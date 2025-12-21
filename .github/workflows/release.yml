@@ -50,6 +50,7 @@ jobs:
         
         cp manifest.json temp-chrome-extension/
         cp content.js temp-chrome-extension/
+        cp styles.css temp-chrome-extension/
         
         cd temp-chrome-extension
         zip -r ../flavortown-utils-chrome-v${{ env.VERSION }}.zip .
@@ -65,6 +66,7 @@ jobs:
         
         cp manifest_firefox.json temp-firefox-extension/manifest.json
         cp content.js temp-firefox-extension/
+        cp styles.css temp-firefox-extension/
         
         cd temp-firefox-extension
         zip -r ../flavortown-utils-firefox-v${{ env.VERSION }}.zip .

@@ -1,0 +1,20 @@
+.flavortown-inline-form .projects-new__card {
+    padding: 38px 8px 24px 8px !important;
+    gap: 38px !important;
+}
+
+.flavortown-inline-form .projects-new__time-preview {
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 4px 16px !important;
+}
+
+.flavortown-inline-form .projects-new__time-preview p {
+    font-size: 1.1em !important;
+    font-weight: 500 !important;
+}
+
+.flavortown-inline-form .projects-new__actions {
+    padding: 4px 16px 8px 16px !important;
+}
