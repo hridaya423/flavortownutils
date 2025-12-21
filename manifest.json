@@ -1,0 +1,17 @@
+{
+    "manifest_version": 3,
+    "name": "Flavortown Utils",
+    "version": "1.0.0",
+    "description": "Flavortown utils",
+    "content_scripts": [
+        {
+            "matches": [
+                "https://flavortown.hackclub.com/*"
+            ],
+            "js": [
+                "content.js"
+            ],
+            "run_at": "document_idle"
+        }
+    ]
+}
