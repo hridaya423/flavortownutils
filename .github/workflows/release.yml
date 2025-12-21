@@ -1,0 +1,111 @@
+name: Extension Release
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Get version from manifests
+      id: get_version
+      run: |
+        CHROME_VERSION=$(grep '"version"' manifest.json | sed -E 's/.*"version": "([^"]+)".*/\1/')
+        FIREFOX_VERSION=$(grep '"version"' manifest_firefox.json | sed -E 's/.*"version": "([^"]+)".*/\1/')
+        
+        VERSION=$CHROME_VERSION
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        
+        if [ "$CHROME_VERSION" != "$FIREFOX_VERSION" ]; then
+          echo "⚠️ Warning: Chrome version ($CHROME_VERSION) != Firefox version ($FIREFOX_VERSION)"
+        fi
+    
+    - name: Delete existing release if it exists
+      run: |
+        if gh release view "v${{ env.VERSION }}" >/dev/null 2>&1; then
+          echo "🗑️ Deleting existing release v${{ env.VERSION }}..."
+          gh release delete "v${{ env.VERSION }}" --yes
+          echo "✅ Existing release deleted"
+        else
+          echo "ℹ️ No existing release found for v${{ env.VERSION }}"
+        fi
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Build Chrome extension package
+      run: |
+        echo "Building Chrome extension..."
+        mkdir -p temp-chrome-extension
+        
+        cp manifest.json temp-chrome-extension/
+        cp content.js temp-chrome-extension/
+        
+        cd temp-chrome-extension
+        zip -r ../flavortown-utils-chrome-v${{ env.VERSION }}.zip .
+        cd ..
+        rm -rf temp-chrome-extension
+        
+        echo "✅ Chrome extension packaged: flavortown-utils-chrome-v${{ env.VERSION }}.zip"
+    
+    - name: Build Firefox extension package
+      run: |
+        echo "Building Firefox extension..."
+        mkdir -p temp-firefox-extension
+        
+        cp manifest_firefox.json temp-firefox-extension/manifest.json
+        cp content.js temp-firefox-extension/
+        
+        cd temp-firefox-extension
+        zip -r ../flavortown-utils-firefox-v${{ env.VERSION }}.zip .
+        cd ..
+        rm -rf temp-firefox-extension
+        
+        echo "✅ Firefox extension packaged: flavortown-utils-firefox-v${{ env.VERSION }}.zip"
+    
+    - name: Upload Chrome extension artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: flavortown-utils-chrome-v${{ env.VERSION }}
+        path: flavortown-utils-chrome-v${{ env.VERSION }}.zip
+        retention-days: 30
+    
+    - name: Upload Firefox extension artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: flavortown-utils-firefox-v${{ env.VERSION }}
+        path: flavortown-utils-firefox-v${{ env.VERSION }}.zip
+        retention-days: 30
+    
+    - name: Create unified release
+      run: |
+        echo "🚀 Creating unified release v${{ env.VERSION }}..."
+        
+        gh release create "v${{ env.VERSION }}" \
+          --title "Flavortown Utils v${{ env.VERSION }} - Chrome & Firefox" \
+          flavortown-utils-chrome-v${{ env.VERSION }}.zip \
+          flavortown-utils-firefox-v${{ env.VERSION }}.zip
+        
+        echo "✅ Release created successfully!"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Summary
+      run: |
+        echo "## 🎉 Release Summary" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "✅ **Version**: v${{ env.VERSION }}" >> $GITHUB_STEP_SUMMARY
+        echo "✅ **Chrome Extension**: flavortown-utils-chrome-v${{ env.VERSION }}.zip" >> $GITHUB_STEP_SUMMARY
+        echo "✅ **Firefox Extension**: flavortown-utils-firefox-v${{ env.VERSION }}.zip" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "🔗 **Release URL**: https://github.com/${{ github.repository }}/releases/tag/v${{ env.VERSION }}" >> $GITHUB_STEP_SUMMARY
