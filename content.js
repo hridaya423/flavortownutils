@@ -1,13 +1,3 @@
-function removeDialogueElements() {
-    if (!window.location.pathname.includes('/shop')) {
-        return;
-    }
-    const dialogueWrapper = document.querySelector('.dialogue-box-wrapper');
-    if (dialogueWrapper) {
-        dialogueWrapper.remove();
-    }
-}
-
 function initPasteUpload() {
     if (!/\/projects\/\d+\/devlogs\/new/.test(window.location.pathname)) {
         return;
@@ -43,19 +33,7 @@ function initPasteUpload() {
 }
 
 function init() {
-    removeDialogueElements();
     initPasteUpload();
-
-    if (document.body) {
-        const observer = new MutationObserver((mutations) => {
-            removeDialogueElements();
-        });
-
-        observer.observe(document.body, {
-            childList: true,
-            subtree: true
-        });
-    }
 }
 
 if (document.readyState === 'loading') {
@@ -70,9 +48,5 @@ document.addEventListener('turbo:load', () => {
         window.__flavortownPasteUploadInit = false;
         lastPathname = window.location.pathname;
     }
-    removeDialogueElements();
     initPasteUpload();
 });
-document.addEventListener('turbo:render', removeDialogueElements);
-document.addEventListener('turbo:frame-load', removeDialogueElements);
-window.addEventListener('popstate', removeDialogueElements);
