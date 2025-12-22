@@ -5,3 +5,4 @@
 - Makes devlog posting directly into project page, instead of a new page.
 - Devlog every xx frequency stat
 - Allows pasting into the attachment.
+- Better goals system, more statistics, better UI for goals
