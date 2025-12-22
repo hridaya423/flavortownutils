@@ -1,40 +1,3 @@
-function initPasteUpload() {
-    const isDevlogNewPage = /\/projects\/\d+\/devlogs\/new/.test(window.location.pathname);
-    const hasInlineForm = document.querySelector('.flavortown-inline-form');
-    const isProjectPage = /\/projects\/\d+$/.test(window.location.pathname);
-
-    if (!isDevlogNewPage && !hasInlineForm && !isProjectPage) {
-        return;
-    }
-    if (window.__flavortownPasteUploadInit) return;
-    window.__flavortownPasteUploadInit = true;
-
-    document.addEventListener('paste', (e) => {
-        const fileInput = document.querySelector('.file-upload__input');
-        if (!fileInput) return;
-
-        const items = e.clipboardData?.items;
-        if (!items) return;
-
-        const files = [];
-        for (const item of items) {
-            if (item.kind === 'file') {
-                const file = item.getAsFile();
-                if (file) files.push(file);
-            }
-        }
-
-        if (files.length === 0) return;
-
-        e.preventDefault();
-        e.stopPropagation();
-
-        const dataTransfer = new DataTransfer();
-        files.forEach(file => dataTransfer.items.add(file));
-        fileInput.files = dataTransfer.files;
-        fileInput.dispatchEvent(new Event('change', { bubbles: true }));
-    });
-}
 
 function addDevlogFrequencyStat() {
     if (!/\/projects\/\d+$/.test(window.location.pathname)) {
@@ -150,10 +113,253 @@ function inlineDevlogForm() {
         });
 }
 
+function enhanceShopGoals() {
+    if (window.location.pathname !== '/shop') return;
+
+    const goalsContainer = document.querySelector('.shop-goals__container');
+    const balanceBtn = document.querySelector('.sidebar__user-balance');
+
+    if (!balanceBtn) return;
+
+    const balanceText = balanceBtn.textContent.trim();
+    const currentCookies = parseInt(balanceText.replace(/[^0-9]/g, ''), 10) || 0;
+
+    function updateStats() {
+        const existingStats = document.querySelector('.flavortown-goals-enhanced');
+        if (existingStats) existingStats.remove();
+
+        const wishlistData = localStorage.getItem('shop_wishlist');
+        if (!wishlistData) return;
+
+        let wishlist;
+        try {
+            wishlist = JSON.parse(wishlistData);
+        } catch (e) {
+            return;
+        }
+
+        const goals = Object.values(wishlist);
+        if (goals.length === 0) return;
+
+        const goalsWithQty = goals.map(g => ({
+            ...g,
+            quantity: g.quantity || 1,
+            totalCost: (g.quantity || 1) * g.price,
+            remaining: Math.max(0, ((g.quantity || 1) * g.price) - currentCookies),
+            hoursNeeded: Math.ceil(Math.max(0, ((g.quantity || 1) * g.price) - currentCookies) / 10)
+        }));
+
+        const totalGoals = goalsWithQty.length;
+        const totalCookiesNeeded = goalsWithQty.reduce((sum, g) => sum + g.totalCost, 0);
+        const cookiesRemaining = Math.max(0, totalCookiesNeeded - currentCookies);
+        const hoursNeeded = Math.ceil(cookiesRemaining / 10);
+        const progressPercent = totalCookiesNeeded > 0 ? Math.min(100, (currentCookies / totalCookiesNeeded) * 100) : 0;
+
+        const itemsHtml = goalsWithQty.map(g => {
+            const itemProgress = g.totalCost > 0 ? Math.min(100, (currentCookies / g.totalCost) * 100) : 0;
+            return `
+                <div class="flavortown-goal-item">
+                    <div class="flavortown-goal-item__header">
+                        <img src="${g.image}" alt="${g.name}" class="flavortown-goal-item__img">
+                        <div class="flavortown-goal-item__info">
+                            <span class="flavortown-goal-item__name">${g.name}</span>
+                            <div class="flavortown-goal-item__progress-bar">
+                                <div class="flavortown-goal-item__progress-fill" style="width: ${itemProgress}%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flavortown-goal-item__stats">
+                        <span>🍪${g.remaining} more</span>
+                        <span>⏱️ ~${g.hoursNeeded}h</span>
+                        <span>×${g.quantity}</span>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        const statsHtml = `
+            <div class="flavortown-goals-enhanced">
+                <div class="flavortown-goals-enhanced__progress">
+                    <div class="flavortown-goals-enhanced__progress-bar">
+                        <div class="flavortown-goals-enhanced__progress-fill" style="width: ${progressPercent}%"></div>
+                    </div>
+                    <span class="flavortown-goals-enhanced__pct">${Math.round(progressPercent)}%</span>
+                </div>
+                <div class="flavortown-goals-enhanced__cards">
+                    <div class="flavortown-goals-enhanced__card">
+                        <span class="flavortown-goals-enhanced__card-label">Goals</span>
+                        <span class="flavortown-goals-enhanced__card-value">🎯 ${totalGoals}</span>
+                    </div>
+                    <div class="flavortown-goals-enhanced__card">
+                        <span class="flavortown-goals-enhanced__card-label">Progress</span>
+                        <span class="flavortown-goals-enhanced__card-value">🍪 ${currentCookies}/${totalCookiesNeeded}</span>
+                    </div>
+                    <div class="flavortown-goals-enhanced__card flavortown-goals-enhanced__card--danger">
+                        <span class="flavortown-goals-enhanced__card-label">Remaining</span>
+                        <span class="flavortown-goals-enhanced__card-value">🍪 ${cookiesRemaining}</span>
+                    </div>
+                    <div class="flavortown-goals-enhanced__card flavortown-goals-enhanced__card--success">
+                        <span class="flavortown-goals-enhanced__card-label">Time Est.</span>
+                        <span class="flavortown-goals-enhanced__card-value">⏱️ ~${hoursNeeded}h</span>
+                    </div>
+                </div>
+                <details class="flavortown-goals-enhanced__accordion" open>
+                    <summary class="flavortown-goals-enhanced__accordion-header">
+                        <span>Goal Items</span>
+                        <span class="flavortown-goals-enhanced__accordion-icon">▼</span>
+                    </summary>
+                    <div class="flavortown-goals-enhanced__accordion-content">
+                        ${itemsHtml}
+                    </div>
+                </details>
+            </div>
+        `;
+
+        const container = document.querySelector('.shop-goals__container');
+        if (container) {
+            const titleEl = container.querySelector('.shop-goals__title');
+            const existingItems = container.querySelector('.shop-goals__items');
+            if (existingItems) existingItems.style.display = 'none';
+            if (titleEl) {
+                titleEl.insertAdjacentHTML('afterend', statsHtml);
+            }
+        }
+    }
+
+    function addQtyControlsToCards() {
+        document.querySelectorAll('.shop-item-card').forEach(card => {
+            const shopId = card.dataset.shopId;
+            if (!shopId) return;
+
+            const wishlistData = localStorage.getItem('shop_wishlist');
+            let wishlist = {};
+            try {
+                wishlist = JSON.parse(wishlistData) || {};
+            } catch (e) { }
+
+            const isInGoals = !!wishlist[shopId];
+            const existingQty = card.querySelector('.flavortown-card-qty');
+            const starBtn = card.querySelector('.shop-item-card__star');
+
+            if (!isInGoals) {
+                if (existingQty) existingQty.remove();
+                if (starBtn) starBtn.style.display = '';
+                return;
+            }
+
+            if (starBtn) starBtn.style.display = 'none';
+
+            if (existingQty) {
+                const valEl = existingQty.querySelector('.flavortown-card-qty__val');
+                if (valEl) valEl.textContent = wishlist[shopId]?.quantity || 1;
+                return;
+            }
+
+            const qty = wishlist[shopId]?.quantity || 1;
+
+            const qtyHtml = `
+                <div class="flavortown-card-qty">
+                    <button class="flavortown-card-qty__btn" data-action="minus" data-shop-id="${shopId}">−</button>
+                    <span class="flavortown-card-qty__val">${qty}</span>
+                    <button class="flavortown-card-qty__btn" data-action="plus" data-shop-id="${shopId}">+</button>
+                </div>
+            `;
+            card.insertAdjacentHTML('afterbegin', qtyHtml);
+        });
+    }
+
+    function handleQtyClick(e) {
+        const starBtn = e.target.closest('.flavortown-card-qty__star');
+        if (starBtn) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const shopId = starBtn.dataset.shopId;
+            const stored = localStorage.getItem('shop_wishlist');
+            if (!stored) return;
+
+            const data = JSON.parse(stored);
+            delete data[shopId];
+            localStorage.setItem('shop_wishlist', JSON.stringify(data));
+
+            updateStats();
+            addQtyControlsToCards();
+            return;
+        }
+
+        const btn = e.target.closest('.flavortown-card-qty__btn');
+        if (!btn) return;
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        const shopId = btn.dataset.shopId;
+        const isPlus = btn.dataset.action === 'plus';
+
+        const stored = localStorage.getItem('shop_wishlist');
+        if (!stored) return;
+
+        const data = JSON.parse(stored);
+        if (!data[shopId]) return;
+
+        const currentQty = data[shopId].quantity || 1;
+
+        if (!isPlus && currentQty <= 1) {
+            const card = btn.closest('.shop-item-card');
+            const originalStar = card?.querySelector('.shop-item-card__star');
+            if (originalStar) {
+                originalStar.style.display = '';
+                originalStar.click();
+            }
+            return;
+        }
+
+        const newQty = isPlus ? currentQty + 1 : currentQty - 1;
+        data[shopId].quantity = newQty;
+
+        localStorage.setItem('shop_wishlist', JSON.stringify(data));
+
+        const card = btn.closest('.shop-item-card');
+        if (card) {
+            const valEl = card.querySelector('.flavortown-card-qty__val');
+            if (valEl) valEl.textContent = newQty;
+        }
+
+        updateStats();
+    }
+
+    if (!window.__flavortownShopQtyListener) {
+        document.addEventListener('click', handleQtyClick);
+        window.__flavortownShopQtyListener = true;
+    }
+
+    updateStats();
+    addQtyControlsToCards();
+
+    if (!window.__flavortownGoalsObserver) {
+        const shopGrid = document.querySelector('.shop-items') || document.body;
+        const observer = new MutationObserver(() => {
+            setTimeout(() => {
+                updateStats();
+                addQtyControlsToCards();
+            }, 100);
+        });
+        observer.observe(shopGrid, { childList: true, subtree: true });
+        window.__flavortownGoalsObserver = observer;
+
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'shop_wishlist') {
+                updateStats();
+                addQtyControlsToCards();
+            }
+        });
+    }
+}
+
 function init() {
-    initPasteUpload();
     addDevlogFrequencyStat();
     inlineDevlogForm();
+    enhanceShopGoals();
 }
 
 if (document.readyState === 'loading') {
@@ -165,11 +371,11 @@ if (document.readyState === 'loading') {
 let lastPathname = window.location.pathname;
 document.addEventListener('turbo:load', () => {
     if (window.location.pathname !== lastPathname) {
-        window.__flavortownPasteUploadInit = false;
         inlineFormLoading = false;
+        window.__flavortownGoalsEnhanced = false;
         lastPathname = window.location.pathname;
     }
-    initPasteUpload();
     addDevlogFrequencyStat();
     inlineDevlogForm();
+    enhanceShopGoals();
 });

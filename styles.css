@@ -18,3 +18,253 @@
 .flavortown-inline-form .projects-new__actions {
     padding: 4px 16px 8px 16px !important;
 }
+
+.shop-item-card {
+    position: relative;
+}
+
+.flavortown-card-qty {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: var(--color-cream, #fdf6e3);
+    border: 2px solid var(--color-brown-light, #8b7355);
+    border-radius: var(--radius-full, 9999px);
+    padding: 2px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+    z-index: 10;
+}
+
+.flavortown-card-qty__btn {
+    width: 22px;
+    height: 22px;
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--color-brown, #5d4e37);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+    font-family: inherit;
+}
+
+.flavortown-card-qty__btn:hover {
+    background: var(--color-brown, #5d4e37);
+    color: var(--color-cream, #fdf6e3);
+}
+
+.flavortown-card-qty__btn:active {
+    transform: scale(0.9);
+}
+
+.flavortown-card-qty__val {
+    font-weight: 700;
+    font-size: 0.8em;
+    min-width: 16px;
+    text-align: center;
+    color: var(--color-brown, #5d4e37);
+    font-family: inherit;
+}
+
+.flavortown-goals-enhanced {
+    margin: 16px 0;
+    font-family: inherit;
+}
+
+.flavortown-goals-enhanced__progress {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.flavortown-goals-enhanced__progress-bar {
+    flex: 1;
+    height: 16px;
+    background: var(--color-cream-dark, #efe6d5);
+    border-radius: var(--radius-full, 9999px);
+    overflow: hidden;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.flavortown-goals-enhanced__progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--color-brown, #5d4e37) 0%, #8b7355 100%);
+    border-radius: var(--radius-full, 9999px);
+    transition: width 0.4s ease;
+}
+
+.flavortown-goals-enhanced__pct {
+    font-weight: 700;
+    font-size: 1.1em;
+    color: var(--color-brown, #5d4e37);
+    min-width: 45px;
+    text-align: right;
+}
+
+.flavortown-goals-enhanced__cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.flavortown-goals-enhanced__card {
+    background: var(--color-cream, #fdf6e3);
+    border: 2px solid var(--color-brown-light, #8b7355);
+    border-radius: var(--radius-md, 10px);
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.flavortown-goals-enhanced__card--danger {
+    border-color: #c53030;
+    background: #fff5f5;
+}
+
+.flavortown-goals-enhanced__card--success {
+    border-color: #38a169;
+    background: #f0fff4;
+}
+
+.flavortown-goals-enhanced__card-label {
+    font-size: 0.7em;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--color-brown-light, #8b7355);
+    font-weight: 600;
+}
+
+.flavortown-goals-enhanced__card-value {
+    font-size: 1em;
+    font-weight: 700;
+    color: var(--color-brown, #5d4e37);
+}
+
+.flavortown-goals-enhanced__card--danger .flavortown-goals-enhanced__card-value {
+    color: #c53030;
+}
+
+.flavortown-goals-enhanced__card--success .flavortown-goals-enhanced__card-value {
+    color: #38a169;
+}
+
+.flavortown-goals-enhanced__accordion {
+    background: var(--color-cream, #fdf6e3);
+    border: 2px solid var(--color-brown-light, #8b7355);
+    border-radius: var(--radius-md, 10px);
+    overflow: hidden;
+}
+
+.flavortown-goals-enhanced__accordion-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--color-brown, #5d4e37);
+    user-select: none;
+}
+
+.flavortown-goals-enhanced__accordion-header::-webkit-details-marker {
+    display: none;
+}
+
+.flavortown-goals-enhanced__accordion-icon {
+    font-size: 0.8em;
+    transition: transform 0.2s;
+}
+
+.flavortown-goals-enhanced__accordion[open] .flavortown-goals-enhanced__accordion-icon {
+    transform: rotate(180deg);
+}
+
+.flavortown-goals-enhanced__accordion-content {
+    padding: 0 14px 14px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.flavortown-goal-item {
+    background: white;
+    border: 1px solid var(--color-brown-light, #8b7355);
+    border-radius: var(--radius-sm, 8px);
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+}
+
+.flavortown-goal-item__header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 6px;
+}
+
+.flavortown-goal-item__img {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-sm, 6px);
+    object-fit: cover;
+}
+
+.flavortown-goal-item__info {
+    width: 100%;
+    text-align: center;
+}
+
+.flavortown-goal-item__name {
+    display: block;
+    font-weight: 600;
+    font-size: 0.8em;
+    color: var(--color-brown, #5d4e37);
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.flavortown-goal-item__progress-bar {
+    height: 5px;
+    background: var(--color-cream-dark, #efe6d5);
+    border-radius: var(--radius-full, 9999px);
+    overflow: hidden;
+}
+
+.flavortown-goal-item__progress-fill {
+    height: 100%;
+    background: var(--color-brown, #5d4e37);
+    border-radius: var(--radius-full, 9999px);
+    transition: width 0.3s;
+}
+
+.flavortown-goal-item__stats {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    font-size: 0.65em;
+    color: var(--color-brown-light, #8b7355);
+    flex-wrap: wrap;
+}
+
+.flavortown-goal-item__stats span:first-child {
+    color: #c53030;
+    font-weight: 600;
+}
+
+.flavortown-goal-item__stats span:nth-child(2) {
+    color: #38a169;
+    font-weight: 600;
+}
