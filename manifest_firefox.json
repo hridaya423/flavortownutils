@@ -36,7 +36,9 @@
         "gecko": {
             "id": "flavortown-utils@hackclub.com",
             "data_collection_permissions": {
-                "required": false
+                "required": [
+                    "none"
+                ]
             }
         }
     }
