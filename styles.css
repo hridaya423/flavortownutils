@@ -268,3 +268,221 @@
     color: #38a169;
     font-weight: 600;
 }
+
+.sidebar__pin-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 28px;
+    height: 28px;
+    border: none;
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.1);
+    color: inherit;
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s, background 0.2s, transform 0.3s;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar:hover .sidebar__pin-btn,
+.sidebar--pinned .sidebar__pin-btn {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.sidebar__pin-btn:hover {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.sidebar--pinned .sidebar__pin-btn {
+    transform: rotate(45deg);
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.sidebar--pinned {
+    --sidebar-collapsed-width: 300px !important;
+    width: var(--sidebar-expanded-width, 300px) !important;
+    min-width: var(--sidebar-expanded-width, 300px) !important;
+    max-width: var(--sidebar-expanded-width, 300px) !important;
+}
+
+.sidebar--pinned .sidebar__blob {
+    width: 100% !important;
+}
+
+.sidebar--pinned .sidebar__nav {
+    width: 100% !important;
+}
+
+.sidebar--pinned .sidebar__nav-list {
+    width: 100% !important;
+}
+
+.sidebar--pinned .sidebar__nav-item {
+    width: 100% !important;
+}
+
+.sidebar--pinned .sidebar__nav-link {
+    width: 100% !important;
+}
+
+.sidebar--pinned .sidebar__nav-label {
+    opacity: 1 !important;
+    visibility: visible !important;
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    overflow: visible !important;
+    clip: auto !important;
+    white-space: normal !important;
+    margin: 0 !important;
+    transform: none !important;
+}
+
+.sidebar--pinned .sidebar__user,
+.sidebar--pinned:hover .sidebar__user {
+    width: 100% !important;
+}
+
+.sidebar--pinned .sidebar__user-card,
+.sidebar--pinned:hover .sidebar__user-card {
+    width: 100% !important;
+}
+
+.sidebar--pinned .sidebar__user-details,
+.sidebar--pinned:hover .sidebar__user-details {
+    opacity: 1 !important;
+    visibility: visible !important;
+    position: static !important;
+    width: auto !important;
+    max-width: none !important;
+    height: auto !important;
+    overflow: visible !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.sidebar--pinned .sidebar__user-name,
+.sidebar--pinned:hover .sidebar__user-name {
+    opacity: 1 !important;
+    visibility: visible !important;
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    clip: auto !important;
+    white-space: normal !important;
+}
+
+.sidebar--pinned .sidebar__user-actions,
+.sidebar--pinned:hover .sidebar__user-actions {
+    opacity: 1 !important;
+    visibility: visible !important;
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    display: flex !important;
+    gap: 0.5rem !important;
+}
+
+.sidebar--pinned .sidebar__nav-link--active::before,
+.sidebar--pinned:hover .sidebar__nav-link--active::before {
+    width: 100% !important;
+    left: 0 !important;
+    transform: none !important;
+}
+
+.sidebar--pinned .sidebar__user-avatar,
+.sidebar--pinned:hover .sidebar__user-avatar {
+    position: relative !important;
+    left: auto !important;
+    transform: none !important;
+}
+
+.sidebar--pinned .sidebar__user-balance,
+.sidebar--pinned:hover .sidebar__user-balance {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.sidebar--pinned .sidebar__user-settings,
+.sidebar--pinned .sidebar__user-logout,
+.sidebar--pinned:hover .sidebar__user-settings,
+.sidebar--pinned:hover .sidebar__user-logout {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.sidebar--pinned:hover {
+    width: var(--sidebar-expanded-width, 300px) !important;
+}
+
+.sidebar--pinned:hover .sidebar__user,
+.sidebar--pinned:hover .sidebar__user-card {
+    position: relative !important;
+    transform: none !important;
+    transition: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.sidebar--pinned:hover .sidebar__user-avatar {
+    position: relative !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: auto !important;
+    transform: none !important;
+    transition: none !important;
+    margin: 0 !important;
+}
+
+.sidebar--pinned:hover .sidebar__user-details {
+    position: static !important;
+    transform: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    max-width: none !important;
+    width: auto !important;
+    height: auto !important;
+    overflow: visible !important;
+    margin: 0 !important;
+}
+
+.sidebar--pinned:hover .sidebar__user-name {
+    position: static !important;
+    transform: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.sidebar--pinned:hover .sidebar__user-actions {
+    position: static !important;
+    transform: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.sidebar--pinned:hover .sidebar__user-balance,
+.sidebar--pinned:hover .sidebar__user-settings,
+.sidebar--pinned:hover .sidebar__user-logout {
+    transform: none !important;
+    transition: none !important;
+}
+
+.sidebar--pinned:hover .sidebar__blob,
+.sidebar--pinned:hover .sidebar__nav,
+.sidebar--pinned:hover .sidebar__nav-list,
+.sidebar--pinned:hover .sidebar__nav-item,
+.sidebar--pinned:hover .sidebar__nav-link,
+.sidebar--pinned:hover .sidebar__nav-label {
+    transform: none !important;
+    transition: none !important;
+}

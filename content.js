@@ -1,3 +1,206 @@
+const browserAPI = typeof browser !== 'undefined' ? browser : chrome;
+
+const CSS_VAR_OVERRIDES = {
+    'background': [
+        '--color-background', '--color-bg', '--neutral-50', '--catppuccin-base',
+        '--color-gray-50', '--color-cream'
+    ],
+    'surface': [
+        '--color-surface', '--neutral-300', '--neutral-400', '--catppuccin-surface2',
+        '--color-bread', '--color-soft-bone', '--color-gray-300', '--color-cream-dark'
+    ],
+    'surface-alt': [
+        '--neutral-100', '--neutral-200', '--color-gray-100', '--color-gray-200'
+    ],
+    'accent': [
+        '--color-accent', '--color-border', '--color-som-dark', '--color-som-bright',
+        '--secondary-300', '--secondary-400', '--color-saddle-taupe', '--catppuccin-accent'
+    ],
+    'accent-alt': [
+        '--color-blue-400', '--color-blue-500', '--secondary-200',
+        '--color-nice-blue', '--color-dark-blue'
+    ],
+    'text': [
+        '--color-text-primary', '--neutral-900', '--catppuccin-text',
+        '--color-gray-900', '--color-brown'
+    ],
+    'text-secondary': [
+        '--color-text-secondary', '--neutral-800', '--color-gray-800', '--color-brown-light'
+    ],
+    'text-muted': [
+        '--color-text-muted', '--neutral-600', '--neutral-700',
+        '--catppuccin-overlay0', '--color-gray-600'
+    ],
+    'border': [
+        '--neutral-500', '--color-gray-500', '--color-brown-dark'
+    ],
+    'success': [
+        '--color-green-400', '--color-green-500', '--color-green-600',
+        '--primary-800', '--color-forest'
+    ],
+    'warning': [
+        '--color-yellow-400', '--color-yellow-500', '--color-yellow-600',
+        '--color-orange-400', '--primary-700', '--color-warm'
+    ],
+    'error': [
+        '--color-red-400', '--color-red-500', '--color-red-600',
+        '--primary-400', '--primary-500', '--color-vintage-red'
+    ],
+    'purple': [
+        '--color-purple-400', '--color-purple-500', '--color-purple-600',
+        '--primary-300', '--secondary-500'
+    ],
+    'teal': [
+        '--color-teal-400', '--color-teal-500', '--primary-900', '--secondary-50'
+    ],
+    'pink': [
+        '--color-pink-400', '--color-pink-500', '--primary-200', '--primary-100'
+    ]
+};
+
+function loadTheme() {
+    browserAPI.storage.sync.get(['theme', 'customColors'], (result) => {
+        const theme = result.theme || 'default';
+        const customColors = result.customColors || {};
+        applyTheme(theme, customColors);
+    });
+}
+
+function applyTheme(theme, customColors) {
+    const existingTheme = document.getElementById('flavortown-theme');
+    if (existingTheme) existingTheme.remove();
+
+    const existingCustom = document.getElementById('flavortown-custom-vars');
+    if (existingCustom) existingCustom.remove();
+
+    if (theme === 'default') return;
+
+    if (theme === 'custom') {
+        const style = document.createElement('style');
+        style.id = 'flavortown-custom-vars';
+
+        let css = ':root, :host {\n';
+
+        for (const [colorKey, value] of Object.entries(customColors)) {
+            const mappedVars = CSS_VAR_OVERRIDES[colorKey];
+            if (mappedVars && value) {
+                mappedVars.forEach(varName => {
+                    css += `    ${varName}: ${value} !important;\n`;
+                });
+            }
+        }
+
+        css += '}\n\n';
+
+        const bg = customColors['background'] || '#1e1e2e';
+        const surface = customColors['surface'] || '#313244';
+        const text = customColors['text'] || '#cdd6f4';
+        const accent = customColors['accent'] || '#cba6f7';
+        const border = customColors['border'] || '#585b70';
+
+        css += `
+html, body {
+    background: ${bg} !important;
+    background-color: ${bg} !important;
+    color: ${text} !important;
+}
+
+body::before {
+    background: ${bg} !important;
+    background-color: ${bg} !important;
+}
+
+.sidebar, .sidebar__content, .sidebar__menu {
+    background: ${surface} !important;
+}
+
+.btn, button {
+    border-color: ${border} !important;
+}
+
+a {
+    color: ${accent} !important;
+}
+
+h1, h2, h3, h4, h5, h6, p, span, div {
+    color: inherit;
+}
+
+.prose, .prose * {
+    color: ${text} !important;
+}
+`;
+
+        style.textContent = css;
+        document.head.appendChild(style);
+    } else {
+        const link = document.createElement('link');
+        link.id = 'flavortown-theme';
+        link.rel = 'stylesheet';
+        link.href = browserAPI.runtime.getURL(`themes/${theme}.css`);
+        document.head.appendChild(link);
+    }
+}
+
+
+
+browserAPI.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message.type === 'APPLY_THEME') {
+        applyTheme(message.theme, message.customColors || {});
+        sendResponse({ success: true });
+    }
+    return true;
+});
+
+function initPinnableSidebar() {
+    const sidebar = document.querySelector('.sidebar');
+    if (!sidebar || sidebar.dataset.pinInitialized) return;
+    sidebar.dataset.pinInitialized = 'true';
+
+    const pinBtn = document.createElement('button');
+    pinBtn.className = 'sidebar__pin-btn';
+    pinBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16 12V4h1V2H7v2h1v8l-2 2v2h5.2v6h1.6v-6H18v-2l-2-2z"/></svg>`;
+    pinBtn.title = 'Pin sidebar';
+
+    const blob = sidebar.querySelector('.sidebar__blob');
+    if (blob) {
+        blob.style.position = 'relative';
+        blob.appendChild(pinBtn);
+    }
+
+    browserAPI.storage.local.get(['sidebarPinned'], (result) => {
+        const isPinned = result.sidebarPinned || false;
+
+        if (isPinned) {
+            sidebar.style.transition = 'none';
+            sidebar.classList.add('sidebar--pinned');
+            sidebar.style.width = 'var(--sidebar-expanded-width, 300px)';
+
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    sidebar.style.transition = '';
+                });
+            });
+        }
+    });
+
+    pinBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+
+        const isPinned = sidebar.classList.contains('sidebar--pinned');
+
+        if (isPinned) {
+            sidebar.classList.remove('sidebar--pinned');
+            sidebar.style.width = '';
+        } else {
+            sidebar.classList.add('sidebar--pinned');
+            sidebar.style.width = 'var(--sidebar-expanded-width, 300px)';
+        }
+
+        browserAPI.storage.local.set({ sidebarPinned: !isPinned });
+    });
+}
 
 function addDevlogFrequencyStat() {
     if (!/\/projects\/\d+$/.test(window.location.pathname)) {
@@ -357,6 +560,8 @@ function enhanceShopGoals() {
 }
 
 function init() {
+    loadTheme();
+    initPinnableSidebar();
     addDevlogFrequencyStat();
     inlineDevlogForm();
     enhanceShopGoals();
@@ -375,6 +580,7 @@ document.addEventListener('turbo:load', () => {
         window.__flavortownGoalsEnhanced = false;
         lastPathname = window.location.pathname;
     }
+    initPinnableSidebar();
     addDevlogFrequencyStat();
     inlineDevlogForm();
     enhanceShopGoals();

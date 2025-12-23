@@ -1,8 +1,16 @@
 {
     "manifest_version": 2,
     "name": "Flavortown Utils",
-    "version": "1.0.0",
-    "description": "Flavortown utils",
+    "version": "1.1.0",
+    "description": "Flavortown utils with themes and enhanced features",
+    "permissions": [
+        "storage",
+        "tabs"
+    ],
+    "browser_action": {
+        "default_popup": "popup.html",
+        "default_title": "Flavortown Utils"
+    },
     "content_scripts": [
         {
             "matches": [
@@ -16,6 +24,9 @@
             ],
             "run_at": "document_idle"
         }
+    ],
+    "web_accessible_resources": [
+        "themes/*.css"
     ],
     "browser_specific_settings": {
         "gecko": {

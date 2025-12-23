@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="popup.css">
+</head>
+
+<body>
+    <div class="popup">
+        <header class="popup__header">
+            <div class="popup__logo">
+                <span class="popup__logo-icon">🍪</span>
+                <div class="popup__logo-text">
+                    <h1>Flavortown Utils</h1>
+                    <span class="popup__version">Theme Manager</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="popup__main">
+            <section class="popup__themes">
+                <div class="theme-card" data-theme="default">
+                    <div class="theme-card__preview theme-card__preview--default">
+                        <div class="theme-card__colors">
+                            <span style="background: #fdf6e3"></span>
+                            <span style="background: #5d4e37"></span>
+                            <span style="background: #d97706"></span>
+                        </div>
+                    </div>
+                    <div class="theme-card__info">
+                        <span class="theme-card__name">Default</span>
+                        <span class="theme-card__desc">Original Flavortown</span>
+                    </div>
+                    <div class="theme-card__check">✓</div>
+                </div>
+
+                <div class="theme-card" data-theme="catppuccin">
+                    <div class="theme-card__preview theme-card__preview--catppuccin">
+                        <div class="theme-card__colors">
+                            <span style="background: #1e1e2e"></span>
+                            <span style="background: #cba6f7"></span>
+                            <span style="background: #f5c2e7"></span>
+                        </div>
+                    </div>
+                    <div class="theme-card__info">
+                        <span class="theme-card__name">Catppuccin</span>
+                        <span class="theme-card__desc">Mocha dark theme</span>
+                    </div>
+                    <div class="theme-card__check">✓</div>
+                </div>
+
+                <div class="theme-card" data-theme="sea">
+                    <div class="theme-card__preview theme-card__preview--sea">
+                        <div class="theme-card__colors">
+                            <span style="background: #0a192f"></span>
+                            <span style="background: #66d9ef"></span>
+                            <span style="background: #7fdbca"></span>
+                        </div>
+                    </div>
+                    <div class="theme-card__info">
+                        <span class="theme-card__name">Ocean</span>
+                        <span class="theme-card__desc">Deep sea vibes</span>
+                    </div>
+                    <div class="theme-card__check">✓</div>
+                </div>
+
+                <div class="theme-card" data-theme="custom">
+                    <div class="theme-card__preview theme-card__preview--custom">
+                        <div class="theme-card__colors" id="customPreviewColors">
+                            <span style="background: #1e1e2e"></span>
+                            <span style="background: #8aadf4"></span>
+                            <span style="background: #cdd6f4"></span>
+                        </div>
+                    </div>
+                    <div class="theme-card__info">
+                        <span class="theme-card__name">Custom</span>
+                        <span class="theme-card__desc">Your own colors</span>
+                    </div>
+                    <div class="theme-card__check">✓</div>
+                </div>
+            </section>
+
+            <section class="popup__custom" id="customSection">
+                <div class="custom-editor">
+                    <div class="custom-editor__header">
+                        <span>🎨 Color Editor</span>
+                        <button class="custom-editor__reset" id="resetBtn"
+                            title="Reset to Catppuccin defaults">↺</button>
+                    </div>
+                    <div class="custom-editor__grid" id="customVars"></div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="popup__footer">
+            <div class="popup__status" id="status"></div>
+        </footer>
+    </div>
+    <script src="popup.js"></script>
+</body>
+
+</html>

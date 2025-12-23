@@ -1,0 +1,258 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+:root {
+    --popup-bg: #1e1e2e;
+    --popup-surface: #313244;
+    --popup-surface-hover: #45475a;
+    --popup-border: #585b70;
+    --popup-text: #cdd6f4;
+    --popup-text-dim: #a6adc8;
+    --popup-accent: #cba6f7;
+    --popup-accent-dim: #b4befe;
+    --popup-success: #a6e3a1;
+}
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--popup-bg);
+    color: var(--popup-text);
+    min-width: 360px;
+    max-width: 360px;
+    transition: background 0.3s, color 0.3s;
+}
+.popup {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
+.popup__header {
+    padding: 16px 16px 12px;
+    border-bottom: 1px solid var(--popup-border);
+    background: linear-gradient(180deg, color-mix(in srgb, var(--popup-accent) 10%, transparent) 0%, transparent 100%);
+    transition: border-color 0.3s, background 0.3s;
+}
+.popup__logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.popup__logo-icon {
+    font-size: 28px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+.popup__logo-text h1 {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    background: linear-gradient(135deg, var(--popup-accent) 0%, var(--popup-accent-dim) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.popup__version {
+    font-size: 11px;
+    color: var(--popup-text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: color 0.3s;
+}
+.popup__main {
+    padding: 12px;
+    flex: 1;
+}
+.popup__themes {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+.theme-card {
+    position: relative;
+    background: var(--popup-surface);
+    border: 2px solid transparent;
+    border-radius: 12px;
+    padding: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    overflow: hidden;
+}
+.theme-card:hover {
+    background: var(--popup-surface-hover);
+    transform: translateY(-2px);
+}
+.theme-card.active {
+    border-color: var(--popup-accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--popup-accent) 20%, transparent);
+}
+.theme-card__preview {
+    height: 50px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    overflow: hidden;
+    position: relative;
+}
+.theme-card__colors {
+    display: flex;
+    height: 100%;
+}
+.theme-card__colors span {
+    flex: 1;
+    transition: transform 0.2s;
+}
+.theme-card:hover .theme-card__colors span {
+    transform: scaleY(1.1);
+}
+.theme-card__info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.theme-card__name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--popup-text);
+    transition: color 0.3s;
+}
+.theme-card__desc {
+    font-size: 10px;
+    color: var(--popup-text-dim);
+    transition: color 0.3s;
+}
+.theme-card__check {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--popup-accent);
+    color: var(--popup-bg);
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.2s;
+}
+.theme-card.active .theme-card__check {
+    opacity: 1;
+    transform: scale(1);
+}
+.popup__custom {
+    display: none;
+    margin-top: 12px;
+    animation: slideDown 0.2s ease;
+}
+.popup__custom.visible {
+    display: block;
+}
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.custom-editor {
+    background: var(--popup-surface);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: background 0.3s;
+}
+.custom-editor__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    background: color-mix(in srgb, var(--popup-accent) 10%, transparent);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--popup-text);
+    transition: background 0.3s, color 0.3s;
+}
+.custom-editor__reset {
+    background: transparent;
+    border: 1px solid var(--popup-border);
+    border-radius: 6px;
+    color: var(--popup-text-dim);
+    font-size: 14px;
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+.custom-editor__reset:hover {
+    background: var(--popup-surface-hover);
+    color: var(--popup-text);
+}
+.custom-editor__grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+    padding: 12px;
+    max-height: 180px;
+    overflow-y: auto;
+}
+.color-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+}
+.color-item__input {
+    width: 36px;
+    height: 36px;
+    border: 2px solid var(--popup-border);
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 2px;
+    background: transparent;
+    transition: transform 0.15s, border-color 0.15s;
+}
+.color-item__input:hover {
+    transform: scale(1.1);
+    border-color: var(--popup-accent);
+}
+.color-item__label {
+    font-size: 8px;
+    color: var(--popup-text-dim);
+    text-align: center;
+    max-width: 50px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: color 0.3s;
+}
+.popup__footer {
+    padding: 12px 16px;
+    border-top: 1px solid var(--popup-border);
+    transition: border-color 0.3s;
+}
+.popup__status {
+    font-size: 12px;
+    text-align: center;
+    color: var(--popup-success);
+    min-height: 16px;
+    transition: opacity 0.2s, color 0.3s;
+}
+.popup__status.error {
+    color: #f38ba8;
+}
+.custom-editor__grid::-webkit-scrollbar {
+    width: 6px;
+}
+.custom-editor__grid::-webkit-scrollbar-track {
+    background: var(--popup-bg);
+}
+.custom-editor__grid::-webkit-scrollbar-thumb {
+    background: var(--popup-border);
+    border-radius: 3px;
+}
+.custom-editor__grid::-webkit-scrollbar-thumb:hover {
+    background: var(--popup-text-dim);
+}
