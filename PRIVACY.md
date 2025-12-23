@@ -1,6 +1,6 @@
 # Privacy Policy for Flavortown Utils
 
-**Last Updated:** December 23, 2024
+**Last Updated:** December 23, 2025
 
 ## Overview
 
