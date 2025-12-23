@@ -154,7 +154,13 @@ body::before {
 
 .btn--borderless {
     color: var(--sea-white) !important;
-    background: transparent !important;
+    background: var(--sea-dark) !important;
+    border: 1px solid var(--sea-surface) !important;
+}
+
+.btn--borderless:hover {
+    background: var(--sea-mid) !important;
+    border-color: var(--sea-cyan) !important;
 }
 
 .ui-heading {
@@ -1050,17 +1056,105 @@ a:hover {
 }
 
 .input-group--green::before {
-    background-color: var(--sea-kelp) !important;
+    background-color: var(--sea-mid) !important;
 }
 
 .input-group--green .input-group__label {
-    background-color: var(--sea-kelp) !important;
-    color: var(--sea-abyss) !important;
+    background-color: var(--sea-mid) !important;
+    color: var(--sea-kelp) !important;
+    border-left: 3px solid var(--sea-kelp) !important;
 }
 
 .input-group--green .input-group__subtitle {
     background-color: var(--sea-dark) !important;
     color: var(--sea-kelp) !important;
+}
+
+.input-group--blue::before {
+    background-color: var(--sea-mid) !important;
+}
+
+.input-group--blue .input-group__label {
+    background-color: var(--sea-mid) !important;
+    color: var(--sea-blue) !important;
+    border-left: 3px solid var(--sea-blue) !important;
+}
+
+.input-group--blue .input-group__subtitle {
+    background-color: var(--sea-dark) !important;
+    color: var(--sea-blue) !important;
+}
+
+.hackatime-project-selector {
+    background: var(--sea-dark) !important;
+    border-color: var(--sea-mid) !important;
+    border-radius: 16px !important;
+}
+
+.hackatime-project-selector--yellow::before {
+    background-color: var(--sea-mid) !important;
+}
+
+.hackatime-project-selector__label {
+    background-color: var(--sea-mid) !important;
+    color: var(--sea-gold) !important;
+    border-left: 3px solid var(--sea-gold) !important;
+}
+
+.hackatime-project-selector__control {
+    background: var(--sea-dark) !important;
+}
+
+.hackatime-project-selector__select {
+    background: var(--sea-abyss) !important;
+    border-color: var(--sea-mid) !important;
+    color: var(--sea-white) !important;
+}
+
+.hackatime-project-selector__selected {
+    background: transparent !important;
+}
+
+.hackatime-project-selector__project {
+    background: var(--sea-mid) !important;
+    border-color: var(--sea-surface) !important;
+}
+
+.hackatime-project-selector__project-icon {
+    color: var(--sea-cyan) !important;
+    background-color: var(--sea-surface) !important;
+}
+
+.hackatime-project-selector--yellow .hackatime-project-selector__project-icon {
+    background-color: var(--sea-surface) !important;
+    color: var(--sea-gold) !important;
+}
+
+.hackatime-project-selector__project-name {
+    color: var(--sea-white) !important;
+}
+
+.hackatime-project-selector__project-meta {
+    color: var(--sea-mist) !important;
+}
+
+.hackatime-project-selector__project-remove {
+    background: var(--sea-coral) !important;
+    color: var(--sea-abyss) !important;
+}
+
+.hackatime-project-selector__project-remove svg {
+    fill: var(--sea-abyss) !important;
+}
+
+.hackatime-project-selector__subtitle {
+    color: var(--sea-mist) !important;
+    background-color: transparent !important;
+}
+
+.hackatime-project-selector--yellow .hackatime-project-selector__subtitle {
+    color: var(--sea-gold) !important;
+    background-color: transparent !important;
 }
 
 .shop-order__summary .shop-order__summary-content {
@@ -1340,7 +1434,8 @@ a:hover {
 }
 
 .input__icon {
-    color: var(--sea-foam) !important;
+    color: var(--sea-cyan) !important;
+    background-color: var(--sea-mid) !important;
 }
 
 .input__icon svg {
@@ -1362,8 +1457,8 @@ a:hover {
 }
 
 .input__label {
-    color: var(--sea-abyss) !important;
-    background-color: var(--sea-cyan) !important;
+    color: var(--sea-cyan) !important;
+    background-color: var(--sea-mid) !important;
 }
 
 .input__subtitle {
