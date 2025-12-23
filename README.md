@@ -1,6 +1,6 @@
-# Flavortown Utils
+<img width="640" height="400" alt="image" src="https://github.com/user-attachments/assets/fe3b4de0-4ce1-4d1f-8829-4d0f4fffbdf8" />
 
-## Current features:
+## Features:
 
 - Makes devlog posting directly into project page, instead of a new page.
 - Devlog every xx frequency stat
