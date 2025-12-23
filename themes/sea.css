@@ -1748,15 +1748,22 @@ a:hover {
 }
 
 .vote-category {
-    background: var(--sea-mid) !important;
-    border-color: var(--sea-surface) !important;
+    background: var(--sea-dark) !important;
+    border-color: var(--sea-mid) !important;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4)) !important;
 }
 
 .vote-category__header {
-    color: var(--sea-white) !important;
+    color: var(--sea-abyss) !important;
+}
+
+.vote-category__body {
+    background-color: var(--sea-dark) !important;
+    border-color: var(--vote-category-accent) !important;
 }
 
 .vote-category__footer {
+    background-color: var(--sea-mid) !important;
     color: var(--sea-mist) !important;
 }
 
@@ -1768,16 +1775,49 @@ a:hover {
     color: var(--sea-gold) !important;
 }
 
+.vote-category--red {
+    --vote-category-accent: var(--sea-coral) !important;
+    --vote-category-footer-bg: var(--sea-mid) !important;
+    --vote-category-footer-text: var(--sea-coral) !important;
+}
+
 .vote-category--red .vote-category__header {
-    color: var(--sea-coral) !important;
+    background-color: var(--sea-coral) !important;
+    color: var(--sea-abyss) !important;
+}
+
+.vote-category--red .vote-category__body {
+    border-color: var(--sea-coral) !important;
+}
+
+.vote-category--yellow {
+    --vote-category-accent: var(--sea-gold) !important;
+    --vote-category-footer-bg: var(--sea-mid) !important;
+    --vote-category-footer-text: var(--sea-gold) !important;
 }
 
 .vote-category--yellow .vote-category__header {
-    color: var(--sea-gold) !important;
+    background-color: var(--sea-gold) !important;
+    color: var(--sea-abyss) !important;
+}
+
+.vote-category--yellow .vote-category__body {
+    border-color: var(--sea-gold) !important;
+}
+
+.vote-category--blue {
+    --vote-category-accent: var(--sea-cyan) !important;
+    --vote-category-footer-bg: var(--sea-mid) !important;
+    --vote-category-footer-text: var(--sea-cyan) !important;
 }
 
 .vote-category--blue .vote-category__header {
-    color: var(--sea-blue) !important;
+    background-color: var(--sea-cyan) !important;
+    color: var(--sea-abyss) !important;
+}
+
+.vote-category--blue .vote-category__body {
+    border-color: var(--sea-cyan) !important;
 }
 
 .btn-submit {
