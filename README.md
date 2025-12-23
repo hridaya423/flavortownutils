@@ -16,6 +16,8 @@
 ## Feature showcase:
 
 <img width="480" height="360" alt="image" src="https://github.com/user-attachments/assets/c3d7205b-2021-462d-8a34-83154410b646" />
+<img width="480" height="360" alt="image" src="https://github.com/user-attachments/assets/459003a6-d3da-4f0d-bac1-a1d483ab3b1d" />
+
 
 
 
