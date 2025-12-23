@@ -1588,3 +1588,115 @@ a:hover {
 ::-webkit-scrollbar-thumb:hover {
     background: var(--ctp-overlay0);
 }
+
+.user-profile__left {
+    background: transparent !important;
+}
+
+.user-profile__card {
+    background: var(--ctp-surface0) !important;
+    border-color: var(--ctp-surface1) !important;
+    color: var(--ctp-text) !important;
+}
+
+.user-profile__identity {
+    background: transparent !important;
+}
+
+.user-profile__identity h1 {
+    color: var(--ctp-text) !important;
+}
+
+.user-profile__identity h2 {
+    color: var(--ctp-subtext0) !important;
+}
+
+.user-profile__avatar {
+    border-color: var(--ctp-mauve) !important;
+}
+
+.user-profile__heading {
+    color: var(--ctp-text) !important;
+    background: transparent !important;
+}
+
+.user-profile__heading svg {
+    color: var(--ctp-mauve) !important;
+}
+
+.user-profile__stats {
+    background: transparent !important;
+}
+
+.user-profile__stat {
+    background: var(--ctp-surface1) !important;
+    border-color: var(--ctp-surface2) !important;
+}
+
+.user-profile__stat h3 {
+    color: var(--ctp-subtext0) !important;
+}
+
+.user-profile__stat h4 {
+    color: var(--ctp-mauve) !important;
+}
+
+.user-profile__times {
+    background: transparent !important;
+}
+
+.user-profile__time {
+    background: var(--ctp-surface1) !important;
+}
+
+.user-profile__time h4 {
+    color: var(--ctp-text) !important;
+}
+
+.user-profile__achievements {
+    background: transparent !important;
+}
+
+.user-profile__achievement {
+    background: var(--ctp-surface1) !important;
+    border-color: var(--ctp-surface2) !important;
+}
+
+.user-profile__achievement-icon {
+    background: var(--ctp-surface2) !important;
+}
+
+.user-profile__achievement-title {
+    color: var(--ctp-text) !important;
+}
+
+.achievement-icon-placeholder {
+    color: var(--ctp-overlay0) !important;
+    background: var(--ctp-surface2) !important;
+}
+
+.user-profile__projects {
+    background: transparent !important;
+}
+
+.user-profile__project-card {
+    background: var(--ctp-surface1) !important;
+    border-color: var(--ctp-surface2) !important;
+}
+
+.user-profile__project-card:hover {
+    background: var(--ctp-surface2) !important;
+    border-color: var(--ctp-mauve) !important;
+}
+
+.user-profile__project-card-title h3 {
+    color: var(--ctp-text) !important;
+}
+
+.user-profile__project-stats {
+    color: var(--ctp-subtext0) !important;
+}
+
+.user-profile__project-stats div {
+    color: var(--ctp-subtext0) !important;
+}
