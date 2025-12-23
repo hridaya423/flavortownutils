@@ -11,6 +11,10 @@
         "default_popup": "popup.html",
         "default_title": "Flavortown Utils"
     },
+    "icons": {
+        "64": "icon64.png",
+        "128": "icon128.png"
+    },
     "content_scripts": [
         {
             "matches": [
