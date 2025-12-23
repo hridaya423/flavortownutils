@@ -1887,3 +1887,42 @@ a:hover {
     background: var(--ctp-yellow) !important;
     color: var(--ctp-crust) !important;
 }
+.shop-order__accessories {
+    background: transparent !important;
+}
+.shop-order__accessory-group-section {
+    background: var(--ctp-surface0) !important;
+    border-color: var(--ctp-surface1) !important;
+}
+.shop-order__accessory-group-section h5 {
+    color: var(--ctp-text) !important;
+}
+.shop-order__accessory-options {
+    background: transparent !important;
+}
+.shop-order__accessory-option-label {
+    cursor: pointer;
+}
+.shop-order__accessory-option-block {
+    background: var(--ctp-surface1) !important;
+    border: 2px solid var(--ctp-surface2) !important;
+    color: var(--ctp-text) !important;
+    border-radius: 8px !important;
+    transition: all 0.2s ease !important;
+}
+.shop-order__accessory-option-block:hover {
+    background: var(--ctp-surface2) !important;
+    border-color: var(--ctp-mauve) !important;
+}
+.shop-order__accessory-option-input:checked + .shop-order__accessory-option-block {
+    background: var(--ctp-mauve) !important;
+    border-color: var(--ctp-mauve) !important;
+    color: var(--ctp-crust) !important;
+}
+.shop-order__accessory-option-name {
+    color: inherit !important;
+}
+.shop-order__accessory-option-price {
+    color: inherit !important;
+    opacity: 0.8;
+}

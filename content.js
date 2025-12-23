@@ -327,7 +327,24 @@ function enhanceShopGoals() {
     const balanceText = balanceBtn.textContent.trim();
     const currentCookies = parseInt(balanceText.replace(/[^0-9]/g, ''), 10) || 0;
 
-    function updateStats() {
+    let updateDebounceTimer = null;
+    let isProcessingClick = false;
+
+    function updateStats(immediate = false) {
+        if (updateDebounceTimer) {
+            clearTimeout(updateDebounceTimer);
+            updateDebounceTimer = null;
+        }
+
+        if (!immediate) {
+            updateDebounceTimer = setTimeout(() => updateStats(true), 50);
+            return;
+        }
+        if (!immediate) {
+            updateDebounceTimer = setTimeout(() => updateStats(true), 50);
+            return;
+        }
+
         const existingStats = document.querySelector('.flavortown-goals-enhanced');
         if (existingStats) existingStats.remove();
 
@@ -341,7 +358,7 @@ function enhanceShopGoals() {
             return;
         }
 
-        const goals = Object.values(wishlist);
+        const goals = Object.entries(wishlist).map(([id, g]) => ({ ...g, id }));
         if (goals.length === 0) return;
 
         const goalsWithQty = goals.map(g => ({
@@ -360,21 +377,39 @@ function enhanceShopGoals() {
 
         const itemsHtml = goalsWithQty.map(g => {
             const itemProgress = g.totalCost > 0 ? Math.min(100, (currentCookies / g.totalCost) * 100) : 0;
+            const baseItemName = g.name.split(' (')[0];
+            const accessories = g.accessories || [];
+            const basePrice = g.basePrice || g.price;
+
+            const accessoriesHtml = accessories.length > 0 ? accessories.map((acc, idx) => `
+                <div class="goal-item__accessory">
+                    <span class="goal-item__accessory-name">+ ${acc.name}</span>
+                    <span class="goal-item__accessory-price">🍪${acc.price.toLocaleString()}</span>
+                    <button class="goal-item__accessory-remove" data-goal-id="${g.id}" data-acc-idx="${idx}" title="Remove accessory">×</button>
+                </div>
+            `).join('') : '';
+
             return `
-                <div class="flavortown-goal-item">
+                <div class="flavortown-goal-item goal-item" data-goal-id="${g.id}" style="position: relative;">
+                    <button class="goal-item__remove" data-goal-id="${g.id}" title="Remove from goals">×</button>
                     <div class="flavortown-goal-item__header">
-                        <img src="${g.image}" alt="${g.name}" class="flavortown-goal-item__img">
+                        <img src="${g.image}" alt="${baseItemName}" class="flavortown-goal-item__img">
                         <div class="flavortown-goal-item__info">
-                            <span class="flavortown-goal-item__name">${g.name}</span>
+                            <span class="flavortown-goal-item__name">${baseItemName}</span>
                             <div class="flavortown-goal-item__progress-bar">
                                 <div class="flavortown-goal-item__progress-fill" style="width: ${itemProgress}%"></div>
                             </div>
                         </div>
                     </div>
+                    ${accessoriesHtml}
                     <div class="flavortown-goal-item__stats">
-                        <span>🍪${g.remaining} more</span>
+                        <span>🍪${g.totalCost.toLocaleString()} total</span>
                         <span>⏱️ ~${g.hoursNeeded}h</span>
-                        <span>×${g.quantity}</span>
+                    </div>
+                    <div class="goal-item__qty-controls">
+                        <button class="goal-item__qty-btn" data-action="decrease" data-goal-id="${g.id}">−</button>
+                        <span class="goal-item__qty-value">${g.quantity}</span>
+                        <button class="goal-item__qty-btn" data-action="increase" data-goal-id="${g.id}">+</button>
                     </div>
                 </div>
             `;
@@ -408,8 +443,10 @@ function enhanceShopGoals() {
                 </div>
                 <details class="flavortown-goals-enhanced__accordion" open>
                     <summary class="flavortown-goals-enhanced__accordion-header">
-                        <span>Goal Items</span>
-                        <span class="flavortown-goals-enhanced__accordion-icon">▼</span>
+                        <div class="flavortown-accordion-inner">
+                            <span class="flavortown-accordion-title">Goal Items</span>
+                            <span class="flavortown-goals-enhanced__accordion-icon">▼</span>
+                        </div>
                     </summary>
                     <div class="flavortown-goals-enhanced__accordion-content">
                         ${itemsHtml}
@@ -472,6 +509,79 @@ function enhanceShopGoals() {
     }
 
     function handleQtyClick(e) {
+        if (e.target.closest('.flavortown-goals-enhanced__accordion-header') ||
+            e.target.closest('summary')) {
+            return;
+        }
+
+        console.log('handleQtyClick fired', e.target, e.target.className);
+
+        const removeBtn = e.target.closest('.goal-item__remove');
+        if (removeBtn) {
+            e.preventDefault();
+            e.stopPropagation();
+            const goalId = removeBtn.dataset.goalId;
+            console.log('Removing goal:', goalId);
+            const stored = localStorage.getItem('shop_wishlist');
+            if (stored) {
+                const data = JSON.parse(stored);
+                delete data[goalId];
+                localStorage.setItem('shop_wishlist', JSON.stringify(data));
+                updateStats(true);
+                addQtyControlsToCards();
+            }
+            return;
+        }
+
+        const qtyBtn = e.target.closest('.goal-item__qty-btn');
+        if (qtyBtn) {
+            e.preventDefault();
+            e.stopPropagation();
+            const goalId = qtyBtn.dataset.goalId;
+            const action = qtyBtn.dataset.action;
+            console.log('Qty button clicked:', action, 'for goal:', goalId);
+            const stored = localStorage.getItem('shop_wishlist');
+            if (stored) {
+                const data = JSON.parse(stored);
+                if (data[goalId]) {
+                    const currentQty = data[goalId].quantity || 1;
+                    if (action === 'increase') {
+                        data[goalId].quantity = currentQty + 1;
+                    } else if (action === 'decrease' && currentQty > 1) {
+                        data[goalId].quantity = currentQty - 1;
+                    }
+                    localStorage.setItem('shop_wishlist', JSON.stringify(data));
+                    updateStats(true);
+                    addQtyControlsToCards();
+                }
+            }
+            return;
+        }
+
+        const accRemoveBtn = e.target.closest('.goal-item__accessory-remove');
+        if (accRemoveBtn) {
+            e.preventDefault();
+            e.stopPropagation();
+            const goalId = accRemoveBtn.dataset.goalId;
+            const accIdx = parseInt(accRemoveBtn.dataset.accIdx, 10);
+            console.log('Removing accessory:', accIdx, 'from goal:', goalId);
+            const stored = localStorage.getItem('shop_wishlist');
+            if (stored) {
+                const data = JSON.parse(stored);
+                if (data[goalId] && data[goalId].accessories) {
+                    const removedAcc = data[goalId].accessories[accIdx];
+                    data[goalId].accessories.splice(accIdx, 1);
+                    if (removedAcc) {
+                        data[goalId].price = (data[goalId].price || 0) - removedAcc.price;
+                    }
+                    localStorage.setItem('shop_wishlist', JSON.stringify(data));
+                    updateStats(true);
+                    addQtyControlsToCards();
+                }
+            }
+            return;
+        }
+
         const starBtn = e.target.closest('.flavortown-card-qty__star');
         if (starBtn) {
             e.preventDefault();
@@ -559,12 +669,268 @@ function enhanceShopGoals() {
     }
 }
 
+async function initShopAccessories() {
+    if (!window.location.pathname.startsWith('/shop') || window.location.pathname.includes('/order')) {
+        return;
+    }
+    if (window.__shopAccessoriesInit) return;
+    window.__shopAccessoriesInit = true;
+
+    const shopCards = document.querySelectorAll('.shop-item-card[data-shop-id]');
+    if (!shopCards.length) return;
+
+    const cacheKey = 'flavortown-accessories-cache';
+    const selectionsKey = 'flavortown-accessory-selections';
+    let cache = {};
+    let selections = {};
+
+    try {
+        cache = JSON.parse(localStorage.getItem(cacheKey) || '{}');
+        selections = JSON.parse(localStorage.getItem(selectionsKey) || '{}');
+    } catch (e) {
+        cache = {};
+        selections = {};
+    }
+
+    const itemsToFetch = [];
+    shopCards.forEach(card => {
+        const shopId = card.dataset.shopId;
+        if (!cache[shopId]) {
+            itemsToFetch.push(shopId);
+        }
+    });
+
+    if (itemsToFetch.length > 0) {
+        await Promise.all(itemsToFetch.map(async (shopId) => {
+            try {
+                const response = await fetch(`/shop/order?shop_item_id=${shopId}`);
+                const html = await response.text();
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+
+                const accessoryGroups = [];
+                doc.querySelectorAll('.shop-order__accessory-group-section').forEach(section => {
+                    const title = section.querySelector('h5')?.textContent?.trim() || 'Options';
+                    const options = [];
+                    section.querySelectorAll('.shop-order__accessory-option-label').forEach(label => {
+                        const input = label.querySelector('input');
+                        const nameEl = label.querySelector('.shop-order__accessory-option-name');
+                        const priceEl = label.querySelector('.shop-order__accessory-option-price');
+                        if (input && nameEl) {
+                            options.push({
+                                id: input.value,
+                                name: nameEl.textContent.trim(),
+                                price: parseFloat(input.dataset.price || 0),
+                                priceText: priceEl?.textContent?.trim() || ''
+                            });
+                        }
+                    });
+                    if (options.length > 0) {
+                        accessoryGroups.push({ title, options });
+                    }
+                });
+
+                cache[shopId] = { groups: accessoryGroups, cachedAt: Date.now() };
+            } catch (e) {
+                console.error('Failed to fetch accessories for item', shopId, e);
+            }
+        }));
+
+        localStorage.setItem(cacheKey, JSON.stringify(cache));
+    }
+
+    shopCards.forEach(card => {
+        const shopId = card.dataset.shopId;
+        const itemData = cache[shopId];
+        if (!itemData || !itemData.groups || itemData.groups.length === 0) return;
+        if (card.querySelector('.shop-item-card__accessories-toggle')) return;
+
+        const orderButton = card.querySelector('.shop-item-card__order-button');
+        if (!orderButton) return;
+
+        const basePrice = parseFloat(card.dataset.shopWishlistItemPriceValue || 0);
+
+        const wishlistData = localStorage.getItem('shop_wishlist');
+        let wishlist = {};
+        try { wishlist = JSON.parse(wishlistData) || {}; } catch (e) { }
+
+        let itemSelections = selections[shopId] || {};
+        const isInGoals = !!wishlist[shopId];
+
+        if (isInGoals && wishlist[shopId].accessories) {
+            wishlist[shopId].accessories.forEach(acc => {
+                itemData.groups.forEach(group => {
+                    const opt = group.options.find(o => o.price === acc.price && o.name === acc.name);
+                    if (opt) {
+                        itemSelections[group.title] = opt.id;
+                    }
+                });
+            });
+            selections[shopId] = itemSelections;
+        }
+
+        const toggleBtn = document.createElement('button');
+        toggleBtn.className = 'shop-item-card__accessories-toggle';
+        toggleBtn.innerHTML = `<span>⚙️ Accessories</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>`;
+
+        const panel = document.createElement('div');
+        panel.className = 'shop-item-card__accessories-panel';
+
+        let panelHTML = '';
+        itemData.groups.forEach(group => {
+            panelHTML += `<div class="shop-item-card__accessory-group">
+                <div class="shop-item-card__accessory-group-title">${group.title}</div>
+                <div class="shop-item-card__accessory-chips">`;
+            group.options.forEach(opt => {
+                const isSelected = itemSelections[group.title] === opt.id;
+                panelHTML += `<button class="shop-item-card__accessory-chip ${isSelected ? 'is-selected' : ''}" 
+                    data-group="${group.title}" data-id="${opt.id}" data-price="${opt.price}">
+                    ${opt.name} ${opt.priceText ? `(${opt.priceText})` : ''}
+                </button>`;
+            });
+            panelHTML += `</div></div>`;
+        });
+
+        const calculateTotal = () => {
+            let total = basePrice;
+            Object.values(itemSelections).forEach(optId => {
+                itemData.groups.forEach(g => {
+                    const opt = g.options.find(o => o.id === optId);
+                    if (opt) total += opt.price;
+                });
+            });
+            return total;
+        };
+
+        const buttonText = isInGoals ? '🔄 Update Goal Accessories' : '⭐ Add with Accessories to Goals';
+
+        panelHTML += `<div class="shop-item-card__total-price">
+            <span>Total:</span>
+            <span class="total-value">🍪${calculateTotal().toLocaleString()}</span>
+        </div>
+        <button class="shop-item-card__add-to-goals" type="button">${buttonText}</button>`;
+        panel.innerHTML = panelHTML;
+
+        toggleBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleBtn.classList.toggle('is-expanded');
+            panel.classList.toggle('is-expanded');
+        });
+
+        panel.querySelectorAll('.shop-item-card__accessory-chip').forEach(chip => {
+            chip.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const group = chip.dataset.group;
+                const id = chip.dataset.id;
+
+                panel.querySelectorAll(`.shop-item-card__accessory-chip[data-group="${group}"]`).forEach(c => {
+                    c.classList.remove('is-selected');
+                });
+
+                if (itemSelections[group] === id) {
+                    delete itemSelections[group];
+                } else {
+                    itemSelections[group] = id;
+                    chip.classList.add('is-selected');
+                }
+
+                selections[shopId] = itemSelections;
+                localStorage.setItem(selectionsKey, JSON.stringify(selections));
+
+                const totalEl = panel.querySelector('.total-value');
+                if (totalEl) {
+                    totalEl.textContent = `🍪${calculateTotal().toLocaleString()}`;
+                }
+
+                const wishlistBtn = card.querySelector('[data-shop-wishlist-item-price-value]');
+                if (wishlistBtn) {
+                    wishlistBtn.dataset.shopWishlistItemPriceValue = calculateTotal();
+                }
+            });
+        });
+
+        const addToGoalsBtn = panel.querySelector('.shop-item-card__add-to-goals');
+        if (addToGoalsBtn) {
+            addToGoalsBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const selectedAccessoriesData = [];
+                Object.entries(itemSelections).forEach(([group, optId]) => {
+                    itemData.groups.forEach(g => {
+                        if (g.title === group) {
+                            const opt = g.options.find(o => o.id === optId);
+                            if (opt) {
+                                selectedAccessoriesData.push({
+                                    name: opt.name,
+                                    price: opt.price
+                                });
+                            }
+                        }
+                    });
+                });
+
+                const currentWishlistData = localStorage.getItem('shop_wishlist');
+                let currentWishlist = {};
+                try { currentWishlist = JSON.parse(currentWishlistData) || {}; } catch (e) { }
+
+                if (currentWishlist[shopId]) {
+                    currentWishlist[shopId].accessories = selectedAccessoriesData;
+                    currentWishlist[shopId].basePrice = basePrice;
+                    currentWishlist[shopId].price = calculateTotal();
+                    localStorage.setItem('shop_wishlist', JSON.stringify(currentWishlist));
+
+                    window.dispatchEvent(new Event('storage'));
+
+                    addToGoalsBtn.textContent = '✅ Updated!';
+                    setTimeout(() => {
+                        addToGoalsBtn.textContent = '🔄 Update Goal Accessories';
+                    }, 2000);
+                } else {
+                    const starBtn = card.querySelector('[data-action*="shop-wishlist#toggle"]');
+                    if (starBtn) {
+                        starBtn.click();
+                        setTimeout(() => {
+                            const newWishlistData = localStorage.getItem('shop_wishlist');
+                            try {
+                                const newWishlist = JSON.parse(newWishlistData) || {};
+                                if (newWishlist[shopId]) {
+                                    newWishlist[shopId].accessories = selectedAccessoriesData;
+                                    newWishlist[shopId].basePrice = basePrice;
+                                    newWishlist[shopId].price = calculateTotal();
+                                    localStorage.setItem('shop_wishlist', JSON.stringify(newWishlist));
+                                    window.dispatchEvent(new Event('storage'));
+                                }
+                            } catch (err) { }
+                        }, 100);
+
+                        addToGoalsBtn.textContent = '✅ Added to Goals!';
+                        setTimeout(() => {
+                            addToGoalsBtn.textContent = '🔄 Update Goal Accessories';
+                        }, 2000);
+                    }
+                }
+            });
+        }
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'shop-item-card__accessories-wrapper';
+        wrapper.appendChild(toggleBtn);
+        wrapper.appendChild(panel);
+
+        orderButton.before(wrapper);
+    });
+}
+
 function init() {
     loadTheme();
     initPinnableSidebar();
     addDevlogFrequencyStat();
     inlineDevlogForm();
     enhanceShopGoals();
+    initShopAccessories();
 }
 
 if (document.readyState === 'loading') {
@@ -578,10 +944,12 @@ document.addEventListener('turbo:load', () => {
     if (window.location.pathname !== lastPathname) {
         inlineFormLoading = false;
         window.__flavortownGoalsEnhanced = false;
+        window.__shopAccessoriesInit = false;
         lastPathname = window.location.pathname;
     }
     initPinnableSidebar();
     addDevlogFrequencyStat();
     inlineDevlogForm();
     enhanceShopGoals();
+    initShopAccessories();
 });

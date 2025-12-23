@@ -1877,3 +1877,52 @@ a:hover {
     background: var(--sea-gold) !important;
     color: var(--sea-abyss) !important;
 }
+
+.shop-order__accessories {
+    background: transparent !important;
+}
+
+.shop-order__accessory-group-section {
+    background: var(--sea-dark) !important;
+    border-color: var(--sea-mid) !important;
+}
+
+.shop-order__accessory-group-section h5 {
+    color: var(--sea-white) !important;
+}
+
+.shop-order__accessory-options {
+    background: transparent !important;
+}
+
+.shop-order__accessory-option-label {
+    cursor: pointer;
+}
+
+.shop-order__accessory-option-block {
+    background: var(--sea-mid) !important;
+    border: 2px solid var(--sea-surface) !important;
+    color: var(--sea-white) !important;
+    border-radius: 8px !important;
+    transition: all 0.2s ease !important;
+}
+
+.shop-order__accessory-option-block:hover {
+    background: var(--sea-surface) !important;
+    border-color: var(--sea-cyan) !important;
+}
+
+.shop-order__accessory-option-input:checked+.shop-order__accessory-option-block {
+    background: var(--sea-cyan) !important;
+    border-color: var(--sea-cyan) !important;
+    color: var(--sea-abyss) !important;
+}
+
+.shop-order__accessory-option-name {
+    color: inherit !important;
+}
+
+.shop-order__accessory-option-price {
+    color: inherit !important;
+    opacity: 0.8;
+}
