@@ -1700,3 +1700,190 @@ a:hover {
 .user-profile__project-stats div {
     color: var(--ctp-subtext0) !important;
 }
+
+.votes-new__main {
+    background: transparent !important;
+}
+
+.votes-new__project {
+    background: transparent !important;
+}
+
+.votes-new__project-card {
+    background: var(--ctp-surface0) !important;
+    border-color: var(--ctp-surface1) !important;
+    color: var(--ctp-text) !important;
+}
+
+.votes-new__project-details {
+    background: transparent !important;
+}
+
+.votes-new__project-card-content h1 {
+    color: var(--ctp-text) !important;
+}
+
+.votes-new__project-card-content p {
+    color: var(--ctp-subtext0) !important;
+}
+
+.votes-new__project-card-stats {
+    color: var(--ctp-subtext0) !important;
+}
+
+.votes-new__project-card-stat {
+    color: var(--ctp-subtext0) !important;
+}
+
+.votes-new__project-card-stat svg {
+    color: var(--ctp-mauve) !important;
+}
+
+.votes-new__project-buttons {
+    background: transparent !important;
+}
+
+.votes-new__devlogs {
+    background: transparent !important;
+}
+
+.votes-new__form {
+    background: var(--ctp-surface0) !important;
+    border-color: var(--ctp-surface1) !important;
+    color: var(--ctp-text) !important;
+}
+
+.votes-new__form h1 {
+    color: var(--ctp-text) !important;
+}
+
+.vote-category {
+    background: var(--ctp-surface1) !important;
+    border-color: var(--ctp-surface2) !important;
+}
+
+.vote-category__header {
+    color: var(--ctp-text) !important;
+}
+
+.vote-category__footer {
+    color: var(--ctp-subtext0) !important;
+}
+
+.vote-category__star {
+    color: var(--ctp-overlay0) !important;
+}
+
+.vote-category__input:checked~.vote-category__star {
+    color: var(--ctp-yellow) !important;
+}
+
+.vote-category--red .vote-category__header {
+    color: var(--ctp-red) !important;
+}
+
+.vote-category--yellow .vote-category__header {
+    color: var(--ctp-yellow) !important;
+}
+
+.vote-category--blue .vote-category__header {
+    color: var(--ctp-blue) !important;
+}
+
+.btn-submit {
+    background: var(--ctp-green) !important;
+    color: var(--ctp-crust) !important;
+}
+
+.btn-submit:hover {
+    background: var(--ctp-teal) !important;
+}
+
+.modal {
+    background: var(--ctp-base) !important;
+    border-color: var(--ctp-surface1) !important;
+    color: var(--ctp-text) !important;
+}
+
+.modal__title {
+    color: var(--ctp-text) !important;
+}
+
+.modal h2 {
+    color: var(--ctp-subtext0) !important;
+}
+
+.form-checkbox label {
+    color: var(--ctp-text) !important;
+}
+
+.form-field {
+    background: var(--ctp-surface0) !important;
+    border-color: var(--ctp-surface1) !important;
+    color: var(--ctp-text) !important;
+}
+
+.form-group small {
+    color: var(--ctp-subtext0) !important;
+}
+
+.modal__actions-close {
+    background: var(--ctp-surface1) !important;
+    color: var(--ctp-text) !important;
+}
+
+.comment-form {
+    background: transparent !important;
+}
+
+.comment-form__input {
+    background: var(--ctp-surface0) !important;
+    border-color: var(--ctp-surface1) !important;
+    color: var(--ctp-text) !important;
+}
+
+.comment-form__input::placeholder {
+    color: var(--ctp-overlay0) !important;
+}
+
+.comments-section {
+    background: transparent !important;
+}
+
+.comments-section__title {
+    color: var(--ctp-text) !important;
+}
+
+.comment {
+    background: var(--ctp-surface0) !important;
+    border-color: var(--ctp-surface1) !important;
+}
+
+.comment__author {
+    color: var(--ctp-text) !important;
+}
+
+.comment__time {
+    color: var(--ctp-subtext0) !important;
+}
+
+.comment__body {
+    color: var(--ctp-text) !important;
+}
+
+.like-button__btn {
+    color: var(--ctp-subtext0) !important;
+}
+
+.like-button__btn:hover {
+    color: var(--ctp-yellow) !important;
+}
+
+.comments-count {
+    color: var(--ctp-subtext0) !important;
+}
+
+.report-btn {
+    background: var(--ctp-yellow) !important;
+    color: var(--ctp-crust) !important;
+}

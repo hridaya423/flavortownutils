@@ -1690,3 +1690,190 @@ a:hover {
 .user-profile__project-stats div {
     color: var(--sea-mist) !important;
 }
+
+.votes-new__main {
+    background: transparent !important;
+}
+
+.votes-new__project {
+    background: transparent !important;
+}
+
+.votes-new__project-card {
+    background: var(--sea-dark) !important;
+    border-color: var(--sea-mid) !important;
+    color: var(--sea-white) !important;
+}
+
+.votes-new__project-details {
+    background: transparent !important;
+}
+
+.votes-new__project-card-content h1 {
+    color: var(--sea-white) !important;
+}
+
+.votes-new__project-card-content p {
+    color: var(--sea-mist) !important;
+}
+
+.votes-new__project-card-stats {
+    color: var(--sea-mist) !important;
+}
+
+.votes-new__project-card-stat {
+    color: var(--sea-mist) !important;
+}
+
+.votes-new__project-card-stat svg {
+    color: var(--sea-cyan) !important;
+}
+
+.votes-new__project-buttons {
+    background: transparent !important;
+}
+
+.votes-new__devlogs {
+    background: transparent !important;
+}
+
+.votes-new__form {
+    background: var(--sea-dark) !important;
+    border-color: var(--sea-mid) !important;
+    color: var(--sea-white) !important;
+}
+
+.votes-new__form h1 {
+    color: var(--sea-white) !important;
+}
+
+.vote-category {
+    background: var(--sea-mid) !important;
+    border-color: var(--sea-surface) !important;
+}
+
+.vote-category__header {
+    color: var(--sea-white) !important;
+}
+
+.vote-category__footer {
+    color: var(--sea-mist) !important;
+}
+
+.vote-category__star {
+    color: var(--sea-foam) !important;
+}
+
+.vote-category__input:checked~.vote-category__star {
+    color: var(--sea-gold) !important;
+}
+
+.vote-category--red .vote-category__header {
+    color: var(--sea-coral) !important;
+}
+
+.vote-category--yellow .vote-category__header {
+    color: var(--sea-gold) !important;
+}
+
+.vote-category--blue .vote-category__header {
+    color: var(--sea-blue) !important;
+}
+
+.btn-submit {
+    background: var(--sea-kelp) !important;
+    color: var(--sea-abyss) !important;
+}
+
+.btn-submit:hover {
+    background: var(--sea-cyan) !important;
+}
+
+.modal {
+    background: var(--sea-abyss) !important;
+    border-color: var(--sea-mid) !important;
+    color: var(--sea-white) !important;
+}
+
+.modal__title {
+    color: var(--sea-white) !important;
+}
+
+.modal h2 {
+    color: var(--sea-mist) !important;
+}
+
+.form-checkbox label {
+    color: var(--sea-white) !important;
+}
+
+.form-field {
+    background: var(--sea-dark) !important;
+    border-color: var(--sea-mid) !important;
+    color: var(--sea-white) !important;
+}
+
+.form-group small {
+    color: var(--sea-mist) !important;
+}
+
+.modal__actions-close {
+    background: var(--sea-mid) !important;
+    color: var(--sea-white) !important;
+}
+
+.comment-form {
+    background: transparent !important;
+}
+
+.comment-form__input {
+    background: var(--sea-dark) !important;
+    border-color: var(--sea-mid) !important;
+    color: var(--sea-white) !important;
+}
+
+.comment-form__input::placeholder {
+    color: var(--sea-foam) !important;
+}
+
+.comments-section {
+    background: transparent !important;
+}
+
+.comments-section__title {
+    color: var(--sea-white) !important;
+}
+
+.comment {
+    background: var(--sea-dark) !important;
+    border-color: var(--sea-mid) !important;
+}
+
+.comment__author {
+    color: var(--sea-white) !important;
+}
+
+.comment__time {
+    color: var(--sea-mist) !important;
+}
+
+.comment__body {
+    color: var(--sea-white) !important;
+}
+
+.like-button__btn {
+    color: var(--sea-mist) !important;
+}
+
+.like-button__btn:hover {
+    color: var(--sea-gold) !important;
+}
+
+.comments-count {
+    color: var(--sea-mist) !important;
+}
+
+.report-btn {
+    background: var(--sea-gold) !important;
+    color: var(--sea-abyss) !important;
+}
