@@ -1245,6 +1245,145 @@ function checkAchievements() {
     document.body.appendChild(iframe);
 }
 
+function captureApiKey() {
+    const apiKeyDisplay = document.querySelector('.api-key-display');
+    if (!apiKeyDisplay) return;
+
+    const keyText = apiKeyDisplay.textContent.trim();
+
+    if (keyText && keyText !== 'No API Key, press generate' && keyText.length > 10) {
+        localStorage.setItem('flavortown_api_key', keyText);
+        return;
+    }
+
+    const hasTriedGenerate = sessionStorage.getItem('flavortown_api_key_auto_generate');
+    if (hasTriedGenerate) return;
+
+    const generateBtn = document.querySelector('.api-key-section form[action="/my/roll_api_key"] button');
+    if (generateBtn) {
+        sessionStorage.setItem('flavortown_api_key_auto_generate', 'true');
+        setTimeout(() => {
+            const form = generateBtn.closest('form');
+            if (form) {
+                form.requestSubmit();
+            }
+        }, 500);
+    }
+}
+
+function addExploreSearch() {
+    if (!window.location.pathname.startsWith('/explore')) return;
+    if (document.querySelector('.flavortown-explore-search')) return;
+    captureApiKey();
+
+    const exploreNav = document.querySelector('.explore__nav');
+    if (!exploreNav) return;
+
+    const searchContainer = document.createElement('div');
+    searchContainer.className = 'flavortown-explore-search';
+    searchContainer.innerHTML = `
+        <div class="flavortown-search-bar">
+            <div class="flavortown-search-input-wrapper">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="flavortown-search-icon"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" class="flavortown-search-input" placeholder="Search projects..." />
+            </div>
+            <div class="flavortown-search-results" style="display: none;">
+                <div class="flavortown-search-header">
+                    <span class="flavortown-search-count"></span>
+                    <button class="flavortown-search-close">✕ Clear</button>
+                </div>
+                <div class="flavortown-search-grid"></div>
+                <div class="flavortown-search-loading" style="display: none;">Searching...</div>
+                <div class="flavortown-search-error" style="display: none;"></div>
+            </div>
+        </div>
+    `;
+
+    exploreNav.after(searchContainer);
+
+    const input = searchContainer.querySelector('.flavortown-search-input');
+    const resultsContainer = searchContainer.querySelector('.flavortown-search-results');
+    const resultsGrid = searchContainer.querySelector('.flavortown-search-grid');
+    const loadingEl = searchContainer.querySelector('.flavortown-search-loading');
+    const errorEl = searchContainer.querySelector('.flavortown-search-error');
+    const countEl = searchContainer.querySelector('.flavortown-search-count');
+    const closeBtn = searchContainer.querySelector('.flavortown-search-close');
+
+    async function doSearch(query) {
+        const apiKey = localStorage.getItem('flavortown_api_key');
+        if (!apiKey) {
+            errorEl.textContent = '⚠️ No API key found. Go to Settings and generate one.';
+            errorEl.style.display = 'block';
+            loadingEl.style.display = 'none';
+            resultsContainer.style.display = 'block';
+            return;
+        }
+
+        loadingEl.style.display = 'block';
+        errorEl.style.display = 'none';
+        resultsGrid.innerHTML = '';
+        resultsContainer.style.display = 'block';
+
+        try {
+            const response = await fetch(`https://flavortown.hackclub.com/api/v1/projects?query=${encodeURIComponent(query)}&page=1`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${apiKey}`,
+                    'Accept': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`API error: ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log('Flavortown Search Response:', data);
+            loadingEl.style.display = 'none';
+
+            if (!data.projects || data.projects.length === 0) {
+                countEl.textContent = 'No projects found';
+                resultsGrid.innerHTML = '<p class="flavortown-search-empty">No matching projects found.</p>';
+                return;
+            }
+
+            countEl.textContent = `${data.projects.length} project${data.projects.length !== 1 ? 's' : ''} found`;
+
+            resultsGrid.innerHTML = data.projects.map(project => `
+                <div class="flavortown-project-card">
+                    <a href="/projects/${project.id}" class="flavortown-project-link">
+                        <h4 class="flavortown-project-title">${project.title}</h4>
+                        <p class="flavortown-project-desc">${project.description?.slice(0, 120) || ''}${project.description?.length > 120 ? '...' : ''}</p>
+                    </a>
+                    <div class="flavortown-project-actions">
+                        ${project.demo_url ? `<a href="${project.demo_url}" target="_blank" class="flavortown-project-btn flavortown-project-btn--demo">🚀 Demo</a>` : ''}
+                        ${project.repo_url ? `<a href="${project.repo_url}" target="_blank" class="flavortown-project-btn flavortown-project-btn--repo">📦 Repo</a>` : ''}
+                    </div>
+                </div>
+            `).join('');
+
+        } catch (err) {
+            console.error('Flavortown: Search error', err);
+            loadingEl.style.display = 'none';
+            errorEl.textContent = `❌ Search failed: ${err.message}`;
+            errorEl.style.display = 'block';
+        }
+    }
+
+    input.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            const query = input.value.trim();
+            if (query) doSearch(query);
+        }
+    });
+
+    closeBtn.addEventListener('click', () => {
+        resultsContainer.style.display = 'none';
+        resultsGrid.innerHTML = '';
+        input.value = '';
+    });
+}
+
 function init() {
     loadTheme();
     initPinnableSidebar();
@@ -1252,6 +1391,8 @@ function init() {
     inlineDevlogForm();
     enhanceShopGoals();
     initShopAccessories();
+    addExploreSearch();
+    captureApiKey();
 
     setTimeout(checkAchievements, 2000);
 }
@@ -1275,4 +1416,6 @@ document.addEventListener('turbo:load', () => {
     inlineDevlogForm();
     enhanceShopGoals();
     initShopAccessories();
+    addExploreSearch();
+    captureApiKey();
 });

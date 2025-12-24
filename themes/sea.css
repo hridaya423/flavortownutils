@@ -2140,3 +2140,68 @@ a:hover {
 .goal-item__priority-btn.is-active {
     color: var(--sea-gold) !important;
 }
+
+.flavortown-search-icon {
+    color: var(--sea-foam) !important;
+}
+
+.flavortown-search-input-wrapper {
+    background: var(--sea-dark) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+}
+
+.flavortown-search-input {
+    color: var(--sea-white) !important;
+}
+
+.flavortown-search-input-wrapper:has(.flavortown-search-input:focus) {
+    background: var(--sea-abyss) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3) !important;
+}
+
+.flavortown-search-input:focus+.flavortown-search-icon {
+    color: var(--sea-cyan) !important;
+}
+
+.flavortown-search-input::placeholder {
+    color: var(--sea-foam) !important;
+}
+
+.flavortown-search-results {
+    background: var(--sea-abyss) !important;
+    border-color: var(--sea-slate) !important;
+}
+
+.flavortown-search-count {
+    color: var(--sea-white) !important;
+}
+
+.flavortown-search-close {
+    background: rgba(255, 107, 107, 0.2) !important;
+    color: var(--sea-coral) !important;
+}
+
+.flavortown-project-card {
+    background: var(--sea-dark) !important;
+    border-color: var(--sea-slate) !important;
+}
+
+.flavortown-project-card:hover {
+    border-color: var(--sea-cyan) !important;
+}
+
+.flavortown-project-img {
+    border-color: var(--sea-mid) !important;
+}
+
+.flavortown-project-title {
+    color: var(--sea-white) !important;
+}
+
+.flavortown-project-desc {
+    color: var(--sea-mist) !important;
+}
+
+.flavortown-project-meta {
+    color: var(--sea-foam) !important;
+}

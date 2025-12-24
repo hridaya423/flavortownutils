@@ -2150,3 +2150,68 @@ a:hover {
 .goal-item__priority-btn.is-active {
     color: var(--ctp-yellow) !important;
 }
+
+.flavortown-search-icon {
+    color: var(--ctp-overlay0) !important;
+}
+
+.flavortown-search-input-wrapper {
+    background: var(--ctp-surface0) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+}
+
+.flavortown-search-input {
+    color: var(--ctp-text) !important;
+}
+
+.flavortown-search-input-wrapper:has(.flavortown-search-input:focus) {
+    background: var(--ctp-base) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2) !important;
+}
+
+.flavortown-search-input:focus+.flavortown-search-icon {
+    color: var(--ctp-mauve) !important;
+}
+
+.flavortown-search-input::placeholder {
+    color: var(--ctp-overlay0) !important;
+}
+
+.flavortown-search-results {
+    background: var(--ctp-base) !important;
+    border-color: var(--ctp-surface2) !important;
+}
+
+.flavortown-search-count {
+    color: var(--ctp-text) !important;
+}
+
+.flavortown-search-close {
+    background: rgba(243, 139, 168, 0.2) !important;
+    color: var(--ctp-red) !important;
+}
+
+.flavortown-project-card {
+    background: var(--ctp-surface0) !important;
+    border-color: var(--ctp-surface2) !important;
+}
+
+.flavortown-project-card:hover {
+    border-color: var(--ctp-mauve) !important;
+}
+
+.flavortown-project-img {
+    border-color: var(--ctp-surface1) !important;
+}
+
+.flavortown-project-title {
+    color: var(--ctp-text) !important;
+}
+
+.flavortown-project-desc {
+    color: var(--ctp-subtext0) !important;
+}
+
+.flavortown-project-meta {
+    color: var(--ctp-overlay0) !important;
+}
