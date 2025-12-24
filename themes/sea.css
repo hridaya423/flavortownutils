@@ -2398,3 +2398,24 @@ a:hover {
 .flavortown-project-meta {
     color: var(--sea-foam) !important;
 }
+
+.my-votes table {
+    border-color: var(--sea-mid) !important;
+}
+
+.my-votes table th {
+    background-color: var(--sea-dark) !important;
+    color: var(--sea-white) !important;
+    border-color: var(--sea-mid) !important;
+}
+
+.my-votes table td {
+    color: var(--sea-mist) !important;
+    border-color: var(--sea-mid) !important;
+}
+
+.my-votes table td a,
+.my-votes a {
+    background-color: var(--sea-cyan) !important;
+    color: var(--sea-abyss) !important;
+}

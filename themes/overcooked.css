@@ -2403,3 +2403,24 @@ a:hover {
 .flavortown-project-meta {
     color: var(--overcooked-foam) !important;
 }
+
+.my-votes table {
+    border-color: var(--overcooked-mid) !important;
+}
+
+.my-votes table th {
+    background-color: var(--overcooked-dark) !important;
+    color: var(--overcooked-white) !important;
+    border-color: var(--overcooked-mid) !important;
+}
+
+.my-votes table td {
+    color: var(--overcooked-mist) !important;
+    border-color: var(--overcooked-mid) !important;
+}
+
+.my-votes table td a,
+.my-votes a {
+    background-color: var(--overcooked-cyan) !important;
+    color: var(--overcooked-burnt) !important;
+}

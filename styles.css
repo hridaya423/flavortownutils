@@ -1804,3 +1804,121 @@
         display: none !important;
     }
 }
+
+.flavortown-votes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    padding: 16px 0;
+}
+
+.flavortown-vote-card {
+    background: var(--color-surface, #fff);
+    border: 2px solid var(--color-border, #e2d8cc);
+    border-radius: 12px;
+    padding: 16px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.flavortown-vote-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.flavortown-vote-card__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--color-border, #e2d8cc);
+}
+
+.flavortown-vote-card__name {
+    font-size: 1.1em;
+    font-weight: 700;
+    color: var(--color-text-primary, #333);
+}
+
+.flavortown-vote-card__link {
+    font-size: 0.85em;
+    padding: 6px 12px;
+}
+
+.flavortown-vote-card__scores {
+    display: flex;
+    gap: 8px;
+}
+
+.flavortown-vote-card__score {
+    flex: 1;
+    padding: 10px 8px;
+    border-radius: 8px;
+    text-align: center;
+    background: var(--color-background, #f9f6f0);
+}
+
+.flavortown-vote-card__score--originality {
+    border-left: 3px solid #e53e3e;
+}
+
+.flavortown-vote-card__score--technical {
+    border-left: 3px solid #ecc94b;
+}
+
+.flavortown-vote-card__score--usability {
+    border-left: 3px solid #4299e1;
+}
+
+.flavortown-vote-card__score-label {
+    display: block;
+    font-size: 0.7em;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--color-text-muted, #888);
+    margin-bottom: 4px;
+}
+
+.flavortown-vote-card__score-value {
+    display: block;
+    font-size: 1.1em;
+    font-weight: 700;
+    color: var(--color-text-primary, #333);
+}
+
+/* Votes Table Theming */
+.flavortown-votes-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--color-surface, #fff);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.flavortown-votes-table th,
+.flavortown-votes-table td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--color-border, #e2d8cc);
+}
+
+.flavortown-votes-table th {
+    background: var(--color-background, #f9f6f0);
+    font-weight: 600;
+    color: var(--color-text-primary, #333);
+    text-transform: uppercase;
+    font-size: 0.8em;
+    letter-spacing: 0.5px;
+}
+
+.flavortown-votes-table td {
+    color: var(--color-text-primary, #333);
+}
+
+.flavortown-votes-table tbody tr:hover {
+    background: var(--color-background, #f9f6f0);
+}
+
+.flavortown-votes-table tbody tr:last-child td {
+    border-bottom: none;
+}

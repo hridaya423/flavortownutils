@@ -2403,3 +2403,24 @@ a:hover {
 .leaderboard-table .stat-total {
     color: var(--ctp-text) !important;
 }
+
+.my-votes table {
+    border-color: var(--ctp-surface1) !important;
+}
+
+.my-votes table th {
+    background-color: var(--ctp-surface0) !important;
+    color: var(--ctp-text) !important;
+    border-color: var(--ctp-surface1) !important;
+}
+
+.my-votes table td {
+    color: var(--ctp-subtext0) !important;
+    border-color: var(--ctp-surface1) !important;
+}
+
+.my-votes table td a,
+.my-votes a {
+    background-color: var(--ctp-mauve) !important;
+    color: var(--ctp-crust) !important;
+}

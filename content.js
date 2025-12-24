@@ -1503,6 +1503,7 @@ function init() {
     captureApiKey();
     initProjectBoardStats();
     addSkipButton();
+    transformVotesTable();
 
     setTimeout(checkAchievements, 2000);
 }
@@ -1554,6 +1555,69 @@ function addSkipButton() {
     skipBtn.style.setProperty('margin', '0', 'important');
 }
 
+function transformVotesTable() {
+    if (!/\/votes\.\d+/.test(window.location.pathname)) return;
+
+    const table = document.querySelector('table');
+    if (!table || table.dataset.flavortownTransformed) return;
+    table.dataset.flavortownTransformed = 'true';
+
+    const tbody = table.querySelector('tbody');
+    if (!tbody) return;
+
+    const rows = Array.from(tbody.querySelectorAll('tr'));
+    if (rows.length === 0) return;
+
+    const projectVotes = {};
+    rows.forEach(row => {
+        const cells = row.querySelectorAll('td');
+        if (cells.length < 4) return;
+
+        const projectName = cells[0].textContent.trim();
+        const category = cells[1].textContent.trim().toLowerCase();
+        const score = cells[2].textContent.trim();
+        const viewLink = cells[3].querySelector('a')?.href || '';
+
+        if (!projectVotes[projectName]) {
+            projectVotes[projectName] = {
+                name: projectName,
+                link: viewLink,
+                originality: '-',
+                technical: '-',
+                usability: '-'
+            };
+        }
+
+        if (category === 'originality') projectVotes[projectName].originality = score;
+        else if (category === 'technical') projectVotes[projectName].technical = score;
+        else if (category === 'usability') projectVotes[projectName].usability = score;
+    });
+
+    const thead = table.querySelector('thead');
+    if (thead) {
+        thead.innerHTML = `
+            <tr>
+                <th>Project</th>
+                <th>Originality</th>
+                <th>Technical</th>
+                <th>Usability</th>
+            </tr>
+        `;
+    }
+
+    tbody.innerHTML = '';
+    Object.values(projectVotes).forEach(project => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td><a href="${project.link}">${project.name}</a></td>
+            <td>${project.originality}</td>
+            <td>${project.technical}</td>
+            <td>${project.usability}</td>
+        `;
+        tbody.appendChild(row);
+    });
+}
+
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
 } else {
@@ -1577,4 +1641,5 @@ document.addEventListener('turbo:load', () => {
     captureApiKey();
     initProjectBoardStats();
     addSkipButton();
+    transformVotesTable();
 });
