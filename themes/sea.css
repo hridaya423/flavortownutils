@@ -2129,6 +2129,16 @@ a:hover {
     color: var(--sea-white) !important;
 }
 
+.flavortown-stat-pill {
+    background: var(--sea-dark) !important;
+    border-color: var(--sea-slate) !important;
+    color: var(--sea-white) !important;
+}
+
+.flavortown-stat-value {
+    color: var(--sea-cyan) !important;
+}
+
 .goal-item__stats-compact {
     color: var(--sea-coral) !important;
 }

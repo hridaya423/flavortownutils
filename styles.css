@@ -891,10 +891,37 @@
 .sidebar--pinned:hover .sidebar__user-balance,
 .sidebar--pinned .sidebar__user-settings,
 .sidebar--pinned:hover .sidebar__user-settings,
-.sidebar--pinned .sidebar__user-logout,
-.sidebar--pinned:hover .sidebar__user-logout {
-    transform: none !important;
-    transition: none !important;
+
+.flavortown-project-stats {
+    display: flex;
+    gap: 12px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+}
+
+.flavortown-stat-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: #fff;
+    border: 1px solid #e6d5c3;
+    border-radius: 9999px;
+    font-size: 0.85em;
+    font-weight: 600;
+    color: #5d4e37;
+    box-shadow: 0 1px 2px rgba(93, 78, 55, 0.05);
+}
+
+.flavortown-stat-value {
+    font-weight: 800;
+    color: #8b6914;
+}
+
+.file-upload__preview img {
+    object-fit: contain !important;
+    width: 100% !important;
+    height: 100% !important;
 }
 
 .sidebar--pinned .sidebar__blob,

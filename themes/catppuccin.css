@@ -2155,6 +2155,16 @@ a:hover {
     color: var(--ctp-overlay0) !important;
 }
 
+.flavortown-stat-pill {
+    background: var(--ctp-surface0) !important;
+    border-color: var(--ctp-surface1) !important;
+    color: var(--ctp-text) !important;
+}
+
+.flavortown-stat-value {
+    color: var(--ctp-peach) !important;
+}
+
 .goal-item__acc-pill {
     background: var(--ctp-surface2) !important;
     color: var(--ctp-subtext0) !important;

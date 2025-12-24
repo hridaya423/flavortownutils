@@ -1389,6 +1389,85 @@ function addExploreSearch() {
     });
 }
 
+function initProjectBoardStats() {
+    if (!window.location.pathname.endsWith('/projects')) return;
+
+    const cards = document.querySelectorAll('.projects-board__grid-item .project-card');
+    if (!cards.length) return;
+
+    let stats = {};
+    try {
+        stats = JSON.parse(localStorage.getItem('flavortown_project_stats') || '{}');
+    } catch (e) { }
+
+    cards.forEach(card => {
+        const id = card.id.replace('project_', '');
+        const statLines = card.querySelectorAll('.project-card__stats h5');
+        if (statLines.length < 2) return;
+
+        const devlogText = statLines[0].textContent.trim();
+        const timeText = statLines[1].textContent.trim();
+
+        const devlogs = parseInt(devlogText) || 0;
+
+        let minutes = 0;
+        const hoursMatch = timeText.match(/(\d+)hr/);
+        const minsMatch = timeText.match(/(\d+)min/);
+
+        if (hoursMatch) minutes += parseInt(hoursMatch[1]) * 60;
+        if (minsMatch) minutes += parseInt(minsMatch[1]);
+
+        stats[id] = {
+            devlogs,
+            minutes,
+            lastUpdated: Date.now()
+        };
+    });
+
+    localStorage.setItem('flavortown_project_stats', JSON.stringify(stats));
+
+    let totalProjects = Object.keys(stats).length;
+    let totalDevlogs = 0;
+    let totalMinutes = 0;
+
+    Object.values(stats).forEach(s => {
+        totalDevlogs += s.devlogs;
+        totalMinutes += s.minutes;
+    });
+
+    const totalHours = Math.floor(totalMinutes / 60);
+
+    let freqText = '';
+    if (totalDevlogs > 0) {
+        const avgMinsPerLog = Math.round(totalMinutes / totalDevlogs);
+        const freqHrs = Math.floor(avgMinsPerLog / 60);
+        const freqMins = avgMinsPerLog % 60;
+        freqText = `${freqHrs}hr ${freqMins}min`;
+    }
+
+    const heading = document.querySelector('.projects-board__heading');
+    if (heading && !document.querySelector('.flavortown-project-stats')) {
+        const statsEl = document.createElement('div');
+        statsEl.className = 'flavortown-project-stats';
+        statsEl.innerHTML = `
+            <div class="flavortown-stat-pill" title="Total Projects">
+                📦 <span class="flavortown-stat-value">${totalProjects}</span> Projects
+            </div>
+            <div class="flavortown-stat-pill" title="Total Devlogs">
+                📝 <span class="flavortown-stat-value">${totalDevlogs}</span> Devlogs
+            </div>
+            <div class="flavortown-stat-pill" title="Total Time Spent">
+                ⏱ <span class="flavortown-stat-value">${totalHours}h ${totalMinutes % 60}m</span>
+            </div>
+            ${freqText ? `
+            <div class="flavortown-stat-pill" title="Average time per devlog">
+                1 📝 per <span class="flavortown-stat-value">${freqText}</span>
+            </div>` : ''}
+        `;
+        heading.appendChild(statsEl);
+    }
+}
+
 function init() {
     loadTheme();
     initPinnableSidebar();
@@ -1398,6 +1477,7 @@ function init() {
     initShopAccessories();
     addExploreSearch();
     captureApiKey();
+    initProjectBoardStats();
 
     setTimeout(checkAchievements, 2000);
 }
