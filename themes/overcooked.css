@@ -355,8 +355,8 @@ body::before {
 }
 
 .comment-form__input {
-    background: var(--overcooked-abyss) !important;
-    border-color: var(--overcooked-mid) !important;
+    background: var(--overcooked-charcoal) !important;
+    border: 1px solid var(--overcooked-mid) !important;
     color: var(--overcooked-white) !important;
 }
 
@@ -1872,8 +1872,8 @@ a:hover {
 }
 
 .comment-form__input {
-    background: var(--overcooked-dark) !important;
-    border-color: var(--overcooked-mid) !important;
+    background: var(--overcooked-charcoal) !important;
+    border: 1px solid var(--overcooked-mid) !important;
     color: var(--overcooked-white) !important;
 }
 

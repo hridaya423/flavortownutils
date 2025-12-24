@@ -350,8 +350,8 @@ body::before {
 }
 
 .comment-form__input {
-    background: var(--sea-abyss) !important;
-    border-color: var(--sea-mid) !important;
+    background: var(--sea-deep) !important;
+    border: 1px solid var(--sea-mid) !important;
     color: var(--sea-white) !important;
 }
 
@@ -1867,8 +1867,8 @@ a:hover {
 }
 
 .comment-form__input {
-    background: var(--sea-dark) !important;
-    border-color: var(--sea-mid) !important;
+    background: var(--sea-deep) !important;
+    border: 1px solid var(--sea-mid) !important;
     color: var(--sea-white) !important;
 }
 

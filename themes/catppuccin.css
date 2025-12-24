@@ -360,8 +360,8 @@ body::before {
 }
 
 .comment-form__input {
-    background: var(--ctp-base) !important;
-    border-color: var(--ctp-surface1) !important;
+    background: var(--ctp-mantle) !important;
+    border: 1px solid var(--ctp-surface1) !important;
     color: var(--ctp-text) !important;
 }
 
@@ -1877,8 +1877,8 @@ a:hover {
 }
 
 .comment-form__input {
-    background: var(--ctp-surface0) !important;
-    border-color: var(--ctp-surface1) !important;
+    background: var(--ctp-mantle) !important;
+    border: 1px solid var(--ctp-surface1) !important;
     color: var(--ctp-text) !important;
 }
 
