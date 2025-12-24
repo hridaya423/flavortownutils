@@ -924,6 +924,125 @@ async function initShopAccessories() {
     });
 }
 
+const ACHIEVEMENT_STORAGE_KEY = 'flavortown_known_achievements';
+const ACHIEVEMENT_CHECK_INTERVAL = 12 * 60 * 60 * 1000;
+const ACHIEVEMENT_LAST_CHECK_KEY = 'flavortown_last_achievement_check';
+
+function showAchievementToast(achievements, totalCookies, isWelcome = false) {
+    const existingToast = document.querySelector('.flavortown-achievement-toast');
+    if (existingToast) existingToast.remove();
+
+    const names = achievements.map(a => a.name).join(', ');
+    const title = isWelcome
+        ? '🎉 Welcome! I collected your achievements: (or these are your already collected ones)'
+        : '🏆 Achievements earned while you were away:';
+
+    const toast = document.createElement('div');
+    toast.className = 'flavortown-achievement-toast';
+    toast.innerHTML = `
+        <div class="flavortown-achievement-toast__content">
+            <div class="flavortown-achievement-toast__title">${title}</div>
+            <div class="flavortown-achievement-toast__names">${names}</div>
+            ${totalCookies > 0 ? `<div class="flavortown-achievement-toast__cookies">🍪 +${totalCookies} cookies</div>` : ''}
+        </div>
+        <button class="flavortown-achievement-toast__close">×</button>
+    `;
+
+    document.body.appendChild(toast);
+
+    requestAnimationFrame(() => {
+        toast.classList.add('is-visible');
+    });
+    toast.querySelector('.flavortown-achievement-toast__close').addEventListener('click', () => {
+        toast.classList.remove('is-visible');
+        setTimeout(() => toast.remove(), 300);
+    });
+
+    setTimeout(() => {
+        if (toast.parentNode) {
+            toast.classList.remove('is-visible');
+            setTimeout(() => toast.remove(), 300);
+        }
+    }, 8000);
+}
+
+function checkAchievements() {
+    if (window.location.pathname.includes('/my/achievements')) return;
+
+    const lastCheck = localStorage.getItem(ACHIEVEMENT_LAST_CHECK_KEY);
+    const now = Date.now();
+    if (lastCheck && (now - parseInt(lastCheck)) < ACHIEVEMENT_CHECK_INTERVAL) {
+        return;
+    }
+
+    const iframe = document.createElement('iframe');
+    iframe.style.cssText = 'position:absolute;width:1px;height:1px;left:-9999px;visibility:hidden;';
+    iframe.src = 'https://flavortown.hackclub.com/my/achievements';
+
+    iframe.onload = () => {
+        setTimeout(() => {
+            try {
+                const doc = iframe.contentDocument || iframe.contentWindow.document;
+                const earnedCards = doc.querySelectorAll('.achievements__card--earned');
+
+                const currentAchievements = [];
+                let totalNewCookies = 0;
+
+                earnedCards.forEach(card => {
+                    const slug = card.dataset.slug || card.id?.replace('achievement-', '') || '';
+                    const name = card.querySelector('.achievements__name')?.textContent?.trim() || 'Unknown';
+                    const rewardEl = card.querySelector('.achievements__reward');
+                    let cookies = 0;
+                    if (rewardEl) {
+                        const match = rewardEl.textContent.match(/\+(\d+)/);
+                        if (match) cookies = parseInt(match[1]);
+                    }
+
+                    currentAchievements.push({ slug, name, cookies });
+                });
+
+                const storedData = localStorage.getItem(ACHIEVEMENT_STORAGE_KEY);
+                const knownSlugs = storedData ? JSON.parse(storedData) : null;
+
+                if (knownSlugs === null) {
+                    const achievementsWithRewards = currentAchievements.filter(a => a.cookies > 0);
+                    if (achievementsWithRewards.length > 0) {
+                        const totalCookies = achievementsWithRewards.reduce((sum, a) => sum + a.cookies, 0);
+                        showAchievementToast(achievementsWithRewards, totalCookies, true);
+                    }
+                } else {
+                    const newAchievements = currentAchievements.filter(a => !knownSlugs.includes(a.slug));
+                    if (newAchievements.length > 0) {
+                        const newWithRewards = newAchievements.filter(a => a.cookies > 0);
+                        if (newWithRewards.length > 0) {
+                            const totalCookies = newWithRewards.reduce((sum, a) => sum + a.cookies, 0);
+                            showAchievementToast(newWithRewards, totalCookies, false);
+                        } else if (newAchievements.length > 0) {
+                            showAchievementToast(newAchievements, 0, false);
+                        }
+                    }
+                }
+
+                const allSlugs = currentAchievements.map(a => a.slug);
+                localStorage.setItem(ACHIEVEMENT_STORAGE_KEY, JSON.stringify(allSlugs));
+                localStorage.setItem(ACHIEVEMENT_LAST_CHECK_KEY, now.toString());
+
+            } catch (e) {
+                console.error('Flavortown: Failed to check achievements', e);
+            } finally {
+                iframe.remove();
+            }
+        }, 2000);
+    };
+
+    iframe.onerror = () => {
+        console.error('Flavortown: Failed to load achievements iframe');
+        iframe.remove();
+    };
+
+    document.body.appendChild(iframe);
+}
+
 function init() {
     loadTheme();
     initPinnableSidebar();
@@ -931,6 +1050,8 @@ function init() {
     inlineDevlogForm();
     enhanceShopGoals();
     initShopAccessories();
+
+    setTimeout(checkAchievements, 2000);
 }
 
 if (document.readyState === 'loading') {

@@ -1976,3 +1976,24 @@ a:hover {
     color: inherit !important;
     opacity: 0.8;
 }
+
+.flavortown-achievement-toast {
+    background: linear-gradient(135deg, var(--ctp-surface0) 0%, var(--ctp-surface1) 100%) !important;
+    border-color: var(--ctp-mauve) !important;
+}
+
+.flavortown-achievement-toast__title {
+    color: var(--ctp-text) !important;
+}
+
+.flavortown-achievement-toast__names {
+    color: var(--ctp-subtext0) !important;
+}
+
+.flavortown-achievement-toast__cookies {
+    color: var(--ctp-peach) !important;
+}
+
+.flavortown-achievement-toast__close {
+    color: var(--ctp-overlay1) !important;
+}
