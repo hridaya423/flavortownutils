@@ -1886,7 +1886,6 @@
     color: var(--color-text-primary, #333);
 }
 
-/* Votes Table Theming */
 .flavortown-votes-table {
     width: 100%;
     border-collapse: collapse;
@@ -1921,4 +1920,84 @@
 
 .flavortown-votes-table tbody tr:last-child td {
     border-bottom: none;
+}
+
+.flavortown-kitchen-dashboard {
+    padding: 20px;
+}
+
+.flavortown-dashboard-header h2 {
+    font-size: 1.5em;
+    font-weight: 700;
+    color: var(--color-text-primary, #333);
+    margin-bottom: 20px;
+}
+
+.flavortown-stat-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.flavortown-stat-card {
+    background: var(--color-surface, #fff);
+    border: 2px solid var(--color-border, #e2d8cc);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+}
+
+.flavortown-stat-card__label {
+    display: block;
+    font-size: 0.85em;
+    color: var(--color-text-muted, #888);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.flavortown-stat-card__value {
+    display: block;
+    font-size: 1.8em;
+    font-weight: 700;
+    color: var(--color-text-primary, #333);
+}
+
+.flavortown-stat-card--balance {
+    border-color: var(--color-accent, #8b7355);
+}
+
+.flavortown-stat-card--earned .flavortown-stat-card__value {
+    color: #38a169;
+}
+
+.flavortown-stat-card--spent .flavortown-stat-card__value {
+    color: #e53e3e;
+}
+
+.flavortown-graph-container {
+    background: var(--color-surface, #fff);
+    border: 2px solid var(--color-border, #e2d8cc);
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.flavortown-graph-container h3 {
+    font-size: 1.1em;
+    font-weight: 600;
+    color: var(--color-text-primary, #333);
+    margin-bottom: 16px;
+}
+
+#flavortown-cookies-graph {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+}
+
+@media (max-width: 768px) {
+    .flavortown-stat-cards {
+        grid-template-columns: 1fr;
+    }
 }

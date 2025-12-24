@@ -186,35 +186,39 @@ function initPinnableSidebar() {
         }
     }
 
-    browserAPI.storage.local.get(['sidebarPinned'], (result) => {
-        const isPinned = result.sidebarPinned || false;
+    try {
+        browserAPI.storage.local.get(['sidebarPinned'], (result) => {
+            const isPinned = result.sidebarPinned || false;
 
-        if (isPinned && window.innerWidth >= MOBILE_BREAKPOINT) {
-            sidebar.style.transition = 'none';
-            applyPinnedState(true);
+            if (isPinned && window.innerWidth >= MOBILE_BREAKPOINT) {
+                sidebar.style.transition = 'none';
+                applyPinnedState(true);
 
-            requestAnimationFrame(() => {
                 requestAnimationFrame(() => {
-                    sidebar.style.transition = '';
+                    requestAnimationFrame(() => {
+                        sidebar.style.transition = '';
+                    });
                 });
-            });
-        }
-    });
+            }
+        });
+    } catch (e) { }
 
     let resizeTimeout;
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimeout);
         resizeTimeout = setTimeout(() => {
-            browserAPI.storage.local.get(['sidebarPinned'], (result) => {
-                applyPinnedState(result.sidebarPinned || false);
-            });
+            try {
+                browserAPI.storage.local.get(['sidebarPinned'], (result) => {
+                    applyPinnedState(result.sidebarPinned || false);
+                });
+            } catch (e) { }
         }, 100);
     });
 
     pinBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         e.preventDefault();
-        s
+
         if (window.innerWidth < MOBILE_BREAKPOINT) {
             return;
         }
@@ -222,7 +226,9 @@ function initPinnableSidebar() {
         const isPinned = sidebar.classList.contains('sidebar--pinned');
 
         applyPinnedState(!isPinned);
-        browserAPI.storage.local.set({ sidebarPinned: !isPinned });
+        try {
+            browserAPI.storage.local.set({ sidebarPinned: !isPinned });
+        } catch (e) { }
     });
 }
 
@@ -1504,6 +1510,7 @@ function init() {
     initProjectBoardStats();
     addSkipButton();
     transformVotesTable();
+    enhanceKitchenDashboard();
 
     setTimeout(checkAchievements, 2000);
 }
@@ -1618,6 +1625,315 @@ function transformVotesTable() {
     });
 }
 
+async function enhanceKitchenDashboard() {
+    if (window.location.pathname !== '/kitchen') return;
+    if (document.querySelector('.flavortown-kitchen-dashboard')) return;
+
+    const kitchenSetup = document.querySelector('.kitchen-setup');
+    if (!kitchenSetup) return;
+
+    const helpSection = document.querySelector('.kitchen-help');
+    if (helpSection) helpSection.remove();
+
+    try {
+        const response = await fetch('/my/balance', {
+            headers: {
+                'Accept': 'text/html, application/xhtml+xml',
+                'Turbo-Frame': 'balance_history'
+            }
+        });
+        const html = await response.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+
+        let rows = doc.querySelectorAll('.balance-history__table tbody tr');
+        if (rows.length === 0) {
+            rows = doc.querySelectorAll('table tbody tr');
+        }
+
+        const transactions = [];
+        let currentBalance = 0;
+
+        let balanceHeader = doc.querySelector('.balance-history__header h1');
+        if (!balanceHeader) {
+            balanceHeader = doc.querySelector('h1');
+        }
+        if (balanceHeader) {
+            const match = balanceHeader.textContent.match(/(\d+)/);
+            if (match) currentBalance = parseInt(match[1], 10);
+        }
+
+        rows.forEach(row => {
+            const cells = row.querySelectorAll('td');
+            if (cells.length < 3) return;
+
+            const reason = cells[0].textContent.trim();
+            const amountText = cells[1].textContent.trim();
+            const dateText = cells[2].textContent.trim();
+
+            const isPositive = amountText.includes('+');
+            const isNegative = amountText.includes('-');
+            const numMatch = amountText.match(/(\d+)/);
+            let amount = numMatch ? parseInt(numMatch[1], 10) : 0;
+            if (isNegative) amount = -amount;
+
+            const date = new Date(dateText);
+            if (!isNaN(date.getTime())) {
+                transactions.push({ reason, amount, date });
+            }
+        });
+
+        let totalProjects = 0;
+        let totalMinutes = 0;
+        let devlogFrequency = '';
+
+        try {
+            const cachedStats = localStorage.getItem('flavortown_project_stats');
+            if (cachedStats) {
+                const stats = JSON.parse(cachedStats);
+                totalProjects = Object.keys(stats).length;
+
+                Object.values(stats).forEach(project => {
+                    totalDevlogs += project.devlogs || 0;
+                    totalMinutes += project.minutes || 0;
+                });
+
+                if (transactions.length > 1 && totalDevlogs > 0) {
+                    const firstDate = transactions[transactions.length - 1].date;
+                    const lastDate = transactions[0].date;
+                    const daysDiff = Math.max(1, Math.ceil((lastDate - firstDate) / (1000 * 60 * 60 * 24)));
+                    const devlogsPerDay = totalDevlogs / daysDiff;
+
+                    if (devlogsPerDay >= 1) {
+                        devlogFrequency = `${devlogsPerDay.toFixed(1)}/day`;
+                    } else if (devlogsPerDay >= 1 / 7) {
+                        devlogFrequency = `${(devlogsPerDay * 7).toFixed(1)}/week`;
+                    } else {
+                        devlogFrequency = `${(devlogsPerDay * 30).toFixed(1)}/month`;
+                    }
+                }
+            }
+        } catch (e) {
+            console.log('Could not read project stats:', e);
+        }
+
+        transactions.reverse();
+        let runningTotal = currentBalance;
+        for (let i = transactions.length - 1; i >= 0; i--) {
+            runningTotal -= transactions[i].amount;
+        }
+        const dataPoints = [];
+        let balance = runningTotal;
+        transactions.forEach(t => {
+            balance += t.amount;
+            dataPoints.push({ date: t.date, balance, reason: t.reason, amount: t.amount });
+        });
+
+        const totalEarned = transactions.filter(t => t.amount > 0).reduce((sum, t) => sum + t.amount, 0);
+        const totalSpent = Math.abs(transactions.filter(t => t.amount < 0).reduce((sum, t) => sum + t.amount, 0));
+
+        const dashboard = document.createElement('div');
+        dashboard.className = 'flavortown-kitchen-dashboard';
+        dashboard.innerHTML = `
+            <div class="flavortown-dashboard-header">
+                <h2>🍪 Your Cookie Stats</h2>
+            </div>
+            <div class="flavortown-stat-cards">
+                <div class="flavortown-stat-card flavortown-stat-card--balance">
+                    <span class="flavortown-stat-card__label">Current Balance</span>
+                    <span class="flavortown-stat-card__value">🍪 ${currentBalance}</span>
+                </div>
+                <div class="flavortown-stat-card flavortown-stat-card--earned">
+                    <span class="flavortown-stat-card__label">Total Earned</span>
+                    <span class="flavortown-stat-card__value">+${totalEarned}</span>
+                </div>
+                <div class="flavortown-stat-card flavortown-stat-card--spent">
+                    <span class="flavortown-stat-card__label">Total Spent</span>
+                    <span class="flavortown-stat-card__value">-${totalSpent}</span>
+                </div>
+            </div>
+            <div class="flavortown-graph-container">
+                <h3>Cookies Over Time</h3>
+                <canvas id="flavortown-cookies-graph" width="800" height="300"></canvas>
+            </div>
+            <div class="flavortown-dashboard-header" style="margin-top: 24px;">
+                <h2>📝 Project Stats</h2>
+            </div>
+            <div class="flavortown-stat-cards">
+                <div class="flavortown-stat-card">
+                    <span class="flavortown-stat-card__label">Total Projects</span>
+                    <span class="flavortown-stat-card__value">📁 ${totalProjects}</span>
+                </div>
+                <div class="flavortown-stat-card">
+                    <span class="flavortown-stat-card__label">Total Devlogs</span>
+                    <span class="flavortown-stat-card__value">📝 ${totalDevlogs}</span>
+                </div>
+                ${devlogFrequency ? `
+                <div class="flavortown-stat-card">
+                    <span class="flavortown-stat-card__label">Devlog Rate</span>
+                    <span class="flavortown-stat-card__value">⚡ ${devlogFrequency}</span>
+                </div>
+                ` : ''}
+            </div>
+        `;
+
+        kitchenSetup.replaceWith(dashboard);
+
+        const canvas = document.getElementById('flavortown-cookies-graph');
+        if (canvas && dataPoints.length > 1) {
+            const ctx = canvas.getContext('2d');
+            const padding = 50;
+            const width = canvas.width - padding * 2;
+            const height = canvas.height - padding * 2;
+
+            const styles = getComputedStyle(document.documentElement);
+            const lineColor = styles.getPropertyValue('--color-accent')?.trim() || '#8b7355';
+            const textColor = styles.getPropertyValue('--color-text-primary')?.trim() || '#333';
+            const gridColor = styles.getPropertyValue('--color-border')?.trim() || '#e2d8cc';
+
+            const minBalance = Math.min(...dataPoints.map(d => d.balance));
+            const maxBalance = Math.max(...dataPoints.map(d => d.balance));
+            const balanceRange = maxBalance - minBalance || 1;
+
+            ctx.strokeStyle = gridColor;
+            ctx.lineWidth = 1;
+            for (let i = 0; i <= 5; i++) {
+                const y = padding + (height / 5) * i;
+                ctx.beginPath();
+                ctx.moveTo(padding, y);
+                ctx.lineTo(canvas.width - padding, y);
+                ctx.stroke();
+
+                const value = Math.round(maxBalance - (balanceRange / 5) * i);
+                ctx.fillStyle = textColor;
+                ctx.font = '12px system-ui';
+                ctx.textAlign = 'right';
+                ctx.fillText(value.toString(), padding - 10, y + 4);
+            }
+
+            ctx.strokeStyle = lineColor;
+            ctx.lineWidth = 3;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.beginPath();
+
+            dataPoints.forEach((point, i) => {
+                const x = padding + (width / (dataPoints.length - 1)) * i;
+                const y = padding + height - ((point.balance - minBalance) / balanceRange) * height;
+
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            });
+            ctx.stroke();
+
+            const pointPositions = dataPoints.map((point, i) => ({
+                x: padding + (width / (dataPoints.length - 1)) * i,
+                y: padding + height - ((point.balance - minBalance) / balanceRange) * height,
+                data: point
+            }));
+
+            dataPoints.forEach((point, i) => {
+                const x = padding + (width / (dataPoints.length - 1)) * i;
+                const y = padding + height - ((point.balance - minBalance) / balanceRange) * height;
+
+                ctx.beginPath();
+                ctx.arc(x, y, 5, 0, Math.PI * 2);
+                ctx.fillStyle = lineColor;
+                ctx.fill();
+                ctx.strokeStyle = '#fff';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            });
+
+            ctx.fillStyle = textColor;
+            ctx.font = '11px system-ui';
+            ctx.textAlign = 'center';
+            if (dataPoints.length > 0) {
+                const maxLabels = Math.min(dataPoints.length, 5);
+                const step = Math.max(1, Math.floor((dataPoints.length - 1) / (maxLabels - 1)));
+
+                for (let i = 0; i < dataPoints.length; i += step) {
+                    if (i === 0 || i >= dataPoints.length - 1 || (i > 0 && i < dataPoints.length - 1)) {
+                        const x = padding + (width / (dataPoints.length - 1)) * i;
+                        const dateStr = dataPoints[i].date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                        ctx.fillText(dateStr, x, canvas.height - 10);
+                    }
+                }
+                if (step > 1) {
+                    const lastX = padding + width;
+                    const lastDateStr = dataPoints[dataPoints.length - 1].date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                    ctx.fillText(lastDateStr, lastX, canvas.height - 10);
+                }
+            }
+
+            const tooltip = document.createElement('div');
+            tooltip.className = 'flavortown-graph-tooltip';
+            tooltip.style.cssText = `
+                position: absolute;
+                display: none;
+                background: var(--color-surface, #fff);
+                border: 2px solid var(--color-border, #e2d8cc);
+                border-radius: 8px;
+                padding: 10px 14px;
+                font-size: 0.9em;
+                pointer-events: none;
+                z-index: 1000;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                max-width: 220px;
+                white-space: nowrap;
+            `;
+            canvas.parentNode.style.position = 'relative';
+            canvas.parentNode.appendChild(tooltip);
+
+            canvas.addEventListener('mousemove', (e) => {
+                const rect = canvas.getBoundingClientRect();
+                const scaleX = canvas.width / rect.width;
+                const scaleY = canvas.height / rect.height;
+                const mouseX = (e.clientX - rect.left) * scaleX;
+                const mouseY = (e.clientY - rect.top) * scaleY;
+
+                let closestPoint = null;
+                let closestDist = Infinity;
+                pointPositions.forEach(p => {
+                    const dist = Math.sqrt((p.x - mouseX) ** 2 + (p.y - mouseY) ** 2);
+                    if (dist < closestDist && dist < 30) {
+                        closestDist = dist;
+                        closestPoint = p;
+                    }
+                });
+
+                if (closestPoint) {
+                    const amountStr = closestPoint.data.amount >= 0 ? `+${closestPoint.data.amount}` : `${closestPoint.data.amount}`;
+                    const dateStr = closestPoint.data.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                    tooltip.innerHTML = `
+                        <div style="font-weight: 700; margin-bottom: 4px;">🍪 ${closestPoint.data.balance}</div>
+                        <div style="color: ${closestPoint.data.amount >= 0 ? '#38a169' : '#e53e3e'}; font-weight: 600;">${amountStr}</div>
+                        <div style="font-size: 0.85em; color: var(--color-text-muted, #888); margin-top: 4px;">${closestPoint.data.reason}</div>
+                        <div style="font-size: 0.8em; color: var(--color-text-muted, #888);">${dateStr}</div>
+                    `;
+                    tooltip.style.display = 'block';
+
+                    let tooltipX = (closestPoint.x / scaleX) + 15;
+                    const tooltipWidth = 220;
+                    if (tooltipX + tooltipWidth > rect.width) {
+                        tooltipX = (closestPoint.x / scaleX) - tooltipWidth - 15;
+                    }
+                    tooltip.style.left = `${tooltipX}px`;
+                    tooltip.style.top = `${(closestPoint.y / scaleY) - 20}px`;
+                } else {
+                    tooltip.style.display = 'none';
+                }
+            });
+
+            canvas.addEventListener('mouseleave', () => {
+                tooltip.style.display = 'none';
+            });
+        }
+    } catch (e) {
+        console.error('Failed to enhance kitchen dashboard:', e);
+    }
+}
+
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
 } else {
@@ -1642,4 +1958,5 @@ document.addEventListener('turbo:load', () => {
     initProjectBoardStats();
     addSkipButton();
     transformVotesTable();
+    enhanceKitchenDashboard();
 });
