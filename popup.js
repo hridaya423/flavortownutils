@@ -70,6 +70,17 @@ const POPUP_THEMES = {
         '--popup-accent-dim': '#7fdbca',
         '--popup-success': '#7fdbca'
     },
+    'overcooked': {
+        '--popup-bg': '#1a0f0f',
+        '--popup-surface': '#2b1212',
+        '--popup-surface-hover': '#4a1818',
+        '--popup-border': '#742a2a',
+        '--popup-text': '#fff5f5',
+        '--popup-text-dim': '#feb2b2',
+        '--popup-accent': '#ed8936',
+        '--popup-accent-dim': '#fbd38d',
+        '--popup-success': '#68d391'
+    },
     'custom': null
 };
 

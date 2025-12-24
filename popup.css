@@ -3,6 +3,7 @@
     margin: 0;
     padding: 0;
 }
+
 :root {
     --popup-bg: #1e1e2e;
     --popup-surface: #313244;
@@ -14,6 +15,7 @@
     --popup-accent-dim: #b4befe;
     --popup-success: #a6e3a1;
 }
+
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     background: var(--popup-bg);
@@ -22,26 +24,31 @@ body {
     max-width: 360px;
     transition: background 0.3s, color 0.3s;
 }
+
 .popup {
     display: flex;
     flex-direction: column;
     min-height: 100%;
 }
+
 .popup__header {
     padding: 16px 16px 12px;
     border-bottom: 1px solid var(--popup-border);
     background: linear-gradient(180deg, color-mix(in srgb, var(--popup-accent) 10%, transparent) 0%, transparent 100%);
     transition: border-color 0.3s, background 0.3s;
 }
+
 .popup__logo {
     display: flex;
     align-items: center;
     gap: 12px;
 }
+
 .popup__logo-icon {
     font-size: 28px;
     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 }
+
 .popup__logo-text h1 {
     font-size: 16px;
     font-weight: 700;
@@ -51,6 +58,7 @@ body {
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
+
 .popup__version {
     font-size: 11px;
     color: var(--popup-text-dim);
@@ -58,15 +66,18 @@ body {
     letter-spacing: 0.5px;
     transition: color 0.3s;
 }
+
 .popup__main {
     padding: 12px;
     flex: 1;
 }
+
 .popup__themes {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
 }
+
 .theme-card {
     position: relative;
     background: var(--popup-surface);
@@ -77,14 +88,17 @@ body {
     transition: all 0.2s ease;
     overflow: hidden;
 }
+
 .theme-card:hover {
     background: var(--popup-surface-hover);
     transform: translateY(-2px);
 }
+
 .theme-card.active {
     border-color: var(--popup-accent);
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--popup-accent) 20%, transparent);
 }
+
 .theme-card__preview {
     height: 50px;
     border-radius: 8px;
@@ -92,33 +106,40 @@ body {
     overflow: hidden;
     position: relative;
 }
+
 .theme-card__colors {
     display: flex;
     height: 100%;
 }
+
 .theme-card__colors span {
     flex: 1;
     transition: transform 0.2s;
 }
+
 .theme-card:hover .theme-card__colors span {
     transform: scaleY(1.1);
 }
+
 .theme-card__info {
     display: flex;
     flex-direction: column;
     gap: 2px;
 }
+
 .theme-card__name {
     font-size: 13px;
     font-weight: 600;
     color: var(--popup-text);
     transition: color 0.3s;
 }
+
 .theme-card__desc {
     font-size: 10px;
     color: var(--popup-text-dim);
     transition: color 0.3s;
 }
+
 .theme-card__check {
     position: absolute;
     top: 8px;
@@ -136,34 +157,41 @@ body {
     transform: scale(0.8);
     transition: all 0.2s;
 }
+
 .theme-card.active .theme-card__check {
     opacity: 1;
     transform: scale(1);
 }
+
 .popup__custom {
     display: none;
     margin-top: 12px;
     animation: slideDown 0.2s ease;
 }
+
 .popup__custom.visible {
     display: block;
 }
+
 @keyframes slideDown {
     from {
         opacity: 0;
         transform: translateY(-10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
     }
 }
+
 .custom-editor {
     background: var(--popup-surface);
     border-radius: 12px;
     overflow: hidden;
     transition: background 0.3s;
 }
+
 .custom-editor__header {
     display: flex;
     justify-content: space-between;
@@ -175,6 +203,7 @@ body {
     color: var(--popup-text);
     transition: background 0.3s, color 0.3s;
 }
+
 .custom-editor__reset {
     background: transparent;
     border: 1px solid var(--popup-border);
@@ -186,10 +215,12 @@ body {
     cursor: pointer;
     transition: all 0.15s;
 }
+
 .custom-editor__reset:hover {
     background: var(--popup-surface-hover);
     color: var(--popup-text);
 }
+
 .custom-editor__grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
@@ -198,12 +229,14 @@ body {
     max-height: 180px;
     overflow-y: auto;
 }
+
 .color-item {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 3px;
 }
+
 .color-item__input {
     width: 36px;
     height: 36px;
@@ -214,10 +247,12 @@ body {
     background: transparent;
     transition: transform 0.15s, border-color 0.15s;
 }
+
 .color-item__input:hover {
     transform: scale(1.1);
     border-color: var(--popup-accent);
 }
+
 .color-item__label {
     font-size: 8px;
     color: var(--popup-text-dim);
@@ -228,11 +263,13 @@ body {
     white-space: nowrap;
     transition: color 0.3s;
 }
+
 .popup__footer {
     padding: 12px 16px;
     border-top: 1px solid var(--popup-border);
     transition: border-color 0.3s;
 }
+
 .popup__status {
     font-size: 12px;
     text-align: center;
@@ -240,19 +277,70 @@ body {
     min-height: 16px;
     transition: opacity 0.2s, color 0.3s;
 }
+
 .popup__status.error {
     color: #f38ba8;
 }
+
 .custom-editor__grid::-webkit-scrollbar {
     width: 6px;
 }
+
 .custom-editor__grid::-webkit-scrollbar-track {
     background: var(--popup-bg);
 }
+
 .custom-editor__grid::-webkit-scrollbar-thumb {
     background: var(--popup-border);
     border-radius: 3px;
 }
+
 .custom-editor__grid::-webkit-scrollbar-thumb:hover {
     background: var(--popup-text-dim);
+}
+
+.custom-group {
+    background: color-mix(in srgb, var(--popup-surface) 50%, transparent);
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 12px;
+    border: 1px solid var(--popup-border);
+}
+
+.custom-section-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--popup-text);
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--popup-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.btn-generate {
+    width: 100%;
+    padding: 8px;
+    margin-top: 12px;
+    background: var(--popup-accent);
+    color: var(--popup-bg);
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.btn-generate:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+    filter: brightness(1.1);
+}
+
+.btn-generate:active {
+    transform: translateY(0);
+    filter: brightness(0.95);
 }

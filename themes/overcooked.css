@@ -1,0 +1,2405 @@
+:root {
+    --overcooked-burnt: #1a0f0f;
+    --overcooked-charcoal: #2b1212;
+    --overcooked-dark: #4a1818;
+    --overcooked-mid: #742a2a;
+    --overcooked-surface: #9b2c2c;
+    --overcooked-wave: #c53030;
+    --overcooked-foam: #fc8181;
+    --overcooked-spray: #fbd38d;
+    --overcooked-mist: #feb2b2;
+    --overcooked-white: #fff5f5;
+    --overcooked-coral: #fc8181;
+    --overcooked-gold: #f6e05e;
+    --overcooked-kelp: #68d391;
+    --overcooked-cyan: #ed8936;
+    --overcooked-sand: #feebc8;
+
+    --overcooked-abyss: var(--overcooked-burnt);
+    --overcooked-deep: var(--overcooked-charcoal);
+
+
+    --color-cream: var(--overcooked-burnt) !important;
+    --color-cream-dark: var(--overcooked-charcoal) !important;
+    --color-brown: var(--overcooked-cyan) !important;
+    --color-brown-light: var(--overcooked-foam) !important;
+    --color-brown-dark: var(--overcooked-spray) !important;
+    --color-red: var(--overcooked-coral) !important;
+    --color-green: var(--overcooked-kelp) !important;
+    --color-background: var(--overcooked-burnt) !important;
+    --color-surface: var(--overcooked-dark) !important;
+    --color-text-primary: var(--overcooked-white) !important;
+    --color-text-secondary: var(--overcooked-mist) !important;
+    --color-text-muted: var(--overcooked-foam) !important;
+    --color-accent: var(--overcooked-cyan) !important;
+    --color-border: var(--overcooked-mid) !important;
+}
+
+body {
+    background: var(--overcooked-abyss) !important;
+    color: var(--overcooked-white) !important;
+}
+
+body::before {
+    background: linear-gradient(180deg, var(--overcooked-abyss) 0%, var(--overcooked-deep) 100%) !important;
+}
+
+.sidebar {
+    background: var(--overcooked-deep) !important;
+}
+
+.sidebar__blob {
+    background: var(--overcooked-dark) !important;
+}
+
+.sidebar__nav-link {
+    color: var(--overcooked-mist) !important;
+}
+
+.sidebar__nav-link:hover {
+    background: var(--overcooked-mid) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.sidebar__nav-link--active {
+    background: var(--overcooked-mid) !important;
+    color: var(--overcooked-cyan) !important;
+}
+
+.sidebar__nav-icon {
+    color: var(--overcooked-foam) !important;
+}
+
+.sidebar__nav-link--active .sidebar__nav-icon {
+    color: var(--overcooked-cyan) !important;
+}
+
+.sidebar__user-card {
+    background: var(--overcooked-dark) !important;
+}
+
+.sidebar__user-avatar {
+    background-color: var(--overcooked-cyan) !important;
+}
+
+.sidebar__user-avatar-hat,
+.sidebar__user-avatar-hat-bg {
+    filter: hue-rotate(180deg) saturate(0.8) !important;
+}
+
+.sidebar__user-name {
+    color: var(--overcooked-abyss) !important;
+    background-color: var(--overcooked-cyan) !important;
+}
+
+.sidebar__user-balance {
+    background: var(--overcooked-mid) !important;
+    color: var(--overcooked-gold) !important;
+}
+
+.sidebar__user-settings,
+.sidebar__user-logout {
+    color: var(--overcooked-foam) !important;
+}
+
+.sidebar__user-settings:hover,
+.sidebar__user-logout:hover {
+    color: var(--overcooked-white) !important;
+}
+
+.sidebar__pin-btn {
+    background: var(--overcooked-mid) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.sidebar__pin-btn:hover {
+    background: var(--overcooked-surface) !important;
+}
+
+.sidebar--pinned .sidebar__pin-btn {
+    background: var(--overcooked-cyan) !important;
+    color: var(--overcooked-abyss) !important;
+}
+
+.btn {
+    transition: all 0.2s ease !important;
+}
+
+.btn--brown {
+    background: var(--overcooked-cyan) !important;
+    color: var(--overcooked-abyss) !important;
+    border-color: var(--overcooked-cyan) !important;
+}
+
+.btn--brown:hover {
+    background: var(--overcooked-spray) !important;
+    color: var(--overcooked-abyss) !important;
+}
+
+.btn--green {
+    background: var(--overcooked-kelp) !important;
+    color: var(--overcooked-abyss) !important;
+    border-color: var(--overcooked-kelp) !important;
+}
+
+.btn--green:hover {
+    background: #7bed9f !important;
+    color: var(--overcooked-abyss) !important;
+}
+
+.btn--red {
+    background: var(--overcooked-coral) !important;
+    color: var(--overcooked-abyss) !important;
+    border-color: var(--overcooked-coral) !important;
+}
+
+.btn--sm {
+    color: var(--overcooked-abyss) !important;
+}
+
+.btn--borderless {
+    color: var(--overcooked-white) !important;
+    background: var(--overcooked-dark) !important;
+    border: 1px solid var(--overcooked-surface) !important;
+}
+
+.btn--borderless:hover {
+    background: var(--overcooked-mid) !important;
+    border-color: var(--overcooked-cyan) !important;
+}
+
+.ui-heading {
+    color: var(--overcooked-white) !important;
+}
+
+.ui-heading__backdrop {
+    background: var(--overcooked-dark) !important;
+}
+
+.ui-heading__surface {
+    background: var(--overcooked-dark) !important;
+}
+
+.ui-heading__title {
+    color: var(--overcooked-white) !important;
+}
+
+.projects-new {
+    background: var(--overcooked-abyss) !important;
+}
+
+.projects-new__container {
+    background: var(--overcooked-abyss) !important;
+}
+
+.projects-new__card {
+    background: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-mid) !important;
+}
+
+.projects-new__field {
+    background: transparent !important;
+}
+
+.projects-new__time-preview {
+    background: var(--overcooked-deep) !important;
+    color: var(--overcooked-mist) !important;
+    border-color: var(--overcooked-mid) !important;
+}
+
+.projects-new__time-preview p {
+    color: var(--overcooked-mist) !important;
+}
+
+.projects-new__time-preview strong {
+    color: var(--overcooked-cyan) !important;
+}
+
+.projects-new__actions {
+    background: transparent !important;
+}
+
+.project-show-card {
+    background: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-mid) !important;
+}
+
+.project-show-card__title {
+    color: var(--overcooked-white) !important;
+}
+
+.project-show-card__byline {
+    color: var(--overcooked-mist) !important;
+}
+
+.project-show-card__stat {
+    color: var(--overcooked-spray) !important;
+}
+
+.project-show-card__description {
+    color: var(--overcooked-white) !important;
+}
+
+.project-card__banner-placeholder {
+    background: linear-gradient(135deg, var(--overcooked-mid) 0%, var(--overcooked-surface) 100%) !important;
+}
+
+.project-card__banner-placeholder-text {
+    color: var(--overcooked-foam) !important;
+}
+
+.post {
+    background: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-mid) !important;
+}
+
+.post__author a {
+    color: var(--overcooked-cyan) !important;
+}
+
+.post__time {
+    color: var(--overcooked-foam) !important;
+}
+
+.post__duration {
+    color: var(--overcooked-spray) !important;
+}
+
+.post__body {
+    color: var(--overcooked-white) !important;
+}
+
+.post__attachments {
+    background: var(--overcooked-deep) !important;
+}
+
+.post__chevron {
+    background: var(--overcooked-mid) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.post__dot {
+    background: var(--overcooked-foam) !important;
+}
+
+.post__dot.is-active {
+    background: var(--overcooked-cyan) !important;
+}
+
+.like-button__btn {
+    color: var(--overcooked-foam) !important;
+}
+
+.like-button__btn--liked {
+    color: var(--overcooked-gold) !important;
+}
+
+.like-button__btn:hover {
+    color: var(--overcooked-gold) !important;
+}
+
+.comments-count {
+    color: var(--overcooked-foam) !important;
+}
+
+.post__interactions {
+    background: transparent !important;
+    border-color: var(--overcooked-mid) !important;
+}
+
+.comments-section {
+    background: transparent !important;
+    border-color: var(--overcooked-mid) !important;
+}
+
+.comments-section__list {
+    background: transparent !important;
+}
+
+.comment {
+    background: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-mid) !important;
+}
+
+.comment__avatar {
+    border-color: var(--overcooked-mid) !important;
+}
+
+.comment__author {
+    color: var(--overcooked-cyan) !important;
+}
+
+.comment__time {
+    color: var(--overcooked-foam) !important;
+}
+
+.comment__body {
+    color: var(--overcooked-white) !important;
+}
+
+.comment__body p {
+    color: var(--overcooked-white) !important;
+}
+
+.comment__delete {
+    color: var(--overcooked-coral) !important;
+}
+
+.comment-form {
+    background: transparent !important;
+    border-color: var(--overcooked-mid) !important;
+}
+
+.comment-form__form {
+    background: transparent !important;
+}
+
+.comment-form__input {
+    background: var(--overcooked-abyss) !important;
+    border-color: var(--overcooked-mid) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.comment-form__input::placeholder {
+    color: var(--overcooked-foam) !important;
+}
+
+.comment-form__actions {
+    background: transparent !important;
+}
+
+.comment-form__actions .btn {
+    color: var(--overcooked-abyss) !important;
+}
+
+.comments-section__title {
+    color: var(--overcooked-mist) !important;
+}
+
+svg {
+    color: inherit !important;
+}
+
+.projects-show__icon-btn {
+    color: var(--overcooked-white) !important;
+}
+
+.projects-show__icon-btn:hover {
+    color: var(--overcooked-cyan) !important;
+}
+
+.projects-show__admin-actions .btn {
+    color: var(--overcooked-white) !important;
+    background: transparent !important;
+}
+
+.projects-show__admin-actions .btn:hover {
+    color: var(--overcooked-cyan) !important;
+}
+
+.input {
+    background: transparent !important;
+}
+
+.input--red,
+.input--green {
+    background: transparent !important;
+}
+
+.input__label {
+    color: var(--overcooked-mist) !important;
+}
+
+.input__field {
+    background: var(--overcooked-abyss) !important;
+    border-color: var(--overcooked-mid) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.input__field--textarea {
+    background: var(--overcooked-abyss) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.input__field::placeholder {
+    color: var(--overcooked-foam) !important;
+}
+
+.input__subtitle {
+    color: var(--overcooked-foam) !important;
+}
+
+.file-upload {
+    background: transparent !important;
+}
+
+.file-upload__area {
+    background: var(--overcooked-abyss) !important;
+    border-color: var(--overcooked-mid) !important;
+}
+
+.file-upload__dropzone {
+    border-color: var(--overcooked-surface) !important;
+    background: var(--overcooked-abyss) !important;
+}
+
+.file-upload__placeholder {
+    background: transparent !important;
+}
+
+.file-upload__headline {
+    color: var(--overcooked-white) !important;
+}
+
+.file-upload__hint {
+    color: var(--overcooked-foam) !important;
+}
+
+.file-upload__browse {
+    color: var(--overcooked-cyan) !important;
+    background: transparent !important;
+}
+
+.file-upload__nav {
+    background: var(--overcooked-mid) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.file-upload__progress {
+    background: var(--overcooked-dark) !important;
+}
+
+.file-upload__progress-bar {
+    background: var(--overcooked-cyan) !important;
+}
+
+.modal {
+    background: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-mid) !important;
+}
+
+.modal__title {
+    color: var(--overcooked-white) !important;
+}
+
+.modal__actions-close {
+    background: var(--overcooked-mid) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.projects-show {
+    background: var(--overcooked-abyss) !important;
+}
+
+.projects-show__container {
+    background: var(--overcooked-abyss) !important;
+}
+
+.projects-show__timeline {
+    background: transparent !important;
+}
+
+.dev-footer {
+    background: var(--overcooked-deep) !important;
+    color: var(--overcooked-foam) !important;
+}
+
+.dev-footer a {
+    color: var(--overcooked-cyan) !important;
+}
+
+a {
+    color: var(--overcooked-cyan) !important;
+}
+
+a:hover {
+    color: var(--overcooked-spray) !important;
+}
+
+.kitchen-index {
+    background: var(--overcooked-abyss) !important;
+}
+
+.kitchen-setup {
+    background: transparent !important;
+}
+
+.kitchen-setup::before {
+    background-color: var(--overcooked-abyss) !important;
+    background-image: repeating-conic-gradient(from 0deg, rgba(102, 217, 239, 0.04) 0deg 90deg, transparent 90deg 180deg) !important;
+}
+
+.kitchen-help {
+    background: transparent !important;
+}
+
+.kitchen-help::before {
+    background-color: var(--overcooked-abyss) !important;
+    background-image: repeating-conic-gradient(from 0deg, rgba(102, 217, 239, 0.04) 0deg 90deg, transparent 90deg 180deg) !important;
+}
+
+.projects-new__card::before {
+    background-color: var(--overcooked-dark) !important;
+    background-image: repeating-conic-gradient(from 0deg, rgba(102, 217, 239, 0.05) 0deg 90deg, transparent 90deg 180deg) !important;
+}
+
+.input::before {
+    background-color: var(--overcooked-cyan) !important;
+}
+
+.kitchen-help__content {
+    background: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-mid) !important;
+}
+
+.kitchen-help__title {
+    color: var(--overcooked-white) !important;
+}
+
+.kitchen-help__grid {
+    background: transparent !important;
+}
+
+.tutorial-steps {
+    background: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-mid) !important;
+}
+
+.tutorial-steps__header {
+    background: var(--overcooked-dark) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.tutorial-steps__toggle-icon {
+    color: var(--overcooked-foam) !important;
+}
+
+.tutorial-steps__title {
+    color: var(--overcooked-white) !important;
+}
+
+.tutorial-steps__progress {
+    color: var(--overcooked-mist) !important;
+}
+
+.tutorial-steps__progress-text {
+    color: var(--overcooked-spray) !important;
+}
+
+.tutorial-steps__progress-bar {
+    background: var(--overcooked-mid) !important;
+}
+
+.tutorial-steps__progress-fill {
+    background: var(--overcooked-cyan) !important;
+}
+
+.tutorial-steps__grid {
+    background: transparent !important;
+}
+
+.tutorial-steps__grid .state-card,
+.tutorial-steps .state-card,
+.kitchen-setup .state-card {
+    border-color: var(--overcooked-surface) !important;
+}
+
+.tutorial-steps__grid .state-card--success,
+.tutorial-steps .state-card--success,
+.kitchen-setup .state-card--success {
+    border-color: var(--overcooked-kelp) !important;
+}
+
+.tutorial-steps__grid .state-card--warning,
+.tutorial-steps .state-card--warning {
+    border-color: var(--overcooked-surface) !important;
+}
+
+.state-card {
+    background: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-surface) !important;
+}
+
+.state-card--success {
+    border-color: var(--overcooked-kelp) !important;
+}
+
+.state-card--warning {
+    border-color: var(--overcooked-surface) !important;
+}
+
+.state-card--neutral {
+    border-color: var(--overcooked-mid) !important;
+}
+
+.state-card__status-pill {
+    background: transparent !important;
+}
+
+.state-card__badge {
+    background: var(--overcooked-mid) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.state-card--success .state-card__badge {
+    background: var(--overcooked-kelp) !important;
+    color: var(--overcooked-abyss) !important;
+}
+
+.state-card--warning .state-card__badge {
+    background: var(--overcooked-gold) !important;
+    color: var(--overcooked-abyss) !important;
+}
+
+.state-card__icon-circle {
+    background: var(--overcooked-mid) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.state-card--success .state-card__icon-circle {
+    background: var(--overcooked-kelp) !important;
+    color: var(--overcooked-abyss) !important;
+}
+
+.state-card--warning .state-card__icon-circle {
+    background: var(--overcooked-gold) !important;
+    color: var(--overcooked-abyss) !important;
+}
+
+.state-card__title {
+    color: var(--overcooked-white) !important;
+}
+
+.state-card__description {
+    color: var(--overcooked-mist) !important;
+}
+
+.state-card__cta {
+    background: transparent !important;
+}
+
+.tutorial-step-card {
+    background: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-surface) !important;
+}
+
+.tutorial-step-card--completed {
+    border-color: var(--overcooked-kelp) !important;
+}
+
+.tutorial-step-card--todo {
+    border-color: var(--overcooked-surface) !important;
+}
+
+.tutorial-step-card--current {
+    border-color: var(--overcooked-cyan) !important;
+}
+
+.kitchen-help-card {
+    background: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-mid) !important;
+}
+
+.btn--bg_yellow {
+    background: var(--overcooked-gold) !important;
+    color: var(--overcooked-abyss) !important;
+}
+
+.btn--bg_yellow:hover {
+    background: var(--overcooked-sand) !important;
+    color: var(--overcooked-abyss) !important;
+}
+
+.btn--bg_yellow svg {
+    fill: var(--overcooked-abyss) !important;
+    color: var(--overcooked-abyss) !important;
+}
+
+.explore__nav {
+    background: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-mid) !important;
+}
+
+.explore__nav-component {
+    color: var(--overcooked-white) !important;
+    background: transparent !important;
+}
+
+.explore__nav-component:hover {
+    background: var(--overcooked-mid) !important;
+    color: var(--overcooked-cyan) !important;
+}
+
+.explore__nav-component.selected {
+    background: var(--overcooked-mid) !important;
+    color: var(--overcooked-cyan) !important;
+}
+
+.projects-board__grid-item {
+    background: transparent !important;
+}
+
+.project-card {
+    background: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-mid) !important;
+}
+
+.project-card__banner {
+    background: var(--overcooked-mid) !important;
+}
+
+.project-card__banner--placeholder {
+    background: var(--overcooked-mid) !important;
+}
+
+.project-card__banner-frame {
+    background: var(--overcooked-mid) !important;
+}
+
+.project-card__banner-frame--placeholder {
+    background: var(--overcooked-mid) !important;
+}
+
+.project-card__banner-placeholder {
+    background: var(--overcooked-mid) !important;
+}
+
+.project-card__banner-placeholder-text {
+    color: var(--overcooked-foam) !important;
+}
+
+.project-card__content {
+    background: transparent !important;
+}
+
+.project-card__title {
+    color: var(--overcooked-white) !important;
+}
+
+.project-card__title-link {
+    color: var(--overcooked-white) !important;
+}
+
+.project-card__title-link:hover {
+    color: var(--overcooked-cyan) !important;
+}
+
+.project-card__description {
+    color: var(--overcooked-mist) !important;
+}
+
+.project-card__description p {
+    color: var(--overcooked-mist) !important;
+}
+
+.project-card__stats {
+    background: transparent !important;
+    color: var(--overcooked-spray) !important;
+}
+
+.project-card__stats h5 {
+    color: var(--overcooked-spray) !important;
+}
+
+.project-card__stats-icon {
+    color: var(--overcooked-foam) !important;
+}
+
+.projects-show__admin-actions {
+    background: transparent !important;
+}
+
+.projects-show__admin-actions .btn {
+    color: var(--overcooked-white) !important;
+    background: transparent !important;
+}
+
+.projects-show__admin-actions .btn:hover {
+    color: var(--overcooked-cyan) !important;
+}
+
+.projects-show__admin-actions .btn svg {
+    color: var(--overcooked-white) !important;
+}
+
+.projects-show__admin-actions .btn:hover svg {
+    color: var(--overcooked-cyan) !important;
+}
+
+.button_to {
+    display: inline !important;
+}
+
+.shop {
+    background: var(--overcooked-abyss) !important;
+}
+
+.shop-page {
+    background: var(--overcooked-abyss) !important;
+}
+
+.shop__buttons {
+    background: transparent !important;
+}
+
+.shop__nav {
+    background: transparent !important;
+}
+
+.shop__searchbar {
+    background: transparent !important;
+}
+
+.shop__filters {
+    background: transparent !important;
+}
+
+.shop__items {
+    background: transparent !important;
+}
+
+.shop-goals {
+    background: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-mid) !important;
+}
+
+.shop-goals__container {
+    background: transparent !important;
+}
+
+.shop-goals__title {
+    color: var(--overcooked-white) !important;
+}
+
+.shop-goals__items {
+    background: transparent !important;
+}
+
+.shop-goals__item {
+    background: var(--overcooked-mid) !important;
+    border-color: var(--overcooked-surface) !important;
+}
+
+.shop-goals__remove {
+    background: var(--overcooked-coral) !important;
+    color: var(--overcooked-abyss) !important;
+}
+
+.shop-goals__name {
+    color: var(--overcooked-white) !important;
+}
+
+.shop-goals__progress-bar {
+    background: var(--overcooked-surface) !important;
+}
+
+.shop-goals__progress-fill {
+    background: var(--overcooked-cyan) !important;
+}
+
+.shop-goals__progress-text {
+    color: var(--overcooked-mist) !important;
+}
+
+.shop-item-card {
+    background: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-mid) !important;
+}
+
+.shop-item-card__star {
+    color: var(--overcooked-foam) !important;
+}
+
+.shop-item-card__star--active {
+    color: var(--overcooked-gold) !important;
+}
+
+.shop-item-card__image {
+    background: var(--overcooked-mid) !important;
+}
+
+.shop-item-card__content {
+    background: transparent !important;
+}
+
+.shop-item-card__title {
+    color: var(--overcooked-white) !important;
+}
+
+.shop-item-card__description {
+    color: var(--overcooked-mist) !important;
+}
+
+.shop-item-card__details {
+    color: var(--overcooked-spray) !important;
+}
+
+.shop-item-card__hours {
+    color: var(--overcooked-foam) !important;
+}
+
+.shop-item-card__price {
+    color: var(--overcooked-gold) !important;
+}
+
+.shop-item-card__original-price {
+    color: var(--overcooked-foam) !important;
+}
+
+.shop-item-card__order-button {
+    background: transparent !important;
+}
+
+.shop-item-card__stock-badge {
+    background: var(--overcooked-gold) !important;
+    color: var(--overcooked-abyss) !important;
+}
+
+.shop-item-card__sale-badge {
+    background: var(--overcooked-coral) !important;
+    color: var(--overcooked-abyss) !important;
+}
+
+.shop-item-card--on-sale {
+    border-color: var(--overcooked-coral) !important;
+}
+
+.dropdown__label {
+    color: var(--overcooked-mist) !important;
+}
+
+.dropdown__button {
+    background: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-mid) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.dropdown__selected {
+    color: var(--overcooked-white) !important;
+}
+
+.dropdown__icon {
+    color: var(--overcooked-foam) !important;
+}
+
+.dropdown__menu {
+    background: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-mid) !important;
+}
+
+.dropdown__item {
+    color: var(--overcooked-white) !important;
+}
+
+.dropdown__item:hover {
+    background: var(--overcooked-mid) !important;
+}
+
+.dropdown__spacer {
+    color: var(--overcooked-foam) !important;
+}
+
+.dropdown--green .dropdown__label {
+    color: var(--overcooked-abyss) !important;
+    background-color: var(--overcooked-kelp) !important;
+    border-radius: 8px !important;
+}
+
+.dropdown--blue .dropdown__label {
+    color: var(--overcooked-abyss) !important;
+    background-color: var(--overcooked-blue) !important;
+    border-radius: 8px !important;
+}
+
+.shop-order__content {
+    background: var(--overcooked-dark) !important;
+    color: var(--overcooked-white) !important;
+    border-radius: 2em !important;
+}
+
+.shop-order__details {
+    background: transparent !important;
+    color: var(--overcooked-white) !important;
+}
+
+.shop-order__description {
+    color: var(--overcooked-mist) !important;
+}
+
+.shop-order .btn-order {
+    background-color: var(--overcooked-cyan) !important;
+    color: var(--overcooked-abyss) !important;
+    border-color: var(--overcooked-cyan) !important;
+    border-radius: 8px !important;
+}
+
+.shop-order .btn-order:hover {
+    background-color: var(--overcooked-teal) !important;
+    border-color: var(--overcooked-teal) !important;
+}
+
+.shop-order .btn-order:disabled {
+    background-color: var(--overcooked-surface) !important;
+    color: var(--overcooked-foam) !important;
+    border-color: var(--overcooked-surface) !important;
+}
+
+.input-group {
+    background: var(--overcooked-dark) !important;
+    border-radius: 16px !important;
+}
+
+.input-group__label {
+    background-color: var(--overcooked-mid) !important;
+    color: var(--overcooked-white) !important;
+    border-radius: 8px !important;
+}
+
+.input-group__subtitle {
+    background-color: var(--overcooked-dark) !important;
+    color: var(--overcooked-mist) !important;
+}
+
+.input-group--green::before {
+    background-color: var(--overcooked-mid) !important;
+}
+
+.input-group--green .input-group__label {
+    background-color: var(--overcooked-mid) !important;
+    color: var(--overcooked-kelp) !important;
+    border-left: 3px solid var(--overcooked-kelp) !important;
+}
+
+.input-group--green .input-group__subtitle {
+    background-color: var(--overcooked-dark) !important;
+    color: var(--overcooked-kelp) !important;
+}
+
+.input-group--blue::before {
+    background-color: var(--overcooked-mid) !important;
+}
+
+.input-group--blue .input-group__label {
+    background-color: var(--overcooked-mid) !important;
+    color: var(--overcooked-blue) !important;
+    border-left: 3px solid var(--overcooked-blue) !important;
+}
+
+.input-group--blue .input-group__subtitle {
+    background-color: var(--overcooked-dark) !important;
+    color: var(--overcooked-blue) !important;
+}
+
+.hackatime-project-selector {
+    background: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-mid) !important;
+    border-radius: 16px !important;
+}
+
+.hackatime-project-selector--yellow::before {
+    background-color: var(--overcooked-mid) !important;
+}
+
+.hackatime-project-selector__label {
+    background-color: var(--overcooked-mid) !important;
+    color: var(--overcooked-gold) !important;
+    border-left: 3px solid var(--overcooked-gold) !important;
+}
+
+.hackatime-project-selector__control {
+    background: var(--overcooked-dark) !important;
+}
+
+.hackatime-project-selector__select {
+    background: var(--overcooked-abyss) !important;
+    border-color: var(--overcooked-mid) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.hackatime-project-selector__selected {
+    background: transparent !important;
+}
+
+.hackatime-project-selector__project {
+    background: var(--overcooked-mid) !important;
+    border-color: var(--overcooked-surface) !important;
+}
+
+.hackatime-project-selector__project-icon {
+    color: var(--overcooked-cyan) !important;
+    background-color: var(--overcooked-surface) !important;
+}
+
+.hackatime-project-selector--yellow .hackatime-project-selector__project-icon {
+    background-color: var(--overcooked-surface) !important;
+    color: var(--overcooked-gold) !important;
+}
+
+.hackatime-project-selector__project-name {
+    color: var(--overcooked-white) !important;
+}
+
+.hackatime-project-selector__project-meta {
+    color: var(--overcooked-mist) !important;
+}
+
+.hackatime-project-selector__project-remove {
+    background: var(--overcooked-coral) !important;
+    color: var(--overcooked-abyss) !important;
+}
+
+.hackatime-project-selector__project-remove svg {
+    fill: var(--overcooked-abyss) !important;
+}
+
+.hackatime-project-selector__subtitle {
+    color: var(--overcooked-mist) !important;
+    background-color: transparent !important;
+}
+
+.hackatime-project-selector--yellow .hackatime-project-selector__subtitle {
+    color: var(--overcooked-gold) !important;
+    background-color: transparent !important;
+}
+
+.shop-order__summary .shop-order__summary-content {
+    background-color: var(--overcooked-mid) !important;
+    border-radius: 16px !important;
+}
+
+.shop-order__summary h4 {
+    color: var(--overcooked-white) !important;
+}
+
+.btn--red {
+    background: var(--overcooked-coral) !important;
+    color: var(--overcooked-abyss) !important;
+    border-color: var(--overcooked-coral) !important;
+}
+
+.btn--red:hover {
+    background: var(--overcooked-sand) !important;
+    border-color: var(--overcooked-sand) !important;
+}
+
+.projects-board__title {
+    color: var(--overcooked-white) !important;
+}
+
+.projects-board__subtitle {
+    color: var(--overcooked-mist) !important;
+}
+
+.projects-board__create-card {
+    background-color: var(--overcooked-dark) !important;
+    color: var(--overcooked-white) !important;
+    border-radius: calc(var(--border-radius) * 1.8) !important;
+}
+
+.projects-board__create-card:hover {
+    background-color: var(--overcooked-mid) !important;
+}
+
+.projects-board__create-card::before {
+    filter: hue-rotate(180deg) saturate(0.5) !important;
+    opacity: 0.2 !important;
+}
+
+.flavortown-goals-enhanced {
+    background: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-mid) !important;
+}
+
+.flavortown-goals-enhanced__header {
+    background: transparent !important;
+}
+
+.flavortown-goals-enhanced__title {
+    color: var(--overcooked-white) !important;
+}
+
+.flavortown-goals-enhanced__progress-bar {
+    background: var(--overcooked-surface) !important;
+}
+
+.flavortown-goals-enhanced__progress-fill {
+    background: var(--overcooked-cyan) !important;
+    background-image: none !important;
+}
+
+.flavortown-goals-enhanced__progress-text {
+    color: var(--overcooked-white) !important;
+}
+
+.flavortown-goals-enhanced__stats {
+    background: transparent !important;
+}
+
+.flavortown-goals-enhanced__stat {
+    background: var(--overcooked-mid) !important;
+    border-color: var(--overcooked-surface) !important;
+}
+
+.flavortown-goals-enhanced__stat-label {
+    color: var(--overcooked-mist) !important;
+}
+
+.flavortown-goals-enhanced__stat-value {
+    color: var(--overcooked-white) !important;
+}
+
+.flavortown-goals-enhanced__items-header {
+    background: var(--overcooked-mid) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.flavortown-goals-enhanced__items-grid {
+    background: transparent !important;
+}
+
+.flavortown-goal-item {
+    background: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-mid) !important;
+}
+
+.flavortown-goal-item__image {
+    background: var(--overcooked-mid) !important;
+}
+
+.flavortown-goal-item__name {
+    color: var(--overcooked-white) !important;
+}
+
+.flavortown-goal-item__progress-bar {
+    background: var(--overcooked-surface) !important;
+}
+
+.flavortown-goal-item__progress-fill {
+    background: var(--overcooked-cyan) !important;
+}
+
+.flavortown-goal-item__info {
+    color: var(--overcooked-mist) !important;
+}
+
+.flavortown-goals-enhanced__stat--remaining {
+    background: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-coral) !important;
+}
+
+.flavortown-goals-enhanced__stat--time {
+    background: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-kelp) !important;
+}
+
+.achievements__stats {
+    background: var(--overcooked-dark) !important;
+    border-radius: 12px !important;
+}
+
+.achievements__card {
+    background: var(--overcooked-dark) !important;
+    border-radius: 16px !important;
+}
+
+.achievements__card::before {
+    filter: hue-rotate(180deg) saturate(0.3) !important;
+    opacity: 0.15 !important;
+}
+
+.achievements__icon {
+    background: var(--overcooked-mid) !important;
+}
+
+.achievements__name {
+    color: var(--overcooked-white) !important;
+}
+
+.achievements__description {
+    color: var(--overcooked-mist) !important;
+}
+
+.achievements__reward {
+    color: var(--overcooked-abyss) !important;
+    background: var(--overcooked-gold) !important;
+}
+
+.achievements__earned-at {
+    color: var(--overcooked-abyss) !important;
+    background: var(--overcooked-kelp) !important;
+}
+
+.achievements__progress {
+    background: transparent !important;
+}
+
+.achievements__progress-bar {
+    background: var(--overcooked-surface) !important;
+}
+
+.achievements__progress-fill {
+    background: var(--overcooked-cyan) !important;
+}
+
+.achievements__progress-text {
+    color: var(--overcooked-mist) !important;
+}
+
+.shop__searchbar .input {
+    border-radius: 12px !important;
+    overflow: hidden !important;
+}
+
+.shop__searchbar .input::before {
+    border-radius: 12px !important;
+}
+
+.user {
+    background: var(--overcooked-dark) !important;
+}
+
+.user .content {
+    background: transparent !important;
+}
+
+.user .content h2 {
+    color: var(--overcooked-white) !important;
+}
+
+.user .content h2 a {
+    color: var(--overcooked-cyan) !important;
+}
+
+.user .content h2 a:hover {
+    color: var(--overcooked-teal) !important;
+}
+
+.user .content p {
+    color: var(--overcooked-mist) !important;
+}
+
+.project-card .project-card__stats h5 {
+    background-color: var(--overcooked-mid) !important;
+    color: var(--overcooked-mist) !important;
+    border-radius: 4px !important;
+}
+
+.project-card .project-card__stats h5 svg {
+    color: var(--overcooked-mist) !important;
+    filter: drop-shadow(5px 0 0 var(--overcooked-mid)) drop-shadow(-5px 0 0 var(--overcooked-mid)) drop-shadow(0 5px 0 var(--overcooked-mid)) drop-shadow(0 -5px 0 var(--overcooked-mid)) !important;
+}
+
+.projects-board__create-card::before {
+    opacity: 0.3 !important;
+}
+
+.music-player__play-pause {
+    background: var(--overcooked-cyan) !important;
+    color: var(--overcooked-abyss) !important;
+}
+
+.music-player__icon {
+    color: var(--overcooked-abyss) !important;
+}
+
+.music-player__volume {
+    background: var(--overcooked-mid) !important;
+    border-radius: 8px !important;
+}
+
+.music-player__volume input[type="range"] {
+    background: transparent !important;
+}
+
+.music-player__volume input[type="range"]::-webkit-slider-track {
+    background: var(--overcooked-surface) !important;
+    border-radius: 4px !important;
+}
+
+.music-player__volume input[type="range"]::-webkit-slider-thumb {
+    background: var(--overcooked-cyan) !important;
+}
+
+.input {
+    background: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-mid) !important;
+}
+
+.input--yellow {
+    background: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-mid) !important;
+}
+
+.input--with-icon {
+    background: var(--overcooked-dark) !important;
+}
+
+.input__control {
+    background: var(--overcooked-dark) !important;
+}
+
+.input__icon {
+    color: var(--overcooked-cyan) !important;
+    background-color: var(--overcooked-mid) !important;
+}
+
+.input__icon svg {
+    fill: var(--overcooked-foam) !important;
+}
+
+.input__icon svg path {
+    fill: var(--overcooked-foam) !important;
+}
+
+.input__field {
+    background: var(--overcooked-dark) !important;
+    color: var(--overcooked-white) !important;
+    border-color: var(--overcooked-mid) !important;
+}
+
+.input__field::placeholder {
+    color: var(--overcooked-foam) !important;
+}
+
+.input__label {
+    color: var(--overcooked-cyan) !important;
+    background-color: var(--overcooked-mid) !important;
+}
+
+.input__subtitle {
+    background-color: var(--overcooked-deep) !important;
+    color: var(--overcooked-mist) !important;
+}
+
+.projects-show__timeline::before {
+    background-image: url("data:image/svg+xml,%3csvg width='8' height='90' viewBox='0 0 4 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3crect x='0' y='0' width='4' height='30' rx='2' fill='%2366d9ef' /%3e%3c/svg%3e") !important;
+    opacity: 0.4 !important;
+}
+
+.post--devlog::after {
+    border-color: var(--overcooked-kelp) !important;
+    background-color: var(--overcooked-kelp) !important;
+}
+
+.post--certified::after {
+    border-color: var(--overcooked-cyan) !important;
+    background-color: var(--overcooked-blue) !important;
+}
+
+.btn--green {
+    background: var(--overcooked-kelp) !important;
+    color: var(--overcooked-abyss) !important;
+    border-color: var(--overcooked-kelp) !important;
+}
+
+.btn--green:hover {
+    background: var(--overcooked-teal) !important;
+    border-color: var(--overcooked-teal) !important;
+}
+
+.shop-item-card::before {
+    background: var(--overcooked-dark) !important;
+    opacity: 0.5 !important;
+}
+
+.flavortown-card-qty {
+    background: var(--overcooked-mid) !important;
+    border-color: var(--overcooked-surface) !important;
+}
+
+.flavortown-card-qty__btn {
+    background: var(--overcooked-surface) !important;
+    color: var(--overcooked-white) !important;
+    border-color: var(--overcooked-foam) !important;
+}
+
+.flavortown-card-qty__btn:hover {
+    background: var(--overcooked-cyan) !important;
+    color: var(--overcooked-abyss) !important;
+}
+
+.flavortown-card-qty__val {
+    color: var(--overcooked-white) !important;
+}
+
+.btn-primary {
+    background: var(--overcooked-cyan) !important;
+    color: var(--overcooked-abyss) !important;
+}
+
+.settings-form {
+    background: transparent !important;
+}
+
+.settings-form__field {
+    background: transparent !important;
+}
+
+.settings-form__label {
+    color: var(--overcooked-white) !important;
+}
+
+.settings-form__input {
+    background: var(--overcooked-abyss) !important;
+    border-color: var(--overcooked-mid) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.settings-form__hint {
+    color: var(--overcooked-foam) !important;
+}
+
+.settings-form__checkbox {
+    color: var(--overcooked-white) !important;
+}
+
+.api-key-container {
+    background: var(--overcooked-abyss) !important;
+}
+
+.api-key-display {
+    background: var(--overcooked-abyss) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.api-key-generate-icon {
+    color: var(--overcooked-white) !important;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--overcooked-deep);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--overcooked-surface);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--overcooked-wave);
+}
+
+.user-profile__left {
+    background: transparent !important;
+}
+
+.user-profile__card {
+    background: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-mid) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.user-profile__identity {
+    background: transparent !important;
+}
+
+.user-profile__identity h1 {
+    color: var(--overcooked-white) !important;
+}
+
+.user-profile__identity h2 {
+    color: var(--overcooked-mist) !important;
+}
+
+.user-profile__avatar {
+    border-color: var(--overcooked-cyan) !important;
+}
+
+.user-profile__heading {
+    color: var(--overcooked-white) !important;
+    background: transparent !important;
+}
+
+.user-profile__heading svg {
+    color: var(--overcooked-cyan) !important;
+}
+
+.user-profile__stats {
+    background: transparent !important;
+}
+
+.user-profile__stat {
+    background: var(--overcooked-mid) !important;
+    border-color: var(--overcooked-surface) !important;
+}
+
+.user-profile__stat h3 {
+    color: var(--overcooked-mist) !important;
+}
+
+.user-profile__stat h4 {
+    color: var(--overcooked-cyan) !important;
+}
+
+.user-profile__times {
+    background: transparent !important;
+}
+
+.user-profile__time {
+    background: var(--overcooked-mid) !important;
+}
+
+.user-profile__time h4 {
+    color: var(--overcooked-white) !important;
+}
+
+.user-profile__achievements {
+    background: transparent !important;
+}
+
+.user-profile__achievement {
+    background: var(--overcooked-mid) !important;
+    border-color: var(--overcooked-surface) !important;
+}
+
+.user-profile__achievement-icon {
+    background: var(--overcooked-surface) !important;
+}
+
+.user-profile__achievement-title {
+    color: var(--overcooked-white) !important;
+}
+
+.achievement-icon-placeholder {
+    color: var(--overcooked-foam) !important;
+    background: var(--overcooked-surface) !important;
+}
+
+.user-profile__projects {
+    background: transparent !important;
+}
+
+.user-profile__project-card {
+    background: var(--overcooked-mid) !important;
+    border-color: var(--overcooked-surface) !important;
+}
+
+.user-profile__project-card:hover {
+    background: var(--overcooked-surface) !important;
+    border-color: var(--overcooked-cyan) !important;
+}
+
+.user-profile__project-card-title h3 {
+    color: var(--overcooked-white) !important;
+}
+
+.user-profile__project-stats {
+    color: var(--overcooked-mist) !important;
+}
+
+.user-profile__project-stats div {
+    color: var(--overcooked-mist) !important;
+}
+
+.votes-new__main {
+    background: transparent !important;
+}
+
+.votes-new__project {
+    background: transparent !important;
+}
+
+.votes-new__project-card {
+    background: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-mid) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.votes-new__project-details {
+    background: transparent !important;
+}
+
+.votes-new__project-card-content h1 {
+    color: var(--overcooked-white) !important;
+}
+
+.votes-new__project-card-content p {
+    color: var(--overcooked-mist) !important;
+}
+
+.votes-new__project-card-stats {
+    color: var(--overcooked-mist) !important;
+}
+
+.votes-new__project-card-stat {
+    color: var(--overcooked-mist) !important;
+}
+
+.votes-new__project-card-stat svg {
+    color: var(--overcooked-cyan) !important;
+}
+
+.votes-new__project-buttons {
+    background: transparent !important;
+}
+
+.votes-new__devlogs {
+    background: transparent !important;
+}
+
+.votes-new__form {
+    background: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-mid) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.votes-new__form h1 {
+    color: var(--overcooked-white) !important;
+}
+
+.vote-category {
+    background: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-mid) !important;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4)) !important;
+}
+
+.vote-category__header {
+    color: var(--overcooked-abyss) !important;
+}
+
+.vote-category__body {
+    background-color: var(--overcooked-dark) !important;
+    border-color: var(--vote-category-accent) !important;
+}
+
+.vote-category__footer {
+    background-color: var(--overcooked-mid) !important;
+    color: var(--overcooked-mist) !important;
+}
+
+.vote-category__star {
+    color: var(--overcooked-foam) !important;
+}
+
+.vote-category__input:checked~.vote-category__star {
+    color: var(--overcooked-gold) !important;
+}
+
+.vote-category--red {
+    --vote-category-accent: var(--overcooked-coral) !important;
+    --vote-category-footer-bg: var(--overcooked-mid) !important;
+    --vote-category-footer-text: var(--overcooked-coral) !important;
+}
+
+.vote-category--red .vote-category__header {
+    background-color: var(--overcooked-coral) !important;
+    color: var(--overcooked-abyss) !important;
+}
+
+.vote-category--red .vote-category__body {
+    border-color: var(--overcooked-coral) !important;
+}
+
+.vote-category--yellow {
+    --vote-category-accent: var(--overcooked-gold) !important;
+    --vote-category-footer-bg: var(--overcooked-mid) !important;
+    --vote-category-footer-text: var(--overcooked-gold) !important;
+}
+
+.vote-category--yellow .vote-category__header {
+    background-color: var(--overcooked-gold) !important;
+    color: var(--overcooked-abyss) !important;
+}
+
+.vote-category--yellow .vote-category__body {
+    border-color: var(--overcooked-gold) !important;
+}
+
+.vote-category--blue {
+    --vote-category-accent: var(--overcooked-cyan) !important;
+    --vote-category-footer-bg: var(--overcooked-mid) !important;
+    --vote-category-footer-text: var(--overcooked-cyan) !important;
+}
+
+.vote-category--blue .vote-category__header {
+    background-color: var(--overcooked-cyan) !important;
+    color: var(--overcooked-abyss) !important;
+}
+
+.vote-category--blue .vote-category__body {
+    border-color: var(--overcooked-cyan) !important;
+}
+
+.btn-submit {
+    background: var(--overcooked-kelp) !important;
+    color: var(--overcooked-abyss) !important;
+}
+
+.btn-submit:hover {
+    background: var(--overcooked-cyan) !important;
+}
+
+.modal {
+    background: var(--overcooked-abyss) !important;
+    border-color: var(--overcooked-mid) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.modal__title {
+    color: var(--overcooked-white) !important;
+}
+
+.modal h2 {
+    color: var(--overcooked-mist) !important;
+}
+
+.form-checkbox label {
+    color: var(--overcooked-white) !important;
+}
+
+.form-field {
+    background: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-mid) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.form-group small {
+    color: var(--overcooked-mist) !important;
+}
+
+.modal__actions-close {
+    background: var(--overcooked-mid) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.comment-form {
+    background: transparent !important;
+}
+
+.comment-form__input {
+    background: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-mid) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.comment-form__input::placeholder {
+    color: var(--overcooked-foam) !important;
+}
+
+.comments-section {
+    background: transparent !important;
+}
+
+.comments-section__title {
+    color: var(--overcooked-white) !important;
+}
+
+.comment {
+    background: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-mid) !important;
+}
+
+.comment__author {
+    color: var(--overcooked-white) !important;
+}
+
+.comment__time {
+    color: var(--overcooked-mist) !important;
+}
+
+.comment__body {
+    color: var(--overcooked-white) !important;
+}
+
+.like-button__btn {
+    color: var(--overcooked-mist) !important;
+}
+
+.like-button__btn:hover {
+    color: var(--overcooked-gold) !important;
+}
+
+.comments-count {
+    color: var(--overcooked-mist) !important;
+}
+
+.report-btn {
+    background: var(--overcooked-gold) !important;
+    color: var(--overcooked-abyss) !important;
+}
+
+.shop-order__accessories {
+    background: transparent !important;
+}
+
+.shop-order__accessory-group-section {
+    background: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-mid) !important;
+}
+
+.shop-order__accessory-group-section h5 {
+    color: var(--overcooked-white) !important;
+}
+
+.shop-order__accessory-options {
+    background: transparent !important;
+}
+
+.shop-order__accessory-option-label {
+    cursor: pointer;
+}
+
+.shop-order__accessory-option-block {
+    background: var(--overcooked-mid) !important;
+    border: 2px solid var(--overcooked-surface) !important;
+    color: var(--overcooked-white) !important;
+    border-radius: 8px !important;
+    transition: all 0.2s ease !important;
+}
+
+.shop-order__accessory-option-block:hover {
+    background: var(--overcooked-surface) !important;
+    border-color: var(--overcooked-cyan) !important;
+}
+
+.shop-order__accessory-option-input:checked+.shop-order__accessory-option-block {
+    background: var(--overcooked-cyan) !important;
+    border-color: var(--overcooked-cyan) !important;
+    color: var(--overcooked-abyss) !important;
+}
+
+.shop-order__accessory-option-name {
+    color: inherit !important;
+}
+
+.shop-order__accessory-option-price {
+    color: inherit !important;
+    opacity: 0.8;
+}
+
+.flavortown-achievement-toast {
+    background: linear-gradient(135deg, var(--overcooked-dark) 0%, var(--overcooked-mid) 100%) !important;
+    border-color: var(--overcooked-cyan) !important;
+}
+
+.flavortown-achievement-toast__title {
+    color: var(--overcooked-white) !important;
+}
+
+.flavortown-achievement-toast__names {
+    color: var(--overcooked-mist) !important;
+}
+
+.flavortown-achievement-toast__cookies {
+    color: var(--overcooked-gold) !important;
+}
+
+.flavortown-achievement-toast__close {
+    color: var(--overcooked-foam) !important;
+}
+
+.shop-goals__container {
+    border-color: var(--overcooked-cyan) !important;
+}
+
+.flavortown-goals-enhanced {
+    background: var(--overcooked-dark) !important;
+}
+
+.flavortown-goals-enhanced__card {
+    background: var(--overcooked-mid) !important;
+    border-color: var(--overcooked-slate) !important;
+}
+
+.flavortown-goals-enhanced__card-label {
+    color: var(--overcooked-mist) !important;
+}
+
+.flavortown-goals-enhanced__card-value {
+    color: var(--overcooked-white) !important;
+}
+
+.flavortown-goals-enhanced__card--danger {
+    background: var(--overcooked-coral) !important;
+}
+
+.flavortown-goals-enhanced__card--danger .flavortown-goals-enhanced__card-label,
+.flavortown-goals-enhanced__card--danger .flavortown-goals-enhanced__card-value {
+    color: var(--overcooked-abyss) !important;
+}
+
+.flavortown-goals-enhanced__card--success {
+    background: var(--overcooked-green) !important;
+}
+
+.flavortown-goals-enhanced__card--success .flavortown-goals-enhanced__card-label,
+.flavortown-goals-enhanced__card--success .flavortown-goals-enhanced__card-value {
+    color: var(--overcooked-abyss) !important;
+}
+
+.flavortown-goals-enhanced__progress-bar {
+    background: var(--overcooked-mid) !important;
+}
+
+.flavortown-goals-enhanced__progress-fill {
+    background: linear-gradient(90deg, var(--overcooked-cyan) 0%, var(--overcooked-teal) 100%) !important;
+}
+
+.flavortown-priority-section {
+    background: linear-gradient(135deg, var(--overcooked-dark) 0%, var(--overcooked-mid) 100%) !important;
+    border-color: var(--overcooked-gold) !important;
+}
+
+.flavortown-priority-section__title {
+    color: var(--overcooked-gold) !important;
+}
+
+.flavortown-priority-section__count,
+.flavortown-priority-section__pct,
+.flavortown-priority-section__stats {
+    color: var(--overcooked-mist) !important;
+}
+
+.flavortown-priority-section__progress-bar {
+    background: var(--overcooked-slate) !important;
+}
+
+.flavortown-priority-section__progress-fill {
+    background: linear-gradient(90deg, var(--overcooked-gold) 0%, var(--overcooked-coral) 100%) !important;
+}
+
+.flavortown-priority-pill {
+    background: var(--overcooked-slate) !important;
+    border-color: var(--overcooked-gold) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.flavortown-goals-enhanced__accordion {
+    background: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-slate) !important;
+}
+
+.flavortown-goals-enhanced__accordion-header,
+.flavortown-accordion-inner {
+    background: var(--overcooked-mid) !important;
+}
+
+.flavortown-goals-enhanced__accordion-header:hover .flavortown-accordion-inner {
+    background: var(--overcooked-slate) !important;
+}
+
+.flavortown-accordion-title {
+    color: var(--overcooked-white) !important;
+}
+
+.flavortown-goals-enhanced__accordion-content {
+    background: var(--overcooked-abyss) !important;
+    border-color: var(--overcooked-dark) !important;
+}
+
+.flavortown-goal-item {
+    --progress-bg-overlay: color-mix(in srgb, var(--overcooked-cyan), transparent 85%);
+}
+
+.flavortown-goal-item[data-progress-state="mid"] {
+    --progress-bg-overlay: color-mix(in srgb, var(--overcooked-gold), transparent 85%);
+}
+
+.flavortown-goal-item[data-progress-state="low"] {
+    --progress-bg-overlay: color-mix(in srgb, var(--overcooked-coral), transparent 85%);
+}
+
+.flavortown-goal-item {
+    background: linear-gradient(90deg, var(--progress-bg-overlay) var(--progress, 0%), var(--overcooked-dark) var(--progress, 0%)) !important;
+    border-color: var(--overcooked-slate) !important;
+}
+
+.flavortown-goal-item:hover {
+    border-color: var(--overcooked-cyan) !important;
+}
+
+.goal-item--priority {
+    --progress-prio-overlay: color-mix(in srgb, var(--overcooked-gold), transparent 85%);
+}
+
+.goal-item--priority[data-progress-state="mid"] {
+    --progress-prio-overlay: color-mix(in srgb, var(--overcooked-gold), transparent 85%);
+}
+
+.goal-item--priority[data-progress-state="low"] {
+    --progress-prio-overlay: color-mix(in srgb, var(--overcooked-coral), transparent 85%);
+}
+
+.goal-item--priority {
+    border-left-color: var(--overcooked-gold) !important;
+    background: linear-gradient(90deg, var(--progress-prio-overlay) var(--progress, 0%), transparent var(--progress, 0%)), linear-gradient(135deg, var(--overcooked-dark) 0%, var(--overcooked-mid) 100%) !important;
+}
+
+.goal-item__name-compact {
+    color: var(--overcooked-white) !important;
+}
+
+.flavortown-stat-pill {
+    background: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-slate) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.flavortown-stat-value {
+    color: var(--overcooked-cyan) !important;
+}
+
+.goal-item__stats-compact {
+    color: var(--overcooked-coral) !important;
+}
+
+.goal-item__time-compact {
+    color: var(--overcooked-green) !important;
+}
+
+.goal-item__affordable {
+    color: var(--overcooked-green) !important;
+}
+
+.goal-item__drag-handle {
+    color: var(--overcooked-foam) !important;
+}
+
+.goal-item__acc-pill {
+    background: var(--overcooked-slate) !important;
+    color: var(--overcooked-mist) !important;
+}
+
+.goal-item__qty-btn-sm {
+    background: var(--overcooked-mid) !important;
+    border-color: var(--overcooked-slate) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.goal-item__qty-btn-sm:hover {
+    background: var(--overcooked-slate) !important;
+}
+
+.goal-item__remove-compact {
+    background: rgba(255, 107, 107, 0.2) !important;
+    color: var(--overcooked-coral) !important;
+}
+
+.goal-item__priority-btn.is-active {
+    color: var(--overcooked-gold) !important;
+}
+
+.flavortown-search-icon {
+    color: var(--overcooked-mist) !important;
+}
+
+.table-data {
+    background: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-slate) !important;
+    box-shadow: none !important;
+}
+
+.table-data thead th {
+    background: var(--overcooked-mid) !important;
+    color: var(--overcooked-white) !important;
+    border-bottom-color: var(--overcooked-slate) !important;
+}
+
+.table-data tbody td {
+    border-bottom-color: var(--overcooked-dark-mid) !important;
+    color: var(--overcooked-foam) !important;
+}
+
+.table-data tbody tr:hover td {
+    background: var(--overcooked-mid) !important;
+}
+
+.pagy.series-nav {
+    background: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-slate) !important;
+    box-shadow: none !important;
+}
+
+.pagy.series-nav a,
+.pagy.series-nav span {
+    color: var(--overcooked-foam) !important;
+    background: transparent !important;
+}
+
+.pagination a {
+    background: transparent !important;
+    color: var(--overcooked-foam) !important;
+}
+
+.pagy.series-nav a:hover:not([disabled]) {
+    background: var(--overcooked-slate) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.pagy.series-nav a[aria-current="page"] {
+    background: var(--overcooked-cyan) !important;
+    color: var(--overcooked-abyss) !important;
+}
+
+.input-primary {
+    background: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-slate) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.input-primary:focus {
+    border-color: var(--overcooked-cyan) !important;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--overcooked-cyan), transparent 80%) !important;
+}
+
+.flavortown-search-input-wrapper {
+    background: var(--overcooked-dark) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+}
+
+.flavortown-search-input {
+    color: var(--overcooked-white) !important;
+}
+
+.flavortown-search-input-wrapper:has(.flavortown-search-input:focus) {
+    background: var(--overcooked-abyss) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3) !important;
+}
+
+.table-data tbody tr {
+    background: transparent !important;
+}
+
+.table-data tbody tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.02) !important;
+}
+
+.card {
+    background: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-slate) !important;
+    box-shadow: none !important;
+}
+
+.card h2 {
+    color: var(--overcooked-white) !important;
+    border-bottom-color: var(--overcooked-slate) !important;
+}
+
+.text-muted {
+    color: var(--overcooked-mist) !important;
+}
+
+.form-control {
+    background: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-slate) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.form-control:focus {
+    border-color: var(--overcooked-cyan) !important;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--overcooked-cyan), transparent 80%) !important;
+}
+
+.badge-pending {
+    background: color-mix(in srgb, var(--overcooked-gold), transparent 85%) !important;
+    color: var(--overcooked-gold) !important;
+    border-color: color-mix(in srgb, var(--overcooked-gold), transparent 70%) !important;
+}
+
+.badge-reviewed {
+    background: color-mix(in srgb, var(--overcooked-green), transparent 85%) !important;
+    color: var(--overcooked-green) !important;
+    border-color: color-mix(in srgb, var(--overcooked-green), transparent 70%) !important;
+}
+
+.badge-dismissed {
+    background: color-mix(in srgb, var(--overcooked-slate), transparent 85%) !important;
+    color: var(--overcooked-mist) !important;
+    border-color: color-mix(in srgb, var(--overcooked-slate), transparent 70%) !important;
+}
+
+.btn-secondary {
+    background: var(--overcooked-slate) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.btn-secondary:hover {
+    background: color-mix(in srgb, var(--overcooked-slate), white 10%) !important;
+}
+
+.action-leaderboard {
+    background: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-slate) !important;
+    box-shadow: none !important;
+}
+
+.leaderboard-table th {
+    border-bottom-color: var(--overcooked-slate) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.leaderboard-table tr.highlight {
+    background: var(--overcooked-mid) !important;
+}
+
+.leaderboard-table tr:hover {
+    background: var(--overcooked-slate) !important;
+}
+
+.leaderboard-table .stat-approved {
+    color: var(--overcooked-green) !important;
+}
+
+.leaderboard-table .stat-rejected {
+    color: var(--overcooked-coral) !important;
+}
+
+.leaderboard-table .stat-on_hold {
+    color: var(--overcooked-gold) !important;
+}
+
+.leaderboard-table .stat-fulfilled {
+    color: var(--overcooked-cyan) !important;
+}
+
+.leaderboard-table .stat-total {
+    color: var(--overcooked-white) !important;
+}
+
+.flavortown-search-input::placeholder {
+    color: var(--overcooked-foam) !important;
+}
+
+.flavortown-search-results {
+    background: var(--overcooked-abyss) !important;
+    border-color: var(--overcooked-slate) !important;
+}
+
+.flavortown-search-count {
+    color: var(--overcooked-white) !important;
+}
+
+.flavortown-search-close {
+    background: rgba(255, 107, 107, 0.2) !important;
+    color: var(--overcooked-coral) !important;
+}
+
+.flavortown-project-card {
+    background: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-slate) !important;
+}
+
+.flavortown-project-card:hover {
+    border-color: var(--overcooked-cyan) !important;
+}
+
+.flavortown-project-img {
+    border-color: var(--overcooked-mid) !important;
+}
+
+.flavortown-project-title {
+    color: var(--overcooked-white) !important;
+}
+
+.flavortown-project-desc {
+    color: var(--overcooked-mist) !important;
+}
+
+.flavortown-project-meta {
+    color: var(--overcooked-foam) !important;
+}

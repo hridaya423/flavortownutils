@@ -157,6 +157,8 @@ function initPinnableSidebar() {
     if (!sidebar || sidebar.dataset.pinInitialized) return;
     sidebar.dataset.pinInitialized = 'true';
 
+    const MOBILE_BREAKPOINT = 960;
+
     const pinBtn = document.createElement('button');
     pinBtn.className = 'sidebar__pin-btn';
     pinBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16 12V4h1V2H7v2h1v8l-2 2v2h5.2v6h1.6v-6H18v-2l-2-2z"/></svg>`;
@@ -168,13 +170,28 @@ function initPinnableSidebar() {
         blob.appendChild(pinBtn);
     }
 
+    function applyPinnedState(isPinned) {
+        if (window.innerWidth < MOBILE_BREAKPOINT) {
+            sidebar.classList.remove('sidebar--pinned');
+            sidebar.style.width = '';
+            return;
+        }
+
+        if (isPinned) {
+            sidebar.classList.add('sidebar--pinned');
+            sidebar.style.width = 'var(--sidebar-expanded-width, 300px)';
+        } else {
+            sidebar.classList.remove('sidebar--pinned');
+            sidebar.style.width = '';
+        }
+    }
+
     browserAPI.storage.local.get(['sidebarPinned'], (result) => {
         const isPinned = result.sidebarPinned || false;
 
-        if (isPinned) {
+        if (isPinned && window.innerWidth >= MOBILE_BREAKPOINT) {
             sidebar.style.transition = 'none';
-            sidebar.classList.add('sidebar--pinned');
-            sidebar.style.width = 'var(--sidebar-expanded-width, 300px)';
+            applyPinnedState(true);
 
             requestAnimationFrame(() => {
                 requestAnimationFrame(() => {
@@ -184,20 +201,27 @@ function initPinnableSidebar() {
         }
     });
 
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            browserAPI.storage.local.get(['sidebarPinned'], (result) => {
+                applyPinnedState(result.sidebarPinned || false);
+            });
+        }, 100);
+    });
+
     pinBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         e.preventDefault();
+        s
+        if (window.innerWidth < MOBILE_BREAKPOINT) {
+            return;
+        }
 
         const isPinned = sidebar.classList.contains('sidebar--pinned');
 
-        if (isPinned) {
-            sidebar.classList.remove('sidebar--pinned');
-            sidebar.style.width = '';
-        } else {
-            sidebar.classList.add('sidebar--pinned');
-            sidebar.style.width = 'var(--sidebar-expanded-width, 300px)';
-        }
-
+        applyPinnedState(!isPinned);
         browserAPI.storage.local.set({ sidebarPinned: !isPinned });
     });
 }
@@ -1478,8 +1502,56 @@ function init() {
     addExploreSearch();
     captureApiKey();
     initProjectBoardStats();
+    addSkipButton();
 
     setTimeout(checkAchievements, 2000);
+}
+
+function addSkipButton() {
+    if (!document.querySelector('.votes-new')) return;
+
+    if (document.querySelector('.votes-new__skip-btn')) return;
+
+    const prevBtn = document.querySelector('.votes-new__prev-btn');
+    if (!prevBtn) return;
+    const buttonContainer = document.createElement('div');
+    buttonContainer.className = 'votes-new__action-row';
+    buttonContainer.style.display = 'flex';
+    buttonContainer.style.justifyContent = 'center';
+    buttonContainer.style.alignItems = 'center';
+    buttonContainer.style.gap = '12px';
+    buttonContainer.style.marginBottom = '24px';
+    buttonContainer.style.marginTop = '24px';
+
+    prevBtn.parentNode.insertBefore(buttonContainer, prevBtn);
+
+    buttonContainer.appendChild(prevBtn);
+
+    prevBtn.style.setProperty('margin', '0', 'important');
+    prevBtn.style.setProperty('display', 'inline-flex', 'important');
+    prevBtn.style.setProperty('align-items', 'center', 'important');
+    prevBtn.style.setProperty('width', 'auto', 'important');
+
+    const skipBtn = document.createElement('a');
+    skipBtn.className = 'btn btn--brown btn--borderless votes-new__skip-btn';
+    skipBtn.style.cursor = 'pointer';
+    skipBtn.title = 'Skip this project';
+    skipBtn.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="13 17 18 12 13 7"></polyline>
+            <polyline points="6 17 11 12 6 7"></polyline>
+        </svg>
+        Skip
+    `;
+
+    skipBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.location.reload();
+    });
+
+    buttonContainer.appendChild(skipBtn);
+
+    skipBtn.style.setProperty('margin', '0', 'important');
 }
 
 if (document.readyState === 'loading') {
@@ -1503,4 +1575,6 @@ document.addEventListener('turbo:load', () => {
     initShopAccessories();
     addExploreSearch();
     captureApiKey();
+    initProjectBoardStats();
+    addSkipButton();
 });
