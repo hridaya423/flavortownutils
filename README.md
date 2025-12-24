@@ -19,6 +19,11 @@
 - Search bar for projects
 - Makes images not crop in devlogs
 - Total project stats
+- Kitchen dashboard
+  - Graph
+  - Stats
+- Better my votes layout
+
 
 ## Feature showcase:
 
