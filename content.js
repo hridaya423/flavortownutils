@@ -421,11 +421,14 @@ function enhanceShopGoals() {
                 : `<span class="goal-item__stats-compact">🍪${g.remaining.toLocaleString()}</span><span class="goal-item__time-compact">⏱${g.hoursNeeded}h</span>`;
 
             const itemProgress = g.totalCost > 0 ? Math.min(100, (currentCookies / g.totalCost) * 100) : 100;
+            let progressState = 'high';
+            if (itemProgress < 30) progressState = 'low';
+            else if (itemProgress < 70) progressState = 'mid';
 
             if (!g.hasAccessories) {
                 return `
                     <div class="flavortown-goal-item goal-item ${priorityClass} ${compactClass}" 
-                         data-goal-id="${g.id}" draggable="true" style="--progress: ${itemProgress}%">
+                         data-goal-id="${g.id}" draggable="true" style="--progress: ${itemProgress}%" data-progress-state="${progressState}">
                         <span class="goal-item__drag-handle">⋮⋮</span>
                         <img src="${g.image}" alt="${baseItemName}" class="goal-item__img-compact">
                         <span class="goal-item__name-compact">${baseItemName}</span>
@@ -444,7 +447,7 @@ function enhanceShopGoals() {
             const manyAccessories = accessories.length >= 4 ? 'goal-item--wide' : '';
             return `
                 <div class="flavortown-goal-item goal-item ${priorityClass} ${manyAccessories}" 
-                     data-goal-id="${g.id}" draggable="true" style="--progress: ${itemProgress}%">
+                     data-goal-id="${g.id}" draggable="true" style="--progress: ${itemProgress}%" data-progress-state="${progressState}">
                     <span class="goal-item__drag-handle">⋮⋮</span>
                     <img src="${g.image}" alt="${baseItemName}" class="goal-item__img-compact">
                     <span class="goal-item__name-compact">${baseItemName}</span>

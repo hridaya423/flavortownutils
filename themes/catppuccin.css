@@ -2098,7 +2098,19 @@ a:hover {
 }
 
 .flavortown-goal-item {
-    background: linear-gradient(90deg, color-mix(in srgb, var(--ctp-green), transparent 85%) var(--progress, 0%), var(--ctp-surface0) var(--progress, 0%)) !important;
+    --progress-bg-overlay: color-mix(in srgb, var(--ctp-green), transparent 85%);
+}
+
+.flavortown-goal-item[data-progress-state="mid"] {
+    --progress-bg-overlay: color-mix(in srgb, var(--ctp-yellow), transparent 85%);
+}
+
+.flavortown-goal-item[data-progress-state="low"] {
+    --progress-bg-overlay: color-mix(in srgb, var(--ctp-red), transparent 85%);
+}
+
+.flavortown-goal-item {
+    background: linear-gradient(90deg, var(--progress-bg-overlay) var(--progress, 0%), var(--ctp-surface0) var(--progress, 0%)) !important;
     border-color: var(--ctp-surface2) !important;
 }
 
@@ -2107,8 +2119,20 @@ a:hover {
 }
 
 .goal-item--priority {
+    --progress-prio-overlay: color-mix(in srgb, var(--ctp-yellow), transparent 85%);
+}
+
+.goal-item--priority[data-progress-state="mid"] {
+    --progress-prio-overlay: color-mix(in srgb, var(--ctp-yellow), transparent 85%);
+}
+
+.goal-item--priority[data-progress-state="low"] {
+    --progress-prio-overlay: color-mix(in srgb, var(--ctp-red), transparent 85%);
+}
+
+.goal-item--priority {
     border-left-color: var(--ctp-yellow) !important;
-    background: linear-gradient(90deg, color-mix(in srgb, var(--ctp-yellow), transparent 85%) var(--progress, 0%), transparent var(--progress, 0%)), linear-gradient(135deg, var(--ctp-surface0) 0%, var(--ctp-surface1) 100%) !important;
+    background: linear-gradient(90deg, var(--progress-prio-overlay) var(--progress, 0%), transparent var(--progress, 0%)), linear-gradient(135deg, var(--ctp-surface0) 0%, var(--ctp-surface1) 100%) !important;
 }
 
 .goal-item__name-compact {

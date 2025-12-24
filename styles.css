@@ -246,7 +246,19 @@
 }
 
 .flavortown-goal-item {
-    background: linear-gradient(90deg, #e3f9e5 var(--progress, 0%), white var(--progress, 0%)) !important;
+    --progress-bg: #e3f9e5;
+}
+
+.flavortown-goal-item[data-progress-state="mid"] {
+    --progress-bg: #fffbe6;
+}
+
+.flavortown-goal-item[data-progress-state="low"] {
+    --progress-bg: #fff1f0;
+}
+
+.flavortown-goal-item {
+    background: linear-gradient(90deg, var(--progress-bg) var(--progress, 0%), white var(--progress, 0%)) !important;
     border: 2px solid #e6dccf !important;
     border-radius: 10px !important;
     padding: 10px 12px !important;
@@ -425,8 +437,20 @@
 }
 
 .goal-item--priority {
+    --progress-overlay: rgba(230, 168, 77, 0.15);
+}
+
+.goal-item--priority[data-progress-state="mid"] {
+    --progress-overlay: rgba(250, 200, 20, 0.15);
+}
+
+.goal-item--priority[data-progress-state="low"] {
+    --progress-overlay: rgba(255, 80, 80, 0.15);
+}
+
+.goal-item--priority {
     border-left: 4px solid #e6a84d !important;
-    background: linear-gradient(90deg, rgba(230, 168, 77, 0.15) var(--progress, 0%), transparent var(--progress, 0%)), linear-gradient(135deg, #fffdf5 0%, #fff 100%) !important;
+    background: linear-gradient(90deg, var(--progress-overlay) var(--progress, 0%), transparent var(--progress, 0%)), linear-gradient(135deg, #fffdf5 0%, #fff 100%) !important;
 }
 
 .goal-item__priority-btn {
