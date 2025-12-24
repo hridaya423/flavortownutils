@@ -1987,3 +1987,156 @@ a:hover {
 .flavortown-achievement-toast__close {
     color: var(--sea-foam) !important;
 }
+
+.shop-goals__container {
+    border-color: var(--sea-cyan) !important;
+}
+
+.flavortown-goals-enhanced {
+    background: var(--sea-dark) !important;
+}
+
+.flavortown-goals-enhanced__card {
+    background: var(--sea-mid) !important;
+    border-color: var(--sea-slate) !important;
+}
+
+.flavortown-goals-enhanced__card-label {
+    color: var(--sea-mist) !important;
+}
+
+.flavortown-goals-enhanced__card-value {
+    color: var(--sea-white) !important;
+}
+
+.flavortown-goals-enhanced__card--danger {
+    background: var(--sea-coral) !important;
+}
+
+.flavortown-goals-enhanced__card--danger .flavortown-goals-enhanced__card-label,
+.flavortown-goals-enhanced__card--danger .flavortown-goals-enhanced__card-value {
+    color: var(--sea-abyss) !important;
+}
+
+.flavortown-goals-enhanced__card--success {
+    background: var(--sea-green) !important;
+}
+
+.flavortown-goals-enhanced__card--success .flavortown-goals-enhanced__card-label,
+.flavortown-goals-enhanced__card--success .flavortown-goals-enhanced__card-value {
+    color: var(--sea-abyss) !important;
+}
+
+.flavortown-goals-enhanced__progress-bar {
+    background: var(--sea-mid) !important;
+}
+
+.flavortown-goals-enhanced__progress-fill {
+    background: linear-gradient(90deg, var(--sea-cyan) 0%, var(--sea-teal) 100%) !important;
+}
+
+.flavortown-priority-section {
+    background: linear-gradient(135deg, var(--sea-dark) 0%, var(--sea-mid) 100%) !important;
+    border-color: var(--sea-gold) !important;
+}
+
+.flavortown-priority-section__title {
+    color: var(--sea-gold) !important;
+}
+
+.flavortown-priority-section__count,
+.flavortown-priority-section__pct,
+.flavortown-priority-section__stats {
+    color: var(--sea-mist) !important;
+}
+
+.flavortown-priority-section__progress-bar {
+    background: var(--sea-slate) !important;
+}
+
+.flavortown-priority-section__progress-fill {
+    background: linear-gradient(90deg, var(--sea-gold) 0%, var(--sea-coral) 100%) !important;
+}
+
+.flavortown-priority-pill {
+    background: var(--sea-slate) !important;
+    border-color: var(--sea-gold) !important;
+    color: var(--sea-white) !important;
+}
+
+.flavortown-goals-enhanced__accordion {
+    background: var(--sea-dark) !important;
+    border-color: var(--sea-slate) !important;
+}
+
+.flavortown-goals-enhanced__accordion-header,
+.flavortown-accordion-inner {
+    background: var(--sea-mid) !important;
+}
+
+.flavortown-accordion-title {
+    color: var(--sea-white) !important;
+}
+
+.flavortown-goals-enhanced__accordion-content {
+    background: var(--sea-abyss) !important;
+    border-color: var(--sea-dark) !important;
+}
+
+.flavortown-goal-item {
+    background: var(--sea-dark) !important;
+    border-color: var(--sea-slate) !important;
+}
+
+.flavortown-goal-item:hover {
+    border-color: var(--sea-cyan) !important;
+}
+
+.goal-item--priority {
+    border-left-color: var(--sea-gold) !important;
+    background: linear-gradient(135deg, var(--sea-dark) 0%, var(--sea-mid) 100%) !important;
+}
+
+.goal-item__name-compact {
+    color: var(--sea-white) !important;
+}
+
+.goal-item__stats-compact {
+    color: var(--sea-coral) !important;
+}
+
+.goal-item__time-compact {
+    color: var(--sea-green) !important;
+}
+
+.goal-item__affordable {
+    color: var(--sea-green) !important;
+}
+
+.goal-item__drag-handle {
+    color: var(--sea-foam) !important;
+}
+
+.goal-item__acc-pill {
+    background: var(--sea-slate) !important;
+    color: var(--sea-mist) !important;
+}
+
+.goal-item__qty-btn-sm {
+    background: var(--sea-mid) !important;
+    border-color: var(--sea-slate) !important;
+    color: var(--sea-white) !important;
+}
+
+.goal-item__qty-btn-sm:hover {
+    background: var(--sea-slate) !important;
+}
+
+.goal-item__remove-compact {
+    background: rgba(255, 107, 107, 0.2) !important;
+    color: var(--sea-coral) !important;
+}
+
+.goal-item__priority-btn.is-active {
+    color: var(--sea-gold) !important;
+}

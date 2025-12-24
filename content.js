@@ -340,12 +340,9 @@ function enhanceShopGoals() {
             updateDebounceTimer = setTimeout(() => updateStats(true), 50);
             return;
         }
-        if (!immediate) {
-            updateDebounceTimer = setTimeout(() => updateStats(true), 50);
-            return;
-        }
 
         const existingStats = document.querySelector('.flavortown-goals-enhanced');
+        const wasAccordionOpen = existingStats?.querySelector('.flavortown-goals-enhanced__accordion')?.open ?? true;
         if (existingStats) existingStats.remove();
 
         const wishlistData = localStorage.getItem('shop_wishlist');
@@ -358,6 +355,11 @@ function enhanceShopGoals() {
             return;
         }
 
+        const priorityData = localStorage.getItem('shop_wishlist_priorities');
+        const orderData = localStorage.getItem('shop_wishlist_order');
+        const priorities = priorityData ? JSON.parse(priorityData) : [];
+        const customOrder = orderData ? JSON.parse(orderData) : [];
+
         const goals = Object.entries(wishlist).map(([id, g]) => ({ ...g, id }));
         if (goals.length === 0) return;
 
@@ -366,8 +368,23 @@ function enhanceShopGoals() {
             quantity: g.quantity || 1,
             totalCost: (g.quantity || 1) * g.price,
             remaining: Math.max(0, ((g.quantity || 1) * g.price) - currentCookies),
-            hoursNeeded: Math.ceil(Math.max(0, ((g.quantity || 1) * g.price) - currentCookies) / 10)
+            hoursNeeded: Math.ceil(Math.max(0, ((g.quantity || 1) * g.price) - currentCookies) / 10),
+            isPriority: priorities.includes(g.id),
+            hasAccessories: (g.accessories || []).length > 0
         }));
+
+        goalsWithQty.sort((a, b) => {
+            if (a.isPriority !== b.isPriority) return b.isPriority - a.isPriority;
+
+            const orderA = customOrder.indexOf(a.id);
+            const orderB = customOrder.indexOf(b.id);
+            if (orderA !== -1 && orderB !== -1) return orderA - orderB;
+            if (orderA !== -1) return -1;
+            if (orderB !== -1) return 1;
+
+            if (a.hasAccessories !== b.hasAccessories) return b.hasAccessories - a.hasAccessories;
+            return a.name.localeCompare(b.name);
+        });
 
         const totalGoals = goalsWithQty.length;
         const totalCookiesNeeded = goalsWithQty.reduce((sum, g) => sum + g.totalCost, 0);
@@ -375,45 +392,101 @@ function enhanceShopGoals() {
         const hoursNeeded = Math.ceil(cookiesRemaining / 10);
         const progressPercent = totalCookiesNeeded > 0 ? Math.min(100, (currentCookies / totalCookiesNeeded) * 100) : 0;
 
-        const itemsHtml = goalsWithQty.map(g => {
-            const itemProgress = g.totalCost > 0 ? Math.min(100, (currentCookies / g.totalCost) * 100) : 0;
+        const priorityGoals = goalsWithQty.filter(g => g.isPriority);
+        const priorityCookiesNeeded = priorityGoals.reduce((sum, g) => sum + g.totalCost, 0);
+        const priorityRemaining = Math.max(0, priorityCookiesNeeded - currentCookies);
+        const priorityHours = Math.ceil(priorityRemaining / 10);
+        const priorityProgress = priorityCookiesNeeded > 0 ? Math.min(100, (currentCookies / priorityCookiesNeeded) * 100) : 0;
+
+        const generateCardHtml = (g) => {
             const baseItemName = g.name.split(' (')[0];
             const accessories = g.accessories || [];
-            const basePrice = g.basePrice || g.price;
+            const priorityClass = g.isPriority ? 'goal-item--priority' : '';
+            const compactClass = !g.hasAccessories ? 'goal-item--compact' : '';
+            const canAfford = g.remaining === 0;
 
-            const accessoriesHtml = accessories.length > 0 ? accessories.map((acc, idx) => `
-                <div class="goal-item__accessory">
-                    <span class="goal-item__accessory-name">+ ${acc.name}</span>
-                    <span class="goal-item__accessory-price">🍪${acc.price.toLocaleString()}</span>
-                    <button class="goal-item__accessory-remove" data-goal-id="${g.id}" data-acc-idx="${idx}" title="Remove accessory">×</button>
+            const accessoriesHtml = accessories.length > 0 ? `
+                <div class="goal-item__accessories-row">
+                    ${accessories.map((acc, idx) => `
+                        <span class="goal-item__acc-pill" title="${acc.name}: 🍪${acc.price}">
+                            + ${acc.name.length > 8 ? acc.name.slice(0, 8) + '…' : acc.name}
+                            <button class="goal-item__acc-remove" data-goal-id="${g.id}" data-acc-idx="${idx}">×</button>
+                        </span>
+                    `).join('')}
                 </div>
-            `).join('') : '';
+            ` : '';
 
-            return `
-                <div class="flavortown-goal-item goal-item" data-goal-id="${g.id}" style="position: relative;">
-                    <button class="goal-item__remove" data-goal-id="${g.id}" title="Remove from goals">×</button>
-                    <div class="flavortown-goal-item__header">
-                        <img src="${g.image}" alt="${baseItemName}" class="flavortown-goal-item__img">
-                        <div class="flavortown-goal-item__info">
-                            <span class="flavortown-goal-item__name">${baseItemName}</span>
-                            <div class="flavortown-goal-item__progress-bar">
-                                <div class="flavortown-goal-item__progress-fill" style="width: ${itemProgress}%"></div>
-                            </div>
+            const statsHtml = canAfford
+                ? '<span class="goal-item__affordable">✓</span>'
+                : `<span class="goal-item__stats-compact">🍪${g.remaining.toLocaleString()}</span><span class="goal-item__time-compact">⏱${g.hoursNeeded}h</span>`;
+
+            if (!g.hasAccessories) {
+                return `
+                    <div class="flavortown-goal-item goal-item ${priorityClass} ${compactClass}" 
+                         data-goal-id="${g.id}" draggable="true">
+                        <span class="goal-item__drag-handle">⋮⋮</span>
+                        <img src="${g.image}" alt="${baseItemName}" class="goal-item__img-compact">
+                        <span class="goal-item__name-compact">${baseItemName}</span>
+                        ${statsHtml}
+                        <div class="goal-item__qty-compact">
+                            <button class="goal-item__qty-btn-sm" data-action="decrease" data-goal-id="${g.id}">−</button>
+                            <span>${g.quantity}</span>
+                            <button class="goal-item__qty-btn-sm" data-action="increase" data-goal-id="${g.id}">+</button>
                         </div>
+                        <button class="goal-item__priority-btn ${g.isPriority ? 'is-active' : ''}" data-goal-id="${g.id}" title="Toggle priority">⭐</button>
+                        <button class="goal-item__remove-compact" data-goal-id="${g.id}" title="Remove">×</button>
                     </div>
+                `;
+            }
+
+            const manyAccessories = accessories.length >= 4 ? 'goal-item--wide' : '';
+            return `
+                <div class="flavortown-goal-item goal-item ${priorityClass} ${manyAccessories}" 
+                     data-goal-id="${g.id}" draggable="true">
+                    <span class="goal-item__drag-handle">⋮⋮</span>
+                    <img src="${g.image}" alt="${baseItemName}" class="goal-item__img-compact">
+                    <span class="goal-item__name-compact">${baseItemName}</span>
                     ${accessoriesHtml}
-                    <div class="flavortown-goal-item__stats">
-                        <span>🍪${g.totalCost.toLocaleString()} total</span>
-                        <span>⏱️ ~${g.hoursNeeded}h</span>
+                    ${statsHtml}
+                    <div class="goal-item__qty-compact">
+                        <button class="goal-item__qty-btn-sm" data-action="decrease" data-goal-id="${g.id}">−</button>
+                        <span>${g.quantity}</span>
+                        <button class="goal-item__qty-btn-sm" data-action="increase" data-goal-id="${g.id}">+</button>
                     </div>
-                    <div class="goal-item__qty-controls">
-                        <button class="goal-item__qty-btn" data-action="decrease" data-goal-id="${g.id}">−</button>
-                        <span class="goal-item__qty-value">${g.quantity}</span>
-                        <button class="goal-item__qty-btn" data-action="increase" data-goal-id="${g.id}">+</button>
-                    </div>
+                    <button class="goal-item__priority-btn ${g.isPriority ? 'is-active' : ''}" data-goal-id="${g.id}" title="Toggle priority">⭐</button>
+                    <button class="goal-item__remove-compact" data-goal-id="${g.id}" title="Remove">×</button>
                 </div>
             `;
-        }).join('');
+        };
+
+        const itemsHtml = goalsWithQty.map(generateCardHtml).join('');
+
+        const prioritySectionHtml = priorityGoals.length > 0 ? `
+            <div class="flavortown-priority-section">
+                <div class="flavortown-priority-section__header">
+                    <span class="flavortown-priority-section__title">🎯 Priority Goals</span>
+                    <span class="flavortown-priority-section__count">${priorityGoals.length} items</span>
+                </div>
+                <div class="flavortown-priority-section__progress">
+                    <div class="flavortown-priority-section__progress-bar">
+                        <div class="flavortown-priority-section__progress-fill" style="width: ${priorityProgress}%"></div>
+                    </div>
+                    <span class="flavortown-priority-section__pct">${Math.round(priorityProgress)}%</span>
+                </div>
+                <div class="flavortown-priority-section__stats">
+                    <span>🍪 ${currentCookies.toLocaleString()}/${priorityCookiesNeeded.toLocaleString()}</span>
+                    <span>📍 ${priorityRemaining.toLocaleString()} remaining</span>
+                    <span>⏱ ~${priorityHours}h</span>
+                </div>
+                <div class="flavortown-priority-section__pills">
+                    ${priorityGoals.map(g => {
+            const qtyText = g.quantity > 1 ? ` x${g.quantity}` : '';
+            const cookiesText = g.remaining > 0 ? ` 🍪${g.remaining.toLocaleString()}` : ' ✓';
+            return `<span class="flavortown-priority-pill" data-goal-id="${g.id}">${g.name.split(' (')[0]}${qtyText}${cookiesText}</span>`;
+        }).join('')}
+                </div>
+            </div>
+        ` : '';
 
         const statsHtml = `
             <div class="flavortown-goals-enhanced">
@@ -430,17 +503,18 @@ function enhanceShopGoals() {
                     </div>
                     <div class="flavortown-goals-enhanced__card">
                         <span class="flavortown-goals-enhanced__card-label">Progress</span>
-                        <span class="flavortown-goals-enhanced__card-value">🍪 ${currentCookies}/${totalCookiesNeeded}</span>
+                        <span class="flavortown-goals-enhanced__card-value">🍪 ${currentCookies.toLocaleString()}/${totalCookiesNeeded.toLocaleString()}</span>
                     </div>
                     <div class="flavortown-goals-enhanced__card flavortown-goals-enhanced__card--danger">
                         <span class="flavortown-goals-enhanced__card-label">Remaining</span>
-                        <span class="flavortown-goals-enhanced__card-value">🍪 ${cookiesRemaining}</span>
+                        <span class="flavortown-goals-enhanced__card-value">🍪 ${cookiesRemaining.toLocaleString()}</span>
                     </div>
                     <div class="flavortown-goals-enhanced__card flavortown-goals-enhanced__card--success">
                         <span class="flavortown-goals-enhanced__card-label">Time Est.</span>
-                        <span class="flavortown-goals-enhanced__card-value">⏱️ ~${hoursNeeded}h</span>
+                        <span class="flavortown-goals-enhanced__card-value">⏱ ~${hoursNeeded}h</span>
                     </div>
                 </div>
+                ${prioritySectionHtml}
                 <details class="flavortown-goals-enhanced__accordion" open>
                     <summary class="flavortown-goals-enhanced__accordion-header">
                         <div class="flavortown-accordion-inner">
@@ -460,9 +534,56 @@ function enhanceShopGoals() {
             const titleEl = container.querySelector('.shop-goals__title');
             const existingItems = container.querySelector('.shop-goals__items');
             if (existingItems) existingItems.style.display = 'none';
+
             if (titleEl) {
                 titleEl.insertAdjacentHTML('afterend', statsHtml);
+
+                const newAccordion = container.querySelector('.flavortown-goals-enhanced__accordion');
+                if (newAccordion) {
+                    newAccordion.open = wasAccordionOpen;
+                }
             }
+
+            setupDragAndDrop();
+        }
+    }
+
+    function setupDragAndDrop() {
+        const container = document.querySelector('.flavortown-goals-enhanced__accordion-content');
+        if (!container) return;
+
+        let draggedEl = null;
+
+        container.querySelectorAll('.flavortown-goal-item').forEach(item => {
+            item.addEventListener('dragstart', (e) => {
+                draggedEl = item;
+                item.classList.add('is-dragging');
+                e.dataTransfer.effectAllowed = 'move';
+            });
+
+            item.addEventListener('dragend', () => {
+                item.classList.remove('is-dragging');
+                draggedEl = null;
+                saveOrder();
+            });
+
+            item.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                if (!draggedEl || draggedEl === item) return;
+                const rect = item.getBoundingClientRect();
+                const midY = rect.top + rect.height / 2;
+                if (e.clientY < midY) {
+                    container.insertBefore(draggedEl, item);
+                } else {
+                    container.insertBefore(draggedEl, item.nextSibling);
+                }
+            });
+        });
+
+        function saveOrder() {
+            const items = container.querySelectorAll('.flavortown-goal-item');
+            const order = Array.from(items).map(el => el.dataset.goalId);
+            localStorage.setItem('shop_wishlist_order', JSON.stringify(order));
         }
     }
 
@@ -573,6 +694,87 @@ function enhanceShopGoals() {
                     data[goalId].accessories.splice(accIdx, 1);
                     if (removedAcc) {
                         data[goalId].price = (data[goalId].price || 0) - removedAcc.price;
+                    }
+                    localStorage.setItem('shop_wishlist', JSON.stringify(data));
+                    updateStats(true);
+                    addQtyControlsToCards();
+                }
+            }
+            return;
+        }
+
+        const accPillRemove = e.target.closest('.goal-item__acc-remove');
+        if (accPillRemove) {
+            e.preventDefault();
+            e.stopPropagation();
+            const goalId = accPillRemove.dataset.goalId;
+            const accIdx = parseInt(accPillRemove.dataset.accIdx, 10);
+            const stored = localStorage.getItem('shop_wishlist');
+            if (stored) {
+                const data = JSON.parse(stored);
+                if (data[goalId] && data[goalId].accessories) {
+                    const removedAcc = data[goalId].accessories[accIdx];
+                    data[goalId].accessories.splice(accIdx, 1);
+                    if (removedAcc) {
+                        data[goalId].price = (data[goalId].price || 0) - removedAcc.price;
+                    }
+                    localStorage.setItem('shop_wishlist', JSON.stringify(data));
+                    updateStats(true);
+                }
+            }
+            return;
+        }
+
+        const priorityBtn = e.target.closest('.goal-item__priority-btn');
+        if (priorityBtn) {
+            e.preventDefault();
+            e.stopPropagation();
+            const goalId = priorityBtn.dataset.goalId;
+            const priorityData = localStorage.getItem('shop_wishlist_priorities');
+            let priorities = priorityData ? JSON.parse(priorityData) : [];
+
+            if (priorities.includes(goalId)) {
+                priorities = priorities.filter(id => id !== goalId);
+            } else {
+                priorities.push(goalId);
+            }
+
+            localStorage.setItem('shop_wishlist_priorities', JSON.stringify(priorities));
+            updateStats(true);
+            return;
+        }
+
+        const removeCompact = e.target.closest('.goal-item__remove-compact');
+        if (removeCompact) {
+            e.preventDefault();
+            e.stopPropagation();
+            const goalId = removeCompact.dataset.goalId;
+            const stored = localStorage.getItem('shop_wishlist');
+            if (stored) {
+                const data = JSON.parse(stored);
+                delete data[goalId];
+                localStorage.setItem('shop_wishlist', JSON.stringify(data));
+                updateStats(true);
+                addQtyControlsToCards();
+            }
+            return;
+        }
+
+        const qtyBtnSm = e.target.closest('.goal-item__qty-btn-sm');
+        if (qtyBtnSm) {
+            e.preventDefault();
+            e.stopPropagation();
+            const goalId = qtyBtnSm.dataset.goalId;
+            const action = qtyBtnSm.dataset.action;
+            const stored = localStorage.getItem('shop_wishlist');
+            if (stored) {
+                const data = JSON.parse(stored);
+                if (data[goalId]) {
+                    const currentQty = data[goalId].quantity || 1;
+                    if (action === 'increase') {
+                        data[goalId].quantity = currentQty + 1;
+                    } else if (action === 'decrease' && currentQty > 1) {
+                        data[goalId].quantity = currentQty - 1;
                     }
                     localStorage.setItem('shop_wishlist', JSON.stringify(data));
                     updateStats(true);

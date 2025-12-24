@@ -238,8 +238,8 @@
 
 .flavortown-goals-enhanced__accordion-content {
     padding: 16px !important;
-    display: grid !important;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)) !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
     gap: 12px !important;
     background: #fff8f0 !important;
     border-top: 2px solid #ebdacc !important;
@@ -248,20 +248,20 @@
 .flavortown-goal-item {
     background: white !important;
     border: 2px solid #e6dccf !important;
-    border-radius: 14px !important;
-    padding: 16px !important;
+    border-radius: 10px !important;
+    padding: 10px 12px !important;
     display: flex !important;
-    flex-direction: column !important;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03) !important;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 10px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03) !important;
     position: relative !important;
+    width: calc(50% - 6px) !important;
 }
 
 .flavortown-goal-item:hover {
-    transform: translateY(-4px) !important;
-    box-shadow: 0 12px 24px rgba(93, 78, 55, 0.1) !important;
+    box-shadow: 0 4px 12px rgba(93, 78, 55, 0.08) !important;
     border-color: #d6c6b5 !important;
-    z-index: 1 !important;
 }
 
 .flavortown-goal-item__header {
@@ -334,6 +334,334 @@
 .flavortown-goal-item__stats span:nth-child(2) {
     color: #38a169 !important;
     font-weight: 700 !important;
+}
+
+/* Priority Section */
+.flavortown-priority-section {
+    background: linear-gradient(135deg, #fdf6e3 0%, #ffefd5 100%) !important;
+    border: 2px solid #e6a84d !important;
+    border-radius: 12px !important;
+    padding: 16px !important;
+    margin-bottom: 16px !important;
+}
+
+.flavortown-priority-section__header {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    margin-bottom: 12px !important;
+}
+
+.flavortown-priority-section__title {
+    font-weight: 800 !important;
+    font-size: 1em !important;
+    color: #8b6914 !important;
+}
+
+.flavortown-priority-section__count {
+    font-size: 0.8em !important;
+    color: #a07d1c !important;
+    font-weight: 600 !important;
+}
+
+.flavortown-priority-section__progress {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    margin-bottom: 12px !important;
+}
+
+.flavortown-priority-section__progress-bar {
+    flex: 1 !important;
+    height: 10px !important;
+    background: #fff3cd !important;
+    border-radius: 5px !important;
+    overflow: hidden !important;
+}
+
+.flavortown-priority-section__progress-fill {
+    height: 100% !important;
+    background: linear-gradient(90deg, #e6a84d 0%, #f4c35b 100%) !important;
+    border-radius: 5px !important;
+    transition: width 0.3s ease !important;
+}
+
+.flavortown-priority-section__pct {
+    font-weight: 700 !important;
+    font-size: 0.85em !important;
+    color: #8b6914 !important;
+    min-width: 40px !important;
+}
+
+.flavortown-priority-section__stats {
+    display: flex !important;
+    gap: 16px !important;
+    font-size: 0.8em !important;
+    color: #8b6914 !important;
+    font-weight: 600 !important;
+    margin-bottom: 12px !important;
+    flex-wrap: wrap !important;
+}
+
+.flavortown-priority-section__pills {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+}
+
+.flavortown-priority-pill {
+    background: #fff !important;
+    border: 1px solid #e6a84d !important;
+    border-radius: 20px !important;
+    padding: 4px 12px !important;
+    font-size: 0.75em !important;
+    font-weight: 600 !important;
+    color: #8b6914 !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+}
+
+.flavortown-priority-pill:hover {
+    background: #ffefd5 !important;
+}
+
+/* Priority Highlight on Cards */
+.goal-item--priority {
+    border-left: 4px solid #e6a84d !important;
+    background: linear-gradient(135deg, #fffdf5 0%, #fff 100%) !important;
+}
+
+/* Priority Button */
+.goal-item__priority-btn {
+    width: 18px !important;
+    height: 18px !important;
+    border: none !important;
+    background: transparent !important;
+    font-size: 12px !important;
+    cursor: pointer !important;
+    opacity: 0.4 !important;
+    flex-shrink: 0 !important;
+    padding: 0 !important;
+}
+
+.goal-item__priority-btn:hover {
+    opacity: 1 !important;
+}
+
+.goal-item__priority-btn.is-active {
+    opacity: 1 !important;
+}
+
+/* Drag Handle */
+.goal-item__drag-handle {
+    font-size: 12px !important;
+    color: #bbb !important;
+    cursor: grab !important;
+    user-select: none !important;
+    flex-shrink: 0 !important;
+    padding: 0 4px !important;
+}
+
+.goal-item__drag-handle:active {
+    cursor: grabbing !important;
+}
+
+.flavortown-goal-item.is-dragging {
+    opacity: 0.5 !important;
+    transform: scale(0.98) !important;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Compact Card for Simple Items */
+.goal-item--compact {
+    flex-direction: row !important;
+    align-items: center !important;
+    padding: 10px 14px !important;
+    gap: 10px !important;
+    width: calc(33.333% - 8px) !important;
+    border-radius: 10px !important;
+}
+
+.goal-item--compact:hover {
+    border-color: #d6c6b5 !important;
+}
+
+/* Affordable indicator */
+.goal-item__affordable {
+    color: #38a169 !important;
+    font-weight: 700 !important;
+    font-size: 0.75em !important;
+    white-space: nowrap !important;
+}
+
+.goal-item__img-compact {
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 8px !important;
+    object-fit: cover !important;
+    border: 1px solid #e6dccf !important;
+    flex-shrink: 0 !important;
+}
+
+.goal-item__name-compact {
+    font-weight: 700 !important;
+    font-size: 0.85em !important;
+    color: #5d4e37 !important;
+    flex: 1 !important;
+    min-width: 0 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+.goal-item__stats-compact {
+    font-size: 0.75em !important;
+    font-weight: 700 !important;
+    color: #c53030 !important;
+    white-space: nowrap !important;
+}
+
+.goal-item__time-compact {
+    font-size: 0.7em !important;
+    color: #38a169 !important;
+    font-weight: 600 !important;
+    white-space: nowrap !important;
+}
+
+.goal-item__qty-compact {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 1px !important;
+    font-size: 0.65em !important;
+    font-weight: 600 !important;
+}
+
+.goal-item__qty-btn-sm {
+    width: 16px !important;
+    height: 14px !important;
+    border: 1px solid #e6dccf !important;
+    background: #fff !important;
+    border-radius: 2px !important;
+    font-size: 10px !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+}
+
+.goal-item__qty-btn-sm:hover {
+    background: #f5ebe0 !important;
+}
+
+.goal-item__remove-compact {
+    width: 18px !important;
+    height: 18px !important;
+    border: none !important;
+    background: rgba(197, 48, 48, 0.1) !important;
+    color: #c53030 !important;
+    border-radius: 3px !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    padding: 0 !important;
+}
+
+.goal-item__remove-compact:hover {
+    background: rgba(197, 48, 48, 0.2) !important;
+}
+
+/* Accessory Pills */
+.goal-item__accessories-row {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 3px !important;
+}
+
+.goal-item__acc-pill {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 2px !important;
+    background: #f5ebe0 !important;
+    border-radius: 8px !important;
+    padding: 2px 5px !important;
+    font-size: 0.55em !important;
+    font-weight: 600 !important;
+    color: #8b7355 !important;
+}
+
+/* Full width for items with many accessories */
+.goal-item--wide {
+    width: 100% !important;
+}
+
+.goal-item__acc-remove {
+    width: 10px !important;
+    height: 10px !important;
+    border: none !important;
+    background: rgba(0, 0, 0, 0.15) !important;
+    border-radius: 50% !important;
+    font-size: 8px !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.goal-item__acc-remove:hover {
+    background: rgba(197, 48, 48, 0.3) !important;
+    color: #c53030 !important;
+}
+
+/* Updated full card layout */
+.goal-item__header {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 8px !important;
+    margin-bottom: 8px !important;
+}
+
+.goal-item__img {
+    width: 48px !important;
+    height: 48px !important;
+    border-radius: 10px !important;
+    object-fit: cover !important;
+    border: 2px solid #f0e8df !important;
+}
+
+.goal-item__name {
+    font-weight: 700 !important;
+    font-size: 0.85em !important;
+    color: #5d4e37 !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    max-width: 100% !important;
+}
+
+.goal-item__footer {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 8px !important;
+    margin-top: auto !important;
+    padding-top: 8px !important;
+    border-top: 1px solid #f0e8df !important;
+    font-size: 0.75em !important;
+}
+
+.goal-item__total {
+    color: #c53030 !important;
+    font-weight: 700 !important;
+}
+
+.goal-item__time {
+    color: #38a169 !important;
+    font-weight: 600 !important;
 }
 
 .sidebar__pin-btn {

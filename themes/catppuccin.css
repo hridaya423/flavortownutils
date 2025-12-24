@@ -1997,3 +1997,156 @@ a:hover {
 .flavortown-achievement-toast__close {
     color: var(--ctp-overlay1) !important;
 }
+
+.shop-goals__container {
+    border-color: var(--ctp-mauve) !important;
+}
+
+.flavortown-goals-enhanced {
+    background: var(--ctp-surface0) !important;
+}
+
+.flavortown-goals-enhanced__card {
+    background: var(--ctp-surface1) !important;
+    border-color: var(--ctp-surface2) !important;
+}
+
+.flavortown-goals-enhanced__card-label {
+    color: var(--ctp-subtext0) !important;
+}
+
+.flavortown-goals-enhanced__card-value {
+    color: var(--ctp-text) !important;
+}
+
+.flavortown-goals-enhanced__card--danger {
+    background: var(--ctp-red) !important;
+}
+
+.flavortown-goals-enhanced__card--danger .flavortown-goals-enhanced__card-label,
+.flavortown-goals-enhanced__card--danger .flavortown-goals-enhanced__card-value {
+    color: var(--ctp-crust) !important;
+}
+
+.flavortown-goals-enhanced__card--success {
+    background: var(--ctp-green) !important;
+}
+
+.flavortown-goals-enhanced__card--success .flavortown-goals-enhanced__card-label,
+.flavortown-goals-enhanced__card--success .flavortown-goals-enhanced__card-value {
+    color: var(--ctp-crust) !important;
+}
+
+.flavortown-goals-enhanced__progress-bar {
+    background: var(--ctp-surface1) !important;
+}
+
+.flavortown-goals-enhanced__progress-fill {
+    background: linear-gradient(90deg, var(--ctp-mauve) 0%, var(--ctp-pink) 100%) !important;
+}
+
+.flavortown-priority-section {
+    background: linear-gradient(135deg, var(--ctp-surface0) 0%, var(--ctp-surface1) 100%) !important;
+    border-color: var(--ctp-yellow) !important;
+}
+
+.flavortown-priority-section__title {
+    color: var(--ctp-yellow) !important;
+}
+
+.flavortown-priority-section__count,
+.flavortown-priority-section__pct,
+.flavortown-priority-section__stats {
+    color: var(--ctp-subtext0) !important;
+}
+
+.flavortown-priority-section__progress-bar {
+    background: var(--ctp-surface2) !important;
+}
+
+.flavortown-priority-section__progress-fill {
+    background: linear-gradient(90deg, var(--ctp-yellow) 0%, var(--ctp-peach) 100%) !important;
+}
+
+.flavortown-priority-pill {
+    background: var(--ctp-surface2) !important;
+    border-color: var(--ctp-yellow) !important;
+    color: var(--ctp-text) !important;
+}
+
+.flavortown-goals-enhanced__accordion {
+    background: var(--ctp-surface0) !important;
+    border-color: var(--ctp-surface2) !important;
+}
+
+.flavortown-goals-enhanced__accordion-header,
+.flavortown-accordion-inner {
+    background: var(--ctp-surface1) !important;
+}
+
+.flavortown-accordion-title {
+    color: var(--ctp-text) !important;
+}
+
+.flavortown-goals-enhanced__accordion-content {
+    background: var(--ctp-base) !important;
+    border-color: var(--ctp-surface1) !important;
+}
+
+.flavortown-goal-item {
+    background: var(--ctp-surface0) !important;
+    border-color: var(--ctp-surface2) !important;
+}
+
+.flavortown-goal-item:hover {
+    border-color: var(--ctp-mauve) !important;
+}
+
+.goal-item--priority {
+    border-left-color: var(--ctp-yellow) !important;
+    background: linear-gradient(135deg, var(--ctp-surface0) 0%, var(--ctp-surface1) 100%) !important;
+}
+
+.goal-item__name-compact {
+    color: var(--ctp-text) !important;
+}
+
+.goal-item__stats-compact {
+    color: var(--ctp-peach) !important;
+}
+
+.goal-item__time-compact {
+    color: var(--ctp-green) !important;
+}
+
+.goal-item__affordable {
+    color: var(--ctp-green) !important;
+}
+
+.goal-item__drag-handle {
+    color: var(--ctp-overlay0) !important;
+}
+
+.goal-item__acc-pill {
+    background: var(--ctp-surface2) !important;
+    color: var(--ctp-subtext0) !important;
+}
+
+.goal-item__qty-btn-sm {
+    background: var(--ctp-surface1) !important;
+    border-color: var(--ctp-surface2) !important;
+    color: var(--ctp-text) !important;
+}
+
+.goal-item__qty-btn-sm:hover {
+    background: var(--ctp-surface2) !important;
+}
+
+.goal-item__remove-compact {
+    background: rgba(243, 139, 168, 0.2) !important;
+    color: var(--ctp-red) !important;
+}
+
+.goal-item__priority-btn.is-active {
+    color: var(--ctp-yellow) !important;
+}
