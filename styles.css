@@ -246,7 +246,7 @@
 }
 
 .flavortown-goal-item {
-    background: white !important;
+    background: linear-gradient(90deg, #e3f9e5 var(--progress, 0%), white var(--progress, 0%)) !important;
     border: 2px solid #e6dccf !important;
     border-radius: 10px !important;
     padding: 10px 12px !important;
@@ -426,7 +426,7 @@
 
 .goal-item--priority {
     border-left: 4px solid #e6a84d !important;
-    background: linear-gradient(135deg, #fffdf5 0%, #fff 100%) !important;
+    background: linear-gradient(90deg, rgba(230, 168, 77, 0.15) var(--progress, 0%), transparent var(--progress, 0%)), linear-gradient(135deg, #fffdf5 0%, #fff 100%) !important;
 }
 
 .goal-item__priority-btn {
@@ -1412,4 +1412,25 @@
 .flavortown-project-btn--repo:hover {
     background: linear-gradient(135deg, #bbdefb 0%, #90caf9 100%);
     transform: translateY(-2px);
+}
+
+.sidebar__user-details {
+    min-width: 0;
+    overflow: hidden;
+}
+
+.sidebar__user-name {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    white-space: normal;
+    line-height: 1.2;
+}
+
+.sidebar__user-avatar {
+    flex-shrink: 0;
 }

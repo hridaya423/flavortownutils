@@ -2074,6 +2074,10 @@ a:hover {
     background: var(--sea-mid) !important;
 }
 
+.flavortown-goals-enhanced__accordion-header:hover .flavortown-accordion-inner {
+    background: var(--sea-slate) !important;
+}
+
 .flavortown-accordion-title {
     color: var(--sea-white) !important;
 }
@@ -2084,7 +2088,7 @@ a:hover {
 }
 
 .flavortown-goal-item {
-    background: var(--sea-dark) !important;
+    background: linear-gradient(90deg, color-mix(in srgb, var(--sea-cyan), transparent 85%) var(--progress, 0%), var(--sea-dark) var(--progress, 0%)) !important;
     border-color: var(--sea-slate) !important;
 }
 
@@ -2094,7 +2098,7 @@ a:hover {
 
 .goal-item--priority {
     border-left-color: var(--sea-gold) !important;
-    background: linear-gradient(135deg, var(--sea-dark) 0%, var(--sea-mid) 100%) !important;
+    background: linear-gradient(90deg, color-mix(in srgb, var(--sea-gold), transparent 85%) var(--progress, 0%), transparent var(--progress, 0%)), linear-gradient(135deg, var(--sea-dark) 0%, var(--sea-mid) 100%) !important;
 }
 
 .goal-item__name-compact {

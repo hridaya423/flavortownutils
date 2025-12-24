@@ -14,7 +14,9 @@
   - More statistics in goals
   - Accessories in goals
   - Better UI for goals
-
+  - Priority goals
+- Auto achievement claim
+- Search bar for projects
 
 ## Feature showcase:
 
