@@ -827,11 +827,14 @@
     visibility: visible !important;
 }
 
+.sidebar--pinned,
 .sidebar--pinned:hover {
     width: var(--sidebar-expanded-width, 300px) !important;
 }
 
+.sidebar--pinned .sidebar__user,
 .sidebar--pinned:hover .sidebar__user,
+.sidebar--pinned .sidebar__user-card,
 .sidebar--pinned:hover .sidebar__user-card {
     position: relative !important;
     transform: none !important;
@@ -840,6 +843,7 @@
     padding: 0 !important;
 }
 
+.sidebar--pinned .sidebar__user-avatar,
 .sidebar--pinned:hover .sidebar__user-avatar {
     position: relative !important;
     left: auto !important;
@@ -851,6 +855,7 @@
     margin: 0 !important;
 }
 
+.sidebar--pinned .sidebar__user-details,
 .sidebar--pinned:hover .sidebar__user-details {
     position: static !important;
     transform: none !important;
@@ -864,6 +869,7 @@
     margin: 0 !important;
 }
 
+.sidebar--pinned .sidebar__user-name,
 .sidebar--pinned:hover .sidebar__user-name {
     position: static !important;
     transform: none !important;
@@ -872,6 +878,7 @@
     visibility: visible !important;
 }
 
+.sidebar--pinned .sidebar__user-actions,
 .sidebar--pinned:hover .sidebar__user-actions {
     position: static !important;
     transform: none !important;
@@ -880,18 +887,27 @@
     visibility: visible !important;
 }
 
+.sidebar--pinned .sidebar__user-balance,
 .sidebar--pinned:hover .sidebar__user-balance,
+.sidebar--pinned .sidebar__user-settings,
 .sidebar--pinned:hover .sidebar__user-settings,
+.sidebar--pinned .sidebar__user-logout,
 .sidebar--pinned:hover .sidebar__user-logout {
     transform: none !important;
     transition: none !important;
 }
 
+.sidebar--pinned .sidebar__blob,
 .sidebar--pinned:hover .sidebar__blob,
+.sidebar--pinned .sidebar__nav,
 .sidebar--pinned:hover .sidebar__nav,
+.sidebar--pinned .sidebar__nav-list,
 .sidebar--pinned:hover .sidebar__nav-list,
+.sidebar--pinned .sidebar__nav-item,
 .sidebar--pinned:hover .sidebar__nav-item,
+.sidebar--pinned .sidebar__nav-link,
 .sidebar--pinned:hover .sidebar__nav-link,
+.sidebar--pinned .sidebar__nav-label,
 .sidebar--pinned:hover .sidebar__nav-label {
     transform: none !important;
     transition: none !important;
