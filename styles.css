@@ -2001,3 +2001,29 @@
         grid-template-columns: 1fr;
     }
 }
+
+.flavortown-graph-container {
+    background: #fdf6f0;
+}
+
+.flavortown-kitchen-dashboard {
+    color: #4a3728;
+}
+
+.flavortown-stat-card {
+    background: #fdf6f0;
+    border-color: #d4c4b5;
+}
+
+.flavortown-stat-card__label {
+    color: #8b7355;
+}
+
+.flavortown-stat-card__value {
+    color: #4a3728;
+}
+
+#flavortown-cookies-graph {
+    background: #fdf6f0;
+    border-radius: 8px;
+}

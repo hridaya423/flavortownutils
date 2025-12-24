@@ -1683,6 +1683,7 @@ async function enhanceKitchenDashboard() {
             }
         });
 
+        let totalDevlogs = 0;
         let totalProjects = 0;
         let totalMinutes = 0;
         let devlogFrequency = '';
