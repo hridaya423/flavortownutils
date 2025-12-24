@@ -2180,7 +2180,66 @@ a:hover {
 }
 
 .flavortown-search-icon {
+    color: var(--sea-mist) !important;
+}
+
+.table-data {
+    background: var(--sea-dark) !important;
+    border-color: var(--sea-slate) !important;
+    box-shadow: none !important;
+}
+
+.table-data thead th {
+    background: var(--sea-mid) !important;
+    color: var(--sea-white) !important;
+    border-bottom-color: var(--sea-slate) !important;
+}
+
+.table-data tbody td {
+    border-bottom-color: var(--sea-dark-mid) !important;
     color: var(--sea-foam) !important;
+}
+
+.table-data tbody tr:hover td {
+    background: var(--sea-mid) !important;
+}
+
+.pagy.series-nav {
+    background: var(--sea-dark) !important;
+    border-color: var(--sea-slate) !important;
+    box-shadow: none !important;
+}
+
+.pagy.series-nav a,
+.pagy.series-nav span {
+    color: var(--sea-foam) !important;
+    background: transparent !important;
+}
+
+.pagination a {
+    background: transparent !important;
+    color: var(--sea-foam) !important;
+}
+
+.pagy.series-nav a:hover:not([disabled]) {
+    background: var(--sea-slate) !important;
+    color: var(--sea-white) !important;
+}
+
+.pagy.series-nav a[aria-current="page"] {
+    background: var(--sea-cyan) !important;
+    color: var(--sea-abyss) !important;
+}
+
+.input-primary {
+    background: var(--sea-dark) !important;
+    border-color: var(--sea-slate) !important;
+    color: var(--sea-white) !important;
+}
+
+.input-primary:focus {
+    border-color: var(--sea-cyan) !important;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--sea-cyan), transparent 80%) !important;
 }
 
 .flavortown-search-input-wrapper {
@@ -2197,8 +2256,104 @@ a:hover {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3) !important;
 }
 
-.flavortown-search-input:focus+.flavortown-search-icon {
+.table-data tbody tr {
+    background: transparent !important;
+}
+
+.table-data tbody tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.02) !important;
+}
+
+.card {
+    background: var(--sea-dark) !important;
+    border-color: var(--sea-slate) !important;
+    box-shadow: none !important;
+}
+
+.card h2 {
+    color: var(--sea-white) !important;
+    border-bottom-color: var(--sea-slate) !important;
+}
+
+.text-muted {
+    color: var(--sea-mist) !important;
+}
+
+.form-control {
+    background: var(--sea-dark) !important;
+    border-color: var(--sea-slate) !important;
+    color: var(--sea-white) !important;
+}
+
+.form-control:focus {
+    border-color: var(--sea-cyan) !important;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--sea-cyan), transparent 80%) !important;
+}
+
+.badge-pending {
+    background: color-mix(in srgb, var(--sea-gold), transparent 85%) !important;
+    color: var(--sea-gold) !important;
+    border-color: color-mix(in srgb, var(--sea-gold), transparent 70%) !important;
+}
+
+.badge-reviewed {
+    background: color-mix(in srgb, var(--sea-green), transparent 85%) !important;
+    color: var(--sea-green) !important;
+    border-color: color-mix(in srgb, var(--sea-green), transparent 70%) !important;
+}
+
+.badge-dismissed {
+    background: color-mix(in srgb, var(--sea-slate), transparent 85%) !important;
+    color: var(--sea-mist) !important;
+    border-color: color-mix(in srgb, var(--sea-slate), transparent 70%) !important;
+}
+
+.btn-secondary {
+    background: var(--sea-slate) !important;
+    color: var(--sea-white) !important;
+}
+
+.btn-secondary:hover {
+    background: color-mix(in srgb, var(--sea-slate), white 10%) !important;
+}
+
+.action-leaderboard {
+    background: var(--sea-dark) !important;
+    border-color: var(--sea-slate) !important;
+    box-shadow: none !important;
+}
+
+.leaderboard-table th {
+    border-bottom-color: var(--sea-slate) !important;
+    color: var(--sea-white) !important;
+}
+
+.leaderboard-table tr.highlight {
+    background: var(--sea-mid) !important;
+}
+
+.leaderboard-table tr:hover {
+    background: var(--sea-slate) !important;
+}
+
+.leaderboard-table .stat-approved {
+    color: var(--sea-green) !important;
+}
+
+.leaderboard-table .stat-rejected {
+    color: var(--sea-coral) !important;
+}
+
+.leaderboard-table .stat-on_hold {
+    color: var(--sea-gold) !important;
+}
+
+.leaderboard-table .stat-fulfilled {
     color: var(--sea-cyan) !important;
+}
+
+.leaderboard-table .stat-total {
+    color: var(--sea-white) !important;
 }
 
 .flavortown-search-input::placeholder {

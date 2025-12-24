@@ -2253,3 +2253,153 @@ a:hover {
 .flavortown-project-meta {
     color: var(--ctp-overlay0) !important;
 }
+
+.table-data {
+    background: var(--ctp-base) !important;
+    border-color: var(--ctp-surface1) !important;
+    box-shadow: none !important;
+}
+
+.table-data thead th {
+    background: var(--ctp-surface0) !important;
+    color: var(--ctp-text) !important;
+    border-bottom-color: var(--ctp-surface1) !important;
+}
+
+.table-data tbody td {
+    border-bottom-color: var(--ctp-surface0) !important;
+    color: var(--ctp-subtext1) !important;
+}
+
+.table-data tbody tr:hover td {
+    background: var(--ctp-surface0) !important;
+}
+
+.pagy.series-nav {
+    background: var(--ctp-base) !important;
+    border-color: var(--ctp-surface1) !important;
+    box-shadow: none !important;
+}
+
+.pagy.series-nav a,
+.pagy.series-nav span {
+    color: var(--ctp-subtext0) !important;
+    background: transparent !important;
+}
+
+.pagination a {
+    background: transparent !important;
+    color: var(--ctp-subtext0) !important;
+}
+
+.pagy.series-nav a:hover:not([disabled]) {
+    background: var(--ctp-surface0) !important;
+    color: var(--ctp-text) !important;
+}
+
+.pagy.series-nav a[aria-current="page"] {
+    background: var(--ctp-mauve) !important;
+    color: var(--ctp-base) !important;
+}
+
+.input-primary {
+    background: var(--ctp-surface0) !important;
+    border-color: var(--ctp-surface1) !important;
+    color: var(--ctp-text) !important;
+}
+
+.table-data tbody tr {
+    background: transparent !important;
+}
+
+.card {
+    background: var(--ctp-base) !important;
+    border-color: var(--ctp-surface1) !important;
+    box-shadow: none !important;
+}
+
+.card h2 {
+    color: var(--ctp-text) !important;
+    border-bottom-color: var(--ctp-surface1) !important;
+}
+
+.text-muted {
+    color: var(--ctp-overlay1) !important;
+}
+
+.form-control {
+    background: var(--ctp-surface0) !important;
+    border-color: var(--ctp-surface1) !important;
+    color: var(--ctp-text) !important;
+}
+
+.form-control:focus {
+    border-color: var(--ctp-mauve) !important;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--ctp-mauve), transparent 80%) !important;
+}
+
+.badge-pending {
+    background: color-mix(in srgb, var(--ctp-yellow), transparent 85%) !important;
+    color: var(--ctp-yellow) !important;
+    border-color: color-mix(in srgb, var(--ctp-yellow), transparent 70%) !important;
+}
+
+.badge-reviewed {
+    background: color-mix(in srgb, var(--ctp-green), transparent 85%) !important;
+    color: var(--ctp-green) !important;
+    border-color: color-mix(in srgb, var(--ctp-green), transparent 70%) !important;
+}
+
+.badge-dismissed {
+    background: color-mix(in srgb, var(--ctp-overlay0), transparent 85%) !important;
+    color: var(--ctp-overlay2) !important;
+    border-color: color-mix(in srgb, var(--ctp-overlay0), transparent 70%) !important;
+}
+
+.btn-secondary {
+    background: var(--ctp-surface1) !important;
+    color: var(--ctp-text) !important;
+}
+
+.btn-secondary:hover {
+    background: var(--ctp-surface2) !important;
+}
+
+.action-leaderboard {
+    background: var(--ctp-base) !important;
+    border-color: var(--ctp-surface1) !important;
+    box-shadow: none !important;
+}
+
+.leaderboard-table th {
+    border-bottom-color: var(--ctp-surface1) !important;
+    color: var(--ctp-text) !important;
+}
+
+.leaderboard-table tr.highlight {
+    background: var(--ctp-surface0) !important;
+}
+
+.leaderboard-table tr:hover {
+    background: var(--ctp-surface1) !important;
+}
+
+.leaderboard-table .stat-approved {
+    color: var(--ctp-green) !important;
+}
+
+.leaderboard-table .stat-rejected {
+    color: var(--ctp-red) !important;
+}
+
+.leaderboard-table .stat-on_hold {
+    color: var(--ctp-yellow) !important;
+}
+
+.leaderboard-table .stat-fulfilled {
+    color: var(--ctp-blue) !important;
+}
+
+.leaderboard-table .stat-total {
+    color: var(--ctp-text) !important;
+}
