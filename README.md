@@ -17,6 +17,8 @@
   - Priority goals
 - Auto achievement claim
 - Search bar for projects
+- Makes images not crop in devlogs
+- Total project stats
 
 ## Feature showcase:
 
