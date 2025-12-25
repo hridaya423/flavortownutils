@@ -2424,3 +2424,37 @@ a:hover {
     background-color: var(--overcooked-cyan) !important;
     color: var(--overcooked-burnt) !important;
 }
+
+.flavortown-kitchen-dashboard {
+    color: var(--overcooked-white) !important;
+}
+
+.flavortown-dashboard-header h2 {
+    color: var(--overcooked-white) !important;
+}
+
+.flavortown-stat-card {
+    background: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-mid) !important;
+}
+
+.flavortown-stat-card__label {
+    color: var(--overcooked-foam) !important;
+}
+
+.flavortown-stat-card__value {
+    color: var(--overcooked-white) !important;
+}
+
+.flavortown-graph-container {
+    background: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-mid) !important;
+}
+
+.flavortown-graph-container h3 {
+    color: var(--overcooked-white) !important;
+}
+
+#flavortown-cookies-graph {
+    background: var(--overcooked-burnt) !important;
+}

@@ -1783,9 +1783,18 @@ async function enhanceKitchenDashboard() {
         const canvas = document.getElementById('flavortown-cookies-graph');
         if (canvas && dataPoints.length > 1) {
             const ctx = canvas.getContext('2d');
+
+            const dpr = window.devicePixelRatio || 1;
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            canvas.style.width = rect.width + 'px';
+            canvas.style.height = rect.height + 'px';
+            ctx.scale(dpr, dpr);
+
             const padding = 50;
-            const width = canvas.width - padding * 2;
-            const height = canvas.height - padding * 2;
+            const width = rect.width - padding * 2;
+            const height = rect.height - padding * 2;
 
             const styles = getComputedStyle(document.documentElement);
             const lineColor = styles.getPropertyValue('--color-accent')?.trim() || '#8b7355';
@@ -1812,34 +1821,62 @@ async function enhanceKitchenDashboard() {
                 ctx.fillText(value.toString(), padding - 10, y + 4);
             }
 
-            ctx.strokeStyle = lineColor;
-            ctx.lineWidth = 3;
-            ctx.lineCap = 'round';
-            ctx.lineJoin = 'round';
-            ctx.beginPath();
-
-            dataPoints.forEach((point, i) => {
-                const x = padding + (width / (dataPoints.length - 1)) * i;
-                const y = padding + height - ((point.balance - minBalance) / balanceRange) * height;
-
-                if (i === 0) ctx.moveTo(x, y);
-                else ctx.lineTo(x, y);
-            });
-            ctx.stroke();
-
             const pointPositions = dataPoints.map((point, i) => ({
                 x: padding + (width / (dataPoints.length - 1)) * i,
                 y: padding + height - ((point.balance - minBalance) / balanceRange) * height,
                 data: point
             }));
 
-            dataPoints.forEach((point, i) => {
-                const x = padding + (width / (dataPoints.length - 1)) * i;
-                const y = padding + height - ((point.balance - minBalance) / balanceRange) * height;
+            for (let i = 1; i < pointPositions.length; i++) {
+                const prev = pointPositions[i - 1];
+                const curr = pointPositions[i];
+                const isGain = curr.data.amount >= 0;
+
+                const segmentGradient = ctx.createLinearGradient(0, padding, 0, padding + height);
+                if (isGain) {
+                    segmentGradient.addColorStop(0, 'rgba(56, 161, 105, 0.4)');
+                    segmentGradient.addColorStop(1, 'rgba(56, 161, 105, 0.05)');
+                } else {
+                    segmentGradient.addColorStop(0, 'rgba(229, 62, 62, 0.4)');
+                    segmentGradient.addColorStop(1, 'rgba(229, 62, 62, 0.05)');
+                }
 
                 ctx.beginPath();
-                ctx.arc(x, y, 5, 0, Math.PI * 2);
-                ctx.fillStyle = lineColor;
+                ctx.moveTo(prev.x, prev.y);
+
+                const cpX = (prev.x + curr.x) / 2;
+                ctx.bezierCurveTo(cpX, prev.y, cpX, curr.y, curr.x, curr.y);
+
+                ctx.lineTo(curr.x, padding + height);
+                ctx.lineTo(prev.x, padding + height);
+                ctx.closePath();
+                ctx.fillStyle = segmentGradient;
+                ctx.fill();
+            }
+            ctx.lineWidth = 3;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+
+            for (let i = 1; i < pointPositions.length; i++) {
+                const prev = pointPositions[i - 1];
+                const curr = pointPositions[i];
+                const isGain = curr.data.amount >= 0;
+
+                ctx.beginPath();
+                ctx.moveTo(prev.x, prev.y);
+                const cpX = (prev.x + curr.x) / 2;
+                ctx.bezierCurveTo(cpX, prev.y, cpX, curr.y, curr.x, curr.y);
+                ctx.strokeStyle = isGain ? '#38a169' : '#e53e3e';
+                ctx.stroke();
+            }
+
+            pointPositions.forEach((point, i) => {
+                const isGain = point.data.amount >= 0;
+                const pointColor = isGain ? '#38a169' : '#e53e3e';
+
+                ctx.beginPath();
+                ctx.arc(point.x, point.y, 6, 0, Math.PI * 2);
+                ctx.fillStyle = pointColor;
                 ctx.fill();
                 ctx.strokeStyle = '#fff';
                 ctx.lineWidth = 2;

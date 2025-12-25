@@ -2419,3 +2419,38 @@ a:hover {
     background-color: var(--sea-cyan) !important;
     color: var(--sea-abyss) !important;
 }
+
+
+.flavortown-kitchen-dashboard {
+    color: var(--sea-white) !important;
+}
+
+.flavortown-dashboard-header h2 {
+    color: var(--sea-white) !important;
+}
+
+.flavortown-stat-card {
+    background: var(--sea-dark) !important;
+    border-color: var(--sea-mid) !important;
+}
+
+.flavortown-stat-card__label {
+    color: var(--sea-foam) !important;
+}
+
+.flavortown-stat-card__value {
+    color: var(--sea-white) !important;
+}
+
+.flavortown-graph-container {
+    background: var(--sea-dark) !important;
+    border-color: var(--sea-mid) !important;
+}
+
+.flavortown-graph-container h3 {
+    color: var(--sea-white) !important;
+}
+
+#flavortown-cookies-graph {
+    background: var(--sea-abyss) !important;
+}

@@ -2424,3 +2424,37 @@ a:hover {
     background-color: var(--ctp-mauve) !important;
     color: var(--ctp-crust) !important;
 }
+
+.flavortown-kitchen-dashboard {
+    color: var(--ctp-text) !important;
+}
+
+.flavortown-dashboard-header h2 {
+    color: var(--ctp-text) !important;
+}
+
+.flavortown-stat-card {
+    background: var(--ctp-surface0) !important;
+    border-color: var(--ctp-surface1) !important;
+}
+
+.flavortown-stat-card__label {
+    color: var(--ctp-subtext0) !important;
+}
+
+.flavortown-stat-card__value {
+    color: var(--ctp-text) !important;
+}
+
+.flavortown-graph-container {
+    background: var(--ctp-surface0) !important;
+    border-color: var(--ctp-surface1) !important;
+}
+
+.flavortown-graph-container h3 {
+    color: var(--ctp-text) !important;
+}
+
+#flavortown-cookies-graph {
+    background: var(--ctp-base) !important;
+}
