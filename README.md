@@ -35,8 +35,8 @@
 ## Installation
 
 ### Chrome
-**Option 1: Chrome Web Store** (In review at the moment)
-1. Visit the [Chrome Web Store]() 
+**Option 1: Chrome Web Store**
+1. Visit the [Chrome Web Store](https://chromewebstore.google.com/detail/flavortown-utils/fdacgialppflhglkinbiapaenfahhjge?authuser=3&hl=en-GB) 
 2. Click "Add to Chrome"
 3. Confirm the installation when prompted
 
