@@ -2454,3 +2454,61 @@ a:hover {
 #flavortown-cookies-graph {
     background: var(--sea-abyss) !important;
 }
+
+.flavortown-efficiency {
+    background: var(--sea-dark) !important;
+    border-color: var(--sea-mid) !important;
+}
+
+.flavortown-efficiency__cookies {
+    color: var(--sea-white) !important;
+}
+
+.flavortown-efficiency__need {
+    color: var(--sea-coral) !important;
+}
+
+.flavortown-efficiency__affordable {
+    color: var(--sea-foam) !important;
+}
+
+.flavortown-efficiency__rate {
+    background: var(--sea-mid) !important;
+}
+
+.flavortown-efficiency__rate-val {
+    color: var(--sea-white) !important;
+}
+
+.flavortown-efficiency__rate-time {
+    color: var(--sea-cyan) !important;
+}
+
+.flavortown-efficiency__progress-bar {
+    background: var(--sea-mid) !important;
+}
+
+.flavortown-efficiency__slider {
+    background: var(--sea-mid) !important;
+}
+
+.flavortown-efficiency__slider::-webkit-slider-thumb {
+    background: var(--sea-cyan) !important;
+}
+
+.flavortown-efficiency__slider::-moz-range-thumb {
+    background: var(--sea-cyan) !important;
+}
+
+.flavortown-efficiency__slider-row {
+    border-color: var(--sea-mid) !important;
+}
+
+.flavortown-efficiency__slider-label {
+    color: var(--sea-foam) !important;
+}
+
+.flavortown-efficiency__custom-rate,
+.flavortown-efficiency__custom-time {
+    color: var(--sea-cyan) !important;
+}

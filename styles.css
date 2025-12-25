@@ -2027,3 +2027,456 @@
     background: #fdf6f0;
     border-radius: 8px;
 }
+
+.flavortown-goal-item {
+    position: relative;
+    overflow: hidden;
+}
+
+.flavortown-goal-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: var(--progress, 0%);
+    background: linear-gradient(90deg, rgba(56, 161, 105, 0.15) 0%, rgba(56, 161, 105, 0.05) 100%);
+    z-index: 0;
+    transition: width 0.3s ease;
+    pointer-events: none;
+}
+
+.flavortown-goal-item[data-progress-state="low"]::before {
+    background: linear-gradient(90deg, rgba(229, 62, 62, 0.15) 0%, rgba(229, 62, 62, 0.05) 100%);
+}
+
+.flavortown-goal-item[data-progress-state="mid"]::before {
+    background: linear-gradient(90deg, rgba(214, 158, 46, 0.15) 0%, rgba(214, 158, 46, 0.05) 100%);
+}
+
+.flavortown-goal-item>* {
+    position: relative;
+    z-index: 1;
+}
+
+.flavortown-efficiency-calc {
+    background: var(--color-surface, #fff);
+    border: 2px solid var(--color-border, #e2d8cc);
+    border-radius: 12px;
+    padding: 16px;
+    margin-top: 16px;
+}
+
+.flavortown-efficiency-calc__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.flavortown-efficiency-calc__title {
+    font-weight: 600;
+    font-size: 0.95em;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.flavortown-efficiency-calc__rate-badge {
+    background: var(--color-accent, #8b7355);
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.8em;
+    font-weight: 600;
+}
+
+.flavortown-efficiency-calc__rates {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.flavortown-efficiency-calc__rate-btn {
+    background: var(--color-background, #f5f0e8);
+    border: 2px solid var(--color-border, #e2d8cc);
+    border-radius: 8px;
+    padding: 10px 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.flavortown-efficiency-calc__rate-btn:hover {
+    border-color: var(--color-accent, #8b7355);
+}
+
+.flavortown-efficiency-calc__rate-btn.is-active {
+    border-color: var(--color-accent, #8b7355);
+    background: var(--color-accent, #8b7355);
+    color: #fff;
+}
+
+.flavortown-efficiency-calc__rate-btn-value {
+    display: block;
+    font-weight: 700;
+    font-size: 1.1em;
+}
+
+.flavortown-efficiency-calc__rate-btn-label {
+    display: block;
+    font-size: 0.75em;
+    opacity: 0.8;
+}
+
+.flavortown-efficiency-calc__rate-btn-time {
+    display: block;
+    font-size: 0.85em;
+    margin-top: 4px;
+    font-weight: 600;
+}
+
+.flavortown-efficiency-calc__custom {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: var(--color-background, #f5f0e8);
+    border-radius: 8px;
+}
+
+.flavortown-efficiency-calc__slider {
+    flex: 1;
+    -webkit-appearance: none;
+    height: 8px;
+    background: var(--color-border, #e2d8cc);
+    border-radius: 4px;
+    outline: none;
+}
+
+.flavortown-efficiency-calc__slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    background: var(--color-accent, #8b7355);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.flavortown-efficiency-calc__custom-value {
+    font-weight: 700;
+    min-width: 80px;
+    text-align: center;
+}
+
+.flavortown-efficiency-calc__results {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.flavortown-efficiency-calc__result {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    background: var(--color-background, #f5f0e8);
+    border-radius: 8px;
+}
+
+.flavortown-efficiency-calc__result-icon {
+    font-size: 1.2em;
+}
+
+.flavortown-efficiency-calc__result-label {
+    font-size: 0.8em;
+    opacity: 0.7;
+}
+
+.flavortown-efficiency-calc__result-value {
+    font-weight: 700;
+    font-size: 1.1em;
+}
+
+.flavortown-efficiency {
+    margin-top: 12px;
+    padding: 12px;
+    background: var(--color-surface, #fdf6f0);
+    border-radius: 10px;
+    border: 1px solid var(--color-border, #e2d8cc);
+}
+
+.flavortown-efficiency__progress-bar {
+    position: relative;
+    height: 28px;
+    background: var(--color-background, #f5ebe0);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.flavortown-efficiency__progress-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    border-radius: 14px;
+    transition: width 0.3s ease;
+}
+
+.flavortown-efficiency__progress-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 600;
+    font-size: 0.85em;
+    color: var(--color-text-primary, #4a3728);
+}
+
+.flavortown-efficiency__stats {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.flavortown-efficiency__need {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.flavortown-efficiency__need-label {
+    font-size: 0.8em;
+    color: var(--color-text-muted, #8b7355);
+}
+
+.flavortown-efficiency__need-value {
+    font-weight: 600;
+    color: #e53e3e;
+}
+
+.flavortown-efficiency__rates {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+}
+
+.flavortown-efficiency__rate {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 4px;
+    background: var(--color-background, #f5ebe0);
+    border-radius: 8px;
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.flavortown-efficiency__rate.is-default {
+    border-color: var(--color-accent, #8b7355);
+    background: rgba(139, 115, 85, 0.1);
+}
+
+.flavortown-efficiency__rate-speed {
+    font-weight: 700;
+    font-size: 0.9em;
+    color: var(--color-text-primary, #4a3728);
+}
+
+.flavortown-efficiency__rate-unit {
+    font-size: 0.65em;
+    color: var(--color-text-muted, #8b7355);
+}
+
+.flavortown-efficiency__rate-time {
+    font-weight: 600;
+    font-size: 0.85em;
+    color: var(--color-accent, #8b7355);
+    margin-top: 2px;
+}
+
+.flavortown-efficiency__affordable {
+    text-align: center;
+    padding: 8px;
+    color: #38a169;
+    font-weight: 600;
+}
+
+.flavortown-efficiency__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.flavortown-efficiency__cookies {
+    font-weight: 600;
+    color: var(--color-text-primary, #4a3728);
+}
+
+.flavortown-efficiency__need {
+    font-size: 0.85em;
+    color: #e53e3e;
+}
+
+.flavortown-efficiency__need strong {
+    font-weight: 700;
+}
+
+.flavortown-efficiency__custom {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--color-border, #e2d8cc);
+}
+
+.flavortown-efficiency__slider {
+    flex: 1;
+    height: 6px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: var(--color-border, #e2d8cc);
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.flavortown-efficiency__slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    background: var(--color-accent, #8b7355);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.flavortown-efficiency__slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    background: var(--color-accent, #8b7355);
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+}
+
+.flavortown-efficiency__custom-display {
+    font-size: 0.85em;
+    color: var(--color-text-muted, #8b7355);
+    white-space: nowrap;
+}
+
+.flavortown-efficiency__custom-rate,
+.flavortown-efficiency__custom-time {
+    font-weight: 700;
+    color: var(--color-accent, #8b7355);
+}
+
+.flavortown-efficiency__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.flavortown-efficiency__rates {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.flavortown-efficiency__rate {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 6px 4px;
+    background: rgba(139, 115, 85, 0.08);
+    border-radius: 6px;
+    font-size: 0.8em;
+}
+
+.flavortown-efficiency__rate-val {
+    font-weight: 700;
+    color: var(--color-text-primary, #4a3728);
+}
+
+.flavortown-efficiency__rate-val::after {
+    content: '🍪/h';
+    font-size: 0.7em;
+    opacity: 0.7;
+    margin-left: 2px;
+}
+
+.flavortown-efficiency__rate-time {
+    color: var(--color-accent, #8b7355);
+    font-weight: 600;
+}
+
+.flavortown-efficiency__slider-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-top: 8px;
+    border-top: 1px dashed var(--color-border, #e2d8cc);
+}
+
+.flavortown-efficiency__slider-label {
+    font-size: 0.8em;
+    color: var(--color-text-muted, #8b7355);
+    white-space: nowrap;
+}
+
+.flavortown-efficiency__progress-bar {
+    width: 100%;
+    height: 8px;
+    background: rgba(0, 0, 0, 0.08);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.flavortown-efficiency__progress-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+/* Efficiency Accordion */
+.flavortown-efficiency__accordion {
+    margin-top: 8px;
+    border-top: 1px dashed var(--color-border, #e2d8cc);
+}
+
+.flavortown-efficiency__accordion-toggle {
+    cursor: pointer;
+    padding: 8px 0;
+    font-size: 0.85em;
+    color: var(--color-text-muted, #8b7355);
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.flavortown-efficiency__accordion-toggle::-webkit-details-marker {
+    display: none;
+}
+
+.flavortown-efficiency__accordion-toggle::after {
+    content: '▼';
+    font-size: 0.7em;
+    margin-left: auto;
+    transition: transform 0.2s ease;
+}
+
+.flavortown-efficiency__accordion[open] .flavortown-efficiency__accordion-toggle::after {
+    transform: rotate(180deg);
+}
+
+.flavortown-efficiency__accordion-content {
+    padding-top: 8px;
+}

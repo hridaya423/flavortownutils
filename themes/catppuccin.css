@@ -2458,3 +2458,61 @@ a:hover {
 #flavortown-cookies-graph {
     background: var(--ctp-base) !important;
 }
+
+.flavortown-efficiency {
+    background: var(--ctp-surface0) !important;
+    border-color: var(--ctp-surface1) !important;
+}
+
+.flavortown-efficiency__cookies {
+    color: var(--ctp-text) !important;
+}
+
+.flavortown-efficiency__need {
+    color: var(--ctp-red) !important;
+}
+
+.flavortown-efficiency__affordable {
+    color: var(--ctp-green) !important;
+}
+
+.flavortown-efficiency__rate {
+    background: var(--ctp-surface1) !important;
+}
+
+.flavortown-efficiency__rate-val {
+    color: var(--ctp-text) !important;
+}
+
+.flavortown-efficiency__rate-time {
+    color: var(--ctp-mauve) !important;
+}
+
+.flavortown-efficiency__progress-bar {
+    background: var(--ctp-surface1) !important;
+}
+
+.flavortown-efficiency__slider {
+    background: var(--ctp-surface1) !important;
+}
+
+.flavortown-efficiency__slider::-webkit-slider-thumb {
+    background: var(--ctp-mauve) !important;
+}
+
+.flavortown-efficiency__slider::-moz-range-thumb {
+    background: var(--ctp-mauve) !important;
+}
+
+.flavortown-efficiency__slider-row {
+    border-color: var(--ctp-surface1) !important;
+}
+
+.flavortown-efficiency__slider-label {
+    color: var(--ctp-subtext0) !important;
+}
+
+.flavortown-efficiency__custom-rate,
+.flavortown-efficiency__custom-time {
+    color: var(--ctp-mauve) !important;
+}

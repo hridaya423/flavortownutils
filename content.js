@@ -390,7 +390,7 @@ function enhanceShopGoals() {
         const priorities = priorityData ? JSON.parse(priorityData) : [];
         const customOrder = orderData ? JSON.parse(orderData) : [];
 
-        const goals = Object.entries(wishlist).map(([id, g]) => ({ ...g, id }));
+        const goals = Object.entries(wishlist).map(([id, g]) => ({ ...g, id, price: Math.ceil(g.price || 0) }));
         if (goals.length === 0) return;
 
         const goalsWithQty = goals.map(g => ({
@@ -1161,6 +1161,108 @@ async function initShopAccessories() {
     });
 }
 
+function addShopCardEfficiency() {
+    if (window.location.pathname !== '/shop') return;
+
+    const balanceBtn = document.querySelector('.sidebar__user-balance');
+    const currentCookies = balanceBtn ? parseInt(balanceBtn.textContent.replace(/[^0-9]/g, ''), 10) || 0 : 0;
+
+    const defaultRate = 10;
+    const rates = [10, 20, 25];
+
+    document.querySelectorAll('.shop-item-card[data-shop-id]').forEach(card => {
+        if (card.querySelector('.flavortown-efficiency')) return;
+
+        const price = Math.ceil(parseFloat(card.dataset.shopWishlistItemPriceValue) || 0);
+        if (price === 0) return;
+
+        const remaining = Math.max(0, price - currentCookies);
+        const progress = price > 0 ? Math.min(100, (currentCookies / price) * 100) : 0;
+        const canAfford = currentCookies >= price;
+
+        const efficiencyDiv = document.createElement('div');
+        efficiencyDiv.className = 'flavortown-efficiency';
+
+        const progressColor = canAfford ? '#48bb78' : '#ed8936';
+
+        if (canAfford) {
+            efficiencyDiv.innerHTML = `
+                <div class="flavortown-efficiency__progress-bar">
+                    <div class="flavortown-efficiency__progress-fill" style="width: 100%; background: ${progressColor}"></div>
+                </div>
+                <div class="flavortown-efficiency__row">
+                    <span class="flavortown-efficiency__cookies">🍪 ${currentCookies}/${price}</span>
+                    <span class="flavortown-efficiency__affordable">✅ You can afford this!</span>
+                </div>
+            `;
+        } else {
+            efficiencyDiv.innerHTML = `
+                <div class="flavortown-efficiency__progress-bar">
+                    <div class="flavortown-efficiency__progress-fill" style="width: ${progress}%; background: ${progressColor}"></div>
+                </div>
+                <div class="flavortown-efficiency__row">
+                    <span class="flavortown-efficiency__cookies">🍪 ${currentCookies}/${price}</span>
+                    <span class="flavortown-efficiency__need">Need <strong>${remaining}</strong> more</span>
+                </div>
+                <details class="flavortown-efficiency__accordion">
+                    <summary class="flavortown-efficiency__accordion-toggle">⏱️ Time Calculator</summary>
+                    <div class="flavortown-efficiency__accordion-content">
+                        <div class="flavortown-efficiency__rates">
+                            ${rates.map(rate => {
+                const hours = (remaining / rate).toFixed(1);
+                return `<div class="flavortown-efficiency__rate">
+                                    <span class="flavortown-efficiency__rate-val">${rate}</span>
+                                    <span class="flavortown-efficiency__rate-time">${hours}h</span>
+                                </div>`;
+            }).join('')}
+                        </div>
+                        <div class="flavortown-efficiency__slider-row">
+                            <input type="range" class="flavortown-efficiency__slider" min="1" max="30" value="${defaultRate}">
+                            <span class="flavortown-efficiency__slider-label"><span class="flavortown-efficiency__custom-rate">${defaultRate}</span> 🍪/h = <span class="flavortown-efficiency__custom-time">${(remaining / defaultRate).toFixed(1)}</span>h</span>
+                        </div>
+                    </div>
+                </details>
+            `;
+        }
+
+        const cardContent = card.querySelector('.shop-item-card__content') || card;
+        cardContent.appendChild(efficiencyDiv);
+
+        const slider = efficiencyDiv.querySelector('.flavortown-efficiency__slider');
+        const sliderRow = efficiencyDiv.querySelector('.flavortown-efficiency__slider-row');
+        const accordion = efficiencyDiv.querySelector('.flavortown-efficiency__accordion');
+        const accordionToggle = efficiencyDiv.querySelector('.flavortown-efficiency__accordion-toggle');
+
+        if (accordion) {
+            accordion.addEventListener('click', (e) => e.stopPropagation());
+        }
+        if (accordionToggle) {
+            accordionToggle.addEventListener('click', (e) => e.stopPropagation());
+        }
+
+        if (sliderRow) {
+            ['mousedown', 'mousemove', 'mouseup', 'click', 'touchstart', 'touchmove', 'touchend'].forEach(evt => {
+                sliderRow.addEventListener(evt, (e) => {
+                    e.stopPropagation();
+                    if (evt === 'click') e.preventDefault();
+                });
+            });
+        }
+
+        if (slider) {
+            const itemRemaining = remaining;
+            slider.addEventListener('input', function (e) {
+                e.stopPropagation();
+                const rate = parseInt(e.target.value, 10);
+                const rateEl = efficiencyDiv.querySelector('.flavortown-efficiency__custom-rate');
+                const timeEl = efficiencyDiv.querySelector('.flavortown-efficiency__custom-time');
+                if (rateEl) rateEl.textContent = rate;
+                if (timeEl) timeEl.textContent = (itemRemaining / rate).toFixed(1);
+            });
+        }
+    });
+}
+
 const ACHIEVEMENT_STORAGE_KEY = 'flavortown_known_achievements';
 const ACHIEVEMENT_CHECK_INTERVAL = 12 * 60 * 60 * 1000;
 const ACHIEVEMENT_LAST_CHECK_KEY = 'flavortown_last_achievement_check';
@@ -1505,6 +1607,7 @@ function init() {
     inlineDevlogForm();
     enhanceShopGoals();
     initShopAccessories();
+    addShopCardEfficiency();
     addExploreSearch();
     captureApiKey();
     initProjectBoardStats();
@@ -1991,6 +2094,7 @@ document.addEventListener('turbo:load', () => {
     inlineDevlogForm();
     enhanceShopGoals();
     initShopAccessories();
+    addShopCardEfficiency();
     addExploreSearch();
     captureApiKey();
     initProjectBoardStats();
