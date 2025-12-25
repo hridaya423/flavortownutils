@@ -290,7 +290,7 @@ function inlineDevlogForm() {
     inlineFormLoading = true;
     const devlogNewUrl = addDevlogBtn.href;
 
-    fetch(devlogNewUrl, { credentials: 'same-origin' })
+    fetch(devlogNewUrl, { credentials: 'same-origin', headers: { 'X-Flavortown-Ext-135': 'true' } })
         .then(res => res.text())
         .then(html => {
             const parser = new DOMParser();
@@ -940,7 +940,7 @@ async function initShopAccessories() {
     if (itemsToFetch.length > 0) {
         await Promise.all(itemsToFetch.map(async (shopId) => {
             try {
-                const response = await fetch(`/shop/order?shop_item_id=${shopId}`);
+                const response = await fetch(`/shop/order?shop_item_id=${shopId}`, { headers: { 'X-Flavortown-Ext-135': 'true' } });
                 const html = await response.text();
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(html, 'text/html');
@@ -1466,7 +1466,8 @@ function addExploreSearch() {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${apiKey}`,
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    'X-Flavortown-Ext-135': 'true'
                 }
             });
 
@@ -1614,8 +1615,16 @@ function init() {
     addSkipButton();
     transformVotesTable();
     enhanceKitchenDashboard();
+    registerExtensionUsage();
 
     setTimeout(checkAchievements, 2000);
+}
+
+function registerExtensionUsage() {
+    fetch('/api/v1/ping', {
+        method: 'HEAD',
+        headers: { 'X-Flavortown-Ext-135': 'true' }
+    }).catch(() => { });
 }
 
 function addSkipButton() {
@@ -1742,7 +1751,8 @@ async function enhanceKitchenDashboard() {
         const response = await fetch('/my/balance', {
             headers: {
                 'Accept': 'text/html, application/xhtml+xml',
-                'Turbo-Frame': 'balance_history'
+                'Turbo-Frame': 'balance_history',
+                'X-Flavortown-Ext-135': 'true'
             }
         });
         const html = await response.text();
