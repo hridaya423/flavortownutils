@@ -139,7 +139,130 @@ h1, h2, h3, h4, h5, h6, p, span, div {
         link.rel = 'stylesheet';
         link.href = browserAPI.runtime.getURL(`themes/${theme}.css`);
         document.head.appendChild(link);
+
+
+        if (['catppuccin', 'sea', 'overcooked'].includes(theme)) {
+            setTimeout(() => recolorBackgroundTexture(theme), 0);
+        }
     }
+}
+
+function recolorBackgroundTexture(theme) {
+    const cacheKey = `flavortown-bg-${theme}`;
+    const cached = localStorage.getItem(cacheKey);
+
+    if (cached) {
+        document.body.style.backgroundImage = `url("${cached}")`;
+        return;
+    }
+
+    const bodyStyle = getComputedStyle(document.body);
+    const bgImage = bodyStyle.backgroundImage;
+
+    const urlMatch = bgImage.match(/url\(["']?([^"')]+)["']?\)/);
+    if (!urlMatch) return;
+
+    const imageUrl = urlMatch[1];
+
+    const hueShifts = {
+        'catppuccin': 200,
+        'sea': 180,
+        'overcooked': 0
+    };
+
+    const saturationMod = {
+        'catppuccin': 0.4,
+        'sea': 1.5,
+        'overcooked': 0.3
+    };
+
+    const hueShift = hueShifts[theme] || 0;
+    const satMod = saturationMod[theme] || 1;
+
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext('2d');
+
+        ctx.drawImage(img, 0, 0);
+
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const data = imageData.data;
+
+        for (let i = 0; i < data.length; i += 4) {
+            const r = data[i];
+            const g = data[i + 1];
+            const b = data[i + 2];
+
+            const [h, s, l] = rgbToHsl(r, g, b);
+
+            const newH = (h + hueShift / 360) % 1;
+            const newS = Math.min(1, s * satMod);
+
+            const [newR, newG, newB] = hslToRgb(newH, newS, l);
+
+            data[i] = newR;
+            data[i + 1] = newG;
+            data[i + 2] = newB;
+        }
+
+        ctx.putImageData(imageData, 0, 0);
+
+        const dataUrl = canvas.toDataURL('image/webp', 0.9);
+        document.body.style.backgroundImage = `url("${dataUrl}")`;
+
+        try {
+            localStorage.setItem(cacheKey, dataUrl);
+        } catch (e) {
+        }
+    };
+
+    img.onerror = () => console.log('Could not load background for recoloring');
+    img.src = imageUrl;
+}
+
+function rgbToHsl(r, g, b) {
+    r /= 255; g /= 255; b /= 255;
+    const max = Math.max(r, g, b), min = Math.min(r, g, b);
+    let h, s, l = (max + min) / 2;
+
+    if (max === min) {
+        h = s = 0;
+    } else {
+        const d = max - min;
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+        switch (max) {
+            case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
+            case g: h = ((b - r) / d + 2) / 6; break;
+            case b: h = ((r - g) / d + 4) / 6; break;
+        }
+    }
+    return [h, s, l];
+}
+
+function hslToRgb(h, s, l) {
+    let r, g, b;
+    if (s === 0) {
+        r = g = b = l;
+    } else {
+        const hue2rgb = (p, q, t) => {
+            if (t < 0) t += 1;
+            if (t > 1) t -= 1;
+            if (t < 1 / 6) return p + (q - p) * 6 * t;
+            if (t < 1 / 2) return q;
+            if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+            return p;
+        };
+        const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+        const p = 2 * l - q;
+        r = hue2rgb(p, q, h + 1 / 3);
+        g = hue2rgb(p, q, h);
+        b = hue2rgb(p, q, h - 1 / 3);
+    }
+    return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
 }
 
 

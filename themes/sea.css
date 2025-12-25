@@ -21,7 +21,7 @@
     --color-brown-dark: var(--sea-spray) !important;
     --color-red: var(--sea-coral) !important;
     --color-green: var(--sea-kelp) !important;
-    --color-background: var(--sea-abyss) !important;
+    --color-background-color: var(--sea-abyss) !important;
     --color-surface: var(--sea-dark) !important;
     --color-text-primary: var(--sea-white) !important;
     --color-text-secondary: var(--sea-mist) !important;
@@ -31,20 +31,20 @@
 }
 
 body {
-    background: var(--sea-abyss) !important;
+    background-color: var(--sea-abyss) !important;
     color: var(--sea-white) !important;
 }
 
 body::before {
-    background: linear-gradient(180deg, var(--sea-abyss) 0%, var(--sea-deep) 100%) !important;
+    background-color: linear-gradient(180deg, var(--sea-abyss) 0%, var(--sea-deep) 100%) !important;
 }
 
 .sidebar {
-    background: var(--sea-deep) !important;
+    background-color: var(--sea-deep) !important;
 }
 
 .sidebar__blob {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
 }
 
 .sidebar__nav-link {
@@ -52,12 +52,12 @@ body::before {
 }
 
 .sidebar__nav-link:hover {
-    background: var(--sea-mid) !important;
+    background-color: var(--sea-mid) !important;
     color: var(--sea-white) !important;
 }
 
 .sidebar__nav-link--active {
-    background: var(--sea-mid) !important;
+    background-color: var(--sea-mid) !important;
     color: var(--sea-cyan) !important;
 }
 
@@ -70,7 +70,7 @@ body::before {
 }
 
 .sidebar__user-card {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
 }
 
 .sidebar__user-avatar {
@@ -88,7 +88,7 @@ body::before {
 }
 
 .sidebar__user-balance {
-    background: var(--sea-mid) !important;
+    background-color: var(--sea-mid) !important;
     color: var(--sea-gold) !important;
 }
 
@@ -103,16 +103,16 @@ body::before {
 }
 
 .sidebar__pin-btn {
-    background: var(--sea-mid) !important;
+    background-color: var(--sea-mid) !important;
     color: var(--sea-white) !important;
 }
 
 .sidebar__pin-btn:hover {
-    background: var(--sea-surface) !important;
+    background-color: var(--sea-surface) !important;
 }
 
 .sidebar--pinned .sidebar__pin-btn {
-    background: var(--sea-cyan) !important;
+    background-color: var(--sea-cyan) !important;
     color: var(--sea-abyss) !important;
 }
 
@@ -121,29 +121,29 @@ body::before {
 }
 
 .btn--brown {
-    background: var(--sea-cyan) !important;
+    background-color: var(--sea-cyan) !important;
     color: var(--sea-abyss) !important;
     border-color: var(--sea-cyan) !important;
 }
 
 .btn--brown:hover {
-    background: var(--sea-spray) !important;
+    background-color: var(--sea-spray) !important;
     color: var(--sea-abyss) !important;
 }
 
 .btn--green {
-    background: var(--sea-kelp) !important;
+    background-color: var(--sea-kelp) !important;
     color: var(--sea-abyss) !important;
     border-color: var(--sea-kelp) !important;
 }
 
 .btn--green:hover {
-    background: #7bed9f !important;
+    background-color: #7bed9f !important;
     color: var(--sea-abyss) !important;
 }
 
 .btn--red {
-    background: var(--sea-coral) !important;
+    background-color: var(--sea-coral) !important;
     color: var(--sea-abyss) !important;
     border-color: var(--sea-coral) !important;
 }
@@ -154,12 +154,12 @@ body::before {
 
 .btn--borderless {
     color: var(--sea-white) !important;
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
     border: 1px solid var(--sea-surface) !important;
 }
 
 .btn--borderless:hover {
-    background: var(--sea-mid) !important;
+    background-color: var(--sea-mid) !important;
     border-color: var(--sea-cyan) !important;
 }
 
@@ -168,11 +168,11 @@ body::before {
 }
 
 .ui-heading__backdrop {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
 }
 
 .ui-heading__surface {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
 }
 
 .ui-heading__title {
@@ -180,24 +180,24 @@ body::before {
 }
 
 .projects-new {
-    background: var(--sea-abyss) !important;
+    background-color: var(--sea-abyss) !important;
 }
 
 .projects-new__container {
-    background: var(--sea-abyss) !important;
+    background-color: var(--sea-abyss) !important;
 }
 
 .projects-new__card {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
     border-color: var(--sea-mid) !important;
 }
 
 .projects-new__field {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .projects-new__time-preview {
-    background: var(--sea-deep) !important;
+    background-color: var(--sea-deep) !important;
     color: var(--sea-mist) !important;
     border-color: var(--sea-mid) !important;
 }
@@ -211,11 +211,11 @@ body::before {
 }
 
 .projects-new__actions {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .project-show-card {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
     border-color: var(--sea-mid) !important;
 }
 
@@ -236,7 +236,7 @@ body::before {
 }
 
 .project-card__banner-placeholder {
-    background: linear-gradient(135deg, var(--sea-mid) 0%, var(--sea-surface) 100%) !important;
+    background-color: linear-gradient(135deg, var(--sea-mid) 0%, var(--sea-surface) 100%) !important;
 }
 
 .project-card__banner-placeholder-text {
@@ -244,7 +244,7 @@ body::before {
 }
 
 .post {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
     border-color: var(--sea-mid) !important;
 }
 
@@ -265,20 +265,20 @@ body::before {
 }
 
 .post__attachments {
-    background: var(--sea-deep) !important;
+    background-color: var(--sea-deep) !important;
 }
 
 .post__chevron {
-    background: var(--sea-mid) !important;
+    background-color: var(--sea-mid) !important;
     color: var(--sea-white) !important;
 }
 
 .post__dot {
-    background: var(--sea-foam) !important;
+    background-color: var(--sea-foam) !important;
 }
 
 .post__dot.is-active {
-    background: var(--sea-cyan) !important;
+    background-color: var(--sea-cyan) !important;
 }
 
 .like-button__btn {
@@ -298,21 +298,21 @@ body::before {
 }
 
 .post__interactions {
-    background: transparent !important;
+    background-color: transparent !important;
     border-color: var(--sea-mid) !important;
 }
 
 .comments-section {
-    background: transparent !important;
+    background-color: transparent !important;
     border-color: var(--sea-mid) !important;
 }
 
 .comments-section__list {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .comment {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
     border-color: var(--sea-mid) !important;
 }
 
@@ -341,16 +341,16 @@ body::before {
 }
 
 .comment-form {
-    background: transparent !important;
+    background-color: transparent !important;
     border-color: var(--sea-mid) !important;
 }
 
 .comment-form__form {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .comment-form__input {
-    background: var(--sea-deep) !important;
+    background-color: var(--sea-deep) !important;
     border: 1px solid var(--sea-mid) !important;
     color: var(--sea-white) !important;
 }
@@ -360,7 +360,7 @@ body::before {
 }
 
 .comment-form__actions {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .comment-form__actions .btn {
@@ -385,7 +385,7 @@ svg {
 
 .projects-show__admin-actions .btn {
     color: var(--sea-white) !important;
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .projects-show__admin-actions .btn:hover {
@@ -393,12 +393,12 @@ svg {
 }
 
 .input {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .input--red,
 .input--green {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .input__label {
@@ -406,13 +406,13 @@ svg {
 }
 
 .input__field {
-    background: var(--sea-abyss) !important;
+    background-color: var(--sea-abyss) !important;
     border-color: var(--sea-mid) !important;
     color: var(--sea-white) !important;
 }
 
 .input__field--textarea {
-    background: var(--sea-abyss) !important;
+    background-color: var(--sea-abyss) !important;
     color: var(--sea-white) !important;
 }
 
@@ -425,21 +425,21 @@ svg {
 }
 
 .file-upload {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .file-upload__area {
-    background: var(--sea-abyss) !important;
+    background-color: var(--sea-abyss) !important;
     border-color: var(--sea-mid) !important;
 }
 
 .file-upload__dropzone {
     border-color: var(--sea-surface) !important;
-    background: var(--sea-abyss) !important;
+    background-color: var(--sea-abyss) !important;
 }
 
 .file-upload__placeholder {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .file-upload__headline {
@@ -452,24 +452,24 @@ svg {
 
 .file-upload__browse {
     color: var(--sea-cyan) !important;
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .file-upload__nav {
-    background: var(--sea-mid) !important;
+    background-color: var(--sea-mid) !important;
     color: var(--sea-white) !important;
 }
 
 .file-upload__progress {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
 }
 
 .file-upload__progress-bar {
-    background: var(--sea-cyan) !important;
+    background-color: var(--sea-cyan) !important;
 }
 
 .modal {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
     border-color: var(--sea-mid) !important;
 }
 
@@ -478,24 +478,24 @@ svg {
 }
 
 .modal__actions-close {
-    background: var(--sea-mid) !important;
+    background-color: var(--sea-mid) !important;
     color: var(--sea-white) !important;
 }
 
 .projects-show {
-    background: var(--sea-abyss) !important;
+    background-color: var(--sea-abyss) !important;
 }
 
 .projects-show__container {
-    background: var(--sea-abyss) !important;
+    background-color: var(--sea-abyss) !important;
 }
 
 .projects-show__timeline {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .dev-footer {
-    background: var(--sea-deep) !important;
+    background-color: var(--sea-deep) !important;
     color: var(--sea-foam) !important;
 }
 
@@ -512,11 +512,11 @@ a:hover {
 }
 
 .kitchen-index {
-    background: var(--sea-abyss) !important;
+    background-color: var(--sea-abyss) !important;
 }
 
 .kitchen-setup {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .kitchen-setup::before {
@@ -525,7 +525,7 @@ a:hover {
 }
 
 .kitchen-help {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .kitchen-help::before {
@@ -543,7 +543,7 @@ a:hover {
 }
 
 .kitchen-help__content {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
     border-color: var(--sea-mid) !important;
 }
 
@@ -552,16 +552,16 @@ a:hover {
 }
 
 .kitchen-help__grid {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .tutorial-steps {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
     border-color: var(--sea-mid) !important;
 }
 
 .tutorial-steps__header {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
     color: var(--sea-white) !important;
 }
 
@@ -582,15 +582,15 @@ a:hover {
 }
 
 .tutorial-steps__progress-bar {
-    background: var(--sea-mid) !important;
+    background-color: var(--sea-mid) !important;
 }
 
 .tutorial-steps__progress-fill {
-    background: var(--sea-cyan) !important;
+    background-color: var(--sea-cyan) !important;
 }
 
 .tutorial-steps__grid {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .tutorial-steps__grid .state-card,
@@ -611,7 +611,7 @@ a:hover {
 }
 
 .state-card {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
     border-color: var(--sea-surface) !important;
 }
 
@@ -628,36 +628,36 @@ a:hover {
 }
 
 .state-card__status-pill {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .state-card__badge {
-    background: var(--sea-mid) !important;
+    background-color: var(--sea-mid) !important;
     color: var(--sea-white) !important;
 }
 
 .state-card--success .state-card__badge {
-    background: var(--sea-kelp) !important;
+    background-color: var(--sea-kelp) !important;
     color: var(--sea-abyss) !important;
 }
 
 .state-card--warning .state-card__badge {
-    background: var(--sea-gold) !important;
+    background-color: var(--sea-gold) !important;
     color: var(--sea-abyss) !important;
 }
 
 .state-card__icon-circle {
-    background: var(--sea-mid) !important;
+    background-color: var(--sea-mid) !important;
     color: var(--sea-white) !important;
 }
 
 .state-card--success .state-card__icon-circle {
-    background: var(--sea-kelp) !important;
+    background-color: var(--sea-kelp) !important;
     color: var(--sea-abyss) !important;
 }
 
 .state-card--warning .state-card__icon-circle {
-    background: var(--sea-gold) !important;
+    background-color: var(--sea-gold) !important;
     color: var(--sea-abyss) !important;
 }
 
@@ -670,11 +670,11 @@ a:hover {
 }
 
 .state-card__cta {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .tutorial-step-card {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
     border-color: var(--sea-surface) !important;
 }
 
@@ -691,17 +691,17 @@ a:hover {
 }
 
 .kitchen-help-card {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
     border-color: var(--sea-mid) !important;
 }
 
 .btn--bg_yellow {
-    background: var(--sea-gold) !important;
+    background-color: var(--sea-gold) !important;
     color: var(--sea-abyss) !important;
 }
 
 .btn--bg_yellow:hover {
-    background: var(--sea-sand) !important;
+    background-color: var(--sea-sand) !important;
     color: var(--sea-abyss) !important;
 }
 
@@ -711,52 +711,52 @@ a:hover {
 }
 
 .explore__nav {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
     border-color: var(--sea-mid) !important;
 }
 
 .explore__nav-component {
     color: var(--sea-white) !important;
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .explore__nav-component:hover {
-    background: var(--sea-mid) !important;
+    background-color: var(--sea-mid) !important;
     color: var(--sea-cyan) !important;
 }
 
 .explore__nav-component.selected {
-    background: var(--sea-mid) !important;
+    background-color: var(--sea-mid) !important;
     color: var(--sea-cyan) !important;
 }
 
 .projects-board__grid-item {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .project-card {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
     border-color: var(--sea-mid) !important;
 }
 
 .project-card__banner {
-    background: var(--sea-mid) !important;
+    background-color: var(--sea-mid) !important;
 }
 
 .project-card__banner--placeholder {
-    background: var(--sea-mid) !important;
+    background-color: var(--sea-mid) !important;
 }
 
 .project-card__banner-frame {
-    background: var(--sea-mid) !important;
+    background-color: var(--sea-mid) !important;
 }
 
 .project-card__banner-frame--placeholder {
-    background: var(--sea-mid) !important;
+    background-color: var(--sea-mid) !important;
 }
 
 .project-card__banner-placeholder {
-    background: var(--sea-mid) !important;
+    background-color: var(--sea-mid) !important;
 }
 
 .project-card__banner-placeholder-text {
@@ -764,7 +764,7 @@ a:hover {
 }
 
 .project-card__content {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .project-card__title {
@@ -788,7 +788,7 @@ a:hover {
 }
 
 .project-card__stats {
-    background: transparent !important;
+    background-color: transparent !important;
     color: var(--sea-spray) !important;
 }
 
@@ -801,12 +801,12 @@ a:hover {
 }
 
 .projects-show__admin-actions {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .projects-show__admin-actions .btn {
     color: var(--sea-white) !important;
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .projects-show__admin-actions .btn:hover {
@@ -942,16 +942,16 @@ a:hover {
 }
 
 .shop-item-card__order-button {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .shop-item-card__stock-badge {
-    background: var(--sea-gold) !important;
+    background-color: var(--sea-gold) !important;
     color: var(--sea-abyss) !important;
 }
 
 .shop-item-card__sale-badge {
-    background: var(--sea-coral) !important;
+    background-color: var(--sea-coral) !important;
     color: var(--sea-abyss) !important;
 }
 
@@ -964,7 +964,7 @@ a:hover {
 }
 
 .dropdown__button {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
     border-color: var(--sea-mid) !important;
     color: var(--sea-white) !important;
 }
@@ -978,7 +978,7 @@ a:hover {
 }
 
 .dropdown__menu {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
     border-color: var(--sea-mid) !important;
 }
 
@@ -987,7 +987,7 @@ a:hover {
 }
 
 .dropdown__item:hover {
-    background: var(--sea-mid) !important;
+    background-color: var(--sea-mid) !important;
 }
 
 .dropdown__spacer {
@@ -1007,13 +1007,13 @@ a:hover {
 }
 
 .shop-order__content {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
     color: var(--sea-white) !important;
     border-radius: 2em !important;
 }
 
 .shop-order__details {
-    background: transparent !important;
+    background-color: transparent !important;
     color: var(--sea-white) !important;
 }
 
@@ -1040,7 +1040,7 @@ a:hover {
 }
 
 .input-group {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
     border-radius: 16px !important;
 }
 
@@ -1086,7 +1086,7 @@ a:hover {
 }
 
 .hackatime-project-selector {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
     border-color: var(--sea-mid) !important;
     border-radius: 16px !important;
 }
@@ -1102,21 +1102,21 @@ a:hover {
 }
 
 .hackatime-project-selector__control {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
 }
 
 .hackatime-project-selector__select {
-    background: var(--sea-abyss) !important;
+    background-color: var(--sea-abyss) !important;
     border-color: var(--sea-mid) !important;
     color: var(--sea-white) !important;
 }
 
 .hackatime-project-selector__selected {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .hackatime-project-selector__project {
-    background: var(--sea-mid) !important;
+    background-color: var(--sea-mid) !important;
     border-color: var(--sea-surface) !important;
 }
 
@@ -1139,7 +1139,7 @@ a:hover {
 }
 
 .hackatime-project-selector__project-remove {
-    background: var(--sea-coral) !important;
+    background-color: var(--sea-coral) !important;
     color: var(--sea-abyss) !important;
 }
 
@@ -1167,13 +1167,13 @@ a:hover {
 }
 
 .btn--red {
-    background: var(--sea-coral) !important;
+    background-color: var(--sea-coral) !important;
     color: var(--sea-abyss) !important;
     border-color: var(--sea-coral) !important;
 }
 
 .btn--red:hover {
-    background: var(--sea-sand) !important;
+    background-color: var(--sea-sand) !important;
     border-color: var(--sea-sand) !important;
 }
 
@@ -1201,12 +1201,12 @@ a:hover {
 }
 
 .flavortown-goals-enhanced {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
     border-color: var(--sea-mid) !important;
 }
 
 .flavortown-goals-enhanced__header {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .flavortown-goals-enhanced__title {
@@ -1214,11 +1214,11 @@ a:hover {
 }
 
 .flavortown-goals-enhanced__progress-bar {
-    background: var(--sea-surface) !important;
+    background-color: var(--sea-surface) !important;
 }
 
 .flavortown-goals-enhanced__progress-fill {
-    background: var(--sea-cyan) !important;
+    background-color: var(--sea-cyan) !important;
     background-image: none !important;
 }
 
@@ -1227,11 +1227,11 @@ a:hover {
 }
 
 .flavortown-goals-enhanced__stats {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .flavortown-goals-enhanced__stat {
-    background: var(--sea-mid) !important;
+    background-color: var(--sea-mid) !important;
     border-color: var(--sea-surface) !important;
 }
 
@@ -1244,21 +1244,21 @@ a:hover {
 }
 
 .flavortown-goals-enhanced__items-header {
-    background: var(--sea-mid) !important;
+    background-color: var(--sea-mid) !important;
     color: var(--sea-white) !important;
 }
 
 .flavortown-goals-enhanced__items-grid {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .flavortown-goal-item {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
     border-color: var(--sea-mid) !important;
 }
 
 .flavortown-goal-item__image {
-    background: var(--sea-mid) !important;
+    background-color: var(--sea-mid) !important;
 }
 
 .flavortown-goal-item__name {
@@ -1266,11 +1266,11 @@ a:hover {
 }
 
 .flavortown-goal-item__progress-bar {
-    background: var(--sea-surface) !important;
+    background-color: var(--sea-surface) !important;
 }
 
 .flavortown-goal-item__progress-fill {
-    background: var(--sea-cyan) !important;
+    background-color: var(--sea-cyan) !important;
 }
 
 .flavortown-goal-item__info {
@@ -1278,22 +1278,22 @@ a:hover {
 }
 
 .flavortown-goals-enhanced__stat--remaining {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
     border-color: var(--sea-coral) !important;
 }
 
 .flavortown-goals-enhanced__stat--time {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
     border-color: var(--sea-kelp) !important;
 }
 
 .achievements__stats {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
     border-radius: 12px !important;
 }
 
 .achievements__card {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
     border-radius: 16px !important;
 }
 
@@ -1303,7 +1303,7 @@ a:hover {
 }
 
 .achievements__icon {
-    background: var(--sea-mid) !important;
+    background-color: var(--sea-mid) !important;
 }
 
 .achievements__name {
@@ -1316,24 +1316,24 @@ a:hover {
 
 .achievements__reward {
     color: var(--sea-abyss) !important;
-    background: var(--sea-gold) !important;
+    background-color: var(--sea-gold) !important;
 }
 
 .achievements__earned-at {
     color: var(--sea-abyss) !important;
-    background: var(--sea-kelp) !important;
+    background-color: var(--sea-kelp) !important;
 }
 
 .achievements__progress {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .achievements__progress-bar {
-    background: var(--sea-surface) !important;
+    background-color: var(--sea-surface) !important;
 }
 
 .achievements__progress-fill {
-    background: var(--sea-cyan) !important;
+    background-color: var(--sea-cyan) !important;
 }
 
 .achievements__progress-text {
@@ -1350,11 +1350,11 @@ a:hover {
 }
 
 .user {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
 }
 
 .user .content {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .user .content h2 {
@@ -1389,7 +1389,7 @@ a:hover {
 }
 
 .music-player__play-pause {
-    background: var(--sea-cyan) !important;
+    background-color: var(--sea-cyan) !important;
     color: var(--sea-abyss) !important;
 }
 
@@ -1398,39 +1398,39 @@ a:hover {
 }
 
 .music-player__volume {
-    background: var(--sea-mid) !important;
+    background-color: var(--sea-mid) !important;
     border-radius: 8px !important;
 }
 
 .music-player__volume input[type="range"] {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .music-player__volume input[type="range"]::-webkit-slider-track {
-    background: var(--sea-surface) !important;
+    background-color: var(--sea-surface) !important;
     border-radius: 4px !important;
 }
 
 .music-player__volume input[type="range"]::-webkit-slider-thumb {
-    background: var(--sea-cyan) !important;
+    background-color: var(--sea-cyan) !important;
 }
 
 .input {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
     border-color: var(--sea-mid) !important;
 }
 
 .input--yellow {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
     border-color: var(--sea-mid) !important;
 }
 
 .input--with-icon {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
 }
 
 .input__control {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
 }
 
 .input__icon {
@@ -1447,7 +1447,7 @@ a:hover {
 }
 
 .input__field {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
     color: var(--sea-white) !important;
     border-color: var(--sea-mid) !important;
 }
@@ -1482,34 +1482,35 @@ a:hover {
 }
 
 .btn--green {
-    background: var(--sea-kelp) !important;
+    background-color: var(--sea-kelp) !important;
     color: var(--sea-abyss) !important;
     border-color: var(--sea-kelp) !important;
 }
 
 .btn--green:hover {
-    background: var(--sea-teal) !important;
+    background-color: var(--sea-teal) !important;
     border-color: var(--sea-teal) !important;
 }
 
 .shop-item-card::before {
     background: var(--sea-dark) !important;
+    filter: hue-rotate(180deg) saturate(1.5) !important;
     opacity: 0.5 !important;
 }
 
 .flavortown-card-qty {
-    background: var(--sea-mid) !important;
+    background-color: var(--sea-mid) !important;
     border-color: var(--sea-surface) !important;
 }
 
 .flavortown-card-qty__btn {
-    background: var(--sea-surface) !important;
+    background-color: var(--sea-surface) !important;
     color: var(--sea-white) !important;
     border-color: var(--sea-foam) !important;
 }
 
 .flavortown-card-qty__btn:hover {
-    background: var(--sea-cyan) !important;
+    background-color: var(--sea-cyan) !important;
     color: var(--sea-abyss) !important;
 }
 
@@ -1518,16 +1519,16 @@ a:hover {
 }
 
 .btn-primary {
-    background: var(--sea-cyan) !important;
+    background-color: var(--sea-cyan) !important;
     color: var(--sea-abyss) !important;
 }
 
 .settings-form {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .settings-form__field {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .settings-form__label {
@@ -1535,7 +1536,7 @@ a:hover {
 }
 
 .settings-form__input {
-    background: var(--sea-abyss) !important;
+    background-color: var(--sea-abyss) !important;
     border-color: var(--sea-mid) !important;
     color: var(--sea-white) !important;
 }
@@ -1549,11 +1550,11 @@ a:hover {
 }
 
 .api-key-container {
-    background: var(--sea-abyss) !important;
+    background-color: var(--sea-abyss) !important;
 }
 
 .api-key-display {
-    background: var(--sea-abyss) !important;
+    background-color: var(--sea-abyss) !important;
     color: var(--sea-white) !important;
 }
 
@@ -1567,30 +1568,30 @@ a:hover {
 }
 
 ::-webkit-scrollbar-track {
-    background: var(--sea-deep);
+    background-color: var(--sea-deep);
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--sea-surface);
+    background-color: var(--sea-surface);
     border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--sea-wave);
+    background-color: var(--sea-wave);
 }
 
 .user-profile__left {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .user-profile__card {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
     border-color: var(--sea-mid) !important;
     color: var(--sea-white) !important;
 }
 
 .user-profile__identity {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .user-profile__identity h1 {
@@ -1607,7 +1608,7 @@ a:hover {
 
 .user-profile__heading {
     color: var(--sea-white) !important;
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .user-profile__heading svg {
@@ -1615,11 +1616,11 @@ a:hover {
 }
 
 .user-profile__stats {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .user-profile__stat {
-    background: var(--sea-mid) !important;
+    background-color: var(--sea-mid) !important;
     border-color: var(--sea-surface) !important;
 }
 
@@ -1632,11 +1633,11 @@ a:hover {
 }
 
 .user-profile__times {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .user-profile__time {
-    background: var(--sea-mid) !important;
+    background-color: var(--sea-mid) !important;
 }
 
 .user-profile__time h4 {
@@ -1644,16 +1645,16 @@ a:hover {
 }
 
 .user-profile__achievements {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .user-profile__achievement {
-    background: var(--sea-mid) !important;
+    background-color: var(--sea-mid) !important;
     border-color: var(--sea-surface) !important;
 }
 
 .user-profile__achievement-icon {
-    background: var(--sea-surface) !important;
+    background-color: var(--sea-surface) !important;
 }
 
 .user-profile__achievement-title {
@@ -1662,20 +1663,20 @@ a:hover {
 
 .achievement-icon-placeholder {
     color: var(--sea-foam) !important;
-    background: var(--sea-surface) !important;
+    background-color: var(--sea-surface) !important;
 }
 
 .user-profile__projects {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .user-profile__project-card {
-    background: var(--sea-mid) !important;
+    background-color: var(--sea-mid) !important;
     border-color: var(--sea-surface) !important;
 }
 
 .user-profile__project-card:hover {
-    background: var(--sea-surface) !important;
+    background-color: var(--sea-surface) !important;
     border-color: var(--sea-cyan) !important;
 }
 
@@ -1692,21 +1693,21 @@ a:hover {
 }
 
 .votes-new__main {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .votes-new__project {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .votes-new__project-card {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
     border-color: var(--sea-mid) !important;
     color: var(--sea-white) !important;
 }
 
 .votes-new__project-details {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .votes-new__project-card-content h1 {
@@ -1730,15 +1731,15 @@ a:hover {
 }
 
 .votes-new__project-buttons {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .votes-new__devlogs {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .votes-new__form {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
     border-color: var(--sea-mid) !important;
     color: var(--sea-white) !important;
 }
@@ -1748,7 +1749,7 @@ a:hover {
 }
 
 .vote-category {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
     border-color: var(--sea-mid) !important;
     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4)) !important;
 }
@@ -1821,16 +1822,16 @@ a:hover {
 }
 
 .btn-submit {
-    background: var(--sea-kelp) !important;
+    background-color: var(--sea-kelp) !important;
     color: var(--sea-abyss) !important;
 }
 
 .btn-submit:hover {
-    background: var(--sea-cyan) !important;
+    background-color: var(--sea-cyan) !important;
 }
 
 .modal {
-    background: var(--sea-abyss) !important;
+    background-color: var(--sea-abyss) !important;
     border-color: var(--sea-mid) !important;
     color: var(--sea-white) !important;
 }
@@ -1848,7 +1849,7 @@ a:hover {
 }
 
 .form-field {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
     border-color: var(--sea-mid) !important;
     color: var(--sea-white) !important;
 }
@@ -1858,16 +1859,16 @@ a:hover {
 }
 
 .modal__actions-close {
-    background: var(--sea-mid) !important;
+    background-color: var(--sea-mid) !important;
     color: var(--sea-white) !important;
 }
 
 .comment-form {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .comment-form__input {
-    background: var(--sea-deep) !important;
+    background-color: var(--sea-deep) !important;
     border: 1px solid var(--sea-mid) !important;
     color: var(--sea-white) !important;
 }
@@ -1877,7 +1878,7 @@ a:hover {
 }
 
 .comments-section {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .comments-section__title {
@@ -1885,7 +1886,7 @@ a:hover {
 }
 
 .comment {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
     border-color: var(--sea-mid) !important;
 }
 
@@ -1914,16 +1915,16 @@ a:hover {
 }
 
 .report-btn {
-    background: var(--sea-gold) !important;
+    background-color: var(--sea-gold) !important;
     color: var(--sea-abyss) !important;
 }
 
 .shop-order__accessories {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .shop-order__accessory-group-section {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
     border-color: var(--sea-mid) !important;
 }
 
@@ -1932,7 +1933,7 @@ a:hover {
 }
 
 .shop-order__accessory-options {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .shop-order__accessory-option-label {
@@ -1940,7 +1941,7 @@ a:hover {
 }
 
 .shop-order__accessory-option-block {
-    background: var(--sea-mid) !important;
+    background-color: var(--sea-mid) !important;
     border: 2px solid var(--sea-surface) !important;
     color: var(--sea-white) !important;
     border-radius: 8px !important;
@@ -1948,12 +1949,12 @@ a:hover {
 }
 
 .shop-order__accessory-option-block:hover {
-    background: var(--sea-surface) !important;
+    background-color: var(--sea-surface) !important;
     border-color: var(--sea-cyan) !important;
 }
 
 .shop-order__accessory-option-input:checked+.shop-order__accessory-option-block {
-    background: var(--sea-cyan) !important;
+    background-color: var(--sea-cyan) !important;
     border-color: var(--sea-cyan) !important;
     color: var(--sea-abyss) !important;
 }
@@ -1968,7 +1969,7 @@ a:hover {
 }
 
 .flavortown-achievement-toast {
-    background: linear-gradient(135deg, var(--sea-dark) 0%, var(--sea-mid) 100%) !important;
+    background-color: linear-gradient(135deg, var(--sea-dark) 0%, var(--sea-mid) 100%) !important;
     border-color: var(--sea-cyan) !important;
 }
 
@@ -1993,11 +1994,11 @@ a:hover {
 }
 
 .flavortown-goals-enhanced {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
 }
 
 .flavortown-goals-enhanced__card {
-    background: var(--sea-mid) !important;
+    background-color: var(--sea-mid) !important;
     border-color: var(--sea-slate) !important;
 }
 
@@ -2010,7 +2011,7 @@ a:hover {
 }
 
 .flavortown-goals-enhanced__card--danger {
-    background: var(--sea-coral) !important;
+    background-color: var(--sea-coral) !important;
 }
 
 .flavortown-goals-enhanced__card--danger .flavortown-goals-enhanced__card-label,
@@ -2019,7 +2020,7 @@ a:hover {
 }
 
 .flavortown-goals-enhanced__card--success {
-    background: var(--sea-green) !important;
+    background-color: var(--sea-green) !important;
 }
 
 .flavortown-goals-enhanced__card--success .flavortown-goals-enhanced__card-label,
@@ -2028,15 +2029,15 @@ a:hover {
 }
 
 .flavortown-goals-enhanced__progress-bar {
-    background: var(--sea-mid) !important;
+    background-color: var(--sea-mid) !important;
 }
 
 .flavortown-goals-enhanced__progress-fill {
-    background: linear-gradient(90deg, var(--sea-cyan) 0%, var(--sea-teal) 100%) !important;
+    background-color: linear-gradient(90deg, var(--sea-cyan) 0%, var(--sea-teal) 100%) !important;
 }
 
 .flavortown-priority-section {
-    background: linear-gradient(135deg, var(--sea-dark) 0%, var(--sea-mid) 100%) !important;
+    background-color: linear-gradient(135deg, var(--sea-dark) 0%, var(--sea-mid) 100%) !important;
     border-color: var(--sea-gold) !important;
 }
 
@@ -2051,31 +2052,31 @@ a:hover {
 }
 
 .flavortown-priority-section__progress-bar {
-    background: var(--sea-slate) !important;
+    background-color: var(--sea-slate) !important;
 }
 
 .flavortown-priority-section__progress-fill {
-    background: linear-gradient(90deg, var(--sea-gold) 0%, var(--sea-coral) 100%) !important;
+    background-color: linear-gradient(90deg, var(--sea-gold) 0%, var(--sea-coral) 100%) !important;
 }
 
 .flavortown-priority-pill {
-    background: var(--sea-slate) !important;
+    background-color: var(--sea-slate) !important;
     border-color: var(--sea-gold) !important;
     color: var(--sea-white) !important;
 }
 
 .flavortown-goals-enhanced__accordion {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
     border-color: var(--sea-slate) !important;
 }
 
 .flavortown-goals-enhanced__accordion-header,
 .flavortown-accordion-inner {
-    background: var(--sea-mid) !important;
+    background-color: var(--sea-mid) !important;
 }
 
 .flavortown-goals-enhanced__accordion-header:hover .flavortown-accordion-inner {
-    background: var(--sea-slate) !important;
+    background-color: var(--sea-slate) !important;
 }
 
 .flavortown-accordion-title {
@@ -2083,7 +2084,7 @@ a:hover {
 }
 
 .flavortown-goals-enhanced__accordion-content {
-    background: var(--sea-abyss) !important;
+    background-color: var(--sea-abyss) !important;
     border-color: var(--sea-dark) !important;
 }
 
@@ -2100,7 +2101,7 @@ a:hover {
 }
 
 .flavortown-goal-item {
-    background: linear-gradient(90deg, var(--progress-bg-overlay) var(--progress, 0%), var(--sea-dark) var(--progress, 0%)) !important;
+    background-color: linear-gradient(90deg, var(--progress-bg-overlay) var(--progress, 0%), var(--sea-dark) var(--progress, 0%)) !important;
     border-color: var(--sea-slate) !important;
 }
 
@@ -2122,7 +2123,7 @@ a:hover {
 
 .goal-item--priority {
     border-left-color: var(--sea-gold) !important;
-    background: linear-gradient(90deg, var(--progress-prio-overlay) var(--progress, 0%), transparent var(--progress, 0%)), linear-gradient(135deg, var(--sea-dark) 0%, var(--sea-mid) 100%) !important;
+    background-color: linear-gradient(90deg, var(--progress-prio-overlay) var(--progress, 0%), transparent var(--progress, 0%)), linear-gradient(135deg, var(--sea-dark) 0%, var(--sea-mid) 100%) !important;
 }
 
 .goal-item__name-compact {
@@ -2130,7 +2131,7 @@ a:hover {
 }
 
 .flavortown-stat-pill {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
     border-color: var(--sea-slate) !important;
     color: var(--sea-white) !important;
 }
@@ -2156,22 +2157,22 @@ a:hover {
 }
 
 .goal-item__acc-pill {
-    background: var(--sea-slate) !important;
+    background-color: var(--sea-slate) !important;
     color: var(--sea-mist) !important;
 }
 
 .goal-item__qty-btn-sm {
-    background: var(--sea-mid) !important;
+    background-color: var(--sea-mid) !important;
     border-color: var(--sea-slate) !important;
     color: var(--sea-white) !important;
 }
 
 .goal-item__qty-btn-sm:hover {
-    background: var(--sea-slate) !important;
+    background-color: var(--sea-slate) !important;
 }
 
 .goal-item__remove-compact {
-    background: rgba(255, 107, 107, 0.2) !important;
+    background-color: rgba(255, 107, 107, 0.2) !important;
     color: var(--sea-coral) !important;
 }
 
@@ -2184,13 +2185,13 @@ a:hover {
 }
 
 .table-data {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
     border-color: var(--sea-slate) !important;
     box-shadow: none !important;
 }
 
 .table-data thead th {
-    background: var(--sea-mid) !important;
+    background-color: var(--sea-mid) !important;
     color: var(--sea-white) !important;
     border-bottom-color: var(--sea-slate) !important;
 }
@@ -2201,11 +2202,11 @@ a:hover {
 }
 
 .table-data tbody tr:hover td {
-    background: var(--sea-mid) !important;
+    background-color: var(--sea-mid) !important;
 }
 
 .pagy.series-nav {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
     border-color: var(--sea-slate) !important;
     box-shadow: none !important;
 }
@@ -2213,26 +2214,26 @@ a:hover {
 .pagy.series-nav a,
 .pagy.series-nav span {
     color: var(--sea-foam) !important;
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .pagination a {
-    background: transparent !important;
+    background-color: transparent !important;
     color: var(--sea-foam) !important;
 }
 
 .pagy.series-nav a:hover:not([disabled]) {
-    background: var(--sea-slate) !important;
+    background-color: var(--sea-slate) !important;
     color: var(--sea-white) !important;
 }
 
 .pagy.series-nav a[aria-current="page"] {
-    background: var(--sea-cyan) !important;
+    background-color: var(--sea-cyan) !important;
     color: var(--sea-abyss) !important;
 }
 
 .input-primary {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
     border-color: var(--sea-slate) !important;
     color: var(--sea-white) !important;
 }
@@ -2243,7 +2244,7 @@ a:hover {
 }
 
 .flavortown-search-input-wrapper {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
 }
 
@@ -2252,20 +2253,20 @@ a:hover {
 }
 
 .flavortown-search-input-wrapper:has(.flavortown-search-input:focus) {
-    background: var(--sea-abyss) !important;
+    background-color: var(--sea-abyss) !important;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3) !important;
 }
 
 .table-data tbody tr {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .table-data tbody tr:nth-child(even) {
-    background: rgba(255, 255, 255, 0.02) !important;
+    background-color: rgba(255, 255, 255, 0.02) !important;
 }
 
 .card {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
     border-color: var(--sea-slate) !important;
     box-shadow: none !important;
 }
@@ -2280,7 +2281,7 @@ a:hover {
 }
 
 .form-control {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
     border-color: var(--sea-slate) !important;
     color: var(--sea-white) !important;
 }
@@ -2291,34 +2292,34 @@ a:hover {
 }
 
 .badge-pending {
-    background: color-mix(in srgb, var(--sea-gold), transparent 85%) !important;
+    background-color: color-mix(in srgb, var(--sea-gold), transparent 85%) !important;
     color: var(--sea-gold) !important;
     border-color: color-mix(in srgb, var(--sea-gold), transparent 70%) !important;
 }
 
 .badge-reviewed {
-    background: color-mix(in srgb, var(--sea-green), transparent 85%) !important;
+    background-color: color-mix(in srgb, var(--sea-green), transparent 85%) !important;
     color: var(--sea-green) !important;
     border-color: color-mix(in srgb, var(--sea-green), transparent 70%) !important;
 }
 
 .badge-dismissed {
-    background: color-mix(in srgb, var(--sea-slate), transparent 85%) !important;
+    background-color: color-mix(in srgb, var(--sea-slate), transparent 85%) !important;
     color: var(--sea-mist) !important;
     border-color: color-mix(in srgb, var(--sea-slate), transparent 70%) !important;
 }
 
 .btn-secondary {
-    background: var(--sea-slate) !important;
+    background-color: var(--sea-slate) !important;
     color: var(--sea-white) !important;
 }
 
 .btn-secondary:hover {
-    background: color-mix(in srgb, var(--sea-slate), white 10%) !important;
+    background-color: color-mix(in srgb, var(--sea-slate), white 10%) !important;
 }
 
 .action-leaderboard {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
     border-color: var(--sea-slate) !important;
     box-shadow: none !important;
 }
@@ -2329,11 +2330,11 @@ a:hover {
 }
 
 .leaderboard-table tr.highlight {
-    background: var(--sea-mid) !important;
+    background-color: var(--sea-mid) !important;
 }
 
 .leaderboard-table tr:hover {
-    background: var(--sea-slate) !important;
+    background-color: var(--sea-slate) !important;
 }
 
 .leaderboard-table .stat-approved {
@@ -2361,7 +2362,7 @@ a:hover {
 }
 
 .flavortown-search-results {
-    background: var(--sea-abyss) !important;
+    background-color: var(--sea-abyss) !important;
     border-color: var(--sea-slate) !important;
 }
 
@@ -2370,12 +2371,12 @@ a:hover {
 }
 
 .flavortown-search-close {
-    background: rgba(255, 107, 107, 0.2) !important;
+    background-color: rgba(255, 107, 107, 0.2) !important;
     color: var(--sea-coral) !important;
 }
 
 .flavortown-project-card {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
     border-color: var(--sea-slate) !important;
 }
 
@@ -2430,7 +2431,7 @@ a:hover {
 }
 
 .flavortown-stat-card {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
     border-color: var(--sea-mid) !important;
 }
 
@@ -2443,7 +2444,7 @@ a:hover {
 }
 
 .flavortown-graph-container {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
     border-color: var(--sea-mid) !important;
 }
 
@@ -2452,11 +2453,11 @@ a:hover {
 }
 
 #flavortown-cookies-graph {
-    background: var(--sea-abyss) !important;
+    background-color: var(--sea-abyss) !important;
 }
 
 .flavortown-efficiency {
-    background: var(--sea-dark) !important;
+    background-color: var(--sea-dark) !important;
     border-color: var(--sea-mid) !important;
 }
 
@@ -2473,7 +2474,7 @@ a:hover {
 }
 
 .flavortown-efficiency__rate {
-    background: var(--sea-mid) !important;
+    background-color: var(--sea-mid) !important;
 }
 
 .flavortown-efficiency__rate-val {
@@ -2485,19 +2486,19 @@ a:hover {
 }
 
 .flavortown-efficiency__progress-bar {
-    background: var(--sea-mid) !important;
+    background-color: var(--sea-mid) !important;
 }
 
 .flavortown-efficiency__slider {
-    background: var(--sea-mid) !important;
+    background-color: var(--sea-mid) !important;
 }
 
 .flavortown-efficiency__slider::-webkit-slider-thumb {
-    background: var(--sea-cyan) !important;
+    background-color: var(--sea-cyan) !important;
 }
 
 .flavortown-efficiency__slider::-moz-range-thumb {
-    background: var(--sea-cyan) !important;
+    background-color: var(--sea-cyan) !important;
 }
 
 .flavortown-efficiency__slider-row {
@@ -2511,4 +2512,82 @@ a:hover {
 .flavortown-efficiency__custom-rate,
 .flavortown-efficiency__custom-time {
     color: var(--sea-cyan) !important;
+}
+
+.explore__header {
+    color: var(--sea-white) !important;
+}
+
+.explore__header-title {
+    color: var(--sea-white) !important;
+}
+
+.explore__description {
+    color: var(--sea-foam) !important;
+}
+
+.explore__details {
+    background-color: var(--sea-dark) !important;
+    border-color: var(--sea-mid) !important;
+}
+
+.explore__details summary {
+    color: var(--sea-white) !important;
+}
+
+.explore__details-content {
+    color: var(--sea-foam) !important;
+}
+
+.explore__code {
+    background-color: var(--sea-abyss) !important;
+    color: var(--sea-cyan) !important;
+}
+
+.grid {
+    background: transparent !important;
+}
+
+.card {
+    background-color: var(--sea-dark) !important;
+    border-color: var(--sea-mid) !important;
+}
+
+.card .content {
+    background: transparent !important;
+}
+
+.card .content h2 {
+    color: var(--sea-cyan) !important;
+}
+
+.card .content p {
+    color: var(--sea-foam) !important;
+}
+
+.card .content label {
+    color: var(--sea-mist) !important;
+}
+
+.card pre,
+.card code {
+    background: var(--sea-abyss) !important;
+    color: var(--sea-white) !important;
+    border-color: var(--sea-mid) !important;
+}
+
+.query-params,
+.response {
+    background: var(--sea-abyss) !important;
+    color: var(--sea-foam) !important;
+    border-color: var(--sea-mid) !important;
+}
+
+.flavortown-priority-section {
+    background: var(--sea-dark) !important;
+}
+
+.goal-item--priority {
+    background: var(--sea-mid) !important;
+    border-left-color: var(--sea-yellow) !important;
 }
