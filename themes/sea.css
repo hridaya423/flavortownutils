@@ -14,6 +14,7 @@
     --sea-kelp: #2ed573;
     --sea-cyan: #22d3ee;
     --sea-sand: #f5deb3;
+    --sea-slate: var(--sea-surface);
     --color-cream: var(--sea-abyss) !important;
     --color-cream-dark: var(--sea-deep) !important;
     --color-brown: var(--sea-cyan) !important;
@@ -2020,7 +2021,7 @@ a:hover {
 }
 
 .flavortown-goals-enhanced__card--success {
-    background-color: var(--sea-green) !important;
+    background-color: var(--sea-kelp) !important;
 }
 
 .flavortown-goals-enhanced__card--success .flavortown-goals-enhanced__card-label,
@@ -2088,21 +2089,17 @@ a:hover {
     border-color: var(--sea-dark) !important;
 }
 
-.flavortown-goal-item {
-    --progress-bg-overlay: color-mix(in srgb, var(--sea-cyan), transparent 85%);
+.flavortown-goal-item,
+.flavortown-goal-item[data-progress-state="mid"],
+.flavortown-goal-item[data-progress-state="low"],
+.flavortown-goal-item[data-progress-state="high"] {
+    background: linear-gradient(90deg, var(--sea-cyan) var(--progress, 0%), var(--sea-dark) var(--progress, 0%)) !important;
+    border-color: var(--sea-mid) !important;
 }
 
-.flavortown-goal-item[data-progress-state="mid"] {
-    --progress-bg-overlay: color-mix(in srgb, var(--sea-gold), transparent 85%);
-}
-
-.flavortown-goal-item[data-progress-state="low"] {
-    --progress-bg-overlay: color-mix(in srgb, var(--sea-coral), transparent 85%);
-}
-
-.flavortown-goal-item {
-    background-color: linear-gradient(90deg, var(--progress-bg-overlay) var(--progress, 0%), var(--sea-dark) var(--progress, 0%)) !important;
-    border-color: var(--sea-slate) !important;
+.flavortown-goal-item::before {
+    display: none !important;
+    content: none !important;
 }
 
 .flavortown-goal-item:hover {
@@ -2110,20 +2107,7 @@ a:hover {
 }
 
 .goal-item--priority {
-    --progress-prio-overlay: color-mix(in srgb, var(--sea-gold), transparent 85%);
-}
-
-.goal-item--priority[data-progress-state="mid"] {
-    --progress-prio-overlay: color-mix(in srgb, var(--sea-gold), transparent 85%);
-}
-
-.goal-item--priority[data-progress-state="low"] {
-    --progress-prio-overlay: color-mix(in srgb, var(--sea-coral), transparent 85%);
-}
-
-.goal-item--priority {
-    border-left-color: var(--sea-gold) !important;
-    background-color: linear-gradient(90deg, var(--progress-prio-overlay) var(--progress, 0%), transparent var(--progress, 0%)), linear-gradient(135deg, var(--sea-dark) 0%, var(--sea-mid) 100%) !important;
+    border-left: 4px solid var(--sea-gold) !important;
 }
 
 .goal-item__name-compact {

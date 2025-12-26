@@ -349,8 +349,8 @@
 }
 
 .flavortown-priority-section {
-    background: linear-gradient(135deg, #fdf6e3 0%, #ffefd5 100%) !important;
-    border: 2px solid #e6a84d !important;
+    background: #fef2f2 !important;
+    border: 2px solid #f87171 !important;
     border-radius: 12px !important;
     padding: 16px !important;
     margin-bottom: 16px !important;
@@ -366,12 +366,12 @@
 .flavortown-priority-section__title {
     font-weight: 800 !important;
     font-size: 1em !important;
-    color: #8b6914 !important;
+    color: #dc2626 !important;
 }
 
 .flavortown-priority-section__count {
     font-size: 0.8em !important;
-    color: #a07d1c !important;
+    color: #ef4444 !important;
     font-weight: 600 !important;
 }
 
@@ -385,14 +385,14 @@
 .flavortown-priority-section__progress-bar {
     flex: 1 !important;
     height: 10px !important;
-    background: #fff3cd !important;
+    background: #fecaca !important;
     border-radius: 5px !important;
     overflow: hidden !important;
 }
 
 .flavortown-priority-section__progress-fill {
     height: 100% !important;
-    background: linear-gradient(90deg, #e6a84d 0%, #f4c35b 100%) !important;
+    background: #f87171 !important;
     border-radius: 5px !important;
     transition: width 0.3s ease !important;
 }
@@ -400,7 +400,7 @@
 .flavortown-priority-section__pct {
     font-weight: 700 !important;
     font-size: 0.85em !important;
-    color: #8b6914 !important;
+    color: #dc2626 !important;
     min-width: 40px !important;
 }
 
@@ -422,35 +422,34 @@
 
 .flavortown-priority-pill {
     background: #fff !important;
-    border: 1px solid #e6a84d !important;
+    border: 1px solid #f87171 !important;
     border-radius: 20px !important;
     padding: 4px 12px !important;
     font-size: 0.75em !important;
     font-weight: 600 !important;
-    color: #8b6914 !important;
+    color: #dc2626 !important;
     cursor: pointer !important;
     transition: all 0.2s ease !important;
 }
 
 .flavortown-priority-pill:hover {
-    background: #ffefd5 !important;
+    background: #fef2f2 !important;
 }
 
 .goal-item--priority {
-    --progress-overlay: rgba(230, 168, 77, 0.15);
+    --progress-overlay: rgba(248, 113, 113, 0.2);
 }
 
 .goal-item--priority[data-progress-state="mid"] {
-    --progress-overlay: rgba(250, 200, 20, 0.15);
+    --progress-overlay: rgba(251, 146, 60, 0.2);
 }
 
 .goal-item--priority[data-progress-state="low"] {
-    --progress-overlay: rgba(255, 80, 80, 0.15);
+    --progress-overlay: rgba(239, 68, 68, 0.25);
 }
 
 .goal-item--priority {
-    border-left: 4px solid #e6a84d !important;
-    background: linear-gradient(90deg, var(--progress-overlay) var(--progress, 0%), transparent var(--progress, 0%)), linear-gradient(135deg, #fffdf5 0%, #fff 100%) !important;
+    border-left: 4px solid #f87171 !important;
 }
 
 .goal-item__priority-btn {
@@ -2445,6 +2444,7 @@
     border-radius: 4px;
     transition: width 0.3s ease;
 }
+
 /* Efficiency Accordion */
 .flavortown-efficiency__accordion {
     margin-top: 8px;
@@ -2478,5 +2478,45 @@
 }
 
 .flavortown-efficiency__accordion-content {
+    padding-top: 8px;
+}
+
+.flavortown-progress-mode-row {
+    display: flex;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 10;
+}
+
+.flavortown-progress-mode-toggle {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    cursor: pointer;
+    font-size: 14px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    transition: all 0.2s;
+    color: inherit;
+    margin-left: auto;
+    margin-right: 8px;
+    position: relative;
+    z-index: 10;
+}
+
+.flavortown-progress-mode-toggle:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.flavortown-progress-mode-inline {
+    position: absolute;
+    top: -32px;
+    right: 4px;
+    z-index: 10;
+}
+
+.flavortown-goals-enhanced__accordion-content {
+    position: relative;
     padding-top: 8px;
 }

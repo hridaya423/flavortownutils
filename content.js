@@ -545,6 +545,18 @@ function enhanceShopGoals() {
         const hoursNeeded = Math.ceil(cookiesRemaining / 10);
         const progressPercent = totalCookiesNeeded > 0 ? Math.min(100, (currentCookies / totalCookiesNeeded) * 100) : 0;
 
+        const progressMode = localStorage.getItem('flavortown_progress_mode') || 'individual';
+        let runningTotal = 0;
+        goalsWithQty.forEach(g => {
+            if (progressMode === 'cumulative') {
+                const availableForThis = Math.max(0, currentCookies - runningTotal);
+                g.displayProgress = g.totalCost > 0 ? Math.min(100, (availableForThis / g.totalCost) * 100) : 100;
+                runningTotal += g.totalCost;
+            } else {
+                g.displayProgress = g.totalCost > 0 ? Math.min(100, (currentCookies / g.totalCost) * 100) : 100;
+            }
+        });
+
         const priorityGoals = goalsWithQty.filter(g => g.isPriority);
         const priorityCookiesNeeded = priorityGoals.reduce((sum, g) => sum + g.totalCost, 0);
         const priorityRemaining = Math.max(0, priorityCookiesNeeded - currentCookies);
@@ -573,7 +585,7 @@ function enhanceShopGoals() {
                 ? '<span class="goal-item__affordable">✓</span>'
                 : `<span class="goal-item__stats-compact">🍪${g.remaining.toLocaleString()}</span><span class="goal-item__time-compact">⏱${g.hoursNeeded}h</span>`;
 
-            const itemProgress = g.totalCost > 0 ? Math.min(100, (currentCookies / g.totalCost) * 100) : 100;
+            const itemProgress = g.displayProgress;
             let progressState = 'high';
             if (itemProgress < 30) progressState = 'low';
             else if (itemProgress < 70) progressState = 'mid';
@@ -677,6 +689,9 @@ function enhanceShopGoals() {
                     <summary class="flavortown-goals-enhanced__accordion-header">
                         <div class="flavortown-accordion-inner">
                             <span class="flavortown-accordion-title">Goal Items</span>
+                            <button class="flavortown-progress-mode-toggle" title="${progressMode === 'cumulative' ? 'Cumulative: fills in order' : 'Individual: each item independent'}">
+                                ${progressMode === 'cumulative' ? '📊' : '📈'}
+                            </button>
                             <span class="flavortown-goals-enhanced__accordion-icon">▼</span>
                         </div>
                     </summary>
@@ -788,6 +803,17 @@ function enhanceShopGoals() {
     }
 
     function handleQtyClick(e) {
+        const progressModeToggle = e.target.closest('.flavortown-progress-mode-toggle');
+        if (progressModeToggle) {
+            e.preventDefault();
+            e.stopPropagation();
+            const currentMode = localStorage.getItem('flavortown_progress_mode') || 'individual';
+            const newMode = currentMode === 'cumulative' ? 'individual' : 'cumulative';
+            localStorage.setItem('flavortown_progress_mode', newMode);
+            updateStats(true);
+            return;
+        }
+
         if (e.target.closest('.flavortown-goals-enhanced__accordion-header') ||
             e.target.closest('summary')) {
             return;

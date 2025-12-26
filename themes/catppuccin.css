@@ -2047,12 +2047,12 @@ a:hover {
 }
 
 .flavortown-priority-section {
-    background: linear-gradient(135deg, var(--ctp-surface0) 0%, var(--ctp-surface1) 100%) !important;
-    border-color: var(--ctp-yellow) !important;
+    background: var(--ctp-surface0) !important;
+    border-color: var(--ctp-mauve) !important;
 }
 
 .flavortown-priority-section__title {
-    color: var(--ctp-yellow) !important;
+    color: var(--ctp-mauve) !important;
 }
 
 .flavortown-priority-section__count,
@@ -2066,12 +2066,12 @@ a:hover {
 }
 
 .flavortown-priority-section__progress-fill {
-    background: linear-gradient(90deg, var(--ctp-yellow) 0%, var(--ctp-peach) 100%) !important;
+    background: var(--ctp-mauve) !important;
 }
 
 .flavortown-priority-pill {
     background: var(--ctp-surface2) !important;
-    border-color: var(--ctp-yellow) !important;
+    border-color: var(--ctp-mauve) !important;
     color: var(--ctp-text) !important;
 }
 
@@ -2099,19 +2099,7 @@ a:hover {
 }
 
 .flavortown-goal-item {
-    --progress-bg-overlay: color-mix(in srgb, var(--ctp-green), transparent 85%);
-}
-
-.flavortown-goal-item[data-progress-state="mid"] {
-    --progress-bg-overlay: color-mix(in srgb, var(--ctp-yellow), transparent 85%);
-}
-
-.flavortown-goal-item[data-progress-state="low"] {
-    --progress-bg-overlay: color-mix(in srgb, var(--ctp-red), transparent 85%);
-}
-
-.flavortown-goal-item {
-    background-color: linear-gradient(90deg, var(--progress-bg-overlay) var(--progress, 0%), var(--ctp-surface0) var(--progress, 0%)) !important;
+    background: linear-gradient(90deg, var(--ctp-surface1) var(--progress, 0%), var(--ctp-surface0) var(--progress, 0%)) !important;
     border-color: var(--ctp-surface2) !important;
 }
 
@@ -2119,21 +2107,21 @@ a:hover {
     border-color: var(--ctp-mauve) !important;
 }
 
+.flavortown-goal-item,
+.flavortown-goal-item[data-progress-state="mid"],
+.flavortown-goal-item[data-progress-state="low"],
+.flavortown-goal-item[data-progress-state="high"] {
+    --progress-bg: var(--ctp-mauve) !important;
+    background: linear-gradient(90deg, var(--ctp-mauve) var(--progress, 0%), var(--ctp-surface0) var(--progress, 0%)) !important;
+}
+
+.flavortown-goal-item::before {
+    display: none !important;
+    content: none !important;
+}
+
 .goal-item--priority {
-    --progress-prio-overlay: color-mix(in srgb, var(--ctp-yellow), transparent 85%);
-}
-
-.goal-item--priority[data-progress-state="mid"] {
-    --progress-prio-overlay: color-mix(in srgb, var(--ctp-yellow), transparent 85%);
-}
-
-.goal-item--priority[data-progress-state="low"] {
-    --progress-prio-overlay: color-mix(in srgb, var(--ctp-red), transparent 85%);
-}
-
-.goal-item--priority {
-    border-left-color: var(--ctp-yellow) !important;
-    background-color: linear-gradient(90deg, var(--progress-prio-overlay) var(--progress, 0%), transparent var(--progress, 0%)), linear-gradient(135deg, var(--ctp-surface0) 0%, var(--ctp-surface1) 100%) !important;
+    border-left: 4px solid var(--ctp-mauve) !important;
 }
 
 .goal-item__name-compact {
@@ -2603,6 +2591,5 @@ a:hover {
 }
 
 .goal-item--priority {
-    background: var(--ctp-surface1) !important;
-    border-left-color: var(--ctp-yellow) !important;
+    border-left: 4px solid var(--ctp-mauve) !important;
 }
