@@ -1945,9 +1945,9 @@ async function enhanceKitchenDashboard() {
             }
         });
 
-        let totalDevlogs = 0;
         let totalProjects = 0;
         let totalMinutes = 0;
+        let totalDevlogs = 0;
         let devlogFrequency = '';
 
         try {
@@ -1957,22 +1957,18 @@ async function enhanceKitchenDashboard() {
                 totalProjects = Object.keys(stats).length;
 
                 Object.values(stats).forEach(project => {
-                    totalDevlogs += project.devlogs || 0;
                     totalMinutes += project.minutes || 0;
+                    totalDevlogs += project.devlogs || 0;
                 });
 
-                if (transactions.length > 1 && totalDevlogs > 0) {
-                    const firstDate = transactions[transactions.length - 1].date;
-                    const lastDate = transactions[0].date;
-                    const daysDiff = Math.max(1, Math.ceil((lastDate - firstDate) / (1000 * 60 * 60 * 24)));
-                    const devlogsPerDay = totalDevlogs / daysDiff;
-
-                    if (devlogsPerDay >= 1) {
-                        devlogFrequency = `${devlogsPerDay.toFixed(1)}/day`;
-                    } else if (devlogsPerDay >= 1 / 7) {
-                        devlogFrequency = `${(devlogsPerDay * 7).toFixed(1)}/week`;
+                if (totalDevlogs > 0 && totalMinutes > 0) {
+                    const avgMinutesPerDevlog = totalMinutes / totalDevlogs;
+                    const hours = Math.floor(avgMinutesPerDevlog / 60);
+                    const mins = Math.round(avgMinutesPerDevlog % 60);
+                    if (hours > 0) {
+                        devlogFrequency = `${hours}h ${mins}m/devlog`;
                     } else {
-                        devlogFrequency = `${(devlogsPerDay * 30).toFixed(1)}/month`;
+                        devlogFrequency = `${mins}m/devlog`;
                     }
                 }
             }
@@ -2028,12 +2024,12 @@ async function enhanceKitchenDashboard() {
                     <span class="flavortown-stat-card__value">📁 ${totalProjects}</span>
                 </div>
                 <div class="flavortown-stat-card">
-                    <span class="flavortown-stat-card__label">Total Devlogs</span>
-                    <span class="flavortown-stat-card__value">📝 ${totalDevlogs}</span>
+                    <span class="flavortown-stat-card__label">Total Time</span>
+                    <span class="flavortown-stat-card__value">⏱ ${Math.floor(totalMinutes / 60)}h ${totalMinutes % 60}m</span>
                 </div>
                 ${devlogFrequency ? `
                 <div class="flavortown-stat-card">
-                    <span class="flavortown-stat-card__label">Devlog Rate</span>
+                    <span class="flavortown-stat-card__label">Avg per Devlog</span>
                     <span class="flavortown-stat-card__value">⚡ ${devlogFrequency}</span>
                 </div>
                 ` : ''}
