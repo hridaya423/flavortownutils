@@ -30,14 +30,13 @@
     --color-accent: var(--sea-cyan) !important;
     --color-border: var(--sea-mid) !important;
 }
-
 body {
     background-color: var(--sea-abyss) !important;
     color: var(--sea-white) !important;
 }
 
 body::before {
-    background-color: linear-gradient(180deg, var(--sea-abyss) 0%, var(--sea-deep) 100%) !important;
+    background-color: var(--sea-abyss) !important;
 }
 
 .sidebar {
@@ -49,12 +48,11 @@ body::before {
 }
 
 .sidebar__nav-link {
-    color: var(--sea-mist) !important;
+    color: var(--sea-white) !important;
 }
 
 .sidebar__nav-link:hover {
     background-color: var(--sea-mid) !important;
-    color: var(--sea-white) !important;
 }
 
 .sidebar__nav-link--active {
@@ -63,7 +61,7 @@ body::before {
 }
 
 .sidebar__nav-icon {
-    color: var(--sea-foam) !important;
+    color: var(--sea-surface) !important;
 }
 
 .sidebar__nav-link--active .sidebar__nav-icon {
@@ -80,7 +78,7 @@ body::before {
 
 .sidebar__user-avatar-hat,
 .sidebar__user-avatar-hat-bg {
-    filter: hue-rotate(180deg) saturate(0.8) !important;
+    filter: hue-rotate(270deg) saturate(0.8) !important;
 }
 
 .sidebar__user-name {
@@ -89,13 +87,12 @@ body::before {
 }
 
 .sidebar__user-balance {
-    background-color: var(--sea-mid) !important;
-    color: var(--sea-gold) !important;
+    color: var(--sea-white) !important;
 }
 
 .sidebar__user-settings,
 .sidebar__user-logout {
-    color: var(--sea-foam) !important;
+    color: var(--sea-surface) !important;
 }
 
 .sidebar__user-settings:hover,
@@ -128,7 +125,7 @@ body::before {
 }
 
 .btn--brown:hover {
-    background-color: var(--sea-spray) !important;
+    background-color: var(--sea-mist) !important;
     color: var(--sea-abyss) !important;
 }
 
@@ -139,7 +136,7 @@ body::before {
 }
 
 .btn--green:hover {
-    background-color: #7bed9f !important;
+    background-color: var(--sea-foam) !important;
     color: var(--sea-abyss) !important;
 }
 
@@ -225,11 +222,11 @@ body::before {
 }
 
 .project-show-card__byline {
-    color: var(--sea-mist) !important;
+    color: var(--sea-foam) !important;
 }
 
 .project-show-card__stat {
-    color: var(--sea-spray) !important;
+    color: var(--sea-mist) !important;
 }
 
 .project-show-card__description {
@@ -237,11 +234,11 @@ body::before {
 }
 
 .project-card__banner-placeholder {
-    background-color: linear-gradient(135deg, var(--sea-mid) 0%, var(--sea-surface) 100%) !important;
+    background-color: var(--sea-mid) !important;
 }
 
 .project-card__banner-placeholder-text {
-    color: var(--sea-foam) !important;
+    color: var(--sea-mid) !important;
 }
 
 .post {
@@ -254,11 +251,11 @@ body::before {
 }
 
 .post__time {
-    color: var(--sea-foam) !important;
+    color: var(--sea-mid) !important;
 }
 
 .post__duration {
-    color: var(--sea-spray) !important;
+    color: var(--sea-surface) !important;
 }
 
 .post__body {
@@ -275,7 +272,7 @@ body::before {
 }
 
 .post__dot {
-    background-color: var(--sea-foam) !important;
+    background-color: var(--sea-mid) !important;
 }
 
 .post__dot.is-active {
@@ -283,7 +280,7 @@ body::before {
 }
 
 .like-button__btn {
-    color: var(--sea-foam) !important;
+    color: var(--sea-surface) !important;
 }
 
 .like-button__btn--liked {
@@ -295,7 +292,7 @@ body::before {
 }
 
 .comments-count {
-    color: var(--sea-foam) !important;
+    color: var(--sea-surface) !important;
 }
 
 .post__interactions {
@@ -326,7 +323,7 @@ body::before {
 }
 
 .comment__time {
-    color: var(--sea-foam) !important;
+    color: var(--sea-mid) !important;
 }
 
 .comment__body {
@@ -357,7 +354,7 @@ body::before {
 }
 
 .comment-form__input::placeholder {
-    color: var(--sea-foam) !important;
+    color: var(--sea-mid) !important;
 }
 
 .comment-form__actions {
@@ -418,11 +415,11 @@ svg {
 }
 
 .input__field::placeholder {
-    color: var(--sea-foam) !important;
+    color: var(--sea-mid) !important;
 }
 
 .input__subtitle {
-    color: var(--sea-foam) !important;
+    color: var(--sea-mid) !important;
 }
 
 .file-upload {
@@ -448,7 +445,7 @@ svg {
 }
 
 .file-upload__hint {
-    color: var(--sea-foam) !important;
+    color: var(--sea-mid) !important;
 }
 
 .file-upload__browse {
@@ -497,7 +494,7 @@ svg {
 
 .dev-footer {
     background-color: var(--sea-deep) !important;
-    color: var(--sea-foam) !important;
+    color: var(--sea-mid) !important;
 }
 
 .dev-footer a {
@@ -509,7 +506,7 @@ a {
 }
 
 a:hover {
-    color: var(--sea-spray) !important;
+    color: var(--sea-mist) !important;
 }
 
 .kitchen-index {
@@ -522,7 +519,7 @@ a:hover {
 
 .kitchen-setup::before {
     background-color: var(--sea-abyss) !important;
-    background-image: repeating-conic-gradient(from 0deg, rgba(102, 217, 239, 0.04) 0deg 90deg, transparent 90deg 180deg) !important;
+    background-image: repeating-conic-gradient(from 0deg, rgba(203, 166, 247, 0.05) 0deg 90deg, transparent 90deg 180deg) !important;
 }
 
 .kitchen-help {
@@ -531,12 +528,12 @@ a:hover {
 
 .kitchen-help::before {
     background-color: var(--sea-abyss) !important;
-    background-image: repeating-conic-gradient(from 0deg, rgba(102, 217, 239, 0.04) 0deg 90deg, transparent 90deg 180deg) !important;
+    background-image: repeating-conic-gradient(from 0deg, rgba(203, 166, 247, 0.04) 0deg 90deg, transparent 90deg 180deg) !important;
 }
 
 .projects-new__card::before {
     background-color: var(--sea-dark) !important;
-    background-image: repeating-conic-gradient(from 0deg, rgba(102, 217, 239, 0.05) 0deg 90deg, transparent 90deg 180deg) !important;
+    background-image: repeating-conic-gradient(from 0deg, rgba(203, 166, 247, 0.06) 0deg 90deg, transparent 90deg 180deg) !important;
 }
 
 .input::before {
@@ -567,7 +564,7 @@ a:hover {
 }
 
 .tutorial-steps__toggle-icon {
-    color: var(--sea-foam) !important;
+    color: var(--sea-surface) !important;
 }
 
 .tutorial-steps__title {
@@ -579,7 +576,7 @@ a:hover {
 }
 
 .tutorial-steps__progress-text {
-    color: var(--sea-spray) !important;
+    color: var(--sea-foam) !important;
 }
 
 .tutorial-steps__progress-bar {
@@ -621,7 +618,7 @@ a:hover {
 }
 
 .state-card--warning {
-    border-color: var(--sea-surface) !important;
+    border-color: var(--sea-gold) !important;
 }
 
 .state-card--neutral {
@@ -667,7 +664,7 @@ a:hover {
 }
 
 .state-card__description {
-    color: var(--sea-mist) !important;
+    color: var(--sea-foam) !important;
 }
 
 .state-card__cta {
@@ -702,7 +699,7 @@ a:hover {
 }
 
 .btn--bg_yellow:hover {
-    background-color: var(--sea-sand) !important;
+    background-color: var(--sea-gold) !important;
     color: var(--sea-abyss) !important;
 }
 
@@ -761,7 +758,7 @@ a:hover {
 }
 
 .project-card__banner-placeholder-text {
-    color: var(--sea-foam) !important;
+    color: var(--sea-mid) !important;
 }
 
 .project-card__content {
@@ -781,24 +778,24 @@ a:hover {
 }
 
 .project-card__description {
-    color: var(--sea-mist) !important;
+    color: var(--sea-foam) !important;
 }
 
 .project-card__description p {
-    color: var(--sea-mist) !important;
+    color: var(--sea-foam) !important;
 }
 
 .project-card__stats {
     background-color: transparent !important;
-    color: var(--sea-spray) !important;
+    color: var(--sea-mist) !important;
 }
 
 .project-card__stats h5 {
-    color: var(--sea-spray) !important;
+    color: var(--sea-mist) !important;
 }
 
 .project-card__stats-icon {
-    color: var(--sea-foam) !important;
+    color: var(--sea-surface) !important;
 }
 
 .projects-show__admin-actions {
@@ -894,7 +891,7 @@ a:hover {
 }
 
 .shop-goals__progress-text {
-    color: var(--sea-mist) !important;
+    color: var(--sea-foam) !important;
 }
 
 .shop-item-card {
@@ -903,7 +900,7 @@ a:hover {
 }
 
 .shop-item-card__star {
-    color: var(--sea-foam) !important;
+    color: var(--sea-surface) !important;
 }
 
 .shop-item-card__star--active {
@@ -923,15 +920,15 @@ a:hover {
 }
 
 .shop-item-card__description {
-    color: var(--sea-mist) !important;
+    color: var(--sea-foam) !important;
 }
 
 .shop-item-card__details {
-    color: var(--sea-spray) !important;
+    color: var(--sea-mist) !important;
 }
 
 .shop-item-card__hours {
-    color: var(--sea-foam) !important;
+    color: var(--sea-surface) !important;
 }
 
 .shop-item-card__price {
@@ -939,20 +936,20 @@ a:hover {
 }
 
 .shop-item-card__original-price {
-    color: var(--sea-foam) !important;
+    color: var(--sea-mid) !important;
 }
 
 .shop-item-card__order-button {
-    background-color: transparent !important;
+    background: transparent !important;
 }
 
 .shop-item-card__stock-badge {
-    background-color: var(--sea-gold) !important;
+    background: var(--sea-gold) !important;
     color: var(--sea-abyss) !important;
 }
 
 .shop-item-card__sale-badge {
-    background-color: var(--sea-coral) !important;
+    background: var(--sea-coral) !important;
     color: var(--sea-abyss) !important;
 }
 
@@ -961,7 +958,7 @@ a:hover {
 }
 
 .dropdown__label {
-    color: var(--sea-mist) !important;
+    color: var(--sea-foam) !important;
 }
 
 .dropdown__button {
@@ -975,7 +972,7 @@ a:hover {
 }
 
 .dropdown__icon {
-    color: var(--sea-foam) !important;
+    color: var(--sea-surface) !important;
 }
 
 .dropdown__menu {
@@ -992,7 +989,7 @@ a:hover {
 }
 
 .dropdown__spacer {
-    color: var(--sea-foam) !important;
+    color: var(--sea-mid) !important;
 }
 
 .dropdown--green .dropdown__label {
@@ -1003,7 +1000,7 @@ a:hover {
 
 .dropdown--blue .dropdown__label {
     color: var(--sea-abyss) !important;
-    background-color: var(--sea-blue) !important;
+    background-color: var(--sea-surface) !important;
     border-radius: 8px !important;
 }
 
@@ -1019,7 +1016,7 @@ a:hover {
 }
 
 .shop-order__description {
-    color: var(--sea-mist) !important;
+    color: var(--sea-foam) !important;
 }
 
 .shop-order .btn-order {
@@ -1030,13 +1027,13 @@ a:hover {
 }
 
 .shop-order .btn-order:hover {
-    background-color: var(--sea-teal) !important;
-    border-color: var(--sea-teal) !important;
+    background-color: var(--sea-mist) !important;
+    border-color: var(--sea-mist) !important;
 }
 
 .shop-order .btn-order:disabled {
     background-color: var(--sea-surface) !important;
-    color: var(--sea-foam) !important;
+    color: var(--sea-mid) !important;
     border-color: var(--sea-surface) !important;
 }
 
@@ -1053,7 +1050,7 @@ a:hover {
 
 .input-group__subtitle {
     background-color: var(--sea-dark) !important;
-    color: var(--sea-mist) !important;
+    color: var(--sea-foam) !important;
 }
 
 .input-group--green::before {
@@ -1077,13 +1074,13 @@ a:hover {
 
 .input-group--blue .input-group__label {
     background-color: var(--sea-mid) !important;
-    color: var(--sea-blue) !important;
-    border-left: 3px solid var(--sea-blue) !important;
+    color: var(--sea-surface) !important;
+    border-left: 3px solid var(--sea-surface) !important;
 }
 
 .input-group--blue .input-group__subtitle {
     background-color: var(--sea-dark) !important;
-    color: var(--sea-blue) !important;
+    color: var(--sea-surface) !important;
 }
 
 .hackatime-project-selector {
@@ -1136,7 +1133,7 @@ a:hover {
 }
 
 .hackatime-project-selector__project-meta {
-    color: var(--sea-mist) !important;
+    color: var(--sea-foam) !important;
 }
 
 .hackatime-project-selector__project-remove {
@@ -1149,7 +1146,7 @@ a:hover {
 }
 
 .hackatime-project-selector__subtitle {
-    color: var(--sea-mist) !important;
+    color: var(--sea-foam) !important;
     background-color: transparent !important;
 }
 
@@ -1168,14 +1165,14 @@ a:hover {
 }
 
 .btn--red {
-    background-color: var(--sea-coral) !important;
+    background-color: var(--sea-wave) !important;
     color: var(--sea-abyss) !important;
-    border-color: var(--sea-coral) !important;
+    border-color: var(--sea-wave) !important;
 }
 
 .btn--red:hover {
-    background-color: var(--sea-sand) !important;
-    border-color: var(--sea-sand) !important;
+    background-color: var(--sea-coral) !important;
+    border-color: var(--sea-coral) !important;
 }
 
 .projects-board__title {
@@ -1183,7 +1180,7 @@ a:hover {
 }
 
 .projects-board__subtitle {
-    color: var(--sea-mist) !important;
+    color: var(--sea-foam) !important;
 }
 
 .projects-board__create-card {
@@ -1197,17 +1194,17 @@ a:hover {
 }
 
 .projects-board__create-card::before {
-    filter: hue-rotate(180deg) saturate(0.5) !important;
+    filter: hue-rotate(270deg) saturate(0.5) !important;
     opacity: 0.2 !important;
 }
 
 .flavortown-goals-enhanced {
-    background-color: var(--sea-dark) !important;
+    background: var(--sea-dark) !important;
     border-color: var(--sea-mid) !important;
 }
 
 .flavortown-goals-enhanced__header {
-    background-color: transparent !important;
+    background: transparent !important;
 }
 
 .flavortown-goals-enhanced__title {
@@ -1215,11 +1212,11 @@ a:hover {
 }
 
 .flavortown-goals-enhanced__progress-bar {
-    background-color: var(--sea-surface) !important;
+    background: var(--sea-surface) !important;
 }
 
 .flavortown-goals-enhanced__progress-fill {
-    background-color: var(--sea-cyan) !important;
+    background: var(--sea-cyan) !important;
     background-image: none !important;
 }
 
@@ -1228,16 +1225,16 @@ a:hover {
 }
 
 .flavortown-goals-enhanced__stats {
-    background-color: transparent !important;
+    background: transparent !important;
 }
 
 .flavortown-goals-enhanced__stat {
-    background-color: var(--sea-mid) !important;
+    background: var(--sea-mid) !important;
     border-color: var(--sea-surface) !important;
 }
 
 .flavortown-goals-enhanced__stat-label {
-    color: var(--sea-mist) !important;
+    color: var(--sea-foam) !important;
 }
 
 .flavortown-goals-enhanced__stat-value {
@@ -1245,21 +1242,21 @@ a:hover {
 }
 
 .flavortown-goals-enhanced__items-header {
-    background-color: var(--sea-mid) !important;
+    background: var(--sea-mid) !important;
     color: var(--sea-white) !important;
 }
 
 .flavortown-goals-enhanced__items-grid {
-    background-color: transparent !important;
+    background: transparent !important;
 }
 
 .flavortown-goal-item {
-    background-color: var(--sea-dark) !important;
+    background: var(--sea-dark) !important;
     border-color: var(--sea-mid) !important;
 }
 
 .flavortown-goal-item__image {
-    background-color: var(--sea-mid) !important;
+    background: var(--sea-mid) !important;
 }
 
 .flavortown-goal-item__name {
@@ -1267,24 +1264,24 @@ a:hover {
 }
 
 .flavortown-goal-item__progress-bar {
-    background-color: var(--sea-surface) !important;
+    background: var(--sea-surface) !important;
 }
 
 .flavortown-goal-item__progress-fill {
-    background-color: var(--sea-cyan) !important;
+    background: var(--sea-cyan) !important;
 }
 
 .flavortown-goal-item__info {
-    color: var(--sea-mist) !important;
+    color: var(--sea-foam) !important;
 }
 
 .flavortown-goals-enhanced__stat--remaining {
-    background-color: var(--sea-dark) !important;
+    background: var(--sea-dark) !important;
     border-color: var(--sea-coral) !important;
 }
 
 .flavortown-goals-enhanced__stat--time {
-    background-color: var(--sea-dark) !important;
+    background: var(--sea-dark) !important;
     border-color: var(--sea-kelp) !important;
 }
 
@@ -1299,7 +1296,7 @@ a:hover {
 }
 
 .achievements__card::before {
-    filter: hue-rotate(180deg) saturate(0.3) !important;
+    filter: hue-rotate(270deg) saturate(0.3) !important;
     opacity: 0.15 !important;
 }
 
@@ -1312,7 +1309,7 @@ a:hover {
 }
 
 .achievements__description {
-    color: var(--sea-mist) !important;
+    color: var(--sea-foam) !important;
 }
 
 .achievements__reward {
@@ -1338,7 +1335,7 @@ a:hover {
 }
 
 .achievements__progress-text {
-    color: var(--sea-mist) !important;
+    color: var(--sea-foam) !important;
 }
 
 .shop__searchbar .input {
@@ -1367,21 +1364,21 @@ a:hover {
 }
 
 .user .content h2 a:hover {
-    color: var(--sea-teal) !important;
+    color: var(--sea-mist) !important;
 }
 
 .user .content p {
-    color: var(--sea-mist) !important;
+    color: var(--sea-foam) !important;
 }
 
 .project-card .project-card__stats h5 {
     background-color: var(--sea-mid) !important;
-    color: var(--sea-mist) !important;
+    color: var(--sea-foam) !important;
     border-radius: 4px !important;
 }
 
 .project-card .project-card__stats h5 svg {
-    color: var(--sea-mist) !important;
+    color: var(--sea-foam) !important;
     filter: drop-shadow(5px 0 0 var(--sea-mid)) drop-shadow(-5px 0 0 var(--sea-mid)) drop-shadow(0 5px 0 var(--sea-mid)) drop-shadow(0 -5px 0 var(--sea-mid)) !important;
 }
 
@@ -1440,11 +1437,11 @@ a:hover {
 }
 
 .input__icon svg {
-    fill: var(--sea-foam) !important;
+    fill: var(--sea-surface) !important;
 }
 
 .input__icon svg path {
-    fill: var(--sea-foam) !important;
+    fill: var(--sea-surface) !important;
 }
 
 .input__field {
@@ -1454,7 +1451,7 @@ a:hover {
 }
 
 .input__field::placeholder {
-    color: var(--sea-foam) !important;
+    color: var(--sea-mid) !important;
 }
 
 .input__label {
@@ -1464,11 +1461,11 @@ a:hover {
 
 .input__subtitle {
     background-color: var(--sea-deep) !important;
-    color: var(--sea-mist) !important;
+    color: var(--sea-foam) !important;
 }
 
 .projects-show__timeline::before {
-    background-image: url("data:image/svg+xml,%3csvg width='8' height='90' viewBox='0 0 4 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3crect x='0' y='0' width='4' height='30' rx='2' fill='%2366d9ef' /%3e%3c/svg%3e") !important;
+    background-image: url("data:image/svg+xml,%3csvg width='8' height='90' viewBox='0 0 4 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3crect x='0' y='0' width='4' height='30' rx='2' fill='%23cba6f7' /%3e%3c/svg%3e") !important;
     opacity: 0.4 !important;
 }
 
@@ -1478,8 +1475,8 @@ a:hover {
 }
 
 .post--certified::after {
-    border-color: var(--sea-cyan) !important;
-    background-color: var(--sea-blue) !important;
+    border-color: var(--sea-foam) !important;
+    background-color: var(--sea-surface) !important;
 }
 
 .btn--green {
@@ -1489,25 +1486,25 @@ a:hover {
 }
 
 .btn--green:hover {
-    background-color: var(--sea-teal) !important;
-    border-color: var(--sea-teal) !important;
+    background-color: var(--sea-foam) !important;
+    border-color: var(--sea-foam) !important;
 }
 
 .shop-item-card::before {
     background: var(--sea-dark) !important;
-    filter: hue-rotate(180deg) saturate(1.5) !important;
+    filter: hue-rotate(200deg) saturate(0.4) !important;
     opacity: 0.5 !important;
 }
 
 .flavortown-card-qty {
-    background-color: var(--sea-mid) !important;
+    background: var(--sea-mid) !important;
     border-color: var(--sea-surface) !important;
 }
 
 .flavortown-card-qty__btn {
-    background-color: var(--sea-surface) !important;
+    background: var(--sea-surface) !important;
     color: var(--sea-white) !important;
-    border-color: var(--sea-foam) !important;
+    border-color: var(--sea-mid) !important;
 }
 
 .flavortown-card-qty__btn:hover {
@@ -1543,7 +1540,7 @@ a:hover {
 }
 
 .settings-form__hint {
-    color: var(--sea-foam) !important;
+    color: var(--sea-mid) !important;
 }
 
 .settings-form__checkbox {
@@ -1578,7 +1575,7 @@ a:hover {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background-color: var(--sea-wave);
+    background-color: var(--sea-mid);
 }
 
 .user-profile__left {
@@ -1600,7 +1597,7 @@ a:hover {
 }
 
 .user-profile__identity h2 {
-    color: var(--sea-mist) !important;
+    color: var(--sea-foam) !important;
 }
 
 .user-profile__avatar {
@@ -1626,7 +1623,7 @@ a:hover {
 }
 
 .user-profile__stat h3 {
-    color: var(--sea-mist) !important;
+    color: var(--sea-foam) !important;
 }
 
 .user-profile__stat h4 {
@@ -1663,7 +1660,7 @@ a:hover {
 }
 
 .achievement-icon-placeholder {
-    color: var(--sea-foam) !important;
+    color: var(--sea-mid) !important;
     background-color: var(--sea-surface) !important;
 }
 
@@ -1686,11 +1683,11 @@ a:hover {
 }
 
 .user-profile__project-stats {
-    color: var(--sea-mist) !important;
+    color: var(--sea-foam) !important;
 }
 
 .user-profile__project-stats div {
-    color: var(--sea-mist) !important;
+    color: var(--sea-foam) !important;
 }
 
 .votes-new__main {
@@ -1716,15 +1713,15 @@ a:hover {
 }
 
 .votes-new__project-card-content p {
-    color: var(--sea-mist) !important;
+    color: var(--sea-foam) !important;
 }
 
 .votes-new__project-card-stats {
-    color: var(--sea-mist) !important;
+    color: var(--sea-foam) !important;
 }
 
 .votes-new__project-card-stat {
-    color: var(--sea-mist) !important;
+    color: var(--sea-foam) !important;
 }
 
 .votes-new__project-card-stat svg {
@@ -1752,7 +1749,7 @@ a:hover {
 .vote-category {
     background-color: var(--sea-dark) !important;
     border-color: var(--sea-mid) !important;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4)) !important;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3)) !important;
 }
 
 .vote-category__header {
@@ -1766,11 +1763,11 @@ a:hover {
 
 .vote-category__footer {
     background-color: var(--sea-mid) !important;
-    color: var(--sea-mist) !important;
+    color: var(--sea-foam) !important;
 }
 
 .vote-category__star {
-    color: var(--sea-foam) !important;
+    color: var(--sea-mid) !important;
 }
 
 .vote-category__input:checked~.vote-category__star {
@@ -1780,7 +1777,7 @@ a:hover {
 .vote-category--red {
     --vote-category-accent: var(--sea-coral) !important;
     --vote-category-footer-bg: var(--sea-mid) !important;
-    --vote-category-footer-text: var(--sea-coral) !important;
+    --vote-category-footer-text: var(--sea-wave) !important;
 }
 
 .vote-category--red .vote-category__header {
@@ -1808,18 +1805,18 @@ a:hover {
 }
 
 .vote-category--blue {
-    --vote-category-accent: var(--sea-cyan) !important;
+    --vote-category-accent: var(--sea-surface) !important;
     --vote-category-footer-bg: var(--sea-mid) !important;
-    --vote-category-footer-text: var(--sea-cyan) !important;
+    --vote-category-footer-text: var(--sea-wave) !important;
 }
 
 .vote-category--blue .vote-category__header {
-    background-color: var(--sea-cyan) !important;
+    background-color: var(--sea-surface) !important;
     color: var(--sea-abyss) !important;
 }
 
 .vote-category--blue .vote-category__body {
-    border-color: var(--sea-cyan) !important;
+    border-color: var(--sea-surface) !important;
 }
 
 .btn-submit {
@@ -1828,7 +1825,7 @@ a:hover {
 }
 
 .btn-submit:hover {
-    background-color: var(--sea-cyan) !important;
+    background-color: var(--sea-foam) !important;
 }
 
 .modal {
@@ -1842,7 +1839,7 @@ a:hover {
 }
 
 .modal h2 {
-    color: var(--sea-mist) !important;
+    color: var(--sea-foam) !important;
 }
 
 .form-checkbox label {
@@ -1856,7 +1853,7 @@ a:hover {
 }
 
 .form-group small {
-    color: var(--sea-mist) !important;
+    color: var(--sea-foam) !important;
 }
 
 .modal__actions-close {
@@ -1875,7 +1872,7 @@ a:hover {
 }
 
 .comment-form__input::placeholder {
-    color: var(--sea-foam) !important;
+    color: var(--sea-mid) !important;
 }
 
 .comments-section {
@@ -1896,7 +1893,7 @@ a:hover {
 }
 
 .comment__time {
-    color: var(--sea-mist) !important;
+    color: var(--sea-foam) !important;
 }
 
 .comment__body {
@@ -1904,7 +1901,7 @@ a:hover {
 }
 
 .like-button__btn {
-    color: var(--sea-mist) !important;
+    color: var(--sea-foam) !important;
 }
 
 .like-button__btn:hover {
@@ -1912,7 +1909,7 @@ a:hover {
 }
 
 .comments-count {
-    color: var(--sea-mist) !important;
+    color: var(--sea-foam) !important;
 }
 
 .report-btn {
@@ -1979,7 +1976,7 @@ a:hover {
 }
 
 .flavortown-achievement-toast__names {
-    color: var(--sea-mist) !important;
+    color: var(--sea-foam) !important;
 }
 
 .flavortown-achievement-toast__cookies {
@@ -1987,7 +1984,7 @@ a:hover {
 }
 
 .flavortown-achievement-toast__close {
-    color: var(--sea-foam) !important;
+    color: var(--sea-surface) !important;
 }
 
 .shop-goals__container {
@@ -2000,11 +1997,11 @@ a:hover {
 
 .flavortown-goals-enhanced__card {
     background-color: var(--sea-mid) !important;
-    border-color: var(--sea-slate) !important;
+    border-color: var(--sea-surface) !important;
 }
 
 .flavortown-goals-enhanced__card-label {
-    color: var(--sea-mist) !important;
+    color: var(--sea-foam) !important;
 }
 
 .flavortown-goals-enhanced__card-value {
@@ -2034,41 +2031,41 @@ a:hover {
 }
 
 .flavortown-goals-enhanced__progress-fill {
-    background-color: linear-gradient(90deg, var(--sea-cyan) 0%, var(--sea-teal) 100%) !important;
+    background-color: linear-gradient(90deg, var(--sea-cyan) 0%, var(--sea-coral) 100%) !important;
 }
 
 .flavortown-priority-section {
-    background-color: linear-gradient(135deg, var(--sea-dark) 0%, var(--sea-mid) 100%) !important;
-    border-color: var(--sea-gold) !important;
+    background: var(--sea-dark) !important;
+    border-color: var(--sea-cyan) !important;
 }
 
 .flavortown-priority-section__title {
-    color: var(--sea-gold) !important;
+    color: var(--sea-cyan) !important;
 }
 
 .flavortown-priority-section__count,
 .flavortown-priority-section__pct,
 .flavortown-priority-section__stats {
-    color: var(--sea-mist) !important;
+    color: var(--sea-foam) !important;
 }
 
 .flavortown-priority-section__progress-bar {
-    background-color: var(--sea-slate) !important;
+    background: var(--sea-surface) !important;
 }
 
 .flavortown-priority-section__progress-fill {
-    background-color: linear-gradient(90deg, var(--sea-gold) 0%, var(--sea-coral) 100%) !important;
+    background: var(--sea-cyan) !important;
 }
 
 .flavortown-priority-pill {
-    background-color: var(--sea-slate) !important;
-    border-color: var(--sea-gold) !important;
+    background: var(--sea-surface) !important;
+    border-color: var(--sea-cyan) !important;
     color: var(--sea-white) !important;
 }
 
 .flavortown-goals-enhanced__accordion {
-    background-color: var(--sea-dark) !important;
-    border-color: var(--sea-slate) !important;
+    background: var(--sea-dark) !important;
+    border-color: var(--sea-surface) !important;
 }
 
 .flavortown-goals-enhanced__accordion-header,
@@ -2077,7 +2074,7 @@ a:hover {
 }
 
 .flavortown-goals-enhanced__accordion-header:hover .flavortown-accordion-inner {
-    background-color: var(--sea-slate) !important;
+    background-color: var(--sea-surface) !important;
 }
 
 .flavortown-accordion-title {
@@ -2086,15 +2083,24 @@ a:hover {
 
 .flavortown-goals-enhanced__accordion-content {
     background-color: var(--sea-abyss) !important;
-    border-color: var(--sea-dark) !important;
+    border-color: var(--sea-mid) !important;
+}
+
+.flavortown-goal-item {
+    background: linear-gradient(90deg, var(--sea-mid) var(--progress, 0%), var(--sea-dark) var(--progress, 0%)) !important;
+    border-color: var(--sea-surface) !important;
+}
+
+.flavortown-goal-item:hover {
+    border-color: var(--sea-cyan) !important;
 }
 
 .flavortown-goal-item,
 .flavortown-goal-item[data-progress-state="mid"],
 .flavortown-goal-item[data-progress-state="low"],
 .flavortown-goal-item[data-progress-state="high"] {
+    --progress-bg: var(--sea-cyan) !important;
     background: linear-gradient(90deg, var(--sea-cyan) var(--progress, 0%), var(--sea-dark) var(--progress, 0%)) !important;
-    border-color: var(--sea-mid) !important;
 }
 
 .flavortown-goal-item::before {
@@ -2102,61 +2108,57 @@ a:hover {
     content: none !important;
 }
 
-.flavortown-goal-item:hover {
-    border-color: var(--sea-cyan) !important;
-}
-
 .goal-item--priority {
-    border-left: 4px solid var(--sea-gold) !important;
+    border-left: 4px solid var(--sea-cyan) !important;
 }
 
 .goal-item__name-compact {
     color: var(--sea-white) !important;
 }
 
+.goal-item__stats-compact {
+    color: var(--sea-gold) !important;
+}
+
+.goal-item__time-compact {
+    color: var(--sea-kelp) !important;
+}
+
+.goal-item__affordable {
+    color: var(--sea-kelp) !important;
+}
+
+.goal-item__drag-handle {
+    color: var(--sea-mid) !important;
+}
+
 .flavortown-stat-pill {
     background-color: var(--sea-dark) !important;
-    border-color: var(--sea-slate) !important;
+    border-color: var(--sea-mid) !important;
     color: var(--sea-white) !important;
 }
 
 .flavortown-stat-value {
-    color: var(--sea-cyan) !important;
-}
-
-.goal-item__stats-compact {
-    color: var(--sea-coral) !important;
-}
-
-.goal-item__time-compact {
-    color: var(--sea-green) !important;
-}
-
-.goal-item__affordable {
-    color: var(--sea-green) !important;
-}
-
-.goal-item__drag-handle {
-    color: var(--sea-foam) !important;
+    color: var(--sea-gold) !important;
 }
 
 .goal-item__acc-pill {
-    background-color: var(--sea-slate) !important;
-    color: var(--sea-mist) !important;
+    background-color: var(--sea-surface) !important;
+    color: var(--sea-foam) !important;
 }
 
 .goal-item__qty-btn-sm {
     background-color: var(--sea-mid) !important;
-    border-color: var(--sea-slate) !important;
+    border-color: var(--sea-surface) !important;
     color: var(--sea-white) !important;
 }
 
 .goal-item__qty-btn-sm:hover {
-    background-color: var(--sea-slate) !important;
+    background-color: var(--sea-surface) !important;
 }
 
 .goal-item__remove-compact {
-    background-color: rgba(255, 107, 107, 0.2) !important;
+    background-color: rgba(243, 139, 168, 0.2) !important;
     color: var(--sea-coral) !important;
 }
 
@@ -2165,71 +2167,12 @@ a:hover {
 }
 
 .flavortown-search-icon {
-    color: var(--sea-mist) !important;
-}
-
-.table-data {
-    background-color: var(--sea-dark) !important;
-    border-color: var(--sea-slate) !important;
-    box-shadow: none !important;
-}
-
-.table-data thead th {
-    background-color: var(--sea-mid) !important;
-    color: var(--sea-white) !important;
-    border-bottom-color: var(--sea-slate) !important;
-}
-
-.table-data tbody td {
-    border-bottom-color: var(--sea-dark-mid) !important;
-    color: var(--sea-foam) !important;
-}
-
-.table-data tbody tr:hover td {
-    background-color: var(--sea-mid) !important;
-}
-
-.pagy.series-nav {
-    background-color: var(--sea-dark) !important;
-    border-color: var(--sea-slate) !important;
-    box-shadow: none !important;
-}
-
-.pagy.series-nav a,
-.pagy.series-nav span {
-    color: var(--sea-foam) !important;
-    background-color: transparent !important;
-}
-
-.pagination a {
-    background-color: transparent !important;
-    color: var(--sea-foam) !important;
-}
-
-.pagy.series-nav a:hover:not([disabled]) {
-    background-color: var(--sea-slate) !important;
-    color: var(--sea-white) !important;
-}
-
-.pagy.series-nav a[aria-current="page"] {
-    background-color: var(--sea-cyan) !important;
-    color: var(--sea-abyss) !important;
-}
-
-.input-primary {
-    background-color: var(--sea-dark) !important;
-    border-color: var(--sea-slate) !important;
-    color: var(--sea-white) !important;
-}
-
-.input-primary:focus {
-    border-color: var(--sea-cyan) !important;
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--sea-cyan), transparent 80%) !important;
+    color: var(--sea-mid) !important;
 }
 
 .flavortown-search-input-wrapper {
     background-color: var(--sea-dark) !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
 }
 
 .flavortown-search-input {
@@ -2238,116 +2181,20 @@ a:hover {
 
 .flavortown-search-input-wrapper:has(.flavortown-search-input:focus) {
     background-color: var(--sea-abyss) !important;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2) !important;
 }
 
-.table-data tbody tr {
-    background-color: transparent !important;
-}
-
-.table-data tbody tr:nth-child(even) {
-    background-color: rgba(255, 255, 255, 0.02) !important;
-}
-
-.card {
-    background-color: var(--sea-dark) !important;
-    border-color: var(--sea-slate) !important;
-    box-shadow: none !important;
-}
-
-.card h2 {
-    color: var(--sea-white) !important;
-    border-bottom-color: var(--sea-slate) !important;
-}
-
-.text-muted {
-    color: var(--sea-mist) !important;
-}
-
-.form-control {
-    background-color: var(--sea-dark) !important;
-    border-color: var(--sea-slate) !important;
-    color: var(--sea-white) !important;
-}
-
-.form-control:focus {
-    border-color: var(--sea-cyan) !important;
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--sea-cyan), transparent 80%) !important;
-}
-
-.badge-pending {
-    background-color: color-mix(in srgb, var(--sea-gold), transparent 85%) !important;
-    color: var(--sea-gold) !important;
-    border-color: color-mix(in srgb, var(--sea-gold), transparent 70%) !important;
-}
-
-.badge-reviewed {
-    background-color: color-mix(in srgb, var(--sea-green), transparent 85%) !important;
-    color: var(--sea-green) !important;
-    border-color: color-mix(in srgb, var(--sea-green), transparent 70%) !important;
-}
-
-.badge-dismissed {
-    background-color: color-mix(in srgb, var(--sea-slate), transparent 85%) !important;
-    color: var(--sea-mist) !important;
-    border-color: color-mix(in srgb, var(--sea-slate), transparent 70%) !important;
-}
-
-.btn-secondary {
-    background-color: var(--sea-slate) !important;
-    color: var(--sea-white) !important;
-}
-
-.btn-secondary:hover {
-    background-color: color-mix(in srgb, var(--sea-slate), white 10%) !important;
-}
-
-.action-leaderboard {
-    background-color: var(--sea-dark) !important;
-    border-color: var(--sea-slate) !important;
-    box-shadow: none !important;
-}
-
-.leaderboard-table th {
-    border-bottom-color: var(--sea-slate) !important;
-    color: var(--sea-white) !important;
-}
-
-.leaderboard-table tr.highlight {
-    background-color: var(--sea-mid) !important;
-}
-
-.leaderboard-table tr:hover {
-    background-color: var(--sea-slate) !important;
-}
-
-.leaderboard-table .stat-approved {
-    color: var(--sea-green) !important;
-}
-
-.leaderboard-table .stat-rejected {
-    color: var(--sea-coral) !important;
-}
-
-.leaderboard-table .stat-on_hold {
-    color: var(--sea-gold) !important;
-}
-
-.leaderboard-table .stat-fulfilled {
+.flavortown-search-input:focus+.flavortown-search-icon {
     color: var(--sea-cyan) !important;
 }
 
-.leaderboard-table .stat-total {
-    color: var(--sea-white) !important;
-}
-
 .flavortown-search-input::placeholder {
-    color: var(--sea-foam) !important;
+    color: var(--sea-mid) !important;
 }
 
 .flavortown-search-results {
     background-color: var(--sea-abyss) !important;
-    border-color: var(--sea-slate) !important;
+    border-color: var(--sea-surface) !important;
 }
 
 .flavortown-search-count {
@@ -2355,13 +2202,13 @@ a:hover {
 }
 
 .flavortown-search-close {
-    background-color: rgba(255, 107, 107, 0.2) !important;
+    background-color: rgba(243, 139, 168, 0.2) !important;
     color: var(--sea-coral) !important;
 }
 
 .flavortown-project-card {
     background-color: var(--sea-dark) !important;
-    border-color: var(--sea-slate) !important;
+    border-color: var(--sea-surface) !important;
 }
 
 .flavortown-project-card:hover {
@@ -2377,11 +2224,161 @@ a:hover {
 }
 
 .flavortown-project-desc {
-    color: var(--sea-mist) !important;
+    color: var(--sea-foam) !important;
 }
 
 .flavortown-project-meta {
+    color: var(--sea-mid) !important;
+}
+
+.table-data {
+    background-color: var(--sea-abyss) !important;
+    border-color: var(--sea-mid) !important;
+    box-shadow: none !important;
+}
+
+.table-data thead th {
+    background-color: var(--sea-dark) !important;
+    color: var(--sea-white) !important;
+    border-bottom-color: var(--sea-mid) !important;
+}
+
+.table-data tbody td {
+    border-bottom-color: var(--sea-dark) !important;
+    color: var(--sea-mist) !important;
+}
+
+.table-data tbody tr:hover td {
+    background-color: var(--sea-dark) !important;
+}
+
+.pagy.series-nav {
+    background-color: var(--sea-abyss) !important;
+    border-color: var(--sea-mid) !important;
+    box-shadow: none !important;
+}
+
+.pagy.series-nav a,
+.pagy.series-nav span {
     color: var(--sea-foam) !important;
+    background-color: transparent !important;
+}
+
+.pagination a {
+    background-color: transparent !important;
+    color: var(--sea-foam) !important;
+}
+
+.pagy.series-nav a:hover:not([disabled]) {
+    background-color: var(--sea-dark) !important;
+    color: var(--sea-white) !important;
+}
+
+.pagy.series-nav a[aria-current="page"] {
+    background-color: var(--sea-cyan) !important;
+    color: var(--sea-abyss) !important;
+}
+
+.input-primary {
+    background-color: var(--sea-dark) !important;
+    border-color: var(--sea-mid) !important;
+    color: var(--sea-white) !important;
+}
+
+.table-data tbody tr {
+    background-color: transparent !important;
+}
+
+.card {
+    background-color: var(--sea-abyss) !important;
+    border-color: var(--sea-mid) !important;
+    box-shadow: none !important;
+}
+
+.card h2 {
+    color: var(--sea-white) !important;
+    border-bottom-color: var(--sea-mid) !important;
+}
+
+.text-muted {
+    color: var(--sea-surface) !important;
+}
+
+.form-control {
+    background-color: var(--sea-dark) !important;
+    border-color: var(--sea-mid) !important;
+    color: var(--sea-white) !important;
+}
+
+.form-control:focus {
+    border-color: var(--sea-cyan) !important;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--sea-cyan), transparent 80%) !important;
+}
+
+.badge-pending {
+    background-color: color-mix(in srgb, var(--sea-gold), transparent 85%) !important;
+    color: var(--sea-gold) !important;
+    border-color: color-mix(in srgb, var(--sea-gold), transparent 70%) !important;
+}
+
+.badge-reviewed {
+    background-color: color-mix(in srgb, var(--sea-kelp), transparent 85%) !important;
+    color: var(--sea-kelp) !important;
+    border-color: color-mix(in srgb, var(--sea-kelp), transparent 70%) !important;
+}
+
+.badge-dismissed {
+    background-color: color-mix(in srgb, var(--sea-mid), transparent 85%) !important;
+    color: var(--sea-foam) !important;
+    border-color: color-mix(in srgb, var(--sea-mid), transparent 70%) !important;
+}
+
+.btn-secondary {
+    background-color: var(--sea-mid) !important;
+    color: var(--sea-white) !important;
+}
+
+.btn-secondary:hover {
+    background-color: var(--sea-surface) !important;
+}
+
+.action-leaderboard {
+    background-color: var(--sea-abyss) !important;
+    border-color: var(--sea-mid) !important;
+    box-shadow: none !important;
+}
+
+.leaderboard-table th {
+    border-bottom-color: var(--sea-mid) !important;
+    color: var(--sea-white) !important;
+}
+
+.leaderboard-table tr.highlight {
+    background-color: var(--sea-dark) !important;
+}
+
+.leaderboard-table tr:hover {
+    background-color: var(--sea-mid) !important;
+}
+
+.leaderboard-table .stat-approved {
+    color: var(--sea-kelp) !important;
+}
+
+.leaderboard-table .stat-rejected {
+    color: var(--sea-coral) !important;
+}
+
+.leaderboard-table .stat-on_hold {
+    color: var(--sea-gold) !important;
+}
+
+.leaderboard-table .stat-fulfilled {
+    color: var(--sea-surface) !important;
+}
+
+.leaderboard-table .stat-total {
+    color: var(--sea-white) !important;
 }
 
 .my-votes table {
@@ -2395,7 +2392,7 @@ a:hover {
 }
 
 .my-votes table td {
-    color: var(--sea-mist) !important;
+    color: var(--sea-foam) !important;
     border-color: var(--sea-mid) !important;
 }
 
@@ -2404,7 +2401,6 @@ a:hover {
     background-color: var(--sea-cyan) !important;
     color: var(--sea-abyss) !important;
 }
-
 
 .flavortown-kitchen-dashboard {
     color: var(--sea-white) !important;
@@ -2454,7 +2450,7 @@ a:hover {
 }
 
 .flavortown-efficiency__affordable {
-    color: var(--sea-foam) !important;
+    color: var(--sea-kelp) !important;
 }
 
 .flavortown-efficiency__rate {
@@ -2513,19 +2509,30 @@ a:hover {
 .explore__details {
     background-color: var(--sea-dark) !important;
     border-color: var(--sea-mid) !important;
+    border-radius: 10px !important;
+    padding: 12px 16px !important;
 }
 
 .explore__details summary {
     color: var(--sea-white) !important;
+    cursor: pointer;
 }
 
 .explore__details-content {
     color: var(--sea-foam) !important;
 }
 
+.explore__details-content p {
+    color: var(--sea-foam) !important;
+}
+
 .explore__code {
-    background-color: var(--sea-abyss) !important;
+    display: block;
+    background-color: var(--sea-deep) !important;
     color: var(--sea-cyan) !important;
+    padding: 10px 14px !important;
+    border-radius: 6px !important;
+    font-family: 'Monaco', 'Menlo', monospace !important;
 }
 
 .grid {
@@ -2533,7 +2540,7 @@ a:hover {
 }
 
 .card {
-    background-color: var(--sea-dark) !important;
+    background: var(--sea-dark) !important;
     border-color: var(--sea-mid) !important;
 }
 
@@ -2555,15 +2562,15 @@ a:hover {
 
 .card pre,
 .card code {
-    background: var(--sea-abyss) !important;
+    background: var(--sea-deep) !important;
     color: var(--sea-white) !important;
     border-color: var(--sea-mid) !important;
 }
 
 .query-params,
 .response {
-    background: var(--sea-abyss) !important;
-    color: var(--sea-foam) !important;
+    background: var(--sea-deep) !important;
+    color: var(--sea-kelp) !important;
     border-color: var(--sea-mid) !important;
 }
 
@@ -2572,6 +2579,5 @@ a:hover {
 }
 
 .goal-item--priority {
-    background: var(--sea-mid) !important;
-    border-left-color: var(--sea-yellow) !important;
+    border-left: 4px solid var(--sea-cyan) !important;
 }

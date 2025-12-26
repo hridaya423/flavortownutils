@@ -98,8 +98,7 @@ body::before {
 }
 
 .sidebar__user-balance {
-    background-color: var(--ctp-surface1) !important;
-    color: var(--ctp-yellow) !important;
+    color: var(--ctp-text) !important;
 }
 
 .sidebar__user-settings,

@@ -36,40 +36,38 @@
     --color-accent: var(--overcooked-cyan) !important;
     --color-border: var(--overcooked-mid) !important;
 }
-
 body {
-    background: var(--overcooked-abyss) !important;
+    background-color: var(--overcooked-abyss) !important;
     color: var(--overcooked-white) !important;
 }
 
 body::before {
-    background: linear-gradient(180deg, var(--overcooked-abyss) 0%, var(--overcooked-deep) 100%) !important;
+    background-color: var(--overcooked-abyss) !important;
 }
 
 .sidebar {
-    background: var(--overcooked-deep) !important;
+    background-color: var(--overcooked-deep) !important;
 }
 
 .sidebar__blob {
-    background: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-dark) !important;
 }
 
 .sidebar__nav-link {
-    color: var(--overcooked-mist) !important;
-}
-
-.sidebar__nav-link:hover {
-    background: var(--overcooked-mid) !important;
     color: var(--overcooked-white) !important;
 }
 
+.sidebar__nav-link:hover {
+    background-color: var(--overcooked-mid) !important;
+}
+
 .sidebar__nav-link--active {
-    background: var(--overcooked-mid) !important;
+    background-color: var(--overcooked-mid) !important;
     color: var(--overcooked-cyan) !important;
 }
 
 .sidebar__nav-icon {
-    color: var(--overcooked-foam) !important;
+    color: var(--overcooked-surface) !important;
 }
 
 .sidebar__nav-link--active .sidebar__nav-icon {
@@ -77,31 +75,30 @@ body::before {
 }
 
 .sidebar__user-card {
-    background: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-dark) !important;
 }
 
 .sidebar__user-avatar {
-    background: var(--overcooked-cyan) !important;
+    background-color: var(--overcooked-cyan) !important;
 }
 
 .sidebar__user-avatar-hat,
 .sidebar__user-avatar-hat-bg {
-    filter: hue-rotate(180deg) saturate(0.8) !important;
+    filter: hue-rotate(270deg) saturate(0.8) !important;
 }
 
 .sidebar__user-name {
     color: var(--overcooked-abyss) !important;
-    background: var(--overcooked-cyan) !important;
+    background-color: var(--overcooked-cyan) !important;
 }
 
 .sidebar__user-balance {
-    background: var(--overcooked-mid) !important;
-    color: var(--overcooked-gold) !important;
+    color: var(--overcooked-white) !important;
 }
 
 .sidebar__user-settings,
 .sidebar__user-logout {
-    color: var(--overcooked-foam) !important;
+    color: var(--overcooked-surface) !important;
 }
 
 .sidebar__user-settings:hover,
@@ -110,16 +107,16 @@ body::before {
 }
 
 .sidebar__pin-btn {
-    background: var(--overcooked-mid) !important;
+    background-color: var(--overcooked-mid) !important;
     color: var(--overcooked-white) !important;
 }
 
 .sidebar__pin-btn:hover {
-    background: var(--overcooked-surface) !important;
+    background-color: var(--overcooked-surface) !important;
 }
 
 .sidebar--pinned .sidebar__pin-btn {
-    background: var(--overcooked-cyan) !important;
+    background-color: var(--overcooked-cyan) !important;
     color: var(--overcooked-abyss) !important;
 }
 
@@ -128,29 +125,29 @@ body::before {
 }
 
 .btn--brown {
-    background: var(--overcooked-cyan) !important;
+    background-color: var(--overcooked-cyan) !important;
     color: var(--overcooked-abyss) !important;
     border-color: var(--overcooked-cyan) !important;
 }
 
 .btn--brown:hover {
-    background: var(--overcooked-spray) !important;
+    background-color: var(--overcooked-mist) !important;
     color: var(--overcooked-abyss) !important;
 }
 
 .btn--green {
-    background: var(--overcooked-kelp) !important;
+    background-color: var(--overcooked-kelp) !important;
     color: var(--overcooked-abyss) !important;
     border-color: var(--overcooked-kelp) !important;
 }
 
 .btn--green:hover {
-    background: #7bed9f !important;
+    background-color: var(--overcooked-foam) !important;
     color: var(--overcooked-abyss) !important;
 }
 
 .btn--red {
-    background: var(--overcooked-coral) !important;
+    background-color: var(--overcooked-coral) !important;
     color: var(--overcooked-abyss) !important;
     border-color: var(--overcooked-coral) !important;
 }
@@ -161,12 +158,12 @@ body::before {
 
 .btn--borderless {
     color: var(--overcooked-white) !important;
-    background: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-dark) !important;
     border: 1px solid var(--overcooked-surface) !important;
 }
 
 .btn--borderless:hover {
-    background: var(--overcooked-mid) !important;
+    background-color: var(--overcooked-mid) !important;
     border-color: var(--overcooked-cyan) !important;
 }
 
@@ -175,11 +172,11 @@ body::before {
 }
 
 .ui-heading__backdrop {
-    background: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-dark) !important;
 }
 
 .ui-heading__surface {
-    background: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-dark) !important;
 }
 
 .ui-heading__title {
@@ -187,24 +184,24 @@ body::before {
 }
 
 .projects-new {
-    background: var(--overcooked-abyss) !important;
+    background-color: var(--overcooked-abyss) !important;
 }
 
 .projects-new__container {
-    background: var(--overcooked-abyss) !important;
+    background-color: var(--overcooked-abyss) !important;
 }
 
 .projects-new__card {
-    background: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-dark) !important;
     border-color: var(--overcooked-mid) !important;
 }
 
 .projects-new__field {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .projects-new__time-preview {
-    background: var(--overcooked-deep) !important;
+    background-color: var(--overcooked-deep) !important;
     color: var(--overcooked-mist) !important;
     border-color: var(--overcooked-mid) !important;
 }
@@ -218,11 +215,11 @@ body::before {
 }
 
 .projects-new__actions {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .project-show-card {
-    background: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-dark) !important;
     border-color: var(--overcooked-mid) !important;
 }
 
@@ -231,11 +228,11 @@ body::before {
 }
 
 .project-show-card__byline {
-    color: var(--overcooked-mist) !important;
+    color: var(--overcooked-foam) !important;
 }
 
 .project-show-card__stat {
-    color: var(--overcooked-spray) !important;
+    color: var(--overcooked-mist) !important;
 }
 
 .project-show-card__description {
@@ -243,15 +240,15 @@ body::before {
 }
 
 .project-card__banner-placeholder {
-    background: linear-gradient(135deg, var(--overcooked-mid) 0%, var(--overcooked-surface) 100%) !important;
+    background-color: var(--overcooked-mid) !important;
 }
 
 .project-card__banner-placeholder-text {
-    color: var(--overcooked-foam) !important;
+    color: var(--overcooked-mid) !important;
 }
 
 .post {
-    background: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-dark) !important;
     border-color: var(--overcooked-mid) !important;
 }
 
@@ -260,11 +257,11 @@ body::before {
 }
 
 .post__time {
-    color: var(--overcooked-foam) !important;
+    color: var(--overcooked-mid) !important;
 }
 
 .post__duration {
-    color: var(--overcooked-spray) !important;
+    color: var(--overcooked-surface) !important;
 }
 
 .post__body {
@@ -272,24 +269,24 @@ body::before {
 }
 
 .post__attachments {
-    background: var(--overcooked-deep) !important;
+    background-color: var(--overcooked-deep) !important;
 }
 
 .post__chevron {
-    background: var(--overcooked-mid) !important;
+    background-color: var(--overcooked-mid) !important;
     color: var(--overcooked-white) !important;
 }
 
 .post__dot {
-    background: var(--overcooked-foam) !important;
+    background-color: var(--overcooked-mid) !important;
 }
 
 .post__dot.is-active {
-    background: var(--overcooked-cyan) !important;
+    background-color: var(--overcooked-cyan) !important;
 }
 
 .like-button__btn {
-    color: var(--overcooked-foam) !important;
+    color: var(--overcooked-surface) !important;
 }
 
 .like-button__btn--liked {
@@ -301,25 +298,25 @@ body::before {
 }
 
 .comments-count {
-    color: var(--overcooked-foam) !important;
+    color: var(--overcooked-surface) !important;
 }
 
 .post__interactions {
-    background: transparent !important;
+    background-color: transparent !important;
     border-color: var(--overcooked-mid) !important;
 }
 
 .comments-section {
-    background: transparent !important;
+    background-color: transparent !important;
     border-color: var(--overcooked-mid) !important;
 }
 
 .comments-section__list {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .comment {
-    background: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-dark) !important;
     border-color: var(--overcooked-mid) !important;
 }
 
@@ -332,7 +329,7 @@ body::before {
 }
 
 .comment__time {
-    color: var(--overcooked-foam) !important;
+    color: var(--overcooked-mid) !important;
 }
 
 .comment__body {
@@ -348,26 +345,26 @@ body::before {
 }
 
 .comment-form {
-    background: transparent !important;
+    background-color: transparent !important;
     border-color: var(--overcooked-mid) !important;
 }
 
 .comment-form__form {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .comment-form__input {
-    background: var(--overcooked-charcoal) !important;
+    background-color: var(--overcooked-deep) !important;
     border: 1px solid var(--overcooked-mid) !important;
     color: var(--overcooked-white) !important;
 }
 
 .comment-form__input::placeholder {
-    color: var(--overcooked-foam) !important;
+    color: var(--overcooked-mid) !important;
 }
 
 .comment-form__actions {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .comment-form__actions .btn {
@@ -392,7 +389,7 @@ svg {
 
 .projects-show__admin-actions .btn {
     color: var(--overcooked-white) !important;
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .projects-show__admin-actions .btn:hover {
@@ -400,12 +397,12 @@ svg {
 }
 
 .input {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .input--red,
 .input--green {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .input__label {
@@ -413,40 +410,40 @@ svg {
 }
 
 .input__field {
-    background: var(--overcooked-abyss) !important;
+    background-color: var(--overcooked-abyss) !important;
     border-color: var(--overcooked-mid) !important;
     color: var(--overcooked-white) !important;
 }
 
 .input__field--textarea {
-    background: var(--overcooked-abyss) !important;
+    background-color: var(--overcooked-abyss) !important;
     color: var(--overcooked-white) !important;
 }
 
 .input__field::placeholder {
-    color: var(--overcooked-foam) !important;
+    color: var(--overcooked-mid) !important;
 }
 
 .input__subtitle {
-    color: var(--overcooked-foam) !important;
+    color: var(--overcooked-mid) !important;
 }
 
 .file-upload {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .file-upload__area {
-    background: var(--overcooked-abyss) !important;
+    background-color: var(--overcooked-abyss) !important;
     border-color: var(--overcooked-mid) !important;
 }
 
 .file-upload__dropzone {
     border-color: var(--overcooked-surface) !important;
-    background: var(--overcooked-abyss) !important;
+    background-color: var(--overcooked-abyss) !important;
 }
 
 .file-upload__placeholder {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .file-upload__headline {
@@ -454,29 +451,29 @@ svg {
 }
 
 .file-upload__hint {
-    color: var(--overcooked-foam) !important;
+    color: var(--overcooked-mid) !important;
 }
 
 .file-upload__browse {
     color: var(--overcooked-cyan) !important;
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .file-upload__nav {
-    background: var(--overcooked-mid) !important;
+    background-color: var(--overcooked-mid) !important;
     color: var(--overcooked-white) !important;
 }
 
 .file-upload__progress {
-    background: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-dark) !important;
 }
 
 .file-upload__progress-bar {
-    background: var(--overcooked-cyan) !important;
+    background-color: var(--overcooked-cyan) !important;
 }
 
 .modal {
-    background: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-dark) !important;
     border-color: var(--overcooked-mid) !important;
 }
 
@@ -485,25 +482,25 @@ svg {
 }
 
 .modal__actions-close {
-    background: var(--overcooked-mid) !important;
+    background-color: var(--overcooked-mid) !important;
     color: var(--overcooked-white) !important;
 }
 
 .projects-show {
-    background: var(--overcooked-abyss) !important;
+    background-color: var(--overcooked-abyss) !important;
 }
 
 .projects-show__container {
-    background: var(--overcooked-abyss) !important;
+    background-color: var(--overcooked-abyss) !important;
 }
 
 .projects-show__timeline {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .dev-footer {
-    background: var(--overcooked-deep) !important;
-    color: var(--overcooked-foam) !important;
+    background-color: var(--overcooked-deep) !important;
+    color: var(--overcooked-mid) !important;
 }
 
 .dev-footer a {
@@ -515,42 +512,42 @@ a {
 }
 
 a:hover {
-    color: var(--overcooked-spray) !important;
+    color: var(--overcooked-mist) !important;
 }
 
 .kitchen-index {
-    background: var(--overcooked-abyss) !important;
+    background-color: var(--overcooked-abyss) !important;
 }
 
 .kitchen-setup {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .kitchen-setup::before {
-    background: var(--overcooked-abyss) !important;
-    background-image: repeating-conic-gradient(from 0deg, rgba(102, 217, 239, 0.04) 0deg 90deg, transparent 90deg 180deg) !important;
+    background-color: var(--overcooked-abyss) !important;
+    background-image: repeating-conic-gradient(from 0deg, rgba(203, 166, 247, 0.05) 0deg 90deg, transparent 90deg 180deg) !important;
 }
 
 .kitchen-help {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .kitchen-help::before {
-    background: var(--overcooked-abyss) !important;
-    background-image: repeating-conic-gradient(from 0deg, rgba(102, 217, 239, 0.04) 0deg 90deg, transparent 90deg 180deg) !important;
+    background-color: var(--overcooked-abyss) !important;
+    background-image: repeating-conic-gradient(from 0deg, rgba(203, 166, 247, 0.04) 0deg 90deg, transparent 90deg 180deg) !important;
 }
 
 .projects-new__card::before {
-    background: var(--overcooked-dark) !important;
-    background-image: repeating-conic-gradient(from 0deg, rgba(102, 217, 239, 0.05) 0deg 90deg, transparent 90deg 180deg) !important;
+    background-color: var(--overcooked-dark) !important;
+    background-image: repeating-conic-gradient(from 0deg, rgba(203, 166, 247, 0.06) 0deg 90deg, transparent 90deg 180deg) !important;
 }
 
 .input::before {
-    background: var(--overcooked-cyan) !important;
+    background-color: var(--overcooked-cyan) !important;
 }
 
 .kitchen-help__content {
-    background: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-dark) !important;
     border-color: var(--overcooked-mid) !important;
 }
 
@@ -559,21 +556,21 @@ a:hover {
 }
 
 .kitchen-help__grid {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .tutorial-steps {
-    background: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-dark) !important;
     border-color: var(--overcooked-mid) !important;
 }
 
 .tutorial-steps__header {
-    background: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-dark) !important;
     color: var(--overcooked-white) !important;
 }
 
 .tutorial-steps__toggle-icon {
-    color: var(--overcooked-foam) !important;
+    color: var(--overcooked-surface) !important;
 }
 
 .tutorial-steps__title {
@@ -585,19 +582,19 @@ a:hover {
 }
 
 .tutorial-steps__progress-text {
-    color: var(--overcooked-spray) !important;
+    color: var(--overcooked-foam) !important;
 }
 
 .tutorial-steps__progress-bar {
-    background: var(--overcooked-mid) !important;
+    background-color: var(--overcooked-mid) !important;
 }
 
 .tutorial-steps__progress-fill {
-    background: var(--overcooked-cyan) !important;
+    background-color: var(--overcooked-cyan) !important;
 }
 
 .tutorial-steps__grid {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .tutorial-steps__grid .state-card,
@@ -618,7 +615,7 @@ a:hover {
 }
 
 .state-card {
-    background: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-dark) !important;
     border-color: var(--overcooked-surface) !important;
 }
 
@@ -627,7 +624,7 @@ a:hover {
 }
 
 .state-card--warning {
-    border-color: var(--overcooked-surface) !important;
+    border-color: var(--overcooked-gold) !important;
 }
 
 .state-card--neutral {
@@ -635,36 +632,36 @@ a:hover {
 }
 
 .state-card__status-pill {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .state-card__badge {
-    background: var(--overcooked-mid) !important;
+    background-color: var(--overcooked-mid) !important;
     color: var(--overcooked-white) !important;
 }
 
 .state-card--success .state-card__badge {
-    background: var(--overcooked-kelp) !important;
+    background-color: var(--overcooked-kelp) !important;
     color: var(--overcooked-abyss) !important;
 }
 
 .state-card--warning .state-card__badge {
-    background: var(--overcooked-gold) !important;
+    background-color: var(--overcooked-gold) !important;
     color: var(--overcooked-abyss) !important;
 }
 
 .state-card__icon-circle {
-    background: var(--overcooked-mid) !important;
+    background-color: var(--overcooked-mid) !important;
     color: var(--overcooked-white) !important;
 }
 
 .state-card--success .state-card__icon-circle {
-    background: var(--overcooked-kelp) !important;
+    background-color: var(--overcooked-kelp) !important;
     color: var(--overcooked-abyss) !important;
 }
 
 .state-card--warning .state-card__icon-circle {
-    background: var(--overcooked-gold) !important;
+    background-color: var(--overcooked-gold) !important;
     color: var(--overcooked-abyss) !important;
 }
 
@@ -673,15 +670,15 @@ a:hover {
 }
 
 .state-card__description {
-    color: var(--overcooked-mist) !important;
+    color: var(--overcooked-foam) !important;
 }
 
 .state-card__cta {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .tutorial-step-card {
-    background: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-dark) !important;
     border-color: var(--overcooked-surface) !important;
 }
 
@@ -698,17 +695,17 @@ a:hover {
 }
 
 .kitchen-help-card {
-    background: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-dark) !important;
     border-color: var(--overcooked-mid) !important;
 }
 
 .btn--bg_yellow {
-    background: var(--overcooked-gold) !important;
+    background-color: var(--overcooked-gold) !important;
     color: var(--overcooked-abyss) !important;
 }
 
 .btn--bg_yellow:hover {
-    background: var(--overcooked-sand) !important;
+    background-color: var(--overcooked-gold) !important;
     color: var(--overcooked-abyss) !important;
 }
 
@@ -718,60 +715,60 @@ a:hover {
 }
 
 .explore__nav {
-    background: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-dark) !important;
     border-color: var(--overcooked-mid) !important;
 }
 
 .explore__nav-component {
     color: var(--overcooked-white) !important;
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .explore__nav-component:hover {
-    background: var(--overcooked-mid) !important;
+    background-color: var(--overcooked-mid) !important;
     color: var(--overcooked-cyan) !important;
 }
 
 .explore__nav-component.selected {
-    background: var(--overcooked-mid) !important;
+    background-color: var(--overcooked-mid) !important;
     color: var(--overcooked-cyan) !important;
 }
 
 .projects-board__grid-item {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .project-card {
-    background: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-dark) !important;
     border-color: var(--overcooked-mid) !important;
 }
 
 .project-card__banner {
-    background: var(--overcooked-mid) !important;
+    background-color: var(--overcooked-mid) !important;
 }
 
 .project-card__banner--placeholder {
-    background: var(--overcooked-mid) !important;
+    background-color: var(--overcooked-mid) !important;
 }
 
 .project-card__banner-frame {
-    background: var(--overcooked-mid) !important;
+    background-color: var(--overcooked-mid) !important;
 }
 
 .project-card__banner-frame--placeholder {
-    background: var(--overcooked-mid) !important;
+    background-color: var(--overcooked-mid) !important;
 }
 
 .project-card__banner-placeholder {
-    background: var(--overcooked-mid) !important;
+    background-color: var(--overcooked-mid) !important;
 }
 
 .project-card__banner-placeholder-text {
-    color: var(--overcooked-foam) !important;
+    color: var(--overcooked-mid) !important;
 }
 
 .project-card__content {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .project-card__title {
@@ -787,33 +784,33 @@ a:hover {
 }
 
 .project-card__description {
-    color: var(--overcooked-mist) !important;
-}
-
-.project-card__description p {
-    color: var(--overcooked-mist) !important;
-}
-
-.project-card__stats {
-    background: transparent !important;
-    color: var(--overcooked-spray) !important;
-}
-
-.project-card__stats h5 {
-    color: var(--overcooked-spray) !important;
-}
-
-.project-card__stats-icon {
     color: var(--overcooked-foam) !important;
 }
 
+.project-card__description p {
+    color: var(--overcooked-foam) !important;
+}
+
+.project-card__stats {
+    background-color: transparent !important;
+    color: var(--overcooked-mist) !important;
+}
+
+.project-card__stats h5 {
+    color: var(--overcooked-mist) !important;
+}
+
+.project-card__stats-icon {
+    color: var(--overcooked-surface) !important;
+}
+
 .projects-show__admin-actions {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .projects-show__admin-actions .btn {
     color: var(--overcooked-white) !important;
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .projects-show__admin-actions .btn:hover {
@@ -900,7 +897,7 @@ a:hover {
 }
 
 .shop-goals__progress-text {
-    color: var(--overcooked-mist) !important;
+    color: var(--overcooked-foam) !important;
 }
 
 .shop-item-card {
@@ -909,7 +906,7 @@ a:hover {
 }
 
 .shop-item-card__star {
-    color: var(--overcooked-foam) !important;
+    color: var(--overcooked-surface) !important;
 }
 
 .shop-item-card__star--active {
@@ -929,15 +926,15 @@ a:hover {
 }
 
 .shop-item-card__description {
-    color: var(--overcooked-mist) !important;
+    color: var(--overcooked-foam) !important;
 }
 
 .shop-item-card__details {
-    color: var(--overcooked-spray) !important;
+    color: var(--overcooked-mist) !important;
 }
 
 .shop-item-card__hours {
-    color: var(--overcooked-foam) !important;
+    color: var(--overcooked-surface) !important;
 }
 
 .shop-item-card__price {
@@ -945,7 +942,7 @@ a:hover {
 }
 
 .shop-item-card__original-price {
-    color: var(--overcooked-foam) !important;
+    color: var(--overcooked-mid) !important;
 }
 
 .shop-item-card__order-button {
@@ -967,11 +964,11 @@ a:hover {
 }
 
 .dropdown__label {
-    color: var(--overcooked-mist) !important;
+    color: var(--overcooked-foam) !important;
 }
 
 .dropdown__button {
-    background: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-dark) !important;
     border-color: var(--overcooked-mid) !important;
     color: var(--overcooked-white) !important;
 }
@@ -981,11 +978,11 @@ a:hover {
 }
 
 .dropdown__icon {
-    color: var(--overcooked-foam) !important;
+    color: var(--overcooked-surface) !important;
 }
 
 .dropdown__menu {
-    background: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-dark) !important;
     border-color: var(--overcooked-mid) !important;
 }
 
@@ -994,146 +991,146 @@ a:hover {
 }
 
 .dropdown__item:hover {
-    background: var(--overcooked-mid) !important;
+    background-color: var(--overcooked-mid) !important;
 }
 
 .dropdown__spacer {
-    color: var(--overcooked-foam) !important;
+    color: var(--overcooked-mid) !important;
 }
 
 .dropdown--green .dropdown__label {
     color: var(--overcooked-abyss) !important;
-    background: var(--overcooked-kelp) !important;
+    background-color: var(--overcooked-kelp) !important;
     border-radius: 8px !important;
 }
 
 .dropdown--blue .dropdown__label {
     color: var(--overcooked-abyss) !important;
-    background: var(--overcooked-blue) !important;
+    background-color: var(--overcooked-surface) !important;
     border-radius: 8px !important;
 }
 
 .shop-order__content {
-    background: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-dark) !important;
     color: var(--overcooked-white) !important;
     border-radius: 2em !important;
 }
 
 .shop-order__details {
-    background: transparent !important;
+    background-color: transparent !important;
     color: var(--overcooked-white) !important;
 }
 
 .shop-order__description {
-    color: var(--overcooked-mist) !important;
+    color: var(--overcooked-foam) !important;
 }
 
 .shop-order .btn-order {
-    background: var(--overcooked-cyan) !important;
+    background-color: var(--overcooked-cyan) !important;
     color: var(--overcooked-abyss) !important;
     border-color: var(--overcooked-cyan) !important;
     border-radius: 8px !important;
 }
 
 .shop-order .btn-order:hover {
-    background: var(--overcooked-teal) !important;
-    border-color: var(--overcooked-teal) !important;
+    background-color: var(--overcooked-mist) !important;
+    border-color: var(--overcooked-mist) !important;
 }
 
 .shop-order .btn-order:disabled {
-    background: var(--overcooked-surface) !important;
-    color: var(--overcooked-foam) !important;
+    background-color: var(--overcooked-surface) !important;
+    color: var(--overcooked-mid) !important;
     border-color: var(--overcooked-surface) !important;
 }
 
 .input-group {
-    background: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-dark) !important;
     border-radius: 16px !important;
 }
 
 .input-group__label {
-    background: var(--overcooked-mid) !important;
+    background-color: var(--overcooked-mid) !important;
     color: var(--overcooked-white) !important;
     border-radius: 8px !important;
 }
 
 .input-group__subtitle {
-    background: var(--overcooked-dark) !important;
-    color: var(--overcooked-mist) !important;
+    background-color: var(--overcooked-dark) !important;
+    color: var(--overcooked-foam) !important;
 }
 
 .input-group--green::before {
-    background: var(--overcooked-mid) !important;
+    background-color: var(--overcooked-mid) !important;
 }
 
 .input-group--green .input-group__label {
-    background: var(--overcooked-mid) !important;
+    background-color: var(--overcooked-mid) !important;
     color: var(--overcooked-kelp) !important;
     border-left: 3px solid var(--overcooked-kelp) !important;
 }
 
 .input-group--green .input-group__subtitle {
-    background: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-dark) !important;
     color: var(--overcooked-kelp) !important;
 }
 
 .input-group--blue::before {
-    background: var(--overcooked-mid) !important;
+    background-color: var(--overcooked-mid) !important;
 }
 
 .input-group--blue .input-group__label {
-    background: var(--overcooked-mid) !important;
-    color: var(--overcooked-blue) !important;
-    border-left: 3px solid var(--overcooked-blue) !important;
+    background-color: var(--overcooked-mid) !important;
+    color: var(--overcooked-surface) !important;
+    border-left: 3px solid var(--overcooked-surface) !important;
 }
 
 .input-group--blue .input-group__subtitle {
-    background: var(--overcooked-dark) !important;
-    color: var(--overcooked-blue) !important;
+    background-color: var(--overcooked-dark) !important;
+    color: var(--overcooked-surface) !important;
 }
 
 .hackatime-project-selector {
-    background: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-dark) !important;
     border-color: var(--overcooked-mid) !important;
     border-radius: 16px !important;
 }
 
 .hackatime-project-selector--yellow::before {
-    background: var(--overcooked-mid) !important;
+    background-color: var(--overcooked-mid) !important;
 }
 
 .hackatime-project-selector__label {
-    background: var(--overcooked-mid) !important;
+    background-color: var(--overcooked-mid) !important;
     color: var(--overcooked-gold) !important;
     border-left: 3px solid var(--overcooked-gold) !important;
 }
 
 .hackatime-project-selector__control {
-    background: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-dark) !important;
 }
 
 .hackatime-project-selector__select {
-    background: var(--overcooked-abyss) !important;
+    background-color: var(--overcooked-abyss) !important;
     border-color: var(--overcooked-mid) !important;
     color: var(--overcooked-white) !important;
 }
 
 .hackatime-project-selector__selected {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .hackatime-project-selector__project {
-    background: var(--overcooked-mid) !important;
+    background-color: var(--overcooked-mid) !important;
     border-color: var(--overcooked-surface) !important;
 }
 
 .hackatime-project-selector__project-icon {
     color: var(--overcooked-cyan) !important;
-    background: var(--overcooked-surface) !important;
+    background-color: var(--overcooked-surface) !important;
 }
 
 .hackatime-project-selector--yellow .hackatime-project-selector__project-icon {
-    background: var(--overcooked-surface) !important;
+    background-color: var(--overcooked-surface) !important;
     color: var(--overcooked-gold) !important;
 }
 
@@ -1142,11 +1139,11 @@ a:hover {
 }
 
 .hackatime-project-selector__project-meta {
-    color: var(--overcooked-mist) !important;
+    color: var(--overcooked-foam) !important;
 }
 
 .hackatime-project-selector__project-remove {
-    background: var(--overcooked-coral) !important;
+    background-color: var(--overcooked-coral) !important;
     color: var(--overcooked-abyss) !important;
 }
 
@@ -1155,17 +1152,17 @@ a:hover {
 }
 
 .hackatime-project-selector__subtitle {
-    color: var(--overcooked-mist) !important;
-    background: transparent !important;
+    color: var(--overcooked-foam) !important;
+    background-color: transparent !important;
 }
 
 .hackatime-project-selector--yellow .hackatime-project-selector__subtitle {
     color: var(--overcooked-gold) !important;
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .shop-order__summary .shop-order__summary-content {
-    background: var(--overcooked-mid) !important;
+    background-color: var(--overcooked-mid) !important;
     border-radius: 16px !important;
 }
 
@@ -1174,14 +1171,14 @@ a:hover {
 }
 
 .btn--red {
-    background: var(--overcooked-coral) !important;
+    background-color: var(--overcooked-wave) !important;
     color: var(--overcooked-abyss) !important;
-    border-color: var(--overcooked-coral) !important;
+    border-color: var(--overcooked-wave) !important;
 }
 
 .btn--red:hover {
-    background: var(--overcooked-sand) !important;
-    border-color: var(--overcooked-sand) !important;
+    background-color: var(--overcooked-coral) !important;
+    border-color: var(--overcooked-coral) !important;
 }
 
 .projects-board__title {
@@ -1189,21 +1186,21 @@ a:hover {
 }
 
 .projects-board__subtitle {
-    color: var(--overcooked-mist) !important;
+    color: var(--overcooked-foam) !important;
 }
 
 .projects-board__create-card {
-    background: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-dark) !important;
     color: var(--overcooked-white) !important;
     border-radius: calc(var(--border-radius) * 1.8) !important;
 }
 
 .projects-board__create-card:hover {
-    background: var(--overcooked-mid) !important;
+    background-color: var(--overcooked-mid) !important;
 }
 
 .projects-board__create-card::before {
-    filter: hue-rotate(180deg) saturate(0.5) !important;
+    filter: hue-rotate(270deg) saturate(0.5) !important;
     opacity: 0.2 !important;
 }
 
@@ -1243,7 +1240,7 @@ a:hover {
 }
 
 .flavortown-goals-enhanced__stat-label {
-    color: var(--overcooked-mist) !important;
+    color: var(--overcooked-foam) !important;
 }
 
 .flavortown-goals-enhanced__stat-value {
@@ -1281,7 +1278,7 @@ a:hover {
 }
 
 .flavortown-goal-item__info {
-    color: var(--overcooked-mist) !important;
+    color: var(--overcooked-foam) !important;
 }
 
 .flavortown-goals-enhanced__stat--remaining {
@@ -1295,22 +1292,22 @@ a:hover {
 }
 
 .achievements__stats {
-    background: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-dark) !important;
     border-radius: 12px !important;
 }
 
 .achievements__card {
-    background: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-dark) !important;
     border-radius: 16px !important;
 }
 
 .achievements__card::before {
-    filter: hue-rotate(180deg) saturate(0.3) !important;
+    filter: hue-rotate(270deg) saturate(0.3) !important;
     opacity: 0.15 !important;
 }
 
 .achievements__icon {
-    background: var(--overcooked-mid) !important;
+    background-color: var(--overcooked-mid) !important;
 }
 
 .achievements__name {
@@ -1318,33 +1315,33 @@ a:hover {
 }
 
 .achievements__description {
-    color: var(--overcooked-mist) !important;
+    color: var(--overcooked-foam) !important;
 }
 
 .achievements__reward {
     color: var(--overcooked-abyss) !important;
-    background: var(--overcooked-gold) !important;
+    background-color: var(--overcooked-gold) !important;
 }
 
 .achievements__earned-at {
     color: var(--overcooked-abyss) !important;
-    background: var(--overcooked-kelp) !important;
+    background-color: var(--overcooked-kelp) !important;
 }
 
 .achievements__progress {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .achievements__progress-bar {
-    background: var(--overcooked-surface) !important;
+    background-color: var(--overcooked-surface) !important;
 }
 
 .achievements__progress-fill {
-    background: var(--overcooked-cyan) !important;
+    background-color: var(--overcooked-cyan) !important;
 }
 
 .achievements__progress-text {
-    color: var(--overcooked-mist) !important;
+    color: var(--overcooked-foam) !important;
 }
 
 .shop__searchbar .input {
@@ -1357,11 +1354,11 @@ a:hover {
 }
 
 .user {
-    background: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-dark) !important;
 }
 
 .user .content {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .user .content h2 {
@@ -1373,21 +1370,21 @@ a:hover {
 }
 
 .user .content h2 a:hover {
-    color: var(--overcooked-teal) !important;
+    color: var(--overcooked-mist) !important;
 }
 
 .user .content p {
-    color: var(--overcooked-mist) !important;
+    color: var(--overcooked-foam) !important;
 }
 
 .project-card .project-card__stats h5 {
-    background: var(--overcooked-mid) !important;
-    color: var(--overcooked-mist) !important;
+    background-color: var(--overcooked-mid) !important;
+    color: var(--overcooked-foam) !important;
     border-radius: 4px !important;
 }
 
 .project-card .project-card__stats h5 svg {
-    color: var(--overcooked-mist) !important;
+    color: var(--overcooked-foam) !important;
     filter: drop-shadow(5px 0 0 var(--overcooked-mid)) drop-shadow(-5px 0 0 var(--overcooked-mid)) drop-shadow(0 5px 0 var(--overcooked-mid)) drop-shadow(0 -5px 0 var(--overcooked-mid)) !important;
 }
 
@@ -1396,7 +1393,7 @@ a:hover {
 }
 
 .music-player__play-pause {
-    background: var(--overcooked-cyan) !important;
+    background-color: var(--overcooked-cyan) !important;
     color: var(--overcooked-abyss) !important;
 }
 
@@ -1405,103 +1402,103 @@ a:hover {
 }
 
 .music-player__volume {
-    background: var(--overcooked-mid) !important;
+    background-color: var(--overcooked-mid) !important;
     border-radius: 8px !important;
 }
 
 .music-player__volume input[type="range"] {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .music-player__volume input[type="range"]::-webkit-slider-track {
-    background: var(--overcooked-surface) !important;
+    background-color: var(--overcooked-surface) !important;
     border-radius: 4px !important;
 }
 
 .music-player__volume input[type="range"]::-webkit-slider-thumb {
-    background: var(--overcooked-cyan) !important;
+    background-color: var(--overcooked-cyan) !important;
 }
 
 .input {
-    background: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-dark) !important;
     border-color: var(--overcooked-mid) !important;
 }
 
 .input--yellow {
-    background: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-dark) !important;
     border-color: var(--overcooked-mid) !important;
 }
 
 .input--with-icon {
-    background: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-dark) !important;
 }
 
 .input__control {
-    background: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-dark) !important;
 }
 
 .input__icon {
     color: var(--overcooked-cyan) !important;
-    background: var(--overcooked-mid) !important;
+    background-color: var(--overcooked-mid) !important;
 }
 
 .input__icon svg {
-    fill: var(--overcooked-foam) !important;
+    fill: var(--overcooked-surface) !important;
 }
 
 .input__icon svg path {
-    fill: var(--overcooked-foam) !important;
+    fill: var(--overcooked-surface) !important;
 }
 
 .input__field {
-    background: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-dark) !important;
     color: var(--overcooked-white) !important;
     border-color: var(--overcooked-mid) !important;
 }
 
 .input__field::placeholder {
-    color: var(--overcooked-foam) !important;
+    color: var(--overcooked-mid) !important;
 }
 
 .input__label {
     color: var(--overcooked-cyan) !important;
-    background: var(--overcooked-mid) !important;
+    background-color: var(--overcooked-mid) !important;
 }
 
 .input__subtitle {
-    background: var(--overcooked-deep) !important;
-    color: var(--overcooked-mist) !important;
+    background-color: var(--overcooked-deep) !important;
+    color: var(--overcooked-foam) !important;
 }
 
 .projects-show__timeline::before {
-    background-image: url("data:image/svg+xml,%3csvg width='8' height='90' viewBox='0 0 4 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3crect x='0' y='0' width='4' height='30' rx='2' fill='%2366d9ef' /%3e%3c/svg%3e") !important;
+    background-image: url("data:image/svg+xml,%3csvg width='8' height='90' viewBox='0 0 4 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3crect x='0' y='0' width='4' height='30' rx='2' fill='%23cba6f7' /%3e%3c/svg%3e") !important;
     opacity: 0.4 !important;
 }
 
 .post--devlog::after {
     border-color: var(--overcooked-kelp) !important;
-    background: var(--overcooked-kelp) !important;
+    background-color: var(--overcooked-kelp) !important;
 }
 
 .post--certified::after {
-    border-color: var(--overcooked-cyan) !important;
-    background: var(--overcooked-blue) !important;
+    border-color: var(--overcooked-foam) !important;
+    background-color: var(--overcooked-surface) !important;
 }
 
 .btn--green {
-    background: var(--overcooked-kelp) !important;
+    background-color: var(--overcooked-kelp) !important;
     color: var(--overcooked-abyss) !important;
     border-color: var(--overcooked-kelp) !important;
 }
 
 .btn--green:hover {
-    background: var(--overcooked-teal) !important;
-    border-color: var(--overcooked-teal) !important;
+    background-color: var(--overcooked-foam) !important;
+    border-color: var(--overcooked-foam) !important;
 }
 
 .shop-item-card::before {
     background: var(--overcooked-dark) !important;
-    filter: hue-rotate(0deg) saturate(0.3) !important;
+    filter: hue-rotate(200deg) saturate(0.4) !important;
     opacity: 0.5 !important;
 }
 
@@ -1513,11 +1510,11 @@ a:hover {
 .flavortown-card-qty__btn {
     background: var(--overcooked-surface) !important;
     color: var(--overcooked-white) !important;
-    border-color: var(--overcooked-foam) !important;
+    border-color: var(--overcooked-mid) !important;
 }
 
 .flavortown-card-qty__btn:hover {
-    background: var(--overcooked-cyan) !important;
+    background-color: var(--overcooked-cyan) !important;
     color: var(--overcooked-abyss) !important;
 }
 
@@ -1526,16 +1523,16 @@ a:hover {
 }
 
 .btn-primary {
-    background: var(--overcooked-cyan) !important;
+    background-color: var(--overcooked-cyan) !important;
     color: var(--overcooked-abyss) !important;
 }
 
 .settings-form {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .settings-form__field {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .settings-form__label {
@@ -1543,13 +1540,13 @@ a:hover {
 }
 
 .settings-form__input {
-    background: var(--overcooked-abyss) !important;
+    background-color: var(--overcooked-abyss) !important;
     border-color: var(--overcooked-mid) !important;
     color: var(--overcooked-white) !important;
 }
 
 .settings-form__hint {
-    color: var(--overcooked-foam) !important;
+    color: var(--overcooked-mid) !important;
 }
 
 .settings-form__checkbox {
@@ -1557,11 +1554,11 @@ a:hover {
 }
 
 .api-key-container {
-    background: var(--overcooked-abyss) !important;
+    background-color: var(--overcooked-abyss) !important;
 }
 
 .api-key-display {
-    background: var(--overcooked-abyss) !important;
+    background-color: var(--overcooked-abyss) !important;
     color: var(--overcooked-white) !important;
 }
 
@@ -1575,30 +1572,30 @@ a:hover {
 }
 
 ::-webkit-scrollbar-track {
-    background: var(--overcooked-deep);
+    background-color: var(--overcooked-deep);
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--overcooked-surface);
+    background-color: var(--overcooked-surface);
     border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--overcooked-wave);
+    background-color: var(--overcooked-mid);
 }
 
 .user-profile__left {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .user-profile__card {
-    background: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-dark) !important;
     border-color: var(--overcooked-mid) !important;
     color: var(--overcooked-white) !important;
 }
 
 .user-profile__identity {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .user-profile__identity h1 {
@@ -1606,7 +1603,7 @@ a:hover {
 }
 
 .user-profile__identity h2 {
-    color: var(--overcooked-mist) !important;
+    color: var(--overcooked-foam) !important;
 }
 
 .user-profile__avatar {
@@ -1615,7 +1612,7 @@ a:hover {
 
 .user-profile__heading {
     color: var(--overcooked-white) !important;
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .user-profile__heading svg {
@@ -1623,16 +1620,16 @@ a:hover {
 }
 
 .user-profile__stats {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .user-profile__stat {
-    background: var(--overcooked-mid) !important;
+    background-color: var(--overcooked-mid) !important;
     border-color: var(--overcooked-surface) !important;
 }
 
 .user-profile__stat h3 {
-    color: var(--overcooked-mist) !important;
+    color: var(--overcooked-foam) !important;
 }
 
 .user-profile__stat h4 {
@@ -1640,11 +1637,11 @@ a:hover {
 }
 
 .user-profile__times {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .user-profile__time {
-    background: var(--overcooked-mid) !important;
+    background-color: var(--overcooked-mid) !important;
 }
 
 .user-profile__time h4 {
@@ -1652,16 +1649,16 @@ a:hover {
 }
 
 .user-profile__achievements {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .user-profile__achievement {
-    background: var(--overcooked-mid) !important;
+    background-color: var(--overcooked-mid) !important;
     border-color: var(--overcooked-surface) !important;
 }
 
 .user-profile__achievement-icon {
-    background: var(--overcooked-surface) !important;
+    background-color: var(--overcooked-surface) !important;
 }
 
 .user-profile__achievement-title {
@@ -1669,21 +1666,21 @@ a:hover {
 }
 
 .achievement-icon-placeholder {
-    color: var(--overcooked-foam) !important;
-    background: var(--overcooked-surface) !important;
+    color: var(--overcooked-mid) !important;
+    background-color: var(--overcooked-surface) !important;
 }
 
 .user-profile__projects {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .user-profile__project-card {
-    background: var(--overcooked-mid) !important;
+    background-color: var(--overcooked-mid) !important;
     border-color: var(--overcooked-surface) !important;
 }
 
 .user-profile__project-card:hover {
-    background: var(--overcooked-surface) !important;
+    background-color: var(--overcooked-surface) !important;
     border-color: var(--overcooked-cyan) !important;
 }
 
@@ -1692,29 +1689,29 @@ a:hover {
 }
 
 .user-profile__project-stats {
-    color: var(--overcooked-mist) !important;
+    color: var(--overcooked-foam) !important;
 }
 
 .user-profile__project-stats div {
-    color: var(--overcooked-mist) !important;
+    color: var(--overcooked-foam) !important;
 }
 
 .votes-new__main {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .votes-new__project {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .votes-new__project-card {
-    background: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-dark) !important;
     border-color: var(--overcooked-mid) !important;
     color: var(--overcooked-white) !important;
 }
 
 .votes-new__project-details {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .votes-new__project-card-content h1 {
@@ -1722,15 +1719,15 @@ a:hover {
 }
 
 .votes-new__project-card-content p {
-    color: var(--overcooked-mist) !important;
+    color: var(--overcooked-foam) !important;
 }
 
 .votes-new__project-card-stats {
-    color: var(--overcooked-mist) !important;
+    color: var(--overcooked-foam) !important;
 }
 
 .votes-new__project-card-stat {
-    color: var(--overcooked-mist) !important;
+    color: var(--overcooked-foam) !important;
 }
 
 .votes-new__project-card-stat svg {
@@ -1738,15 +1735,15 @@ a:hover {
 }
 
 .votes-new__project-buttons {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .votes-new__devlogs {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .votes-new__form {
-    background: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-dark) !important;
     border-color: var(--overcooked-mid) !important;
     color: var(--overcooked-white) !important;
 }
@@ -1756,9 +1753,9 @@ a:hover {
 }
 
 .vote-category {
-    background: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-dark) !important;
     border-color: var(--overcooked-mid) !important;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4)) !important;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3)) !important;
 }
 
 .vote-category__header {
@@ -1766,17 +1763,17 @@ a:hover {
 }
 
 .vote-category__body {
-    background: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-dark) !important;
     border-color: var(--vote-category-accent) !important;
 }
 
 .vote-category__footer {
-    background: var(--overcooked-mid) !important;
-    color: var(--overcooked-mist) !important;
+    background-color: var(--overcooked-mid) !important;
+    color: var(--overcooked-foam) !important;
 }
 
 .vote-category__star {
-    color: var(--overcooked-foam) !important;
+    color: var(--overcooked-mid) !important;
 }
 
 .vote-category__input:checked~.vote-category__star {
@@ -1786,11 +1783,11 @@ a:hover {
 .vote-category--red {
     --vote-category-accent: var(--overcooked-coral) !important;
     --vote-category-footer-bg: var(--overcooked-mid) !important;
-    --vote-category-footer-text: var(--overcooked-coral) !important;
+    --vote-category-footer-text: var(--overcooked-wave) !important;
 }
 
 .vote-category--red .vote-category__header {
-    background: var(--overcooked-coral) !important;
+    background-color: var(--overcooked-coral) !important;
     color: var(--overcooked-abyss) !important;
 }
 
@@ -1805,7 +1802,7 @@ a:hover {
 }
 
 .vote-category--yellow .vote-category__header {
-    background: var(--overcooked-gold) !important;
+    background-color: var(--overcooked-gold) !important;
     color: var(--overcooked-abyss) !important;
 }
 
@@ -1814,31 +1811,31 @@ a:hover {
 }
 
 .vote-category--blue {
-    --vote-category-accent: var(--overcooked-cyan) !important;
+    --vote-category-accent: var(--overcooked-surface) !important;
     --vote-category-footer-bg: var(--overcooked-mid) !important;
-    --vote-category-footer-text: var(--overcooked-cyan) !important;
+    --vote-category-footer-text: var(--overcooked-wave) !important;
 }
 
 .vote-category--blue .vote-category__header {
-    background: var(--overcooked-cyan) !important;
+    background-color: var(--overcooked-surface) !important;
     color: var(--overcooked-abyss) !important;
 }
 
 .vote-category--blue .vote-category__body {
-    border-color: var(--overcooked-cyan) !important;
+    border-color: var(--overcooked-surface) !important;
 }
 
 .btn-submit {
-    background: var(--overcooked-kelp) !important;
+    background-color: var(--overcooked-kelp) !important;
     color: var(--overcooked-abyss) !important;
 }
 
 .btn-submit:hover {
-    background: var(--overcooked-cyan) !important;
+    background-color: var(--overcooked-foam) !important;
 }
 
 .modal {
-    background: var(--overcooked-abyss) !important;
+    background-color: var(--overcooked-abyss) !important;
     border-color: var(--overcooked-mid) !important;
     color: var(--overcooked-white) !important;
 }
@@ -1848,7 +1845,7 @@ a:hover {
 }
 
 .modal h2 {
-    color: var(--overcooked-mist) !important;
+    color: var(--overcooked-foam) !important;
 }
 
 .form-checkbox label {
@@ -1856,36 +1853,36 @@ a:hover {
 }
 
 .form-field {
-    background: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-dark) !important;
     border-color: var(--overcooked-mid) !important;
     color: var(--overcooked-white) !important;
 }
 
 .form-group small {
-    color: var(--overcooked-mist) !important;
+    color: var(--overcooked-foam) !important;
 }
 
 .modal__actions-close {
-    background: var(--overcooked-mid) !important;
+    background-color: var(--overcooked-mid) !important;
     color: var(--overcooked-white) !important;
 }
 
 .comment-form {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .comment-form__input {
-    background: var(--overcooked-charcoal) !important;
+    background-color: var(--overcooked-deep) !important;
     border: 1px solid var(--overcooked-mid) !important;
     color: var(--overcooked-white) !important;
 }
 
 .comment-form__input::placeholder {
-    color: var(--overcooked-foam) !important;
+    color: var(--overcooked-mid) !important;
 }
 
 .comments-section {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .comments-section__title {
@@ -1893,7 +1890,7 @@ a:hover {
 }
 
 .comment {
-    background: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-dark) !important;
     border-color: var(--overcooked-mid) !important;
 }
 
@@ -1902,7 +1899,7 @@ a:hover {
 }
 
 .comment__time {
-    color: var(--overcooked-mist) !important;
+    color: var(--overcooked-foam) !important;
 }
 
 .comment__body {
@@ -1910,7 +1907,7 @@ a:hover {
 }
 
 .like-button__btn {
-    color: var(--overcooked-mist) !important;
+    color: var(--overcooked-foam) !important;
 }
 
 .like-button__btn:hover {
@@ -1918,20 +1915,20 @@ a:hover {
 }
 
 .comments-count {
-    color: var(--overcooked-mist) !important;
+    color: var(--overcooked-foam) !important;
 }
 
 .report-btn {
-    background: var(--overcooked-gold) !important;
+    background-color: var(--overcooked-gold) !important;
     color: var(--overcooked-abyss) !important;
 }
 
 .shop-order__accessories {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .shop-order__accessory-group-section {
-    background: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-dark) !important;
     border-color: var(--overcooked-mid) !important;
 }
 
@@ -1940,7 +1937,7 @@ a:hover {
 }
 
 .shop-order__accessory-options {
-    background: transparent !important;
+    background-color: transparent !important;
 }
 
 .shop-order__accessory-option-label {
@@ -1948,7 +1945,7 @@ a:hover {
 }
 
 .shop-order__accessory-option-block {
-    background: var(--overcooked-mid) !important;
+    background-color: var(--overcooked-mid) !important;
     border: 2px solid var(--overcooked-surface) !important;
     color: var(--overcooked-white) !important;
     border-radius: 8px !important;
@@ -1956,12 +1953,12 @@ a:hover {
 }
 
 .shop-order__accessory-option-block:hover {
-    background: var(--overcooked-surface) !important;
+    background-color: var(--overcooked-surface) !important;
     border-color: var(--overcooked-cyan) !important;
 }
 
 .shop-order__accessory-option-input:checked+.shop-order__accessory-option-block {
-    background: var(--overcooked-cyan) !important;
+    background-color: var(--overcooked-cyan) !important;
     border-color: var(--overcooked-cyan) !important;
     color: var(--overcooked-abyss) !important;
 }
@@ -1976,7 +1973,7 @@ a:hover {
 }
 
 .flavortown-achievement-toast {
-    background: linear-gradient(135deg, var(--overcooked-dark) 0%, var(--overcooked-mid) 100%) !important;
+    background-color: linear-gradient(135deg, var(--overcooked-dark) 0%, var(--overcooked-mid) 100%) !important;
     border-color: var(--overcooked-cyan) !important;
 }
 
@@ -1985,7 +1982,7 @@ a:hover {
 }
 
 .flavortown-achievement-toast__names {
-    color: var(--overcooked-mist) !important;
+    color: var(--overcooked-foam) !important;
 }
 
 .flavortown-achievement-toast__cookies {
@@ -1993,7 +1990,7 @@ a:hover {
 }
 
 .flavortown-achievement-toast__close {
-    color: var(--overcooked-foam) !important;
+    color: var(--overcooked-surface) !important;
 }
 
 .shop-goals__container {
@@ -2001,16 +1998,16 @@ a:hover {
 }
 
 .flavortown-goals-enhanced {
-    background: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-dark) !important;
 }
 
 .flavortown-goals-enhanced__card {
-    background: var(--overcooked-mid) !important;
-    border-color: var(--overcooked-slate) !important;
+    background-color: var(--overcooked-mid) !important;
+    border-color: var(--overcooked-surface) !important;
 }
 
 .flavortown-goals-enhanced__card-label {
-    color: var(--overcooked-mist) !important;
+    color: var(--overcooked-foam) !important;
 }
 
 .flavortown-goals-enhanced__card-value {
@@ -2018,7 +2015,7 @@ a:hover {
 }
 
 .flavortown-goals-enhanced__card--danger {
-    background: var(--overcooked-coral) !important;
+    background-color: var(--overcooked-coral) !important;
 }
 
 .flavortown-goals-enhanced__card--danger .flavortown-goals-enhanced__card-label,
@@ -2027,7 +2024,7 @@ a:hover {
 }
 
 .flavortown-goals-enhanced__card--success {
-    background: var(--overcooked-kelp) !important;
+    background-color: var(--overcooked-kelp) !important;
 }
 
 .flavortown-goals-enhanced__card--success .flavortown-goals-enhanced__card-label,
@@ -2036,54 +2033,54 @@ a:hover {
 }
 
 .flavortown-goals-enhanced__progress-bar {
-    background: var(--overcooked-mid) !important;
+    background-color: var(--overcooked-mid) !important;
 }
 
 .flavortown-goals-enhanced__progress-fill {
-    background: linear-gradient(90deg, var(--overcooked-cyan) 0%, var(--overcooked-teal) 100%) !important;
+    background-color: linear-gradient(90deg, var(--overcooked-cyan) 0%, var(--overcooked-coral) 100%) !important;
 }
 
 .flavortown-priority-section {
-    background: linear-gradient(135deg, var(--overcooked-dark) 0%, var(--overcooked-mid) 100%) !important;
-    border-color: var(--overcooked-gold) !important;
+    background: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-cyan) !important;
 }
 
 .flavortown-priority-section__title {
-    color: var(--overcooked-gold) !important;
+    color: var(--overcooked-cyan) !important;
 }
 
 .flavortown-priority-section__count,
 .flavortown-priority-section__pct,
 .flavortown-priority-section__stats {
-    color: var(--overcooked-mist) !important;
+    color: var(--overcooked-foam) !important;
 }
 
 .flavortown-priority-section__progress-bar {
-    background: var(--overcooked-slate) !important;
+    background: var(--overcooked-surface) !important;
 }
 
 .flavortown-priority-section__progress-fill {
-    background: linear-gradient(90deg, var(--overcooked-gold) 0%, var(--overcooked-coral) 100%) !important;
+    background: var(--overcooked-cyan) !important;
 }
 
 .flavortown-priority-pill {
-    background: var(--overcooked-slate) !important;
-    border-color: var(--overcooked-gold) !important;
+    background: var(--overcooked-surface) !important;
+    border-color: var(--overcooked-cyan) !important;
     color: var(--overcooked-white) !important;
 }
 
 .flavortown-goals-enhanced__accordion {
     background: var(--overcooked-dark) !important;
-    border-color: var(--overcooked-slate) !important;
+    border-color: var(--overcooked-surface) !important;
 }
 
 .flavortown-goals-enhanced__accordion-header,
 .flavortown-accordion-inner {
-    background: var(--overcooked-mid) !important;
+    background-color: var(--overcooked-mid) !important;
 }
 
 .flavortown-goals-enhanced__accordion-header:hover .flavortown-accordion-inner {
-    background: var(--overcooked-slate) !important;
+    background-color: var(--overcooked-surface) !important;
 }
 
 .flavortown-accordion-title {
@@ -2091,16 +2088,25 @@ a:hover {
 }
 
 .flavortown-goals-enhanced__accordion-content {
-    background: var(--overcooked-abyss) !important;
-    border-color: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-abyss) !important;
+    border-color: var(--overcooked-mid) !important;
+}
+
+.flavortown-goal-item {
+    background: linear-gradient(90deg, var(--overcooked-mid) var(--progress, 0%), var(--overcooked-dark) var(--progress, 0%)) !important;
+    border-color: var(--overcooked-surface) !important;
+}
+
+.flavortown-goal-item:hover {
+    border-color: var(--overcooked-cyan) !important;
 }
 
 .flavortown-goal-item,
 .flavortown-goal-item[data-progress-state="mid"],
 .flavortown-goal-item[data-progress-state="low"],
 .flavortown-goal-item[data-progress-state="high"] {
+    --progress-bg: var(--overcooked-cyan) !important;
     background: linear-gradient(90deg, var(--overcooked-cyan) var(--progress, 0%), var(--overcooked-dark) var(--progress, 0%)) !important;
-    border-color: var(--overcooked-mid) !important;
 }
 
 .flavortown-goal-item::before {
@@ -2108,30 +2114,16 @@ a:hover {
     content: none !important;
 }
 
-.flavortown-goal-item:hover {
-    border-color: var(--overcooked-cyan) !important;
-}
-
 .goal-item--priority {
-    border-left: 4px solid var(--overcooked-gold) !important;
+    border-left: 4px solid var(--overcooked-cyan) !important;
 }
 
 .goal-item__name-compact {
     color: var(--overcooked-white) !important;
 }
 
-.flavortown-stat-pill {
-    background: var(--overcooked-dark) !important;
-    border-color: var(--overcooked-slate) !important;
-    color: var(--overcooked-white) !important;
-}
-
-.flavortown-stat-value {
-    color: var(--overcooked-cyan) !important;
-}
-
 .goal-item__stats-compact {
-    color: var(--overcooked-coral) !important;
+    color: var(--overcooked-gold) !important;
 }
 
 .goal-item__time-compact {
@@ -2143,26 +2135,36 @@ a:hover {
 }
 
 .goal-item__drag-handle {
-    color: var(--overcooked-foam) !important;
+    color: var(--overcooked-mid) !important;
+}
+
+.flavortown-stat-pill {
+    background-color: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-mid) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.flavortown-stat-value {
+    color: var(--overcooked-gold) !important;
 }
 
 .goal-item__acc-pill {
-    background: var(--overcooked-slate) !important;
-    color: var(--overcooked-mist) !important;
+    background-color: var(--overcooked-surface) !important;
+    color: var(--overcooked-foam) !important;
 }
 
 .goal-item__qty-btn-sm {
-    background: var(--overcooked-mid) !important;
-    border-color: var(--overcooked-slate) !important;
+    background-color: var(--overcooked-mid) !important;
+    border-color: var(--overcooked-surface) !important;
     color: var(--overcooked-white) !important;
 }
 
 .goal-item__qty-btn-sm:hover {
-    background: var(--overcooked-slate) !important;
+    background-color: var(--overcooked-surface) !important;
 }
 
 .goal-item__remove-compact {
-    background: rgba(255, 107, 107, 0.2) !important;
+    background-color: rgba(243, 139, 168, 0.2) !important;
     color: var(--overcooked-coral) !important;
 }
 
@@ -2171,71 +2173,12 @@ a:hover {
 }
 
 .flavortown-search-icon {
-    color: var(--overcooked-mist) !important;
-}
-
-.table-data {
-    background: var(--overcooked-dark) !important;
-    border-color: var(--overcooked-slate) !important;
-    box-shadow: none !important;
-}
-
-.table-data thead th {
-    background: var(--overcooked-mid) !important;
-    color: var(--overcooked-white) !important;
-    border-bottom-color: var(--overcooked-slate) !important;
-}
-
-.table-data tbody td {
-    border-bottom-color: var(--overcooked-dark-mid) !important;
-    color: var(--overcooked-foam) !important;
-}
-
-.table-data tbody tr:hover td {
-    background: var(--overcooked-mid) !important;
-}
-
-.pagy.series-nav {
-    background: var(--overcooked-dark) !important;
-    border-color: var(--overcooked-slate) !important;
-    box-shadow: none !important;
-}
-
-.pagy.series-nav a,
-.pagy.series-nav span {
-    color: var(--overcooked-foam) !important;
-    background: transparent !important;
-}
-
-.pagination a {
-    background: transparent !important;
-    color: var(--overcooked-foam) !important;
-}
-
-.pagy.series-nav a:hover:not([disabled]) {
-    background: var(--overcooked-slate) !important;
-    color: var(--overcooked-white) !important;
-}
-
-.pagy.series-nav a[aria-current="page"] {
-    background: var(--overcooked-cyan) !important;
-    color: var(--overcooked-abyss) !important;
-}
-
-.input-primary {
-    background: var(--overcooked-dark) !important;
-    border-color: var(--overcooked-slate) !important;
-    color: var(--overcooked-white) !important;
-}
-
-.input-primary:focus {
-    border-color: var(--overcooked-cyan) !important;
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--overcooked-cyan), transparent 80%) !important;
+    color: var(--overcooked-mid) !important;
 }
 
 .flavortown-search-input-wrapper {
-    background: var(--overcooked-dark) !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+    background-color: var(--overcooked-dark) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
 }
 
 .flavortown-search-input {
@@ -2243,117 +2186,21 @@ a:hover {
 }
 
 .flavortown-search-input-wrapper:has(.flavortown-search-input:focus) {
-    background: var(--overcooked-abyss) !important;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3) !important;
+    background-color: var(--overcooked-abyss) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2) !important;
 }
 
-.table-data tbody tr {
-    background: transparent !important;
-}
-
-.table-data tbody tr:nth-child(even) {
-    background: rgba(255, 255, 255, 0.02) !important;
-}
-
-.card {
-    background-color: var(--overcooked-dark) !important;
-    border-color: var(--overcooked-slate) !important;
-    box-shadow: none !important;
-}
-
-.card h2 {
-    color: var(--overcooked-white) !important;
-    border-bottom-color: var(--overcooked-slate) !important;
-}
-
-.text-muted {
-    color: var(--overcooked-mist) !important;
-}
-
-.form-control {
-    background: var(--overcooked-dark) !important;
-    border-color: var(--overcooked-slate) !important;
-    color: var(--overcooked-white) !important;
-}
-
-.form-control:focus {
-    border-color: var(--overcooked-cyan) !important;
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--overcooked-cyan), transparent 80%) !important;
-}
-
-.badge-pending {
-    background: color-mix(in srgb, var(--overcooked-gold), transparent 85%) !important;
-    color: var(--overcooked-gold) !important;
-    border-color: color-mix(in srgb, var(--overcooked-gold), transparent 70%) !important;
-}
-
-.badge-reviewed {
-    background: color-mix(in srgb, var(--overcooked-green), transparent 85%) !important;
-    color: var(--overcooked-green) !important;
-    border-color: color-mix(in srgb, var(--overcooked-green), transparent 70%) !important;
-}
-
-.badge-dismissed {
-    background: color-mix(in srgb, var(--overcooked-slate), transparent 85%) !important;
-    color: var(--overcooked-mist) !important;
-    border-color: color-mix(in srgb, var(--overcooked-slate), transparent 70%) !important;
-}
-
-.btn-secondary {
-    background: var(--overcooked-slate) !important;
-    color: var(--overcooked-white) !important;
-}
-
-.btn-secondary:hover {
-    background: color-mix(in srgb, var(--overcooked-slate), white 10%) !important;
-}
-
-.action-leaderboard {
-    background: var(--overcooked-dark) !important;
-    border-color: var(--overcooked-slate) !important;
-    box-shadow: none !important;
-}
-
-.leaderboard-table th {
-    border-bottom-color: var(--overcooked-slate) !important;
-    color: var(--overcooked-white) !important;
-}
-
-.leaderboard-table tr.highlight {
-    background: var(--overcooked-mid) !important;
-}
-
-.leaderboard-table tr:hover {
-    background: var(--overcooked-slate) !important;
-}
-
-.leaderboard-table .stat-approved {
-    color: var(--overcooked-green) !important;
-}
-
-.leaderboard-table .stat-rejected {
-    color: var(--overcooked-coral) !important;
-}
-
-.leaderboard-table .stat-on_hold {
-    color: var(--overcooked-gold) !important;
-}
-
-.leaderboard-table .stat-fulfilled {
+.flavortown-search-input:focus+.flavortown-search-icon {
     color: var(--overcooked-cyan) !important;
 }
 
-.leaderboard-table .stat-total {
-    color: var(--overcooked-white) !important;
-}
-
 .flavortown-search-input::placeholder {
-    color: var(--overcooked-foam) !important;
+    color: var(--overcooked-mid) !important;
 }
 
 .flavortown-search-results {
-    background: var(--overcooked-abyss) !important;
-    border-color: var(--overcooked-slate) !important;
+    background-color: var(--overcooked-abyss) !important;
+    border-color: var(--overcooked-surface) !important;
 }
 
 .flavortown-search-count {
@@ -2361,13 +2208,13 @@ a:hover {
 }
 
 .flavortown-search-close {
-    background: rgba(255, 107, 107, 0.2) !important;
+    background-color: rgba(243, 139, 168, 0.2) !important;
     color: var(--overcooked-coral) !important;
 }
 
 .flavortown-project-card {
-    background: var(--overcooked-dark) !important;
-    border-color: var(--overcooked-slate) !important;
+    background-color: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-surface) !important;
 }
 
 .flavortown-project-card:hover {
@@ -2383,11 +2230,161 @@ a:hover {
 }
 
 .flavortown-project-desc {
-    color: var(--overcooked-mist) !important;
+    color: var(--overcooked-foam) !important;
 }
 
 .flavortown-project-meta {
+    color: var(--overcooked-mid) !important;
+}
+
+.table-data {
+    background-color: var(--overcooked-abyss) !important;
+    border-color: var(--overcooked-mid) !important;
+    box-shadow: none !important;
+}
+
+.table-data thead th {
+    background-color: var(--overcooked-dark) !important;
+    color: var(--overcooked-white) !important;
+    border-bottom-color: var(--overcooked-mid) !important;
+}
+
+.table-data tbody td {
+    border-bottom-color: var(--overcooked-dark) !important;
+    color: var(--overcooked-mist) !important;
+}
+
+.table-data tbody tr:hover td {
+    background-color: var(--overcooked-dark) !important;
+}
+
+.pagy.series-nav {
+    background-color: var(--overcooked-abyss) !important;
+    border-color: var(--overcooked-mid) !important;
+    box-shadow: none !important;
+}
+
+.pagy.series-nav a,
+.pagy.series-nav span {
     color: var(--overcooked-foam) !important;
+    background-color: transparent !important;
+}
+
+.pagination a {
+    background-color: transparent !important;
+    color: var(--overcooked-foam) !important;
+}
+
+.pagy.series-nav a:hover:not([disabled]) {
+    background-color: var(--overcooked-dark) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.pagy.series-nav a[aria-current="page"] {
+    background-color: var(--overcooked-cyan) !important;
+    color: var(--overcooked-abyss) !important;
+}
+
+.input-primary {
+    background-color: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-mid) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.table-data tbody tr {
+    background-color: transparent !important;
+}
+
+.card {
+    background-color: var(--overcooked-abyss) !important;
+    border-color: var(--overcooked-mid) !important;
+    box-shadow: none !important;
+}
+
+.card h2 {
+    color: var(--overcooked-white) !important;
+    border-bottom-color: var(--overcooked-mid) !important;
+}
+
+.text-muted {
+    color: var(--overcooked-surface) !important;
+}
+
+.form-control {
+    background-color: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-mid) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.form-control:focus {
+    border-color: var(--overcooked-cyan) !important;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--overcooked-cyan), transparent 80%) !important;
+}
+
+.badge-pending {
+    background-color: color-mix(in srgb, var(--overcooked-gold), transparent 85%) !important;
+    color: var(--overcooked-gold) !important;
+    border-color: color-mix(in srgb, var(--overcooked-gold), transparent 70%) !important;
+}
+
+.badge-reviewed {
+    background-color: color-mix(in srgb, var(--overcooked-kelp), transparent 85%) !important;
+    color: var(--overcooked-kelp) !important;
+    border-color: color-mix(in srgb, var(--overcooked-kelp), transparent 70%) !important;
+}
+
+.badge-dismissed {
+    background-color: color-mix(in srgb, var(--overcooked-mid), transparent 85%) !important;
+    color: var(--overcooked-foam) !important;
+    border-color: color-mix(in srgb, var(--overcooked-mid), transparent 70%) !important;
+}
+
+.btn-secondary {
+    background-color: var(--overcooked-mid) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.btn-secondary:hover {
+    background-color: var(--overcooked-surface) !important;
+}
+
+.action-leaderboard {
+    background-color: var(--overcooked-abyss) !important;
+    border-color: var(--overcooked-mid) !important;
+    box-shadow: none !important;
+}
+
+.leaderboard-table th {
+    border-bottom-color: var(--overcooked-mid) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.leaderboard-table tr.highlight {
+    background-color: var(--overcooked-dark) !important;
+}
+
+.leaderboard-table tr:hover {
+    background-color: var(--overcooked-mid) !important;
+}
+
+.leaderboard-table .stat-approved {
+    color: var(--overcooked-kelp) !important;
+}
+
+.leaderboard-table .stat-rejected {
+    color: var(--overcooked-coral) !important;
+}
+
+.leaderboard-table .stat-on_hold {
+    color: var(--overcooked-gold) !important;
+}
+
+.leaderboard-table .stat-fulfilled {
+    color: var(--overcooked-surface) !important;
+}
+
+.leaderboard-table .stat-total {
+    color: var(--overcooked-white) !important;
 }
 
 .my-votes table {
@@ -2395,20 +2392,20 @@ a:hover {
 }
 
 .my-votes table th {
-    background: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-dark) !important;
     color: var(--overcooked-white) !important;
     border-color: var(--overcooked-mid) !important;
 }
 
 .my-votes table td {
-    color: var(--overcooked-mist) !important;
+    color: var(--overcooked-foam) !important;
     border-color: var(--overcooked-mid) !important;
 }
 
 .my-votes table td a,
 .my-votes a {
-    background: var(--overcooked-cyan) !important;
-    color: var(--overcooked-burnt) !important;
+    background-color: var(--overcooked-cyan) !important;
+    color: var(--overcooked-abyss) !important;
 }
 
 .flavortown-kitchen-dashboard {
@@ -2420,7 +2417,7 @@ a:hover {
 }
 
 .flavortown-stat-card {
-    background: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-dark) !important;
     border-color: var(--overcooked-mid) !important;
 }
 
@@ -2433,7 +2430,7 @@ a:hover {
 }
 
 .flavortown-graph-container {
-    background: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-dark) !important;
     border-color: var(--overcooked-mid) !important;
 }
 
@@ -2442,11 +2439,11 @@ a:hover {
 }
 
 #flavortown-cookies-graph {
-    background: var(--overcooked-burnt) !important;
+    background-color: var(--overcooked-abyss) !important;
 }
 
 .flavortown-efficiency {
-    background: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-dark) !important;
     border-color: var(--overcooked-mid) !important;
 }
 
@@ -2459,11 +2456,11 @@ a:hover {
 }
 
 .flavortown-efficiency__affordable {
-    color: var(--overcooked-foam) !important;
+    color: var(--overcooked-kelp) !important;
 }
 
 .flavortown-efficiency__rate {
-    background: var(--overcooked-mid) !important;
+    background-color: var(--overcooked-mid) !important;
 }
 
 .flavortown-efficiency__rate-val {
@@ -2475,19 +2472,19 @@ a:hover {
 }
 
 .flavortown-efficiency__progress-bar {
-    background: var(--overcooked-mid) !important;
+    background-color: var(--overcooked-mid) !important;
 }
 
 .flavortown-efficiency__slider {
-    background: var(--overcooked-mid) !important;
+    background-color: var(--overcooked-mid) !important;
 }
 
 .flavortown-efficiency__slider::-webkit-slider-thumb {
-    background: var(--overcooked-cyan) !important;
+    background-color: var(--overcooked-cyan) !important;
 }
 
 .flavortown-efficiency__slider::-moz-range-thumb {
-    background: var(--overcooked-cyan) !important;
+    background-color: var(--overcooked-cyan) !important;
 }
 
 .flavortown-efficiency__slider-row {
@@ -2516,21 +2513,32 @@ a:hover {
 }
 
 .explore__details {
-    background: var(--overcooked-dark) !important;
+    background-color: var(--overcooked-dark) !important;
     border-color: var(--overcooked-mid) !important;
+    border-radius: 10px !important;
+    padding: 12px 16px !important;
 }
 
 .explore__details summary {
     color: var(--overcooked-white) !important;
+    cursor: pointer;
 }
 
 .explore__details-content {
     color: var(--overcooked-foam) !important;
 }
 
+.explore__details-content p {
+    color: var(--overcooked-foam) !important;
+}
+
 .explore__code {
-    background: var(--overcooked-abyss) !important;
+    display: block;
+    background-color: var(--overcooked-deep) !important;
     color: var(--overcooked-cyan) !important;
+    padding: 10px 14px !important;
+    border-radius: 6px !important;
+    font-family: 'Monaco', 'Menlo', monospace !important;
 }
 
 .grid {
@@ -2560,15 +2568,15 @@ a:hover {
 
 .card pre,
 .card code {
-    background: var(--overcooked-abyss) !important;
+    background: var(--overcooked-deep) !important;
     color: var(--overcooked-white) !important;
     border-color: var(--overcooked-mid) !important;
 }
 
 .query-params,
 .response {
-    background: var(--overcooked-abyss) !important;
-    color: var(--overcooked-foam) !important;
+    background: var(--overcooked-deep) !important;
+    color: var(--overcooked-kelp) !important;
     border-color: var(--overcooked-mid) !important;
 }
 
@@ -2577,6 +2585,5 @@ a:hover {
 }
 
 .goal-item--priority {
-    background: var(--overcooked-mid) !important;
-    border-left-color: var(--overcooked-yellow) !important;
+    border-left: 4px solid var(--overcooked-cyan) !important;
 }

@@ -1593,9 +1593,9 @@
 .card {
     background: #ffffff !important;
     border: 2px solid #e6d5c3 !important;
-    border-radius: 16px !important;
-    padding: 24px !important;
-    margin-bottom: 24px !important;
+    border-radius: 12px !important;
+    padding: 12px !important;
+    margin-bottom: 12px !important;
     box-shadow: 0 4px 12px rgba(93, 78, 55, 0.05) !important;
 }
 
@@ -1604,8 +1604,14 @@
     margin-top: 0 !important;
     font-size: 1.25em !important;
     border-bottom: 2px solid #e6d5c3 !important;
-    padding-bottom: 12px !important;
-    margin-bottom: 16px !important;
+    padding-bottom: 8px !important;
+    margin-bottom: 12px !important;
+}
+
+.card pre {
+    padding: 8px !important;
+    margin: 8px 0 !important;
+    white-space: pre-wrap !important;
 }
 
 .text-muted {
