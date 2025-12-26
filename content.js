@@ -1764,17 +1764,10 @@ function init() {
     addSkipButton();
     transformVotesTable();
     enhanceKitchenDashboard();
-    registerExtensionUsage();
 
     setTimeout(checkAchievements, 2000);
 }
 
-function registerExtensionUsage() {
-    fetch('/api/v1/ping', {
-        method: 'HEAD',
-        headers: { 'X-Flavortown-Ext-135': 'true' }
-    }).catch(() => { });
-}
 
 function addSkipButton() {
     if (!document.querySelector('.votes-new')) return;
