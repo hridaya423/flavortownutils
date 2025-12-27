@@ -533,7 +533,7 @@ function enhanceShopGoals() {
         goalsWithQty.sort((a, b) => {
             const orderA = customOrder.indexOf(a.id);
             const orderB = customOrder.indexOf(b.id);
-            if (orderA !== -c1 && orderB !== -1) return orderA - orderB;
+            if (orderA !== -1 && orderB !== -1) return orderA - orderB;
             if (orderA !== -1) return -1;
             if (orderB !== -1) return 1;
 
