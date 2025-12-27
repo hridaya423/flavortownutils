@@ -30,6 +30,7 @@
     --color-accent: var(--sea-cyan) !important;
     --color-border: var(--sea-mid) !important;
 }
+
 body {
     background-color: var(--sea-abyss) !important;
     color: var(--sea-white) !important;
@@ -1617,11 +1618,6 @@ a:hover {
     background-color: transparent !important;
 }
 
-.user-profile__stat {
-    background-color: var(--sea-mid) !important;
-    border-color: var(--sea-surface) !important;
-}
-
 .user-profile__stat h3 {
     color: var(--sea-foam) !important;
 }
@@ -1632,10 +1628,6 @@ a:hover {
 
 .user-profile__times {
     background-color: transparent !important;
-}
-
-.user-profile__time {
-    background-color: var(--sea-mid) !important;
 }
 
 .user-profile__time h4 {
@@ -1649,10 +1641,6 @@ a:hover {
 .user-profile__achievement {
     background-color: var(--sea-mid) !important;
     border-color: var(--sea-surface) !important;
-}
-
-.user-profile__achievement-icon {
-    background-color: var(--sea-surface) !important;
 }
 
 .user-profile__achievement-title {
@@ -1687,7 +1675,53 @@ a:hover {
 }
 
 .user-profile__project-stats div {
+    color: var(--sea-mist) !important;
+}
+
+.user-profile__orders {
+    background-color: transparent !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1rem !important;
+}
+
+.user-profile__order {
+    background-color: var(--sea-mid) !important;
+    border: 1px solid var(--sea-surface) !important;
+    border-radius: 12px !important;
+    padding: 1rem !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 1rem !important;
+}
+
+.user-profile__order h3 {
     color: var(--sea-foam) !important;
+    margin: 0 !important;
+    font-size: 1.1em !important;
+    flex-grow: 1 !important;
+}
+
+.user-profile__order h3 b {
+    color: var(--sea-white) !important;
+}
+
+.user-profile__order-item-image {
+    width: 48px !important;
+    height: 48px !important;
+    object-fit: cover !important;
+    border-radius: 8px !important;
+    background-color: var(--sea-deep) !important;
+}
+
+.user-profile__order-item-name--red {
+    color: var(--sea-coral) !important;
+    font-weight: 600 !important;
+}
+
+.user-profile__order-item-name--green {
+    color: var(--sea-kelp) !important;
+    font-weight: 600 !important;
 }
 
 .votes-new__main {

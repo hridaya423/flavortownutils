@@ -36,6 +36,7 @@
     --color-accent: var(--overcooked-cyan) !important;
     --color-border: var(--overcooked-mid) !important;
 }
+
 body {
     background-color: var(--overcooked-abyss) !important;
     color: var(--overcooked-white) !important;
@@ -1623,21 +1624,12 @@ a:hover {
     background-color: transparent !important;
 }
 
-.user-profile__stat {
-    background-color: var(--overcooked-mid) !important;
-    border-color: var(--overcooked-surface) !important;
-}
-
 .user-profile__stat h3 {
     color: var(--overcooked-foam) !important;
 }
 
 .user-profile__stat h4 {
     color: var(--overcooked-cyan) !important;
-}
-
-.user-profile__times {
-    background-color: transparent !important;
 }
 
 .user-profile__time {
@@ -1655,10 +1647,6 @@ a:hover {
 .user-profile__achievement {
     background-color: var(--overcooked-mid) !important;
     border-color: var(--overcooked-surface) !important;
-}
-
-.user-profile__achievement-icon {
-    background-color: var(--overcooked-surface) !important;
 }
 
 .user-profile__achievement-title {
@@ -1693,7 +1681,53 @@ a:hover {
 }
 
 .user-profile__project-stats div {
+    color: var(--overcooked-mist) !important;
+}
+
+.user-profile__orders {
+    background-color: transparent !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1rem !important;
+}
+
+.user-profile__order {
+    background-color: var(--overcooked-mid) !important;
+    border: 1px solid var(--overcooked-surface) !important;
+    border-radius: 12px !important;
+    padding: 1rem !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 1rem !important;
+}
+
+.user-profile__order h3 {
     color: var(--overcooked-foam) !important;
+    margin: 0 !important;
+    font-size: 1.1em !important;
+    flex-grow: 1 !important;
+}
+
+.user-profile__order h3 b {
+    color: var(--overcooked-white) !important;
+}
+
+.user-profile__order-item-image {
+    width: 48px !important;
+    height: 48px !important;
+    object-fit: cover !important;
+    border-radius: 8px !important;
+    background-color: var(--overcooked-deep) !important;
+}
+
+.user-profile__order-item-name--red {
+    color: var(--overcooked-coral) !important;
+    font-weight: 600 !important;
+}
+
+.user-profile__order-item-name--green {
+    color: var(--overcooked-kelp) !important;
+    font-weight: 600 !important;
 }
 
 .votes-new__main {
