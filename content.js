@@ -760,7 +760,7 @@ function enhanceShopGoals() {
             const items = container.querySelectorAll('.flavortown-goal-item');
             const order = Array.from(items).map(el => el.dataset.goalId);
             localStorage.setItem('shop_wishlist_order', JSON.stringify(order));
-            updateStats();
+            updateStats(true);
         }
     }
 
