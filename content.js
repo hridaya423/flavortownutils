@@ -494,6 +494,10 @@ function enhanceShopGoals() {
             return;
         }
 
+        const balanceBtn = document.querySelector('.sidebar__user-balance');
+        const balanceText = balanceBtn ? balanceBtn.textContent.trim() : '0';
+        const currentCookies = parseInt(balanceText.replace(/[^0-9]/g, ''), 10) || 0;
+
         const existingStats = document.querySelector('.flavortown-goals-enhanced');
         const wasAccordionOpen = existingStats?.querySelector('.flavortown-goals-enhanced__accordion')?.open ?? true;
         if (existingStats) existingStats.remove();
@@ -527,14 +531,13 @@ function enhanceShopGoals() {
         }));
 
         goalsWithQty.sort((a, b) => {
-            if (a.isPriority !== b.isPriority) return b.isPriority - a.isPriority;
-
             const orderA = customOrder.indexOf(a.id);
             const orderB = customOrder.indexOf(b.id);
-            if (orderA !== -1 && orderB !== -1) return orderA - orderB;
+            if (orderA !== -c1 && orderB !== -1) return orderA - orderB;
             if (orderA !== -1) return -1;
             if (orderB !== -1) return 1;
 
+            if (a.isPriority !== b.isPriority) return b.isPriority - a.isPriority;
             if (a.hasAccessories !== b.hasAccessories) return b.hasAccessories - a.hasAccessories;
             return a.name.localeCompare(b.name);
         });
@@ -757,6 +760,7 @@ function enhanceShopGoals() {
             const items = container.querySelectorAll('.flavortown-goal-item');
             const order = Array.from(items).map(el => el.dataset.goalId);
             localStorage.setItem('shop_wishlist_order', JSON.stringify(order));
+            updateStats();
         }
     }
 
@@ -1750,8 +1754,97 @@ function initProjectBoardStats() {
     }
 }
 
+const UPDATE_CHECK_KEY = 'flavortown_last_update_check';
+const UPDATE_CHECK_INTERVAL = 12 * 60 * 60 * 1000;
+
+function compareVersions(v1, v2) {
+    const p1 = v1.split('.').map(Number);
+    const p2 = v2.split('.').map(Number);
+    for (let i = 0; i < Math.max(p1.length, p2.length); i++) {
+        const n1 = p1[i] || 0;
+        const n2 = p2[i] || 0;
+        if (n1 > n2) return 1;
+        if (n1 < n2) return -1;
+    }
+    return 0;
+}
+
+function showUpdateToast(version, url, isStore) {
+    const existingToast = document.querySelector('.flavortown-update-toast');
+    if (existingToast) return;
+
+    const toast = document.createElement('div');
+    toast.className = 'flavortown-achievement-toast flavortown-update-toast';
+
+    toast.style.cursor = 'default';
+
+    const sourceText = isStore ? 'the Web Store' : 'GitHub Releases';
+    const actionText = isStore ? 'View in Store' : 'Download Update';
+
+    toast.innerHTML = `
+        <div class="flavortown-achievement-toast__content">
+            <div class="flavortown-achievement-toast__title">🚀 Update Available: v${version}</div>
+            <div class="flavortown-achievement-toast__names">
+                A new version is available on ${sourceText}.
+                <div style="margin-top: 4px;">
+                    <a href="${url}" target="_blank" style="color: inherit; text-decoration: underline; font-weight: bold;">${actionText}</a>
+                </div>
+            </div>
+        </div>
+        <button class="flavortown-achievement-toast__close">×</button>
+    `;
+
+    document.body.appendChild(toast);
+
+    requestAnimationFrame(() => toast.classList.add('is-visible'));
+
+    toast.querySelector('.flavortown-achievement-toast__close').addEventListener('click', () => {
+        toast.classList.remove('is-visible');
+        setTimeout(() => toast.remove(), 300);
+    });
+}
+
+function checkForUpdates() {
+    const lastCheck = localStorage.getItem(UPDATE_CHECK_KEY);
+    const now = Date.now();
+
+    if (lastCheck && (now - parseInt(lastCheck, 10) < UPDATE_CHECK_INTERVAL)) {
+        return;
+    }
+
+    fetch('https://api.github.com/repos/hridaya423/flavortownutils/releases/latest')
+        .then(r => r.json())
+        .then(data => {
+            localStorage.setItem(UPDATE_CHECK_KEY, now.toString());
+
+            if (!data.tag_name) return;
+
+            const latestVersion = data.tag_name.replace(/^v/, '');
+            const currentVersion = browserAPI.runtime.getManifest().version;
+
+            if (compareVersions(latestVersion, currentVersion) > 0) {
+                const manifest = browserAPI.runtime.getManifest();
+                const isStore = !!manifest.update_url;
+
+                let updateUrl = data.html_url;
+
+                if (isStore) {
+                    if (navigator.userAgent.includes('Firefox')) {
+                        updateUrl = 'https://addons.mozilla.org/en-US/firefox/search/?q=Flavortown+Utils';
+                    } else if (navigator.userAgent.includes('Chrome')) {
+                        updateUrl = 'https://chromewebstore.google.com/detail/flavortown-utils/fdacgialppflhglkinbiapaenfahhjge';
+                    }
+                }
+
+                showUpdateToast(latestVersion, updateUrl, isStore);
+            }
+        })
+        .catch(e => console.error('Flavortown update check failed:', e));
+}
+
 function init() {
     loadTheme();
+    checkForUpdates();
     initPinnableSidebar();
     addDevlogFrequencyStat();
     inlineDevlogForm();
