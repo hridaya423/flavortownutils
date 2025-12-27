@@ -39,6 +39,20 @@
     --color-text-muted: var(--ctp-overlay0) !important;
     --color-accent: var(--ctp-mauve) !important;
     --color-border: var(--ctp-surface1) !important;
+
+    --flavortown-toolbar-bg: var(--ctp-surface0);
+    --flavortown-toolbar-border: var(--ctp-surface1);
+    --flavortown-toolbar-icon: var(--ctp-surface2);
+    --flavortown-toolbar-btn-hover: var(--ctp-surface1);
+    --flavortown-toolbar-btn-active: var(--ctp-surface2);
+
+    --flavortown-preview-bg: var(--ctp-surface0);
+    --flavortown-preview-border: var(--ctp-surface1);
+    --flavortown-preview-muted: var(--ctp-overlay0);
+    --flavortown-preview-accent: var(--ctp-mauve);
+    --flavortown-preview-code-bg: var(--ctp-mantle);
+    --flavortown-preview-text: var(--ctp-text);
+    --flavortown-preview-panel-bg: var(--ctp-mantle);
 }
 
 body {
@@ -1466,8 +1480,8 @@ a:hover {
 }
 
 .input__label {
-    color: var(--ctp-mauve) !important;
-    background-color: var(--ctp-surface1) !important;
+    color: var(--ctp-text) !important;
+    background-color: var(--ctp-mauve) !important;
 }
 
 .input__subtitle {

@@ -35,6 +35,20 @@
     --color-text-muted: var(--overcooked-foam) !important;
     --color-accent: var(--overcooked-cyan) !important;
     --color-border: var(--overcooked-mid) !important;
+
+    --flavortown-toolbar-bg: var(--overcooked-dark);
+    --flavortown-toolbar-border: var(--overcooked-mid);
+    --flavortown-toolbar-icon: var(--overcooked-dark);
+    --flavortown-toolbar-btn-hover: var(--overcooked-mid);
+    --flavortown-toolbar-btn-active: var(--overcooked-surface);
+
+    --flavortown-preview-bg: var(--overcooked-dark);
+    --flavortown-preview-border: var(--overcooked-mid);
+    --flavortown-preview-muted: var(--overcooked-foam);
+    --flavortown-preview-accent: var(--overcooked-cyan);
+    --flavortown-preview-code-bg: var(--overcooked-deep);
+    --flavortown-preview-text: var(--overcooked-dark);
+    --flavortown-preview-panel-bg: var(--overcooked-cream);
 }
 
 body {

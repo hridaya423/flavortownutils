@@ -29,6 +29,20 @@
     --color-text-muted: var(--sea-foam) !important;
     --color-accent: var(--sea-cyan) !important;
     --color-border: var(--sea-mid) !important;
+
+    --flavortown-toolbar-bg: var(--sea-dark);
+    --flavortown-toolbar-border: var(--sea-mid);
+    --flavortown-toolbar-icon: var(--sea-deep);
+    --flavortown-toolbar-btn-hover: var(--sea-mid);
+    --flavortown-toolbar-btn-active: var(--sea-surface);
+
+    --flavortown-preview-bg: var(--sea-dark);
+    --flavortown-preview-border: var(--sea-mid);
+    --flavortown-preview-muted: var(--sea-foam);
+    --flavortown-preview-accent: var(--sea-cyan);
+    --flavortown-preview-code-bg: var(--sea-deep);
+    --flavortown-preview-text: var(--sea-white);
+    --flavortown-preview-panel-bg: var(--sea-deep);
 }
 
 body {

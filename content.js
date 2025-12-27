@@ -397,6 +397,299 @@ function addDevlogFrequencyStat() {
 
 let inlineFormLoading = false;
 
+const LUCIDE_ICONS = {
+    bold: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 12h9a4 4 0 0 1 0 8H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h7a4 4 0 0 1 0 8"/></svg>',
+    italic: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" x2="10" y1="4" y2="4"/><line x1="14" x2="5" y1="20" y2="20"/><line x1="15" x2="9" y1="4" y2="20"/></svg>',
+    strikethrough: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4H9a3 3 0 0 0-2.83 4"/><path d="M14 12a4 4 0 0 1 0 8H6"/><line x1="4" x2="20" y1="12" y2="12"/></svg>',
+    heading1: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h8"/><path d="M4 18V6"/><path d="M12 18V6"/><path d="m17 12 3-2v8"/></svg>',
+    heading2: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h8"/><path d="M4 18V6"/><path d="M12 18V6"/><path d="M21 18h-4c0-4 4-3 4-6 0-1.5-2-2.5-4-1"/></svg>',
+    heading3: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h8"/><path d="M4 18V6"/><path d="M12 18V6"/><path d="M17.5 10.5c1.7-1 3.5 0 3.5 1.5a2 2 0 0 1-2 2"/><path d="M17 17.5c2 1.5 4 .3 4-1.5a2 2 0 0 0-2-2"/></svg>',
+    list: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" x2="21" y1="6" y2="6"/><line x1="8" x2="21" y1="12" y2="12"/><line x1="8" x2="21" y1="18" y2="18"/><line x1="3" x2="3.01" y1="6" y2="6"/><line x1="3" x2="3.01" y1="12" y2="12"/><line x1="3" x2="3.01" y1="18" y2="18"/></svg>',
+    listOrdered: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="10" x2="21" y1="6" y2="6"/><line x1="10" x2="21" y1="12" y2="12"/><line x1="10" x2="21" y1="18" y2="18"/><path d="M4 6h1v4"/><path d="M4 10h2"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>',
+    listChecks: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 17 2 2 4-4"/><path d="m3 7 2 2 4-4"/><path d="M13 6h8"/><path d="M13 12h8"/><path d="M13 18h8"/></svg>',
+    quote: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V21z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3z"/></svg>',
+    code: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>',
+    codeBlock: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12.5 8 15l2 2.5"/><path d="m14 12.5 2 2.5-2 2.5"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/></svg>',
+    link: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>',
+    image: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>',
+    minus: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>',
+    eye: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>',
+    eyeOff: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" x2="22" y1="2" y2="22"/></svg>'
+};
+
+function parseMarkdown(text) {
+    if (!text) return '';
+
+    try {
+        let html = text
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+
+        html = html.replace(/```(\w*)\n([\s\S]*?)```/g, (_, lang, code) =>
+            `<pre class="flavortown-md-pre"><code>${code.trim()}</code></pre>`);
+
+        html = html.replace(/`([^`]+)`/g, '<code class="flavortown-md-code">$1</code>');
+
+        html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+        html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
+        html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
+        html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+        html = html.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+        html = html.replace(/~~([^~]+)~~/g, '<del>$1</del>');
+
+        html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" class="flavortown-md-img">');
+
+        html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+
+        html = html.replace(/^---$/gm, '<hr class="flavortown-md-hr">');
+
+        html = html.replace(/^&gt; (.+)$/gm, '<blockquote class="flavortown-md-quote">$1</blockquote>');
+
+        html = html.replace(/^- \[ \] (.+)$/gm, '<div class="flavortown-md-task"><input type="checkbox" disabled> $1</div>');
+        html = html.replace(/^- \[x\] (.+)$/gm, '<div class="flavortown-md-task"><input type="checkbox" checked disabled> $1</div>');
+
+        html = html.replace(/^- (.+)$/gm, '<li class="flavortown-md-li">$1</li>');
+        html = html.replace(/^\d+\. (.+)$/gm, '<li class="flavortown-md-oli">$1</li>');
+
+        const lines = html.split('\n');
+        html = lines.map(line => {
+            if (line.trim() === '') return '';
+            if (/^<(h[1-6]|ul|ol|li|pre|blockquote|div|hr|img|code|strong|em|del|a)/.test(line)) return line;
+            if (line.includes('<li')) return line;
+            return `<p>${line}</p>`;
+        }).join('\n');
+
+        return html;
+    } catch (e) {
+        console.error('Flavortown parseMarkdown error:', e);
+        return `<p>${text}</p>`;
+    }
+}
+
+function addLivePreview(textarea, toolbar) {
+    const inputWrapper = textarea.closest('.input');
+    if (!inputWrapper || inputWrapper.dataset.livePreview) return;
+    inputWrapper.dataset.livePreview = 'true';
+
+    const container = document.createElement('div');
+    container.className = 'flavortown-md-container';
+
+    const resizeHandle = document.createElement('div');
+    resizeHandle.className = 'flavortown-md-resize';
+    resizeHandle.title = 'Drag to resize';
+    resizeHandle.innerHTML = '⁞';
+
+    const previewPanel = document.createElement('div');
+    previewPanel.className = 'flavortown-md-preview input__field input__field--textarea';
+    previewPanel.innerHTML = '<div class="flavortown-md-preview__placeholder">Preview will appear here...</div>';
+
+    const closeBtn = document.createElement('button');
+    closeBtn.type = 'button';
+    closeBtn.className = 'flavortown-md-preview__close';
+    closeBtn.innerHTML = '×';
+    closeBtn.title = 'Close preview';
+
+    textarea.parentNode.insertBefore(container, textarea);
+    container.appendChild(textarea);
+    container.appendChild(resizeHandle);
+    container.appendChild(previewPanel);
+
+    let previewVisible = false;
+    let previewManuallyClosed = false;
+    let debounceTimer = null;
+
+    const markdownPatterns = /(\*\*|__|~~|`|#{1,3}\s|-\s|\d+\.\s|>\s|\[.+\]\(.+\)|!\[)/;
+
+    function hidePreview() {
+        previewVisible = false;
+        previewManuallyClosed = true;
+        container.classList.remove('flavortown-md-container--preview');
+    }
+
+    closeBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        hidePreview();
+    });
+
+    function updatePreview() {
+        const text = textarea.value;
+        const hasMarkdown = markdownPatterns.test(text);
+
+        if (!text) {
+            previewManuallyClosed = false;
+        }
+
+        if (hasMarkdown && !previewVisible && !previewManuallyClosed) {
+            previewVisible = true;
+            container.classList.add('flavortown-md-container--preview');
+        }
+
+        if (!previewVisible || !text) {
+            previewPanel.innerHTML = '<div class="flavortown-md-preview__placeholder">Preview will appear here...</div>';
+            return;
+        }
+
+        const html = parseMarkdown(text);
+        previewPanel.innerHTML = '<button type="button" class="flavortown-md-preview__close" title="Close preview">×</button>' + html;
+        previewPanel.querySelector('.flavortown-md-preview__close').addEventListener('click', (e) => {
+            e.preventDefault();
+            hidePreview();
+        });
+    }
+
+    textarea.addEventListener('input', () => {
+        if (debounceTimer) clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(updatePreview, 50);
+    });
+
+    let isResizing = false;
+    let startX = 0;
+    let startTextareaWidth = 0;
+
+    resizeHandle.addEventListener('mousedown', (e) => {
+        isResizing = true;
+        startX = e.clientX;
+        startTextareaWidth = textarea.offsetWidth;
+        document.body.style.cursor = 'col-resize';
+        document.body.style.userSelect = 'none';
+        e.preventDefault();
+    });
+
+    document.addEventListener('mousemove', (e) => {
+        if (!isResizing) return;
+        const delta = e.clientX - startX;
+        const newWidth = Math.max(150, Math.min(startTextareaWidth + delta, container.offsetWidth - 180));
+        textarea.style.width = newWidth + 'px';
+        textarea.style.flex = 'none';
+    });
+
+    document.addEventListener('mouseup', () => {
+        if (isResizing) {
+            isResizing = false;
+            document.body.style.cursor = '';
+            document.body.style.userSelect = '';
+        }
+    });
+
+    if (textarea.value) {
+        updatePreview();
+    }
+}
+
+function addMarkdownToolbar(textarea) {
+    if (!textarea || textarea.dataset.mdToolbar) return;
+    textarea.dataset.mdToolbar = 'true';
+
+    const inputWrapper = textarea.closest('.input');
+    if (!inputWrapper) return;
+
+    const toolbar = document.createElement('div');
+    toolbar.className = 'flavortown-md-toolbar';
+
+    const buttons = [
+        { icon: 'bold', title: 'Bold', action: () => wrapSelection(textarea, '**', '**') },
+        { icon: 'italic', title: 'Italic', action: () => wrapSelection(textarea, '*', '*') },
+        { icon: 'strikethrough', title: 'Strikethrough', action: () => wrapSelection(textarea, '~~', '~~') },
+        { type: 'separator' },
+        { icon: 'heading1', title: 'Heading 1', action: () => prefixLine(textarea, '# ') },
+        { icon: 'heading2', title: 'Heading 2', action: () => prefixLine(textarea, '## ') },
+        { icon: 'heading3', title: 'Heading 3', action: () => prefixLine(textarea, '### ') },
+        { type: 'separator' },
+        { icon: 'list', title: 'Bullet List', action: () => prefixLine(textarea, '- ') },
+        { icon: 'listOrdered', title: 'Numbered List', action: () => prefixLine(textarea, '1. ') },
+        { icon: 'listChecks', title: 'Task List', action: () => prefixLine(textarea, '- [ ] ') },
+        { icon: 'quote', title: 'Blockquote', action: () => prefixLine(textarea, '> ') },
+        { type: 'separator' },
+        { icon: 'code', title: 'Inline Code', action: () => wrapSelection(textarea, '`', '`') },
+        { icon: 'codeBlock', title: 'Code Block', action: () => insertBlock(textarea, '```\n', '\n```') },
+        { icon: 'link', title: 'Link', action: () => insertLink(textarea) },
+        { icon: 'minus', title: 'Horizontal Rule', action: () => insertText(textarea, '\n---\n') }
+    ];
+
+    buttons.forEach(btn => {
+        if (btn.type === 'separator') {
+            const sep = document.createElement('div');
+            sep.className = 'flavortown-md-toolbar__separator';
+            toolbar.appendChild(sep);
+            return;
+        }
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'flavortown-md-toolbar__btn';
+        button.title = btn.title;
+        button.innerHTML = LUCIDE_ICONS[btn.icon];
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+            btn.action();
+            textarea.focus();
+        });
+        toolbar.appendChild(button);
+    });
+
+    inputWrapper.style.position = 'relative';
+    inputWrapper.insertBefore(toolbar, textarea);
+
+    addLivePreview(textarea, toolbar);
+}
+
+function wrapSelection(textarea, before, after) {
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const text = textarea.value;
+    const selected = text.substring(start, end) || 'text';
+    const newText = text.substring(0, start) + before + selected + after + text.substring(end);
+    textarea.value = newText;
+    textarea.selectionStart = start + before.length;
+    textarea.selectionEnd = start + before.length + selected.length;
+    textarea.dispatchEvent(new Event('input', { bubbles: true }));
+}
+
+function prefixLine(textarea, prefix) {
+    const start = textarea.selectionStart;
+    const text = textarea.value;
+    const lineStart = text.lastIndexOf('\n', start - 1) + 1;
+    const newText = text.substring(0, lineStart) + prefix + text.substring(lineStart);
+    textarea.value = newText;
+    textarea.selectionStart = textarea.selectionEnd = start + prefix.length;
+    textarea.dispatchEvent(new Event('input', { bubbles: true }));
+}
+
+function insertBlock(textarea, before, after) {
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const text = textarea.value;
+    const selected = text.substring(start, end) || 'code';
+    const newText = text.substring(0, start) + before + selected + after + text.substring(end);
+    textarea.value = newText;
+    textarea.selectionStart = start + before.length;
+    textarea.selectionEnd = start + before.length + selected.length;
+    textarea.dispatchEvent(new Event('input', { bubbles: true }));
+}
+
+function insertText(textarea, insertStr) {
+    const start = textarea.selectionStart;
+    const text = textarea.value;
+    const newText = text.substring(0, start) + insertStr + text.substring(start);
+    textarea.value = newText;
+    textarea.selectionStart = textarea.selectionEnd = start + insertStr.length;
+    textarea.dispatchEvent(new Event('input', { bubbles: true }));
+}
+
+function insertLink(textarea) {
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const text = textarea.value;
+    const selected = text.substring(start, end) || 'link text';
+    const insertStr = `[${selected}](url)`;
+    const newText = text.substring(0, start) + insertStr + text.substring(end);
+    textarea.value = newText;
+    const urlStart = start + selected.length + 3;
+    textarea.selectionStart = urlStart;
+    textarea.selectionEnd = urlStart + 3;
+    textarea.dispatchEvent(new Event('input', { bubbles: true }));
+}
+
 function inlineDevlogForm() {
     if (!/\/projects\/\d+$/.test(window.location.pathname)) {
         return;
@@ -449,8 +742,9 @@ function inlineDevlogForm() {
             addDevlogBtn.style.display = 'none';
             container.parentNode.insertBefore(wrapper, container.nextSibling);
 
-            const form = wrapper.querySelector('form');
-            if (form) {
+            const devlogTextarea = wrapper.querySelector('#post_devlog_body');
+            if (devlogTextarea) {
+                addMarkdownToolbar(devlogTextarea);
             }
 
             if (window.Stimulus && window.Stimulus.application) {
