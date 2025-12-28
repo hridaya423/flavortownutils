@@ -49,6 +49,15 @@
     --flavortown-preview-code-bg: var(--overcooked-deep);
     --flavortown-preview-text: var(--overcooked-dark);
     --flavortown-preview-panel-bg: var(--overcooked-cream);
+
+    --flavortown-doomscroll-bg: rgba(26, 15, 15, 0.8);
+    --flavortown-doomscroll-card-bg: var(--overcooked-dark);
+    --flavortown-doomscroll-media-bg: linear-gradient(135deg, var(--overcooked-burnt) 0%, var(--overcooked-charcoal) 50%, var(--overcooked-dark) 100%);
+    --flavortown-doomscroll-text: var(--overcooked-white);
+    --flavortown-doomscroll-btn-bg: var(--overcooked-mid);
+    --flavortown-doomscroll-btn-color: var(--overcooked-coral);
+    --flavortown-doomscroll-btn-border: var(--overcooked-surface);
+    --flavortown-doomscroll-btn-hover: var(--overcooked-surface);
 }
 
 body {

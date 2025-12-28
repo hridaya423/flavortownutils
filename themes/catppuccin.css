@@ -53,6 +53,15 @@
     --flavortown-preview-code-bg: var(--ctp-mantle);
     --flavortown-preview-text: var(--ctp-text);
     --flavortown-preview-panel-bg: var(--ctp-mantle);
+
+    --flavortown-doomscroll-bg: rgba(17, 17, 27, 0.8);
+    --flavortown-doomscroll-card-bg: var(--ctp-base);
+    --flavortown-doomscroll-media-bg: linear-gradient(135deg, var(--ctp-crust) 0%, var(--ctp-mantle) 50%, var(--ctp-base) 100%);
+    --flavortown-doomscroll-text: var(--ctp-text);
+    --flavortown-doomscroll-btn-bg: var(--ctp-surface0);
+    --flavortown-doomscroll-btn-color: var(--ctp-mauve);
+    --flavortown-doomscroll-btn-border: var(--ctp-surface1);
+    --flavortown-doomscroll-btn-hover: var(--ctp-surface1);
 }
 
 body {

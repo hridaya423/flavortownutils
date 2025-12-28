@@ -414,7 +414,8 @@ const LUCIDE_ICONS = {
     image: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>',
     minus: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>',
     eye: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>',
-    eyeOff: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" x2="22" y1="2" y2="22"/></svg>'
+    eyeOff: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" x2="22" y1="2" y2="22"/></svg>',
+    underline: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4v6a6 6 0 0 0 12 0V4"/><line x1="4" x2="20" y1="20" y2="20"/></svg>'
 };
 
 function parseMarkdown(text) {
@@ -437,6 +438,7 @@ function parseMarkdown(text) {
         html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
         html = html.replace(/\*([^*]+)\*/g, '<em>$1</em>');
         html = html.replace(/~~([^~]+)~~/g, '<del>$1</del>');
+        html = html.replace(/&lt;u&gt;(.+?)&lt;\/u&gt;/g, '<u>$1</u>');
 
         html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" class="flavortown-md-img">');
 
@@ -444,18 +446,18 @@ function parseMarkdown(text) {
 
         html = html.replace(/^---$/gm, '<hr class="flavortown-md-hr">');
 
-        html = html.replace(/^&gt; (.+)$/gm, '<blockquote class="flavortown-md-quote">$1</blockquote>');
+        html = html.replace(/^&gt;\s?(.+)$/gm, '<blockquote class="flavortown-md-quote">$1</blockquote>');
 
-        html = html.replace(/^- \[ \] (.+)$/gm, '<div class="flavortown-md-task"><input type="checkbox" disabled> $1</div>');
-        html = html.replace(/^- \[x\] (.+)$/gm, '<div class="flavortown-md-task"><input type="checkbox" checked disabled> $1</div>');
+        html = html.replace(/^-\s?\[\s?\]\s?(.+)$/gm, '<div class="flavortown-md-task"><input type="checkbox" disabled> $1</div>');
+        html = html.replace(/^-\s?\[[xX]\]\s?(.+)$/gm, '<div class="flavortown-md-task"><input type="checkbox" checked disabled> $1</div>');
 
-        html = html.replace(/^- (.+)$/gm, '<li class="flavortown-md-li">$1</li>');
-        html = html.replace(/^\d+\. (.+)$/gm, '<li class="flavortown-md-oli">$1</li>');
+        html = html.replace(/^-\s+(.+)$/gm, '<li class="flavortown-md-li">$1</li>');
+        html = html.replace(/^\d+\.\s+(.+)$/gm, '<li class="flavortown-md-oli">$1</li>');
 
         const lines = html.split('\n');
         html = lines.map(line => {
             if (line.trim() === '') return '';
-            if (/^<(h[1-6]|ul|ol|li|pre|blockquote|div|hr|img|code|strong|em|del|a)/.test(line)) return line;
+            if (/^<(h[1-6]|ul|ol|li|pre|blockquote|div|hr|img|code|strong|em|del|u|a)/.test(line)) return line;
             if (line.includes('<li')) return line;
             return `<p>${line}</p>`;
         }).join('\n');
@@ -499,7 +501,7 @@ function addLivePreview(textarea, toolbar) {
     let previewManuallyClosed = false;
     let debounceTimer = null;
 
-    const markdownPatterns = /(\*\*|__|~~|`|#{1,3}\s|-\s|\d+\.\s|>\s|\[.+\]\(.+\)|!\[)/;
+    const markdownPatterns = /(\*\*|__|~~|`|#{1,3}\s|-\s|\d+\.\s|>\s|\[.+\]\(.+\)|!\[|<u>)/;
 
     function hidePreview() {
         previewVisible = false;
@@ -590,6 +592,7 @@ function addMarkdownToolbar(textarea) {
     const buttons = [
         { icon: 'bold', title: 'Bold', action: () => wrapSelection(textarea, '**', '**') },
         { icon: 'italic', title: 'Italic', action: () => wrapSelection(textarea, '*', '*') },
+        { icon: 'underline', title: 'Underline', action: () => wrapSelection(textarea, '<u>', '</u>') },
         { icon: 'strikethrough', title: 'Strikethrough', action: () => wrapSelection(textarea, '~~', '~~') },
         { type: 'separator' },
         { icon: 'heading1', title: 'Heading 1', action: () => prefixLine(textarea, '# ') },
@@ -2610,6 +2613,409 @@ async function enhanceKitchenDashboard() {
     }
 }
 
+function addDoomscrollMode() {
+    const path = window.location.pathname;
+    if (path !== '/explore' && path !== '/explore/following' && !path.match(/^\/explore\/?$/)) return;
+    if (document.querySelector('.flavortown-doomscroll-toggle')) return;
+
+    const nav = document.querySelector('.explore__nav');
+    if (!nav) return;
+
+    const toggleBtn = document.createElement('a');
+    toggleBtn.className = 'explore__nav-component flavortown-doomscroll-toggle';
+    toggleBtn.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="18" height="18" rx="2"/>
+            <path d="M10 8l6 4-6 4V8z" fill="currentColor"/>
+        </svg>
+        Buffet
+    `;
+    toggleBtn.title = 'All-you-can-eat devlogs (Immersive Mode)';
+
+    const navList = nav.querySelector('ul, .nav__list');
+    if (navList) {
+        const li = document.createElement('li');
+        li.className = 'nav__item';
+        li.appendChild(toggleBtn);
+        navList.appendChild(li);
+    } else {
+        nav.appendChild(toggleBtn);
+    }
+
+    let doomscrollActive = false;
+    let doomscrollContainer = null;
+    let currentIndex = 0;
+    let posts = [];
+    let originalPosts = [];
+
+    function extractPostData(postEl, index) {
+        const avatar = postEl.querySelector('.post__avatar img')?.src || '';
+        const username = postEl.querySelector('.post__author a')?.textContent?.trim() || 'Unknown';
+        const userLink = postEl.querySelector('.post__author a')?.href || '#';
+        const projectName = postEl.querySelector('.post__author a:last-of-type')?.textContent?.trim() || '';
+        const projectLink = postEl.querySelector('.post__author a:last-of-type')?.href || '#';
+        const bodyEl = postEl.querySelector('.post__body');
+        const body = bodyEl?.innerHTML || '';
+        const bodyText = bodyEl?.textContent?.trim() || '';
+        const time = postEl.querySelector('.post__time')?.textContent?.trim() || '';
+        const duration = postEl.querySelector('.post__duration')?.textContent?.trim() || '';
+
+        const media = [];
+        postEl.querySelectorAll('.post__slide').forEach(slide => {
+            const img = slide.querySelector('img');
+            const video = slide.querySelector('video');
+            if (img) media.push({ type: 'image', src: img.src, alt: img.alt });
+            else if (video) media.push({ type: 'video', src: video.src });
+        });
+
+        const likeBtn = postEl.querySelector('.like-button__btn');
+        const likeCount = postEl.querySelector('.like-button__count')?.textContent?.trim() || '0';
+        const likeHref = likeBtn?.href || '';
+        const isLiked = likeBtn?.classList.contains('is-liked') || false;
+        const commentCount = postEl.querySelector('.comments-count__count')?.textContent?.trim() || '0';
+
+        const comments = [];
+        postEl.querySelectorAll('.comment').forEach(c => {
+            comments.push({
+                author: c.querySelector('.comment__author')?.textContent?.trim() || '',
+                body: c.querySelector('.comment__body')?.textContent?.trim() || ''
+            });
+        });
+
+        const postClasses = postEl.className;
+        let postType = 'devlog';
+        if (postClasses.includes('post--fire')) postType = 'fire';
+        else if (postClasses.includes('post--certified')) postType = 'certified';
+        else if (postClasses.includes('post--ship')) postType = 'ship';
+
+        return { avatar, username, userLink, projectName, projectLink, body, bodyText, time, duration, media, likeCount, likeHref, isLiked, commentCount, comments, postType, index };
+    }
+
+    function createDoomscrollCard(postData, index) {
+        const card = document.createElement('div');
+        card.className = 'flavortown-doomscroll__card';
+        card.dataset.index = index;
+
+        const hasMedia = postData.media.length > 0;
+        const isTextHeavy = postData.bodyText.length > 250;
+
+        let mediaHTML = '';
+        if (hasMedia) {
+            const firstMedia = postData.media[0];
+            mediaHTML = firstMedia.type === 'image'
+                ? `<img src="${firstMedia.src}" alt="${firstMedia.alt || ''}" loading="lazy">`
+                : `<video src="${firstMedia.src}" controls autoplay muted loop playsinline></video>`;
+
+            if (postData.media.length > 1) {
+                const dotsHTML = postData.media.map((_, i) => `<button class="flavortown-doomscroll__gallery-dot ${i === 0 ? 'active' : ''}" data-index="${i}"></button>`).join('');
+                mediaHTML = `<div class="flavortown-doomscroll__gallery"><div class="flavortown-doomscroll__gallery-media">${mediaHTML}</div><button class="flavortown-doomscroll__gallery-nav flavortown-doomscroll__gallery-nav--prev" style="display:none;">‹</button><button class="flavortown-doomscroll__gallery-nav flavortown-doomscroll__gallery-nav--next">›</button><div class="flavortown-doomscroll__gallery-dots">${dotsHTML}</div></div>`;
+            }
+        }
+
+        const typeBadge = { fire: '🔥', certified: '✅', ship: '🚀', devlog: '📝' }[postData.postType];
+
+        const projectIdMatch = postData.projectLink.match(/\/projects\/(\d+)/);
+        const projectId = projectIdMatch ? projectIdMatch[1] : null;
+
+        card.innerHTML = `
+            <div class="flavortown-doomscroll__background">
+                ${hasMedia ? mediaHTML : `<div class="flavortown-doomscroll__text-only">${postData.body}</div>`}
+            </div>
+            <div class="flavortown-doomscroll__overlay">
+                <div class="flavortown-doomscroll__info">
+                    <div class="flavortown-doomscroll__author-row">
+                        <img src="${postData.avatar}" alt="${postData.username}" class="flavortown-doomscroll__avatar">
+                        <div class="flavortown-doomscroll__author-meta">
+                            <a href="${postData.userLink}" class="flavortown-doomscroll__username" target="_blank">${typeBadge} @${postData.username}</a>
+                            <span class="flavortown-doomscroll__project-row"><a href="${postData.projectLink}" class="flavortown-doomscroll__project-name" target="_blank">${postData.projectName}</a> · <span class="flavortown-doomscroll__time">${postData.time}</span>${postData.duration ? ` · <span class="flavortown-doomscroll__duration">${postData.duration}</span>` : ''}</span>
+                        </div>
+                    </div>
+                    <div class="flavortown-doomscroll__caption ${isTextHeavy ? 'expandable' : ''}">
+                        <div class="flavortown-doomscroll__caption-text">${postData.bodyText.substring(0, isTextHeavy ? 250 : 500)}${isTextHeavy ? '...' : ''}</div>
+                        ${isTextHeavy ? '<button class="flavortown-doomscroll__expand-btn">more</button>' : ''}
+                    </div>
+                    ${postData.comments.length > 0 ? `
+                    <div class="flavortown-doomscroll__comments-preview">
+                        ${postData.comments.slice(0, 3).map(c => `
+                            <div class="flavortown-doomscroll__comment">
+                                <span class="flavortown-doomscroll__comment-author">@${c.author}</span>
+                                <span class="flavortown-doomscroll__comment-text">${c.body}</span>
+                            </div>
+                        `).join('')}
+                        ${postData.comments.length > 3 ? `<button class="flavortown-doomscroll__more-comments">View all ${postData.commentCount} comments</button>` : ''}
+                    </div>
+                    ` : ''}
+                    <div class="flavortown-doomscroll__comment-form">
+                        <input type="text" class="flavortown-doomscroll__comment-input" placeholder="Add a comment..." data-index="${index}">
+                        <button class="flavortown-doomscroll__comment-submit" data-index="${index}">Post</button>
+                    </div>
+                </div>
+                <div class="flavortown-doomscroll__actions">
+                    <button class="flavortown-doomscroll__action ${postData.isLiked ? 'is-liked' : ''}" data-action="like">
+                        <div class="flavortown-doomscroll__action-icon"><svg viewBox="0 0 24 24" class="like-icon"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div>
+                        <span class="flavortown-doomscroll__action-count">${postData.likeCount}</span>
+                    </button>
+                    <button class="flavortown-doomscroll__action" data-action="comment">
+                        <div class="flavortown-doomscroll__action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div>
+                        <span class="flavortown-doomscroll__action-count">${postData.commentCount}</span>
+                    </button>
+                    <button class="flavortown-doomscroll__action" data-action="follow" data-project-id="${projectId}">
+                        <div class="flavortown-doomscroll__action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg></div>
+                        <span class="flavortown-doomscroll__action-label">Follow</span>
+                    </button>
+                    <button class="flavortown-doomscroll__action" data-action="report" data-project-id="${projectId}">
+                        <div class="flavortown-doomscroll__action-icon"><svg viewBox="0 0 25 25" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M3.125 2.34375C3.3322 2.34375 3.53091 2.42606 3.67743 2.57257C3.82394 2.71909 3.90625 2.9178 3.90625 3.125V3.6875L5.82083 3.20833C8.17281 2.62027 10.6576 2.89295 12.826 3.97708L12.9385 4.03333C14.7366 4.9325 16.793 5.17283 18.75 4.7125L21.9896 3.95C22.1111 3.9215 22.2376 3.92253 22.3587 3.95299C22.4797 3.98345 22.5917 4.04246 22.6852 4.12508C22.7787 4.2077 22.8511 4.31152 22.8963 4.42786C22.9414 4.5442 22.9581 4.66966 22.9448 4.79375C22.5572 8.37261 22.5589 11.983 22.95 15.5615C22.9708 15.7511 22.9215 15.9419 22.8114 16.0977C22.7012 16.2535 22.5379 16.3637 22.3521 16.4073L19.1083 17.1708C16.7954 17.7152 14.3648 17.4314 12.2396 16.3687L12.1271 16.3125C10.2924 15.3951 8.19008 15.1641 6.2 15.6615L3.90625 16.2344V21.875C3.90625 22.0822 3.82394 22.2809 3.67743 22.4274C3.53091 22.5739 3.3322 22.6562 3.125 22.6562C2.9178 22.6562 2.71909 22.5739 2.57257 22.4274C2.42606 22.2809 2.34375 22.0822 2.34375 21.875V3.125C2.34375 3.0224 2.36396 2.92081 2.40322 2.82603C2.44248 2.73124 2.50003 2.64512 2.57257 2.57257C2.64512 2.50003 2.73124 2.44248 2.82603 2.40322C2.92081 2.36396 3.0224 2.34375 3.125 2.34375Z"/></svg></div>
+                    </button>
+                </div>
+            </div>
+        `;
+
+        if (postData.media.length > 1) {
+            let currentMediaIndex = 0;
+            const galleryMedia = card.querySelector('.flavortown-doomscroll__gallery-media');
+            const prevBtn = card.querySelector('.flavortown-doomscroll__gallery-nav--prev');
+            const nextBtn = card.querySelector('.flavortown-doomscroll__gallery-nav--next');
+            const dots = card.querySelectorAll('.flavortown-doomscroll__gallery-dot');
+            function showMedia(idx) {
+                currentMediaIndex = idx;
+                const m = postData.media[idx];
+                galleryMedia.innerHTML = m.type === 'image' ? `<img src="${m.src}" alt="${m.alt || ''}" loading="lazy">` : `<video src="${m.src}" controls autoplay muted loop playsinline></video>`;
+                dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+                prevBtn.style.display = idx === 0 ? 'none' : 'flex';
+                nextBtn.style.display = idx === postData.media.length - 1 ? 'none' : 'flex';
+            }
+            prevBtn?.addEventListener('click', e => { e.stopPropagation(); showMedia(currentMediaIndex - 1); });
+            nextBtn?.addEventListener('click', e => { e.stopPropagation(); showMedia(currentMediaIndex + 1); });
+            dots.forEach((dot, i) => dot.addEventListener('click', e => { e.stopPropagation(); showMedia(i); }));
+        }
+
+        const expandBtn = card.querySelector('.flavortown-doomscroll__expand-btn');
+        expandBtn?.addEventListener('click', () => {
+            const caption = card.querySelector('.flavortown-doomscroll__caption');
+            const textEl = card.querySelector('.flavortown-doomscroll__caption-text');
+            caption.classList.toggle('expanded');
+            if (caption.classList.contains('expanded')) {
+                textEl.textContent = postData.bodyText;
+                expandBtn.textContent = 'less';
+            } else {
+                textEl.textContent = postData.bodyText.substring(0, 100) + '...';
+                expandBtn.textContent = 'more';
+            }
+        });
+
+        const likeBtn = card.querySelector('[data-action="like"]');
+        if (likeBtn) {
+            likeBtn.addEventListener('click', e => {
+                e.stopPropagation();
+                const originalLikeBtn = originalPosts[postData.index]?.querySelector('.like-button__btn');
+                if (originalLikeBtn) {
+                    originalLikeBtn.click();
+                    setTimeout(() => {
+                        const isNowLiked = originalLikeBtn.classList.contains('is-liked');
+                        const originalCount = originalPosts[postData.index]?.querySelector('.like-button__count')?.textContent || '0';
+                        likeBtn.classList.toggle('is-liked', isNowLiked);
+                        likeBtn.querySelector('.flavortown-doomscroll__action-count').textContent = originalCount;
+                        likeBtn.querySelector('.like-icon').style.transform = 'scale(1.3)';
+                        setTimeout(() => likeBtn.querySelector('.like-icon').style.transform = '', 200);
+                    }, 300);
+                }
+            });
+        }
+
+        const commentInput = card.querySelector('.flavortown-doomscroll__comment-input');
+        const commentSubmit = card.querySelector('.flavortown-doomscroll__comment-submit');
+        if (commentInput && commentSubmit) {
+            const submitComment = () => {
+                const text = commentInput.value.trim();
+                if (!text) return;
+
+                const originalForm = originalPosts[postData.index]?.querySelector('.comment-form');
+                const originalInput = originalForm?.querySelector('.comment-form__input');
+                const originalSubmit = originalForm?.querySelector('button[type="submit"], .comment-form__submit');
+
+                if (originalInput && originalSubmit) {
+                    originalInput.value = text;
+                    originalInput.dispatchEvent(new Event('input', { bubbles: true }));
+                    originalSubmit.click();
+                    commentInput.value = '';
+
+                    setTimeout(() => {
+                        const newCount = originalPosts[postData.index]?.querySelector('.comments-count__count')?.textContent || '0';
+                        card.querySelector('[data-action="comment"] .flavortown-doomscroll__action-count').textContent = newCount;
+                    }, 500);
+                }
+            };
+
+            commentSubmit.addEventListener('click', e => { e.stopPropagation(); submitComment(); });
+            commentInput.addEventListener('keydown', e => { if (e.key === 'Enter') { e.stopPropagation(); submitComment(); } });
+            commentInput.addEventListener('click', e => e.stopPropagation());
+        }
+
+        card.querySelector('[data-action="comment"]')?.addEventListener('click', e => {
+            e.stopPropagation();
+            commentInput?.focus();
+        });
+
+        card.querySelector('[data-action="follow"]')?.addEventListener('click', async e => {
+            e.stopPropagation();
+            const followBtn = e.currentTarget;
+            const projectId = followBtn.dataset.projectId;
+            if (!projectId) return;
+
+            const originalFollowBtn = originalPosts[postData.index]?.querySelector('form[action*="/follow"] button');
+            if (originalFollowBtn) {
+                originalFollowBtn.click();
+                setTimeout(() => {
+                    followBtn.classList.toggle('is-following');
+                    const label = followBtn.querySelector('.flavortown-doomscroll__action-label');
+                    if (label) label.textContent = followBtn.classList.contains('is-following') ? 'Following' : 'Follow';
+                }, 200);
+            } else {
+                try {
+                    const token = document.querySelector('meta[name="csrf-token"]')?.content;
+                    await fetch(`/projects/${projectId}/follow`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'X-CSRF-Token': token,
+                            'Accept': 'text/vnd.turbo-stream.html'
+                        },
+                        credentials: 'same-origin'
+                    });
+                    followBtn.classList.toggle('is-following');
+                    const label = followBtn.querySelector('.flavortown-doomscroll__action-label');
+                    if (label) label.textContent = followBtn.classList.contains('is-following') ? 'Following' : 'Follow';
+                } catch (err) { console.error('Follow failed:', err); }
+            }
+        });
+
+        card.querySelector('[data-action="report"]')?.addEventListener('click', e => {
+            e.stopPropagation();
+            const reportBtn = e.currentTarget;
+            if (reportBtn.classList.contains('reported')) return;
+
+            if (confirm('Report this devlog for inappropriate content?')) {
+                reportBtn.classList.add('reported');
+                reportBtn.style.opacity = '0.5';
+                alert('Thanks for reporting. The Flavortown team will review this.');
+            }
+        });
+
+        card.querySelector('.flavortown-doomscroll__more-comments')?.addEventListener('click', e => {
+            e.stopPropagation();
+            closeDoomscroll();
+            originalPosts[postData.index]?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+
+        return card;
+    }
+
+    function scrollToIndex(index) {
+        if (index < 0 || index >= posts.length) return;
+        currentIndex = index;
+        const phoneFrame = doomscrollContainer?.querySelector('.flavortown-doomscroll__container');
+        phoneFrame?.querySelectorAll('.flavortown-doomscroll__card')[index]?.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function handleKeydown(e) {
+        if (!doomscrollActive) return;
+        const phoneFrame = doomscrollContainer?.querySelector('.flavortown-doomscroll__container');
+        switch (e.key) {
+            case 'Escape': closeDoomscroll(); break;
+            case 'ArrowDown': case 'j': case ' ': e.preventDefault(); scrollToIndex(currentIndex + 1); break;
+            case 'ArrowUp': case 'k': e.preventDefault(); scrollToIndex(currentIndex - 1); break;
+            case 'l': phoneFrame?.querySelectorAll('.flavortown-doomscroll__card')[currentIndex]?.querySelector('[data-action="like"]')?.click(); break;
+        }
+    }
+
+    function openDoomscroll() {
+        const postEls = document.querySelectorAll('.explore__list .post');
+        if (postEls.length === 0) { alert('No posts found!'); return; }
+
+        originalPosts = Array.from(postEls);
+        posts = originalPosts.map((el, i) => extractPostData(el, i));
+        currentIndex = 0;
+        let isLoadingMore = false;
+
+        doomscrollContainer = document.createElement('div');
+        doomscrollContainer.className = 'flavortown-doomscroll';
+        const phoneFrame = document.createElement('div');
+        phoneFrame.className = 'flavortown-doomscroll__container';
+
+        const closeBtn = document.createElement('button');
+        closeBtn.className = 'flavortown-doomscroll__close';
+        closeBtn.innerHTML = '×';
+        closeBtn.addEventListener('click', closeDoomscroll);
+        doomscrollContainer.appendChild(closeBtn);
+
+        const hint = document.createElement('div');
+        hint.className = 'flavortown-doomscroll__nav-hint';
+        hint.innerHTML = '↑↓ or <kbd>J</kbd>/<kbd>K</kbd> · <kbd>L</kbd> to like · <kbd>ESC</kbd> exit';
+        doomscrollContainer.appendChild(hint);
+        setTimeout(() => hint.style.opacity = '0', 4000);
+
+        posts.forEach((p, i) => phoneFrame.appendChild(createDoomscrollCard(p, i)));
+
+        async function loadMorePosts() {
+            if (isLoadingMore) return;
+            const loadMoreBtn = document.querySelector('.explore__pagination [data-action="load-more#load"]');
+            if (!loadMoreBtn) return;
+
+            isLoadingMore = true;
+
+            loadMoreBtn.click();
+
+            await new Promise(resolve => setTimeout(resolve, 1500));
+
+            const allPostEls = document.querySelectorAll('.explore__list .post');
+            const newPostEls = Array.from(allPostEls).slice(originalPosts.length);
+
+            if (newPostEls.length > 0) {
+                newPostEls.forEach((el, i) => {
+                    const postData = extractPostData(el, posts.length);
+                    posts.push(postData);
+                    originalPosts.push(el);
+                    phoneFrame.appendChild(createDoomscrollCard(postData, posts.length - 1));
+                });
+            }
+
+            isLoadingMore = false;
+        }
+
+        phoneFrame.addEventListener('scroll', () => {
+            const cardHeight = phoneFrame.querySelector('.flavortown-doomscroll__card')?.offsetHeight || phoneFrame.clientHeight;
+            const newIndex = Math.round(phoneFrame.scrollTop / cardHeight);
+            if (newIndex !== currentIndex && newIndex >= 0 && newIndex < posts.length) {
+                currentIndex = newIndex;
+            }
+
+            if (currentIndex >= posts.length - 3) {
+                loadMorePosts();
+            }
+        });
+
+        doomscrollContainer.appendChild(phoneFrame);
+        document.body.appendChild(doomscrollContainer);
+        document.body.style.overflow = 'hidden';
+        document.addEventListener('keydown', handleKeydown);
+        doomscrollActive = true;
+        toggleBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Exit`;
+        toggleBtn.classList.add('active');
+    }
+
+    function closeDoomscroll() {
+        doomscrollContainer?.remove();
+        doomscrollContainer = null;
+        document.body.style.overflow = '';
+        document.removeEventListener('keydown', handleKeydown);
+        doomscrollActive = false;
+        toggleBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M10 8l6 4-6 4V8z" fill="currentColor"/></svg>Buffet`;
+        toggleBtn.classList.remove('active');
+    }
+
+    toggleBtn.addEventListener('click', () => doomscrollActive ? closeDoomscroll() : openDoomscroll());
+}
+
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
 } else {
@@ -2636,4 +3042,5 @@ document.addEventListener('turbo:load', () => {
     addSkipButton();
     transformVotesTable();
     enhanceKitchenDashboard();
+    addDoomscrollMode();
 });

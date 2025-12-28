@@ -43,6 +43,15 @@
     --flavortown-preview-code-bg: var(--sea-deep);
     --flavortown-preview-text: var(--sea-white);
     --flavortown-preview-panel-bg: var(--sea-deep);
+
+    --flavortown-doomscroll-bg: rgba(10, 22, 40, 0.8);
+    --flavortown-doomscroll-card-bg: var(--sea-dark);
+    --flavortown-doomscroll-media-bg: linear-gradient(135deg, var(--sea-abyss) 0%, var(--sea-deep) 50%, var(--sea-dark) 100%);
+    --flavortown-doomscroll-text: var(--sea-white);
+    --flavortown-doomscroll-btn-bg: var(--sea-mid);
+    --flavortown-doomscroll-btn-color: var(--sea-cyan);
+    --flavortown-doomscroll-btn-border: var(--sea-surface);
+    --flavortown-doomscroll-btn-hover: var(--sea-surface);
 }
 
 body {
