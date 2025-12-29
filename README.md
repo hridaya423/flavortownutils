@@ -52,8 +52,8 @@
 5. Select the extension folder
 
 ### Firefox
-**Option 1: Mozilla Addons** (In review at the moment)
-1. Visit the [Mozilla Addons]()
+**Option 1: Mozilla Addons**
+1. Visit the [Mozilla Addons](https://addons.mozilla.org/en-US/firefox/addon/flavortown-utils/)
 2. Click "Add to Firefox"
 3. Confirm the installation when prompted
 
