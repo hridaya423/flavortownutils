@@ -36,37 +36,24 @@ function loadImageIntoShotsso(imageDataUrl) {
 
     (async () => {
         try {
-            const removeAds = () => {
-                const adContainers = document.querySelectorAll('.ad-container');
-                adContainers.forEach(ad => {
-                    ad.remove();
-                });
-            };
-            removeAds();
-            const adObserver = new MutationObserver(() => removeAds());
-            adObserver.observe(document.body, { childList: true, subtree: true });
 
+           
             let copyNotified = false;
-            const detectCopyToast = () => {
+            const checkForCopyToast = () => {
                 const toast = document.querySelector('[role="status"][aria-live="polite"]');
                 if (toast && toast.textContent.includes('Copied to clipboard') && !copyNotified) {
                     copyNotified = true;
-
-                    window.parent.postMessage({
-                        type: 'SHOTS_COPY_COMPLETE'
-                    }, '*');
-
+                    window.parent.postMessage({ type: 'SHOTS_COPY_COMPLETE' }, '*');
                     setTimeout(() => { copyNotified = false; }, 3000);
                 }
             };
-            const toastObserver = new MutationObserver(detectCopyToast);
-            toastObserver.observe(document.body, { childList: true, subtree: true });
+            setInterval(checkForCopyToast, 300);
 
+           
             const styleCopyButton = () => {
                 const copyBtn = document.querySelector('.copy-button-wrapper button, button.copy-button, .copy-button');
                 if (copyBtn && !copyBtn.dataset.flavortownStyled) {
                     copyBtn.dataset.flavortownStyled = 'true';
-
                     copyBtn.style.cssText += `
                         background: linear-gradient(135deg, #10b981, #059669) !important;
                         color: white !important;
@@ -74,18 +61,14 @@ function loadImageIntoShotsso(imageDataUrl) {
                         box-shadow: 0 2px 8px rgba(16, 185, 129, 0.5) !important;
                     `;
                     copyBtn.title = 'Copy to clipboard (auto-uploads to devlog)';
-
                     const wrapper = copyBtn.closest('.copy-button-wrapper');
                     if (wrapper) {
                         wrapper.style.cssText += 'transform: scale(1.1); transition: transform 0.2s;';
                     }
-
                 }
             };
-
-            setInterval(styleCopyButton, 1000);
-            const buttonObserver = new MutationObserver(styleCopyButton);
-            buttonObserver.observe(document.body, { childList: true, subtree: true });
+            setTimeout(styleCopyButton, 1000);
+            setInterval(styleCopyButton, 3000);
 
             const existingImage = document.querySelector('.dropped-image');
 
