@@ -1062,7 +1062,10 @@
     width: auto !important;
     height: auto !important;
     clip: auto !important;
-    white-space: normal !important;
+    white-space: nowrap !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    max-width: none !important;
 }
 
 .sidebar--pinned .sidebar__user-actions,
