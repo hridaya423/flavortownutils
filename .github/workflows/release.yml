@@ -50,6 +50,7 @@ jobs:
         
         cp manifest.json temp-chrome-extension/
         cp content.js temp-chrome-extension/
+        cp background.js temp-chrome-extension/
         cp styles.css temp-chrome-extension/
         cp popup.html temp-chrome-extension/
         cp popup.js temp-chrome-extension/
@@ -72,6 +73,7 @@ jobs:
         
         cp manifest_firefox.json temp-firefox-extension/manifest.json
         cp content.js temp-firefox-extension/
+        cp background.js temp-firefox-extension/
         cp styles.css temp-firefox-extension/
         cp popup.html temp-firefox-extension/
         cp popup.js temp-firefox-extension/

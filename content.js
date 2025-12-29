@@ -2374,6 +2374,31 @@ async function enhanceKitchenDashboard() {
         const totalEarned = transactions.filter(t => t.amount > 0).reduce((sum, t) => sum + t.amount, 0);
         const totalSpent = Math.abs(transactions.filter(t => t.amount < 0).reduce((sum, t) => sum + t.amount, 0));
 
+        let achievementCount = '';
+        let achievementTotal = '';
+        let achievementPercent = '';
+        let leaderboardRank = '';
+        let leaderboardCookies = '';
+
+        const kitchenStats = document.querySelector('.kitchen-stats');
+        if (kitchenStats) {
+            const countEl = kitchenStats.querySelector('.kitchen-stats-card__count');
+            const totalEl = kitchenStats.querySelector('.kitchen-stats-card__total');
+            const percentEl = kitchenStats.querySelector('.state-card__description');
+
+            if (countEl) achievementCount = countEl.textContent.trim();
+            if (totalEl) achievementTotal = totalEl.textContent.trim().replace('/', '').trim();
+            if (percentEl) achievementPercent = percentEl.textContent.trim();
+
+            const rankEl = kitchenStats.querySelector('.kitchen-stats-card__rank');
+            const cookiesEl = kitchenStats.querySelectorAll('.state-card__description')[1];
+
+            if (rankEl) leaderboardRank = rankEl.textContent.trim();
+            if (cookiesEl) leaderboardCookies = cookiesEl.textContent.trim();
+
+            kitchenStats.style.display = 'none';
+        }
+
         const dashboard = document.createElement('div');
         dashboard.className = 'flavortown-kitchen-dashboard';
         dashboard.innerHTML = `
@@ -2399,7 +2424,7 @@ async function enhanceKitchenDashboard() {
                 <canvas id="flavortown-cookies-graph" width="800" height="300"></canvas>
             </div>
             <div class="flavortown-dashboard-header" style="margin-top: 24px;">
-                <h2>📝 Project Stats</h2>
+                <h2>📊 Your Progress</h2>
             </div>
             <div class="flavortown-stat-cards">
                 <div class="flavortown-stat-card">
@@ -2414,6 +2439,20 @@ async function enhanceKitchenDashboard() {
                 <div class="flavortown-stat-card">
                     <span class="flavortown-stat-card__label">Avg per Devlog</span>
                     <span class="flavortown-stat-card__value">⚡ ${devlogFrequency}</span>
+                </div>
+                ` : ''}
+                ${achievementCount ? `
+                <div class="flavortown-stat-card">
+                    <span class="flavortown-stat-card__label">Achievements</span>
+                    <span class="flavortown-stat-card__value">🏆 ${achievementCount}/${achievementTotal}</span>
+                    <span class="flavortown-stat-card__sublabel" style="font-size: 0.8em; opacity: 0.7;">${achievementPercent}</span>
+                </div>
+                ` : ''}
+                ${leaderboardRank ? `
+                <div class="flavortown-stat-card">
+                    <span class="flavortown-stat-card__label">Leaderboard</span>
+                    <span class="flavortown-stat-card__value">🏅 ${leaderboardRank}</span>
+                    <span class="flavortown-stat-card__sublabel" style="font-size: 0.8em; opacity: 0.7;">${leaderboardCookies}</span>
                 </div>
                 ` : ''}
             </div>
@@ -3043,4 +3082,517 @@ document.addEventListener('turbo:load', () => {
     transformVotesTable();
     enhanceKitchenDashboard();
     addDoomscrollMode();
+    addAdminViewButton();
+    addSidebarItems();
+    enhanceAchievementsPage();
+    initShotsEditor();
 });
+
+function initShotsEditor() {
+    function addShotsButton() {
+        const fileUploadArea = document.querySelector('.file-upload');
+        if (!fileUploadArea) return false;
+        if (document.querySelector('.flavortown-shots-btn')) return true;
+
+        const attachmentContainer = fileUploadArea.closest('.form-group') ||
+            fileUploadArea.closest('[class*="attachment"]') ||
+            fileUploadArea.parentElement;
+
+        const shotsBtn = document.createElement('button');
+        shotsBtn.type = 'button';
+        shotsBtn.className = 'flavortown-shots-btn';
+        shotsBtn.innerHTML = '✨ Style';
+        shotsBtn.title = 'Style your screenshot with shots.so - add backgrounds, frames, and effects';
+        shotsBtn.style.cssText = `
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            z-index: 10;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 5px 12px;
+            background: rgba(255, 255, 255, 0.85);
+            color: #5a7052;
+            border: 1px solid rgba(90, 112, 82, 0.3);
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.8em;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        `;
+        shotsBtn.onmouseenter = () => {
+            shotsBtn.style.background = 'rgba(90, 112, 82, 0.15)';
+            shotsBtn.style.borderColor = 'rgba(90, 112, 82, 0.5)';
+        };
+        shotsBtn.onmouseleave = () => {
+            shotsBtn.style.background = 'rgba(255, 255, 255, 0.85)';
+            shotsBtn.style.borderColor = 'rgba(90, 112, 82, 0.3)';
+        };
+        shotsBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            openShotsModal();
+        });
+
+        const uploadAreaStyle = window.getComputedStyle(fileUploadArea);
+        if (uploadAreaStyle.position === 'static') {
+            fileUploadArea.style.position = 'relative';
+        }
+
+        fileUploadArea.appendChild(shotsBtn);
+        return true;
+    }
+
+    if (addShotsButton()) return;
+
+    const observer = new MutationObserver(() => {
+        if (addShotsButton()) {
+            observer.disconnect();
+        }
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    setTimeout(() => {
+        if (addShotsButton()) {
+            observer.disconnect();
+        }
+    }, 2000);
+}
+
+let _shotsOriginalFiles = [];
+let _shotsStyledFileIndex = -1;
+
+function openShotsModal() {
+    const overlay = document.createElement('div');
+    overlay.className = 'flavortown-shots-overlay';
+    overlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.9);
+        z-index: 999999;
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+    `;
+
+    const previewImg = document.querySelector('.file-upload__preview img');
+    const imageUrl = previewImg ? previewImg.src : null;
+
+    const fileInput = document.querySelector('.file-upload input[type="file"]')
+        || document.querySelector('[data-file-upload-target="input"]')
+        || document.querySelector('input[type="file"]');
+    
+    _shotsOriginalFiles = fileInput ? Array.from(fileInput.files || []) : [];
+    _shotsStyledFileIndex = -1;
+
+    async function findStyledFileIndex() {
+        if (!imageUrl || _shotsOriginalFiles.length === 0) return -1;
+        if (_shotsOriginalFiles.length === 1) return 0;
+
+        try {
+            const previewBlob = await fetch(imageUrl).then(r => r.blob());
+            const previewSize = previewBlob.size;
+
+            let bestMatchIndex = -1;
+            let bestSizeDiff = Infinity;
+
+            for (let i = 0; i < _shotsOriginalFiles.length; i++) {
+                if (!_shotsOriginalFiles[i].type.startsWith('image/')) continue;
+
+                const sizeDiff = Math.abs(_shotsOriginalFiles[i].size - previewSize);
+ 
+                if (sizeDiff === 0) {
+                    return i;
+                }
+
+                if (sizeDiff < bestSizeDiff) {
+                    bestSizeDiff = sizeDiff;
+                    bestMatchIndex = i;
+                }
+            }
+
+            if (bestMatchIndex !== -1 && bestSizeDiff < previewSize * 0.05) {
+                return bestMatchIndex;
+            }
+
+            const previewItems = document.querySelectorAll('.file-upload__preview-item, .file-upload__item');
+            if (previewItems.length > 1) {
+                const activeItem = document.querySelector('.file-upload__preview-item.active, .file-upload__item.active');
+                if (activeItem) {
+                    const index = Array.from(previewItems).indexOf(activeItem);
+                    if (index !== -1) return index;
+                }
+            }
+
+            return bestMatchIndex !== -1 ? bestMatchIndex : 0;
+        } catch (e) {
+            console.error('[Flavortown] Error finding styled file:', e);
+            return 0;
+        }
+    }
+    
+    findStyledFileIndex().then(idx => {
+        _shotsStyledFileIndex = idx;
+    });
+
+    const header = document.createElement('div');
+    header.style.cssText = `
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 20px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        margin-bottom: 12px;
+        color: white;
+    `;
+    header.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <span style="font-size: 1.5em;">✨</span>
+            <div>
+                <strong style="font-size: 1.1em;">Style Your Screenshot</strong>
+                <p style="margin: 4px 0 0; opacity: 0.8; font-size: 0.9em;">
+                    ${imageUrl ? 'Your image is being loaded... ' : 'Drop your image into the editor. '}
+                    Style it → Click the green 📋 copy button to upload!
+                </p>
+            </div>
+        </div>
+        <button id="flavortown-shots-close" style="
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        ">✕ Close</button>
+    `;
+    overlay.appendChild(header);
+
+    const iframeContainer = document.createElement('div');
+    iframeContainer.style.cssText = `
+        flex: 1;
+        border-radius: 12px;
+        overflow: hidden;
+        background: #1a1a2e;
+    `;
+
+    const iframe = document.createElement('iframe');
+    iframe.src = 'https://shots.so';
+    iframe.style.cssText = `
+        width: 100%;
+        height: 100%;
+        border: none;
+    `;
+    iframe.allow = 'clipboard-write';
+    iframeContainer.appendChild(iframe);
+    overlay.appendChild(iframeContainer);
+
+    document.body.appendChild(overlay);
+
+    function handleExportMessage(event) {
+        if (event.data?.type === 'SHOTS_COPY_COMPLETE') {
+            const instructions = header.querySelector('p');
+            if (instructions) {
+                instructions.innerHTML = '<strong style="color: #f59e0b;">⏳ Reading from clipboard...</strong>';
+            }
+
+            navigator.clipboard.read().then(async (items) => {
+                for (const item of items) {
+                    const imageType = item.types.find(t => t.startsWith('image/'));
+                    if (imageType) {
+                        const blob = await item.getType(imageType);
+                        const file = new File([blob], 'styled-screenshot.png', { type: imageType });
+
+                        const currentFileInput = document.querySelector('.file-upload input[type="file"]')
+                            || document.querySelector('[data-file-upload-target="input"]')
+                            || document.querySelector('input[type="file"]');
+
+                        if (currentFileInput) {
+                            const dt = new DataTransfer();
+
+                            for (let i = 0; i < _shotsOriginalFiles.length; i++) {
+                             
+                                if (i === _shotsStyledFileIndex) continue;
+                                dt.items.add(_shotsOriginalFiles[i]);
+                            }
+
+                            dt.items.add(file);
+
+                            currentFileInput.files = dt.files;
+                           
+
+                            ['input', 'change'].forEach(eventType => {
+                                currentFileInput.dispatchEvent(new Event(eventType, { bubbles: true, cancelable: true }));
+                            });
+
+                           
+
+                            if (instructions) {
+                                instructions.innerHTML = '<strong style="color: #10b981;">✓ Styled image added!</strong> Closing...';
+                            }
+
+                            setTimeout(() => {
+                                window.removeEventListener('message', handleExportMessage);
+                                overlay.remove();
+                            }, 1500);
+                            return;
+                        }
+                    }
+                }
+
+                if (instructions) {
+                    instructions.innerHTML = '<strong style="color: #ef4444;">No image in clipboard.</strong> Try copying again.';
+                }
+            }).catch(err => {
+                console.error('[Flavortown] Clipboard read failed:', err);
+                if (instructions) {
+                    instructions.innerHTML = '<strong style="color: #ef4444;">Clipboard access denied.</strong> Grant permission and try again.';
+                }
+            });
+            return;
+        }
+
+        if (event.data?.type === 'SHOTS_CAPTURE_FAILED') {
+            console.error('[Flavortown] Canvas capture failed:', event.data.error);
+            return;
+        }
+
+        if (event.data?.type !== 'SHOTS_EXPORT_COMPLETE') return;
+
+        const { dataUrl, filename } = event.data;
+
+        fetch(dataUrl)
+            .then(res => res.blob())
+            .then(blob => {
+                const file = new File([blob], filename || 'styled-screenshot.png', { type: blob.type });
+
+                const fileInput = document.querySelector('.file-upload input[type="file"]')
+                    || document.querySelector('[data-file-upload-target="input"]')
+                    || document.querySelector('input[type="file"]');
+
+                if (fileInput) {
+                    const dt = new DataTransfer();
+                    dt.items.add(file);
+                    fileInput.files = dt.files;
+
+                    ['input', 'change'].forEach(eventType => {
+                        fileInput.dispatchEvent(new Event(eventType, { bubbles: true, cancelable: true }));
+                    });
+
+
+                    const instructions = header.querySelector('p');
+                    if (instructions) {
+                        instructions.innerHTML = '<strong style="color: #10b981;">✓ Styled image uploaded!</strong> Closing in 2 seconds...';
+                    }
+
+                    setTimeout(() => {
+                        window.removeEventListener('message', handleExportMessage);
+                        overlay.remove();
+                    }, 2000);
+                } else {
+                    console.error('[Flavortown] Could not find file input');
+                    const instructions = header.querySelector('p');
+                    if (instructions) {
+                        instructions.innerHTML = '<strong style="color: #ef4444;">Could not find upload field.</strong> Please close and try again.';
+                    }
+                }
+            })
+            .catch(err => {
+                console.error('[Flavortown] Failed to process export:', err);
+            });
+    }
+
+    window.addEventListener('message', handleExportMessage);
+
+    async function getCurrentTabId() {
+        return new Promise(resolve => {
+            browserAPI.runtime.sendMessage({ type: 'GET_TAB_ID' }, (response) => {
+                resolve(response?.tabId);
+            });
+        }).catch(() => null);
+    }
+
+    iframe.addEventListener('load', async () => {
+        await new Promise(r => setTimeout(r, 500));
+
+        if (imageUrl) {
+            try {
+                const response = await fetch(imageUrl);
+                const blob = await response.blob();
+                const reader = new FileReader();
+
+                reader.onload = async () => {
+                    const imageDataUrl = reader.result;
+
+                    browserAPI.runtime.sendMessage({
+                        type: 'INJECT_SHOTS_HELPER',
+                        tabId: await getCurrentTabId(),
+                        imageDataUrl: imageDataUrl
+                    }, (response) => {
+                        if (response?.success) {
+                            const instructions = header.querySelector('p');
+                            if (instructions) {
+                                instructions.innerHTML = '<strong style="color: #10b981;">✓ Image loaded!</strong> Style it → click the green 📋 copy button!';
+                            }
+                        } else {
+                            console.error('[Flavortown] Injection failed:', response?.error);
+                            fallbackToClipboard(blob, header);
+                        }
+                    });
+                };
+                reader.readAsDataURL(blob);
+            } catch (err) {
+                console.error('[Flavortown] Error:', err);
+            }
+        } else {
+            const instructions = header.querySelector('p');
+            if (instructions) {
+                instructions.innerHTML = 'Drop your image into the editor. Style it → click the green 📋 copy button!';
+            }
+        }
+    });
+
+    async function fallbackToClipboard(blob, header) {
+        try {
+            await navigator.clipboard.write([new ClipboardItem({ [blob.type]: blob })]);
+            const instructions = header.querySelector('p');
+            if (instructions) {
+                instructions.innerHTML = '<strong style="color: #f59e0b;">Image copied to clipboard!</strong> Press Ctrl+V in shots.so to paste.';
+            }
+        } catch (e) {
+            console.error('[Flavortown] Clipboard failed:', e);
+        }
+    }
+
+    document.getElementById('flavortown-shots-close').addEventListener('click', () => {
+        window.removeEventListener('message', handleExportMessage);
+        overlay.remove();
+    });
+
+    const escHandler = (e) => {
+        if (e.key === 'Escape') {
+            window.removeEventListener('message', handleExportMessage);
+            overlay.remove();
+            document.removeEventListener('keydown', escHandler);
+        }
+    };
+    document.addEventListener('keydown', escHandler);
+}
+
+function enhanceAchievementsPage() {
+    if (!window.location.pathname.startsWith('/my/achievements')) return;
+    if (document.querySelector('.flavortown-achievements-enhanced')) return;
+
+    const statsSection = document.querySelector('.achievements__stats');
+    if (!statsSection) return;
+
+    const countEl = statsSection.querySelector('.achievements__stats-count');
+    const totalEl = statsSection.querySelector('.achievements__stats-total');
+    const fillEl = statsSection.querySelector('.achievements__stats-fill');
+    const barEl = statsSection.querySelector('.achievements__stats-bar');
+
+    const earned = countEl ? parseInt(countEl.textContent.trim(), 10) : 0;
+    const total = totalEl ? parseInt(totalEl.textContent.trim(), 10) : 0;
+    const percent = total > 0 ? Math.round((earned / total) * 100) : 0;
+
+    if (fillEl && !fillEl.querySelector('.flavortown-percent')) {
+        const percentLabel = document.createElement('span');
+        percentLabel.className = 'flavortown-percent';
+        percentLabel.textContent = `${percent}%`;
+        percentLabel.style.cssText = 'position: absolute; right: 8px; top: 50%; transform: translateY(-50%); font-size: 0.8em; font-weight: 800; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.5), 0 0 8px rgba(0,0,0,0.3);';
+        fillEl.style.position = 'relative';
+        fillEl.appendChild(percentLabel);
+    }
+
+    let potentialCookies = 0;
+    document.querySelectorAll('.achievements__card:not(.achievements__card--earned)').forEach(card => {
+        const rewardEl = card.querySelector('.achievements__reward');
+        if (rewardEl) {
+            const match = rewardEl.textContent.match(/\+(\d+)/);
+            if (match) potentialCookies += parseInt(match[1], 10);
+        }
+    });
+
+    if (potentialCookies > 0) {
+        const potentialLine = document.createElement('div');
+        potentialLine.className = 'flavortown-achievements-enhanced';
+        potentialLine.style.cssText = 'margin-top: 8px; font-size: 0.9em; color: var(--color-text-muted, #666); text-align: center;';
+        potentialLine.innerHTML = `🍪 <strong>+${potentialCookies}</strong> potential cookies from remaining achievements`;
+        statsSection.appendChild(potentialLine);
+    }
+}
+
+function addSidebarItems() {
+    const navList = document.querySelector('.sidebar__nav-list');
+    if (!navList) return;
+
+    if (document.querySelector('.flavortown-sidebar-achievements')) return;
+
+    const currentPath = window.location.pathname;
+
+    const createItem = (href, label, svgPath, className) => {
+        const isActive = currentPath === href || currentPath.startsWith(href + '/');
+        const li = document.createElement('li');
+        li.className = `sidebar__nav-item ${className}`;
+        li.innerHTML = `
+            <a class="sidebar__nav-link${isActive ? ' sidebar__nav-link--active' : ''}" ${isActive ? 'aria-current="page"' : ''} href="${href}">
+                <span class="sidebar__nav-icon-wrapper" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="sidebar__nav-icon" fill="currentColor">
+                        ${svgPath}
+                    </svg>
+                </span>
+                <span class="sidebar__nav-label">${label}</span>
+            </a>
+        `;
+        return li;
+    };
+
+    const achievementsItem = createItem(
+        '/my/achievements',
+        'Achievements',
+        '<path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94.63 1.5 1.98 2.63 3.61 2.96V19H7v2h10v-2h-4v-3.1c1.63-.33 2.98-1.46 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82c-1.16-.41-2-1.51-2-2.82zm14 0c0 1.31-.84 2.41-2 2.82V7h2v1z"></path>',
+        'flavortown-sidebar-achievements'
+    );
+
+    const leaderboardItem = createItem(
+        '/leaderboard',
+        'Leaderboard',
+        '<path d="M7.5 21H2V9h5.5v12zm7.25-18h-5.5v18h5.5V3zM22 11h-5.5v10H22V11z"></path>',
+        'flavortown-sidebar-leaderboard'
+    );
+
+    navList.appendChild(achievementsItem);
+    navList.appendChild(leaderboardItem);
+}
+
+function addAdminViewButton() {
+    const match = window.location.pathname.match(/^\/users\/(\d+)/);
+    if (!match) return;
+
+    const userId = match[1];
+    const hasAdmin = document.querySelector('.sidebar__nav-link[href="/admin"]');
+    if (!hasAdmin) return;
+
+    if (document.querySelector('.flavortown-admin-view-btn')) return;
+
+    const profileIdentity = document.querySelector('.user-profile__identity h1');
+    if (!profileIdentity) return;
+
+    const adminBtn = document.createElement('a');
+    adminBtn.className = 'flavortown-admin-view-btn';
+    adminBtn.href = `/admin/users/${userId}`;
+    adminBtn.title = 'View in Admin';
+    adminBtn.textContent = '👁️';
+    adminBtn.style.cssText = 'margin-left: 8px; font-size: 0.8em; text-decoration: none; opacity: 0.7; cursor: pointer; transition: opacity 0.2s;';
+    adminBtn.onmouseenter = () => adminBtn.style.opacity = '1';
+    adminBtn.onmouseleave = () => adminBtn.style.opacity = '0.7';
+
+    profileIdentity.appendChild(adminBtn);
+}

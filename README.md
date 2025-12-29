@@ -15,6 +15,7 @@
   - Accessories in goals
   - Better UI for goals
   - Priority goals
+  - Cumulative progress and individual progress towards goals
 - Auto achievement claim
 - Search bar for projects
 - Makes images not crop in devlogs
@@ -23,7 +24,10 @@
   - Graph
   - Stats
 - Better my votes layout
-
+- Doomscroll devlogs
+- Markdown editor
+- Extra statistics on achievements page
+- Inbuilt shots.so integration to stylize your devlog attachments!
 
 ## Feature showcase:
 

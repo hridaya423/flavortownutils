@@ -5,7 +5,13 @@
     "description": "A utility extension for Flavortown, with multiple useful features to enhance the experience",
     "permissions": [
         "storage",
-        "tabs"
+        "tabs",
+        "scripting",
+        "clipboardWrite"
+    ],
+    "host_permissions": [
+        "https://shots.so/*",
+        "https://flavortown.hackclub.com/*"
     ],
     "action": {
         "default_popup": "popup.html",
@@ -14,6 +20,9 @@
     "icons": {
         "64": "icon64.png",
         "128": "icon128.png"
+    },
+    "background": {
+        "service_worker": "background.js"
     },
     "content_scripts": [
         {
@@ -35,7 +44,8 @@
                 "themes/*.css"
             ],
             "matches": [
-                "https://flavortown.hackclub.com/*"
+                "https://flavortown.hackclub.com/*",
+                "https://shots.so/*"
             ]
         }
     ]
