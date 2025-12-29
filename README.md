@@ -1,5 +1,14 @@
 <img width="640" height="400" alt="image" src="https://github.com/user-attachments/assets/fe3b4de0-4ce1-4d1f-8829-4d0f4fffbdf8" />
 
+## Table of Contents
+- [Features:](#features)
+- [Feature showcase:](#feature-showcase)
+- [Installation](#installation)
+  - [Chrome](#chrome)
+  - [Firefox](#firefox)
+  - [Safari](#safari)
+
+
 ## Features:
 
 - Makes devlog posting directly into project page, instead of a new page.
@@ -52,8 +61,8 @@
 5. Select the extension folder
 
 ### Firefox
-**Option 1: Mozilla Addons**
-1. Visit the [Mozilla Addons](https://addons.mozilla.org/en-US/firefox/addon/flavortown-utils/)
+**Option 1: Mozilla Addons** (In review at the moment)
+1. Visit the [Mozilla Addons]()
 2. Click "Add to Firefox"
 3. Confirm the installation when prompted
 
