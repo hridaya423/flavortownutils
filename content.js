@@ -2458,7 +2458,14 @@ async function enhanceKitchenDashboard() {
             </div>
         `;
 
+
+        const parentContainer = kitchenSetup.parentNode;
         kitchenSetup.replaceWith(dashboard);
+
+        const kitchenAnnouncement = document.querySelector('.kitchen-announcement');
+        if (kitchenAnnouncement && parentContainer) {
+            parentContainer.insertBefore(kitchenAnnouncement, dashboard);
+        }
 
         const canvas = document.getElementById('flavortown-cookies-graph');
         if (canvas && dataPoints.length > 1) {
