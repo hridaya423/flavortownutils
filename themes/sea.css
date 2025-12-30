@@ -992,6 +992,25 @@ a:hover {
 }
 
 .dropdown__selected {
+    background-color: var(--sea-dark) !important;
+    color: var(--sea-white) !important;
+}
+
+.shop-order .dropdown__button,
+.shop-order__form .dropdown__button,
+.shop-order [class*="dropdown"] {
+    background-color: var(--sea-dark) !important;
+    border-color: var(--sea-mid) !important;
+    color: var(--sea-white) !important;
+}
+
+.input--address .dropdown__button,
+.input--address [class*="dropdown__"] {
+    background-color: var(--sea-dark) !important;
+    color: var(--sea-white) !important;
+}
+
+.dropdown__char-span {
     color: var(--sea-white) !important;
 }
 
@@ -2637,4 +2656,81 @@ a:hover {
 
 .goal-item--priority {
     border-left: 4px solid var(--sea-cyan) !important;
+}
+
+.flavortown-achievement-toast {
+    background: var(--sea-dark) !important;
+    border: 1px solid var(--sea-surface) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+}
+
+.flavortown-achievement-toast__content {
+    background: transparent !important;
+}
+
+.flavortown-achievement-toast__title {
+    color: var(--sea-cyan) !important;
+}
+
+.flavortown-achievement-toast__names {
+    color: var(--sea-white) !important;
+}
+
+.flavortown-achievement-toast__cookies {
+    color: var(--sea-gold) !important;
+    background: var(--sea-mid) !important;
+}
+
+.flavortown-achievement-toast__close {
+    color: var(--sea-surface) !important;
+    background: var(--sea-mid) !important;
+}
+
+.flavortown-achievement-toast__close:hover {
+    color: var(--sea-white) !important;
+    background: var(--sea-surface) !important;
+}
+
+.flavortown-shots-btn {
+    background: var(--sea-dark) !important;
+    border: 1px solid var(--sea-surface) !important;
+    color: var(--sea-cyan) !important;
+}
+
+.flavortown-shots-btn:hover {
+    background: var(--sea-mid) !important;
+    border-color: var(--sea-cyan) !important;
+    color: var(--sea-mist) !important;
+}
+
+.shop-order__content {
+    background-image: none !important;
+    background-color: var(--sea-dark) !important;
+}
+
+.shop-order__image {
+    background-color: var(--sea-mid) !important;
+}
+
+.kitchen-announcement,
+.announcement {
+    background-color: var(--sea-dark) !important;
+    border-color: var(--sea-mid) !important;
+}
+
+.announcement__content {
+    background-color: transparent !important;
+    border-color: var(--sea-cyan) !important;
+}
+
+.announcement__flag {
+    filter: hue-rotate(180deg) saturate(0.9) !important;
+}
+
+.announcement__text h2 {
+    color: var(--sea-cyan) !important;
+}
+
+.announcement__text p {
+    color: var(--sea-white) !important;
 }

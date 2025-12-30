@@ -1002,6 +1002,21 @@ a:hover {
 }
 
 .dropdown__selected {
+    background-color: var(--ctp-surface0) !important;
+    color: var(--ctp-text) !important;
+}
+
+.shop-order .dropdown__button,
+.shop-order__form .dropdown__button,
+.shop-order [class*="dropdown"] {
+    background-color: var(--ctp-surface0) !important;
+    border-color: var(--ctp-surface1) !important;
+    color: var(--ctp-text) !important;
+}
+
+.input--address .dropdown__button,
+.input--address [class*="dropdown__"] {
+    background-color: var(--ctp-surface0) !important;
     color: var(--ctp-text) !important;
 }
 
@@ -2647,4 +2662,81 @@ a:hover {
 
 .goal-item--priority {
     border-left: 4px solid var(--ctp-mauve) !important;
+}
+
+.flavortown-achievement-toast {
+    background: var(--ctp-surface0) !important;
+    border: 1px solid var(--ctp-surface2) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+}
+
+.flavortown-achievement-toast__content {
+    background: transparent !important;
+}
+
+.flavortown-achievement-toast__title {
+    color: var(--ctp-mauve) !important;
+}
+
+.flavortown-achievement-toast__names {
+    color: var(--ctp-text) !important;
+}
+
+.flavortown-achievement-toast__cookies {
+    color: var(--ctp-yellow) !important;
+    background: var(--ctp-surface1) !important;
+}
+
+.flavortown-achievement-toast__close {
+    color: var(--ctp-overlay1) !important;
+    background: var(--ctp-surface1) !important;
+}
+
+.flavortown-achievement-toast__close:hover {
+    color: var(--ctp-text) !important;
+    background: var(--ctp-surface2) !important;
+}
+
+.flavortown-shots-btn {
+    background: var(--ctp-surface0) !important;
+    border: 1px solid var(--ctp-surface2) !important;
+    color: var(--ctp-mauve) !important;
+}
+
+.flavortown-shots-btn:hover {
+    background: var(--ctp-surface1) !important;
+    border-color: var(--ctp-mauve) !important;
+    color: var(--ctp-lavender) !important;
+}
+
+.shop-order__content {
+    background-image: none !important;
+    background-color: var(--ctp-surface0) !important;
+}
+
+.shop-order__image {
+    background-color: var(--ctp-surface1) !important;
+}
+
+.kitchen-announcement,
+.announcement {
+    background-color: var(--ctp-surface0) !important;
+    border-color: var(--ctp-surface1) !important;
+}
+
+.announcement__content {
+    background-color: transparent !important;
+    border-color: var(--ctp-mauve) !important;
+}
+
+.announcement__flag {
+    filter: hue-rotate(270deg) saturate(0.8) !important;
+}
+
+.announcement__text h2 {
+    color: var(--ctp-mauve) !important;
+}
+
+.announcement__text p {
+    color: var(--ctp-text) !important;
 }
