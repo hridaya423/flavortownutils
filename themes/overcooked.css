@@ -2740,3 +2740,47 @@ a:hover {
 .announcement__text p {
     color: var(--overcooked-white) !important;
 }
+
+#project-idea-container {
+    background: var(--overcooked-dark) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+}
+
+#project-idea-container > div,
+.project-idea-generator,
+.project-idea-generator > div {
+    background: transparent !important;
+}
+
+.project-idea-generator h3 {
+    color: var(--overcooked-cyan) !important;
+}
+
+.project-idea-generator p {
+    color: var(--overcooked-white) !important;
+}
+
+#shopkeeper-speech {
+    background-color: var(--overcooked-mid) !important;
+    color: var(--overcooked-white) !important;
+}
+
+#shopkeeper-bar {
+    background: transparent !important;
+}
+
+#shopkeeper-bakery {
+    background: transparent !important;
+}
+
+#shopkeeper-submit.btn--red,
+#shopkeeper-submit.btn--striped {
+    background-color: var(--overcooked-cyan) !important;
+    border-color: var(--overcooked-cyan) !important;
+    color: var(--overcooked-abyss) !important;
+}
+
+#shopkeeper-submit.btn--red:hover,
+#shopkeeper-submit.btn--striped:hover {
+    background-color: var(--overcooked-mist) !important;
+}

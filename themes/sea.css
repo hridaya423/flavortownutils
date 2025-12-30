@@ -2734,3 +2734,47 @@ a:hover {
 .announcement__text p {
     color: var(--sea-white) !important;
 }
+
+#project-idea-container {
+    background: var(--sea-dark) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+}
+
+#project-idea-container > div,
+.project-idea-generator,
+.project-idea-generator > div {
+    background: transparent !important;
+}
+
+.project-idea-generator h3 {
+    color: var(--sea-cyan) !important;
+}
+
+.project-idea-generator p {
+    color: var(--sea-white) !important;
+}
+
+#shopkeeper-speech {
+    background-color: var(--sea-mid) !important;
+    color: var(--sea-white) !important;
+}
+
+#shopkeeper-bar {
+    background: transparent !important;
+}
+
+#shopkeeper-bakery {
+    background: transparent !important;
+}
+
+#shopkeeper-submit.btn--red,
+#shopkeeper-submit.btn--striped {
+    background-color: var(--sea-cyan) !important;
+    border-color: var(--sea-cyan) !important;
+    color: var(--sea-abyss) !important;
+}
+
+#shopkeeper-submit.btn--red:hover,
+#shopkeeper-submit.btn--striped:hover {
+    background-color: var(--sea-mist) !important;
+}

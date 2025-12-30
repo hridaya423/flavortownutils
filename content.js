@@ -73,7 +73,12 @@ function applyTheme(theme, customColors) {
     const existingCustom = document.getElementById('flavortown-custom-vars');
     if (existingCustom) existingCustom.remove();
 
-    if (theme === 'default') return;
+    if (theme === 'default') {
+        setTimeout(() => {
+            document.dispatchEvent(new CustomEvent('flavortown-theme-changed', { detail: { theme } }));
+        }, 100);
+        return;
+    }
 
     if (theme === 'custom') {
         const style = document.createElement('style');
@@ -145,6 +150,10 @@ h1, h2, h3, h4, h5, h6, p, span, div {
             setTimeout(() => recolorBackgroundTexture(theme), 0);
         }
     }
+    
+    setTimeout(() => {
+        document.dispatchEvent(new CustomEvent('flavortown-theme-changed', { detail: { theme } }));
+    }, 100);
 }
 
 function recolorBackgroundTexture(theme) {
@@ -2469,6 +2478,8 @@ async function enhanceKitchenDashboard() {
 
         const canvas = document.getElementById('flavortown-cookies-graph');
         if (canvas && dataPoints.length > 1) {
+        
+            const drawGraph = () => {
             const ctx = canvas.getContext('2d');
 
             const dpr = window.devicePixelRatio || 1;
@@ -2485,8 +2496,16 @@ async function enhanceKitchenDashboard() {
 
             const styles = getComputedStyle(document.documentElement);
             const lineColor = styles.getPropertyValue('--color-accent')?.trim() || '#8b7355';
-            const textColor = styles.getPropertyValue('--color-text-primary')?.trim() || '#333';
-            const gridColor = styles.getPropertyValue('--color-border')?.trim() || '#e2d8cc';
+            const themeStyles = document.getElementById('flavortown-theme');
+            const isDarkTheme = !!themeStyles;
+            let textColor, gridColor;
+            if (isDarkTheme) {
+                textColor = '#cdd6f4';
+                gridColor = '#45475a';
+            } else {
+                textColor = styles.getPropertyValue('--color-text-primary')?.trim() || '#333';
+                gridColor = styles.getPropertyValue('--color-border')?.trim() || '#e2d8cc';
+            }
 
             const minBalance = Math.min(...dataPoints.map(d => d.balance));
             const maxBalance = Math.max(...dataPoints.map(d => d.balance));
@@ -2581,77 +2600,93 @@ async function enhanceKitchenDashboard() {
                     if (i === 0 || i >= dataPoints.length - 1 || (i > 0 && i < dataPoints.length - 1)) {
                         const x = padding + (width / (dataPoints.length - 1)) * i;
                         const dateStr = dataPoints[i].date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-                        ctx.fillText(dateStr, x, canvas.height - 10);
+                        ctx.fillText(dateStr, x, rect.height - 10);
                     }
                 }
                 if (step > 1) {
                     const lastX = padding + width;
                     const lastDateStr = dataPoints[dataPoints.length - 1].date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-                    ctx.fillText(lastDateStr, lastX, canvas.height - 10);
+                    ctx.fillText(lastDateStr, lastX, rect.height - 10);
                 }
             }
+            
+            canvas._pointPositions = pointPositions;
+            canvas._dpr = dpr;
+            }; 
+            
+            if (!document.querySelector('.flavortown-graph-tooltip')) {
+                const tooltip = document.createElement('div');
+                tooltip.className = 'flavortown-graph-tooltip';
+                tooltip.style.cssText = `
+                    position: absolute;
+                    display: none;
+                    background: var(--color-surface, #fff);
+                    border: 2px solid var(--color-border, #e2d8cc);
+                    border-radius: 8px;
+                    padding: 10px 14px;
+                    font-size: 0.9em;
+                    pointer-events: none;
+                    z-index: 1000;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                    max-width: 220px;
+                    white-space: nowrap;
+                `;
+                canvas.parentNode.style.position = 'relative';
+                canvas.parentNode.appendChild(tooltip);
 
-            const tooltip = document.createElement('div');
-            tooltip.className = 'flavortown-graph-tooltip';
-            tooltip.style.cssText = `
-                position: absolute;
-                display: none;
-                background: var(--color-surface, #fff);
-                border: 2px solid var(--color-border, #e2d8cc);
-                border-radius: 8px;
-                padding: 10px 14px;
-                font-size: 0.9em;
-                pointer-events: none;
-                z-index: 1000;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-                max-width: 220px;
-                white-space: nowrap;
-            `;
-            canvas.parentNode.style.position = 'relative';
-            canvas.parentNode.appendChild(tooltip);
+                canvas.addEventListener('mousemove', (e) => {
+                    const tooltip = document.querySelector('.flavortown-graph-tooltip');
+                    const pointPositions = canvas._pointPositions;
+                    if (!pointPositions || !tooltip) return;
+                    
+                    const rect = canvas.getBoundingClientRect();
+                   
+                    const mouseX = e.clientX - rect.left;
+                    const mouseY = e.clientY - rect.top;
 
-            canvas.addEventListener('mousemove', (e) => {
-                const rect = canvas.getBoundingClientRect();
-                const scaleX = canvas.width / rect.width;
-                const scaleY = canvas.height / rect.height;
-                const mouseX = (e.clientX - rect.left) * scaleX;
-                const mouseY = (e.clientY - rect.top) * scaleY;
+                    let closestPoint = null;
+                    let closestDist = Infinity;
+                    pointPositions.forEach(p => {
+                        const dist = Math.sqrt((p.x - mouseX) ** 2 + (p.y - mouseY) ** 2);
+                        if (dist < closestDist && dist < 50) {
+                            closestDist = dist;
+                            closestPoint = p;
+                        }
+                    });
 
-                let closestPoint = null;
-                let closestDist = Infinity;
-                pointPositions.forEach(p => {
-                    const dist = Math.sqrt((p.x - mouseX) ** 2 + (p.y - mouseY) ** 2);
-                    if (dist < closestDist && dist < 30) {
-                        closestDist = dist;
-                        closestPoint = p;
+                    if (closestPoint) {
+                        const amountStr = closestPoint.data.amount >= 0 ? `+${closestPoint.data.amount}` : `${closestPoint.data.amount}`;
+                        const dateStr = closestPoint.data.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                        tooltip.innerHTML = `
+                            <div style="font-weight: 700; margin-bottom: 4px;">🍪 ${closestPoint.data.balance}</div>
+                            <div style="color: ${closestPoint.data.amount >= 0 ? '#38a169' : '#e53e3e'}; font-weight: 600;">${amountStr}</div>
+                            <div style="font-size: 0.85em; color: var(--color-text-muted, #888); margin-top: 4px;">${closestPoint.data.reason}</div>
+                            <div style="font-size: 0.8em; color: var(--color-text-muted, #888);">${dateStr}</div>
+                        `;
+                        tooltip.style.display = 'block';
+
+                        let tooltipX = closestPoint.x + 15;
+                        const tooltipWidth = 220;
+                        if (tooltipX + tooltipWidth > rect.width) {
+                            tooltipX = closestPoint.x - tooltipWidth - 15;
+                        }
+                        tooltip.style.left = `${tooltipX}px`;
+                        tooltip.style.top = `${closestPoint.y - 20}px`;
+                    } else {
+                        tooltip.style.display = 'none';
                     }
                 });
 
-                if (closestPoint) {
-                    const amountStr = closestPoint.data.amount >= 0 ? `+${closestPoint.data.amount}` : `${closestPoint.data.amount}`;
-                    const dateStr = closestPoint.data.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-                    tooltip.innerHTML = `
-                        <div style="font-weight: 700; margin-bottom: 4px;">🍪 ${closestPoint.data.balance}</div>
-                        <div style="color: ${closestPoint.data.amount >= 0 ? '#38a169' : '#e53e3e'}; font-weight: 600;">${amountStr}</div>
-                        <div style="font-size: 0.85em; color: var(--color-text-muted, #888); margin-top: 4px;">${closestPoint.data.reason}</div>
-                        <div style="font-size: 0.8em; color: var(--color-text-muted, #888);">${dateStr}</div>
-                    `;
-                    tooltip.style.display = 'block';
-
-                    let tooltipX = (closestPoint.x / scaleX) + 15;
-                    const tooltipWidth = 220;
-                    if (tooltipX + tooltipWidth > rect.width) {
-                        tooltipX = (closestPoint.x / scaleX) - tooltipWidth - 15;
-                    }
-                    tooltip.style.left = `${tooltipX}px`;
-                    tooltip.style.top = `${(closestPoint.y / scaleY) - 20}px`;
-                } else {
-                    tooltip.style.display = 'none';
-                }
-            });
-
-            canvas.addEventListener('mouseleave', () => {
-                tooltip.style.display = 'none';
+                canvas.addEventListener('mouseleave', () => {
+                    const tooltip = document.querySelector('.flavortown-graph-tooltip');
+                    if (tooltip) tooltip.style.display = 'none';
+                });
+            }
+            
+            drawGraph();
+            
+            document.addEventListener('flavortown-theme-changed', () => {
+                setTimeout(drawGraph, 150);
             });
         }
     } catch (e) {
