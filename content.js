@@ -3231,7 +3231,241 @@ function openShotsModal() {
         || document.querySelector('input[type="file"]');
     
     _shotsOriginalFiles = fileInput ? Array.from(fileInput.files || []) : [];
+ 
     _shotsStyledFileIndex = -1;
+
+    const imageFiles = _shotsOriginalFiles.filter(f => f.type.startsWith('image/'));
+
+    if (imageFiles.length >= 2) {
+        showImageSelectionUI(imageFiles, (selectedImages) => {
+            proceedWithShotsModal(selectedImages, imageUrl);
+        });
+        return;
+    }
+    
+    proceedWithShotsModal([{ file: imageFiles[0] || null, url: imageUrl }], imageUrl);
+}
+
+function showImageSelectionUI(imageFiles, onComplete) {
+    const selectionOverlay = document.createElement('div');
+    selectionOverlay.className = 'flavortown-image-selection';
+    selectionOverlay.style.cssText = `
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(139, 119, 101, 0.85);
+        backdrop-filter: blur(8px);
+        z-index: 999999;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        animation: fadeIn 0.2s ease-out;
+    `;
+    
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+        .flavortown-image-selection .image-option:hover { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2); }
+        .flavortown-image-selection .layout-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); }
+        .flavortown-image-selection .cancel-btn:hover { background: #c9a88a !important; }
+        .flavortown-image-selection .proceed-btn:not(:disabled):hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(90, 130, 70, 0.3); }
+    `;
+    document.head.appendChild(style);
+    
+    let selectedImages = [];
+    let layoutMode = 'single';
+    
+    const content = document.createElement('div');
+    content.style.cssText = `
+        background: linear-gradient(145deg, #f5e6d3 0%, #ece0d1 100%);
+        border: 3px solid #a94442;
+        border-radius: 16px;
+        padding: 0;
+        max-width: 600px;
+        width: 90%;
+        color: #4a3728;
+        box-shadow: 0 16px 48px rgba(0, 0, 0, 0.25);
+        animation: slideUp 0.25s ease-out;
+        overflow: hidden;
+    `;
+    
+    const renderUI = () => {
+        content.innerHTML = `
+            <div style="
+                background: linear-gradient(135deg, #a94442 0%, #8b3533 100%);
+                padding: 14px 20px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            ">
+                <span style="font-size: 1.3em;">🎨</span>
+                <div>
+                    <h2 style="margin: 0; font-size: 1.1em; font-weight: 700; color: #fff;">Style Your Screenshots</h2>
+                    <p style="margin: 2px 0 0; font-size: 0.75em; color: rgba(255,255,255,0.75);">Pick your layout</p>
+                </div>
+            </div>
+            
+            <div style="padding: 24px 28px 28px;">
+                <div style="display: flex; gap: 14px; margin-bottom: 24px;">
+                    <button class="layout-btn" data-layout="single" style="
+                        flex: 1; padding: 12px 10px; border-radius: 10px; cursor: pointer;
+                        background: ${layoutMode === 'single' ? 'linear-gradient(135deg, #7a9e5a 0%, #6b8f4a 100%)' : '#e8dcc8'};
+                        border: 2px solid ${layoutMode === 'single' ? '#5a7e3a' : '#d4c4a8'};
+                        color: ${layoutMode === 'single' ? '#fff' : '#5a4a3a'};
+                        font-weight: 600; font-size: 0.9em;
+                        transition: all 0.2s ease;
+                        display: flex; flex-direction: column; align-items: center; gap: 4px;
+                    ">
+                        <span style="font-size: 1.4em;">📷</span>
+                        <span>Single</span>
+                    </button>
+                    <button class="layout-btn" data-layout="dual" style="
+                        flex: 1; padding: 12px 10px; border-radius: 10px; cursor: pointer;
+                        background: ${layoutMode === 'dual' ? 'linear-gradient(135deg, #7a9e5a 0%, #6b8f4a 100%)' : '#e8dcc8'};
+                        border: 2px solid ${layoutMode === 'dual' ? '#5a7e3a' : '#d4c4a8'};
+                        color: ${layoutMode === 'dual' ? '#fff' : '#5a4a3a'};
+                        font-weight: 600; font-size: 0.9em;
+                        transition: all 0.2s ease;
+                        display: flex; flex-direction: column; align-items: center; gap: 4px;
+                    ">
+                        <span style="font-size: 1.4em;">📷📷</span>
+                        <span>Two-Panel</span>
+                    </button>
+                </div>
+                
+            <div class="image-grid" style="
+                display: grid; 
+                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); 
+                gap: 12px; 
+                margin-bottom: 28px;
+                max-height: 400px;
+                overflow-y: auto;
+                padding: 4px;
+            ">
+                ${imageFiles.map((file, i) => {
+                    const isSelected = selectedImages.some(s => s.index === i);
+                    const selOrder = selectedImages.findIndex(s => s.index === i) + 1;
+                    return `
+                        <div class="image-option" data-index="${i}" style="
+                            position: relative; 
+                            aspect-ratio: 1; 
+                            border-radius: 8px; 
+                            overflow: hidden;
+                            cursor: pointer; 
+                            border: 3px solid ${isSelected ? '#7a9e5a' : '#d4c4a8'};
+                            transition: all 0.2s ease;
+                            box-shadow: ${isSelected ? '0 3px 12px rgba(90, 130, 70, 0.3)' : '0 2px 6px rgba(0,0,0,0.1)'};
+                            background: #fff;
+                        ">
+                            <img src="${URL.createObjectURL(file)}" style="width: 100%; height: 100%; object-fit: cover;">
+                            ${isSelected ? `
+                                <div style="
+                                    position: absolute; top: 4px; right: 4px;
+                                    background: linear-gradient(135deg, #7a9e5a 0%, #5a7e3a 100%);
+                                    color: white; width: 22px; height: 22px;
+                                    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+                                    font-weight: bold; font-size: 0.8em;
+                                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+                                    border: 2px solid #fff;
+                                ">${selOrder}</div>
+                                <div style="
+                                    position: absolute; inset: 0;
+                                    background: rgba(90, 130, 70, 0.1);
+                                    pointer-events: none;
+                                "></div>
+                            ` : ''}
+                        </div>
+                    `;
+                }).join('')}
+            </div>
+            
+            <div style="display: flex; gap: 10px;">
+                <button class="cancel-btn" style="
+                    flex: 1; padding: 12px; border-radius: 8px; cursor: pointer;
+                    background: #e0d4c0; 
+                    border: 2px solid #c9b89a; 
+                    color: #5a4a3a; font-weight: 600; font-size: 0.9em;
+                    transition: all 0.2s ease;
+                ">Cancel</button>
+                <button class="proceed-btn" style="
+                    flex: 1; padding: 12px; border-radius: 8px; cursor: pointer;
+                    background: ${selectedImages.length >= (layoutMode === 'single' ? 1 : 2) ? 'linear-gradient(135deg, #7a9e5a 0%, #5a8649 100%)' : '#c9b89a'};
+                    border: 2px solid ${selectedImages.length >= (layoutMode === 'single' ? 1 : 2) ? '#4a6e3a' : '#b0a090'}; 
+                    color: ${selectedImages.length >= (layoutMode === 'single' ? 1 : 2) ? '#fff' : '#8a7a6a'};
+                    font-weight: 600; font-size: 0.9em;
+                    transition: all 0.2s ease;
+                " ${selectedImages.length < (layoutMode === 'single' ? 1 : 2) ? 'disabled' : ''}>
+                    Continue →
+                </button>
+            </div>
+            </div>
+        `;
+        
+        content.querySelectorAll('.layout-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                layoutMode = btn.dataset.layout;
+                selectedImages = [];
+                renderUI();
+            });
+        });
+        
+        content.querySelectorAll('.image-option').forEach(opt => {
+            opt.addEventListener('click', () => {
+                const idx = parseInt(opt.dataset.index);
+                const existingIdx = selectedImages.findIndex(s => s.index === idx);
+                
+                if (existingIdx !== -1) {
+                    selectedImages.splice(existingIdx, 1);
+                } else if (layoutMode === 'single') {
+                    selectedImages = [{ index: idx, file: imageFiles[idx] }];
+                } else if (selectedImages.length < 2) {
+                    selectedImages.push({ index: idx, file: imageFiles[idx] });
+                }
+                renderUI();
+            });
+        });
+        
+        content.querySelector('.cancel-btn').addEventListener('click', () => {
+            selectionOverlay.remove();
+        });
+        
+        content.querySelector('.proceed-btn').addEventListener('click', () => {
+            if (selectedImages.length >= (layoutMode === 'single' ? 1 : 2)) {
+                selectionOverlay.remove();
+                const result = selectedImages.map(s => ({
+                    file: s.file,
+                    url: URL.createObjectURL(s.file)
+                }));
+                onComplete(result);
+            }
+        });
+    };
+    
+    renderUI();
+    selectionOverlay.appendChild(content);
+    document.body.appendChild(selectionOverlay);
+}
+
+function proceedWithShotsModal(selectedImages, originalImageUrl) {
+    const overlay = document.createElement('div');
+    overlay.className = 'flavortown-shots-overlay';
+    overlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.9);
+        z-index: 999999;
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+    `;
+    
+    const imageUrl = selectedImages[0]?.url || originalImageUrl;
+    const secondImageUrl = selectedImages[1]?.url || null;
 
     async function findStyledFileIndex() {
         if (!imageUrl || _shotsOriginalFiles.length === 0) return -1;
@@ -3359,10 +3593,21 @@ function openShotsModal() {
                         if (currentFileInput) {
                             const dt = new DataTransfer();
 
-                            for (let i = 0; i < _shotsOriginalFiles.length; i++) {
-                             
-                                if (i === _shotsStyledFileIndex) continue;
-                                dt.items.add(_shotsOriginalFiles[i]);
+                            if (selectedImages && selectedImages.length > 0) {
+                                _shotsOriginalFiles.forEach(originalFile => {
+                                    const isSelected = selectedImages.some(selected => 
+                                        selected.file === originalFile || 
+                                        (selected.file && originalFile && selected.file.name === originalFile.name && selected.file.size === originalFile.size)
+                                    );
+                                    if (!isSelected) {
+                                        dt.items.add(originalFile);
+                                    }
+                                });
+                            } else {
+                                for (let i = 0; i < _shotsOriginalFiles.length; i++) {
+                                    if (i === _shotsStyledFileIndex) continue;
+                                    dt.items.add(_shotsOriginalFiles[i]);
+                                }
                             }
 
                             dt.items.add(file);
@@ -3420,9 +3665,23 @@ function openShotsModal() {
                     || document.querySelector('input[type="file"]');
 
                 if (fileInput) {
-                    const dt = new DataTransfer();
-                    dt.items.add(file);
-                    fileInput.files = dt.files;
+                    const newDt = new DataTransfer();
+                    
+                    if (selectedImages && selectedImages.length > 0) {
+                        _shotsOriginalFiles.forEach(originalFile => {
+                            const isSelected = selectedImages.some(selected => 
+                                selected.file === originalFile || 
+                                (selected.file && originalFile && selected.file.name === originalFile.name && selected.file.size === originalFile.size)
+                            );
+                            if (!isSelected) {
+                                newDt.items.add(originalFile);
+                            }
+                        });
+                    }
+                    
+                    newDt.items.add(file);
+                    
+                    fileInput.files = newDt.files;
 
                     ['input', 'change'].forEach(eventType => {
                         fileInput.dispatchEvent(new Event(eventType, { bubbles: true, cancelable: true }));
@@ -3472,16 +3731,35 @@ function openShotsModal() {
 
                 reader.onload = async () => {
                     const imageDataUrl = reader.result;
+                    
+                    let secondImageDataUrl = null;
+                    if (secondImageUrl) {
+                        try {
+                            const resp2 = await fetch(secondImageUrl);
+                            const blob2 = await resp2.blob();
+                            secondImageDataUrl = await new Promise(resolve => {
+                                const r2 = new FileReader();
+                                r2.onload = () => resolve(r2.result);
+                                r2.readAsDataURL(blob2);
+                            });
+                        } catch (e) {
+                            console.error('[Flavortown] Failed to load second image:', e);
+                        }
+                    }
 
                     browserAPI.runtime.sendMessage({
                         type: 'INJECT_SHOTS_HELPER',
                         tabId: await getCurrentTabId(),
-                        imageDataUrl: imageDataUrl
+                        imageDataUrl: imageDataUrl,
+                        secondImageDataUrl: secondImageDataUrl
                     }, (response) => {
                         if (response?.success) {
                             const instructions = header.querySelector('p');
                             if (instructions) {
-                                instructions.innerHTML = '<strong style="color: #10b981;">✓ Image loaded!</strong> Style it → click the green 📋 copy button!';
+                                const msg = secondImageDataUrl 
+                                    ? '✓ Images loaded! Style them → click the green 📋 copy button!'
+                                    : '✓ Image loaded! Style it → click the green 📋 copy button!';
+                                instructions.innerHTML = `<strong style="color: #10b981;">${msg}</strong>`;
                             }
                         } else {
                             console.error('[Flavortown] Injection failed:', response?.error);

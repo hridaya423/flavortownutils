@@ -10,6 +10,7 @@ browserAPI.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.type === 'INJECT_SHOTS_HELPER') {
         const tabId = message.tabId || sender.tab?.id;
         const imageDataUrl = message.imageDataUrl;
+        const secondImageDataUrl = message.secondImageDataUrl || null;
 
         if (!tabId) {
             sendResponse({ success: false, error: 'No tab ID' });
@@ -19,7 +20,7 @@ browserAPI.runtime.onMessage.addListener((message, sender, sendResponse) => {
         browserAPI.scripting.executeScript({
             target: { tabId: tabId, allFrames: true },
             func: loadImageIntoShotsso,
-            args: [imageDataUrl]
+            args: [imageDataUrl, secondImageDataUrl]
         }).then(() => {
             sendResponse({ success: true });
         }).catch((err) => {
@@ -31,7 +32,7 @@ browserAPI.runtime.onMessage.addListener((message, sender, sendResponse) => {
     }
 });
 
-function loadImageIntoShotsso(imageDataUrl) {
+function loadImageIntoShotsso(imageDataUrl, secondImageDataUrl) {
     if (!window.location.hostname.includes('shots.so')) return;
 
     (async () => {
@@ -126,7 +127,6 @@ function loadImageIntoShotsso(imageDataUrl) {
                 ['input', 'change'].forEach(evt => {
                     fileInput.dispatchEvent(new Event(evt, { bubbles: true, cancelable: true }));
                 });
-                return;
             }
 
             const dropzone = document.querySelector('.dropzone') || document.querySelector('.file-drop');
@@ -143,6 +143,118 @@ function loadImageIntoShotsso(imageDataUrl) {
                     dropzone.dispatchEvent(evt);
                 });
             }
+            
+            const selectAspectRatio = async () => {
+                await new Promise(r => setTimeout(r, 800));
+                
+                const frameTab = Array.from(document.querySelectorAll('.panel-tabs button span'))
+                    .find(s => s.textContent === 'Frame');
+                if (frameTab) {
+                    frameTab.closest('button').click();
+                    await new Promise(r => setTimeout(r, 200));
+                }
+                
+                const aspectBtn = document.querySelector('.panel-selector-btn-desktop') 
+                    || document.querySelector('.button-wrapper button');
+                if (aspectBtn) {
+                    aspectBtn.click();
+                    await new Promise(r => setTimeout(r, 200));
+                    
+                    const frameItems = document.querySelectorAll('.frame-item');
+                    for (const item of frameItems) {
+                        const label = item.querySelector('.label');
+                        if (label && label.textContent.trim() === '16:9') {
+                            item.click();
+                            break;
+                        }
+                    }
+                    await new Promise(r => setTimeout(r, 150));
+                }
+                
+                if (secondImageDataUrl) {
+                    await setup2PanelLayout();
+                }
+                
+                const mockupTab = Array.from(document.querySelectorAll('.panel-tabs button span'))
+                    .find(s => s.textContent === 'Mockup');
+                if (mockupTab) {
+                    mockupTab.closest('button').click();
+                }
+            };
+                
+            const setup2PanelLayout = async () => { 
+                const switchButtons = document.querySelectorAll('.layout-filters .switch .switch-button');
+                if (switchButtons.length >= 2) {
+                    const btn = switchButtons[1];
+                    ['mousedown', 'mouseup', 'click'].forEach(evt => {
+                        btn.dispatchEvent(new MouseEvent(evt, { bubbles: true, cancelable: true }));
+                    });
+                    await new Promise(r => setTimeout(r, 600));
+                }
+                
+                const layoutItems = document.querySelectorAll('.panel-control .layout-item');
+                if (layoutItems.length > 0) {
+                    const targetItem = layoutItems[1] || layoutItems[0];
+                    targetItem.scrollIntoView({ behavior: 'instant', block: 'center' });
+                    await new Promise(r => setTimeout(r, 100));
+                    ['mousedown', 'mouseup', 'click'].forEach(evt => {
+                        targetItem.dispatchEvent(new MouseEvent(evt, { bubbles: true, cancelable: true }));
+                    });
+                    await new Promise(r => setTimeout(r, 500));
+                }
+                
+                await new Promise(r => setTimeout(r, 500));
+                
+                const mainCanvas = document.querySelector('.frame-editor, .main-canvas, [class*="editor"]');
+                const allDropzones = document.querySelectorAll('.display-container-single .dropzone');
+                
+                let emptyDropzone = null;
+                for (const dz of allDropzones) {
+                    if (dz.querySelector('.empty-state') && !dz.querySelector('.dropped-image')) {
+                        emptyDropzone = dz;
+                        break;
+                    }
+                }
+                
+                if (emptyDropzone) {
+                    const fileInputSecond = emptyDropzone.querySelector('input[type="file"]');
+                    
+                    if (fileInputSecond) {
+                        const response = await fetch(secondImageDataUrl);
+                        const blob = await response.blob();
+                        const file = new File([blob], 'screenshot2.png', { type: blob.type });
+                        
+                        const dt = new DataTransfer();
+                        dt.items.add(file);
+                        fileInputSecond.files = dt.files;
+                        ['input', 'change'].forEach(evt => {
+                            fileInputSecond.dispatchEvent(new Event(evt, { bubbles: true, cancelable: true }));
+                        });
+                        await new Promise(r => setTimeout(r, 500));
+                    } else {
+                        const response = await fetch(secondImageDataUrl);
+                        const blob = await response.blob();
+                        const file = new File([blob], 'screenshot2.png', { type: blob.type });
+                        
+                        const fileDrop = emptyDropzone.querySelector('.file-drop');
+                        if (fileDrop) {
+                            const dt = new DataTransfer();
+                            dt.items.add(file);
+                            ['dragenter', 'dragover', 'drop'].forEach(eventType => {
+                                const evt = new DragEvent(eventType, {
+                                    bubbles: true,
+                                    cancelable: true,
+                                    dataTransfer: dt
+                                });
+                                fileDrop.dispatchEvent(evt);
+                            });
+                            await new Promise(r => setTimeout(r, 500));
+                        }
+                    }
+                }
+            };
+            
+            selectAspectRatio();
         } catch (err) {
             console.error('[SHOTS] Error:', err);
         }
