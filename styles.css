@@ -2013,19 +2013,6 @@
     min-width: 0;
     overflow: hidden;
 }
-
-.sidebar__user-name {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 100%;
-    white-space: normal;
-    line-height: 1.2;
-}
-
 .sidebar__user-avatar {
     flex-shrink: 0;
 }

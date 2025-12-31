@@ -404,6 +404,87 @@ function addDevlogFrequencyStat() {
     statsContainer.appendChild(frequencyStat);
 }
 
+function addShipStats() {
+    if (!/\/projects\/\d+$/.test(window.location.pathname)) {
+        return;
+    }
+
+    const shipPosts = document.querySelectorAll('.post.post--ship');
+    if (!shipPosts.length) return;
+
+    shipPosts.forEach((shipPost) => {
+        if (shipPost.querySelector('.flavortown-ship-stats')) return;
+
+        let totalMinutes = 0;
+        let devlogCount = 0;
+
+        let currentElement = shipPost.nextElementSibling;
+        while (currentElement) {
+            if (currentElement.classList.contains('post--ship')) {
+                break;
+            }
+
+            if (currentElement.classList.contains('post--devlog')) {
+                devlogCount++;
+                const durationEl = currentElement.querySelector('.post__duration');
+                if (durationEl) {
+                    const durationText = durationEl.textContent.trim();
+                    const hourMatch = durationText.match(/(\d+)h/);
+                    const minMatch = durationText.match(/(\d+)m/);
+                    const hours = hourMatch ? parseInt(hourMatch[1], 10) : 0;
+                    const mins = minMatch ? parseInt(minMatch[1], 10) : 0;
+                    totalMinutes += hours * 60 + mins;
+                }
+            }
+
+            currentElement = currentElement.nextElementSibling;
+        }
+
+        if (devlogCount === 0) return;
+
+        const totalHours = Math.floor(totalMinutes / 60);
+        const remainingMins = totalMinutes % 60;
+
+        const statsDiv = document.createElement('div');
+        statsDiv.className = 'flavortown-ship-stats';
+        statsDiv.style.cssText = `
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-top: 12px;
+            padding: 12px 16px;
+            background: var(--catppuccin-surface0, var(--color-cream-dark, rgba(0,0,0,0.05)));
+            border-radius: 8px;
+            font-size: 0.9em;
+        `;
+
+        statsDiv.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 6px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="opacity: 0.7;">
+                    <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.2 3.2.8-1.3-4.5-2.7V7z"/>
+                </svg>
+                <span><strong>Total time:</strong> ${totalHours}h ${remainingMins}m</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 6px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="opacity: 0.7;">
+                    <path d="m19.18 7.132-4.206-4.306c-.512-.513-1.23-.82-2.05-.82H6.871C5.333 1.903 4 3.236 4 4.774v14.355A2.866 2.866 0 0 0 6.872 22h10.256A2.866 2.866 0 0 0 20 19.129V9.081c0-.718-.308-1.436-.82-1.949M8.923 10.106H12c.41 0 .82.308.82.82 0 .513-.307.82-.82.82H8.923a.81.81 0 0 1-.82-.82c0-.513.41-.82.82-.82m6.154 5.742H8.923c-.41 0-.82-.308-.82-.82s.307-.82.82-.82h6.154c.41 0 .82.307.82.82s-.41.82-.82.82"/>
+                </svg>
+                <span><strong>${devlogCount}</strong> devlog${devlogCount !== 1 ? 's' : ''} on this ship</span>
+            </div>
+        `;
+
+        const postBody = shipPost.querySelector('.post__body');
+        if (postBody) {
+            postBody.after(statsDiv);
+        } else {
+            const shipTitle = shipPost.querySelector('.post__ship-title');
+            if (shipTitle) {
+                shipTitle.after(statsDiv);
+            }
+        }
+    });
+}
+
 let inlineFormLoading = false;
 
 const LUCIDE_ICONS = {
@@ -2153,6 +2234,7 @@ function init() {
     checkForUpdates();
     initPinnableSidebar();
     addDevlogFrequencyStat();
+    addShipStats();
     inlineDevlogForm();
     enhanceShopGoals();
     initShopAccessories();
@@ -2163,6 +2245,7 @@ function init() {
     addSkipButton();
     transformVotesTable();
     enhanceKitchenDashboard();
+    enhanceAdminPage();
 
     setTimeout(checkAchievements, 2000);
 }
@@ -3113,6 +3196,7 @@ document.addEventListener('turbo:load', () => {
     }
     initPinnableSidebar();
     addDevlogFrequencyStat();
+    addShipStats();
     inlineDevlogForm();
     enhanceShopGoals();
     initShopAccessories();
@@ -3128,6 +3212,7 @@ document.addEventListener('turbo:load', () => {
     addSidebarItems();
     enhanceAchievementsPage();
     initShotsEditor();
+    enhanceAdminPage();
 });
 
 function initShotsEditor() {
@@ -3915,4 +4000,691 @@ function addAdminViewButton() {
     adminBtn.onmouseleave = () => adminBtn.style.opacity = '0.7';
 
     profileIdentity.appendChild(adminBtn);
+}
+
+function enhanceAdminPage() {
+    if (!window.location.pathname.startsWith('/admin')) return;
+    if (document.querySelector('.flavortown-admin-enhanced')) return;
+    document.body.classList.add('flavortown-admin-enhanced');
+
+    const h1Elements = document.querySelectorAll('h1');
+    h1Elements.forEach(h1 => {
+        if (h1.textContent.includes('Fraud Dept')) {
+            try {
+                localStorage.setItem('flavortown-fraud', 'true');
+            } catch (e) {}
+        }
+    });
+
+    document.querySelectorAll('.card').forEach(card => {
+        const h2 = card.querySelector('h2');
+        if (h2 && h2.textContent.includes('Shop Orders Summary')) {
+            const viewAllDetails = card.querySelector('details');
+            if (viewAllDetails) {
+                const summary = viewAllDetails.querySelector('summary');
+                if (summary && summary.textContent.includes('View All Orders')) {
+                    viewAllDetails.remove();
+                }
+            }
+        }
+    });
+
+    let buttonsCard = null;
+    let shopItemCard = null;
+    let auditLogCard = null;
+    let internalNotesCard = null;
+
+    document.querySelectorAll('.card').forEach(card => {
+        const h2 = card.querySelector('h2');
+        if (h2) {
+            if (h2.textContent.includes('Buttons')) {
+                buttonsCard = card;
+            } else if (h2.textContent.includes('shop item')) {
+                shopItemCard = card;
+            }
+        }
+        const summary = card.querySelector('details summary');
+        if (summary) {
+            if (summary.textContent.includes('Audit Log')) {
+                auditLogCard = card;
+            } else if (summary.textContent.includes('Internal Notes')) {
+                internalNotesCard = card;
+            }
+        }
+    });
+
+    if (buttonsCard && shopItemCard) {
+        const grid = buttonsCard.querySelector('[style*="grid-template-columns"]');
+        if (grid) {
+            const buttonContainer = document.createElement('div');
+            buttonContainer.className = 'flavortown-admin-buttons';
+            buttonContainer.style.cssText = `
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+                margin-top: 1rem;
+                padding-top: 1rem;
+                border-top: 1px solid #e5e7eb;
+                align-items: stretch;
+            `;
+
+            const directChildren = Array.from(grid.children);
+            directChildren.forEach(el => {
+                if (el.tagName === 'DIALOG') return;
+                
+                const buttonStyle = 'width: auto; padding: 8px 16px; height: 100%; min-height: 36px; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; margin: 0;';
+                
+                if (el.tagName === 'FORM') {
+                    const clonedForm = el.cloneNode(true);
+                    clonedForm.querySelectorAll('dialog').forEach(d => d.remove());
+                    clonedForm.style.cssText = 'display: flex; width: auto; margin: 0; align-items: stretch;';
+                    const btn = clonedForm.querySelector('button, input[type="submit"]');
+                    if (btn) {
+                        btn.style.cssText = buttonStyle;
+                    }
+                    buttonContainer.appendChild(clonedForm);
+                } else if (el.tagName === 'A') {
+                    const clonedLink = el.cloneNode(true);
+                    clonedLink.style.cssText = buttonStyle;
+                    buttonContainer.appendChild(clonedLink);
+                } else if (el.tagName === 'BUTTON') {
+                    const clonedBtn = el.cloneNode(true);
+                    clonedBtn.style.cssText = buttonStyle;
+                    buttonContainer.appendChild(clonedBtn);
+                }
+            });
+
+            const dialog = grid.querySelector('dialog');
+            if (dialog) {
+                document.body.appendChild(dialog);
+            }
+
+            shopItemCard.appendChild(buttonContainer);
+            buttonsCard.remove();
+        }
+    }
+
+    if (auditLogCard && internalNotesCard && auditLogCard !== internalNotesCard) {
+        auditLogCard.after(internalNotesCard);
+    }
+    const detailsElements = document.querySelectorAll('.card details');
+    detailsElements.forEach(details => {
+        const summary = details.querySelector('summary');
+        
+        if (summary && !summary.textContent.includes('Internal Notes')) {
+            details.setAttribute('open', '');
+        }
+        
+        if (summary) {
+            summary.style.fontSize = '1rem';
+            summary.style.fontWeight = '600';
+            summary.style.padding = '0.5rem 0';
+            summary.style.color = 'var(--color-brown, #374151)';
+        }
+    });
+
+    document.querySelectorAll('.card').forEach(card => {
+        const h2 = card.querySelector('h2');
+        if (h2 && h2.textContent.includes('Fulfillment Information')) {
+            const infoRows = card.querySelector('.info-rows');
+            if (infoRows && infoRows.children.length === 0) {
+                card.remove();
+            }
+        }
+    });
+
+    if (window.location.pathname === '/admin') {
+        enhanceAdminDashboard();
+    }
+    
+    if (window.location.pathname.match(/\/admin\/users\/\d+/)) {
+        enhanceAdminUserPage();
+    }
+}
+
+function enhanceAdminUserPage() {
+    const flexContainer = document.querySelector('.flex');
+    if (flexContainer) {
+        flexContainer.style.cssText = 'display: flex; flex-wrap: wrap; gap: 1rem; align-items: stretch;';
+        
+        flexContainer.querySelectorAll('.card').forEach(card => {
+            const h2 = card.querySelector('h2');
+            if (h2) {
+                h2.style.cssText = 'font-size: 0.9rem; margin-bottom: 0.5rem;';
+                
+                if (h2.textContent.includes('actions')) {
+                    card.style.cssText += 'padding: 0.75rem; flex: 2; min-width: 350px;';
+                } else {
+                    card.style.cssText += 'padding: 0.75rem; flex: 1; min-width: 180px; max-width: 250px;';
+                }
+            }
+        });
+    }
+    
+    const actionHistoryCard = Array.from(document.querySelectorAll('.card')).find(card => {
+        const h2 = card.querySelector('h2');
+        return h2 && h2.textContent.includes('Action History');
+    });
+    
+    if (actionHistoryCard) {
+        actionHistoryCard.style.maxWidth = '100%';
+        
+        const table = actionHistoryCard.querySelector('table');
+        if (table) {
+            table.style.fontSize = '1rem';
+            table.querySelectorAll('th, td').forEach(cell => {
+                cell.style.padding = '0.5rem 1rem';
+            });
+
+            const rows = table.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                if (cells.length >= 3) {
+                    const changesCell = cells[2];
+                    
+                    changesCell.querySelectorAll('div').forEach(div => {
+                        const text = div.textContent;
+                        
+                        if (text.includes('Tutorial Steps Completed:')) {
+                            const match = text.match(/\[([^\]]+)\]\s*→\s*\[([^\]]+)\]/);
+                            if (match) {
+                                const oldSteps = match[1].split(',').map(s => s.trim().replace(/"/g, ''));
+                                const newSteps = match[2].split(',').map(s => s.trim().replace(/"/g, ''));
+                                const addedSteps = newSteps.filter(s => !oldSteps.includes(s));
+                                
+                                if (addedSteps.length > 0) {
+                                    const humanSteps = addedSteps.map(s => s.replace(/_/g, ' ')).join(', ');
+                                    div.innerHTML = `<strong>Completed:</strong> ${humanSteps}`;
+                                }
+                            }
+                        }
+                        
+                        if (text.includes('Updated At:')) {
+                            div.style.display = 'none';
+                        }
+                        
+                        if (text.includes('Has Gotten Free Stickers:')) {
+                            div.innerHTML = '<strong>Got free stickers</strong>';
+                        }
+                    });
+                }
+            });
+        }
+    }
+    
+    const shopOrdersDetails = Array.from(document.querySelectorAll('.card details')).find(d => {
+        const summary = d.querySelector('summary');
+        return summary && summary.textContent.includes('Shop Orders');
+    });
+    
+    if (shopOrdersDetails) {
+        const shopRows = shopOrdersDetails.querySelectorAll('tbody tr');
+        if (shopRows.length > 3) {
+            shopOrdersDetails.removeAttribute('open');
+        }
+    }
+
+    let currentBalance = 0;
+    const basicInfoCard = Array.from(document.querySelectorAll('.card')).find(card => {
+        const h2 = card.querySelector('h2');
+        return h2 && h2.textContent.toLowerCase().includes('basic info');
+    });
+
+    if (basicInfoCard) {
+        const balanceMatch = basicInfoCard.textContent.match(/Balance:\s*(\d+)/i);
+        if (balanceMatch) {
+            currentBalance = parseInt(balanceMatch[1], 10);
+        }
+    }
+
+    let achievementCredits = 0;
+    if (actionHistoryCard) {
+        const rows = actionHistoryCard.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+            const text = row.textContent;
+            if (text.toLowerCase().includes('achievement')) {
+                const ticketMatch = text.match(/\+(\d+)\s*tickets/i);
+                if (ticketMatch) {
+                    achievementCredits += parseInt(ticketMatch[1], 10);
+                } else {
+                    const balanceChange = text.match(/Balance:\s*(\d+)\s*→\s*(\d+)/);
+                    if (balanceChange) {
+                        const diff = parseInt(balanceChange[2], 10) - parseInt(balanceChange[1], 10);
+                        if (diff > 0) achievementCredits += diff;
+                    }
+                }
+            }
+        });
+    }
+
+    const deductableBalance = Math.max(0, currentBalance - achievementCredits);
+
+    const deductionCard = document.createElement('div');
+    deductionCard.className = 'card';
+    deductionCard.style.cssText = 'padding: 0.75rem; flex: 1; min-width: 250px; max-width: 300px; border-left: 4px solid var(--color-yellow, #f59e0b); display: flex; flex-direction: column; justify-content: center;';
+    deductionCard.innerHTML = `
+        <h2 style="font-size: 0.9rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+            Deduction Calculator
+        </h2>
+        <div style="display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.9rem;">
+            <div style="display: flex; justify-content: space-between;">
+                <span>Total Balance:</span>
+                <span class="font-mono">${currentBalance}</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; color: var(--color-gray-dark, #666);">
+                <span>Achievement Credits:</span>
+                <span class="font-mono">-${achievementCredits}</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; border-top: 1px dashed #ddd; padding-top: 4px; margin-top: 2px;">
+                <span style="font-weight: 500;">Deductable Balance:</span>
+                <span class="font-mono" style="font-weight: 600;">${deductableBalance}</span>
+            </div>
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 8px;">
+                <span>Deduction Rate (%):</span>
+                <input type="number" id="deduction-rate" value="30" min="0" max="100" style="width: 60px; padding: 4px; border: 1px solid #ddd; border-radius: 4px; text-align: right;">
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.03); padding: 6px; border-radius: 4px; margin-top: 4px;">
+                <span style="font-weight: 600;">Deduction:</span>
+                <span id="deduction-amount" style="font-weight: 700; color: #d97706;">0</span>
+            </div>
+        </div>
+    `;
+
+    const rateInput = deductionCard.querySelector('#deduction-rate');
+    const amountDisplay = deductionCard.querySelector('#deduction-amount');
+
+    const updateCalc = () => {
+        const rate = parseFloat(rateInput.value) || 0;
+        const deduction = Math.round(deductableBalance * (rate / 100));
+        amountDisplay.textContent = -deduction;
+    };
+
+    rateInput.addEventListener('input', updateCalc);
+    rateInput.addEventListener('change', updateCalc);
+    updateCalc();
+
+    if (flexContainer) {
+        flexContainer.appendChild(deductionCard);
+    }
+}
+
+function enhanceAdminDashboard() {
+    const isFraudDept = localStorage.getItem('flavortown-fraud') === 'true';
+    const isAdmin = document.querySelector('.flavortown-admin-dashboard') !== null;
+
+    if (isFraudDept) {
+        document.querySelectorAll('.button-grid a.btn-primary').forEach(btn => {
+            const text = btn.textContent.trim();
+            if (text.includes('Help bot') || text.includes('Ship Cert Dashboard')) {
+                btn.remove();
+            }
+        });
+    }
+
+    if (!isAdmin) return;
+
+    const h2Elements = document.querySelectorAll('h2');
+    let tasksH2 = null;
+    h2Elements.forEach(h2 => {
+        if (h2.textContent.trim() === 'tasks') {
+            tasksH2 = h2;
+        }
+    });
+
+    if (!tasksH2) return;
+
+    const dashboard = document.createElement('div');
+    dashboard.className = 'flavortown-admin-dashboard';
+    dashboard.style.cssText = `
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1rem;
+        margin-top: 1.5rem;
+        margin-bottom: 2rem;
+    `;
+
+    dashboard.innerHTML = `
+        <div class="card flavortown-dashboard-card" style="padding: 1rem;">
+            <h3 style="color: #a855f7; font-size: 1rem; margin-bottom: 0.75rem;">📊 Quick Stats</h3>
+            <div class="flavortown-stats-content" style="font-size: 0.875rem; line-height: 1.8;">
+                <div style="color: #6b7280;">Loading...</div>
+            </div>
+        </div>
+        <div class="card flavortown-dashboard-card" style="padding: 1rem;">
+            <h3 style="color: #ef4444; font-size: 1rem; margin-bottom: 0.75rem;">🚨 Top Reported Users</h3>
+            <div class="flavortown-reports-users" style="font-size: 0.875rem; line-height: 1.8;">
+                <div style="color: #6b7280;">Loading...</div>
+            </div>
+        </div>
+        <div class="card flavortown-dashboard-card" style="padding: 1rem;">
+            <h3 style="color: #f59e0b; font-size: 1rem; margin-bottom: 0.75rem;">📁 Top Reported Projects</h3>
+            <div class="flavortown-reports-projects" style="font-size: 0.875rem; line-height: 1.8;">
+                <div style="color: #6b7280;">Loading...</div>
+            </div>
+        </div>
+        <div class="card flavortown-dashboard-card" style="padding: 1rem;">
+            <h3 style="color: #10b981; font-size: 1rem; margin-bottom: 0.75rem;">📦 Shop Order Rates</h3>
+            <div class="flavortown-shop-rates" style="font-size: 0.875rem; line-height: 1.8;">
+                <div style="color: #6b7280;">Loading...</div>
+            </div>
+        </div>
+    `;
+
+    tasksH2.before(dashboard);
+    
+    const dashboardsH2 = Array.from(document.querySelectorAll('h2')).find(h2 => h2.textContent.trim() === 'dashboards');
+    if (dashboardsH2) {
+        const dashboardsButtonGrid = dashboardsH2.nextElementSibling;
+        const oldestSection = document.createElement('div');
+        oldestSection.className = 'flavortown-oldest-section';
+        oldestSection.style.cssText = 'display: flex; gap: 1rem; margin-top: 1.5rem;';
+        oldestSection.innerHTML = `
+            <div class="card flavortown-dashboard-card" style="padding: 1rem; flex: 1;">
+                <h3 style="color: #f97316; font-size: 1rem; margin-bottom: 0.75rem;">⏳ Oldest Pending Reports</h3>
+                <div class="flavortown-oldest-reports" style="font-size: 0.875rem; line-height: 1.6;">
+                    <div style="color: #6b7280;">Loading...</div>
+                </div>
+            </div>
+            <div class="card flavortown-dashboard-card" style="padding: 1rem; flex: 1;">
+                <h3 style="color: #3b82f6; font-size: 1rem; margin-bottom: 0.75rem;">🛒 Oldest Pending Orders</h3>
+                <div class="flavortown-oldest-orders" style="font-size: 0.875rem; line-height: 1.6;">
+                    <div style="color: #6b7280;">Loading...</div>
+                </div>
+            </div>
+        `;
+        if (dashboardsButtonGrid) {
+            dashboardsButtonGrid.after(oldestSection);
+        } else {
+            dashboardsH2.after(oldestSection);
+        }
+    }
+    
+    fetchAdminStats();
+    fetchOldestPending();
+}
+
+async function fetchOldestPending() {
+    try {
+        const reportsRes = await fetch('/admin/reports?status=pending', { credentials: 'same-origin' });
+        const reportsHtml = await reportsRes.text();
+        const reportsDoc = new DOMParser().parseFromString(reportsHtml, 'text/html');
+        
+        const rows = reportsDoc.querySelectorAll('table tbody tr');
+        const oldestReports = [];
+        
+        const rowsArray = Array.from(rows);
+        const oldest = rowsArray.slice(-5).reverse();
+        
+        oldest.forEach(row => {
+            const idCell = row.querySelector('td:nth-child(1)');
+            const projectCell = row.querySelector('td:nth-child(2) a');
+            const dateCell = row.querySelector('td:nth-child(7)');
+            
+            const reportId = idCell?.textContent?.trim()?.replace('#', '') || '';
+            const project = projectCell?.textContent?.trim() || 'Unknown';
+            const date = dateCell?.textContent?.trim()?.split('\n')[0] || '';
+            
+            if (reportId) {
+                oldestReports.push({ id: reportId, project, date });
+            }
+        });
+        
+        const reportsCard = document.querySelector('.flavortown-oldest-reports');
+        if (reportsCard) {
+            if (oldestReports.length === 0) {
+                reportsCard.innerHTML = '<span style="color: #10b981;">✓ No pending reports</span>';
+            } else {
+                reportsCard.innerHTML = oldestReports.map(r => `
+                    <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #f3f4f6;">
+                        <a href="/admin/reports/${r.id}" style="color: #3b82f6; text-decoration: none; max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${r.project}</a>
+                        <span style="color: #9ca3af; font-size: 0.8rem;">${r.date}</span>
+                    </div>
+                `).join('');
+            }
+        }
+    } catch (e) {
+        console.error('Oldest reports error:', e);
+    }
+    
+    try {
+        const ordersRes = await fetch('/admin/shop_orders?view=shop_orders', { credentials: 'same-origin' });
+        const ordersHtml = await ordersRes.text();
+        const ordersDoc = new DOMParser().parseFromString(ordersHtml, 'text/html');
+        
+        const ordersTable = ordersDoc.querySelector('table.table-data');
+        const ordersRows = ordersTable ? ordersTable.querySelectorAll('tbody tr') : [];
+        const oldestOrders = [];
+        
+        const rowsArray = Array.from(ordersRows);
+        const oldest = rowsArray.slice(-5).reverse();
+        
+        oldest.forEach(row => {
+            const idCell = row.querySelector('td:nth-child(1)');
+            const itemCell = row.querySelector('td:nth-child(3)');
+            const dateCell = row.querySelector('td:nth-child(7)');
+            
+            const orderId = idCell?.textContent?.trim() || '';
+            const item = itemCell?.textContent?.trim()?.split('\n')[0] || 'Order';
+            const date = dateCell?.textContent?.trim()?.split('\n')[0] || '';
+            
+            if (orderId && orderId.startsWith('#')) {
+                const orderNum = orderId.replace('#', '');
+                oldestOrders.push({ id: orderId, orderNum, item, date });
+            }
+        });
+        
+        const ordersCard = document.querySelector('.flavortown-oldest-orders');
+        if (ordersCard) {
+            if (oldestOrders.length === 0) {
+                ordersCard.innerHTML = '<span style="color: #10b981;">✓ No pending orders</span>';
+            } else {
+                ordersCard.innerHTML = oldestOrders.map(o => `
+                    <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #f3f4f6;">
+                        <a href="/admin/shop_orders/${o.orderNum}" style="color: #3b82f6; text-decoration: none; max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${o.id}">${o.item}</a>
+                        <span style="color: #9ca3af; font-size: 0.8rem;">${o.date}</span>
+                    </div>
+                `).join('');
+            }
+        }
+    } catch (e) {
+        console.error('Oldest orders error:', e);
+    }
+    
+    fetchShopOrderRates();
+}
+
+async function fetchShopOrderRates() {
+    try {
+        const ratesPanel = document.querySelector('.flavortown-shop-rates');
+        if (!ratesPanel) return;
+        
+        const statuses = [
+            { key: 'pending', url: '/admin/shop_orders?view=shop_orders' },
+            { key: 'fulfilled', url: '/admin/shop_orders?status=fulfilled&view=shop_orders' },
+            { key: 'awaiting', url: '/admin/shop_orders?status=awaiting_periodical_fulfillment&view=shop_orders' },
+            { key: 'rejected', url: '/admin/shop_orders?status=rejected&view=shop_orders' },
+            { key: 'hold', url: '/admin/shop_orders?status=on_hold&view=shop_orders' }
+        ];
+        
+        const counts = {};
+        
+        for (const s of statuses) {
+            try {
+                const res = await fetch(s.url, { credentials: 'same-origin' });
+                const html = await res.text();
+                const doc = new DOMParser().parseFromString(html, 'text/html');
+                
+                const ordersTable = doc.querySelector('table.table-data');
+                if (ordersTable) {
+                    const rows = ordersTable.querySelectorAll('tbody tr');
+                    counts[s.key] = rows.length;
+                } else {
+                    counts[s.key] = 0;
+                }
+            } catch (e) {
+                counts[s.key] = 0;
+            }
+        }
+        
+        const approved = counts.fulfilled + counts.awaiting;
+        const total = counts.pending + approved + counts.rejected + counts.hold;
+        
+        const approvalRate = total > 0 ? Math.round((approved / total) * 100) : 0;
+        const rejectionRate = total > 0 ? Math.round((counts.rejected / total) * 100) : 0;
+        const holdRate = total > 0 ? Math.round((counts.hold / total) * 100) : 0;
+        const pendingRate = total > 0 ? Math.round((counts.pending / total) * 100) : 0;
+        
+        ratesPanel.innerHTML = `
+            <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #f3f4f6;">
+                <span>✅ Approved:</span>
+                <strong style="color: #10b981;">${approvalRate}% (${approved})</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #f3f4f6;">
+                <span>❌ Rejected:</span>
+                <strong style="color: #ef4444;">${rejectionRate}% (${counts.rejected})</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #f3f4f6;">
+                <span>⏸️ On Hold:</span>
+                <strong style="color: #f59e0b;">${holdRate}% (${counts.hold})</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 4px 0;">
+                <span>⏳ Pending:</span>
+                <strong style="color: #6b7280;">${pendingRate}% (${counts.pending})</strong>
+            </div>
+        `;
+    } catch (e) {
+        console.error('Shop rates error:', e);
+    }
+}
+
+async function fetchAdminStats() {
+    try {
+        const reportsRes = await fetch('/admin/reports', { credentials: 'same-origin' });
+        const reportsHtml = await reportsRes.text();
+        const reportsDoc = new DOMParser().parseFromString(reportsHtml, 'text/html');
+
+        const reportRows = reportsDoc.querySelectorAll('table tbody tr');
+        const projectReports = {};
+        
+        reportRows.forEach(row => {
+            const projectLink = row.querySelector('td:nth-child(2) a');
+            if (projectLink) {
+                const href = projectLink.getAttribute('href') || '';
+                const projectId = href.match(/\/projects\/(\d+)/)?.[1];
+                const projectName = projectLink.textContent.trim();
+                if (projectId) {
+                    if (!projectReports[projectId]) {
+                        projectReports[projectId] = { name: projectName, count: 0 };
+                    }
+                    projectReports[projectId].count++;
+                }
+            }
+        });
+
+        const topProjects = Object.entries(projectReports)
+            .sort((a, b) => b[1].count - a[1].count)
+            .slice(0, 5);
+
+        const projectsToFetch = Object.entries(projectReports)
+            .sort((a, b) => b[1].count - a[1].count)
+            .slice(0, 10);
+        
+        const userReports = {};
+        const usersContent = document.querySelector('.flavortown-reports-users');
+        if (usersContent) {
+            usersContent.innerHTML = '<div style="color: #6b7280;">Fetching user data...</div>';
+        }
+
+        for (const [projectId, projectData] of projectsToFetch) {
+            try {
+                const projectRes = await fetch(`/admin/projects/${projectId}`, { credentials: 'same-origin' });
+                const projectHtml = await projectRes.text();
+                const projectDoc = new DOMParser().parseFromString(projectHtml, 'text/html');
+                
+                const membersCard = Array.from(projectDoc.querySelectorAll('.card')).find(card => {
+                    const h2 = card.querySelector('h2');
+                    return h2 && h2.textContent.includes('Members');
+                });
+                
+                if (membersCard) {
+                    const memberLinks = membersCard.querySelectorAll('a[href*="/admin/users/"]');
+                    memberLinks.forEach(link => {
+                        const href = link.getAttribute('href') || '';
+                        const userId = href.match(/\/users\/(\d+)/)?.[1];
+                        const userName = link.textContent.trim();
+                        if (userId) {
+                            if (!userReports[userId]) {
+                                userReports[userId] = { name: userName, count: 0, projects: [] };
+                            }
+                            userReports[userId].count += projectData.count;
+                            if (!userReports[userId].projects.includes(projectData.name)) {
+                                userReports[userId].projects.push(projectData.name);
+                            }
+                        }
+                    });
+                }
+            } catch (e) {
+                console.error('Failed to fetch project', projectId, e);
+            }
+        }
+
+        const topUsers = Object.entries(userReports)
+            .sort((a, b) => b[1].count - a[1].count)
+            .slice(0, 5);
+
+        const shopOrdersBtn = document.querySelector('a[href*="shop_orders"] span');
+        const pendingOrders = shopOrdersBtn ? shopOrdersBtn.textContent.trim() : '0';
+
+        const reportsBtn = document.querySelector('a[href*="reports"] span');
+        const reportsCount = reportsBtn ? reportsBtn.textContent.trim() : '0';
+
+        const statsContent = document.querySelector('.flavortown-stats-content');
+        if (statsContent) {
+            statsContent.innerHTML = `
+                <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #f3f4f6;">
+                    <span>🛒 Pending Orders:</span>
+                    <strong style="color: #10b981;">${pendingOrders}</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #f3f4f6;">
+                    <span>🚨 Open Reports:</span>
+                    <strong style="color: #ef4444;">${reportsCount}</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: 4px 0;">
+                    <span>📁 Reported Projects:</span>
+                    <strong>${Object.keys(projectReports).length}</strong>
+                </div>
+            `;
+        }
+
+        if (usersContent) {
+            if (topUsers.length === 0) {
+                usersContent.innerHTML = '<div style="color: #10b981;">✓ No reported users</div>';
+            } else {
+                usersContent.innerHTML = topUsers.map(([id, data]) => `
+                    <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #f3f4f6; align-items: center;">
+                        <a href="/admin/users/${id}" style="color: #3b82f6; text-decoration: none; max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${data.projects.join(', ')}">${data.name || 'User #' + id}</a>
+                        <span style="background: #fecaca; color: #991b1b; padding: 0 6px; border-radius: 9999px; font-size: 0.75rem;">${data.count} reports</span>
+                    </div>
+                `).join('');
+            }
+        }
+
+        const projectsContent = document.querySelector('.flavortown-reports-projects');
+        if (projectsContent) {
+            if (topProjects.length === 0) {
+                projectsContent.innerHTML = '<div style="color: #10b981;">✓ No reported projects</div>';
+            } else {
+                projectsContent.innerHTML = topProjects.map(([id, data]) => `
+                    <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #f3f4f6;">
+                        <a href="/admin/projects/${id}" style="color: #3b82f6; text-decoration: none; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${data.name || 'Project #' + id}</a>
+                        <span style="background: #fef3c7; color: #92400e; padding: 0 6px; border-radius: 9999px; font-size: 0.75rem;">${data.count}</span>
+                    </div>
+                `).join('');
+            }
+        }
+    } catch (e) {
+        console.error('Flavortown admin stats error:', e);
+        const statsContent = document.querySelector('.flavortown-stats-content');
+        if (statsContent) statsContent.innerHTML = '<div style="color: #ef4444;">Failed to load</div>';
+    }
 }
