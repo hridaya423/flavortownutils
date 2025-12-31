@@ -37,6 +37,12 @@
 - Markdown editor
 - Extra statistics on achievements page
 - Inbuilt shots.so integration to stylize your devlog attachments!
+  - Automatic aspect ratio picking, which is best for flavortown sizing
+  - 2 image layout support
+- Admin UI improvements
+  - Better UI for most things in admin
+  - some extra statistics
+  - deduction calculator
 
 ## Feature showcase:
 
