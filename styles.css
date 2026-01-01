@@ -1078,6 +1078,7 @@
     width: auto !important;
     height: auto !important;
     display: flex !important;
+    align-items: center !important;
     gap: 0.5rem !important;
 }
 
@@ -1167,6 +1168,8 @@
     transition: none !important;
     opacity: 1 !important;
     visibility: visible !important;
+    display: flex !important;
+    align-items: center !important;
 }
 
 .sidebar--pinned .sidebar__user-balance,
@@ -2018,54 +2021,82 @@
 .sidebar__user-avatar {
     flex-shrink: 0;
 }
+.sidebar__user-actions {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+}
+.sidebar__user-actions button {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+.sidebar__user-balance {
+    line-height: 1 !important;
+    vertical-align: middle !important;
+    font-size: 14px !important;
+}
+.sidebar__user-settings,
+.sidebar__user-logout {
+    width: 20px !important;
+    height: 20px !important;
+}
+.sidebar__user-settings-icon,
+.sidebar__user-logout-icon {
+    width: 18px !important;
+    height: 18px !important;
+    vertical-align: middle !important;
+}
 
 .shop-order__details .shop-order__address .dropdown__button .dropdown__selected {
     background-color: var(--color-background, #fff) !important;
 }
 
 .shop-item-card__accessories-toggle {
-    background: var(--color-surface, #fdf6e3) !important;
-    border: 1px solid var(--color-border, #c4b5a5) !important;
-    color: var(--color-text-primary, #5d4e3c) !important;
+    background: var(--catppuccin-surface0, var(--color-surface, #fdf6e3)) !important;
+    border: 1px solid var(--catppuccin-surface2, var(--color-border, #c4b5a5)) !important;
+    color: var(--catppuccin-text, var(--color-text-primary, #5d4e3c)) !important;
 }
 
 .shop-item-card__accessories-toggle:hover {
-    background: var(--color-background, #f5efe9) !important;
+    background: var(--catppuccin-surface1, var(--color-background, #f5efe9)) !important;
 }
 
 .shop-item-card__accessories-panel {
-    background: var(--color-background, #f5efe9) !important;
-    border: 1px solid var(--color-border, #c4b5a5) !important;
+    background: var(--catppuccin-base, var(--color-background, #f5efe9)) !important;
+    border: 1px solid var(--catppuccin-surface2, var(--color-border, #c4b5a5)) !important;
     border-top: none !important;
 }
 
 .shop-item-card__accessory-group-title {
-    color: var(--color-text-secondary, #6b5c4a) !important;
+    color: var(--catppuccin-subtext1, var(--color-text-secondary, #6b5c4a)) !important;
 }
 
 .shop-item-card__accessory-chip {
-    background: var(--color-surface, #fff) !important;
-    border: 2px solid var(--color-border, #c4b5a5) !important;
-    color: var(--color-text-primary, #5d4e3c) !important;
+    background: var(--catppuccin-surface0, var(--color-surface, #fff)) !important;
+    border: 2px solid var(--catppuccin-surface2, var(--color-border, #c4b5a5)) !important;
+    color: var(--catppuccin-text, var(--color-text-primary, #5d4e3c)) !important;
 }
 
 .shop-item-card__accessory-chip:hover {
-    border-color: var(--color-accent, #8b7355) !important;
+    border-color: var(--catppuccin-mauve, var(--color-accent, #8b7355)) !important;
 }
 
 .shop-item-card__accessory-chip.is-selected {
-    background: var(--color-accent, #8b7355) !important;
-    border-color: var(--color-accent, #6b5c4a) !important;
-    color: var(--color-background, #fff) !important;
+    background: var(--catppuccin-mauve, var(--color-accent, #8b7355)) !important;
+    border-color: var(--catppuccin-mauve, var(--color-accent, #6b5c4a)) !important;
+    color: var(--catppuccin-base, var(--color-background, #fff)) !important;
 }
 
 .shop-item-card__total-price {
-    border-top-color: var(--color-border, #c4b5a5) !important;
-    color: var(--color-text-primary, #5d4e3c) !important;
+    border-top-color: var(--catppuccin-surface2, var(--color-border, #c4b5a5)) !important;
+    color: var(--catppuccin-text, var(--color-text-primary, #5d4e3c)) !important;
 }
 
 .shop-item-card__total-price .total-value {
-    color: var(--color-accent, #6b5c4a) !important;
+    color: var(--catppuccin-mauve, var(--color-accent, #6b5c4a)) !important;
 }
 
 @media (max-width: 960px) {

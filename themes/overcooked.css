@@ -2916,3 +2916,76 @@ a:hover {
     border-color: var(--overcooked-mid) !important;
     color: var(--overcooked-foam) !important;
 }
+
+.shop-item-card__accessories-toggle {
+    background: var(--overcooked-dark) !important;
+    border: 1px solid var(--overcooked-mid) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.shop-item-card__accessories-toggle:hover {
+    background: var(--overcooked-mid) !important;
+}
+
+.shop-item-card__accessories-panel {
+    background: var(--overcooked-burnt) !important;
+    border: 1px solid var(--overcooked-mid) !important;
+    border-top: none !important;
+}
+
+.shop-item-card__accessory-group-title {
+    color: var(--overcooked-mist) !important;
+}
+
+.shop-item-card__accessory-chip {
+    background: var(--overcooked-mid) !important;
+    border: 2px solid var(--overcooked-surface) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.shop-item-card__accessory-chip:hover {
+    border-color: var(--overcooked-cyan) !important;
+    background: var(--overcooked-surface) !important;
+}
+
+.shop-item-card__accessory-chip.is-selected {
+    background: var(--overcooked-cyan) !important;
+    border-color: var(--overcooked-cyan) !important;
+    color: var(--overcooked-burnt) !important;
+}
+
+.shop-item-card__total-price {
+    border-top-color: var(--overcooked-mid) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.shop-item-card__total-price .total-value {
+    color: var(--overcooked-cyan) !important;
+}
+
+main:has(.chef-img) {
+    background: var(--overcooked-burnt) !important;
+    color: var(--overcooked-white) !important;
+}
+
+main:has(.chef-img) h1 {
+    color: var(--overcooked-cyan) !important;
+}
+
+main:has(.chef-img) h2 {
+    color: var(--overcooked-white) !important;
+}
+
+main:has(.chef-img) p {
+    color: var(--overcooked-mist) !important;
+}
+
+main:has(.chef-img) .btn {
+    background: var(--overcooked-cyan) !important;
+    color: var(--overcooked-burnt) !important;
+    border: none !important;
+}
+
+main:has(.chef-img) .btn:hover {
+    background: var(--overcooked-gold) !important;
+}

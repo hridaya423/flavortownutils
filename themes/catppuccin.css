@@ -2048,6 +2048,79 @@ a:hover {
     opacity: 0.8;
 }
 
+.shop-item-card__accessories-toggle {
+    background: var(--ctp-surface0) !important;
+    border: 1px solid var(--ctp-surface1) !important;
+    color: var(--ctp-text) !important;
+}
+
+.shop-item-card__accessories-toggle:hover {
+    background: var(--ctp-surface1) !important;
+}
+
+.shop-item-card__accessories-panel {
+    background: var(--ctp-base) !important;
+    border: 1px solid var(--ctp-surface1) !important;
+    border-top: none !important;
+}
+
+.shop-item-card__accessory-group-title {
+    color: var(--ctp-subtext0) !important;
+}
+
+.shop-item-card__accessory-chip {
+    background: var(--ctp-surface1) !important;
+    border: 2px solid var(--ctp-surface2) !important;
+    color: var(--ctp-text) !important;
+}
+
+.shop-item-card__accessory-chip:hover {
+    border-color: var(--ctp-mauve) !important;
+    background: var(--ctp-surface2) !important;
+}
+
+.shop-item-card__accessory-chip.is-selected {
+    background: var(--ctp-mauve) !important;
+    border-color: var(--ctp-mauve) !important;
+    color: var(--ctp-crust) !important;
+}
+
+.shop-item-card__total-price {
+    border-top-color: var(--ctp-surface1) !important;
+    color: var(--ctp-text) !important;
+}
+
+.shop-item-card__total-price .total-value {
+    color: var(--ctp-mauve) !important;
+}
+
+main:has(.chef-img) {
+    background: var(--ctp-base) !important;
+    color: var(--ctp-text) !important;
+}
+
+main:has(.chef-img) h1 {
+    color: var(--ctp-mauve) !important;
+}
+
+main:has(.chef-img) h2 {
+    color: var(--ctp-text) !important;
+}
+
+main:has(.chef-img) p {
+    color: var(--ctp-subtext1) !important;
+}
+
+main:has(.chef-img) .btn {
+    background: var(--ctp-mauve) !important;
+    color: var(--ctp-crust) !important;
+    border: none !important;
+}
+
+main:has(.chef-img) .btn:hover {
+    background: var(--ctp-lavender) !important;
+}
+
 .flavortown-achievement-toast {
     background-color: linear-gradient(135deg, var(--ctp-surface0) 0%, var(--ctp-surface1) 100%) !important;
     border-color: var(--ctp-mauve) !important;
