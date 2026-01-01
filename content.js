@@ -5110,7 +5110,7 @@ if (sessionStorage.getItem('flavortown_focus_search') === 'true') {
 setupCommandPalette();
 
 
-const VOTES_JSON_URL = 'https://raw.githubusercontent.com/hridaya423/flavortownutils/main/data/votes.json';
+const VOTES_JSON_URL = 'https://raw.githubusercontent.com/hridaya423/flavortownutils/refs/heads/main/data/votes.json';
 
 async function fetchVotesData() {
     try {
