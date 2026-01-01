@@ -2290,6 +2290,7 @@ function init() {
     enhanceAdminPage();
 
     setTimeout(checkAchievements, 2000);
+    setTimeout(initVotesFeature, 1000);
 }
 
 
@@ -3255,6 +3256,7 @@ document.addEventListener('turbo:load', () => {
     enhanceAchievementsPage();
     initShotsEditor();
     enhanceAdminPage();
+    initVotesFeature();
 });
 
 function initShotsEditor() {
@@ -5106,3 +5108,258 @@ if (sessionStorage.getItem('flavortown_focus_search') === 'true') {
 }
 
 setupCommandPalette();
+
+
+const VOTES_JSON_URL = 'https://raw.githubusercontent.com/hridaya423/flavortownutils/main/data/votes.json';
+
+async function fetchVotesData() {
+    try {
+        const response = await fetch(VOTES_JSON_URL);
+        if (!response.ok) return null;
+        return await response.json();
+    } catch (e) {
+        console.error('Failed to fetch votes data:', e);
+        return null;
+    }
+}
+
+function getRelativeTime(timestamp) {
+    const now = new Date();
+    const date = new Date(timestamp);
+    const diffMs = now - date;
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMs / 3600000);
+    const diffDays = Math.floor(diffMs / 86400000);
+
+    if (diffMins < 1) return 'just now';
+    if (diffMins < 60) return `${diffMins}m ago`;
+    if (diffHours < 24) return `${diffHours}h ago`;
+    if (diffDays < 7) return `${diffDays}d ago`;
+    return date.toLocaleDateString();
+}
+
+function truncateFeedback(text, maxLength = 120) {
+    if (!text || text.length <= maxLength) return text || '';
+    return text.substring(0, maxLength).trim() + '...';
+}
+
+function getCurrentProjectName() {
+    const projectHeader = document.querySelector('.project-show__header h1, .project-show-card__title');
+    if (projectHeader) return projectHeader.textContent.trim();
+
+    const pageTitle = document.querySelector('h1');
+    if (pageTitle) return pageTitle.textContent.trim();
+
+    return null;
+}
+
+function parseRelativeTime(relativeStr) {
+    if (!relativeStr) return null;
+    const now = new Date();
+    const str = relativeStr.toLowerCase().trim();
+
+    if (str.includes('just now') || str.includes('moment')) return now;
+
+    const match = str.match(/(\d+)\s*(second|minute|hour|day|week|month|year)s?\s*ago/i);
+    if (!match) return null;
+
+    const num = parseInt(match[1]);
+    const unit = match[2].toLowerCase();
+
+    const ms = {
+        second: 1000,
+        minute: 60 * 1000,
+        hour: 60 * 60 * 1000,
+        day: 24 * 60 * 60 * 1000,
+        week: 7 * 24 * 60 * 60 * 1000,
+        month: 30 * 24 * 60 * 60 * 1000,
+        year: 365 * 24 * 60 * 60 * 1000,
+    };
+
+    return new Date(now.getTime() - num * ms[unit]);
+}
+
+function clusterVotesToShips(votes, ships) {
+    const sortedShips = [...ships].sort((a, b) => a.date - b.date);
+
+    const clustered = new Map();
+    ships.forEach(ship => clustered.set(ship, []));
+
+    votes.forEach(vote => {
+        const voteDate = new Date(vote.timestamp);
+
+        let assignedShip = sortedShips[0];
+
+        for (const ship of sortedShips) {
+            if (ship.date <= voteDate) {
+                assignedShip = ship;
+            } else {
+                break;
+            }
+        }
+
+        clustered.get(assignedShip).push(vote);
+    });
+
+    return clustered;
+}
+
+function createVoteCard(vote, usersMap) {
+    const voteCard = document.createElement('div');
+    voteCard.style.cssText = `
+        padding: 10px 12px;
+        background: var(--catppuccin-base, var(--color-cream, rgba(255,255,255,0.5)));
+        border-radius: 8px;
+        font-size: 0.9em;
+    `;
+
+    const feedbackText = truncateFeedback(vote.feedback);
+    const hasMore = vote.feedback && vote.feedback.length > 120;
+
+    const user = usersMap && usersMap[vote.votedBy];
+    const voterDisplay = user
+        ? `<img src="${user.avatar}" alt="" style="width: 18px; height: 18px; border-radius: 50%; vertical-align: middle;"> ${user.username}`
+        : (vote.votedBy && vote.votedBy !== 'Unknown' ? `@${vote.votedBy}` : '');
+
+    voteCard.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+            <span style="color: var(--catppuccin-subtext0, #6c6f85); font-size: 0.85em;">
+                ${getRelativeTime(vote.timestamp)}
+            </span>
+            ${voterDisplay ? `<span style="font-size: 0.8em; color: var(--catppuccin-subtext1, #7c7f93);">${voterDisplay}</span>` : ''}
+        </div>
+        <div class="vote-feedback-text" style="line-height: 1.4; color: var(--catppuccin-text, #cdd6f4);">
+            ${feedbackText || '<em style="opacity: 0.6;">No feedback provided</em>'}
+        </div>
+        ${hasMore ? `<button class="vote-expand-btn" style="
+            background: none;
+            border: none;
+            color: var(--catppuccin-mauve, #cba6f7);
+            cursor: pointer;
+            padding: 4px 0 0 0;
+            font-size: 0.85em;
+        ">Show more</button>` : ''}
+    `;
+
+    if (hasMore) {
+        const expandBtn = voteCard.querySelector('.vote-expand-btn');
+        const feedbackEl = voteCard.querySelector('.vote-feedback-text');
+        let expanded = false;
+        expandBtn.addEventListener('click', () => {
+            expanded = !expanded;
+            feedbackEl.textContent = expanded ? vote.feedback : truncateFeedback(vote.feedback);
+            expandBtn.textContent = expanded ? 'Show less' : 'Show more';
+        });
+    }
+
+    return voteCard;
+}
+
+function createVotesContainer(votes, usersMap) {
+    const votesContainer = document.createElement('div');
+    votesContainer.className = 'flavortown-project-votes';
+    votesContainer.style.cssText = `
+        margin-top: 12px;
+        padding: 14px;
+        background: var(--catppuccin-surface0, var(--color-cream-dark, rgba(0,0,0,0.05)));
+        border-radius: 10px;
+        border-left: 3px solid var(--catppuccin-mauve, var(--color-accent, #b4befe));
+    `;
+
+    const header = document.createElement('div');
+    header.style.cssText = `
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 10px;
+        font-weight: 600;
+        font-size: 0.9em;
+        color: var(--catppuccin-text, #cdd6f4);
+    `;
+    header.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="var(--catppuccin-yellow, #f9e2af)" style="opacity: 0.9;">
+            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+        </svg>
+        <span>Community Votes (${votes.length})</span>
+    `;
+    votesContainer.appendChild(header);
+
+    const votesList = document.createElement('div');
+    votesList.style.cssText = 'display: flex; flex-direction: column; gap: 8px;';
+
+    votes.slice(0, 5).forEach(vote => {
+        votesList.appendChild(createVoteCard(vote, usersMap));
+    });
+
+    if (votes.length > 5) {
+        const moreNote = document.createElement('div');
+        moreNote.style.cssText = 'font-size: 0.85em; opacity: 0.7; text-align: center; padding-top: 8px;';
+        moreNote.textContent = `+ ${votes.length - 5} more votes`;
+        votesList.appendChild(moreNote);
+    }
+
+    votesContainer.appendChild(votesList);
+    return votesContainer;
+}
+
+async function addProjectVotesDisplay() {
+    if (!/\/projects\/\d+$/.test(window.location.pathname)) return;
+
+    const shipPosts = document.querySelectorAll('article.post--ship');
+    if (shipPosts.length === 0) return;
+
+    if (document.querySelector('.flavortown-project-votes')) return;
+
+    const projectName = getCurrentProjectName();
+    if (!projectName) return;
+
+    const votesData = await fetchVotesData();
+    if (!votesData || !votesData.votes || votesData.votes.length === 0) return;
+
+    const projectVotes = votesData.votes.filter(vote =>
+        vote.project && projectName &&
+        (vote.project.toLowerCase().includes(projectName.toLowerCase()) ||
+         projectName.toLowerCase().includes(vote.project.toLowerCase()))
+    );
+
+    if (projectVotes.length === 0) return;
+
+    const ships = [];
+    shipPosts.forEach(post => {
+        const timeEl = post.querySelector('.post__time');
+        const shipStats = post.querySelector('.flavortown-ship-stats');
+
+        if (timeEl) {
+            const relativeTime = timeEl.textContent.trim();
+            const date = parseRelativeTime(relativeTime);
+
+            if (date) {
+                ships.push({
+                    element: post,
+                    statsElement: shipStats,
+                    date: date,
+                    relativeTime: relativeTime
+                });
+            }
+        }
+    });
+
+    if (ships.length === 0) return;
+
+    const clusteredVotes = clusterVotesToShips(projectVotes, ships);
+
+    ships.forEach(ship => {
+        const shipVotes = clusteredVotes.get(ship);
+        if (!shipVotes || shipVotes.length === 0) return;
+
+        const insertAfter = ship.statsElement || ship.element.querySelector('.post__body');
+        if (!insertAfter) return;
+
+        const votesContainer = createVotesContainer(shipVotes, votesData.users);
+        insertAfter.parentNode.insertBefore(votesContainer, insertAfter.nextSibling);
+    });
+}
+
+function initVotesFeature() {
+    addProjectVotesDisplay();
+}
