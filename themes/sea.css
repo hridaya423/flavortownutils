@@ -2144,17 +2144,25 @@ a:hover {
     border-color: var(--sea-surface) !important;
 }
 
-.flavortown-goals-enhanced__accordion-header,
-.flavortown-accordion-inner {
+.flavortown-goals-enhanced__accordion-header {
     background-color: var(--sea-mid) !important;
 }
 
-.flavortown-goals-enhanced__accordion-header:hover .flavortown-accordion-inner {
+.flavortown-goals-enhanced__accordion-header:hover {
     background-color: var(--sea-surface) !important;
+}
+
+.flavortown-goals-enhanced__accordion-toolbar {
+    background-color: var(--sea-mid) !important;
+    border-color: var(--sea-surface) !important;
 }
 
 .flavortown-accordion-title {
     color: var(--sea-white) !important;
+}
+
+.flavortown-goals-enhanced__accordion-icon {
+    color: var(--sea-foam) !important;
 }
 
 .flavortown-goals-enhanced__accordion-content {
@@ -2777,4 +2785,128 @@ a:hover {
 #shopkeeper-submit.btn--red:hover,
 #shopkeeper-submit.btn--striped:hover {
     background-color: var(--sea-mist) !important;
+}
+
+.flavortown-cmd-palette {
+    background: rgba(10, 22, 40, 0.7) !important;
+}
+
+.flavortown-cmd-modal {
+    background: linear-gradient(180deg, var(--sea-dark) 0%, var(--sea-deep) 100%) !important;
+    border-color: var(--sea-mid) !important;
+}
+
+.flavortown-cmd-input-wrapper {
+    border-color: var(--sea-mid) !important;
+}
+
+.flavortown-cmd-input-wrapper svg {
+    color: var(--sea-foam) !important;
+}
+
+.flavortown-cmd-input {
+    color: var(--sea-white) !important;
+}
+
+.flavortown-cmd-input::placeholder {
+    color: var(--sea-surface) !important;
+}
+
+.flavortown-cmd-hint {
+    background: var(--sea-mid) !important;
+    color: var(--sea-mist) !important;
+    border-color: var(--sea-surface) !important;
+}
+
+.flavortown-cmd-category {
+    color: var(--sea-foam) !important;
+}
+
+.flavortown-cmd-item:hover,
+.flavortown-cmd-item.active {
+    background: rgba(34, 211, 238, 0.1) !important;
+}
+
+.flavortown-cmd-item.active {
+    background: rgba(34, 211, 238, 0.2) !important;
+}
+
+.flavortown-cmd-label {
+    color: var(--sea-white) !important;
+}
+
+.flavortown-cmd-shortcut {
+    background: var(--sea-mid) !important;
+    color: var(--sea-mist) !important;
+    border-color: var(--sea-surface) !important;
+}
+
+.flavortown-cmd-empty {
+    color: var(--sea-foam) !important;
+}
+
+.flavortown-cmd-footer {
+    border-color: var(--sea-mid) !important;
+    background: var(--sea-deep) !important;
+    color: var(--sea-foam) !important;
+}
+
+.flavortown-progress-toggle {
+    background: var(--sea-mid) !important;
+}
+
+.flavortown-progress-toggle__btn {
+    color: var(--sea-foam) !important;
+}
+
+.flavortown-progress-toggle__btn:hover {
+    color: var(--sea-white) !important;
+}
+
+.flavortown-progress-toggle__btn.active {
+    background: var(--sea-surface) !important;
+    color: var(--sea-white) !important;
+}
+
+.flavortown-image-selection {
+    background: rgba(10, 25, 40, 0.9) !important;
+}
+
+.flavortown-screenshot-modal {
+    background: linear-gradient(145deg, var(--sea-deep) 0%, var(--sea-abyss) 100%) !important;
+    border-color: var(--sea-teal) !important;
+    color: var(--sea-white) !important;
+}
+
+.flavortown-screenshot-modal > div:first-child {
+    background: linear-gradient(135deg, var(--sea-teal) 0%, var(--sea-mid) 100%) !important;
+}
+
+.flavortown-screenshot-modal .layout-btn {
+    background: var(--sea-mid) !important;
+    border-color: var(--sea-surface) !important;
+    color: var(--sea-white) !important;
+}
+
+.flavortown-screenshot-modal .image-option {
+    border-color: var(--sea-surface) !important;
+    background: var(--sea-mid) !important;
+}
+
+.flavortown-screenshot-modal .cancel-btn {
+    background: var(--sea-mid) !important;
+    border-color: var(--sea-surface) !important;
+    color: var(--sea-white) !important;
+}
+
+.flavortown-screenshot-modal .proceed-btn {
+    background: linear-gradient(135deg, var(--sea-teal) 0%, var(--sea-mid) 100%) !important;
+    border-color: var(--sea-teal) !important;
+    color: var(--sea-white) !important;
+}
+
+.flavortown-screenshot-modal .proceed-btn:disabled {
+    background: var(--sea-surface) !important;
+    border-color: var(--sea-mid) !important;
+    color: var(--sea-foam) !important;
 }

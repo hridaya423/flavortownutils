@@ -2150,17 +2150,25 @@ a:hover {
     border-color: var(--overcooked-surface) !important;
 }
 
-.flavortown-goals-enhanced__accordion-header,
-.flavortown-accordion-inner {
+.flavortown-goals-enhanced__accordion-header {
     background-color: var(--overcooked-mid) !important;
 }
 
-.flavortown-goals-enhanced__accordion-header:hover .flavortown-accordion-inner {
+.flavortown-goals-enhanced__accordion-header:hover {
     background-color: var(--overcooked-surface) !important;
+}
+
+.flavortown-goals-enhanced__accordion-toolbar {
+    background-color: var(--overcooked-mid) !important;
+    border-color: var(--overcooked-surface) !important;
 }
 
 .flavortown-accordion-title {
     color: var(--overcooked-white) !important;
+}
+
+.flavortown-goals-enhanced__accordion-icon {
+    color: var(--overcooked-foam) !important;
 }
 
 .flavortown-goals-enhanced__accordion-content {
@@ -2783,4 +2791,128 @@ a:hover {
 #shopkeeper-submit.btn--red:hover,
 #shopkeeper-submit.btn--striped:hover {
     background-color: var(--overcooked-mist) !important;
+}
+
+.flavortown-cmd-palette {
+    background: rgba(26, 15, 15, 0.7) !important;
+}
+
+.flavortown-cmd-modal {
+    background: linear-gradient(180deg, var(--overcooked-dark) 0%, var(--overcooked-charcoal) 100%) !important;
+    border-color: var(--overcooked-mid) !important;
+}
+
+.flavortown-cmd-input-wrapper {
+    border-color: var(--overcooked-mid) !important;
+}
+
+.flavortown-cmd-input-wrapper svg {
+    color: var(--overcooked-foam) !important;
+}
+
+.flavortown-cmd-input {
+    color: var(--overcooked-white) !important;
+}
+
+.flavortown-cmd-input::placeholder {
+    color: var(--overcooked-surface) !important;
+}
+
+.flavortown-cmd-hint {
+    background: var(--overcooked-mid) !important;
+    color: var(--overcooked-mist) !important;
+    border-color: var(--overcooked-surface) !important;
+}
+
+.flavortown-cmd-category {
+    color: var(--overcooked-foam) !important;
+}
+
+.flavortown-cmd-item:hover,
+.flavortown-cmd-item.active {
+    background: rgba(237, 137, 54, 0.15) !important;
+}
+
+.flavortown-cmd-item.active {
+    background: rgba(237, 137, 54, 0.25) !important;
+}
+
+.flavortown-cmd-label {
+    color: var(--overcooked-white) !important;
+}
+
+.flavortown-cmd-shortcut {
+    background: var(--overcooked-mid) !important;
+    color: var(--overcooked-mist) !important;
+    border-color: var(--overcooked-surface) !important;
+}
+
+.flavortown-cmd-empty {
+    color: var(--overcooked-foam) !important;
+}
+
+.flavortown-cmd-footer {
+    border-color: var(--overcooked-mid) !important;
+    background: var(--overcooked-charcoal) !important;
+    color: var(--overcooked-foam) !important;
+}
+
+.flavortown-progress-toggle {
+    background: var(--overcooked-mid) !important;
+}
+
+.flavortown-progress-toggle__btn {
+    color: var(--overcooked-foam) !important;
+}
+
+.flavortown-progress-toggle__btn:hover {
+    color: var(--overcooked-white) !important;
+}
+
+.flavortown-progress-toggle__btn.active {
+    background: var(--overcooked-surface) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.flavortown-image-selection {
+    background: rgba(20, 18, 16, 0.9) !important;
+}
+
+.flavortown-screenshot-modal {
+    background: linear-gradient(145deg, var(--overcooked-charcoal) 0%, var(--overcooked-abyss) 100%) !important;
+    border-color: var(--overcooked-orange) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.flavortown-screenshot-modal > div:first-child {
+    background: linear-gradient(135deg, var(--overcooked-orange) 0%, var(--overcooked-amber) 100%) !important;
+}
+
+.flavortown-screenshot-modal .layout-btn {
+    background: var(--overcooked-mid) !important;
+    border-color: var(--overcooked-surface) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.flavortown-screenshot-modal .image-option {
+    border-color: var(--overcooked-surface) !important;
+    background: var(--overcooked-mid) !important;
+}
+
+.flavortown-screenshot-modal .cancel-btn {
+    background: var(--overcooked-mid) !important;
+    border-color: var(--overcooked-surface) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.flavortown-screenshot-modal .proceed-btn {
+    background: linear-gradient(135deg, var(--overcooked-orange) 0%, var(--overcooked-amber) 100%) !important;
+    border-color: var(--overcooked-orange) !important;
+    color: var(--overcooked-charcoal) !important;
+}
+
+.flavortown-screenshot-modal .proceed-btn:disabled {
+    background: var(--overcooked-surface) !important;
+    border-color: var(--overcooked-mid) !important;
+    color: var(--overcooked-foam) !important;
 }

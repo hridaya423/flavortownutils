@@ -86,6 +86,7 @@ const POPUP_THEMES = {
 
 let currentTheme = 'default';
 let customColors = { ...DEFAULT_CUSTOM_COLORS };
+let catppuccinAccent = 'mauve';
 
 document.addEventListener('DOMContentLoaded', async () => {
     await loadSettings();
@@ -94,8 +95,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 async function loadSettings() {
-    const result = await browserAPI.storage.sync.get(['theme', 'customColors']);
+    const result = await browserAPI.storage.sync.get(['theme', 'customColors', 'catppuccinAccent']);
     currentTheme = result.theme || 'default';
+    catppuccinAccent = result.catppuccinAccent || 'mauve';
     if (result.customColors) {
         customColors = { ...DEFAULT_CUSTOM_COLORS, ...result.customColors };
     }
@@ -114,6 +116,14 @@ function setupEventListeners() {
         renderCustomVars();
         updateCustomPreview();
         saveAndApply();
+    });
+
+    document.querySelectorAll('.accent-toggle__btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            catppuccinAccent = btn.dataset.accent;
+            updateAccentToggleUI();
+            saveAndApply();
+        });
     });
 }
 
@@ -137,8 +147,22 @@ function updateUI() {
         customSection.classList.remove('visible');
     }
 
+    const accentToggle = document.getElementById('accentToggle');
+    if (currentTheme === 'catppuccin') {
+        accentToggle?.classList.add('visible');
+    } else {
+        accentToggle?.classList.remove('visible');
+    }
+    updateAccentToggleUI();
+
     updateCustomPreview();
     applyPopupTheme();
+}
+
+function updateAccentToggleUI() {
+    document.querySelectorAll('.accent-toggle__btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.accent === catppuccinAccent);
+    });
 }
 
 function applyPopupTheme() {
@@ -157,6 +181,12 @@ function applyPopupTheme() {
             '--popup-accent-dim': customColors['accent-alt'],
             '--popup-success': customColors['success']
         };
+    } else if (currentTheme === 'catppuccin') {
+        themeVars = { ...POPUP_THEMES['catppuccin'] };
+        if (catppuccinAccent === 'lavender') {
+            themeVars['--popup-accent'] = '#b4befe';
+            themeVars['--popup-accent-dim'] = '#89b4fa';
+        }
     } else {
         themeVars = POPUP_THEMES[currentTheme] || POPUP_THEMES['default'];
     }
@@ -211,7 +241,8 @@ async function saveAndApply() {
     try {
         await browserAPI.storage.sync.set({
             theme: currentTheme,
-            customColors: customColors
+            customColors: customColors,
+            catppuccinAccent: catppuccinAccent
         });
 
         const tabs = await browserAPI.tabs.query({ url: 'https://flavortown.hackclub.com/*' });
@@ -221,7 +252,8 @@ async function saveAndApply() {
                 await browserAPI.tabs.sendMessage(tab.id, {
                     type: 'APPLY_THEME',
                     theme: currentTheme,
-                    customColors: customColors
+                    customColors: customColors,
+                    catppuccinAccent: catppuccinAccent
                 });
             } catch (e) {
                 console.log('Tab not ready:', tab.id, e.message);

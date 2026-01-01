@@ -59,19 +59,23 @@ const CSS_VAR_OVERRIDES = {
 };
 
 function loadTheme() {
-    browserAPI.storage.sync.get(['theme', 'customColors'], (result) => {
+    browserAPI.storage.sync.get(['theme', 'customColors', 'catppuccinAccent'], (result) => {
         const theme = result.theme || 'default';
         const customColors = result.customColors || {};
-        applyTheme(theme, customColors);
+        const catppuccinAccent = result.catppuccinAccent || 'mauve';
+        applyTheme(theme, customColors, catppuccinAccent);
     });
 }
 
-function applyTheme(theme, customColors) {
+function applyTheme(theme, customColors, catppuccinAccent = 'mauve') {
     const existingTheme = document.getElementById('flavortown-theme');
     if (existingTheme) existingTheme.remove();
 
     const existingCustom = document.getElementById('flavortown-custom-vars');
     if (existingCustom) existingCustom.remove();
+    
+    const existingAccent = document.getElementById('flavortown-accent-override');
+    if (existingAccent) existingAccent.remove();
 
     if (theme === 'default') {
         setTimeout(() => {
@@ -148,6 +152,19 @@ h1, h2, h3, h4, h5, h6, p, span, div {
 
         if (['catppuccin', 'sea', 'overcooked'].includes(theme)) {
             setTimeout(() => recolorBackgroundTexture(theme), 0);
+        }
+        
+        if (theme === 'catppuccin' && catppuccinAccent === 'lavender') {
+            const accentStyle = document.createElement('style');
+            accentStyle.id = 'flavortown-accent-override';
+            accentStyle.textContent = `
+:root {
+    --ctp-mauve: #b4befe !important;
+    --color-brown: #b4befe !important;
+    --color-accent: #b4befe !important;
+}
+`;
+            document.head.appendChild(accentStyle);
         }
     }
     
@@ -278,7 +295,7 @@ function hslToRgb(h, s, l) {
 
 browserAPI.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.type === 'APPLY_THEME') {
-        applyTheme(message.theme, message.customColors || {});
+        applyTheme(message.theme, message.customColors || {}, message.catppuccinAccent || 'mauve');
         sendResponse({ success: true });
     }
     return true;
@@ -1075,15 +1092,20 @@ function enhanceShopGoals() {
                     </div>
                 </div>
                 ${prioritySectionHtml}
+                <div class="flavortown-progress-toggle-wrapper">
+                    <div class="flavortown-progress-toggle">
+                        <button class="flavortown-progress-toggle__btn ${progressMode === 'cumulative' ? 'active' : ''}" data-mode="cumulative">
+                            Cumulative
+                        </button>
+                        <button class="flavortown-progress-toggle__btn ${progressMode === 'individual' ? 'active' : ''}" data-mode="individual">
+                            Individual
+                        </button>
+                    </div>
+                </div>
                 <details class="flavortown-goals-enhanced__accordion" open>
                     <summary class="flavortown-goals-enhanced__accordion-header">
-                        <div class="flavortown-accordion-inner">
-                            <span class="flavortown-accordion-title">Goal Items</span>
-                            <button class="flavortown-progress-mode-toggle" title="${progressMode === 'cumulative' ? 'Cumulative: fills in order' : 'Individual: each item independent'}">
-                                ${progressMode === 'cumulative' ? '📊' : '📈'}
-                            </button>
-                            <span class="flavortown-goals-enhanced__accordion-icon">▼</span>
-                        </div>
+                        <span class="flavortown-accordion-title">Goal Items</span>
+                        <span class="flavortown-goals-enhanced__accordion-icon">▼</span>
                     </summary>
                     <div class="flavortown-goals-enhanced__accordion-content">
                         ${itemsHtml}
@@ -1194,12 +1216,11 @@ function enhanceShopGoals() {
     }
 
     function handleQtyClick(e) {
-        const progressModeToggle = e.target.closest('.flavortown-progress-mode-toggle');
-        if (progressModeToggle) {
+        const progressToggleBtn = e.target.closest('.flavortown-progress-toggle__btn');
+        if (progressToggleBtn) {
             e.preventDefault();
             e.stopPropagation();
-            const currentMode = localStorage.getItem('flavortown_progress_mode') || 'individual';
-            const newMode = currentMode === 'cumulative' ? 'individual' : 'cumulative';
+            const newMode = progressToggleBtn.dataset.mode;
             localStorage.setItem('flavortown_progress_mode', newMode);
             updateStats(true);
             return;
@@ -1427,12 +1448,33 @@ function enhanceShopGoals() {
     addQtyControlsToCards();
 
     if (!window.__flavortownGoalsObserver) {
+        let isUpdating = false;
+        
         const shopGrid = document.querySelector('.shop-items') || document.body;
-        const observer = new MutationObserver(() => {
-            setTimeout(() => {
-                updateStats();
-                addQtyControlsToCards();
-            }, 100);
+        const observer = new MutationObserver((mutations) => {
+            if (isUpdating) return;
+            
+            const shouldUpdate = mutations.some(m => {
+                for (const node of [...m.addedNodes, ...m.removedNodes]) {
+                    if (node.nodeType === 1) {
+                        if (node.classList?.contains('shop-item-card') || 
+                            node.classList?.contains('shop-goals__item') ||
+                            node.closest?.('.shop-items')) {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            });
+            
+            if (shouldUpdate) {
+                isUpdating = true;
+                setTimeout(() => {
+                    updateStats();
+                    addQtyControlsToCards();
+                    isUpdating = false;
+                }, 100);
+            }
         });
         observer.observe(shopGrid, { childList: true, subtree: true });
         window.__flavortownGoalsObserver = observer;
@@ -3363,6 +3405,7 @@ function showImageSelectionUI(imageFiles, onComplete) {
     let layoutMode = 'single';
     
     const content = document.createElement('div');
+    content.className = 'flavortown-screenshot-modal';
     content.style.cssText = `
         background: linear-gradient(145deg, #f5e6d3 0%, #ece0d1 100%);
         border: 3px solid #a94442;
@@ -4310,7 +4353,8 @@ function enhanceAdminUserPage() {
 
 function enhanceAdminDashboard() {
     const isFraudDept = localStorage.getItem('flavortown-fraud') === 'true';
-    const isAdmin = document.querySelector('.flavortown-admin-dashboard') !== null;
+    
+    if (document.querySelector('.flavortown-admin-dashboard')) return;
 
     if (isFraudDept) {
         document.querySelectorAll('.button-grid a.btn-primary').forEach(btn => {
@@ -4320,8 +4364,6 @@ function enhanceAdminDashboard() {
             }
         });
     }
-
-    if (!isAdmin) return;
 
     const h2Elements = document.querySelectorAll('h2');
     let tasksH2 = null;
@@ -4688,3 +4730,379 @@ async function fetchAdminStats() {
         if (statsContent) statsContent.innerHTML = '<div style="color: #ef4444;">Failed to load</div>';
     }
 }
+
+
+function setupCommandPalette() {
+    if (document.querySelector('.flavortown-cmd-palette')) return;
+
+    const isAdmin = !!document.querySelector('a[href="/admin"], a[href*="/admin"]');
+    
+    const staticCommands = [
+        { id: 'home', label: 'Go to Kitchen', category: 'Navigation', url: '/' },
+        { id: 'projects', label: 'My Projects', category: 'Navigation', url: '/projects' },
+        { id: 'shop', label: 'Open Shop', category: 'Navigation', url: '/shop' },
+        { id: 'explore', label: 'Explore', category: 'Navigation', url: '/explore' },
+        { id: 'leaderboard', label: 'Leaderboard', category: 'Navigation', url: '/leaderboard' },
+        { id: 'achievements', label: 'My Achievements', category: 'Navigation', url: '/my/achievements' },
+        { id: 'profile', label: 'My Profile', category: 'Navigation', url: '/my' },
+        { id: 'search-projects', label: 'Search Projects', category: 'Actions', action: 'searchProjects' },
+        { id: 'new-project', label: 'New Project', category: 'Actions', url: '/projects/new' },
+        { id: 'buffet', label: 'Toggle Buffet Mode', category: 'Actions', action: 'buffet' },
+        { id: 'settings', label: 'Open Settings', category: 'Actions', action: 'openSettings' },
+        { id: 'api-docs', label: 'API Documentation', category: 'Actions', url: '/api/v1/docs', external: true },
+        { id: 'setting-votes', label: 'Toggle: Send Votes to Slack', category: 'Settings', action: 'toggleSetting', settingId: 'send_votes_to_slack' },
+        { id: 'setting-leaderboard', label: 'Toggle: Leaderboard Opt-in', category: 'Settings', action: 'toggleSetting', settingId: 'leaderboard_optin' },
+        { id: 'setting-balance', label: 'Toggle: Balance Notifications', category: 'Settings', action: 'toggleSetting', settingId: 'slack_balance_notifications' },
+        { id: 'setting-effects', label: 'Toggle: Special Effects', category: 'Settings', action: 'toggleSetting', settingId: 'special_effects_enabled' },
+        { id: 'theme-default', label: 'Theme: Default', category: 'Themes', action: 'theme', theme: 'default' },
+        { id: 'theme-catppuccin', label: 'Theme: Catppuccin', category: 'Themes', action: 'theme', theme: 'catppuccin' },
+        { id: 'theme-sea', label: 'Theme: Sea', category: 'Themes', action: 'theme', theme: 'sea' },
+        { id: 'theme-overcooked', label: 'Theme: Overcooked', category: 'Themes', action: 'theme', theme: 'overcooked' },
+        { id: 'accent-mauve', label: 'Catppuccin: Mauve Accent', category: 'Themes', action: 'setAccent', accent: 'mauve' },
+        { id: 'accent-lavender', label: 'Catppuccin: Lavender Accent', category: 'Themes', action: 'setAccent', accent: 'lavender' },
+    ];
+    
+    if (isAdmin) {
+        staticCommands.push(
+            { id: 'admin', label: 'Admin Dashboard', category: 'Admin', url: '/admin' },
+            { id: 'admin-reports', label: 'Admin: Pending Reports', category: 'Admin', url: '/admin/reports' },
+            { id: 'admin-orders', label: 'Admin: Shop Orders', category: 'Admin', url: '/admin/shop_orders' },
+            { id: 'admin-users', label: 'Admin: Search Users', category: 'Admin', url: '/admin/users' },
+        );
+    }
+
+    let allCommands = [...staticCommands];
+    let selectedIndex = 0;
+    let filteredCommands = [];
+    let projectsLoaded = false;
+
+    function getRecentCommands() {
+        try {
+            return JSON.parse(localStorage.getItem('flavortown_cmd_recent') || '[]');
+        } catch { return []; }
+    }
+
+    function saveRecentCommand(cmdId) {
+        let recent = getRecentCommands();
+        recent = recent.filter(id => id !== cmdId);
+        recent.unshift(cmdId);
+        recent = recent.slice(0, 5);
+        localStorage.setItem('flavortown_cmd_recent', JSON.stringify(recent));
+    }
+
+    const overlay = document.createElement('div');
+    overlay.className = 'flavortown-cmd-palette';
+    overlay.innerHTML = `
+        <div class="flavortown-cmd-modal">
+            <div class="flavortown-cmd-input-wrapper">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="text" class="flavortown-cmd-input" placeholder="Type a command..." autofocus />
+                <kbd class="flavortown-cmd-hint">ESC</kbd>
+            </div>
+            <div class="flavortown-cmd-results"></div>
+            <div class="flavortown-cmd-footer">
+                <span>↑↓ Navigate</span>
+                <span>↵ Select</span>
+                <span>ESC Close</span>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(overlay);
+
+    const input = overlay.querySelector('.flavortown-cmd-input');
+    const results = overlay.querySelector('.flavortown-cmd-results');
+
+    function fuzzyMatch(text, query) {
+        const lowerText = text.toLowerCase();
+        const lowerQuery = query.toLowerCase();
+        return lowerQuery.split('').every(char => lowerText.includes(char)) && lowerText.includes(lowerQuery.charAt(0));
+    }
+
+    function render() {
+        const query = input.value.trim();
+        const recent = getRecentCommands();
+
+        if (!query) {
+            const recentCmds = recent.map(id => allCommands.find(c => c.id === id)).filter(Boolean);
+            const otherCmds = allCommands.filter(c => !recent.includes(c.id));
+            filteredCommands = [...recentCmds, ...otherCmds];
+        } else {
+            filteredCommands = allCommands.filter(cmd => 
+                fuzzyMatch(cmd.label, query) || fuzzyMatch(cmd.category, query)
+            );
+        }
+
+        if (selectedIndex >= filteredCommands.length) selectedIndex = Math.max(0, filteredCommands.length - 1);
+
+        let html = '';
+        let lastCategory = '';
+
+        filteredCommands.forEach((cmd, i) => {
+            const isRecent = !query && recent.includes(cmd.id) && i < recent.length;
+            const cat = isRecent ? 'Recent' : cmd.category;
+            
+            if (cat !== lastCategory) {
+                html += `<div class="flavortown-cmd-category">${cat}</div>`;
+                lastCategory = cat;
+            }
+
+            html += `
+                <div class="flavortown-cmd-item ${i === selectedIndex ? 'active' : ''}" data-index="${i}">
+                    <span class="flavortown-cmd-label">${cmd.label}</span>
+                    ${cmd.shortcut ? `<kbd class="flavortown-cmd-shortcut">${cmd.shortcut}</kbd>` : ''}
+                </div>
+            `;
+        });
+
+        results.innerHTML = html || '<div class="flavortown-cmd-empty">No commands found</div>';
+
+        const activeEl = results.querySelector('.flavortown-cmd-item.active');
+        if (activeEl) activeEl.scrollIntoView({ block: 'nearest' });
+    }
+
+    function executeCommand(cmd) {
+        if (!cmd) return;
+        saveRecentCommand(cmd.id);
+        closePalette();
+
+        if (cmd.url) {
+            if (cmd.action === 'devlog' && cmd.projectId) {
+                window.location.href = `/projects/${cmd.projectId}#devlog`;
+                sessionStorage.setItem('flavortown_focus_devlog', 'true');
+            } else {
+                window.location.href = cmd.url;
+            }
+        } else if (cmd.action === 'theme' && cmd.theme) {
+            browserAPI.storage.sync.set({ theme: cmd.theme }, () => {
+                browserAPI.storage.sync.get(['catppuccinAccent'], (result) => {
+                    applyTheme(cmd.theme, {}, result.catppuccinAccent || 'mauve');
+                });
+            });
+        } else if (cmd.action === 'setAccent' && cmd.accent) {
+            browserAPI.storage.sync.set({ catppuccinAccent: cmd.accent }, () => {
+                browserAPI.storage.sync.get(['theme'], (result) => {
+                    if (result.theme === 'catppuccin') {
+                        applyTheme('catppuccin', {}, cmd.accent);
+                    }
+                });
+                const toast = document.createElement('div');
+                toast.style.cssText = 'position:fixed;bottom:20px;right:20px;background:#cba6f7;color:#1e1e2e;padding:12px 20px;border-radius:8px;font-weight:600;z-index:999999';
+                toast.textContent = `Catppuccin accent: ${cmd.accent}`;
+                if (cmd.accent === 'lavender') {
+                    toast.style.background = '#b4befe';
+                }
+                document.body.appendChild(toast);
+                setTimeout(() => toast.remove(), 2000);
+            });
+        } else if (cmd.action === 'buffet') {
+            if (!window.location.pathname.startsWith('/explore')) {
+                sessionStorage.setItem('flavortown_toggle_buffet', 'true');
+                window.location.href = '/explore';
+            } else {
+                const buffetBtn = document.querySelector('.flavortown-doomscroll-toggle');
+                if (buffetBtn) buffetBtn.click();
+            }
+        } else if (cmd.action === 'openSettings') {
+            const settingsModal = document.getElementById('settings-modal');
+            if (settingsModal) {
+                settingsModal.showModal();
+            }
+        } else if (cmd.action === 'toggleSetting' && cmd.settingId) {
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || 
+                              document.querySelector('input[name="authenticity_token"]')?.value;
+            
+            const checkbox = document.getElementById(cmd.settingId);
+            const newValue = checkbox ? !checkbox.checked : true;
+            
+            const formData = new FormData();
+            formData.append('_method', 'patch');
+            formData.append(cmd.settingId, newValue ? '1' : '0');
+            
+            fetch('/my/settings', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-Token': csrfToken,
+                },
+                body: formData,
+                credentials: 'same-origin'
+            }).then(res => {
+                if (res.ok) {
+                    const toast = document.createElement('div');
+                    toast.style.cssText = 'position:fixed;bottom:20px;right:20px;background:#4ade80;color:#15803d;padding:12px 20px;border-radius:8px;font-weight:600;z-index:999999;animation:fadeOut 2s forwards';
+                    toast.textContent = `${cmd.label.replace('Toggle: ', '')} ${newValue ? 'enabled' : 'disabled'}`;
+                    document.body.appendChild(toast);
+                    setTimeout(() => toast.remove(), 2000);
+                    if (checkbox) checkbox.checked = newValue;
+                }
+            });
+        } else if (cmd.action === 'searchProjects') {
+            if (window.location.pathname !== '/explore') {
+                sessionStorage.setItem('flavortown_focus_search', 'true');
+                window.location.href = '/explore';
+            } else {
+                const searchInput = document.querySelector('.flavortown-search-container input, .flavortown-search-input');
+                if (searchInput) searchInput.focus();
+            }
+        }
+    }
+
+    function openPalette() {
+        overlay.classList.add('open');
+        input.value = '';
+        selectedIndex = 0;
+        loadProjects();
+        render();
+        setTimeout(() => input.focus(), 50);
+    }
+
+    function closePalette() {
+        overlay.classList.remove('open');
+        input.value = '';
+    }
+
+    async function loadProjects() {
+        if (projectsLoaded) return;
+        projectsLoaded = true;
+
+        try {
+            const res = await fetch('/projects', { credentials: 'same-origin' });
+            if (!res.ok) return;
+            const html = await res.text();
+            const doc = new DOMParser().parseFromString(html, 'text/html');
+            
+            const projectCards = doc.querySelectorAll('.project-card[id^="project_"]');
+            const projects = [];
+            
+            projectCards.forEach(card => {
+                const cardId = card.getAttribute('id');
+                const idMatch = cardId.match(/project_(\d+)/);
+                if (!idMatch) return;
+                
+                const id = idMatch[1];
+                const titleLink = card.querySelector('.project-card__title-link');
+                const title = titleLink ? titleLink.textContent.trim() : `Project #${id}`;
+                
+                projects.push({ id, title });
+            });
+            
+            if (projects.length > 0) {
+                const projectCmds = projects.slice(0, 10).flatMap(p => [
+                    { id: `proj-${p.id}`, label: `Go to "${p.title}"`, category: 'Your Projects', url: `/projects/${p.id}` },
+                    { id: `devlog-${p.id}`, label: `New Devlog on "${p.title}"`, category: 'Your Projects', url: `/projects/${p.id}`, action: 'devlog', projectId: p.id },
+                ]);
+                allCommands = [...staticCommands, ...projectCmds];
+                render();
+            }
+        } catch (e) {
+            console.error('Command palette: Failed to load projects', e);
+        }
+    }
+
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) closePalette();
+        const item = e.target.closest('.flavortown-cmd-item');
+        if (item) {
+            const idx = parseInt(item.dataset.index);
+            executeCommand(filteredCommands[idx]);
+        }
+    });
+
+    input.addEventListener('input', () => {
+        selectedIndex = 0;
+        render();
+    });
+
+    input.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            selectedIndex = Math.min(selectedIndex + 1, filteredCommands.length - 1);
+            render();
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            selectedIndex = Math.max(selectedIndex - 1, 0);
+            render();
+        } else if (e.key === 'Enter') {
+            e.preventDefault();
+            executeCommand(filteredCommands[selectedIndex]);
+        } else if (e.key === 'Escape') {
+            closePalette();
+        }
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+            e.preventDefault();
+            if (overlay.classList.contains('open')) {
+                closePalette();
+            } else {
+                openPalette();
+            }
+        }
+        if (e.key === 'Escape' && overlay.classList.contains('open')) {
+            closePalette();
+        }
+    });
+}
+
+if (sessionStorage.getItem('flavortown_focus_devlog') === 'true') {
+    sessionStorage.removeItem('flavortown_focus_devlog');
+    
+    let attempts = 0;
+    const maxAttempts = 20; 
+    
+    const pollForDevlogForm = () => {
+        const devlogForm = document.querySelector('.flavortown-inline-form');
+        if (devlogForm) {
+            devlogForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            const textarea = devlogForm.querySelector('textarea');
+            if (textarea) {
+                setTimeout(() => textarea.focus(), 300);
+            }
+        } else if (attempts < maxAttempts) {
+            attempts++;
+            setTimeout(pollForDevlogForm, 250);
+        }
+    };
+    
+    setTimeout(pollForDevlogForm, 500);
+}
+
+if (sessionStorage.getItem('flavortown_toggle_buffet') === 'true') {
+    sessionStorage.removeItem('flavortown_toggle_buffet');
+    
+    let attempts = 0;
+    const maxAttempts = 20;
+    
+    const pollForBuffet = () => {
+        const buffetBtn = document.querySelector('.flavortown-doomscroll-toggle');
+        if (buffetBtn) {
+            buffetBtn.click();
+        } else if (attempts < maxAttempts) {
+            attempts++;
+            setTimeout(pollForBuffet, 250);
+        }
+    };
+    
+    setTimeout(pollForBuffet, 500);
+}
+
+if (sessionStorage.getItem('flavortown_focus_search') === 'true') {
+    sessionStorage.removeItem('flavortown_focus_search');
+    
+    let attempts = 0;
+    const maxAttempts = 20;
+    
+    const pollForSearch = () => {
+        const searchInput = document.querySelector('.flavortown-search-container input, .flavortown-search-input');
+        if (searchInput) {
+            searchInput.focus();
+        } else if (attempts < maxAttempts) {
+            attempts++;
+            setTimeout(pollForSearch, 250);
+        }
+    };
+    
+    setTimeout(pollForSearch, 500);
+}
+
+setupCommandPalette();

@@ -43,6 +43,11 @@
   - Better UI for most things in admin
   - some extra statistics
   - deduction calculator
+- Ctrl+K, control panel for all things in flavortown
+  - Navigation
+  - Themes
+  - New devlog
+  - Settings
 
 ## Feature showcase:
 

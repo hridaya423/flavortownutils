@@ -344,3 +344,62 @@ body {
     transform: translateY(0);
     filter: brightness(0.95);
 }
+
+.accent-toggle {
+    grid-column: 1 / -1;
+    background: var(--popup-surface);
+    border-radius: 10px;
+    padding: 10px 12px;
+    display: none;
+}
+
+.accent-toggle.visible {
+    display: block;
+}
+
+.accent-toggle__label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--popup-text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+
+.accent-toggle__options {
+    display: flex;
+    gap: 8px;
+}
+
+.accent-toggle__btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 12px;
+    background: var(--popup-surface-hover);
+    border: 2px solid transparent;
+    border-radius: 8px;
+    color: var(--popup-text);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.accent-toggle__btn:hover {
+    background: var(--popup-border);
+}
+
+.accent-toggle__btn.active {
+    border-color: var(--popup-accent);
+    background: color-mix(in srgb, var(--popup-accent) 15%, transparent);
+}
+
+.accent-toggle__color {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
