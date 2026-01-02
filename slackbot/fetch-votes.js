@@ -149,6 +149,31 @@ async function main() {
     .filter(Boolean)
     .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
+  const outputPath = path.join(__dirname, '..', 'data', 'votes.json');
+  const outputDir = path.dirname(outputPath);
+
+  if (!fs.existsSync(outputDir)) {
+    fs.mkdirSync(outputDir, { recursive: true });
+  }
+
+  let existingData = null;
+  try {
+    if (fs.existsSync(outputPath)) {
+      existingData = JSON.parse(fs.readFileSync(outputPath, 'utf8'));
+    }
+  } catch (e) {
+    console.warn('Could not read existing data:', e.message);
+  }
+
+  const existingVoteCount = existingData?.totalVotes || 0;
+  const existingLatestTs = existingData?.votes?.[0]?.slackTs || null;
+  const newLatestTs = votes[0]?.slackTs || null;
+
+  if (existingVoteCount === votes.length && existingLatestTs === newLatestTs) {
+    console.log('No new votes detected, skipping write.');
+    return;
+  }
+
   const users = await fetchAllUsers(votes);
 
   const output = {
@@ -157,13 +182,6 @@ async function main() {
     votes: votes,
     users: users,
   };
-
-  const outputPath = path.join(__dirname, '..', 'data', 'votes.json');
-  const outputDir = path.dirname(outputPath);
-
-  if (!fs.existsSync(outputDir)) {
-    fs.mkdirSync(outputDir, { recursive: true });
-  }
 
   fs.writeFileSync(outputPath, JSON.stringify(output, null, 2));
 }
