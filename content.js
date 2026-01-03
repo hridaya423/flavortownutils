@@ -4872,6 +4872,26 @@ function setupCommandPalette() {
                 window.location.href = `/projects/${cmd.projectId}#devlog`;
                 sessionStorage.setItem('flavortown_focus_devlog', 'true');
             } else {
+                if (window.__flavortownTutorial?.isActive) {
+                    const t = window.__flavortownTutorial;
+                    const currentStep = t.steps[t.currentStep];
+
+                    if (currentStep?.interactive === 'open-command-palette') {
+                        const nextStepIndex = t.currentStep + 1;
+                        if (nextStepIndex < t.steps.length) {
+                            const nextStep = t.steps[nextStepIndex];
+                            const targetHighlight = nextStep?.afterNavTarget || nextStep?.target || null;
+                            saveTutorialState(t.currentPhase, nextStepIndex, targetHighlight, true, nextStep.id, t.stepOrder || t.steps.map(s => s.id));
+                        }
+                    } else {
+                        const targetHighlight = currentStep?.afterNavTarget || currentStep?.target || null;
+                        saveTutorialState(t.currentPhase, t.currentStep, targetHighlight, true, currentStep?.id, t.stepOrder || t.steps.map(s => s.id));
+                    }
+                    sessionStorage.setItem('flavortown_tutorial_resume', JSON.stringify({
+                        phase: t.currentPhase,
+                        step: t.currentStep
+                    }));
+                }
                 window.location.href = cmd.url;
             }
         } else if (cmd.action === 'theme' && cmd.theme) {
@@ -5363,3 +5383,1934 @@ async function addProjectVotesDisplay() {
 function initVotesFeature() {
     addProjectVotesDisplay();
 }
+
+const EXTENSION_VERSION = chrome.runtime.getManifest().version;
+
+const THEME_OPTIONS = [
+    { id: 'default', name: 'Default', color: '#ec8b33' },
+    { id: 'catppuccin', name: 'Catppuccin', color: '#cba6f7' },
+    { id: 'sea', name: 'Sea', color: '#7dd3fc' },
+    { id: 'overcooked', name: 'Overcooked', color: '#f97316' }
+];
+
+let tutorialUserContext = {
+    username: null,
+    hasProjects: false,
+    projectWithShips: null,
+    projectForDevlog: null,
+    hasVotes: false,
+    scanned: false
+};
+
+async function scanUserContext() {
+    if (tutorialUserContext.scanned) return tutorialUserContext;
+
+    try {
+        const profileLink = document.querySelector('a[href^="/users/"], .sidebar__user-name');
+        if (profileLink) {
+            const href = profileLink.getAttribute('href');
+            if (href) {
+                tutorialUserContext.username = href.split('/users/')[1]?.split('/')[0];
+            } else {
+                tutorialUserContext.username = profileLink.textContent?.trim();
+            }
+        }
+
+        const projectsRes = await fetch('/projects', { credentials: 'same-origin' });
+        if (projectsRes.ok) {
+            const html = await projectsRes.text();
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const projectCards = doc.querySelectorAll('.project-card');
+
+            tutorialUserContext.hasProjects = projectCards.length > 0;
+
+            let projectWithTime = null;
+            let fallbackProject = null;
+            const projectIds = [];
+
+            for (const card of projectCards) {
+                const link = card.querySelector('a[href*="/projects/"]');
+                if (!link) continue;
+
+                const href = link.getAttribute('href');
+                const match = href.match(/\/projects\/(\d+)/);
+                if (!match) continue;
+
+                const projectId = match[1];
+                const projectName = card.querySelector('.project-card__title-link')?.textContent?.trim() || 'Your Project';
+                projectIds.push({ id: projectId, name: projectName, href });
+
+                const stats = card.querySelectorAll('.project-card__stats h5');
+                let hasTime = false;
+                for (const stat of stats) {
+                    const text = stat.textContent.trim();
+                    if (text.match(/\d+h/) || (text.match(/\d+m/) && !text.match(/^0m$/))) {
+                        hasTime = true;
+                        break;
+                    }
+                }
+
+                if (hasTime && !projectWithTime) {
+                    projectWithTime = { id: projectId, name: projectName };
+                }
+                if (!fallbackProject) {
+                    fallbackProject = { id: projectId, name: projectName };
+                }
+
+                const shipBadge = card.querySelector('.badge--shipped, .shipped, [class*="ship"]');
+                const devlogCount = card.querySelector('[class*="devlog"]');
+                if ((shipBadge || devlogCount) && !tutorialUserContext.projectWithShips) {
+                    tutorialUserContext.projectWithShips = {
+                        id: projectId,
+                        url: href,
+                        name: projectName
+                    };
+                }
+            }
+
+            tutorialUserContext.projectForDevlog = projectWithTime || fallbackProject;
+
+            if (!tutorialUserContext.projectWithShips && projectIds.length > 0) {
+                for (const project of projectIds) {
+                    try {
+                        const projectRes = await fetch(`/projects/${project.id}`, { credentials: 'same-origin' });
+                        if (!projectRes.ok) continue;
+                        const projectHtml = await projectRes.text();
+                        const projectDoc = parser.parseFromString(projectHtml, 'text/html');
+                        const shipPost = projectDoc.querySelector('article.post--ship, .post--ship, .post__ship-title');
+                        if (shipPost) {
+                            tutorialUserContext.projectWithShips = {
+                                id: project.id,
+                                url: project.href,
+                                name: project.name
+                            };
+                            break;
+                        }
+                    } catch (e) {
+                        console.warn('Tutorial: Could not scan project for ships', e);
+                    }
+                }
+            }
+        }
+    } catch (e) {
+        console.warn('Tutorial: Could not scan user context', e);
+    }
+
+    tutorialUserContext.scanned = true;
+    return tutorialUserContext;
+}
+
+const TUTORIAL_PHASE_1 = [
+    {
+        id: 'welcome',
+        title: 'Thanks for installing! 🎉',
+        description: 'Welcome to Flavortown Utils. Let me give you a quick tour of the cool features! — it\'ll only take a minute.',
+        target: null,
+        position: 'center',
+        icon: '👋'
+    },
+    {
+        id: 'themes-demo',
+        title: 'Pick a theme',
+        description: 'First up, choose a look. Try one below — you can always change it later with Ctrl+Shift+T.',
+        target: null,
+        position: 'center',
+        icon: '🎨',
+        interactive: 'theme-picker'
+    },
+    {
+        id: 'pinnable-sidebar',
+        title: 'Pin the sidebar',
+        description: 'Click the pin icon to keep the sidebar visible. Handy when you\'re browsing around.',
+        target: '.sidebar__blob',
+        position: 'right',
+        icon: '📌',
+        waitForClick: '.sidebar__pin-btn'
+    },
+    {
+        id: 'command-palette-demo',
+        title: 'Quick navigation',
+        description: 'Press Ctrl+K anytime to open the command palette. Jump anywhere, change settings, all from your keyboard. Give it a try!',
+        target: null,
+        position: 'center',
+        icon: '⌨️',
+        interactive: 'open-command-palette'
+    },
+    {
+        id: 'phase-choice',
+        title: 'That\'s the essentials!',
+        description: 'Want to see what else Flavortown Utils has to offer? There\'s a lot more.',
+        target: null,
+        position: 'center',
+        icon: '✨',
+        isChoice: true
+    }
+];
+
+const TUTORIAL_PHASE_2 = [
+    {
+        id: 'inline-devlog',
+        title: 'Inline devlog posting',
+        description: 'Post devlogs right from your project page — no more navigating away. Let me show you...',
+        afterNavDescription: 'Here you go! Look for the devlog form right here on the project page. Quick and easy.',
+        target: null,
+        afterNavTarget: '.flavortown-inline-devlog, .post-form, form[action*="devlogs"], .post',
+        position: 'center',
+        icon: '📝',
+        interactive: 'navigate-project-devlog'
+    },
+    {
+        id: 'shots-integration',
+        title: 'Image styling',
+        description: 'Built-in shots.so integration for beautifying your devlog images. Look for it when uploading attachments.',
+        target: null,
+        afterNavTarget: '.flavortown-shots-btn',
+        position: 'center',
+        icon: '📸',
+        interactive: 'navigate-shots'
+    },
+    {
+        id: 'ship-stats',
+        title: 'Ship stats',
+        description: 'Every ship post now shows detailed stats — time spent, devlog count, and more. Check them out on any project page!',
+        target: null,
+        position: 'center',
+        icon: '📊'
+    },
+    {
+        id: 'kitchen-dashboard',
+        title: 'Dashboard graphs',
+        description: 'Your home page now shows activity graphs and stats. Let me take you there...',
+        afterNavDescription: 'This is your dashboard! Activity graphs show your coding patterns over time.',
+        target: null,
+        afterNavTarget: '.flavortown-kitchen-dashboard, .flavortown-graph-container',
+        position: 'center',
+        icon: '📈',
+        interactive: 'navigate-dashboard'
+    },
+    {
+        id: 'community-votes',
+        title: 'Community votes',
+        description: 'See feedback from people who voted on your projects, right on the project page.',
+        target: null,
+        position: 'center',
+        icon: '⭐',
+        skip: true
+    },
+    {
+        id: 'buffet-mode',
+        title: 'Buffet mode',
+        description: 'Endless devlog browsing. Look for the Buffet button on any project to start scrolling.',
+        afterNavDescription: 'Found it! Click this button to enter Buffet mode and scroll through devlogs infinitely.',
+        target: null,
+        afterNavTarget: '.flavortown-doomscroll-toggle',
+        position: 'center',
+        icon: '🍱',
+        interactive: 'show-buffet-button'
+    },
+    {
+        id: 'phase2-choice',
+        title: 'Want to see more?',
+        description: 'There\'s still a lot more — shop features, image tools, and a few other goodies.',
+        target: null,
+        position: 'center',
+        icon: '📦',
+        isChoice: true,
+        choicePhase: 3
+    }
+];
+
+const TUTORIAL_PHASE_3 = [
+    {
+        id: 'shop-enhancements',
+        title: 'Shop upgrades',
+        description: 'Goals, priority items, and progress tracking. Let me show you...',
+        afterNavDescription: 'Here\'s the shop! Check out the goals panel — track items you want and see how close you are.',
+        target: null,
+        afterNavTarget: '.flavortown-goals-enhanced, .shop-goals',
+        position: 'center',
+        icon: '🛒',
+        interactive: 'navigate-shop'
+    },
+    {
+        id: 'search-projects',
+        title: 'Project search',
+        description: 'Use the search bar or Ctrl+K to quickly find any project.',
+        target: null,
+        position: 'center',
+        icon: '🔍',
+        interactive: 'navigate-project-search'
+    },
+    {
+        id: 'auto-achievements',
+        title: 'Auto achievements',
+        description: 'Achievements get claimed automatically — no more clicking through each one.',
+        target: null,
+        position: 'center',
+        icon: '🏆'
+    },
+    {
+        id: 'better-images',
+        title: 'Full-size images',
+        description: 'Devlog images aren\'t cropped anymore. See them as they were meant to be.',
+        target: null,
+        position: 'center',
+        icon: '🖼️'
+    },
+    {
+        id: 'better-votes',
+        title: 'Better votes page',
+        description: 'The voting history page got a cleaner layout. Let me show you...',
+        afterNavDescription: 'Here\'s your votes page! Much cleaner table layout with better readability.',
+        target: null,
+        afterNavTarget: '.my-votes, .votes-table, table',
+        position: 'center',
+        icon: '🗳️',
+        interactive: 'navigate-votes',
+        skip: true
+    },
+    {
+        id: 'done',
+        title: 'You\'re all set! 🎉',
+        description: 'That\'s most of it! Check the README for more features!. Now go ship something great!',
+        target: null,
+        position: 'center',
+        icon: '🚀',
+        isFinal: true
+    }
+];
+
+const VERSION_FEATURES = {
+    '1.6.0': [
+        { title: 'Community Votes', description: 'See votes and feedback on your shipped projects', icon: '⭐' },
+        { title: 'Improved Theming', description: 'Better theme support for accessories and 404 pages', icon: '🎨' },
+        { title: 'Bug Fixes', description: 'Various performance and stability improvements', icon: '🐛' }
+    ]
+};
+
+async function getOnboardingState() {
+    return new Promise(resolve => {
+        browserAPI.storage.local.get(['flavortown_onboarding_complete', 'flavortown_last_version'], result => {
+            resolve({
+                onboardingComplete: result.flavortown_onboarding_complete || false,
+                lastVersion: result.flavortown_last_version || null
+            });
+        });
+    });
+}
+
+async function setOnboardingComplete() {
+    return new Promise(resolve => {
+        browserAPI.storage.local.set({
+            flavortown_onboarding_complete: true,
+            flavortown_last_version: EXTENSION_VERSION
+        }, resolve);
+    });
+}
+
+async function setLastVersion() {
+    return new Promise(resolve => {
+        browserAPI.storage.local.set({ flavortown_last_version: EXTENSION_VERSION }, resolve);
+    });
+}
+
+function saveTutorialState(phase, stepIndex, targetHighlight = null, runHandlerAgain = false, stepId = null, stepOrder = null) {
+    localStorage.setItem('flavortown_tutorial_state', JSON.stringify({
+        phase,
+        stepIndex,
+        stepId,
+        targetHighlight,
+        runHandlerAgain,
+        stepOrder,
+        timestamp: Date.now()
+    }));
+}
+
+function getTutorialState() {
+    try {
+        const state = localStorage.getItem('flavortown_tutorial_state');
+        if (!state) return null;
+        const parsed = JSON.parse(state);
+        if (Date.now() - parsed.timestamp > 30 * 60 * 1000) {
+            localStorage.removeItem('flavortown_tutorial_state');
+            return null;
+        }
+        return parsed;
+    } catch {
+        return null;
+    }
+}
+
+function clearTutorialState() {
+    localStorage.removeItem('flavortown_tutorial_state');
+    sessionStorage.removeItem('flavortown_tutorial_state');
+    sessionStorage.removeItem('flavortown_tutorial_resume');
+}
+
+function injectTutorialStyles() {
+    if (document.getElementById('flavortown-tutorial-styles')) return;
+
+    const style = document.createElement('style');
+    style.id = 'flavortown-tutorial-styles';
+    style.textContent = `
+        @keyframes flavortown-pulse {
+            0%, 100% { box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.6), 0 0 0 4px var(--flavortown-tutorial-accent, #ec8b33); }
+            50% { box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.6), 0 0 0 8px var(--flavortown-tutorial-accent, #ec8b33), 0 0 20px var(--flavortown-tutorial-accent, #ec8b33); }
+        }
+
+        @keyframes flavortown-confetti-fall {
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+
+        @keyframes flavortown-confetti-burst {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(calc(-50% + var(--end-x)), calc(-50% + var(--end-y))) scale(0.5);
+                opacity: 0;
+            }
+        }
+
+        @keyframes flavortown-bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes flavortown-fade-in {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes flavortown-scale-in {
+            from { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+            to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
+
+        .flavortown-tutorial-spotlight {
+            animation: flavortown-pulse 2s ease-in-out infinite;
+        }
+
+        .flavortown-confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            top: -20px;
+            z-index: 100001;
+            pointer-events: none;
+            animation: flavortown-confetti-fall 3s linear forwards;
+        }
+
+        .flavortown-theme-btn {
+            padding: 12px 20px;
+            border-radius: 10px;
+            border: 2px solid var(--flavortown-tutorial-border, rgba(0, 0, 0, 0.25));
+            background: var(--flavortown-tutorial-surface, rgba(255, 255, 255, 0.9));
+            color: var(--flavortown-tutorial-text, inherit);
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        }
+
+        .flavortown-theme-btn:hover {
+            transform: translateY(-2px);
+            border-color: var(--flavortown-tutorial-accent, #ec8b33);
+            background: var(--flavortown-tutorial-bg, rgba(255, 255, 255, 1));
+        }
+
+        .flavortown-theme-btn.active {
+            border-color: var(--flavortown-tutorial-accent, #ec8b33);
+            background: var(--flavortown-tutorial-bg, rgba(255, 255, 255, 1));
+            box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+        }
+
+        .flavortown-theme-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: 2px solid rgba(0,0,0,0.15);
+            flex-shrink: 0;
+        }
+
+        #flavortown-tutorial-modal {
+            /* Default theme (cream/brown) - fallback values match Flavortown's default */
+            --flavortown-tutorial-accent: var(--ctp-mauve, var(--sea-cyan, var(--overcooked-coral, var(--color-brown, #5d4e37))));
+            --flavortown-tutorial-bg: var(--ctp-base, var(--sea-dark, var(--overcooked-dark, var(--color-cream, #fdf6e3))));
+            --flavortown-tutorial-surface: var(--ctp-surface0, var(--sea-mid, var(--overcooked-mid, var(--color-cream-dark, #efe6d5))));
+            --flavortown-tutorial-border: var(--ctp-surface1, var(--sea-surface, var(--overcooked-surface, var(--color-brown-light, #8b7355))));
+            --flavortown-tutorial-text: var(--ctp-text, var(--sea-white, var(--overcooked-white, var(--color-brown, #5d4e37))));
+            --flavortown-tutorial-subtext: var(--ctp-subtext0, var(--sea-foam, var(--overcooked-foam, var(--color-brown-light, #8b7355))));
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+function showConfetti() {
+    const colors = ['#cba6f7', '#f38ba8', '#a6e3a1', '#89b4fa', '#fab387', '#f9e2af'];
+    const confettiCount = 30;
+
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
+
+    for (let i = 0; i < confettiCount; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'flavortown-confetti-burst';
+
+        const angle = (Math.PI * 2 * i) / confettiCount + (Math.random() - 0.5) * 0.5;
+        const velocity = 100 + Math.random() * 120;
+        const endX = Math.cos(angle) * velocity;
+        const endY = Math.sin(angle) * velocity;
+
+        confetti.style.cssText = `
+            position: fixed;
+            width: ${6 + Math.random() * 6}px;
+            height: ${6 + Math.random() * 6}px;
+            left: ${centerX}px;
+            top: ${centerY}px;
+            background-color: ${colors[Math.floor(Math.random() * colors.length)]};
+            z-index: 100001;
+            pointer-events: none;
+            border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
+            opacity: 1;
+            transform: translate(-50%, -50%) rotate(${Math.random() * 360}deg);
+            animation: flavortown-confetti-burst ${0.5 + Math.random() * 0.3}s ease-out forwards;
+            --end-x: ${endX}px;
+            --end-y: ${endY}px;
+        `;
+
+        document.body.appendChild(confetti);
+        setTimeout(() => confetti.remove(), 1000);
+    }
+}
+
+class TutorialController {
+    constructor() {
+        this.currentPhase = 1;
+        this.currentStep = 0;
+        this.steps = [...TUTORIAL_PHASE_1];
+        this.stepOrder = this.steps.map(s => s.id);
+        this.overlay = null;
+        this.spotlight = null;
+        this.modal = null;
+        this.escHandler = null;
+        this.clickWaitHandler = null;
+        this.targetRetryCount = 0;
+        this.targetRetryStepId = null;
+        this.targetObserver = null;
+        this.targetObserverCleanup = null;
+        this.targetObserverStepId = null;
+        this.debugIndicator = null;
+        this.debugOutline = null;
+        window.__flavortownTutorial = this;
+        this.resumeState = null;
+        this.alwaysDebug = localStorage.getItem('flavortown_tutorial_debug') === 'true';
+        this.pendingNavigationTimeout = null;
+        this.navigationStepId = null;
+        this.pendingInteractiveTimeouts = [];
+    }
+
+    setInteractiveTimeout(callback, delay, stepId) {
+        const timeoutId = setTimeout(() => {
+            if (this.steps[this.currentStep]?.id === stepId) {
+                callback();
+            }
+            this.pendingInteractiveTimeouts = this.pendingInteractiveTimeouts.filter(t => t.id !== timeoutId);
+        }, delay);
+        this.pendingInteractiveTimeouts.push({ id: timeoutId, stepId });
+        return timeoutId;
+    }
+
+    clearInteractiveTimeouts() {
+        this.pendingInteractiveTimeouts.forEach(t => clearTimeout(t.id));
+        this.pendingInteractiveTimeouts = [];
+    }
+
+    start() {
+        injectTutorialStyles();
+        this.overlay = this.createOverlay();
+        this.stepOrder = this.steps.map(s => s.id);
+        this.showStep(0);
+
+        scanUserContext().catch(e => console.warn('Tutorial scan failed:', e));
+
+        this.escHandler = (e) => {
+            if (e.key === 'Escape') {
+                this.end();
+            }
+        };
+        document.addEventListener('keydown', this.escHandler);
+    }
+
+    createOverlay() {
+        const overlay = document.createElement('div');
+        overlay.id = 'flavortown-tutorial-overlay';
+        overlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.35);
+            z-index: 99998;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        `;
+        document.body.appendChild(overlay);
+        requestAnimationFrame(() => overlay.style.opacity = '1');
+        return overlay;
+    }
+
+    createSpotlight(targetElement) {
+        if (this.spotlight) this.spotlight.remove();
+
+        if (this.sidebarHoverHandler && this.sidebarElement) {
+            this.sidebarElement.removeEventListener('mouseenter', this.sidebarHoverHandler);
+            this.sidebarElement.removeEventListener('mouseleave', this.sidebarHoverHandler);
+            this.sidebarHoverHandler = null;
+            this.sidebarElement = null;
+        }
+
+        if (this.overlay) {
+            this.overlay.style.opacity = '0.55';
+        }
+
+        const spotlight = document.createElement('div');
+        spotlight.id = 'flavortown-tutorial-spotlight';
+        spotlight.className = 'flavortown-tutorial-spotlight';
+
+        const rect = targetElement.getBoundingClientRect();
+        let padding = 8;
+        let computedRadius = window.getComputedStyle(targetElement).borderRadius || '12px';
+
+        if (targetElement.classList.contains('sidebar__blob') || targetElement.classList.contains('sidebar__pin-btn')) {
+            const sidebar = document.querySelector('.sidebar');
+            const sidebarBlob = document.querySelector('.sidebar__blob');
+            const targetEl = sidebarBlob || sidebar;
+
+            if (targetEl) {
+                const updateSpotlightPosition = () => {
+                    const sRect = targetEl.getBoundingClientRect();
+                    spotlight.style.top = `${sRect.top - 8}px`;
+                    spotlight.style.left = `${sRect.left - 8}px`;
+                    spotlight.style.width = `${sRect.width + 16}px`;
+                    spotlight.style.height = `${sRect.height + 16}px`;
+                };
+
+                spotlight.style.position = 'fixed';
+                spotlight.style.borderRadius = '20px';
+                spotlight.style.zIndex = '99999';
+                spotlight.style.pointerEvents = 'none';
+                spotlight.style.boxShadow = `0 0 0 9999px rgba(0, 0, 0, 0.65), 0 0 0 5px var(--flavortown-tutorial-accent, #ec8b33), 0 0 25px rgba(236, 139, 51, 0.45)`;
+                spotlight.style.outline = '2px solid var(--flavortown-tutorial-accent, #ec8b33)';
+                spotlight.style.transition = 'all 0.3s ease';
+
+                updateSpotlightPosition();
+
+                if (sidebar) {
+                    const hoverHandler = () => {
+                        setTimeout(updateSpotlightPosition, 50);
+                        setTimeout(updateSpotlightPosition, 200);
+                        setTimeout(updateSpotlightPosition, 400);
+                    };
+                    sidebar.addEventListener('mouseenter', hoverHandler);
+                    sidebar.addEventListener('mouseleave', hoverHandler);
+                    this.sidebarHoverHandler = hoverHandler;
+                    this.sidebarElement = sidebar;
+                }
+
+                document.body.appendChild(spotlight);
+                this.spotlight = spotlight;
+                return spotlight;
+            }
+        }
+
+        spotlight.style.cssText = `
+            position: fixed;
+            top: ${rect.top - padding}px;
+            left: ${rect.left - padding}px;
+            width: ${rect.width + padding * 2}px;
+            height: ${rect.height + padding * 2}px;
+            border-radius: ${computedRadius || '12px'};
+            z-index: 99999;
+            pointer-events: none;
+            box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.65), 0 0 0 5px var(--flavortown-tutorial-accent, #ec8b33), 0 0 25px rgba(236, 139, 51, 0.45);
+            outline: 2px solid var(--flavortown-tutorial-accent, #ec8b33);
+            transition: all 0.4s ease;
+        `;
+
+        document.body.appendChild(spotlight);
+        this.spotlight = spotlight;
+        return spotlight;
+    }
+
+    createModal(step, index) {
+        if (this.modal) {
+            this.modal.remove();
+            this.modal = null;
+        }
+
+        const modal = document.createElement('div');
+        modal.id = 'flavortown-tutorial-modal';
+
+        const totalSteps = this.steps.length;
+        const progress = ((index + 1) / totalSteps) * 100;
+        const target = step.target ? this.findTargetMatch([step.target])?.el : null;
+        const canAutoPosition = step.position === 'center' && target;
+        let useCenterPosition = !canAutoPosition && (step.position === 'center' || !target);
+        let modalTransformEnd = '';
+        const isPaletteStep = step.interactive === 'open-command-palette';
+        if (isPaletteStep) {
+            useCenterPosition = false;
+            modalTransformEnd = 'translateX(-50%) scale(1)';
+        }
+
+        modal.style.cssText = `
+            position: fixed;
+            z-index: 100000;
+            background: var(--flavortown-tutorial-bg, #fdf6e3);
+            border: 2px solid var(--flavortown-tutorial-border, #8b7355);
+            border-radius: 16px;
+            padding: 24px;
+            max-width: 420px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            color: var(--flavortown-tutorial-text, #5d4e37);
+            opacity: 0;
+            transition: all 0.3s ease;
+        `;
+
+        if (step.interactive === 'open-command-palette') {
+            modal.style.bottom = '40px';
+            modal.style.left = '50%';
+            modal.style.top = 'auto';
+            modal.style.transform = 'translateX(-50%) scale(0.9)';
+        } else if (canAutoPosition && target) {
+            const rect = target.getBoundingClientRect();
+            const modalWidth = 420;
+            const modalHeight = 260;
+            const spaceRight = window.innerWidth - rect.right;
+            const spaceLeft = rect.left;
+            const spaceBelow = window.innerHeight - rect.bottom;
+
+            if (spaceRight >= modalWidth + 24) {
+                modal.style.top = `${Math.min(rect.top + 20, window.innerHeight - 350)}px`;
+                modal.style.left = `${Math.min(rect.right + 24, window.innerWidth - 450)}px`;
+                modal.style.transform = 'translateX(20px)';
+                modalTransformEnd = 'translateX(0)';
+            } else if (spaceLeft >= modalWidth + 24) {
+                modal.style.top = `${Math.min(rect.top + 20, window.innerHeight - 350)}px`;
+                modal.style.left = `${Math.max(20, rect.left - modalWidth - 24)}px`;
+                modal.style.transform = 'translateX(-20px)';
+                modalTransformEnd = 'translateX(0)';
+            } else if (spaceBelow >= modalHeight + 24) {
+                modal.style.top = `${Math.min(rect.bottom + 24, window.innerHeight - 300)}px`;
+                modal.style.left = `${Math.min(Math.max(20, rect.left), window.innerWidth - 450)}px`;
+                modal.style.transform = 'translateY(20px)';
+                modalTransformEnd = 'translateY(0)';
+            } else {
+                useCenterPosition = true;
+            }
+        }
+
+        if (useCenterPosition) {
+            modal.style.top = '50%';
+            modal.style.left = '50%';
+            modal.style.transform = 'translate(-50%, -50%) scale(0.9)';
+        } else if (step.position === 'right' && target) {
+            const rect = target.getBoundingClientRect();
+            const leftOffset = step.target === '.sidebar__blob' ? 320 : rect.right + 24;
+            modal.style.top = `${Math.min(rect.top + 20, window.innerHeight - 350)}px`;
+            modal.style.left = `${Math.min(leftOffset, window.innerWidth - 450)}px`;
+            modal.style.transform = 'translateX(20px)';
+        } else if (step.position === 'left' && target) {
+            const rect = target.getBoundingClientRect();
+            const modalWidth = 420;
+            modal.style.top = `${Math.min(rect.top + 20, window.innerHeight - 350)}px`;
+            modal.style.left = `${Math.max(20, rect.left - modalWidth - 24)}px`;
+            modal.style.transform = 'translateX(-20px)';
+        }
+
+        let interactiveContent = '';
+        let buttonsHtml = '';
+
+        if (step.interactive === 'theme-picker') {
+            interactiveContent = `
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 16px 0;">
+                    ${THEME_OPTIONS.map(theme => `
+                        <button class="flavortown-theme-btn" data-theme="${theme.id}">
+                            <span class="flavortown-theme-dot" style="background: ${theme.color}"></span>
+                            ${theme.name}
+                        </button>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        if (step.isChoice) {
+            const nextPhase = step.choicePhase || 2;
+            const skipText = nextPhase === 3 ? "I've seen enough!" : "I'm good, let's go!";
+            const continueText = nextPhase === 3 ? "Show me everything!" : "Show me more!";
+            buttonsHtml = `
+                <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                    <button id="tutorial-skip-choice" data-phase="${nextPhase}" style="
+                        padding: 12px 24px;
+                        border-radius: 8px;
+                        border: 1px solid var(--flavortown-tutorial-border, #8b7355);
+                        background: transparent;
+                        color: inherit;
+                        cursor: pointer;
+                        font-size: 0.9em;
+                        transition: all 0.2s;
+                    ">${skipText}</button>
+                    <button id="tutorial-continue-choice" data-phase="${nextPhase}" style="
+                        padding: 12px 24px;
+                        border-radius: 8px;
+                        border: none;
+                        background: var(--flavortown-tutorial-accent, #5d4e37);
+                        color: var(--flavortown-tutorial-bg, #fdf6e3);
+                        cursor: pointer;
+                        font-size: 0.9em;
+                        font-weight: 600;
+                        transition: all 0.2s;
+                    ">${continueText}</button>
+                </div>
+            `;
+        } else if (step.isFinal) {
+            buttonsHtml = `
+                <div style="display: flex; gap: 10px; justify-content: center;">
+                    <button id="tutorial-finish" style="
+                        padding: 14px 32px;
+                        border-radius: 8px;
+                        border: none;
+                        background: var(--flavortown-tutorial-accent, #5d4e37);
+                        color: var(--flavortown-tutorial-bg, #fdf6e3);
+                        cursor: pointer;
+                        font-size: 1em;
+                        font-weight: 600;
+                        transition: all 0.2s;
+                    ">Let's go! 🎉</button>
+                </div>
+            `;
+        } else {
+            buttonsHtml = `
+                <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                    ${index > 0 ? `
+                        <button id="tutorial-prev" style="
+                            padding: 10px 20px;
+                            border-radius: 8px;
+                            border: 1px solid var(--flavortown-tutorial-border, #3a3a3a);
+                            background: transparent;
+                            color: inherit;
+                            cursor: pointer;
+                            font-size: 0.9em;
+                            transition: all 0.2s;
+                        ">Back</button>
+                    ` : ''}
+                    <button id="tutorial-next" style="
+                        padding: 10px 24px;
+                        border-radius: 8px;
+                        border: none;
+                        background: var(--flavortown-tutorial-accent, #5d4e37);
+                        color: var(--flavortown-tutorial-bg, #fdf6e3);
+                        cursor: pointer;
+                        font-size: 0.9em;
+                        font-weight: 600;
+                        transition: all 0.2s;
+                    ">${step.waitForClick ? 'Waiting...' : 'Next'}</button>
+                </div>
+            `;
+        }
+
+        modal.innerHTML = `
+            <div style="margin-bottom: 16px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <span style="font-size: 0.8em; color: var(--flavortown-tutorial-subtext, #8b7355);">
+                        ${this.currentPhase === 1 ? 'Essentials' : this.currentPhase === 2 ? 'Core Features' : 'Extra Features'} • Step ${index + 1} of ${totalSteps}
+                    </span>
+                    <button id="tutorial-skip" style="
+                        background: none;
+                        border: none;
+                        color: var(--flavortown-tutorial-subtext, #8b7355);
+                        cursor: pointer;
+                        font-size: 0.85em;
+                        padding: 4px 8px;
+                        border-radius: 4px;
+                        transition: background 0.2s;
+                    ">Skip</button>
+                </div>
+                <div style="
+                    width: 100%;
+                    height: 4px;
+                    background: var(--flavortown-tutorial-surface, #efe6d5);
+                    border-radius: 2px;
+                    overflow: hidden;
+                ">
+                    <div style="
+                        width: ${progress}%;
+                        height: 100%;
+                        background: var(--flavortown-tutorial-accent, #5d4e37);
+                        transition: width 0.3s ease;
+                    "></div>
+                </div>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                <span style="font-size: 2em;">${step.icon || '✨'}</span>
+                <h3 style="
+                    margin: 0;
+                    font-size: 1.3em;
+                    color: inherit;
+                ">${step.title}</h3>
+            </div>
+
+            <p style="
+                margin: 0 0 16px 0;
+                color: var(--flavortown-tutorial-subtext, #8b7355);
+                line-height: 1.6;
+                font-size: 0.95em;
+                white-space: pre-line;
+            ">${step.description}</p>
+
+            ${interactiveContent}
+            ${buttonsHtml}
+        `;
+
+        document.body.appendChild(modal);
+        this.modal = modal;
+
+        requestAnimationFrame(() => {
+            modal.style.opacity = '1';
+            if (useCenterPosition) {
+                modal.style.transform = 'translate(-50%, -50%) scale(1)';
+            } else if (modalTransformEnd) {
+                modal.style.transform = modalTransformEnd;
+            } else {
+                modal.style.transform = 'translateX(0)';
+            }
+        });
+
+        this.setupModalListeners(step);
+
+        return modal;
+    }
+
+    setupModalListeners(step) {
+        const modal = this.modal;
+
+        const skipBtn = modal.querySelector('#tutorial-skip');
+        if (skipBtn) {
+            skipBtn.addEventListener('mouseenter', () => skipBtn.style.background = 'rgba(255,255,255,0.1)');
+            skipBtn.addEventListener('mouseleave', () => skipBtn.style.background = 'none');
+            skipBtn.addEventListener('click', () => this.end());
+        }
+
+        const nextBtn = modal.querySelector('#tutorial-next');
+        if (nextBtn && !step.waitForClick) {
+            nextBtn.addEventListener('mouseenter', () => nextBtn.style.opacity = '0.85');
+            nextBtn.addEventListener('mouseleave', () => nextBtn.style.opacity = '1');
+            nextBtn.addEventListener('click', () => this.next());
+        }
+
+        const prevBtn = modal.querySelector('#tutorial-prev');
+        if (prevBtn) {
+            prevBtn.addEventListener('mouseenter', () => prevBtn.style.background = 'rgba(255,255,255,0.1)');
+            prevBtn.addEventListener('mouseleave', () => prevBtn.style.background = 'transparent');
+            prevBtn.addEventListener('click', () => this.prev());
+        }
+
+        const skipChoiceBtn = modal.querySelector('#tutorial-skip-choice');
+        if (skipChoiceBtn) {
+            skipChoiceBtn.addEventListener('click', () => this.end());
+        }
+
+        const continueChoiceBtn = modal.querySelector('#tutorial-continue-choice');
+        if (continueChoiceBtn) {
+            const targetPhase = parseInt(continueChoiceBtn.dataset.phase) || 2;
+            continueChoiceBtn.addEventListener('mouseenter', () => continueChoiceBtn.style.opacity = '0.85');
+            continueChoiceBtn.addEventListener('mouseleave', () => continueChoiceBtn.style.opacity = '1');
+            continueChoiceBtn.addEventListener('click', () => {
+                if (targetPhase === 2) {
+                    this.startPhase2();
+                } else if (targetPhase === 3) {
+                    this.startPhase3();
+                }
+            });
+        }
+
+        const finishBtn = modal.querySelector('#tutorial-finish');
+        if (finishBtn) {
+            finishBtn.addEventListener('click', () => {
+                showConfetti();
+                this.end();
+            });
+        }
+
+        const themeBtns = modal.querySelectorAll('.flavortown-theme-btn');
+        themeBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const themeId = btn.dataset.theme;
+                browserAPI.storage.sync.set({ theme: themeId });
+                themeBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                if (typeof applyTheme === 'function') {
+                    applyTheme(themeId);
+                }
+            });
+        });
+
+        if (step.waitForClick) {
+            const waitTarget = document.querySelector(step.waitForClick);
+            if (waitTarget) {
+                if (step.waitForClick === '.sidebar__pin-btn') {
+                    const pinStyle = document.createElement('style');
+                    pinStyle.id = 'flavortown-tutorial-pin-style';
+                    pinStyle.textContent = `
+                        /* Force sidebar to expanded state during tutorial */
+                        .sidebar {
+                            z-index: 100000 !important;
+                            pointer-events: auto !important;
+                            transform: translateX(0) !important;
+                            opacity: 1 !important;
+                        }
+                        .sidebar__blob {
+                            z-index: 100000 !important;
+                            pointer-events: auto !important;
+                            transform: translateX(0) !important;
+                            opacity: 1 !important;
+                        }
+                        .sidebar__content {
+                            opacity: 1 !important;
+                            visibility: visible !important;
+                        }
+                        .sidebar__pin-btn {
+                            opacity: 1 !important;
+                            visibility: visible !important;
+                            pointer-events: auto !important;
+                            z-index: 100001 !important;
+                            transform: scale(1.1) !important;
+                            box-shadow: 0 0 0 3px var(--flavortown-tutorial-accent, #ec8b33),
+                                        0 0 20px rgba(236, 139, 51, 0.5) !important;
+                            animation: flavortown-pulse 2s ease-in-out infinite !important;
+                        }
+                    `;
+                    document.head.appendChild(pinStyle);
+
+                    const sidebar = document.querySelector('.sidebar');
+                    if (sidebar) {
+                        sidebar.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
+                    }
+
+                    this.pinStyleElement = pinStyle;
+                }
+
+                this.clickWaitHandler = () => {
+                    if (this.pinStyleElement) {
+                        this.pinStyleElement.remove();
+                        this.pinStyleElement = null;
+                    }
+
+                    this.next();
+                };
+                waitTarget.addEventListener('click', this.clickWaitHandler, { once: true });
+            }
+        }
+
+        if (step.interactive === 'open-command-palette') {
+            saveTutorialState(this.currentPhase, this.currentStep, null, true, step.id, this.stepOrder);
+
+            this.setInteractiveTimeout(() => {
+                const isMac = navigator.userAgent.indexOf('Mac') >= 0;
+                document.dispatchEvent(new KeyboardEvent('keydown', {
+                    key: 'k',
+                    code: 'KeyK',
+                    ctrlKey: !isMac,
+                    metaKey: isMac,
+                    bubbles: true
+                }));
+
+                const cmdPalette = document.querySelector('.flavortown-cmd-palette');
+                if (cmdPalette) {
+                    const stepBeforeOpen = this.currentStep;
+
+                    const observer = new MutationObserver((mutations) => {
+                        for (const mutation of mutations) {
+                            if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                                if (!cmdPalette.classList.contains('open')) {
+                                    observer.disconnect();
+                                    if (this.steps[this.currentStep]?.id !== step.id) {
+                                        return;
+                                    }
+                                    const savedState = getTutorialState();
+                                    if (savedState && savedState.stepIndex !== stepBeforeOpen) {
+                                        return;
+                                    }
+                                    this.setInteractiveTimeout(() => {
+                                        if (this.steps[this.currentStep]?.id === step.id) {
+                                            this.next();
+                                        }
+                                    }, 300, step.id);
+                                }
+                            }
+                        }
+                    });
+                    observer.observe(cmdPalette, { attributes: true });
+
+                    this.cmdPaletteObserver = observer;
+                }
+            }, 800, step.id);
+        }
+        if (step.interactive === 'navigate-project-devlog') {
+            const pathname = window.location.pathname;
+            const isProjectDetailPage = /^\/projects\/\d+$/.test(pathname);
+            if (isProjectDetailPage) {
+                return;
+            }
+
+            if (tutorialUserContext.projectForDevlog) {
+                saveTutorialState(this.currentPhase, this.currentStep, '.flavortown-inline-devlog, .post-form, form[action*="devlogs"]', false, step.id, this.stepOrder);
+                window.location.href = `/projects/${tutorialUserContext.projectForDevlog.id}`;
+                return;
+            }
+
+            this.setInteractiveTimeout(() => {
+                const isProjectsListPage = pathname === '/projects';
+
+                if (isProjectsListPage) {
+                    const projectCards = document.querySelectorAll('.project-card');
+                    let bestProjectId = null;
+                    let fallbackProjectId = null;
+
+                    for (const card of projectCards) {
+                        const link = card.querySelector('a[href*="/projects/"]');
+                        if (!link) continue;
+
+                        const match = link.getAttribute('href').match(/\/projects\/(\d+)/);
+                        if (!match) continue;
+
+                        const projectId = match[1];
+                        const stats = card.querySelectorAll('.project-card__stats h5');
+                        let hasTime = false;
+                        for (const stat of stats) {
+                            const text = stat.textContent.trim();
+                            if (text.match(/\d+h/) || (text.match(/\d+m/) && !text.match(/^0m$/))) {
+                                hasTime = true;
+                                break;
+                            }
+                        }
+
+                        if (hasTime && !bestProjectId) bestProjectId = projectId;
+                        if (!fallbackProjectId) fallbackProjectId = projectId;
+                    }
+
+                    const projectId = bestProjectId || fallbackProjectId;
+                    if (projectId) {
+                        saveTutorialState(this.currentPhase, this.currentStep, '.flavortown-inline-devlog, .post-form, form[action*="devlogs"]', false, step.id, this.stepOrder);
+                        window.location.href = `/projects/${projectId}`;
+                        return;
+                    }
+                    this.next();
+                } else {
+                    saveTutorialState(this.currentPhase, this.currentStep, null, true, step.id, this.stepOrder);
+                    window.location.href = '/projects';
+                }
+            }, 200, step.id);
+        }
+
+        if (step.interactive === 'navigate-dashboard') {
+            this.navigationStepId = step.id;
+            this.pendingNavigationTimeout = setTimeout(() => {
+                if (this.steps[this.currentStep]?.id !== 'kitchen-dashboard') {
+                    return;
+                }
+                if (window.location.pathname === '/kitchen') {
+                    return;
+                }
+                saveTutorialState(this.currentPhase, this.currentStep, '.flavortown-kitchen-dashboard, .flavortown-graph-container', false, step.id, this.stepOrder);
+                window.location.href = '/kitchen';
+            }, 1000);
+        }
+
+        if (step.interactive === 'show-buffet-button') {
+            const stepId = step.id;
+            this.setInteractiveTimeout(() => {
+                const onExplore = window.location.pathname.startsWith('/explore');
+                if (!onExplore) {
+                    sessionStorage.setItem('flavortown_toggle_buffet', 'true');
+                    saveTutorialState(this.currentPhase, this.currentStep, '.flavortown-doomscroll-toggle', true, stepId, this.stepOrder);
+                    window.location.href = '/explore';
+                    return;
+                }
+
+                const openOverlay = document.querySelector('.flavortown-doomscroll');
+                if (openOverlay) {
+                    const closeBtn = openOverlay.querySelector('.flavortown-doomscroll__close');
+                    this.setInteractiveTimeout(() => {
+                        closeBtn?.click();
+                        this.setInteractiveTimeout(() => {
+                            if (this.steps[this.currentStep]?.id !== stepId) return;
+                            this.createSpotlight(document.querySelector('.flavortown-doomscroll-toggle, .flavortown-buffet-btn'));
+                        }, 300, stepId);
+                    }, 7000, stepId);
+                    return;
+                }
+
+                let attempts = 0;
+                const maxAttempts = 20;
+                const pollForBuffet = () => {
+                    const buffetBtn = document.querySelector('.flavortown-doomscroll-toggle, .flavortown-buffet-btn');
+                    if (buffetBtn) {
+                        buffetBtn.click();
+                        this.setInteractiveTimeout(() => {
+                            const closeBtn = document.querySelector('.flavortown-doomscroll__close');
+                            closeBtn?.click();
+                            this.setInteractiveTimeout(() => {
+                                if (this.steps[this.currentStep]?.id !== stepId) return;
+                                this.createSpotlight(buffetBtn);
+                            }, 300, stepId);
+                        }, 7000, stepId);
+                        return;
+                    } else if (attempts < maxAttempts) {
+                        attempts++;
+                        this.setInteractiveTimeout(pollForBuffet, 250, stepId);
+                    } else {
+                        this.next();
+                    }
+                };
+
+                pollForBuffet();
+            }, 300, stepId);
+        }
+
+        if (step.interactive === 'navigate-shots') {
+            const pathname = window.location.pathname;
+            const isProjectDetailPage = /^\/projects\/\d+$/.test(pathname);
+            const shotsSelectors = ['.flavortown-shots-btn', '.flavortown-inline-form .flavortown-shots-btn'];
+
+            const gotoProject = (projectId) => {
+                saveTutorialState(this.currentPhase, this.currentStep, shotsSelectors.join(','), false, step.id, this.stepOrder);
+                window.location.href = `/projects/${projectId}`;
+            };
+
+            if (!isProjectDetailPage) {
+                const targetProject = tutorialUserContext.projectForDevlog || tutorialUserContext.projectWithShips;
+                if (targetProject?.id) {
+                    gotoProject(targetProject.id);
+                    return;
+                }
+                this.next();
+                return;
+            }
+
+            this.setInteractiveTimeout(() => {
+                const fileArea = document.querySelector('.file-upload, .flavortown-inline-form');
+                if (!fileArea) {
+                    this.next();
+                    return;
+                }
+                if (typeof addShotsButton === 'function') addShotsButton();
+                const shotsBtn = document.querySelector(shotsSelectors.join(','));
+                if (shotsBtn) {
+                    this.createSpotlight(shotsBtn);
+                    this.setInteractiveTimeout(() => this.next(), 1500, step.id);
+                } else {
+                    this.next();
+                }
+            }, 400, step.id);
+        }
+
+        if (step.interactive === 'navigate-project-search') {
+            const onExplore = window.location.pathname.startsWith('/explore');
+            if (!onExplore) {
+                saveTutorialState(this.currentPhase, this.currentStep, '.flavortown-search-container input, .flavortown-search-input', true, step.id, this.stepOrder);
+                window.location.href = '/explore';
+                return;
+            }
+            const searchInput = document.querySelector('.flavortown-search-container input, .flavortown-search-input');
+            if (searchInput) {
+                this.createSpotlight(searchInput);
+                searchInput.focus();
+            } else {
+                this.next();
+            }
+        }
+
+        if (step.interactive === 'navigate-shop') {
+            this.navigationStepId = step.id;
+            this.pendingNavigationTimeout = setTimeout(() => {
+                if (this.steps[this.currentStep]?.interactive !== 'navigate-shop') {
+                    return;
+                }
+                if (window.location.pathname === '/shop') {
+                    return;
+                }
+                saveTutorialState(this.currentPhase, this.currentStep, '.flavortown-goals-enhanced, .shop-goals', false, step.id, this.stepOrder);
+                window.location.href = '/shop';
+            }, 1000);
+        }
+
+        if (step.interactive === 'navigate-votes') {
+            this.next();
+        }
+
+        if (step.interactive === 'navigate-votes-disabled') {
+            this.navigationStepId = step.id;
+            this.pendingNavigationTimeout = setTimeout(() => {
+                if (this.steps[this.currentStep]?.interactive !== 'navigate-votes-disabled') {
+                    return;
+                }
+                if (window.location.pathname.includes('/votes')) {
+                    return;
+                }
+                const votesLink = document.querySelector('a[href*="/my/votes"], a[href*="votes"]');
+                if (votesLink) {
+                    saveTutorialState(this.currentPhase, this.currentStep, '.my-votes, .votes-table', false, step.id, this.stepOrder);
+                    window.location.href = votesLink.getAttribute('href');
+                } else {
+                    saveTutorialState(this.currentPhase, this.currentStep, '.my-votes', false, step.id, this.stepOrder);
+                    window.location.href = '/my/votes';
+                }
+            }, 1000);
+        }
+    }
+
+    setupTargetObserver(selectors, step, index) {
+        if (this.targetObserverStepId === step.id) return;
+        if (this.targetObserver) {
+            this.targetObserver.disconnect();
+            this.targetObserver = null;
+        }
+        if (this.targetObserverCleanup) {
+            this.targetObserverCleanup();
+            this.targetObserverCleanup = null;
+        }
+
+        const check = () => {
+            if (!this.findTargetMatch(selectors)) return;
+            if (this.targetObserver) {
+                this.targetObserver.disconnect();
+                this.targetObserver = null;
+            }
+            if (this.targetObserverCleanup) {
+                this.targetObserverCleanup();
+                this.targetObserverCleanup = null;
+            }
+            this.targetObserverStepId = null;
+            this.showStep(index);
+        };
+
+        this.targetObserver = new MutationObserver(check);
+        this.targetObserver.observe(document.body, { childList: true, subtree: true });
+
+        const scrollHandler = () => check();
+        window.addEventListener('scroll', scrollHandler, { passive: true });
+        this.targetObserverCleanup = () => window.removeEventListener('scroll', scrollHandler);
+        this.targetObserverStepId = step.id;
+
+        setTimeout(check, 0);
+    }
+
+    findTargetMatch(selectors, forceFirstCandidate = false) {
+        let fallback = null;
+        for (const selector of selectors) {
+            const candidates = Array.from(document.querySelectorAll(selector));
+            for (const el of candidates) {
+                if (forceFirstCandidate && candidates.length > 0) {
+                    return { el: candidates[0], selector };
+                }
+                const rect = el.getBoundingClientRect();
+                if (rect.width <= 0 || rect.height <= 0) continue;
+                return { el, selector };
+            }
+            if (!fallback && candidates.length > 0) {
+                fallback = { el: candidates[0], selector };
+            }
+        }
+        return fallback;
+    }
+
+    showDebugIndicator(message, rect = null) {
+        this.debugIndicator?.remove();
+        this.debugOutline?.remove();
+
+        const badge = document.createElement('div');
+        badge.id = 'flavortown-tutorial-debug';
+        badge.style.cssText = `
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            z-index: 100001;
+            background: rgba(0,0,0,0.85);
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-family: system-ui, sans-serif;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+            pointer-events: none;
+            max-width: 260px;
+            line-height: 1.4;
+        `;
+        badge.textContent = message;
+
+        if (rect) {
+            const outline = document.createElement('div');
+            outline.id = 'flavortown-tutorial-debug-outline';
+            outline.style.cssText = `
+                position: fixed;
+                top: ${rect.top - 6}px;
+                left: ${rect.left - 6}px;
+                width: ${rect.width + 12}px;
+                height: ${rect.height + 12}px;
+                border: 2px dashed #cba6f7;
+                border-radius: 10px;
+                z-index: 100000;
+                pointer-events: none;
+            `;
+            document.body.appendChild(outline);
+            this.debugOutline = outline;
+            badge.textContent = `${message} (highlighted)`;
+        }
+
+        document.body.appendChild(badge);
+        this.debugIndicator = badge;
+    }
+
+    showStep(index) {
+        const step = this.steps[index];
+        if (!step) return;
+
+        const previousStep = this.currentStep !== index ? this.steps[this.currentStep] : null;
+
+        this.clearInteractiveTimeouts();
+
+        if (previousStep?.interactive === 'show-buffet-button') {
+            const buffetOverlay = document.querySelector('.flavortown-doomscroll');
+            const closeBtn = buffetOverlay?.querySelector('.flavortown-doomscroll__close');
+            closeBtn?.click();
+        }
+
+        if (this.pendingNavigationTimeout && this.navigationStepId !== step.id) {
+            clearTimeout(this.pendingNavigationTimeout);
+            this.pendingNavigationTimeout = null;
+            this.navigationStepId = null;
+        }
+
+        this.currentStep = index;
+        const debugMode = localStorage.getItem('flavortown_tutorial_debug') === 'true';
+
+        if (this.targetObserverStepId && this.targetObserverStepId !== step.id) {
+            if (this.targetObserver) {
+                this.targetObserver.disconnect();
+                this.targetObserver = null;
+            }
+            if (this.targetObserverCleanup) {
+                this.targetObserverCleanup();
+                this.targetObserverCleanup = null;
+            }
+            this.targetObserverStepId = null;
+        }
+
+        if (step.id === 'community-votes' || step.skip) {
+            if (this.currentStep < this.steps.length - 1) {
+                this.showStep(this.currentStep + 1);
+            } else {
+                this.end();
+            }
+            return;
+        }
+
+        if (this.spotlight) {
+            this.spotlight.remove();
+            this.spotlight = null;
+        }
+
+        if (this.clickWaitHandler) {
+            const waitTarget = document.querySelector(this.steps[index - 1]?.waitForClick);
+            if (waitTarget) {
+                waitTarget.removeEventListener('click', this.clickWaitHandler);
+            }
+            this.clickWaitHandler = null;
+        }
+
+        const targetSelectors = [];
+        if (step.target) targetSelectors.push(step.target);
+        if (step.afterNavTarget) {
+            targetSelectors.push(...step.afterNavTarget.split(',').map(s => s.trim()).filter(Boolean));
+        }
+
+        let displayStep = step;
+        const found = this.findTargetMatch(targetSelectors, false);
+        let target = found ? found.el : null;
+
+        if (found && step.afterNavTarget && (!step.target || found.selector !== step.target)) {
+            displayStep = { ...step };
+            if (step.afterNavDescription) {
+                displayStep.description = step.afterNavDescription;
+            }
+            displayStep.target = found.selector;
+        }
+
+        if (displayStep.requiresElement && displayStep.target && !target) {
+            if (!target) {
+                if (debugMode) {
+                    this.showDebugIndicator(`Waiting for target: ${targetSelectors.join(' , ')}`);
+                }
+                if (this.targetRetryStepId !== step.id) {
+                    this.targetRetryStepId = step.id;
+                    this.targetRetryCount = 0;
+                }
+                if (this.targetRetryCount < 20) {
+                    this.targetRetryCount += 1;
+                    if (targetSelectors.length) {
+                        this.setupTargetObserver(targetSelectors, step, index);
+                    }
+                    setTimeout(() => this.showStep(index), 300);
+                    return;
+                }
+                this.targetRetryCount = 0;
+                this.targetRetryStepId = null;
+                if (this.currentStep < this.steps.length - 1) {
+                    this.showStep(this.currentStep + 1);
+                } else {
+                    this.end();
+                }
+                return;
+            }
+        }
+        this.targetRetryCount = 0;
+        this.targetRetryStepId = null;
+        if (this.targetObserverStepId === step.id) {
+            if (this.targetObserver) {
+                this.targetObserver.disconnect();
+                this.targetObserver = null;
+            }
+            if (this.targetObserverCleanup) {
+                this.targetObserverCleanup();
+                this.targetObserverCleanup = null;
+            }
+            this.targetObserverStepId = null;
+        }
+
+        if (debugMode) {
+            if (target) {
+                const rect = target.getBoundingClientRect();
+                this.showDebugIndicator(`Target: ${displayStep.target} (w:${Math.round(rect.width)} h:${Math.round(rect.height)})`, rect);
+            } else {
+                this.showDebugIndicator(`No target found for selectors: ${targetSelectors.join(' , ')}`);
+            }
+        }
+
+        if (target) {
+            if (this.overlay) {
+                this.overlay.style.opacity = '0.55';
+            }
+            const rect = target.getBoundingClientRect();
+            const inView = rect.top >= 0 && rect.bottom <= window.innerHeight;
+            if (!inView) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                setTimeout(() => {
+                    if (this.currentStep !== index) return;
+                    this.createSpotlight(target);
+                    this.createModal(displayStep, index);
+                }, 600);
+                return;
+            }
+            this.createSpotlight(target);
+        } else if (this.overlay) {
+            this.overlay.style.opacity = '1';
+        }
+
+        setTimeout(() => {
+            this.createModal(displayStep, index);
+        }, this.spotlight ? 200 : 0);
+    }
+
+    next() {
+        if (this.currentStep < this.steps.length - 1) {
+            const nextStep = this.currentStep + 1;
+            const nextStepId = this.steps[nextStep]?.id;
+            saveTutorialState(this.currentPhase, nextStep, null, false, nextStepId, this.stepOrder);
+            this.showStep(nextStep);
+        } else {
+            this.end();
+        }
+    }
+
+    prev() {
+        if (this.currentStep > 0) {
+            const prevStep = this.currentStep - 1;
+            const prevStepId = this.steps[prevStep]?.id;
+            saveTutorialState(this.currentPhase, prevStep, null, false, prevStepId, this.stepOrder);
+            this.showStep(prevStep);
+        }
+    }
+
+    reorderStepsForCurrentPage(steps) {
+        const pathname = window.location.pathname;
+        const reordered = [...steps];
+
+        const pageStepMap = {
+            '/kitchen': ['kitchen-dashboard'],
+            '/explore': ['search-projects'],
+            '/shop': ['shop-goals']
+        };
+
+        let priorityStepIds = [];
+        for (const [pagePath, stepIds] of Object.entries(pageStepMap)) {
+            if (pathname.startsWith(pagePath)) {
+                priorityStepIds = stepIds;
+                break;
+            }
+        }
+
+        if (priorityStepIds.length === 0) return reordered;
+
+        const prioritySteps = reordered.filter(s => priorityStepIds.includes(s.id));
+        const otherSteps = reordered.filter(s => !priorityStepIds.includes(s.id));
+
+        let insertIndex = 0;
+        for (let i = 0; i < otherSteps.length; i++) {
+            if (otherSteps[i].interactive) {
+                insertIndex = i;
+                break;
+            }
+        }
+
+        otherSteps.splice(insertIndex, 0, ...prioritySteps);
+        return otherSteps;
+    }
+
+    applySavedOrder(baseSteps, savedOrder) {
+        if (!Array.isArray(savedOrder) || savedOrder.length === 0) return baseSteps;
+        const byId = new Map(baseSteps.map(s => [s.id, s]));
+        const ordered = [];
+        for (const id of savedOrder) {
+            if (byId.has(id)) {
+                ordered.push(byId.get(id));
+                byId.delete(id);
+            }
+        }
+        for (const [, step] of byId) {
+            ordered.push(step);
+        }
+        return ordered;
+    }
+
+    getPhaseSteps(phase, savedOrder = null) {
+        let base;
+        if (phase === 2) base = [...TUTORIAL_PHASE_2];
+        else if (phase === 3) base = [...TUTORIAL_PHASE_3];
+        else base = [...TUTORIAL_PHASE_1];
+        return this.applySavedOrder(base, savedOrder);
+    }
+
+    startPhase2() {
+        this.currentPhase = 2;
+        this.steps = this.reorderStepsForCurrentPage(this.getPhaseSteps(2));
+        this.stepOrder = this.steps.map(s => s.id);
+        this.currentStep = 0;
+        this.showStep(0);
+    }
+
+    startPhase3() {
+        this.currentPhase = 3;
+        this.steps = this.reorderStepsForCurrentPage(this.getPhaseSteps(3));
+        this.stepOrder = this.steps.map(s => s.id);
+        this.currentStep = 0;
+        this.showStep(0);
+    }
+
+    end() {
+        if (this.escHandler) {
+            document.removeEventListener('keydown', this.escHandler);
+        }
+
+        this.clearInteractiveTimeouts();
+
+        if (this.cmdPaletteObserver) {
+            this.cmdPaletteObserver.disconnect();
+            this.cmdPaletteObserver = null;
+        }
+
+        if (this.pinStyleElement) {
+            this.pinStyleElement.remove();
+            this.pinStyleElement = null;
+        }
+
+        if (this.sidebarHoverHandler && this.sidebarElement) {
+            this.sidebarElement.removeEventListener('mouseenter', this.sidebarHoverHandler);
+            this.sidebarElement.removeEventListener('mouseleave', this.sidebarHoverHandler);
+            this.sidebarHoverHandler = null;
+            this.sidebarElement = null;
+        }
+
+        if (this.modal) {
+            this.modal.style.opacity = '0';
+            this.modal.style.transform = 'translate(-50%, -50%) scale(0.9)';
+        }
+        if (this.spotlight) {
+            this.spotlight.remove();
+        }
+        if (this.overlay) {
+            this.overlay.style.opacity = '0';
+        }
+        this.debugIndicator?.remove();
+        this.debugOutline?.remove();
+
+        setTimeout(() => {
+            this.modal?.remove();
+            this.overlay?.remove();
+            this.debugIndicator?.remove();
+            this.debugOutline?.remove();
+        }, 300);
+
+        setOnboardingComplete();
+    }
+}
+
+function createWhatsNewModal(features) {
+    injectTutorialStyles();
+
+    const overlay = document.createElement('div');
+    overlay.id = 'flavortown-tutorial-overlay';
+    overlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.75);
+        z-index: 99998;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    `;
+    document.body.appendChild(overlay);
+    requestAnimationFrame(() => overlay.style.opacity = '1');
+
+    const modal = document.createElement('div');
+    modal.id = 'flavortown-tutorial-modal';
+    modal.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0.9);
+        z-index: 100000;
+        background: var(--flavortown-tutorial-bg, #fdf6e3);
+        border: 2px solid var(--flavortown-tutorial-border, #8b7355);
+        border-radius: 16px;
+        padding: 28px;
+        max-width: 450px;
+        width: 90%;
+        color: var(--flavortown-tutorial-text, #5d4e37);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        opacity: 0;
+        transition: all 0.3s ease;
+    `;
+
+    modal.innerHTML = `
+        <div style="text-align: center; margin-bottom: 20px;">
+            <div style="font-size: 2.5em; margin-bottom: 8px;">🎉</div>
+            <h2 style="
+                margin: 0;
+                font-size: 1.4em;
+                color: inherit;
+            ">What's New in v${EXTENSION_VERSION}</h2>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px;">
+            ${features.map(f => `
+                <div style="
+                    display: flex;
+                    align-items: flex-start;
+                    gap: 12px;
+                    padding: 12px;
+                    background: var(--flavortown-tutorial-surface, #efe6d5);
+                    border-radius: 10px;
+                ">
+                    <span style="font-size: 1.4em;">${f.icon}</span>
+                    <div>
+                        <div style="font-weight: 600; color: inherit; margin-bottom: 2px;">
+                            ${f.title}
+                        </div>
+                        <div style="font-size: 0.9em; color: var(--flavortown-tutorial-subtext, #8b7355);">
+                            ${f.description}
+                        </div>
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+        <div style="display: flex; gap: 10px; justify-content: center;">
+            <button id="whatsnew-close" style="
+                padding: 12px 32px;
+                border-radius: 8px;
+                border: none;
+                background: var(--flavortown-tutorial-accent, #5d4e37);
+                color: var(--flavortown-tutorial-bg, #fdf6e3);
+                cursor: pointer;
+                font-size: 0.95em;
+                font-weight: 600;
+                transition: all 0.2s;
+            ">Awesome!</button>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    requestAnimationFrame(() => {
+        modal.style.opacity = '1';
+        modal.style.transform = 'translate(-50%, -50%) scale(1)';
+    });
+
+    const closeBtn = modal.querySelector('#whatsnew-close');
+    closeBtn.addEventListener('mouseenter', () => closeBtn.style.opacity = '0.85');
+    closeBtn.addEventListener('mouseleave', () => closeBtn.style.opacity = '1');
+
+    const closeModal = () => {
+        modal.style.opacity = '0';
+        modal.style.transform = 'translate(-50%, -50%) scale(0.9)';
+        overlay.style.opacity = '0';
+        setTimeout(() => {
+            modal.remove();
+            overlay.remove();
+        }, 300);
+        setLastVersion();
+    };
+
+    closeBtn.addEventListener('click', closeModal);
+    overlay.addEventListener('click', closeModal);
+}
+
+async function runTutorial() {
+    const tutorial = new TutorialController();
+    tutorial.start();
+}
+
+async function resumeTutorial(savedState) {
+    const tutorial = new TutorialController();
+
+    tutorial.currentPhase = savedState.phase || 1;
+    const savedOrder = Array.isArray(savedState.stepOrder) ? savedState.stepOrder : null;
+    if (tutorial.currentPhase === 2) {
+        tutorial.steps = tutorial.getPhaseSteps(2, savedOrder);
+    } else if (tutorial.currentPhase === 3) {
+        tutorial.steps = tutorial.getPhaseSteps(3, savedOrder);
+    } else {
+        tutorial.steps = tutorial.getPhaseSteps(1, savedOrder);
+    }
+    tutorial.stepOrder = tutorial.steps.map(s => s.id);
+
+    let savedStepId = savedState.stepId;
+    let stepIndex = savedState.stepIndex;
+
+    if (savedStepId) {
+        const foundIndex = tutorial.steps.findIndex(s => s.id === savedStepId);
+        if (foundIndex !== -1) {
+            stepIndex = foundIndex;
+        }
+    }
+
+    const currentStep = tutorial.steps[stepIndex];
+    if (!currentStep) return;
+
+    clearTutorialState();
+
+    if (savedState.runHandlerAgain) {
+        tutorial.currentStep = stepIndex;
+        tutorial.isActive = true;
+        injectTutorialStyles();
+        tutorial.escHandler = (e) => {
+            if (e.key === 'Escape') {
+                tutorial.end();
+            }
+        };
+        document.addEventListener('keydown', tutorial.escHandler);
+        tutorial.showStep(stepIndex);
+        return;
+    }
+
+    const targetSelectors = currentStep.afterNavTarget
+        ? currentStep.afterNavTarget.split(',').map(s => s.trim())
+        : (savedState.targetHighlight ? savedState.targetHighlight.split(',').map(s => s.trim()) : []);
+    let targetElement = null;
+
+    for (let i = 0; i < 15; i++) {
+        for (const selector of targetSelectors) {
+            targetElement = document.querySelector(selector);
+            if (targetElement) break;
+        }
+        if (targetElement) break;
+        await new Promise(r => setTimeout(r, 500));
+    }
+
+    tutorial.currentStep = stepIndex;
+    tutorial.isActive = true;
+
+    injectTutorialStyles();
+
+    const displayStep = { ...currentStep };
+    if (currentStep.afterNavDescription) {
+        displayStep.description = currentStep.afterNavDescription;
+    }
+    if (targetElement && currentStep.afterNavTarget) {
+        displayStep.target = currentStep.afterNavTarget;
+    }
+
+    if (targetElement) {
+        targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        setTimeout(() => {
+            tutorial.createSpotlight(targetElement);
+
+            setTimeout(() => {
+                tutorial.createModal(displayStep, stepIndex);
+            }, 300);
+        }, 500);
+    } else {
+        setTimeout(() => {
+            tutorial.createModal(displayStep, stepIndex);
+        }, 100);
+    }
+
+    tutorial.escHandler = (e) => {
+        if (e.key === 'Escape') {
+            tutorial.end();
+        }
+    };
+    document.addEventListener('keydown', tutorial.escHandler);
+}
+
+async function initOnboarding() {
+    scanUserContext().catch(e => console.warn('Tutorial scan failed:', e));
+
+    const savedState = getTutorialState();
+    if (savedState) {
+        resumeTutorial(savedState);
+        return;
+    }
+
+    const state = await getOnboardingState();
+
+    if (!state.onboardingComplete) {
+        runTutorial();
+        return;
+    }
+
+    if (state.lastVersion && state.lastVersion !== EXTENSION_VERSION) {
+        const features = VERSION_FEATURES[EXTENSION_VERSION];
+        if (features && features.length > 0) {
+            createWhatsNewModal(features);
+        } else {
+            setLastVersion();
+        }
+    }
+}
+
+setTimeout(initOnboarding, 50);
