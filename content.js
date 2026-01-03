@@ -5599,15 +5599,15 @@ const TUTORIAL_PHASE_2 = [
         skip: true
     },
     {
-        id: 'buffet-mode',
-        title: 'Buffet mode',
-        description: 'Endless devlog browsing. Look for the Buffet button on any project to start scrolling.',
-        afterNavDescription: 'Found it! Click this button to enter Buffet mode and scroll through devlogs infinitely.',
+        id: 'shop-goals',
+        title: 'Shop upgrades',
+        description: 'Goals, priority items, and progress tracking. Let me show you...',
+        afterNavDescription: 'Here\'s the shop! Check out the goals panel — track items you want and see how close you are.',
         target: null,
-        afterNavTarget: '.flavortown-doomscroll-toggle',
+        afterNavTarget: '.flavortown-goals-enhanced, .shop-goals',
         position: 'center',
-        icon: '🍱',
-        interactive: 'show-buffet-button'
+        icon: '🛒',
+        interactive: 'navigate-shop'
     },
     {
         id: 'phase2-choice',
@@ -5623,17 +5623,6 @@ const TUTORIAL_PHASE_2 = [
 
 const TUTORIAL_PHASE_3 = [
     {
-        id: 'shop-enhancements',
-        title: 'Shop upgrades',
-        description: 'Goals, priority items, and progress tracking. Let me show you...',
-        afterNavDescription: 'Here\'s the shop! Check out the goals panel — track items you want and see how close you are.',
-        target: null,
-        afterNavTarget: '.flavortown-goals-enhanced, .shop-goals',
-        position: 'center',
-        icon: '🛒',
-        interactive: 'navigate-shop'
-    },
-    {
         id: 'search-projects',
         title: 'Project search',
         description: 'Use the search bar or Ctrl+K to quickly find any project.',
@@ -5641,6 +5630,17 @@ const TUTORIAL_PHASE_3 = [
         position: 'center',
         icon: '🔍',
         interactive: 'navigate-project-search'
+    },
+    {
+        id: 'buffet-mode',
+        title: 'Buffet mode',
+        description: 'Endless devlog browsing. Look for the Buffet button on any project to start scrolling.',
+        afterNavDescription: 'Found it! Click this button to enter Buffet mode and scroll through devlogs infinitely.',
+        target: null,
+        afterNavTarget: '.flavortown-doomscroll-toggle',
+        position: 'center',
+        icon: '🍱',
+        interactive: 'show-buffet-button'
     },
     {
         id: 'auto-achievements',
@@ -6316,7 +6316,17 @@ class TutorialController {
         if (nextBtn && !step.waitForClick) {
             nextBtn.addEventListener('mouseenter', () => nextBtn.style.opacity = '0.85');
             nextBtn.addEventListener('mouseleave', () => nextBtn.style.opacity = '1');
-            nextBtn.addEventListener('click', () => this.next());
+            nextBtn.addEventListener('click', () => {
+                if (step.interactive === 'open-command-palette') {
+                    const palette = document.querySelector('.flavortown-cmd-palette');
+                    if (palette) {
+                        palette.classList.remove('open');
+                        const paletteInput = palette.querySelector('input');
+                        if (paletteInput) paletteInput.value = '';
+                    }
+                }
+                this.next();
+            });
         }
 
         const prevBtn = modal.querySelector('#tutorial-prev');
@@ -6935,6 +6945,15 @@ class TutorialController {
     }
 
     next() {
+        const current = this.steps[this.currentStep];
+        if (current?.interactive === 'open-command-palette') {
+            const palette = document.querySelector('.flavortown-cmd-palette');
+            if (palette) {
+                palette.classList.remove('open');
+                const paletteInput = palette.querySelector('input');
+                if (paletteInput) paletteInput.value = '';
+            }
+        }
         if (this.currentStep < this.steps.length - 1) {
             const nextStep = this.currentStep + 1;
             const nextStepId = this.steps[nextStep]?.id;
