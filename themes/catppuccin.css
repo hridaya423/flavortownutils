@@ -1053,6 +1053,18 @@ a:hover {
     border-radius: 8px !important;
 }
 
+.dropdown--pink .dropdown__label {
+    color: var(--ctp-crust) !important;
+    background-color: var(--ctp-pink) !important;
+    border-radius: 8px !important;
+}
+
+.dropdown--brown .dropdown__label {
+    color: var(--ctp-crust) !important;
+    background-color: var(--ctp-peach) !important;
+    border-radius: 8px !important;
+}
+
 .shop-order__content {
     background-color: var(--ctp-surface0) !important;
     color: var(--ctp-text) !important;

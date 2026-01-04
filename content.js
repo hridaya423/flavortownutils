@@ -5599,23 +5599,25 @@ const TUTORIAL_PHASE_2 = [
         skip: true
     },
     {
+        id: 'shop-time-calc',
+        title: 'Time calculator',
+        description: 'See how long it\'ll take to earn enough cookies. Let me take you to the shop...',
+        afterNavDescription: 'Here\'s the time calculator! Slide to adjust your earning rate and see time estimates.',
+        target: null,
+        afterNavTarget: '.flavortown-efficiency',
+        position: 'center',
+        icon: '⏱️',
+        interactive: 'navigate-shop-time-calc'
+    },
+    {
         id: 'shop-accessories',
         title: 'Accessories panel',
         description: 'Bundle upgrades together! Click the accessories button on any item to add extras to your purchase.',
-        target: null,
+        target: '.shop-item-card__accessories-wrapper',
         afterNavTarget: '.shop-item-card__accessories-wrapper',
         position: 'center',
         icon: '⚙️',
-        interactive: 'navigate-shop-accessories'
-    },
-    {
-        id: 'shop-time-calc',
-        title: 'Time calculator',
-        description: 'See exactly how long it\'ll take to earn enough cookies. Slide to adjust your earning rate!',
-        target: '.flavortown-efficiency',
-        position: 'center',
-        icon: '⏱️',
-        interactive: 'show-time-calc'
+        interactive: 'show-shop-accessories'
     },
     {
         id: 'shop-goals',
@@ -5940,6 +5942,38 @@ class TutorialController {
         this.pendingNavigationTimeout = null;
         this.navigationStepId = null;
         this.pendingInteractiveTimeouts = [];
+        this.userHasTheme = false;
+        this.userHasSidebarPinned = false;
+        this.preloadUserState();
+    }
+
+    preloadUserState() {
+        browserAPI.storage.sync.get(['theme'], (result) => {
+            this.userHasTheme = result.theme && result.theme !== 'default';
+        });
+        browserAPI.storage.local.get(['sidebarPinned'], (result) => {
+            this.userHasSidebarPinned = result.sidebarPinned || false;
+        });
+    }
+
+    prepareGoalInBackground() {
+        if (this.goalPrepared) return;
+
+        const goalsPanel = document.querySelector('.flavortown-goals-enhanced, .shop-goals');
+        if (!goalsPanel) return;
+
+        const goalItems = goalsPanel.querySelectorAll('.flavortown-goal-item, .goal-item-card, .shop-goals__item');
+        const hasGoals = goalItems.length > 0;
+
+        if (!hasGoals) {
+            this.goalPrepared = true;
+            const starBtn = document.querySelector('.shop-item-card__star[aria-pressed="false"], .shop-item-card__star:not([aria-pressed="true"])');
+            if (starBtn) {
+                starBtn.click();
+            }
+        } else {
+            this.goalPrepared = true;
+        }
     }
 
     setInteractiveTimeout(callback, delay, stepId) {
@@ -5962,6 +5996,8 @@ class TutorialController {
         injectTutorialStyles();
         this.overlay = this.createOverlay();
         this.stepOrder = this.steps.map(s => s.id);
+        this.goalPrepared = false;
+        this.handledStepId = null;
         this.showStep(0);
 
         scanUserContext().catch(e => console.warn('Tutorial scan failed:', e));
@@ -5993,7 +6029,11 @@ class TutorialController {
         return overlay;
     }
 
-    createSpotlight(targetElement) {
+    createSpotlight(targetElement, stepId = null) {
+        if (stepId && this.steps[this.currentStep]?.id !== stepId) {
+            return null;
+        }
+
         if (this.spotlight) this.spotlight.remove();
 
         if (this.sidebarHoverHandler && this.sidebarElement) {
@@ -6068,11 +6108,30 @@ class TutorialController {
             pointer-events: none;
             box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.65), 0 0 0 5px var(--flavortown-tutorial-accent, #ec8b33), 0 0 25px rgba(236, 139, 51, 0.45);
             outline: 2px solid var(--flavortown-tutorial-accent, #ec8b33);
-            transition: all 0.4s ease;
+            transition: top 0.05s linear, left 0.05s linear, width 0.2s ease, height 0.2s ease;
         `;
 
         document.body.appendChild(spotlight);
         this.spotlight = spotlight;
+
+        if (this.spotlightScrollHandler) {
+            window.removeEventListener('scroll', this.spotlightScrollHandler, true);
+        }
+
+        this.spotlightTargetElement = targetElement;
+        this.spotlightPadding = padding;
+
+        this.spotlightScrollHandler = () => {
+            if (!this.spotlight || !this.spotlightTargetElement) return;
+            const newRect = this.spotlightTargetElement.getBoundingClientRect();
+            this.spotlight.style.top = `${newRect.top - this.spotlightPadding}px`;
+            this.spotlight.style.left = `${newRect.left - this.spotlightPadding}px`;
+            this.spotlight.style.width = `${newRect.width + this.spotlightPadding * 2}px`;
+            this.spotlight.style.height = `${newRect.height + this.spotlightPadding * 2}px`;
+        };
+
+        window.addEventListener('scroll', this.spotlightScrollHandler, true);
+
         return spotlight;
     }
 
@@ -6592,7 +6651,7 @@ class TutorialController {
                         closeBtn?.click();
                         this.setInteractiveTimeout(() => {
                             if (this.steps[this.currentStep]?.id !== stepId) return;
-                            this.createSpotlight(document.querySelector('.flavortown-doomscroll-toggle, .flavortown-buffet-btn'));
+                            this.createSpotlight(document.querySelector('.flavortown-doomscroll-toggle, .flavortown-buffet-btn'), stepId);
                         }, 300, stepId);
                     }, 7000, stepId);
                     return;
@@ -6609,7 +6668,7 @@ class TutorialController {
                             closeBtn?.click();
                             this.setInteractiveTimeout(() => {
                                 if (this.steps[this.currentStep]?.id !== stepId) return;
-                                this.createSpotlight(buffetBtn);
+                                this.createSpotlight(buffetBtn, stepId);
                             }, 300, stepId);
                         }, 7000, stepId);
                         return;
@@ -6654,7 +6713,7 @@ class TutorialController {
                 if (typeof addShotsButton === 'function') addShotsButton();
                 const shotsBtn = document.querySelector(shotsSelectors.join(','));
                 if (shotsBtn) {
-                    this.createSpotlight(shotsBtn);
+                    this.createSpotlight(shotsBtn, step.id);
                     this.setInteractiveTimeout(() => this.next(), 1500, step.id);
                 } else {
                     this.next();
@@ -6671,65 +6730,80 @@ class TutorialController {
             }
             const searchInput = document.querySelector('.flavortown-search-container input, .flavortown-search-input');
             if (searchInput) {
-                this.createSpotlight(searchInput);
+                this.createSpotlight(searchInput, step.id);
                 searchInput.focus();
             } else {
                 this.next();
             }
         }
 
-        if (step.interactive === 'navigate-shop-accessories') {
+        if (step.interactive === 'navigate-shop-time-calc') {
+            if (this.handledStepId === step.id) return;
+            this.handledStepId = step.id;
+
             const onShop = window.location.pathname === '/shop';
 
             if (!onShop) {
                 this.navigationStepId = step.id;
                 this.pendingNavigationTimeout = setTimeout(() => {
-                    if (this.steps[this.currentStep]?.interactive !== 'navigate-shop-accessories') {
+                    if (this.steps[this.currentStep]?.interactive !== 'navigate-shop-time-calc') {
                         return;
                     }
-                    saveTutorialState(this.currentPhase, this.currentStep, '.shop-item-card__accessories-wrapper', false, step.id, this.stepOrder);
+                    saveTutorialState(this.currentPhase, this.currentStep, '.flavortown-efficiency', false, step.id, this.stepOrder);
                     window.location.href = '/shop';
                 }, 1000);
                 return;
             }
 
             this.setInteractiveTimeout(() => {
-                const accessoriesToggle = document.querySelector('.shop-item-card__accessories-toggle');
-                if (accessoriesToggle) {
-                    accessoriesToggle.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                const efficiency = document.querySelector('.flavortown-efficiency');
+                if (efficiency) {
+                    efficiency.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
                     setTimeout(() => {
-                        const panel = accessoriesToggle.closest('.shop-item-card__accessories-wrapper')?.querySelector('.shop-item-card__accessories-panel');
-                        if (panel && !panel.classList.contains('is-open')) {
-                            accessoriesToggle.click();
+                        if (this.steps[this.currentStep]?.id !== step.id) return;
+                        const accordion = efficiency.querySelector('.flavortown-efficiency__accordion');
+                        if (accordion && !accordion.hasAttribute('open')) {
+                            accordion.setAttribute('open', '');
                         }
 
                         setTimeout(() => {
-                            const wrapper = accessoriesToggle.closest('.shop-item-card__accessories-wrapper');
-                            if (wrapper) {
-                                this.createSpotlight(wrapper);
-                            }
+                            if (this.steps[this.currentStep]?.id !== step.id) return;
+                            this.createSpotlight(efficiency, step.id);
+                            this.createModal(step, this.currentStep);
                         }, 400);
                     }, 600);
                 }
             }, 500, step.id);
+            return;
         }
 
-        if (step.interactive === 'show-time-calc') {
-            const efficiency = document.querySelector('.flavortown-efficiency');
-            if (efficiency) {
-                efficiency.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        if (step.interactive === 'show-shop-accessories') {
+            if (this.handledStepId === step.id) return;
+            this.handledStepId = step.id;
+
+            const accessoriesToggle = document.querySelector('.shop-item-card__accessories-toggle');
+            if (accessoriesToggle) {
+                accessoriesToggle.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
                 this.setInteractiveTimeout(() => {
-                    const accordion = efficiency.querySelector('.flavortown-efficiency__accordion');
-                    if (accordion && !accordion.hasAttribute('open')) {
-                        accordion.setAttribute('open', '');
+                    const panel = accessoriesToggle.closest('.shop-item-card__accessories-wrapper')?.querySelector('.shop-item-card__accessories-panel');
+                    if (panel && !panel.classList.contains('is-open')) {
+                        accessoriesToggle.click();
                     }
 
                     setTimeout(() => {
-                        this.createSpotlight(efficiency);
-                    }, 300);
+                        if (this.steps[this.currentStep]?.id !== step.id) return;
+                        const wrapper = accessoriesToggle.closest('.shop-item-card__accessories-wrapper');
+                        if (wrapper) {
+                            this.createSpotlight(wrapper, step.id);
+                            this.createModal(step, this.currentStep);
+                        }
+
+                        this.prepareGoalInBackground();
+                    }, 400);
                 }, 600, step.id);
+                return;
             }
         }
 
@@ -6738,9 +6812,12 @@ class TutorialController {
         }
 
         if (step.interactive === 'show-shop-goals') {
+            if (this.handledStepId === step.id) return;
+            this.handledStepId = step.id;
+
             const goalsPanel = document.querySelector('.flavortown-goals-enhanced, .shop-goals');
 
-            const goalItems = goalsPanel?.querySelectorAll('.flavortown-goals-enhanced__item, .goal-item-card, img[src*="shop"], .shop-item-card') || [];
+            const goalItems = goalsPanel?.querySelectorAll('.flavortown-goal-item, .goal-item-card, .shop-goals__item') || [];
             const hasGoals = goalItems.length > 0;
 
             if (!hasGoals) {
@@ -6748,6 +6825,7 @@ class TutorialController {
                 if (starBtn) {
                     starBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     setTimeout(() => {
+                        if (this.steps[this.currentStep]?.id !== step.id) return;
                         starBtn.click();
 
                         this.setInteractiveTimeout(() => {
@@ -6755,7 +6833,9 @@ class TutorialController {
                             if (updatedGoals) {
                                 updatedGoals.scrollIntoView({ behavior: 'smooth', block: 'start' });
                                 setTimeout(() => {
-                                    this.createSpotlight(updatedGoals);
+                                    if (this.steps[this.currentStep]?.id !== step.id) return;
+                                    this.createSpotlight(updatedGoals, step.id);
+                                    this.createModal(step, this.currentStep);
                                 }, 600);
                             }
                         }, 1000, step.id);
@@ -6767,8 +6847,10 @@ class TutorialController {
             if (goalsPanel) {
                 goalsPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 this.setInteractiveTimeout(() => {
-                    this.createSpotlight(goalsPanel);
+                    this.createSpotlight(goalsPanel, step.id);
+                    this.createModal(step, this.currentStep);
                 }, 600, step.id);
+                return;
             }
         }
 
@@ -6901,6 +6983,10 @@ class TutorialController {
 
         const previousStep = this.currentStep !== index ? this.steps[this.currentStep] : null;
 
+        if (previousStep && this.handledStepId !== step.id) {
+            this.handledStepId = null;
+        }
+
         this.clearInteractiveTimeouts();
 
         if (previousStep?.interactive === 'show-buffet-button') {
@@ -6937,6 +7023,28 @@ class TutorialController {
                 this.end();
             }
             return;
+        }
+
+        if (step.id === 'themes-demo' && this.userHasTheme) {
+            if (this.currentStep < this.steps.length - 1) {
+                this.showStep(this.currentStep + 1);
+            } else {
+                this.end();
+            }
+            return;
+        }
+
+        if (step.id === 'pinnable-sidebar') {
+            const sidebar = document.querySelector('.sidebar');
+            const isAlreadyPinned = sidebar?.classList.contains('sidebar--pinned');
+            if (isAlreadyPinned) {
+                if (this.currentStep < this.steps.length - 1) {
+                    this.showStep(this.currentStep + 1);
+                } else {
+                    this.end();
+                }
+                return;
+            }
         }
 
         if (this.spotlight) {
@@ -7040,12 +7148,12 @@ class TutorialController {
                 target.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 setTimeout(() => {
                     if (this.currentStep !== index) return;
-                    this.createSpotlight(target);
+                    this.createSpotlight(target, step.id);
                     this.createModal(displayStep, index);
                 }, 600);
                 return;
             }
-            this.createSpotlight(target);
+            this.createSpotlight(target, step.id);
         } else if (this.overlay) {
             this.overlay.style.opacity = '1';
         }
@@ -7091,7 +7199,7 @@ class TutorialController {
         const pageStepMap = {
             '/kitchen': ['kitchen-dashboard'],
             '/explore': ['search-projects'],
-            '/shop': ['shop-goals']
+            '/shop': ['shop-time-calc', 'shop-accessories', 'shop-goals']
         };
 
         let priorityStepIds = [];
@@ -7104,7 +7212,11 @@ class TutorialController {
 
         if (priorityStepIds.length === 0) return reordered;
 
-        const prioritySteps = reordered.filter(s => priorityStepIds.includes(s.id));
+        const prioritySteps = [];
+        for (const id of priorityStepIds) {
+            const step = reordered.find(s => s.id === id);
+            if (step) prioritySteps.push(step);
+        }
         const otherSteps = reordered.filter(s => !priorityStepIds.includes(s.id));
 
         let insertIndex = 0;
@@ -7181,6 +7293,12 @@ class TutorialController {
             this.sidebarElement.removeEventListener('mouseleave', this.sidebarHoverHandler);
             this.sidebarHoverHandler = null;
             this.sidebarElement = null;
+        }
+
+        if (this.spotlightScrollHandler) {
+            window.removeEventListener('scroll', this.spotlightScrollHandler, true);
+            this.spotlightScrollHandler = null;
+            this.spotlightTargetElement = null;
         }
 
         if (this.modal) {

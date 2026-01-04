@@ -1047,6 +1047,18 @@ a:hover {
     border-radius: 8px !important;
 }
 
+.dropdown--pink .dropdown__label {
+    color: var(--sea-abyss) !important;
+    background-color: var(--sea-coral) !important;
+    border-radius: 8px !important;
+}
+
+.dropdown--brown .dropdown__label {
+    color: var(--sea-abyss) !important;
+    background-color: var(--sea-sand) !important;
+    border-radius: 8px !important;
+}
+
 .shop-order__content {
     background-color: var(--sea-dark) !important;
     color: var(--sea-white) !important;
