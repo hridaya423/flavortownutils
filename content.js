@@ -5505,7 +5505,7 @@ const TUTORIAL_PHASE_1 = [
     {
         id: 'welcome',
         title: 'Thanks for installing! 🎉',
-        description: 'Welcome to Flavortown Utils. Let me give you a quick tour of the cool features! — it\'ll only take a minute.',
+        description: 'Welcome to Flavortown Utils. Let me give you a quick tour of the cool features! It\'ll only take a minute.',
         target: null,
         position: 'center',
         icon: '👋'
@@ -5513,7 +5513,7 @@ const TUTORIAL_PHASE_1 = [
     {
         id: 'themes-demo',
         title: 'Pick a theme',
-        description: 'First up, choose a look. Try one below — you can always change it later with Ctrl+Shift+T.',
+        description: 'First up, choose a look. Try one below, you can always change it later with Ctrl+Shift+T.',
         target: null,
         position: 'center',
         icon: '🎨',
@@ -5552,10 +5552,10 @@ const TUTORIAL_PHASE_2 = [
     {
         id: 'inline-devlog',
         title: 'Inline devlog posting',
-        description: 'Post devlogs right from your project page — no more navigating away. Let me show you...',
+        description: 'Post devlogs right from your project page, no more extra step of clicking a button Let me show you...',
         afterNavDescription: 'Here you go! Look for the devlog form right here on the project page. Quick and easy.',
         target: null,
-        afterNavTarget: '.flavortown-inline-devlog, .post-form, form[action*="devlogs"], .post',
+        afterNavTarget: '.flavortown-inline-devlog, .post-form, form[action*="devlogs"]',
         position: 'center',
         icon: '📝',
         interactive: 'navigate-project-devlog'
@@ -5573,7 +5573,7 @@ const TUTORIAL_PHASE_2 = [
     {
         id: 'ship-stats',
         title: 'Ship stats',
-        description: 'Every ship post now shows detailed stats — time spent, devlog count, and more. Check them out on any project page!',
+        description: 'Every ship post now shows detailed stats, time spent, devlog count, and more. Check them out on any project page!',
         target: null,
         position: 'center',
         icon: '📊'
@@ -5599,20 +5599,36 @@ const TUTORIAL_PHASE_2 = [
         skip: true
     },
     {
-        id: 'shop-goals',
-        title: 'Shop upgrades',
-        description: 'Goals, priority items, and progress tracking. Let me show you...',
-        afterNavDescription: 'Here\'s the shop! Check out the goals panel — track items you want and see how close you are.',
+        id: 'shop-accessories',
+        title: 'Accessories panel',
+        description: 'Bundle upgrades together! Click the accessories button on any item to add extras to your purchase.',
         target: null,
-        afterNavTarget: '.flavortown-goals-enhanced, .shop-goals',
+        afterNavTarget: '.shop-item-card__accessories-wrapper',
         position: 'center',
-        icon: '🛒',
-        interactive: 'navigate-shop'
+        icon: '⚙️',
+        interactive: 'navigate-shop-accessories'
+    },
+    {
+        id: 'shop-time-calc',
+        title: 'Time calculator',
+        description: 'See exactly how long it\'ll take to earn enough cookies. Slide to adjust your earning rate!',
+        target: '.flavortown-efficiency',
+        position: 'center',
+        icon: '⏱️',
+        interactive: 'show-time-calc'
+    },
+    {
+        id: 'shop-goals',
+        title: 'Goals panel',
+        description: 'Save items for later and track your progress. Your wishlist, always visible at the top!',
+        target: '.flavortown-goals-enhanced, .shop-goals',
+        position: 'center',
+        icon: '⭐'
     },
     {
         id: 'phase2-choice',
         title: 'Want to see more?',
-        description: 'There\'s still a lot more — shop features, image tools, and a few other goodies.',
+        description: 'There\'s still a lot more, shop features, image tools, and a few other goodies.',
         target: null,
         position: 'center',
         icon: '📦',
@@ -5645,7 +5661,7 @@ const TUTORIAL_PHASE_3 = [
     {
         id: 'auto-achievements',
         title: 'Auto achievements',
-        description: 'Achievements get claimed automatically — no more clicking through each one.',
+        description: 'Achievements get claimed automatically, no more clicking through each one.',
         target: null,
         position: 'center',
         icon: '🏆'
@@ -5780,7 +5796,15 @@ function injectTutorialStyles() {
             50% { transform: translateY(-10px); }
         }
 
-        @keyframes flavortown-fade-in {
+        @keyframes flavortown-fade-in {<div class="shop-item-card__accessories-wrapper"><button class="shop-item-card__accessories-toggle"><span>⚙️ Accessories</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"></path></svg></button><div class="shop-item-card__accessories-panel"><div class="shop-item-card__accessory-group">
+                <div class="shop-item-card__accessory-group-title">Other upgrades</div>
+                <div class="shop-item-card__accessory-chips"><button class="shop-item-card__accessory-chip is-selected" data-group="Other upgrades" data-id="53" data-price="300">
+                    $100 Credit (🍪 300)
+                </button></div></div><div class="shop-item-card__total-price">
+            <span>Total:</span>
+            <span class="total-value">🍪600</span>
+        </div>
+        <button class="shop-item-card__add-to-goals" type="button">⭐ Add with Accessories to Goals</button></div></div>
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
@@ -5979,7 +6003,7 @@ class TutorialController {
         }
 
         if (this.overlay) {
-            this.overlay.style.opacity = '0.55';
+            this.overlay.style.opacity = '0';
         }
 
         const spotlight = document.createElement('div');
@@ -6653,18 +6677,59 @@ class TutorialController {
             }
         }
 
-        if (step.interactive === 'navigate-shop') {
-            this.navigationStepId = step.id;
-            this.pendingNavigationTimeout = setTimeout(() => {
-                if (this.steps[this.currentStep]?.interactive !== 'navigate-shop') {
-                    return;
+        if (step.interactive === 'navigate-shop-accessories') {
+            const onShop = window.location.pathname === '/shop';
+
+            if (!onShop) {
+                this.navigationStepId = step.id;
+                this.pendingNavigationTimeout = setTimeout(() => {
+                    if (this.steps[this.currentStep]?.interactive !== 'navigate-shop-accessories') {
+                        return;
+                    }
+                    saveTutorialState(this.currentPhase, this.currentStep, '.shop-item-card__accessories-wrapper', false, step.id, this.stepOrder);
+                    window.location.href = '/shop';
+                }, 1000);
+                return;
+            }
+
+            this.setInteractiveTimeout(() => {
+                const accessoriesToggle = document.querySelector('.shop-item-card__accessories-toggle');
+                if (accessoriesToggle) {
+                    accessoriesToggle.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                    setTimeout(() => {
+                        const panel = accessoriesToggle.closest('.shop-item-card__accessories-wrapper')?.querySelector('.shop-item-card__accessories-panel');
+                        if (panel && !panel.classList.contains('is-open')) {
+                            accessoriesToggle.click();
+                        }
+
+                        setTimeout(() => {
+                            const wrapper = accessoriesToggle.closest('.shop-item-card__accessories-wrapper');
+                            if (wrapper) {
+                                this.createSpotlight(wrapper);
+                            }
+                        }, 400);
+                    }, 600);
                 }
-                if (window.location.pathname === '/shop') {
-                    return;
-                }
-                saveTutorialState(this.currentPhase, this.currentStep, '.flavortown-goals-enhanced, .shop-goals', false, step.id, this.stepOrder);
-                window.location.href = '/shop';
-            }, 1000);
+            }, 500, step.id);
+        }
+
+        if (step.interactive === 'show-time-calc') {
+            const efficiency = document.querySelector('.flavortown-efficiency');
+            if (efficiency) {
+                efficiency.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                this.setInteractiveTimeout(() => {
+                    const accordion = efficiency.querySelector('.flavortown-efficiency__accordion');
+                    if (accordion && !accordion.hasAttribute('open')) {
+                        accordion.setAttribute('open', '');
+                    }
+
+                    setTimeout(() => {
+                        this.createSpotlight(efficiency);
+                    }, 300);
+                }, 600, step.id);
+            }
         }
 
         if (step.interactive === 'navigate-votes') {
@@ -6841,6 +6906,9 @@ class TutorialController {
         if (this.spotlight) {
             this.spotlight.remove();
             this.spotlight = null;
+            if (this.overlay) {
+                this.overlay.style.opacity = '1';
+            }
         }
 
         if (this.clickWaitHandler) {
@@ -6857,6 +6925,14 @@ class TutorialController {
             targetSelectors.push(...step.afterNavTarget.split(',').map(s => s.trim()).filter(Boolean));
         }
 
+        if (step.interactive === 'navigate-project-devlog') {
+            const pathname = window.location.pathname;
+            const isProjectDetailPage = /^\/projects\/\d+/.test(pathname);
+            if (!isProjectDetailPage) {
+                targetSelectors.length = 0;
+            }
+        }
+
         let displayStep = step;
         const found = this.findTargetMatch(targetSelectors, false);
         let target = found ? found.el : null;
@@ -6869,7 +6945,9 @@ class TutorialController {
             displayStep.target = found.selector;
         }
 
-        if (displayStep.requiresElement && displayStep.target && !target) {
+        const requiresElement = displayStep.requiresElement && !(displayStep.interactive === 'navigate-shop' && !window.location.pathname.startsWith('/shop'));
+
+        if (requiresElement && displayStep.target && !target) {
             if (!target) {
                 if (debugMode) {
                     this.showDebugIndicator(`Waiting for target: ${targetSelectors.join(' , ')}`);
@@ -6920,9 +6998,6 @@ class TutorialController {
         }
 
         if (target) {
-            if (this.overlay) {
-                this.overlay.style.opacity = '0.55';
-            }
             const rect = target.getBoundingClientRect();
             const inView = rect.top >= 0 && rect.bottom <= window.innerHeight;
             if (!inView) {
@@ -7245,6 +7320,7 @@ async function resumeTutorial(savedState) {
         tutorial.currentStep = stepIndex;
         tutorial.isActive = true;
         injectTutorialStyles();
+        tutorial.overlay = tutorial.createOverlay();
         tutorial.escHandler = (e) => {
             if (e.key === 'Escape') {
                 tutorial.end();
@@ -7260,19 +7336,29 @@ async function resumeTutorial(savedState) {
         : (savedState.targetHighlight ? savedState.targetHighlight.split(',').map(s => s.trim()) : []);
     let targetElement = null;
 
-    for (let i = 0; i < 15; i++) {
+    await new Promise(r => setTimeout(r, 800));
+
+    for (let i = 0; i < 20; i++) {
         for (const selector of targetSelectors) {
-            targetElement = document.querySelector(selector);
-            if (targetElement) break;
+            const el = document.querySelector(selector);
+            if (el) {
+                const rect = el.getBoundingClientRect();
+                if (rect.width > 0 && rect.height > 0) {
+                    targetElement = el;
+                    break;
+                }
+            }
         }
         if (targetElement) break;
-        await new Promise(r => setTimeout(r, 500));
+        await new Promise(r => setTimeout(r, 400));
     }
 
     tutorial.currentStep = stepIndex;
     tutorial.isActive = true;
 
     injectTutorialStyles();
+
+    tutorial.overlay = tutorial.createOverlay();
 
     const displayStep = { ...currentStep };
     if (currentStep.afterNavDescription) {
@@ -7286,12 +7372,24 @@ async function resumeTutorial(savedState) {
         targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
         setTimeout(() => {
-            tutorial.createSpotlight(targetElement);
+            let finalTarget = targetElement;
+            for (const selector of targetSelectors) {
+                const el = document.querySelector(selector);
+                if (el) {
+                    const rect = el.getBoundingClientRect();
+                    if (rect.width > 0 && rect.height > 0) {
+                        finalTarget = el;
+                        break;
+                    }
+                }
+            }
+
+            tutorial.createSpotlight(finalTarget);
 
             setTimeout(() => {
                 tutorial.createModal(displayStep, stepIndex);
             }, 300);
-        }, 500);
+        }, 800);
     } else {
         setTimeout(() => {
             tutorial.createModal(displayStep, stepIndex);
