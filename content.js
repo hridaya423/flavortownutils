@@ -5623,7 +5623,8 @@ const TUTORIAL_PHASE_2 = [
         description: 'Save items for later and track your progress. Your wishlist, always visible at the top!',
         target: '.flavortown-goals-enhanced, .shop-goals',
         position: 'center',
-        icon: '⭐'
+        icon: '⭐',
+        interactive: 'show-shop-goals'
     },
     {
         id: 'phase2-choice',
@@ -6736,6 +6737,41 @@ class TutorialController {
             this.next();
         }
 
+        if (step.interactive === 'show-shop-goals') {
+            const goalsPanel = document.querySelector('.flavortown-goals-enhanced, .shop-goals');
+
+            const goalItems = goalsPanel?.querySelectorAll('.flavortown-goals-enhanced__item, .goal-item-card, img[src*="shop"], .shop-item-card') || [];
+            const hasGoals = goalItems.length > 0;
+
+            if (!hasGoals) {
+                const starBtn = document.querySelector('.shop-item-card__star[aria-pressed="false"], .shop-item-card__star:not([aria-pressed="true"])');
+                if (starBtn) {
+                    starBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    setTimeout(() => {
+                        starBtn.click();
+
+                        this.setInteractiveTimeout(() => {
+                            const updatedGoals = document.querySelector('.flavortown-goals-enhanced, .shop-goals');
+                            if (updatedGoals) {
+                                updatedGoals.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                setTimeout(() => {
+                                    this.createSpotlight(updatedGoals);
+                                }, 600);
+                            }
+                        }, 1000, step.id);
+                    }, 500);
+                    return;
+                }
+            }
+
+            if (goalsPanel) {
+                goalsPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                this.setInteractiveTimeout(() => {
+                    this.createSpotlight(goalsPanel);
+                }, 600, step.id);
+            }
+        }
+
         if (step.interactive === 'navigate-votes-disabled') {
             this.navigationStepId = step.id;
             this.pendingNavigationTimeout = setTimeout(() => {
@@ -7336,9 +7372,9 @@ async function resumeTutorial(savedState) {
         : (savedState.targetHighlight ? savedState.targetHighlight.split(',').map(s => s.trim()) : []);
     let targetElement = null;
 
-    await new Promise(r => setTimeout(r, 800));
+    await new Promise(r => setTimeout(r, 1200));
 
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 25; i++) {
         for (const selector of targetSelectors) {
             const el = document.querySelector(selector);
             if (el) {
@@ -7350,7 +7386,7 @@ async function resumeTutorial(savedState) {
             }
         }
         if (targetElement) break;
-        await new Promise(r => setTimeout(r, 400));
+        await new Promise(r => setTimeout(r, 500));
     }
 
     tutorial.currentStep = stepIndex;
@@ -7388,8 +7424,8 @@ async function resumeTutorial(savedState) {
 
             setTimeout(() => {
                 tutorial.createModal(displayStep, stepIndex);
-            }, 300);
-        }, 800);
+            }, 400);
+        }, 1000);
     } else {
         setTimeout(() => {
             tutorial.createModal(displayStep, stepIndex);
@@ -7407,27 +7443,29 @@ async function resumeTutorial(savedState) {
 async function initOnboarding() {
     scanUserContext().catch(e => console.warn('Tutorial scan failed:', e));
 
+    const state = await getOnboardingState();
+
+    if (state.onboardingComplete) {
+        clearTutorialState();
+
+        if (state.lastVersion && state.lastVersion !== EXTENSION_VERSION) {
+            const features = VERSION_FEATURES[EXTENSION_VERSION];
+            if (features && features.length > 0) {
+                createWhatsNewModal(features);
+            } else {
+                setLastVersion();
+            }
+        }
+        return;
+    }
+
     const savedState = getTutorialState();
     if (savedState) {
         resumeTutorial(savedState);
         return;
     }
 
-    const state = await getOnboardingState();
-
-    if (!state.onboardingComplete) {
-        runTutorial();
-        return;
-    }
-
-    if (state.lastVersion && state.lastVersion !== EXTENSION_VERSION) {
-        const features = VERSION_FEATURES[EXTENSION_VERSION];
-        if (features && features.length > 0) {
-            createWhatsNewModal(features);
-        } else {
-            setLastVersion();
-        }
-    }
+    runTutorial();
 }
 
 setTimeout(initOnboarding, 50);
