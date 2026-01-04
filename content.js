@@ -5200,7 +5200,7 @@ function parseRelativeTime(relativeStr) {
 }
 
 function clusterVotesToShips(votes, ships) {
-    const sortedShips = [...ships].sort((a, b) => a.date - b.date);
+    const VOTE_WINDOW_DAYS = 3;
 
     const clustered = new Map();
     ships.forEach(ship => clustered.set(ship, []));
@@ -5208,17 +5208,23 @@ function clusterVotesToShips(votes, ships) {
     votes.forEach(vote => {
         const voteDate = new Date(vote.timestamp);
 
-        let assignedShip = sortedShips[0];
+        let bestShip = null;
+        let smallestGap = Infinity;
 
-        for (const ship of sortedShips) {
-            if (ship.date <= voteDate) {
-                assignedShip = ship;
-            } else {
-                break;
+        for (const ship of ships) {
+            const daysSinceShip = (voteDate - ship.date) / (1000 * 60 * 60 * 24);
+
+            if (daysSinceShip >= 0 && daysSinceShip <= VOTE_WINDOW_DAYS) {
+                if (daysSinceShip < smallestGap) {
+                    smallestGap = daysSinceShip;
+                    bestShip = ship;
+                }
             }
         }
 
-        clustered.get(assignedShip).push(vote);
+        if (bestShip) {
+            clustered.get(bestShip).push(vote);
+        }
     });
 
     return clustered;
@@ -5338,8 +5344,7 @@ async function addProjectVotesDisplay() {
 
     const projectVotes = votesData.votes.filter(vote =>
         vote.project && projectName &&
-        (vote.project.toLowerCase().includes(projectName.toLowerCase()) ||
-         projectName.toLowerCase().includes(vote.project.toLowerCase()))
+        vote.project.toLowerCase().trim() === projectName.toLowerCase().trim()
     );
 
     if (projectVotes.length === 0) return;
