@@ -5200,7 +5200,13 @@ function parseRelativeTime(relativeStr) {
 }
 
 function clusterVotesToShips(votes, ships) {
-    const VOTE_WINDOW_DAYS = 3;
+    const MAX_WINDOW_DAYS = 14;
+
+    const normalizedShips = ships.map(ship => {
+        const startOfDay = new Date(ship.date);
+        startOfDay.setHours(0, 0, 0, 0);
+        return { ...ship, normalizedDate: startOfDay };
+    });
 
     const clustered = new Map();
     ships.forEach(ship => clustered.set(ship, []));
@@ -5208,22 +5214,23 @@ function clusterVotesToShips(votes, ships) {
     votes.forEach(vote => {
         const voteDate = new Date(vote.timestamp);
 
-        let bestShip = null;
+        let bestOriginalShip = null;
         let smallestGap = Infinity;
 
-        for (const ship of ships) {
-            const daysSinceShip = (voteDate - ship.date) / (1000 * 60 * 60 * 24);
+        for (let i = 0; i < normalizedShips.length; i++) {
+            const normShip = normalizedShips[i];
+            const daysSinceShip = (voteDate - normShip.normalizedDate) / (1000 * 60 * 60 * 24);
 
-            if (daysSinceShip >= 0 && daysSinceShip <= VOTE_WINDOW_DAYS) {
+            if (daysSinceShip >= 0 && daysSinceShip <= MAX_WINDOW_DAYS) {
                 if (daysSinceShip < smallestGap) {
                     smallestGap = daysSinceShip;
-                    bestShip = ship;
+                    bestOriginalShip = ships[i];
                 }
             }
         }
 
-        if (bestShip) {
-            clustered.get(bestShip).push(vote);
+        if (bestOriginalShip) {
+            clustered.get(bestOriginalShip).push(vote);
         }
     });
 
