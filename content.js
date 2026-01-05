@@ -387,7 +387,7 @@ function addDevlogFrequencyStat() {
     }
     if (document.querySelector('.flavortown-utils-frequency-stat')) return;
 
-    const statsContainer = document.querySelector('.project-show-card__stats .project-show-card__stats');
+    const statsContainer = document.querySelector('.project-show-card__stats');
     if (!statsContainer) return;
 
     const statElements = statsContainer.querySelectorAll('.project-show-card__stat');
@@ -400,7 +400,7 @@ function addDevlogFrequencyStat() {
         if (devlogMatch) {
             devlogCount = parseInt(devlogMatch[1], 10);
         }
-        const timeMatch = text.match(/(\d+)hr?\s*(\d+)min/);
+        const timeMatch = text.match(/(\d+)h[r]?\s*(\d+)m[in]*/);
         if (timeMatch) {
             totalMinutes = parseInt(timeMatch[1], 10) * 60 + parseInt(timeMatch[2], 10);
         }
@@ -416,7 +416,7 @@ function addDevlogFrequencyStat() {
     frequencyStat.className = 'project-show-card__stat flavortown-utils-frequency-stat';
     frequencyStat.innerHTML = `
         <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.2 3.2.8-1.3-4.5-2.7V7z"/></svg>
-        <span>1 devlog every ${avgHours}hr ${avgMins}min</span>
+        <span>${avgHours > 0 ? avgHours + 'h ' : ''}${avgMins}m/devlog</span>
     `;
     statsContainer.appendChild(frequencyStat);
 }
@@ -2673,8 +2673,8 @@ function initProjectBoardStats() {
         const devlogs = parseInt(devlogText) || 0;
 
         let minutes = 0;
-        const hoursMatch = timeText.match(/(\d+)hr/);
-        const minsMatch = timeText.match(/(\d+)min/);
+        const hoursMatch = timeText.match(/(\d+)h/);
+        const minsMatch = timeText.match(/(\d+)m/);
 
         if (hoursMatch) minutes += parseInt(hoursMatch[1]) * 60;
         if (minsMatch) minutes += parseInt(minsMatch[1]);
