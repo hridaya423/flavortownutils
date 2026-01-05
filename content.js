@@ -873,6 +873,553 @@ function inlineDevlogForm() {
         });
 }
 
+function setupInlineDevlogEditing() {
+    if (!/\/projects\/\d+$/.test(window.location.pathname)) return;
+
+    const editButtons = document.querySelectorAll('article.post--devlog .post__action-btn[href*="/edit"]');
+    editButtons.forEach(btn => {
+        if (btn.dataset.flavortownInlineEdit) return;
+        btn.dataset.flavortownInlineEdit = 'true';
+
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const post = btn.closest('article.post--devlog');
+            enableInlineDevlogEdit(post, btn.href);
+        });
+    });
+}
+
+async function enableInlineDevlogEdit(postElement, editUrl) {
+    if (postElement.querySelector('.flavortown-inline-edit')) return;
+
+    const postBody = postElement.querySelector('.post__body');
+    if (!postBody) return;
+
+    const originalHtml = postBody.innerHTML;
+
+    postBody.innerHTML = '<div style="padding: 12px; color: var(--color-text-muted, #888); font-style: italic;">Loading...</div>';
+
+    try {
+        const { body, csrfToken, formAction } = await fetchDevlogEditContent(editUrl);
+        createDevlogEditUI(postElement, postBody, body, originalHtml, csrfToken, formAction, editUrl);
+    } catch (error) {
+        console.error('Flavortown Utils: Failed to load devlog for editing', error);
+        postBody.innerHTML = originalHtml;
+        alert('Failed to load devlog for editing. Please try again.');
+    }
+}
+
+async function fetchDevlogEditContent(editUrl) {
+    const response = await fetch(editUrl, { credentials: 'same-origin' });
+    const html = await response.text();
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+
+    const textarea = doc.querySelector('#post_devlog_body');
+    const body = textarea ? textarea.value : '';
+
+    const csrfMeta = document.querySelector('meta[name="csrf-token"]');
+    const csrfToken = csrfMeta ? csrfMeta.content : '';
+
+    const form = doc.querySelector('form.projects-new__form');
+    const formAction = form ? form.action : '';
+
+    return { body, csrfToken, formAction };
+}
+
+function createDevlogEditUI(postElement, postBody, currentText, originalHtml, csrfToken, formAction, editUrl) {
+    const editWrapper = document.createElement('div');
+    editWrapper.className = 'flavortown-inline-edit';
+    editWrapper.style.cssText = `
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    `;
+
+    const inputWrapper = document.createElement('div');
+    inputWrapper.className = 'input flavortown-inline-edit-input';
+    inputWrapper.style.cssText = `
+        position: relative;
+        background: var(--color-cream, #fdf6e3);
+        border-radius: 12px;
+        overflow: hidden;
+        border: 2px solid var(--color-border, rgba(0,0,0,0.08));
+        box-shadow: inset 0 1px 3px rgba(0,0,0,0.04);
+    `;
+
+    const textarea = document.createElement('textarea');
+    textarea.className = 'flavortown-inline-edit__textarea input__field input__field--textarea';
+    textarea.value = currentText;
+    textarea.placeholder = 'Write a few sentences about what you worked on…';
+    textarea.style.cssText = `
+        width: 100%;
+        padding: 14px 16px;
+        border: none;
+        font-family: inherit;
+        font-size: 1em;
+        line-height: 1.7;
+        resize: none;
+        background: transparent;
+        color: var(--color-text-primary, #333);
+        min-height: 100px;
+        max-height: 500px;
+        overflow-y: auto;
+        outline: none;
+    `;
+
+    const autoExpand = () => {
+        textarea.style.height = 'auto';
+        textarea.style.height = Math.min(Math.max(textarea.scrollHeight, 100), 500) + 'px';
+    };
+    textarea.addEventListener('input', autoExpand);
+
+    inputWrapper.appendChild(textarea);
+
+    setTimeout(autoExpand, 0);
+
+    const actions = document.createElement('div');
+    actions.className = 'flavortown-inline-edit__actions';
+    actions.style.cssText = `
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+    `;
+
+    const cancelBtn = document.createElement('button');
+    cancelBtn.type = 'button';
+    cancelBtn.className = 'btn btn--borderless';
+    cancelBtn.textContent = 'Cancel';
+    cancelBtn.onclick = () => {
+        postBody.innerHTML = originalHtml;
+    };
+
+    const saveBtn = document.createElement('button');
+    saveBtn.type = 'button';
+    saveBtn.className = 'btn btn--brown';
+    saveBtn.textContent = 'Save Changes';
+    saveBtn.onclick = () => saveDevlogEdit(textarea.value, csrfToken, formAction, postBody, editWrapper, originalHtml, saveBtn);
+
+    actions.appendChild(cancelBtn);
+    actions.appendChild(saveBtn);
+
+    editWrapper.appendChild(inputWrapper);
+    editWrapper.appendChild(actions);
+
+    postBody.innerHTML = '';
+    postBody.appendChild(editWrapper);
+
+    addInlineEditToolbar(textarea, inputWrapper);
+
+    textarea.focus();
+
+    const versionsUrl = editUrl.replace('/edit', '/versions');
+    fetchDevlogVersions(versionsUrl).then(versions => {
+        if (versions) {
+            createVersionHistoryAccordion(versions, editWrapper);
+        }
+    });
+}
+
+function addInlineEditToolbar(textarea, inputWrapper) {
+    if (!textarea || textarea.dataset.mdToolbar) return;
+    textarea.dataset.mdToolbar = 'true';
+
+    const toolbar = document.createElement('div');
+    toolbar.className = 'flavortown-md-toolbar flavortown-inline-toolbar';
+    toolbar.style.cssText = `
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2px;
+        padding: 8px 12px;
+        background: rgba(0,0,0,0.03);
+        border-bottom: 1px solid rgba(0,0,0,0.06);
+    `;
+
+    const buttons = [
+        { icon: 'bold', title: 'Bold', action: () => wrapSelection(textarea, '**', '**') },
+        { icon: 'italic', title: 'Italic', action: () => wrapSelection(textarea, '*', '*') },
+        { icon: 'strikethrough', title: 'Strikethrough', action: () => wrapSelection(textarea, '~~', '~~') },
+        { type: 'separator' },
+        { icon: 'heading1', title: 'Heading 1', action: () => prefixLine(textarea, '# ') },
+        { icon: 'heading2', title: 'Heading 2', action: () => prefixLine(textarea, '## ') },
+        { type: 'separator' },
+        { icon: 'list', title: 'Bullet List', action: () => prefixLine(textarea, '- ') },
+        { icon: 'listOrdered', title: 'Numbered List', action: () => prefixLine(textarea, '1. ') },
+        { type: 'separator' },
+        { icon: 'code', title: 'Inline Code', action: () => wrapSelection(textarea, '`', '`') },
+        { icon: 'link', title: 'Link', action: () => insertLink(textarea) }
+    ];
+
+    buttons.forEach(btn => {
+        if (btn.type === 'separator') {
+            const sep = document.createElement('div');
+            sep.style.cssText = 'width: 1px; height: 16px; background: rgba(0,0,0,0.1); margin: 0 6px; align-self: center;';
+            toolbar.appendChild(sep);
+            return;
+        }
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.style.cssText = `
+            padding: 5px 7px;
+            background: transparent;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            color: var(--color-text-secondary, #666);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.1s ease;
+        `;
+        button.title = btn.title;
+        button.innerHTML = LUCIDE_ICONS[btn.icon];
+        button.querySelector('svg')?.setAttribute('width', '16');
+        button.querySelector('svg')?.setAttribute('height', '16');
+        button.addEventListener('mouseenter', () => {
+            button.style.background = 'rgba(0,0,0,0.08)';
+            button.style.color = 'var(--color-text-primary, #333)';
+        });
+        button.addEventListener('mouseleave', () => {
+            button.style.background = 'transparent';
+            button.style.color = 'var(--color-text-secondary, #666)';
+        });
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+            btn.action();
+            textarea.focus();
+        });
+        toolbar.appendChild(button);
+    });
+
+    inputWrapper.insertBefore(toolbar, textarea);
+}
+
+async function saveDevlogEdit(newBody, csrfToken, formAction, postBody, editWrapper, originalHtml, saveBtn) {
+    const originalBtnText = saveBtn.textContent;
+    saveBtn.textContent = 'Saving...';
+    saveBtn.disabled = true;
+
+    try {
+        const formData = new FormData();
+        formData.append('post_devlog[body]', newBody);
+        formData.append('authenticity_token', csrfToken);
+        formData.append('_method', 'patch');
+
+        const response = await fetch(formAction, {
+            method: 'POST',
+            credentials: 'same-origin',
+            body: formData
+        });
+
+        if (response.ok) {
+            const responseText = await response.text();
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(responseText, 'text/html');
+
+            const thisPostId = formAction.match(/\/devlogs\/(\d+)/)?.[1];
+            if (thisPostId) {
+                const updatedPost = doc.querySelector(`article.post--devlog a[href*="/devlogs/${thisPostId}/edit"]`)?.closest('article.post--devlog');
+                if (updatedPost) {
+                    const updatedBody = updatedPost.querySelector('.post__body');
+                    if (updatedBody) {
+                        postBody.innerHTML = updatedBody.innerHTML;
+                        return;
+                    }
+                }
+            }
+
+            const updatedHtml = simpleMarkdownToHtml(newBody);
+            postBody.innerHTML = updatedHtml;
+        } else {
+            throw new Error('Save failed');
+        }
+    } catch (error) {
+        console.error('Flavortown Utils: Failed to save devlog:', error);
+        saveBtn.textContent = originalBtnText;
+        saveBtn.disabled = false;
+        alert('Failed to save changes. Please try again.');
+    }
+}
+
+function simpleMarkdownToHtml(markdown) {
+    let html = markdown
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+
+    html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+    html = html.replace(/~~(.+?)~~/g, '<del>$1</del>');
+    html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+    html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+    html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+    html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
+    html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
+    html = html.replace(/^- (.+)$/gm, '<li>$1</li>');
+    html = html.replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>');
+
+    const paragraphs = html.split(/\n\n+/);
+    html = paragraphs.map(p => {
+        p = p.trim();
+        if (!p) return '';
+        if (p.startsWith('<h') || p.startsWith('<ul') || p.startsWith('<ol')) return p;
+        return `<p>${p.replace(/\n/g, '<br>')}</p>`;
+    }).join('\n');
+
+    return html;
+}
+
+async function fetchDevlogVersions(versionsUrl) {
+    try {
+        const response = await fetch(versionsUrl, { credentials: 'same-origin' });
+        if (!response.ok) return null;
+
+        const html = await response.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+
+        const versions = [];
+
+        const currentCard = doc.querySelector('.projects-new__card');
+        if (currentCard) {
+            const contentDiv = currentCard.querySelector('div[style*="pre-wrap"]');
+            if (contentDiv) {
+                versions.push({
+                    label: 'Current Version',
+                    content: contentDiv.textContent.trim(),
+                    editedBy: null,
+                    editedAt: null
+                });
+            }
+        }
+
+        const versionCards = doc.querySelectorAll('.projects-new__card[style*="margin-top"]');
+        versionCards.forEach(card => {
+            const heading = card.querySelector('h3');
+            const timeSpan = card.querySelector('span[style*="color"]');
+            const contentDiv = card.querySelector('div[style*="pre-wrap"]');
+
+            if (heading && contentDiv) {
+                versions.push({
+                    label: heading.textContent.trim(),
+                    content: contentDiv.textContent.trim(),
+                    editedBy: timeSpan ? timeSpan.textContent.trim() : null
+                });
+            }
+        });
+
+        return versions.length > 1 ? versions : null;   
+    } catch (error) {
+        console.error('Flavortown Utils: Failed to fetch versions:', error);
+        return null;
+    }
+}
+
+function computeLineDiff(oldText, newText) {
+    const oldLines = oldText.split('\n');
+    const newLines = newText.split('\n');
+
+    const lcs = [];
+    for (let i = 0; i <= oldLines.length; i++) {
+        lcs[i] = [];
+        for (let j = 0; j <= newLines.length; j++) {
+            if (i === 0 || j === 0) {
+                lcs[i][j] = 0;
+            } else if (oldLines[i - 1] === newLines[j - 1]) {
+                lcs[i][j] = lcs[i - 1][j - 1] + 1;
+            } else {
+                lcs[i][j] = Math.max(lcs[i - 1][j], lcs[i][j - 1]);
+            }
+        }
+    }
+
+    let i = oldLines.length;
+    let j = newLines.length;
+    const result = [];
+
+    while (i > 0 || j > 0) {
+        if (i > 0 && j > 0 && oldLines[i - 1] === newLines[j - 1]) {
+            result.unshift({ type: 'unchanged', text: oldLines[i - 1] });
+            i--;
+            j--;
+        } else if (j > 0 && (i === 0 || lcs[i][j - 1] >= lcs[i - 1][j])) {
+            result.unshift({ type: 'added', text: newLines[j - 1] });
+            j--;
+        } else if (i > 0) {
+            result.unshift({ type: 'removed', text: oldLines[i - 1] });
+            i--;
+        }
+    }
+
+    return result;
+}
+
+function createVersionHistoryAccordion(versions, editWrapper) {
+    if (!versions || versions.length < 2) return;
+
+    const accordion = document.createElement('div');
+    accordion.className = 'flavortown-version-history';
+    accordion.style.cssText = 'margin-top: 8px;';
+
+    let isOpen = false;
+
+    const header = document.createElement('button');
+    header.type = 'button';
+    header.className = 'flavortown-version-history__header';
+    header.style.cssText = `
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 14px;
+        background: var(--color-cream, #fdf6e3);
+        border: 2px solid var(--color-border, rgba(0,0,0,0.08));
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 0.85em;
+        font-weight: 500;
+        color: var(--color-text-secondary, #666);
+        transition: all 0.15s ease;
+    `;
+
+    header.addEventListener('mouseenter', () => {
+        header.style.borderColor = 'rgba(0,0,0,0.15)';
+    });
+    header.addEventListener('mouseleave', () => {
+        if (!isOpen) header.style.borderColor = 'var(--color-border, rgba(0,0,0,0.08))';
+    });
+
+    const chevronIcon = document.createElement('span');
+    chevronIcon.innerHTML = LUCIDE_ICONS.chevronRight || '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>';
+    chevronIcon.style.cssText = 'transition: transform 0.2s ease; display: flex; opacity: 0.5;';
+    chevronIcon.querySelector('svg')?.setAttribute('width', '14');
+    chevronIcon.querySelector('svg')?.setAttribute('height', '14');
+
+    const headerText = document.createElement('span');
+    headerText.textContent = `Version History`;
+    headerText.style.cssText = 'flex: 1; text-align: left;';
+
+    const badge = document.createElement('span');
+    badge.textContent = `${versions.length - 1} previous`;
+    badge.style.cssText = `
+        color: var(--color-text-muted, #999);
+        font-size: 0.9em;
+        font-weight: 400;
+    `;
+
+    header.appendChild(chevronIcon);
+    header.appendChild(headerText);
+    header.appendChild(badge);
+
+    const content = document.createElement('div');
+    content.className = 'flavortown-version-history__content';
+    content.style.cssText = `
+        display: none;
+        background: var(--color-cream, #fdf6e3);
+        border: 2px solid var(--color-border, rgba(0,0,0,0.08));
+        border-top: none;
+        border-radius: 0 0 10px 10px;
+        overflow: hidden;
+        max-height: 350px;
+        overflow-y: auto;
+    `;
+
+    for (let i = 0; i < versions.length - 1; i++) {
+        const newerVersion = versions[i];
+        const olderVersion = versions[i + 1];
+
+        const diffSection = document.createElement('div');
+        diffSection.className = 'flavortown-version-diff';
+        if (i > 0) {
+            diffSection.style.borderTop = '1px solid rgba(0,0,0,0.06)';
+        }
+
+        const diffHeader = document.createElement('div');
+        diffHeader.style.cssText = `
+            padding: 10px 14px;
+            background: rgba(0,0,0,0.02);
+            font-size: 0.8em;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0,0,0,0.04);
+        `;
+
+        const diffTitle = document.createElement('span');
+        diffTitle.style.cssText = 'font-weight: 600; color: var(--color-text-primary, #333);';
+        diffTitle.textContent = `${newerVersion.label} → ${olderVersion.label}`;
+
+        const diffMeta = document.createElement('span');
+        diffMeta.style.cssText = 'color: var(--color-text-muted, #999); font-size: 0.9em;';
+        if (olderVersion.editedBy) {
+            diffMeta.textContent = olderVersion.editedBy.replace('Edited by ', '').replace(' on ', ' · ');
+        }
+
+        diffHeader.appendChild(diffTitle);
+        diffHeader.appendChild(diffMeta);
+
+        const diffBody = document.createElement('div');
+        diffBody.style.cssText = `
+            font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+            font-size: 0.8em;
+            line-height: 1.6;
+        `;
+
+        const diff = computeLineDiff(olderVersion.content, newerVersion.content);
+
+        diff.forEach(line => {
+            const lineEl = document.createElement('div');
+            lineEl.style.cssText = `
+                padding: 3px 14px;
+                white-space: pre-wrap;
+                word-break: break-word;
+                border-left: 3px solid transparent;
+            `;
+
+            const escapedText = escapeHtml(line.text);
+
+            if (line.type === 'added') {
+                lineEl.style.background = 'rgba(46, 160, 67, 0.12)';
+                lineEl.style.borderLeftColor = '#2ea043';
+                lineEl.style.color = '#1a7f37';
+                lineEl.innerHTML = `<span style="opacity: 0.5; user-select: none; margin-right: 6px;">+</span>${escapedText}`;
+            } else if (line.type === 'removed') {
+                lineEl.style.background = 'rgba(248, 81, 73, 0.12)';
+                lineEl.style.borderLeftColor = '#f85149';
+                lineEl.style.color = '#cf222e';
+                lineEl.innerHTML = `<span style="opacity: 0.5; user-select: none; margin-right: 6px;">−</span>${escapedText}`;
+            } else {
+                lineEl.style.color = '#888';
+                lineEl.innerHTML = `<span style="opacity: 0.3; user-select: none; margin-right: 6px;">&nbsp;</span>${escapedText}`;
+            }
+
+            diffBody.appendChild(lineEl);
+        });
+
+        diffSection.appendChild(diffHeader);
+        diffSection.appendChild(diffBody);
+        content.appendChild(diffSection);
+    }
+
+    header.addEventListener('click', () => {
+        isOpen = !isOpen;
+        content.style.display = isOpen ? 'block' : 'none';
+        chevronIcon.style.transform = isOpen ? 'rotate(90deg)' : 'rotate(0deg)';
+        header.style.borderRadius = isOpen ? '10px 10px 0 0' : '10px';
+        header.style.borderBottom = isOpen ? 'none' : '';
+    });
+
+    accordion.appendChild(header);
+    accordion.appendChild(content);
+    editWrapper.appendChild(accordion);
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
 function enhanceShopGoals() {
     if (window.location.pathname !== '/shop') return;
 
@@ -2278,6 +2825,7 @@ function init() {
     addDevlogFrequencyStat();
     addShipStats();
     inlineDevlogForm();
+    setupInlineDevlogEditing();
     enhanceShopGoals();
     initShopAccessories();
     addShopCardEfficiency();
@@ -2924,7 +3472,7 @@ function addDoomscrollMode() {
         const projectIdMatch = postData.projectLink.match(/\/projects\/(\d+)/);
         const projectId = projectIdMatch ? projectIdMatch[1] : null;
 
-        card.innerHTML = `
+        card.innerHTML = `  
             <div class="flavortown-doomscroll__background">
                 ${hasMedia ? mediaHTML : `<div class="flavortown-doomscroll__text-only">${postData.body}</div>`}
             </div>
@@ -3241,6 +3789,7 @@ document.addEventListener('turbo:load', () => {
     addDevlogFrequencyStat();
     addShipStats();
     inlineDevlogForm();
+    setupInlineDevlogEditing();
     enhanceShopGoals();
     initShopAccessories();
     addShopCardEfficiency();
@@ -5244,6 +5793,7 @@ function createVoteCard(vote, usersMap) {
         background: var(--catppuccin-base, var(--color-cream, rgba(255,255,255,0.5)));
         border-radius: 8px;
         font-size: 0.9em;
+        color: var(--catppuccin-text, var(--color-text-primary, inherit));
     `;
 
     const feedbackText = truncateFeedback(vote.feedback);
@@ -5256,18 +5806,18 @@ function createVoteCard(vote, usersMap) {
 
     voteCard.innerHTML = `
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-            <span style="color: var(--catppuccin-subtext0, #6c6f85); font-size: 0.85em;">
+            <span style="color: var(--catppuccin-subtext0, var(--color-text-muted, #666)); font-size: 0.85em;">
                 ${getRelativeTime(vote.timestamp)}
             </span>
-            ${voterDisplay ? `<span style="font-size: 0.8em; color: var(--catppuccin-subtext1, #7c7f93);">${voterDisplay}</span>` : ''}
+            ${voterDisplay ? `<span style="font-size: 0.8em; color: var(--catppuccin-subtext1, var(--color-text-secondary, #555));">${voterDisplay}</span>` : ''}
         </div>
-        <div class="vote-feedback-text" style="line-height: 1.4; color: var(--catppuccin-text, #cdd6f4);">
+        <div class="vote-feedback-text" style="line-height: 1.4; color: var(--catppuccin-text, var(--color-text-primary, inherit));">
             ${feedbackText || '<em style="opacity: 0.6;">No feedback provided</em>'}
         </div>
         ${hasMore ? `<button class="vote-expand-btn" style="
             background: none;
             border: none;
-            color: var(--catppuccin-mauve, #cba6f7);
+            color: var(--catppuccin-mauve, var(--color-accent, var(--color-brown, #b4854a)));
             cursor: pointer;
             padding: 4px 0 0 0;
             font-size: 0.85em;
@@ -5296,7 +5846,7 @@ function createVotesContainer(votes, usersMap) {
         padding: 14px;
         background: var(--catppuccin-surface0, var(--color-cream-dark, rgba(0,0,0,0.05)));
         border-radius: 10px;
-        border-left: 3px solid var(--catppuccin-mauve, var(--color-accent, #b4befe));
+        border-left: 3px solid var(--catppuccin-mauve, var(--color-accent, var(--color-brown, #b4854a)));
     `;
 
     const header = document.createElement('div');
@@ -5307,10 +5857,10 @@ function createVotesContainer(votes, usersMap) {
         margin-bottom: 10px;
         font-weight: 600;
         font-size: 0.9em;
-        color: var(--catppuccin-text, #cdd6f4);
+        color: var(--catppuccin-text, var(--color-text-primary, inherit));
     `;
     header.innerHTML = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="var(--catppuccin-yellow, #f9e2af)" style="opacity: 0.9;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="var(--catppuccin-yellow, var(--color-brown, #d4a857))" style="opacity: 0.9;">
             <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
         </svg>
         <span>Community Votes (${votes.length})</span>
