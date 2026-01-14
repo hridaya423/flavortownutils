@@ -2832,61 +2832,12 @@ function init() {
     addExploreSearch();
     captureApiKey();
     initProjectBoardStats();
-    addSkipButton();
     transformVotesTable();
     enhanceKitchenDashboard();
     enhanceAdminPage();
 
     setTimeout(checkAchievements, 2000);
     setTimeout(initVotesFeature, 1000);
-}
-
-
-function addSkipButton() {
-    if (!document.querySelector('.votes-new')) return;
-
-    if (document.querySelector('.votes-new__skip-btn')) return;
-
-    const prevBtn = document.querySelector('.votes-new__prev-btn');
-    if (!prevBtn) return;
-    const buttonContainer = document.createElement('div');
-    buttonContainer.className = 'votes-new__action-row';
-    buttonContainer.style.display = 'flex';
-    buttonContainer.style.justifyContent = 'center';
-    buttonContainer.style.alignItems = 'center';
-    buttonContainer.style.gap = '12px';
-    buttonContainer.style.marginBottom = '24px';
-    buttonContainer.style.marginTop = '24px';
-
-    prevBtn.parentNode.insertBefore(buttonContainer, prevBtn);
-
-    buttonContainer.appendChild(prevBtn);
-
-    prevBtn.style.setProperty('margin', '0', 'important');
-    prevBtn.style.setProperty('display', 'inline-flex', 'important');
-    prevBtn.style.setProperty('align-items', 'center', 'important');
-    prevBtn.style.setProperty('width', 'auto', 'important');
-
-    const skipBtn = document.createElement('a');
-    skipBtn.className = 'btn btn--brown btn--borderless votes-new__skip-btn';
-    skipBtn.style.cursor = 'pointer';
-    skipBtn.title = 'Skip this project';
-    skipBtn.innerHTML = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="13 17 18 12 13 7"></polyline>
-            <polyline points="6 17 11 12 6 7"></polyline>
-        </svg>
-        Skip
-    `;
-
-    skipBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        window.location.reload();
-    });
-
-    buttonContainer.appendChild(skipBtn);
-
-    skipBtn.style.setProperty('margin', '0', 'important');
 }
 
 function transformVotesTable() {
@@ -3796,7 +3747,6 @@ document.addEventListener('turbo:load', () => {
     addExploreSearch();
     captureApiKey();
     initProjectBoardStats();
-    addSkipButton();
     transformVotesTable();
     enhanceKitchenDashboard();
     addDoomscrollMode();
