@@ -1831,7 +1831,8 @@ a:hover {
 }
 
 .votes-new__form {
-    background-color: var(--overcooked-dark) !important;
+    background-color: color-mix(in srgb, var(--overcooked-wave), black 50%) !important;
+    background-blend-mode: multiply !important;
     border-color: var(--overcooked-mid) !important;
     color: var(--overcooked-white) !important;
 }

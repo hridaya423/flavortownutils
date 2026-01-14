@@ -1825,7 +1825,8 @@ a:hover {
 }
 
 .votes-new__form {
-    background-color: var(--sea-dark) !important;
+    background-color: color-mix(in srgb, var(--sea-teal), black 50%) !important;
+    background-blend-mode: multiply !important;
     border-color: var(--sea-mid) !important;
     color: var(--sea-white) !important;
 }

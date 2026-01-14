@@ -1831,7 +1831,8 @@ a:hover {
 }
 
 .votes-new__form {
-    background-color: var(--ctp-surface0) !important;
+    background-color: color-mix(in srgb, var(--ctp-lavender), black 70%) !important;
+    background-blend-mode: multiply !important;
     border-color: var(--ctp-surface1) !important;
     color: var(--ctp-text) !important;
 }
