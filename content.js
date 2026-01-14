@@ -2832,7 +2832,7 @@ function init() {
     addExploreSearch();
     captureApiKey();
     initProjectBoardStats();
-    transformVotesTable();
+    addSkipButton();
     enhanceKitchenDashboard();
     enhanceAdminPage();
 
@@ -2840,67 +2840,144 @@ function init() {
     setTimeout(initVotesFeature, 1000);
 }
 
-function transformVotesTable() {
-    if (!/\/votes\.\d+/.test(window.location.pathname)) return;
+const VOTES_LAST_PROJECT_KEY = 'flavortown-votes-last-project';
+const VOTES_REFRESH_ATTEMPTS_KEY = 'flavortown-votes-refresh-attempts';
+const MAX_VOTES_REFRESH_ATTEMPTS = 2;
+let skipButtonObserver;
+let votesRotationChecked = false;
 
-    const table = document.querySelector('table');
-    if (!table || table.dataset.flavortownTransformed) return;
-    table.dataset.flavortownTransformed = 'true';
-
-    const tbody = table.querySelector('tbody');
-    if (!tbody) return;
-
-    const rows = Array.from(tbody.querySelectorAll('tr'));
-    if (rows.length === 0) return;
-
-    const projectVotes = {};
-    rows.forEach(row => {
-        const cells = row.querySelectorAll('td');
-        if (cells.length < 4) return;
-
-        const projectName = cells[0].textContent.trim();
-        const category = cells[1].textContent.trim().toLowerCase();
-        const score = cells[2].textContent.trim();
-        const viewLink = cells[3].querySelector('a')?.href || '';
-
-        if (!projectVotes[projectName]) {
-            projectVotes[projectName] = {
-                name: projectName,
-                link: viewLink,
-                originality: '-',
-                technical: '-',
-                usability: '-'
-            };
+function ensureVotesActionsStyles() {
+    if (document.getElementById('flavortown-votes-actions-style')) return;
+    const style = document.createElement('style');
+    style.id = 'flavortown-votes-actions-style';
+    style.textContent = `
+        .flavortown-votes-actions {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 0 12px;
+            margin-top: 8px;
         }
+        .flavortown-votes-actions .btn {
+            margin: 0 !important;
+            min-height: 40px;
+        }
+    `;
+    document.head.appendChild(style);
+}
 
-        if (category === 'originality') projectVotes[projectName].originality = score;
-        else if (category === 'technical') projectVotes[projectName].technical = score;
-        else if (category === 'usability') projectVotes[projectName].usability = score;
-    });
+function getCurrentVotesProjectKey() {
+    const card = document.querySelector('.votes-new__project-card');
+    if (!card) return null;
 
-    const thead = table.querySelector('thead');
-    if (thead) {
-        thead.innerHTML = `
-            <tr>
-                <th>Project</th>
-                <th>Originality</th>
-                <th>Technical</th>
-                <th>Usability</th>
-            </tr>
-        `;
+    const title = card.querySelector('h1')?.textContent?.trim() || '';
+    const banner = card.querySelector('img')?.src || '';
+    const repo = card.querySelector('a[aria-label="Repo"]')?.href || '';
+
+    const key = [title, banner, repo].filter(Boolean).join('|');
+    return key || null;
+}
+
+function ensureVotesProjectRotation() {
+    if (votesRotationChecked) return;
+    if (!window.location.pathname.startsWith('/votes/new')) return;
+
+    const currentKey = getCurrentVotesProjectKey();
+    if (!currentKey) return;
+
+    votesRotationChecked = true;
+
+    const lastKey = sessionStorage.getItem(VOTES_LAST_PROJECT_KEY);
+    let attempts = Number(sessionStorage.getItem(VOTES_REFRESH_ATTEMPTS_KEY) || '0');
+    if (Number.isNaN(attempts)) attempts = 0;
+
+    if (lastKey && lastKey === currentKey && attempts < MAX_VOTES_REFRESH_ATTEMPTS) {
+        attempts += 1;
+        sessionStorage.setItem(VOTES_REFRESH_ATTEMPTS_KEY, String(attempts));
+        window.location.reload();
+        return;
     }
 
-    tbody.innerHTML = '';
-    Object.values(projectVotes).forEach(project => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td><a href="${project.link}">${project.name}</a></td>
-            <td>${project.originality}</td>
-            <td>${project.technical}</td>
-            <td>${project.usability}</td>
-        `;
-        tbody.appendChild(row);
+    sessionStorage.setItem(VOTES_LAST_PROJECT_KEY, currentKey);
+    sessionStorage.setItem(VOTES_REFRESH_ATTEMPTS_KEY, '0');
+}
+
+function addSkipButton() {
+    if (!window.location.pathname.startsWith('/votes/new')) {
+        if (skipButtonObserver) {
+            skipButtonObserver.disconnect();
+            skipButtonObserver = null;
+        }
+        votesRotationChecked = false;
+        return;
+    }
+
+    const ensureSkipButton = () => {
+        const prevBtn = document.querySelector('.votes-new__prev-btn');
+        const form = document.querySelector('.votes-new__form');
+        const submitBtn = form?.querySelector('button[type="submit"], input[type="submit"], .btn--brown');
+        const target = prevBtn || submitBtn;
+
+        if (!target || !target.parentNode) return false;
+
+        let skipBtn = document.querySelector('.flavortown-skip-btn');
+        if (!skipBtn) {
+            skipBtn = document.createElement('button');
+            skipBtn.type = 'button';
+            skipBtn.className = 'btn btn--brown btn--borderless flavortown-skip-btn';
+            skipBtn.textContent = 'Skip';
+            skipBtn.addEventListener('click', () => {
+                const currentKey = getCurrentVotesProjectKey();
+                if (currentKey) {
+                    sessionStorage.setItem(VOTES_LAST_PROJECT_KEY, currentKey);
+                    sessionStorage.setItem(VOTES_REFRESH_ATTEMPTS_KEY, '0');
+                }
+                votesRotationChecked = false;
+                window.location.reload();
+            });
+        }
+
+        if (prevBtn) {
+            ensureVotesActionsStyles();
+            let container = prevBtn.closest('.flavortown-votes-actions');
+            if (!container) {
+                container = document.createElement('div');
+                container.className = 'flavortown-votes-actions';
+                prevBtn.parentNode.insertBefore(container, prevBtn);
+                container.appendChild(prevBtn);
+            }
+            container.appendChild(skipBtn);
+        } else {
+            target.insertAdjacentElement('afterend', skipBtn);
+        }
+
+        ensureVotesProjectRotation();
+        return true;
+    };
+
+    if (skipButtonObserver) {
+        skipButtonObserver.disconnect();
+        skipButtonObserver = null;
+    }
+
+    if (ensureSkipButton()) return;
+
+    skipButtonObserver = new MutationObserver(() => {
+        if (ensureSkipButton()) {
+            skipButtonObserver.disconnect();
+            skipButtonObserver = null;
+        }
     });
+
+    skipButtonObserver.observe(document.body, { childList: true, subtree: true });
+
+    setTimeout(() => {
+        if (skipButtonObserver) {
+            skipButtonObserver.disconnect();
+            skipButtonObserver = null;
+        }
+    }, 5000);
 }
 
 async function enhanceKitchenDashboard() {
@@ -3734,6 +3811,7 @@ document.addEventListener('turbo:load', () => {
         inlineFormLoading = false;
         window.__flavortownGoalsEnhanced = false;
         window.__shopAccessoriesInit = false;
+        votesRotationChecked = false;
         lastPathname = window.location.pathname;
     }
     initPinnableSidebar();
@@ -3747,7 +3825,7 @@ document.addEventListener('turbo:load', () => {
     addExploreSearch();
     captureApiKey();
     initProjectBoardStats();
-    transformVotesTable();
+    addSkipButton();
     enhanceKitchenDashboard();
     addDoomscrollMode();
     addAdminViewButton();
@@ -6190,18 +6268,6 @@ const TUTORIAL_PHASE_3 = [
         icon: '🖼️'
     },
     {
-        id: 'better-votes',
-        title: 'Better votes page',
-        description: 'The voting history page got a cleaner layout. Let me show you...',
-        afterNavDescription: 'Here\'s your votes page! Much cleaner table layout with better readability.',
-        target: null,
-        afterNavTarget: '.my-votes, .votes-table, table',
-        position: 'center',
-        icon: '🗳️',
-        interactive: 'navigate-votes',
-        skip: true
-    },
-    {
         id: 'done',
         title: 'You\'re all set! 🎉',
         description: 'That\'s most of it! Check the README for more features!. Now go ship something great!',
@@ -7319,10 +7385,6 @@ class TutorialController {
             }
         }
 
-        if (step.interactive === 'navigate-votes') {
-            this.next();
-        }
-
         if (step.interactive === 'show-shop-goals') {
             if (this.handledStepId === step.id) return;
             this.handledStepId = step.id;
@@ -7364,26 +7426,6 @@ class TutorialController {
                 }, 600, step.id);
                 return;
             }
-        }
-
-        if (step.interactive === 'navigate-votes-disabled') {
-            this.navigationStepId = step.id;
-            this.pendingNavigationTimeout = setTimeout(() => {
-                if (this.steps[this.currentStep]?.interactive !== 'navigate-votes-disabled') {
-                    return;
-                }
-                if (window.location.pathname.includes('/votes')) {
-                    return;
-                }
-                const votesLink = document.querySelector('a[href*="/my/votes"], a[href*="votes"]');
-                if (votesLink) {
-                    saveTutorialState(this.currentPhase, this.currentStep, '.my-votes, .votes-table', false, step.id, this.stepOrder);
-                    window.location.href = votesLink.getAttribute('href');
-                } else {
-                    saveTutorialState(this.currentPhase, this.currentStep, '.my-votes', false, step.id, this.stepOrder);
-                    window.location.href = '/my/votes';
-                }
-            }, 1000);
         }
     }
 

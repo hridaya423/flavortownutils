@@ -32,7 +32,6 @@
 - Kitchen dashboard
   - Graph
   - Stats
-- Better my votes layout
 - Doomscroll devlogs
 - Markdown editor
 - Extra statistics on achievements page
