@@ -42,11 +42,17 @@
 
     --flavortown-toolbar-bg: var(--ctp-surface0);
     --flavortown-toolbar-border: var(--ctp-surface1);
-    --flavortown-toolbar-icon: var(--ctp-surface2);
+    --flavortown-toolbar-icon: var(--ctp-overlay0);
     --flavortown-toolbar-btn-hover: var(--ctp-surface1);
     --flavortown-toolbar-btn-active: var(--ctp-surface2);
 
+    --ft-votes-accent: var(--ctp-mauve);
+    --ft-votes-bg: var(--ctp-surface1);
+    --ft-votes-bg-hover: var(--ctp-surface2);
+    --ft-votes-text: var(--ctp-text);
+
     --flavortown-preview-bg: var(--ctp-surface0);
+
     --flavortown-preview-border: var(--ctp-surface1);
     --flavortown-preview-muted: var(--ctp-overlay0);
     --flavortown-preview-accent: var(--ctp-mauve);
@@ -1919,8 +1925,12 @@ a:hover {
     color: var(--ctp-crust) !important;
 }
 
+.votes-new__form .btn-submit::before {
+    border-color: var(--ctp-green) !important;
+}
+
 .btn-submit:hover {
-    background-color: var(--ctp-teal) !important;
+    background-color: var(--ctp-green) !important;
 }
 
 .modal {

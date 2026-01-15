@@ -36,6 +36,11 @@
     --flavortown-toolbar-btn-hover: var(--sea-mid);
     --flavortown-toolbar-btn-active: var(--sea-surface);
 
+    --ft-votes-accent: var(--sea-cyan);
+    --ft-votes-bg: color-mix(in srgb, var(--sea-cyan) 12%, transparent);
+    --ft-votes-bg-hover: color-mix(in srgb, var(--sea-cyan) 20%, transparent);
+    --ft-votes-text: var(--sea-white);
+
     --flavortown-preview-bg: var(--sea-dark);
     --flavortown-preview-border: var(--sea-mid);
     --flavortown-preview-muted: var(--sea-foam);
@@ -1913,8 +1918,12 @@ a:hover {
     color: var(--sea-abyss) !important;
 }
 
+.votes-new__form .btn-submit::before {
+    border-color: var(--sea-cyan) !important;
+}
+
 .btn-submit:hover {
-    background-color: var(--sea-foam) !important;
+    background-color: var(--sea-kelp) !important;
 }
 
 .modal {

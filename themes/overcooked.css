@@ -38,11 +38,17 @@
 
     --flavortown-toolbar-bg: var(--overcooked-dark);
     --flavortown-toolbar-border: var(--overcooked-mid);
-    --flavortown-toolbar-icon: var(--overcooked-dark);
+    --flavortown-toolbar-icon: var(--overcooked-deep);
     --flavortown-toolbar-btn-hover: var(--overcooked-mid);
     --flavortown-toolbar-btn-active: var(--overcooked-surface);
 
+    --ft-votes-accent: var(--overcooked-cyan);
+    --ft-votes-bg: color-mix(in srgb, var(--overcooked-cyan) 12%, transparent);
+    --ft-votes-bg-hover: color-mix(in srgb, var(--overcooked-cyan) 20%, transparent);
+    --ft-votes-text: var(--overcooked-white);
+
     --flavortown-preview-bg: var(--overcooked-dark);
+
     --flavortown-preview-border: var(--overcooked-mid);
     --flavortown-preview-muted: var(--overcooked-foam);
     --flavortown-preview-accent: var(--overcooked-cyan);
@@ -1919,8 +1925,12 @@ a:hover {
     color: var(--overcooked-abyss) !important;
 }
 
+.votes-new__form .btn-submit::before {
+    border-color: var(--overcooked-cyan) !important;
+}
+
 .btn-submit:hover {
-    background-color: var(--overcooked-foam) !important;
+    background-color: var(--overcooked-kelp) !important;
 }
 
 .modal {
