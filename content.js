@@ -2838,7 +2838,6 @@ function init() {
 
     setTimeout(checkAchievements, 2000);
     setTimeout(initVotesFeature, 1000);
-    setTimeout(maybeShowChangelog, 1800);
 }
 
 const VOTES_LAST_PROJECT_KEY = 'flavortown-votes-last-project';
@@ -3874,7 +3873,6 @@ document.addEventListener('turbo:load', () => {
     initShotsEditor();
     enhanceAdminPage();
     initVotesFeature();
-    setTimeout(maybeShowChangelog, 1200);
 });
 
 function initShotsEditor() {
@@ -6320,106 +6318,23 @@ const TUTORIAL_PHASE_3 = [
 ];
 
 const VERSION_FEATURES = {
-    '1.8.0': [
+    '1.8.1': [
         { title: 'Vote feature fixes', description: 'Skip now works 100% of the time and My votes isnt bugged anymore.', icon: '🛠️' },
         { title: 'Theme polish', description: 'Improved styling for voting elements.', icon: '🎨' }
     ]
 };
-
-function ensureChangelogStyles() {
-    if (document.getElementById('flavortown-changelog-styles')) return;
-    const style = document.createElement('style');
-    style.id = 'flavortown-changelog-styles';
-    style.textContent = `
-        .flavortown-changelog-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.35);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 99999;
-        }
-        .flavortown-changelog {
-            background: var(--flavortown-tutorial-bg, #fdf6e3);
-            color: var(--flavortown-tutorial-text, #5d4e37);
-            border: 2px solid var(--flavortown-tutorial-border, #8b7355);
-            border-radius: 18px;
-            padding: 18px 20px;
-            width: min(520px, 92vw);
-            box-shadow: 0 16px 48px rgba(0,0,0,0.28);
-            position: relative;
-        }
-        .flavortown-changelog__header {
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            gap: 12px;
-            margin-bottom: 14px;
-            font-weight: 800;
-            font-size: 1.12rem;
-        }
-        .flavortown-changelog__list {
-            list-style: none;
-            padding: 0;
-            margin: 0 0 16px 0;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .flavortown-changelog__item {
-            display: flex;
-            gap: 10px;
-            align-items: flex-start;
-            padding: 12px 14px;
-            border-radius: 14px;
-            background: var(--flavortown-tutorial-surface, #efe6d5);
-            border: 1px solid var(--flavortown-tutorial-border, #d8c4a0);
-        }
-        .flavortown-changelog__icon {
-            font-size: 1.2rem;
-            line-height: 1.5;
-        }
-        .flavortown-changelog__title {
-            font-weight: 800;
-            margin-bottom: 4px;
-            color: var(--flavortown-tutorial-text, #5d4e37);
-        }
-        .flavortown-changelog__actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 8px;
-            margin-top: 8px;
-        }
-        .flavortown-changelog__primary {
-            background: var(--flavortown-tutorial-accent, #5d4e37) !important;
-            color: var(--flavortown-tutorial-bg, #fdf6e3) !important;
-            border: 2px solid var(--flavortown-tutorial-accent, #5d4e37) !important;
-            border-radius: 10px;
-            padding: 8px 12px;
-            font-weight: 800;
-            min-width: 96px;
-            text-align: center;
-        }
-        .flavortown-changelog__primary:hover {
-            background: var(--flavortown-tutorial-subtext, #8b7355) !important;
-            border-color: var(--flavortown-tutorial-subtext, #8b7355) !important;
-        }
-    `;
-    document.head.appendChild(style);
-}
 
 async function getOnboardingState() {
     return new Promise(resolve => {
         browserAPI.storage.local.get([
             'flavortown_onboarding_complete',
             'flavortown_last_version',
-            'flavortown_changelog_seen'
+            'flavortown_whatsnew_seen'
         ], result => {
             resolve({
                 onboardingComplete: result.flavortown_onboarding_complete || false,
                 lastVersion: result.flavortown_last_version || null,
-                changelogSeen: result.flavortown_changelog_seen || null
+                whatsNewSeen: result.flavortown_whatsnew_seen || null
             });
         });
     });
@@ -6430,7 +6345,7 @@ async function setOnboardingComplete() {
         browserAPI.storage.local.set({
             flavortown_onboarding_complete: true,
             flavortown_last_version: EXTENSION_VERSION,
-            flavortown_changelog_seen: EXTENSION_VERSION
+            flavortown_whatsnew_seen: EXTENSION_VERSION
         }, resolve);
     });
 }
@@ -6439,69 +6354,9 @@ async function setLastVersion() {
     return new Promise(resolve => {
         browserAPI.storage.local.set({
             flavortown_last_version: EXTENSION_VERSION,
-            flavortown_changelog_seen: EXTENSION_VERSION
+            flavortown_whatsnew_seen: EXTENSION_VERSION
         }, resolve);
     });
-}
-
-function getChangelogEntries(version) {
-    return VERSION_FEATURES[version] || VERSION_FEATURES.default || [];
-}
-
-function showChangelogModal(version, entries) {
-    if (document.querySelector('.flavortown-changelog-overlay')) return;
-    ensureChangelogStyles();
-
-    const overlay = document.createElement('div');
-    overlay.className = 'flavortown-changelog-overlay';
-
-    const modal = document.createElement('div');
-    modal.className = 'flavortown-changelog';
-    modal.innerHTML = `
-        <div class="flavortown-changelog__header">
-            <span>What’s new in v${version}</span>
-        </div>
-        <ul class="flavortown-changelog__list">
-            ${entries.map(item => `
-                <li class="flavortown-changelog__item">
-                    <span class="flavortown-changelog__icon">${item.icon || '•'}</span>
-                    <div>
-                        <div class="flavortown-changelog__title">${item.title}</div>
-                        <div style="opacity:0.85; font-size: 0.95em;">${item.description}</div>
-                    </div>
-                </li>
-            `).join('')}
-        </ul>
-        <div class="flavortown-changelog__actions">
-            <button class="flavortown-changelog__primary" data-action="close">Got it</button>
-        </div>
-    `;
-
-    const close = () => overlay.remove();
-    modal.querySelectorAll('button[data-action="close"]').forEach(btn => btn.addEventListener('click', close));
-    overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) close();
-    });
-
-    overlay.appendChild(modal);
-    document.body.appendChild(overlay);
-}
-
-async function maybeShowChangelog() {
-    const { onboardingComplete, changelogSeen } = await getOnboardingState();
-    if (!onboardingComplete) return;
-
-    const alreadySeen = changelogSeen === EXTENSION_VERSION;
-    if (alreadySeen) return;
-
-    const entries = getChangelogEntries(EXTENSION_VERSION);
-    if (entries.length === 0) {
-        await setLastVersion();
-        return;
-    }
-
-    showChangelogModal(EXTENSION_VERSION, entries);
-    await setLastVersion();
 }
 
 function saveTutorialState(phase, stepIndex, targetHighlight = null, runHandlerAgain = false, stepId = null, stepOrder = null) {
@@ -8312,12 +8167,19 @@ async function initOnboarding() {
     if (state.onboardingComplete) {
         clearTutorialState();
 
-        if (state.lastVersion && state.lastVersion !== EXTENSION_VERSION) {
+        const seen = state.whatsNewSeen === EXTENSION_VERSION;
+
+        if (!state.lastVersion) {
+            await setLastVersion();
+            return;
+        }
+
+        if (!seen) {
             const features = VERSION_FEATURES[EXTENSION_VERSION];
             if (features && features.length > 0) {
                 createWhatsNewModal(features);
             } else {
-                setLastVersion();
+                await setLastVersion();
             }
         }
         return;
