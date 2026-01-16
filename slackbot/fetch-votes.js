@@ -10,6 +10,20 @@ if (!SLACK_TOKEN) {
   process.exit(1);
 }
 
+const ALLOWED_BOT_NAMES = ['Flavorpheus'];
+const BLOCKED_BOT_NAMES = ['The Journey'];
+
+function getBotName(message) {
+  return (
+    message?.bot_profile?.name ||
+    message?.username ||
+    message?.user_profile?.display_name ||
+    message?.user_profile?.real_name ||
+    ''
+  );
+}
+
+
 async function fetchSlackMessages() {
   const messages = [];
   let cursor = null;
@@ -18,6 +32,7 @@ async function fetchSlackMessages() {
     const params = new URLSearchParams({
       channel: CHANNEL_ID,
       limit: '200',
+      include_all_metadata: 'true',
     });
 
     if (cursor) {
@@ -38,7 +53,16 @@ async function fetchSlackMessages() {
       process.exit(1);
     }
 
-    messages.push(...data.messages);
+    const filtered = (data.messages || []).filter(msg => {
+      const botName = getBotName(msg);
+      if (BLOCKED_BOT_NAMES.some(blocked => botName.includes(blocked))) return false;
+      if (ALLOWED_BOT_NAMES.length && botName) {
+        if (!ALLOWED_BOT_NAMES.some(allowed => botName.includes(allowed))) return false;
+      }
+      return true;
+    });
+
+    messages.push(...filtered);
     cursor = data.response_metadata?.next_cursor || null;
 
 

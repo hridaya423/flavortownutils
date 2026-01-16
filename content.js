@@ -5816,7 +5816,7 @@ function parseRelativeTime(relativeStr) {
 }
 
 function clusterVotesToShips(votes, ships) {
-    const MAX_WINDOW_DAYS = 14;
+    const MAX_WINDOW_DAYS = Infinity;
 
     const normalizedShips = ships.map(ship => {
         const startOfDay = new Date(ship.date);
