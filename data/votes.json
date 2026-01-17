@@ -1,7 +1,56 @@
 {
-  "lastUpdated": "2026-01-16T22:30:37.950Z",
-  "totalVotes": 203,
+  "lastUpdated": "2026-01-17T01:27:05.344Z",
+  "totalVotes": 210,
   "votes": [
+    {
+      "project": "Logpheus",
+      "feedback": "I am well aware of this project and it has gained a LOT of popularity with chefs on the slack. I think that the idea is very unique and solves a problem that people with personal channels have. The actual demo is pretty simple and its really easy to get the devlogs to work and get posted into the channel",
+      "votedBy": "U084D1T5ZV0",
+      "timestamp": "2026-01-17T01:16:40.458Z",
+      "slackTs": "1768612600.458729"
+    },
+    {
+      "project": "Colision Simulator",
+      "feedback": "1 singluar devlog on a project that could've used more! I feel like they couldve devlogged each section such as velocity logic, elasticity, etc. The stack they used was etremely simple. All they did was use html css, and js",
+      "votedBy": "U084D1T5ZV0",
+      "timestamp": "2026-01-17T01:14:07.504Z",
+      "slackTs": "1768612447.504189"
+    },
+    {
+      "project": "Weather APP",
+      "feedback": "Another extremely simple project. The creator made a very simple html, css, and js project. I think that one that couldve increased the complexity rating was using a framework like react or angular. The idea is pretty basic and is easily replicable",
+      "votedBy": "U084D1T5ZV0",
+      "timestamp": "2026-01-17T01:12:28.067Z",
+      "slackTs": "1768612348.067089"
+    },
+    {
+      "project": "Terminal Typing Test",
+      "feedback": "Personally, I think that this project is pretty simple. Making a typing test and that too in the terminal, is quite simple. I also think that the storytelling process was quite poor since they only made a single devlog for a 4 hour long project!",
+      "votedBy": "U084D1T5ZV0",
+      "timestamp": "2026-01-17T01:10:38.109Z",
+      "slackTs": "1768612238.109039"
+    },
+    {
+      "project": "My Personal Website",
+      "feedback": "Love the css animations tho i feel like the skewness is a bit much.",
+      "votedBy": "U09MQ8PKNMU",
+      "timestamp": "2026-01-16T23:48:16.164Z",
+      "slackTs": "1768607296.164309"
+    },
+    {
+      "project": "sorting-visualiser",
+      "feedback": "Demo link didn't work, as well as the acknowledgments seem a bit ai generated.",
+      "votedBy": "U09MQ8PKNMU",
+      "timestamp": "2026-01-16T23:46:57.433Z",
+      "slackTs": "1768607217.433269"
+    },
+    {
+      "project": "chkprm",
+      "feedback": "Please give a bit more about what it is in the flavortown thing",
+      "votedBy": "U09MQ8PKNMU",
+      "timestamp": "2026-01-16T23:45:25.714Z",
+      "slackTs": "1768607125.714459"
+    },
     {
       "project": "Lovesprite",
       "feedback": "You should rework the Project structure (not the best to have all files in the root folder)",
@@ -1714,6 +1763,16 @@
       "id": "U08AT086H8E",
       "username": "itslukasreis",
       "avatar": "https://avatars.slack-edge.com/2025-12-14/10132050312737_cb30475cd6a3f962c644_72.jpg"
+    },
+    "U084D1T5ZV0": {
+      "id": "U084D1T5ZV0",
+      "username": "kashsuks",
+      "avatar": "https://avatars.slack-edge.com/2025-12-10/10078589222967_669bffbc7f9ee3695e9d_72.png"
+    },
+    "U09MQ8PKNMU": {
+      "id": "U09MQ8PKNMU",
+      "username": "omkanabar",
+      "avatar": "https://secure.gravatar.com/avatar/52c3822c27475d91d998715d05044774.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0006-72.png"
     }
   }
 }
