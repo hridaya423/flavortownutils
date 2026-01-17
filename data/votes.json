@@ -1,7 +1,14 @@
 {
-  "lastUpdated": "2026-01-17T18:26:58.504Z",
-  "totalVotes": 323,
+  "lastUpdated": "2026-01-17T19:14:17.553Z",
+  "totalVotes": 324,
   "votes": [
+    {
+      "project": "Tetrois (Console Tetris)",
+      "feedback": "Cool game! It would be cool if you add some steps for different operating systems like windows.",
+      "votedBy": "U0A3VK4GFRN",
+      "timestamp": "2026-01-17T18:39:35.858Z",
+      "slackTs": "1768675175.858679"
+    },
     {
       "project": "Cheq: Charge Equilibration for Molecular Dynamics",
       "feedback": "respect because rust is super hard, this is a very cool project",
@@ -2679,6 +2686,11 @@
       "id": "U0A8EFD3CUQ",
       "username": "benjamin.mueller",
       "avatar": "https://avatars.slack-edge.com/2026-01-08/10252088691635_872ec0e53a500b09c186_72.png"
+    },
+    "U0A3VK4GFRN": {
+      "id": "U0A3VK4GFRN",
+      "username": "bhatrichit10",
+      "avatar": "https://avatars.slack-edge.com/2025-12-23/10160500975127_4e0ba49afbde21f78807_72.png"
     }
   }
 }
