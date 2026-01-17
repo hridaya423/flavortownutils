@@ -4,6 +4,8 @@ const path = require('path');
 
 const SLACK_TOKEN = process.env.SLACK_TOKEN;
 const CHANNEL_ID = 'C0A2DTFSYSD';
+const CUTOFF_ISO = '2026-01-14T00:00:00.000Z';
+const CUTOFF_TS = Math.floor(new Date(CUTOFF_ISO).getTime() / 1000);
 
 if (!SLACK_TOKEN) {
   console.error('Error: slack token isnt there.');
@@ -96,7 +98,10 @@ function parseVoteMessage(message) {
     feedback = text.substring(projectEndIndex).trim();
   }
 
-  const timestamp = message.ts ? new Date(parseFloat(message.ts) * 1000).toISOString() : null;
+  const tsFloat = message.ts ? parseFloat(message.ts) : null;
+  const timestamp = tsFloat ? new Date(tsFloat * 1000).toISOString() : null;
+
+  if (tsFloat && tsFloat < CUTOFF_TS) return null;
 
   return {
     project,
