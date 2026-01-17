@@ -2904,6 +2904,319 @@ function getCurrentVotesProjectKey() {
     return key || null;
 }
 
+const SPEED_READER_TOO_FAST_KEY = 'flavortown_speed_reader_too_fast';
+const SPEED_READER_DEFAULT_WPM = 300;
+const SPEED_READER_MIN_WPM = 150;
+const SPEED_READER_MAX_WPM = 700;
+const SPEED_READER_STEP = 25;
+const SPEED_READER_RAMP_STEP_MIN = 3;
+const SPEED_READER_RAMP_STEP_MAX = 4;
+const SPEED_READER_RAMP_TICK_MS = 1000;
+const SPEED_READER_FADE_MS = 200;
+
+function getComfortCap() {
+    try {
+        const val = parseInt(localStorage.getItem(SPEED_READER_TOO_FAST_KEY), 10);
+        if (!Number.isNaN(val)) return Math.max(SPEED_READER_MIN_WPM, val - 50);
+    } catch (e) {
+        console.warn('SpeedReader: cannot read comfort cap', e);
+    }
+    return null;
+}
+
+function storeTooFast(wpm) {
+    try {
+        localStorage.setItem(SPEED_READER_TOO_FAST_KEY, String(wpm));
+    } catch (e) {
+        console.warn('SpeedReader: cannot store too-fast wpm', e);
+    }
+}
+
+function getStartingWpm() {
+    const cap = getComfortCap();
+    if (cap) return Math.min(SPEED_READER_DEFAULT_WPM, cap);
+    return SPEED_READER_DEFAULT_WPM;
+}
+
+function computeOrpIndex(word) {
+    const len = word.length;
+    if (len <= 1) return 0;
+    return Math.floor((len - 1) / 2);
+}
+
+function splitWords(text) {
+    if (!text) return [];
+    return text
+        .replace(/\s+/g, ' ')
+        .trim()
+        .split(' ')
+        .filter(Boolean);
+}
+
+function highlightWord(word, wrap = true) {
+    const idx = computeOrpIndex(word);
+    const pre = word.slice(0, idx);
+    const orp = word.slice(idx, idx + 1) || '';
+    const post = word.slice(idx + 1);
+    const inner = `<span class="sr-pre">${pre}</span><span class="sr-orp">${orp}</span><span class="sr-post">${post}</span>`;
+    return wrap ? `<span class="sr-word-inner">${inner}</span>` : inner;
+}
+
+async function gatherProjectTextsForSpeedRead() {
+    const card = document.querySelector('.votes-new__project-card');
+    const projectTitle = card?.querySelector('h1')?.textContent?.trim();
+    const projectIdMatch = card?.querySelector('a[href*="/projects/"]')?.getAttribute('href')?.match(/\/(\d+)/);
+    const projectId = projectIdMatch ? projectIdMatch[1] : null;
+
+    const pagePosts = Array.from(document.querySelectorAll('.votes-new__devlogs article.post .post__body'));
+    if (pagePosts.length === 0) return { text: '', count: 0, projectTitle, projectId };
+
+    const entries = pagePosts
+        .map((el, idx) => ({ body: el.textContent?.trim() || '', idx }))
+        .filter(e => e.body);
+
+    entries.reverse();
+
+    const allText = entries.map(e => e.body).join(' \n ');
+    return { text: allText, count: entries.length, projectTitle, projectId };
+}
+
+let speedReaderModal = null;
+let speedReaderState = null;
+
+function closeSpeedReader() {
+    if (speedReaderState?.timer) {
+        clearTimeout(speedReaderState.timer);
+    }
+    if (speedReaderState?.rampTimeout) {
+        clearTimeout(speedReaderState.rampTimeout);
+    }
+    speedReaderState = null;
+    document.removeEventListener('keydown', handleSpeedReaderKeys, true);
+
+    if (speedReaderModal) {
+        const modal = speedReaderModal;
+        speedReaderModal = null;
+        modal.classList.add('sr-modal-closing');
+        setTimeout(() => {
+            modal.remove();
+        }, SPEED_READER_FADE_MS);
+    }
+}
+
+function handleSpeedReaderKeys(e) {
+    if (!speedReaderState) return;
+    if (e.key === 'Escape') {
+        e.preventDefault();
+        closeSpeedReader();
+        return;
+    }
+    if (e.key === 'y' || e.key === 'Y') {
+        e.preventDefault();
+        adjustSpeed(SPEED_READER_STEP, false);
+    }
+    if (e.key === 'x' || e.key === 'X') {
+        e.preventDefault();
+        storeTooFast(speedReaderState.wpm);
+        adjustSpeed(-SPEED_READER_STEP, true);
+    }
+}
+
+function adjustSpeed(delta, markTooFast) {
+    if (!speedReaderState) return;
+    const prev = speedReaderState.wpm;
+    const maxCap = Math.min(SPEED_READER_MAX_WPM, speedReaderState.maxWpm || SPEED_READER_MAX_WPM);
+    let next = prev + delta;
+    next = Math.max(SPEED_READER_MIN_WPM, Math.min(maxCap, next));
+
+    if (markTooFast && delta < 0 && prev > next) {
+        storeTooFast(prev);
+        speedReaderState.rampActive = false;
+        if (speedReaderState.rampTimeout) {
+            clearTimeout(speedReaderState.rampTimeout);
+            speedReaderState.rampTimeout = null;
+        }
+    }
+
+    speedReaderState.wpm = next;
+    if (speedReaderModal) {
+        const status = speedReaderModal.querySelector('.sr-status');
+        if (status) status.textContent = `${Math.round(next)} wpm · ${speedReaderState.index + 1}/${speedReaderState.words.length}`;
+    }
+}
+
+
+function showSpeedReader(words) {
+    closeSpeedReader();
+
+    const modal = document.createElement('div');
+    modal.className = 'sr-modal-overlay';
+    modal.innerHTML = `
+        <div class="sr-modal">
+            <div class="sr-word-box">
+                <div class="sr-word-line"></div>
+                <div class="sr-word">
+                    <div class="sr-word-measure"></div>
+                </div>
+            </div>
+            <div class="sr-controls">Y speed up · X too fast · Esc close</div>
+            <div class="sr-status"></div>
+        </div>
+    `;
+
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeSpeedReader();
+        }
+    });
+    modal.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            e.preventDefault();
+            closeSpeedReader();
+        }
+    });
+    modal.tabIndex = -1;
+    setTimeout(() => modal.focus(), 0);
+
+    document.body.appendChild(modal);
+    speedReaderModal = modal;
+
+    const wordEl = modal.querySelector('.sr-word');
+    const measureEl = modal.querySelector('.sr-word-measure');
+    const statusEl = modal.querySelector('.sr-status');
+    const wordBox = modal.querySelector('.sr-word-box');
+
+    const wpm = Math.min(getStartingWpm(), SPEED_READER_MAX_WPM);
+    speedReaderState = {
+        words,
+        index: 0,
+        wpm,
+        timer: null,
+        rampTimeout: null,
+        rampActive: true,
+        maxWpm: Math.floor(650 + Math.random() * 51),
+    };
+
+    function scheduleRamp() {
+        if (!speedReaderState?.rampActive) return;
+        const step = SPEED_READER_RAMP_STEP_MIN + Math.random() * (SPEED_READER_RAMP_STEP_MAX - SPEED_READER_RAMP_STEP_MIN);
+        speedReaderState.rampTimeout = setTimeout(() => {
+            if (!speedReaderState?.rampActive) return;
+            adjustSpeed(step, false);
+            scheduleRamp();
+        }, SPEED_READER_RAMP_TICK_MS);
+    }
+
+function renderWord(word) {
+    if (!wordEl || !measureEl) return;
+    measureEl.innerHTML = highlightWord(word, false);
+    const orpSpan = measureEl.querySelector('.sr-orp');
+    let offset = 0;
+    if (orpSpan) {
+        offset = orpSpan.offsetLeft + orpSpan.offsetWidth / 2;
+    }
+    wordEl.innerHTML = highlightWord(word, true);
+    const inner = wordEl.querySelector('.sr-word-inner');
+    if (!wordBox) return;
+
+    if (inner) {
+        inner.style.setProperty('--sr-focal-offset', `${offset}px`);
+    }
+    if (wordEl) {
+        wordEl.style.setProperty('--sr-focal-offset', `${offset}px`);
+    }
+
+    const guidePx = wordBox.clientWidth * 0.38;
+    const paddingLeft = parseFloat(getComputedStyle(wordBox).paddingLeft || '0');
+    let shift = guidePx - paddingLeft - offset;
+    if (inner) {
+        inner.style.setProperty('--sr-shift', `${shift}px`);
+        requestAnimationFrame(() => {
+            const orp = inner.querySelector('.sr-orp');
+            if (!orp || !wordBox) return;
+            const orpRect = orp.getBoundingClientRect();
+            const boxRect = wordBox.getBoundingClientRect();
+            const lineX = boxRect.left + boxRect.width * 0.38;
+            const delta = (orpRect.left + orpRect.width / 2) - lineX;
+            if (Math.abs(delta) > 0.5) {
+                shift -= delta;
+                inner.style.setProperty('--sr-shift', `${shift}px`);
+            }
+        });
+    }
+}
+
+
+    function step() {
+        if (!speedReaderState || speedReaderState.index >= speedReaderState.words.length) {
+            closeSpeedReader();
+            return;
+        }
+        const word = speedReaderState.words[speedReaderState.index];
+        renderWord(word);
+        if (statusEl) statusEl.textContent = `${Math.round(speedReaderState.wpm)} wpm · ${speedReaderState.index + 1}/${speedReaderState.words.length}`;
+
+        speedReaderState.index += 1;
+
+        const baseDelay = 60000 / speedReaderState.wpm;
+        const lastChar = word.slice(-1);
+        let extra = 0;
+        if (/[,;:]/.test(lastChar)) extra += 20;
+        if (/[\.!?]/.test(lastChar)) extra += 40;
+        if (/\n/.test(word)) extra += 60;
+
+        speedReaderState.timer = setTimeout(step, baseDelay + extra);
+    }
+
+    scheduleRamp();
+    document.addEventListener('keydown', handleSpeedReaderKeys, true);
+    step();
+}
+
+function initSpeedReaderOnVotesPage() {
+    if (!window.location.pathname.startsWith('/votes/new')) return;
+
+    const card = document.querySelector('.votes-new__project-card');
+    if (!card) return;
+
+    const buttonsContainer = card.querySelector('.votes-new__project-buttons');
+    if (!buttonsContainer) return;
+
+    let btn = buttonsContainer.querySelector('.sr-devlog-btn');
+    if (!btn) {
+        btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'btn btn--brown btn--borderless sr-devlog-btn';
+        btn.textContent = 'Speed read devlogs';
+        buttonsContainer.appendChild(btn);
+    }
+
+    const updateBtnState = async () => {
+        const { text, count } = await gatherProjectTextsForSpeedRead();
+        const hasText = text && text.trim().length > 0 && count > 0;
+        btn.disabled = !hasText;
+        btn.title = hasText ? 'Open speed reader for devlogs & ships' : 'No devlogs/ships to read';
+    };
+
+    btn.addEventListener('click', async () => {
+        const { text, count } = await gatherProjectTextsForSpeedRead();
+        if (!text || !text.trim() || count === 0) {
+            btn.disabled = true;
+            btn.title = 'No devlogs/ships to read';
+            return;
+        }
+        const words = splitWords(text);
+        if (words.length === 0) {
+            btn.disabled = true;
+            btn.title = 'No devlogs/ships to read';
+            return;
+        }
+        showSpeedReader(words);
+    });
+
+    updateBtnState();
+}
+
 function ensureVotesProjectRotation() {
     if (votesRotationChecked) return;
     if (!window.location.pathname.startsWith('/votes/new')) return;
@@ -3026,6 +3339,9 @@ async function enhanceKitchenDashboard() {
 
     const helpSection = document.querySelector('.kitchen-help');
     if (helpSection) helpSection.remove();
+
+    const kitchenComic = document.querySelector('.kitchen-comic');
+    if (kitchenComic) kitchenComic.remove();
 
     try {
         const response = await fetch('/my/balance', {
@@ -6009,9 +6325,122 @@ async function addProjectVotesDisplay() {
     });
 }
 
+function addSpeedReaderStyles() {
+    if (document.querySelector('#sr-styles')) return;
+    const style = document.createElement('style');
+    style.id = 'sr-styles';
+    style.textContent = `
+    .sr-modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.85);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 99999;
+    }
+    .sr-modal {
+        position: relative;
+        width: min(90vw, 800px);
+        height: min(70vh, 400px);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: #eee;
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        text-align: center;
+        gap: 10px;
+        --sr-guide-x: 38%;
+    }
+    .sr-word-box {
+        background: rgba(0,0,0,0.9);
+        padding: 24px 32px;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+        min-width: min(80vw, 600px);
+        position: relative;
+        overflow: hidden;
+    }
+    .sr-controls {
+        font-size: 14px;
+        opacity: 0.7;
+    }
+    .sr-word {
+        font-size: clamp(32px, 6vw, 64px);
+        font-weight: 600;
+        line-height: 1.2;
+        color: #eee;
+        position: relative;
+        width: 100%;
+        min-height: 1.2em;
+        white-space: nowrap;
+    }
+    .sr-word-line {
+        position: absolute;
+        left: 38%;
+        top: 0;
+        height: 100%;
+        width: 2px;
+        background: linear-gradient(
+            to bottom,
+            rgba(255,255,255,0.35) 0%,
+            rgba(255,255,255,0.35) 20%,
+            transparent 45%,
+            transparent 55%,
+            rgba(255,255,255,0.35) 80%,
+            rgba(255,255,255,0.35) 100%
+        );
+        transform: translateX(-50%);
+        pointer-events: none;
+    }
+    .sr-word-line::after {
+        content: '';
+        display: none;
+    }
+    .sr-word-inner {
+        display: inline-block;
+        position: absolute;
+        left: 0;
+        transform: translateX(var(--sr-shift, 0px));
+        white-space: nowrap;
+        will-change: transform;
+    }
+    .sr-word-measure {
+        position: absolute;
+        left: -9999px;
+        top: 0;
+        visibility: hidden;
+        white-space: nowrap;
+        font-size: inherit;
+        font-weight: inherit;
+        font-family: inherit;
+        line-height: inherit;
+    }
+    .sr-word .sr-orp { color: #ff6b6b; font-weight: 700; }
+    .sr-status {
+        font-size: 14px;
+        opacity: 0.8;
+    }
+    .sr-pre, .sr-post { opacity: 0.85; }
+    .sr-modal-overlay { transition: opacity 0.2s ease; }
+    .sr-modal-overlay.sr-modal-closing { opacity: 0; }
+    .sr-modal-overlay:focus { outline: none; }
+    `;
+    document.head.appendChild(style);
+}
+
 function initVotesFeature() {
     addProjectVotesDisplay();
+    initSpeedReaderOnVotesPage();
+    addSpeedReaderStyles();
 }
+
+document.addEventListener('turbo:load', () => {
+    if (window.location.pathname.startsWith('/votes/new')) {
+        initSpeedReaderOnVotesPage();
+    }
+});
 
 const EXTENSION_VERSION = chrome.runtime.getManifest().version;
 
@@ -6318,6 +6747,10 @@ const TUTORIAL_PHASE_3 = [
 ];
 
 const VERSION_FEATURES = {
+    '1.9.0': [
+        { title: 'Speed reader in votes', description: 'Read devlogs and ships fast.', icon: '⚡' },
+        { title: 'Community votes fixes', description: 'Some clustering logic fixes and data fetching issues.', icon: '🛠️' }
+    ],
     '1.8.1': [
         { title: 'Vote feature fixes', description: 'Skip now works 100% of the time and My votes isnt bugged anymore.', icon: '🛠️' },
         { title: 'Theme polish', description: 'Improved styling for voting elements.', icon: '🎨' }
