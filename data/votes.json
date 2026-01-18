@@ -1,7 +1,35 @@
 {
-  "lastUpdated": "2026-01-18T19:14:29.942Z",
-  "totalVotes": 331,
+  "lastUpdated": "2026-01-18T20:20:46.977Z",
+  "totalVotes": 335,
   "votes": [
+    {
+      "project": "Gharbiya Fablab",
+      "feedback": "Nice website! i suggest making the landing page more explicit",
+      "votedBy": "U06GL5GN8E6",
+      "timestamp": "2026-01-18T20:10:29.245Z",
+      "slackTs": "1768767029.245799"
+    },
+    {
+      "project": "VibeBox",
+      "feedback": "cool!",
+      "votedBy": "U06GL5GN8E6",
+      "timestamp": "2026-01-18T20:09:35.249Z",
+      "slackTs": "1768766975.249429"
+    },
+    {
+      "project": "Classmates Fetch",
+      "feedback": "cool idea, i just don't understand the concept",
+      "votedBy": "U0A8EFD3CUQ",
+      "timestamp": "2026-01-18T19:56:43.144Z",
+      "slackTs": "1768766203.144639"
+    },
+    {
+      "project": "DevTrack",
+      "feedback": "very cool project, i am worried about the privacy implications of handing my data to AI.. But i guess it's being scraped by other bots, anyways",
+      "votedBy": "U0A8EFD3CUQ",
+      "timestamp": "2026-01-18T19:55:39.656Z",
+      "slackTs": "1768766139.656939"
+    },
     {
       "project": "Password Generator",
       "feedback": "You should probobly include a build script or something becuase:\n1. It would allow other version to be built easily\n2. Dropping a nradom exe in a github repo is very suspicious/unusual",
@@ -2820,6 +2848,11 @@
       "id": "U0A6XFSMW5D",
       "username": "humnamustafa01",
       "avatar": "https://avatars.slack-edge.com/2026-01-16/10339920832720_e86b6c7fc8d4d72e47af_72.png"
+    },
+    "U06GL5GN8E6": {
+      "id": "U06GL5GN8E6",
+      "username": "ramondeleonca",
+      "avatar": "https://avatars.slack-edge.com/2024-08-31/7660175426995_ad0c03d9a310f9d31dc1_72.jpg"
     }
   }
 }
