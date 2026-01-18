@@ -1,7 +1,56 @@
 {
-  "lastUpdated": "2026-01-18T18:26:11.996Z",
-  "totalVotes": 324,
+  "lastUpdated": "2026-01-18T19:14:29.942Z",
+  "totalVotes": 331,
   "votes": [
+    {
+      "project": "Password Generator",
+      "feedback": "You should probobly include a build script or something becuase:\n1. It would allow other version to be built easily\n2. Dropping a nradom exe in a github repo is very suspicious/unusual",
+      "votedBy": "U09UU7TETBR",
+      "timestamp": "2026-01-18T19:05:14.084Z",
+      "slackTs": "1768763114.084289"
+    },
+    {
+      "project": "Riko",
+      "feedback": "funny bot &gt;_&lt;",
+      "votedBy": "U0A2LV8U44X",
+      "timestamp": "2026-01-18T19:04:26.484Z",
+      "slackTs": "1768763066.484639"
+    },
+    {
+      "project": "MineSweeper",
+      "feedback": "Nice game for a beginner!",
+      "votedBy": "U088SJQAM35",
+      "timestamp": "2026-01-18T18:54:36.628Z",
+      "slackTs": "1768762476.628429"
+    },
+    {
+      "project": "Chaos on the Couch",
+      "feedback": "Cool game.",
+      "votedBy": "U09UU7TETBR",
+      "timestamp": "2026-01-18T18:43:23.145Z",
+      "slackTs": "1768761803.145229"
+    },
+    {
+      "project": "Absurdity Bingo",
+      "feedback": "Very simple app, but a creative idea nonetheless",
+      "votedBy": "U09UU7TETBR",
+      "timestamp": "2026-01-18T18:42:07.381Z",
+      "slackTs": "1768761727.381199"
+    },
+    {
+      "project": "SVIS Finance",
+      "feedback": "Good job on your first project!",
+      "votedBy": "U09UU7TETBR",
+      "timestamp": "2026-01-18T18:38:27.735Z",
+      "slackTs": "1768761507.735799"
+    },
+    {
+      "project": "FlavorLineTool",
+      "feedback": "originality: i'm sure many people have thought of doing this kind of thing\ntechnical: mostly great (especially making a pr to flavor) but like, what's this:\n```\ndef main():\n    app()\n\nif __name__ == \"__main__\":\n    main()\n```\nwhy not just call app() from that if statement?\nusablility: idk, i didn't try it",
+      "votedBy": "U092HLFD2DQ",
+      "timestamp": "2026-01-18T18:27:25.476Z",
+      "slackTs": "1768760845.476449"
+    },
     {
       "project": "Helicon",
       "feedback": "I like the ai integration",
