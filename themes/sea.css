@@ -129,20 +129,6 @@ body::before {
     color: var(--sea-white) !important;
 }
 
-.sidebar__pin-btn {
-    background-color: var(--sea-mid) !important;
-    color: var(--sea-white) !important;
-}
-
-.sidebar__pin-btn:hover {
-    background-color: var(--sea-surface) !important;
-}
-
-.sidebar--pinned .sidebar__pin-btn {
-    background-color: var(--sea-cyan) !important;
-    color: var(--sea-abyss) !important;
-}
-
 .btn {
     transition: all 0.2s ease !important;
 }

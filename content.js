@@ -301,86 +301,6 @@ browserAPI.runtime.onMessage.addListener((message, sender, sendResponse) => {
     return true;
 });
 
-function initPinnableSidebar() {
-    const sidebar = document.querySelector('.sidebar');
-    if (!sidebar || sidebar.dataset.pinInitialized) return;
-    sidebar.dataset.pinInitialized = 'true';
-
-    const MOBILE_BREAKPOINT = 960;
-
-    const pinBtn = document.createElement('button');
-    pinBtn.className = 'sidebar__pin-btn';
-    pinBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16 12V4h1V2H7v2h1v8l-2 2v2h5.2v6h1.6v-6H18v-2l-2-2z"/></svg>`;
-    pinBtn.title = 'Pin sidebar';
-
-    const blob = sidebar.querySelector('.sidebar__blob');
-    if (blob) {
-        blob.style.position = 'relative';
-        blob.appendChild(pinBtn);
-    }
-
-    function applyPinnedState(isPinned) {
-        if (window.innerWidth < MOBILE_BREAKPOINT) {
-            sidebar.classList.remove('sidebar--pinned');
-            sidebar.style.width = '';
-            return;
-        }
-
-        if (isPinned) {
-            sidebar.classList.add('sidebar--pinned');
-            sidebar.style.width = 'var(--sidebar-expanded-width, 300px)';
-        } else {
-            sidebar.classList.remove('sidebar--pinned');
-            sidebar.style.width = '';
-        }
-    }
-
-    try {
-        browserAPI.storage.local.get(['sidebarPinned'], (result) => {
-            const isPinned = result.sidebarPinned || false;
-
-            if (isPinned && window.innerWidth >= MOBILE_BREAKPOINT) {
-                sidebar.style.transition = 'none';
-                applyPinnedState(true);
-
-                requestAnimationFrame(() => {
-                    requestAnimationFrame(() => {
-                        sidebar.style.transition = '';
-                    });
-                });
-            }
-        });
-    } catch (e) { }
-
-    let resizeTimeout;
-    window.addEventListener('resize', () => {
-        clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(() => {
-            try {
-                browserAPI.storage.local.get(['sidebarPinned'], (result) => {
-                    applyPinnedState(result.sidebarPinned || false);
-                });
-            } catch (e) { }
-        }, 100);
-    });
-
-    pinBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-
-        if (window.innerWidth < MOBILE_BREAKPOINT) {
-            return;
-        }
-
-        const isPinned = sidebar.classList.contains('sidebar--pinned');
-
-        applyPinnedState(!isPinned);
-        try {
-            browserAPI.storage.local.set({ sidebarPinned: !isPinned });
-        } catch (e) { }
-    });
-}
-
 function addDevlogFrequencyStat() {
     if (!/\/projects\/\d+$/.test(window.location.pathname)) {
         return;
@@ -2821,7 +2741,6 @@ function checkForUpdates() {
 function init() {
     loadTheme();
     checkForUpdates();
-    initPinnableSidebar();
     addDevlogFrequencyStat();
     addShipStats();
     inlineDevlogForm();
@@ -4169,7 +4088,6 @@ document.addEventListener('turbo:load', () => {
         lastPathname = window.location.pathname;
     }
     sessionStorage.removeItem(VOTES_SKIP_TRIGGER_KEY);
-    initPinnableSidebar();
     addDevlogFrequencyStat();
     addShipStats();
     inlineDevlogForm();
@@ -6578,15 +6496,6 @@ const TUTORIAL_PHASE_1 = [
         interactive: 'theme-picker'
     },
     {
-        id: 'pinnable-sidebar',
-        title: 'Pin the sidebar',
-        description: 'Click the pin icon to keep the sidebar visible. Handy when you\'re browsing around.',
-        target: '.sidebar__blob',
-        position: 'right',
-        icon: '📌',
-        waitForClick: '.sidebar__pin-btn'
-    },
-    {
         id: 'command-palette-demo',
         title: 'Quick navigation',
         description: 'Press Ctrl+K anytime to open the command palette. Jump anywhere, change settings, all from your keyboard. Give it a try!',
@@ -7001,16 +6910,12 @@ class TutorialController {
         this.navigationStepId = null;
         this.pendingInteractiveTimeouts = [];
         this.userHasTheme = false;
-        this.userHasSidebarPinned = false;
         this.preloadUserState();
     }
 
     preloadUserState() {
         browserAPI.storage.sync.get(['theme'], (result) => {
             this.userHasTheme = result.theme && result.theme !== 'default';
-        });
-        browserAPI.storage.local.get(['sidebarPinned'], (result) => {
-            this.userHasSidebarPinned = result.sidebarPinned || false;
         });
     }
 
@@ -7094,13 +6999,6 @@ class TutorialController {
 
         if (this.spotlight) this.spotlight.remove();
 
-        if (this.sidebarHoverHandler && this.sidebarElement) {
-            this.sidebarElement.removeEventListener('mouseenter', this.sidebarHoverHandler);
-            this.sidebarElement.removeEventListener('mouseleave', this.sidebarHoverHandler);
-            this.sidebarHoverHandler = null;
-            this.sidebarElement = null;
-        }
-
         if (this.overlay) {
             this.overlay.style.opacity = '0';
         }
@@ -7112,48 +7010,6 @@ class TutorialController {
         const rect = targetElement.getBoundingClientRect();
         let padding = 8;
         let computedRadius = window.getComputedStyle(targetElement).borderRadius || '12px';
-
-        if (targetElement.classList.contains('sidebar__blob') || targetElement.classList.contains('sidebar__pin-btn')) {
-            const sidebar = document.querySelector('.sidebar');
-            const sidebarBlob = document.querySelector('.sidebar__blob');
-            const targetEl = sidebarBlob || sidebar;
-
-            if (targetEl) {
-                const updateSpotlightPosition = () => {
-                    const sRect = targetEl.getBoundingClientRect();
-                    spotlight.style.top = `${sRect.top - 8}px`;
-                    spotlight.style.left = `${sRect.left - 8}px`;
-                    spotlight.style.width = `${sRect.width + 16}px`;
-                    spotlight.style.height = `${sRect.height + 16}px`;
-                };
-
-                spotlight.style.position = 'fixed';
-                spotlight.style.borderRadius = '20px';
-                spotlight.style.zIndex = '99999';
-                spotlight.style.pointerEvents = 'none';
-                spotlight.style.boxShadow = `0 0 0 9999px rgba(0, 0, 0, 0.65), 0 0 0 5px var(--flavortown-tutorial-accent, #ec8b33), 0 0 25px rgba(236, 139, 51, 0.45)`;
-                spotlight.style.outline = '2px solid var(--flavortown-tutorial-accent, #ec8b33)';
-                spotlight.style.transition = 'all 0.3s ease';
-
-                updateSpotlightPosition();
-
-                if (sidebar) {
-                    const hoverHandler = () => {
-                        setTimeout(updateSpotlightPosition, 50);
-                        setTimeout(updateSpotlightPosition, 200);
-                        setTimeout(updateSpotlightPosition, 400);
-                    };
-                    sidebar.addEventListener('mouseenter', hoverHandler);
-                    sidebar.addEventListener('mouseleave', hoverHandler);
-                    this.sidebarHoverHandler = hoverHandler;
-                    this.sidebarElement = sidebar;
-                }
-
-                document.body.appendChild(spotlight);
-                this.spotlight = spotlight;
-                return spotlight;
-            }
-        }
 
         spotlight.style.cssText = `
             position: fixed;
@@ -7522,54 +7378,7 @@ class TutorialController {
         if (step.waitForClick) {
             const waitTarget = document.querySelector(step.waitForClick);
             if (waitTarget) {
-                if (step.waitForClick === '.sidebar__pin-btn') {
-                    const pinStyle = document.createElement('style');
-                    pinStyle.id = 'flavortown-tutorial-pin-style';
-                    pinStyle.textContent = `
-                        /* Force sidebar to expanded state during tutorial */
-                        .sidebar {
-                            z-index: 100000 !important;
-                            pointer-events: auto !important;
-                            transform: translateX(0) !important;
-                            opacity: 1 !important;
-                        }
-                        .sidebar__blob {
-                            z-index: 100000 !important;
-                            pointer-events: auto !important;
-                            transform: translateX(0) !important;
-                            opacity: 1 !important;
-                        }
-                        .sidebar__content {
-                            opacity: 1 !important;
-                            visibility: visible !important;
-                        }
-                        .sidebar__pin-btn {
-                            opacity: 1 !important;
-                            visibility: visible !important;
-                            pointer-events: auto !important;
-                            z-index: 100001 !important;
-                            transform: scale(1.1) !important;
-                            box-shadow: 0 0 0 3px var(--flavortown-tutorial-accent, #ec8b33),
-                                        0 0 20px rgba(236, 139, 51, 0.5) !important;
-                            animation: flavortown-pulse 2s ease-in-out infinite !important;
-                        }
-                    `;
-                    document.head.appendChild(pinStyle);
-
-                    const sidebar = document.querySelector('.sidebar');
-                    if (sidebar) {
-                        sidebar.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
-                    }
-
-                    this.pinStyleElement = pinStyle;
-                }
-
                 this.clickWaitHandler = () => {
-                    if (this.pinStyleElement) {
-                        this.pinStyleElement.remove();
-                        this.pinStyleElement = null;
-                    }
-
                     this.next();
                 };
                 waitTarget.addEventListener('click', this.clickWaitHandler, { once: true });
@@ -8068,19 +7877,6 @@ class TutorialController {
             return;
         }
 
-        if (step.id === 'pinnable-sidebar') {
-            const sidebar = document.querySelector('.sidebar');
-            const isAlreadyPinned = sidebar?.classList.contains('sidebar--pinned');
-            if (isAlreadyPinned) {
-                if (this.currentStep < this.steps.length - 1) {
-                    this.showStep(this.currentStep + 1);
-                } else {
-                    this.end();
-                }
-                return;
-            }
-        }
-
         if (this.spotlight) {
             this.spotlight.remove();
             this.spotlight = null;
@@ -8315,18 +8111,6 @@ class TutorialController {
         if (this.cmdPaletteObserver) {
             this.cmdPaletteObserver.disconnect();
             this.cmdPaletteObserver = null;
-        }
-
-        if (this.pinStyleElement) {
-            this.pinStyleElement.remove();
-            this.pinStyleElement = null;
-        }
-
-        if (this.sidebarHoverHandler && this.sidebarElement) {
-            this.sidebarElement.removeEventListener('mouseenter', this.sidebarHoverHandler);
-            this.sidebarElement.removeEventListener('mouseleave', this.sidebarHoverHandler);
-            this.sidebarHoverHandler = null;
-            this.sidebarElement = null;
         }
 
         if (this.spotlightScrollHandler) {

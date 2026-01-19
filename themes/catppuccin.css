@@ -140,20 +140,6 @@ body::before {
     color: var(--ctp-text) !important;
 }
 
-.sidebar__pin-btn {
-    background-color: var(--ctp-surface1) !important;
-    color: var(--ctp-text) !important;
-}
-
-.sidebar__pin-btn:hover {
-    background-color: var(--ctp-surface2) !important;
-}
-
-.sidebar--pinned .sidebar__pin-btn {
-    background-color: var(--ctp-mauve) !important;
-    color: var(--ctp-crust) !important;
-}
-
 .btn {
     transition: all 0.2s ease !important;
 }

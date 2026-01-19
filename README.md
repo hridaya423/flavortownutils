@@ -17,7 +17,6 @@
     - Catpuccin
     - Oceanic
     - Custom (Modify all the colors to your liking!)
-- Pin the sidebar
 - Shop
   - See accessories of each item in the shop without having to go to order page
   - More statistics in goals

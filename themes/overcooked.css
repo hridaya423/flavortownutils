@@ -136,20 +136,6 @@ body::before {
     color: var(--overcooked-white) !important;
 }
 
-.sidebar__pin-btn {
-    background-color: var(--overcooked-mid) !important;
-    color: var(--overcooked-white) !important;
-}
-
-.sidebar__pin-btn:hover {
-    background-color: var(--overcooked-surface) !important;
-}
-
-.sidebar--pinned .sidebar__pin-btn {
-    background-color: var(--overcooked-cyan) !important;
-    color: var(--overcooked-abyss) !important;
-}
-
 .btn {
     transition: all 0.2s ease !important;
 }
