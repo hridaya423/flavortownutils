@@ -1,7 +1,42 @@
 {
-  "lastUpdated": "2026-01-20T10:26:13.592Z",
-  "totalVotes": 590,
+  "lastUpdated": "2026-01-20T11:22:35.888Z",
+  "totalVotes": 595,
   "votes": [
+    {
+      "project": "QRCode Suite",
+      "feedback": "Small tip that when the project prompts \"Do you want to create another QR code? (yes/no)\", entering \"y\" or \"n\" should also work, in addition to yes/no.",
+      "votedBy": "U0823L7CE83",
+      "timestamp": "2026-01-20T11:09:16.589Z",
+      "slackTs": "1768907356.589589"
+    },
+    {
+      "project": "SenseBox Mini",
+      "feedback": "Nice little project. Not very orignal though because everyone makes it",
+      "votedBy": "Unknown",
+      "timestamp": "2026-01-20T11:07:18.502Z",
+      "slackTs": "1768907238.502299"
+    },
+    {
+      "project": "B.E.T.T",
+      "feedback": "cool project, but idk what it does. I don't have minecraft",
+      "votedBy": "Unknown",
+      "timestamp": "2026-01-20T11:05:29.597Z",
+      "slackTs": "1768907129.597009"
+    },
+    {
+      "project": "SimpleRNG",
+      "feedback": "Pretty cool. I think should try and deploy onto a website so its easier to demo. Also try and use less technical jargon in your devlogs and explain your progress in simpler terms so that people who are not familiar with the tech stack you are using can understand.",
+      "votedBy": "U0A73LN55TP",
+      "timestamp": "2026-01-20T10:54:05.885Z",
+      "slackTs": "1768906445.885099"
+    },
+    {
+      "project": "Guessing Game",
+      "feedback": "Maybe try deploying to a website so its easier to review for your next project.",
+      "votedBy": "U0A73LN55TP",
+      "timestamp": "2026-01-20T10:48:41.932Z",
+      "slackTs": "1768906121.932419"
+    },
     {
       "project": "Automatic Light Switch",
       "feedback": "Very nice! 2 seconds is a short amount of time tho.",
@@ -4733,6 +4768,16 @@
       "id": "U0A9HLKSBAQ",
       "username": "punith34k",
       "avatar": "https://secure.gravatar.com/avatar/24bb7ca05b83f781d540c3d3c8682dab.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0017-72.png"
+    },
+    "U0823L7CE83": {
+      "id": "U0823L7CE83",
+      "username": "pranavvasipalli",
+      "avatar": "https://avatars.slack-edge.com/2025-12-24/10178806867683_c11eed606bb78ae186e3_72.png"
+    },
+    "U0A73LN55TP": {
+      "id": "U0A73LN55TP",
+      "username": "aaronzach11",
+      "avatar": "https://secure.gravatar.com/avatar/f8f7d9b4abed97dede4055f7b25ec85a.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0009-72.png"
     }
   }
 }
