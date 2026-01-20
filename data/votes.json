@@ -1,7 +1,98 @@
 {
-  "lastUpdated": "2026-01-20T07:26:11.823Z",
-  "totalVotes": 558,
+  "lastUpdated": "2026-01-20T08:30:16.337Z",
+  "totalVotes": 571,
   "votes": [
+    {
+      "project": "pes sgpa calculator",
+      "feedback": "Nicely done!",
+      "votedBy": "U0A5DVA4Q4R",
+      "timestamp": "2026-01-20T08:27:00.888Z",
+      "slackTs": "1768897620.888709"
+    },
+    {
+      "project": "B.E.T.T",
+      "feedback": "nice",
+      "votedBy": "U0A8F724F1A",
+      "timestamp": "2026-01-20T08:26:19.384Z",
+      "slackTs": "1768897579.384129"
+    },
+    {
+      "project": "Koequet: Dataset Formatter",
+      "feedback": "nice",
+      "votedBy": "U0A8F724F1A",
+      "timestamp": "2026-01-20T08:26:00.687Z",
+      "slackTs": "1768897560.687309"
+    },
+    {
+      "project": "Tabagotchi",
+      "feedback": "nice but need more work",
+      "votedBy": "U0A8F724F1A",
+      "timestamp": "2026-01-20T08:25:46.086Z",
+      "slackTs": "1768897546.086389"
+    },
+    {
+      "project": "Logpheus",
+      "feedback": "nice work 22hr",
+      "votedBy": "U0A8F724F1A",
+      "timestamp": "2026-01-20T08:24:46.540Z",
+      "slackTs": "1768897486.540869"
+    },
+    {
+      "project": "A Fridgemagnet Game",
+      "feedback": "nice work 11hr",
+      "votedBy": "U0A8F724F1A",
+      "timestamp": "2026-01-20T08:24:30.585Z",
+      "slackTs": "1768897470.585039"
+    },
+    {
+      "project": "Guessing Game",
+      "feedback": "game is nice but you can improve the design",
+      "votedBy": "U0A0U191RS5",
+      "timestamp": "2026-01-20T08:16:43.626Z",
+      "slackTs": "1768897003.626779"
+    },
+    {
+      "project": "Sand simulator",
+      "feedback": "",
+      "votedBy": "U0825SVHFJL",
+      "timestamp": "2026-01-20T08:10:03.039Z",
+      "slackTs": "1768896603.039949"
+    },
+    {
+      "project": "Quantum Echoes",
+      "feedback": "",
+      "votedBy": "U0825SVHFJL",
+      "timestamp": "2026-01-20T08:09:14.454Z",
+      "slackTs": "1768896554.454359"
+    },
+    {
+      "project": "Automatic Light Switch",
+      "feedback": "Fun idea! It's a little simple, but cool overall :3\nI would suggest using Markdown formatting in your README, but the hardware itself is quite good.",
+      "votedBy": "U08RJ1PEM7X",
+      "timestamp": "2026-01-20T07:50:03.471Z",
+      "slackTs": "1768895403.471889"
+    },
+    {
+      "project": "B.E.T.T",
+      "feedback": "Cool pack with good storytelling! I'd suggest doing more non-AI coding for things like the website, but other than that it's great!",
+      "votedBy": "U08RJ1PEM7X",
+      "timestamp": "2026-01-20T07:46:45.061Z",
+      "slackTs": "1768895205.061489"
+    },
+    {
+      "project": "MiddleDrag",
+      "feedback": "Cool project, however the devlogs and readme don't tell the greatest story. Also, this seems to rely on AI quite heavily.",
+      "votedBy": "U08RJ1PEM7X",
+      "timestamp": "2026-01-20T07:44:11.930Z",
+      "slackTs": "1768895051.930459"
+    },
+    {
+      "project": "Quantum Echoes",
+      "feedback": "Very cool and technical, with great devlogs. Amazing work :3",
+      "votedBy": "U08RJ1PEM7X",
+      "timestamp": "2026-01-20T07:39:57.046Z",
+      "slackTs": "1768894797.046069"
+    },
     {
       "project": "Passcore",
       "feedback": "This project is a good introduction into password heuristics. Some suggestions to consider:\n- Use enums instead of strings for password grades. You can still `impl Display` on them, so don't worry about that.\n- Faster doesn't always mean better. This isn't quite a battle-tested algorithm. If you want, you could add a disclaimer on <http://crates.io|crates.io>.\n- \"The xyz function will never log your password\" in the docstrings is unnecessary.\n- In docstrings, try not referring to the function by its name. Instead, describe what it does directly, e.g. \"Takes a password and outputs a grade\" instead of \"The grade_password function takes a...\"\n- Use assertions in doctests! `assert_eq!(x, 4);` is better than `println!(\"{x}\"); // x is 4`.",
@@ -4494,6 +4585,11 @@
       "id": "U092C4M8VFA",
       "username": "not_a_normal_robot",
       "avatar": "https://avatars.slack-edge.com/2025-06-17/9070519575761_258342fcfbe54ed1f4c7_72.png"
+    },
+    "U0A0U191RS5": {
+      "id": "U0A0U191RS5",
+      "username": "kumarsuryavanshiprinc",
+      "avatar": "https://avatars.slack-edge.com/2025-12-26/10197137760212_9df8b126ca317796dbcf_72.png"
     }
   }
 }
