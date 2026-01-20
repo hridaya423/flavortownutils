@@ -1,7 +1,35 @@
 {
-  "lastUpdated": "2026-01-20T05:27:25.761Z",
-  "totalVotes": 554,
+  "lastUpdated": "2026-01-20T07:26:11.823Z",
+  "totalVotes": 558,
   "votes": [
+    {
+      "project": "Passcore",
+      "feedback": "This project is a good introduction into password heuristics. Some suggestions to consider:\n- Use enums instead of strings for password grades. You can still `impl Display` on them, so don't worry about that.\n- Faster doesn't always mean better. This isn't quite a battle-tested algorithm. If you want, you could add a disclaimer on <http://crates.io|crates.io>.\n- \"The xyz function will never log your password\" in the docstrings is unnecessary.\n- In docstrings, try not referring to the function by its name. Instead, describe what it does directly, e.g. \"Takes a password and outputs a grade\" instead of \"The grade_password function takes a...\"\n- Use assertions in doctests! `assert_eq!(x, 4);` is better than `println!(\"{x}\"); // x is 4`.",
+      "votedBy": "U092C4M8VFA",
+      "timestamp": "2026-01-20T07:25:21.413Z",
+      "slackTs": "1768893921.413769"
+    },
+    {
+      "project": "Guessing Game",
+      "feedback": "This is a classic simple project for people who just started programming. Overall a decent project, but I'd suggest going for more creative project ideas instead, since there isn't much to add to this kind of project. Perhaps try implementing Pong next? That kind of idea could have a lot of depth and you can add your own personal touch to it, like new mechanics.",
+      "votedBy": "U092C4M8VFA",
+      "timestamp": "2026-01-20T07:13:25.942Z",
+      "slackTs": "1768893205.942319"
+    },
+    {
+      "project": "Linux Conversion Expert",
+      "feedback": "Very cool",
+      "votedBy": "U0A787QJ80J",
+      "timestamp": "2026-01-20T07:03:45.163Z",
+      "slackTs": "1768892625.163199"
+    },
+    {
+      "project": "If I Ran The World",
+      "feedback": "Ay man\nthis project is actually very cool! The UI is clean, and easy controls. \n\nBut if you could, I'd recommend you to add persistent gameplay to localStorage if you're using JS to make this. Keep it up!",
+      "votedBy": "Unknown",
+      "timestamp": "2026-01-20T06:45:22.007Z",
+      "slackTs": "1768891522.007559"
+    },
     {
       "project": "Koequet: Dataset Formatter",
       "feedback": "Very elegant wow just looking like a wow.:kissing_closed_eyes:",
@@ -4461,6 +4489,11 @@
       "id": "U0A7ELX4A8M",
       "username": "r.nick0510",
       "avatar": "https://secure.gravatar.com/avatar/87b4116dbdfcaca6a01b944452b03678.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0007-72.png"
+    },
+    "U092C4M8VFA": {
+      "id": "U092C4M8VFA",
+      "username": "not_a_normal_robot",
+      "avatar": "https://avatars.slack-edge.com/2025-06-17/9070519575761_258342fcfbe54ed1f4c7_72.png"
     }
   }
 }
