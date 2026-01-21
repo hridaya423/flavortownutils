@@ -1,7 +1,21 @@
 {
-  "lastUpdated": "2026-01-21T04:42:36.286Z",
-  "totalVotes": 655,
+  "lastUpdated": "2026-01-21T07:26:48.127Z",
+  "totalVotes": 657,
   "votes": [
+    {
+      "project": "DevUtils",
+      "feedback": "Good UI! Prob more devlogs",
+      "votedBy": "U0A55A4B21K",
+      "timestamp": "2026-01-21T07:03:06.088Z",
+      "slackTs": "1768978986.088609"
+    },
+    {
+      "project": "Cnvrt",
+      "feedback": "More devlogs",
+      "votedBy": "U0A55A4B21K",
+      "timestamp": "2026-01-21T06:59:15.803Z",
+      "slackTs": "1768978755.803089"
+    },
     {
       "project": "hookt",
       "feedback": "Looks quite cool, with a good README and good devlogs! Only thing I would suggest is making the version selector (\"hookt-version\" variable in the gradle config) a bit clearer! I know it's mentioned in releases, but that isn't very well explained in the main README.",
