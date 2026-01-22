@@ -1054,6 +1054,27 @@ a:hover {
     background-color: transparent !important;
 }
 
+.kitchen-recently-added {
+    background-color: var(--overcooked-dark) !important;
+    border: 1px solid var(--overcooked-mid) !important;
+}
+
+.kitchen-recently-added__header {
+    background-color: transparent !important;
+}
+
+.kitchen-recently-added__title {
+    color: var(--overcooked-white) !important;
+}
+
+.kitchen-recently-added__subtitle {
+    color: var(--overcooked-foam) !important;
+}
+
+.kitchen-recently-added__items {
+    background-color: transparent !important;
+}
+
 .my-orders__item {
     background-color: var(--overcooked-dark) !important;
     border-color: var(--overcooked-mid) !important;

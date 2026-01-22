@@ -1058,6 +1058,27 @@ a:hover {
     background-color: transparent !important;
 }
 
+.kitchen-recently-added {
+    background-color: var(--ctp-surface0) !important;
+    border: 1px solid var(--ctp-surface1) !important;
+}
+
+.kitchen-recently-added__header {
+    background-color: transparent !important;
+}
+
+.kitchen-recently-added__title {
+    color: var(--ctp-text) !important;
+}
+
+.kitchen-recently-added__subtitle {
+    color: var(--ctp-subtext0) !important;
+}
+
+.kitchen-recently-added__items {
+    background-color: transparent !important;
+}
+
 .my-orders__item {
     background-color: var(--ctp-surface0) !important;
     border-color: var(--ctp-surface1) !important;
