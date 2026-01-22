@@ -983,6 +983,125 @@ a:hover {
     border-color: var(--ctp-red) !important;
 }
 
+.nibbles__sidequests {
+    background-color: var(--ctp-surface0) !important;
+    border: 1px solid var(--ctp-surface1) !important;
+}
+
+.nibbles__sidequests-subtitle {
+    color: var(--ctp-subtext0) !important;
+}
+
+.nibbles__sidequests-cards {
+    background-color: transparent !important;
+}
+
+.sidequest-card {
+    background-color: var(--ctp-surface1) !important;
+    border-color: var(--ctp-surface2) !important;
+    color: var(--ctp-text) !important;
+}
+
+.sidequest-card__title {
+    color: var(--ctp-text) !important;
+}
+
+.sidequest-card__content h2 {
+    color: var(--ctp-subtext0) !important;
+}
+
+.sidequest-card__content {
+    background-color: var(--ctp-surface0) !important;
+}
+
+.sidequest-card__buttons .btn--blue,
+.sidequest-card__buttons .btn--red,
+.sidequest-card__buttons .btn--green,
+.sidequest-card__buttons .btn-submit {
+    color: var(--ctp-crust) !important;
+}
+
+.sidequest-card__buttons .btn--blue {
+    background-color: var(--ctp-blue) !important;
+    border-color: var(--ctp-blue) !important;
+}
+
+.sidequest-card__buttons .btn--green,
+.sidequest-card__buttons .btn-submit {
+    background-color: var(--ctp-green) !important;
+    border-color: var(--ctp-green) !important;
+}
+
+.sidequest-card__buttons .btn--red {
+    background-color: var(--ctp-red) !important;
+    border-color: var(--ctp-red) !important;
+}
+
+.shop__recently-added-inner {
+    background-color: var(--ctp-surface0) !important;
+    border: 1px solid var(--ctp-surface1) !important;
+}
+
+.shop__recently-added-header {
+    background-color: transparent !important;
+}
+
+.shop__recently-added-title {
+    color: var(--ctp-text) !important;
+}
+
+.shop__recently-added-subtitle {
+    color: var(--ctp-subtext0) !important;
+}
+
+.shop__recently-added-items {
+    background-color: transparent !important;
+}
+
+.my-orders__item {
+    background-color: var(--ctp-surface0) !important;
+    border-color: var(--ctp-surface1) !important;
+}
+
+.my-orders__header-bar {
+    background-color: var(--ctp-surface1) !important;
+    border-color: var(--ctp-surface2) !important;
+    color: var(--ctp-text) !important;
+}
+
+.my-orders__header-label {
+    color: var(--ctp-subtext0) !important;
+}
+
+.my-orders__header-value {
+    color: var(--ctp-text) !important;
+}
+
+.my-orders__body {
+    background-color: var(--ctp-surface0) !important;
+}
+
+.my-orders__item-name {
+    color: var(--ctp-text) !important;
+}
+
+.my-orders__status {
+    background-color: var(--ctp-surface2) !important;
+    color: var(--ctp-text) !important;
+}
+
+.my-orders__label {
+    color: var(--ctp-subtext0) !important;
+}
+
+.my-orders__value {
+    color: var(--ctp-text) !important;
+}
+
+.my-orders__cancel-link {
+    color: var(--ctp-red) !important;
+}
+
 .dropdown__label {
     color: var(--ctp-subtext0) !important;
 }

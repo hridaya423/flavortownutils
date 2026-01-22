@@ -972,6 +972,125 @@ a:hover {
     border-color: var(--sea-coral) !important;
 }
 
+.nibbles__sidequests {
+    background-color: var(--sea-dark) !important;
+    border: 1px solid var(--sea-mid) !important;
+}
+
+.nibbles__sidequests-subtitle {
+    color: var(--sea-foam) !important;
+}
+
+.nibbles__sidequests-cards {
+    background-color: transparent !important;
+}
+
+.sidequest-card {
+    background-color: var(--sea-mid) !important;
+    border-color: var(--sea-surface) !important;
+    color: var(--sea-white) !important;
+}
+
+.sidequest-card__title {
+    color: var(--sea-white) !important;
+}
+
+.sidequest-card__content h2 {
+    color: var(--sea-foam) !important;
+}
+
+.sidequest-card__content {
+    background-color: var(--sea-dark) !important;
+}
+
+.sidequest-card__buttons .btn--blue,
+.sidequest-card__buttons .btn--red,
+.sidequest-card__buttons .btn--green,
+.sidequest-card__buttons .btn-submit {
+    color: var(--sea-abyss) !important;
+}
+
+.sidequest-card__buttons .btn--blue {
+    background-color: var(--sea-surface) !important;
+    border-color: var(--sea-surface) !important;
+}
+
+.sidequest-card__buttons .btn--green,
+.sidequest-card__buttons .btn-submit {
+    background-color: var(--sea-kelp) !important;
+    border-color: var(--sea-kelp) !important;
+}
+
+.sidequest-card__buttons .btn--red {
+    background-color: var(--sea-coral) !important;
+    border-color: var(--sea-coral) !important;
+}
+
+.shop__recently-added-inner {
+    background-color: var(--sea-dark) !important;
+    border: 1px solid var(--sea-mid) !important;
+}
+
+.shop__recently-added-header {
+    background-color: transparent !important;
+}
+
+.shop__recently-added-title {
+    color: var(--sea-white) !important;
+}
+
+.shop__recently-added-subtitle {
+    color: var(--sea-foam) !important;
+}
+
+.shop__recently-added-items {
+    background-color: transparent !important;
+}
+
+.my-orders__item {
+    background-color: var(--sea-dark) !important;
+    border-color: var(--sea-mid) !important;
+}
+
+.my-orders__header-bar {
+    background-color: var(--sea-mid) !important;
+    border-color: var(--sea-surface) !important;
+    color: var(--sea-white) !important;
+}
+
+.my-orders__header-label {
+    color: var(--sea-foam) !important;
+}
+
+.my-orders__header-value {
+    color: var(--sea-white) !important;
+}
+
+.my-orders__body {
+    background-color: var(--sea-dark) !important;
+}
+
+.my-orders__item-name {
+    color: var(--sea-white) !important;
+}
+
+.my-orders__status {
+    background-color: var(--sea-surface) !important;
+    color: var(--sea-white) !important;
+}
+
+.my-orders__label {
+    color: var(--sea-foam) !important;
+}
+
+.my-orders__value {
+    color: var(--sea-white) !important;
+}
+
+.my-orders__cancel-link {
+    color: var(--sea-coral) !important;
+}
+
 .dropdown__label {
     color: var(--sea-foam) !important;
 }
