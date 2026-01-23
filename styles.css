@@ -2442,6 +2442,15 @@
     margin-bottom: 8px;
 }
 
+.flavortown-efficiency__hours {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.82em;
+    color: var(--color-text-muted, #8b7355);
+    margin-bottom: 8px;
+}
+
 .flavortown-efficiency__rates {
     display: flex;
     gap: 8px;
@@ -2556,6 +2565,35 @@
     margin-bottom: 0 !important;
 }
 
+.shop-goals__title {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 12px !important;
+}
+
+.flavortown-goals-title-text {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+.flavortown-goals-projection-toggle {
+    display: inline-flex !important;
+    align-items: center !important;
+    margin-left: auto !important;
+}
+
+.flavortown-goals-projection-toggle .flavortown-progress-toggle {
+    padding: 2px !important;
+    border-radius: 20px !important;
+}
+
+.flavortown-goals-projection-toggle .flavortown-progress-toggle__btn {
+    padding: 6px 12px !important;
+    font-size: 12px !important;
+}
+
 .flavortown-progress-toggle {
     display: inline-flex !important;
     background: #f0ebe4 !important;
@@ -2579,6 +2617,11 @@
 
 .flavortown-progress-toggle__btn:hover {
     color: #5d4e37 !important;
+}
+
+.flavortown-progress-toggle__btn:disabled {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
 }
 
 .flavortown-progress-toggle__btn.active {

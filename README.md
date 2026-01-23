@@ -12,7 +12,11 @@
 ## Features:
 
 - Makes devlog posting directly into project page, instead of a new page.
-- Devlog every xx frequency stat
+- Useful project stats
+  - Percentile of payout
+  - Cookies/h rate
+  - Devlog frequency stat
+  - Cookies
 - Themes
     - Catpuccin
     - Oceanic
@@ -24,6 +28,8 @@
   - Better UI for goals
   - Priority goals
   - Cumulative progress and individual progress towards goals
+  - Projected progress towards goal using unshipped hours
+  - Time estimates of ship items based on your average efficiency
 - Auto achievement claim
 - Search bar for projects
 - Makes images not crop in devlogs
@@ -50,6 +56,7 @@
 - Inline devlog editing
 - Inline version history
 - Speed read devlogs
+
 ## Feature showcase:
 
 <img width="480" height="360" alt="image" src="https://github.com/user-attachments/assets/c3d7205b-2021-462d-8a34-83154410b646" />

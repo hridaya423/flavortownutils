@@ -83,6 +83,20 @@ body::before {
     background-color: var(--overcooked-dark) !important;
 }
 
+.sidebar__pin-button {
+    background-color: transparent !important;
+    border: none !important;
+}
+
+.sidebar__pin-icon {
+    color: var(--overcooked-surface) !important;
+}
+
+.sidebar__pin-button:hover .sidebar__pin-icon,
+.sidebar__pin-button:focus-visible .sidebar__pin-icon {
+    color: var(--overcooked-cyan) !important;
+}
+
 .sidebar__nav-link {
     color: var(--overcooked-white) !important;
 }
@@ -606,7 +620,7 @@ a:hover {
 }
 
 .tutorial-steps__progress-fill {
-    background-color: var(--overcooked-cyan) !important;
+    background: linear-gradient(90deg, var(--overcooked-cyan) 0%, var(--overcooked-gold) 100%) !important;
 }
 
 .tutorial-steps__grid {
@@ -909,7 +923,7 @@ a:hover {
 }
 
 .shop-goals__progress-fill {
-    background: var(--overcooked-cyan) !important;
+    background: linear-gradient(90deg, var(--overcooked-cyan) 0%, var(--overcooked-gold) 100%) !important;
 }
 
 .shop-goals__progress-text {
@@ -1409,8 +1423,7 @@ a:hover {
 }
 
 .flavortown-goals-enhanced__progress-fill {
-    background: var(--overcooked-cyan) !important;
-    background-image: none !important;
+    background: linear-gradient(90deg, var(--overcooked-cyan) 0%, var(--overcooked-gold) 100%) !important;
 }
 
 .flavortown-goals-enhanced__progress-text {
@@ -1461,7 +1474,7 @@ a:hover {
 }
 
 .flavortown-goal-item__progress-fill {
-    background: var(--overcooked-cyan) !important;
+    background: linear-gradient(90deg, var(--overcooked-cyan) 0%, var(--overcooked-gold) 100%) !important;
 }
 
 .flavortown-goal-item__info {
@@ -1524,7 +1537,7 @@ a:hover {
 }
 
 .achievements__progress-fill {
-    background-color: var(--overcooked-cyan) !important;
+    background: linear-gradient(90deg, var(--overcooked-cyan) 0%, var(--overcooked-gold) 100%) !important;
 }
 
 .achievements__progress-text {
@@ -2198,7 +2211,7 @@ a:hover {
 }
 
 .flavortown-achievement-toast {
-    background-color: linear-gradient(135deg, var(--overcooked-dark) 0%, var(--overcooked-mid) 100%) !important;
+    background: linear-gradient(135deg, var(--overcooked-dark) 0%, var(--overcooked-mid) 100%) !important;
     border-color: var(--overcooked-cyan) !important;
 }
 
@@ -2262,7 +2275,7 @@ a:hover {
 }
 
 .flavortown-goals-enhanced__progress-fill {
-    background-color: linear-gradient(90deg, var(--overcooked-cyan) 0%, var(--overcooked-coral) 100%) !important;
+    background: linear-gradient(90deg, var(--overcooked-cyan) 0%, var(--overcooked-gold) 100%) !important;
 }
 
 .flavortown-priority-section {
@@ -2285,7 +2298,7 @@ a:hover {
 }
 
 .flavortown-priority-section__progress-fill {
-    background: var(--overcooked-cyan) !important;
+    background: linear-gradient(90deg, var(--overcooked-cyan) 0%, var(--overcooked-gold) 100%) !important;
 }
 
 .flavortown-priority-pill {
