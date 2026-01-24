@@ -17,6 +17,8 @@
   - Cookies/h rate
   - Devlog frequency stat
   - Cookies
+  - Vote estimation avg stars
+  - Avg stars across each category
 - Themes
     - Catpuccin
     - Oceanic
