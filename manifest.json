@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "Flavortown Utils",
-    "version": "2.0.0",
+    "version": "2.1.0",
     "description": "A utility extension for Flavortown, with multiple useful features to enhance the experience",
     "permissions": [
         "storage",
@@ -25,6 +25,18 @@
         "service_worker": "background.js"
     },
     "content_scripts": [
+        {
+            "matches": [
+                "https://flavortown.hackclub.com/*"
+            ],
+            "js": [
+                "theme-preload.js"
+            ],
+            "css": [
+                "styles.css"
+            ],
+            "run_at": "document_start"
+        },
         {
             "matches": [
                 "https://flavortown.hackclub.com/*"

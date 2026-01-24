@@ -1588,6 +1588,23 @@ a:hover {
     filter: drop-shadow(5px 0 0 var(--ctp-surface1)) drop-shadow(-5px 0 0 var(--ctp-surface1)) drop-shadow(0 5px 0 var(--ctp-surface1)) drop-shadow(0 -5px 0 var(--ctp-surface1)) !important;
 }
 
+.flavortown-vote-estimate-accordion {
+    border-color: var(--ctp-surface2) !important;
+    background: var(--ctp-base) !important;
+    color: var(--ctp-text) !important;
+}
+
+.flavortown-vote-estimate-accordion__toggle {
+    background: var(--ctp-surface1) !important;
+    border-bottom-color: var(--ctp-surface2) !important;
+    color: var(--ctp-text) !important;
+}
+
+.flavortown-vote-estimate-accordion__categories {
+    background: var(--ctp-base) !important;
+    color: var(--ctp-subtext0) !important;
+}
+
 .projects-board__create-card::before {
     opacity: 0.3 !important;
 }

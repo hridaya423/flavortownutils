@@ -1588,6 +1588,23 @@ a:hover {
     filter: drop-shadow(5px 0 0 var(--overcooked-mid)) drop-shadow(-5px 0 0 var(--overcooked-mid)) drop-shadow(0 5px 0 var(--overcooked-mid)) drop-shadow(0 -5px 0 var(--overcooked-mid)) !important;
 }
 
+.flavortown-vote-estimate-accordion {
+    border-color: var(--overcooked-mid) !important;
+    background: var(--overcooked-dark) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.flavortown-vote-estimate-accordion__toggle {
+    background: var(--overcooked-mid) !important;
+    border-bottom-color: var(--overcooked-surface) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.flavortown-vote-estimate-accordion__categories {
+    background: var(--overcooked-dark) !important;
+    color: var(--overcooked-foam) !important;
+}
+
 .projects-board__create-card::before {
     opacity: 0.3 !important;
 }

@@ -697,6 +697,65 @@
     gap: 8px !important;
 }
 
+.flavortown-vote-estimate-pill {
+    font-weight: 600;
+}
+
+.flavortown-vote-estimate-accordion {
+    width: 100%;
+    font-size: 0.85em;
+    border: 1px solid var(--color-brown-light, #b79b83);
+    border-radius: 8px;
+    background: var(--color-cream, #fdf6e3);
+    overflow: hidden;
+    color: var(--color-brown, #5d4e37);
+}
+
+.flavortown-vote-estimate-accordion__toggle {
+    width: 100%;
+    padding: 8px 12px;
+    cursor: pointer;
+    color: inherit;
+    opacity: 0.9;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    list-style: none;
+    background: var(--color-tan-400, var(--color-cream-dark, #efe6d5));
+    border-bottom: 1px solid var(--color-brown-light, #b79b83);
+    font-weight: 600;
+    text-align: left;
+}
+
+.flavortown-vote-estimate-accordion__toggle::-webkit-details-marker {
+    display: none;
+}
+
+.flavortown-vote-estimate-accordion__toggle::before {
+    content: '▸';
+    margin-right: 6px;
+    font-size: 0.85em;
+    transition: transform 0.15s ease;
+}
+
+.flavortown-vote-estimate-accordion[open] .flavortown-vote-estimate-accordion__toggle::before {
+    transform: rotate(90deg);
+}
+
+.flavortown-vote-estimate-accordion__categories {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px 12px;
+    padding: 10px 12px 12px;
+    font-size: 0.95em;
+    color: inherit;
+    opacity: 0.85;
+    background: var(--color-cream, #fdf6e3);
+    text-align: left;
+    justify-items: start;
+}
+
 .flavortown-priority-pill {
     background: #fff !important;
     border: 1px solid #f87171 !important;
@@ -961,6 +1020,15 @@
     gap: 12px;
     margin-top: 12px;
     flex-wrap: wrap;
+}
+
+.flavortown-project-category-stats {
+    width: 100%;
+    margin-top: 8px;
+}
+
+.flavortown-project-cookies-details {
+    margin-top: 8px;
 }
 
 .flavortown-stat-pill {

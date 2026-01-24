@@ -60,6 +60,42 @@ const CSS_VAR_OVERRIDES = {
 
 const COOKIE_RATE_MIN = 1;
 const COOKIE_RATE_MAX = 30;
+const PAYOUT_LOW_DOLLARS_PER_HOUR = 0.3;
+const PAYOUT_HIGH_DOLLARS_PER_HOUR = 6.0;
+const PAYOUT_GAMMA = 1.745427173;
+const PAYOUT_TICKETS_PER_DOLLAR = 5;
+const PERCENTILE_HILL_SHAPE = 1.08;
+const THEME_CACHE_KEY = 'flavortown-theme-cache';
+const THEME_PRELOAD_STYLE_ID = 'flavortown-theme-preload';
+const THEME_PALETTE_VARS = [
+    '--color-cream',
+    '--color-cream-dark',
+    '--color-brown',
+    '--color-brown-light',
+    '--color-brown-dark',
+    '--color-background',
+    '--color-surface',
+    '--color-text-primary',
+    '--color-text-secondary',
+    '--color-text-muted',
+    '--color-border',
+    '--color-accent'
+];
+const SCORE_CURVE_COEFFS = [
+    0.0654770022136067,
+    4.9873443913234494,
+    -23.337176021689906,
+    58.83329667184651,
+    -76.01887125623473,
+    47.32169499600278,
+    -10.863898322106492
+];
+const CATEGORY_SCORE_RANGES = {
+    originality: { min: 1.3399256178444185, max: 5.825152142613143 },
+    technical: { min: 1.1910278012630102, max: 6.15532650901786 },
+    usability: { min: 1.5577755101474042, max: 5.333419758087392, percentileSlope: -0.3 },
+    storytelling: { min: 0.9456184633427491, max: 6.136955727382335 }
+};
 const SHIP_PAYOUT_CACHE_KEY = 'flavortown_ship_payouts';
 const SHIP_PAYOUT_CACHE_TTL = 15 * 60 * 1000;
 const SHIP_TIME_CACHE_KEY = 'flavortown_ship_minutes';
@@ -76,7 +112,54 @@ function loadTheme() {
     });
 }
 
+function readThemeCache() {
+    try {
+        const cached = localStorage.getItem(THEME_CACHE_KEY);
+        return cached ? JSON.parse(cached) : null;
+    } catch (e) {
+        return null;
+    }
+}
+
+function writeThemeCache(data) {
+    try {
+        localStorage.setItem(THEME_CACHE_KEY, JSON.stringify(data));
+    } catch (e) {
+    }
+}
+
+function captureThemePalette() {
+    const styles = getComputedStyle(document.documentElement);
+    const palette = {};
+    THEME_PALETTE_VARS.forEach(varName => {
+        const value = styles.getPropertyValue(varName).trim();
+        if (value) palette[varName] = value;
+    });
+    return palette;
+}
+
+function cacheThemePalette(theme, customColors, catppuccinAccent) {
+    const palette = captureThemePalette();
+    if (!palette || Object.keys(palette).length === 0) return;
+    writeThemeCache({
+        theme: theme || 'default',
+        customColors: customColors || {},
+        catppuccinAccent: catppuccinAccent || 'mauve',
+        palette
+    });
+}
+
 function applyTheme(theme, customColors, catppuccinAccent = 'mauve') {
+    writeThemeCache({
+        theme: theme || 'default',
+        customColors: customColors || {},
+        catppuccinAccent: catppuccinAccent || 'mauve',
+        palette: readThemeCache()?.palette || {}
+    });
+
+    const preloadStyle = document.getElementById(THEME_PRELOAD_STYLE_ID);
+    if (preloadStyle) preloadStyle.remove();
+
     const existingTheme = document.getElementById('flavortown-theme');
     if (existingTheme) existingTheme.remove();
 
@@ -151,11 +234,15 @@ h1, h2, h3, h4, h5, h6, p, span, div {
 
         style.textContent = css;
         document.head.appendChild(style);
+        setTimeout(() => cacheThemePalette(theme, customColors, catppuccinAccent), 0);
     } else {
         const link = document.createElement('link');
         link.id = 'flavortown-theme';
         link.rel = 'stylesheet';
         link.href = browserAPI.runtime.getURL(`themes/${theme}.css`);
+        link.addEventListener('load', () => {
+            setTimeout(() => cacheThemePalette(theme, customColors, catppuccinAccent), 0);
+        });
         document.head.appendChild(link);
 
 
@@ -378,11 +465,7 @@ function addShipStats() {
                 const durationEl = currentElement.querySelector('.post__duration');
                 if (durationEl) {
                     const durationText = durationEl.textContent.trim();
-                    const hourMatch = durationText.match(/(\d+)h/);
-                    const minMatch = durationText.match(/(\d+)m/);
-                    const hours = hourMatch ? parseInt(hourMatch[1], 10) : 0;
-                    const mins = minMatch ? parseInt(minMatch[1], 10) : 0;
-                    totalMinutes += hours * 60 + mins;
+                    totalMinutes += parseDurationToMinutes(durationText);
                 }
             }
 
@@ -463,7 +546,7 @@ function parseDurationToMinutes(text) {
 
     if (hoursMatch) minutes += parseInt(hoursMatch[1], 10) * 60;
     if (minsMatch) minutes += parseInt(minsMatch[1], 10);
-    if (secsMatch) minutes += Math.round(parseInt(secsMatch[1], 10) / 60);
+    if (secsMatch) minutes += parseInt(secsMatch[1], 10) / 60;
 
     return minutes;
 }
@@ -473,21 +556,126 @@ function formatCookieRate(rate) {
     return rate.toFixed(1);
 }
 
+function normalizePayoutHours(hours) {
+    if (!hours || !isFinite(hours)) return null;
+    return Math.round(hours * 100) / 100;
+}
+
+function getMultiplierFromCookies(totalCookies, hours) {
+    if (!totalCookies || !hours || !isFinite(totalCookies) || !isFinite(hours)) return null;
+    const roundedHours = normalizePayoutHours(hours);
+    if (!roundedHours || roundedHours <= 0) return null;
+    return totalCookies / roundedHours;
+}
+
+function clampValue(value, min, max) {
+    if (!isFinite(value)) return min;
+    return Math.min(max, Math.max(min, value));
+}
+
+function hillCurve(value, shape) {
+    if (!isFinite(value)) return 0;
+    const clamped = clampValue(value, 0, 1);
+    const raised = Math.pow(clamped, shape);
+    const inverted = Math.pow(1 - clamped, shape);
+    return raised / (raised + inverted);
+}
+
+function polynomialCurve(value, coeffs) {
+    if (!isFinite(value)) return 0;
+    let total = 0;
+    for (let i = 0; i < coeffs.length; i++) {
+        total += coeffs[i] * Math.pow(value, i);
+    }
+    return total;
+}
+
+function lerpRange(min, max, t) {
+    return min + (max - min) * t;
+}
+
+function roundToHalf(value) {
+    if (!isFinite(value)) return null;
+    return Math.round(value * 2) / 2;
+}
+
+function estimatePercentileFromMultiplier(multiplier) {
+    if (!multiplier || !isFinite(multiplier)) return null;
+    const hourlyRate = multiplier / PAYOUT_TICKETS_PER_DOLLAR;
+    const normalized = (hourlyRate - PAYOUT_LOW_DOLLARS_PER_HOUR) / (PAYOUT_HIGH_DOLLARS_PER_HOUR - PAYOUT_LOW_DOLLARS_PER_HOUR);
+    const clamped = clampValue(normalized, 0, 1);
+    const pRaw = Math.pow(clamped, 1 / PAYOUT_GAMMA);
+    const corrected = hillCurve(pRaw, PERCENTILE_HILL_SHAPE);
+    return clampValue(corrected * 100, 0.01, 99.99);
+}
+
+function estimateOverallScoreFromMultiplier(multiplier) {
+    if (!multiplier || !isFinite(multiplier)) return null;
+    const hourlyRate = multiplier / PAYOUT_TICKETS_PER_DOLLAR;
+    const normalized = (hourlyRate - PAYOUT_LOW_DOLLARS_PER_HOUR) / (PAYOUT_HIGH_DOLLARS_PER_HOUR - PAYOUT_LOW_DOLLARS_PER_HOUR);
+    const clamped = clampValue(normalized, 0, 1);
+    const pRaw = Math.pow(clamped, 1 / PAYOUT_GAMMA);
+    const scoreNorm = polynomialCurve(pRaw, SCORE_CURVE_COEFFS);
+    const score = 1 + 5 * scoreNorm;
+    return clampValue(score, 1, 6);
+}
+
+function estimateCategoryScoresFromOverall(overallScore, percentile) {
+    if (!overallScore || !isFinite(overallScore)) return null;
+    const p = clampValue((percentile || 0) / 100, 0, 1);
+    const scoreNorm = clampValue((overallScore - 1) / 5, 0, 1);
+    const originality = lerpRange(CATEGORY_SCORE_RANGES.originality.min, CATEGORY_SCORE_RANGES.originality.max, scoreNorm);
+    const technical = lerpRange(CATEGORY_SCORE_RANGES.technical.min, CATEGORY_SCORE_RANGES.technical.max, scoreNorm);
+    const usabilityBase = lerpRange(CATEGORY_SCORE_RANGES.usability.min, CATEGORY_SCORE_RANGES.usability.max, scoreNorm);
+    const usability = usabilityBase + (CATEGORY_SCORE_RANGES.usability.percentileSlope || 0) * p;
+    const storytelling = lerpRange(CATEGORY_SCORE_RANGES.storytelling.min, CATEGORY_SCORE_RANGES.storytelling.max, scoreNorm);
+
+    return { originality, technical, usability, storytelling };
+}
+
+function buildVoteEstimate(multiplier) {
+    const percentile = estimatePercentileFromMultiplier(multiplier);
+    if (!percentile) return null;
+    const overallScore = estimateOverallScoreFromMultiplier(multiplier);
+    if (!overallScore) return null;
+    const categoriesRaw = estimateCategoryScoresFromOverall(overallScore, percentile);
+    if (!categoriesRaw) return { percentile, overallScore, categories: null };
+
+    return {
+        percentile,
+        overallScore,
+        categories: {
+            originality: roundToHalf(clampValue(categoriesRaw.originality, 1, 6)),
+            technical: roundToHalf(clampValue(categoriesRaw.technical, 1, 6)),
+            usability: roundToHalf(clampValue(categoriesRaw.usability, 1, 6)),
+            storytelling: roundToHalf(clampValue(categoriesRaw.storytelling, 1, 6))
+        }
+    };
+}
+
+function formatScoreValue(score) {
+    if (!score || !isFinite(score)) return '--';
+    return score.toFixed(2).replace(/\.00$/, '');
+}
+
+function formatPercentileFromPercentile(percentile) {
+    if (!percentile || !isFinite(percentile)) return '--';
+    if (percentile >= 50) {
+        const topPercent = clampValue(100 - percentile, 0.01, 99.99);
+        return `Top ${topPercent.toFixed(2)}%`;
+    }
+    return `Bottom ${percentile.toFixed(2)}%`;
+}
+
 function getRatePercentile(rate) {
     if (rate === null || rate === undefined || !isFinite(rate)) return null;
     const clamped = Math.min(COOKIE_RATE_MAX, Math.max(COOKIE_RATE_MIN, rate));
-    const raw = Math.round(((clamped - COOKIE_RATE_MIN) / (COOKIE_RATE_MAX - COOKIE_RATE_MIN)) * 100);
-    return Math.min(100, Math.max(1, raw));
+    return estimatePercentileFromMultiplier(clamped);
 }
 
 function formatPercentile(rate) {
     const percentile = getRatePercentile(rate);
-    if (!percentile) return '--';
-    if (percentile >= 50) {
-        const topPercent = Math.max(1, 100 - percentile);
-        return `Top ${topPercent}%`;
-    }
-    return `Bottom ${percentile}%`;
+    return formatPercentileFromPercentile(percentile);
 }
 
 function formatCookieRateLine(rate) {
@@ -499,21 +687,66 @@ function formatCookiePercentileLine(rate) {
     return formatPercentile(rate);
 }
 
+function createVoteEstimateElement(estimate, options = {}) {
+    if (!estimate) return null;
+
+    const overallText = formatScoreValue(estimate.overallScore);
+
+    const scorePill = document.createElement('h5');
+    scorePill.className = 'flavortown-vote-estimate-pill';
+    scorePill.textContent = `~ avg ⭐ ${overallText}`;
+
+    let accordion = null;
+    if (estimate.categories) {
+        accordion = document.createElement('details');
+        accordion.className = 'flavortown-vote-estimate-accordion';
+        accordion.innerHTML = `
+            <summary class="flavortown-vote-estimate-accordion__toggle">Est. category medians</summary>
+            <div class="flavortown-vote-estimate-accordion__categories">
+                <span>Originality ★${formatScoreValue(estimate.categories.originality)}</span>
+                <span>Technical ★${formatScoreValue(estimate.categories.technical)}</span>
+                <span>Usability ★${formatScoreValue(estimate.categories.usability)}</span>
+                <span>Storytelling ★${formatScoreValue(estimate.categories.storytelling)}</span>
+            </div>
+        `;
+    }
+
+    return { scorePill, accordion };
+}
+
 function getCookieRange(hours) {
     if (!hours || hours <= 0) return null;
-    const minCookies = Math.max(1, Math.ceil(hours * COOKIE_RATE_MIN));
-    const maxCookies = Math.max(minCookies, Math.floor(hours * COOKIE_RATE_MAX));
-    const expectedCookies = hours * ((COOKIE_RATE_MIN + COOKIE_RATE_MAX) / 2);
+    const normalizedHours = normalizePayoutHours(hours) || hours;
+    const minCookies = Math.max(1, Math.ceil(normalizedHours * COOKIE_RATE_MIN));
+    const maxCookies = Math.max(minCookies, Math.floor(normalizedHours * COOKIE_RATE_MAX));
+    const expectedCookies = normalizedHours * ((COOKIE_RATE_MIN + COOKIE_RATE_MAX) / 2);
     return { minCookies, maxCookies, expectedCookies };
 }
 
-function pickBestShip(ships, payout) {
+function getShipRatePenalty(ship, payout) {
+    if (!ship || !isFinite(ship.hours) || ship.hours <= 0) return Number.POSITIVE_INFINITY;
+    if (payout.amount < ship.minCookies) {
+        return (ship.minCookies - payout.amount) / ship.hours;
+    }
+    if (payout.amount > ship.maxCookies) {
+        return (payout.amount - ship.maxCookies) / ship.hours;
+    }
+    return 0;
+}
+
+function pickBestShip(ships, payout, expectedRate = null, fallback = false) {
     if (!ships.length) return null;
     const payoutDate = payout.date;
     const sorted = ships.slice().sort((a, b) => {
-        const rangeA = a.maxCookies - a.minCookies;
-        const rangeB = b.maxCookies - b.minCookies;
-        if (rangeA !== rangeB) return rangeA - rangeB;
+        if (fallback) {
+            const penaltyA = getShipRatePenalty(a, payout);
+            const penaltyB = getShipRatePenalty(b, payout);
+            if (penaltyA !== penaltyB) return penaltyA - penaltyB;
+        } else {
+            const rangeA = a.maxCookies - a.minCookies;
+            const rangeB = b.maxCookies - b.minCookies;
+            if (rangeA !== rangeB) return rangeA - rangeB;
+        }
 
         const daysSinceA = payoutDate - a.date;
         const daysSinceB = payoutDate - b.date;
@@ -521,7 +754,17 @@ function pickBestShip(ships, payout) {
 
         const diffA = Math.abs(payout.amount - a.expectedCookies);
         const diffB = Math.abs(payout.amount - b.expectedCookies);
-        return diffA - diffB;
+        if (diffA !== diffB) return diffA - diffB;
+
+        if (expectedRate && isFinite(expectedRate)) {
+            const rateA = payout.amount / (a.hours || 1);
+            const rateB = payout.amount / (b.hours || 1);
+            const rateDiffA = Math.abs(rateA - expectedRate);
+            const rateDiffB = Math.abs(rateB - expectedRate);
+            if (rateDiffA !== rateDiffB) return rateDiffA - rateDiffB;
+        }
+
+        return 0;
     });
 
     return sorted[0];
@@ -530,6 +773,12 @@ function pickBestShip(ships, payout) {
 function assignPayoutsToShips(payouts, ships) {
     const assignments = new Map();
     ships.forEach(ship => assignments.set(ship, []));
+
+    const totalShipHours = ships.reduce((sum, ship) => sum + (ship.hours || 0), 0);
+    const totalCookies = payouts.reduce((sum, payout) => sum + payout.amount, 0);
+    const expectedRate = totalShipHours > 0
+        ? clampValue(totalCookies / totalShipHours, COOKIE_RATE_MIN, COOKIE_RATE_MAX)
+        : null;
 
     const pending = payouts.map(payout => {
         const eligible = ships.filter(ship =>
@@ -548,10 +797,11 @@ function assignPayoutsToShips(payouts, ships) {
 
     pending.forEach(entry => {
         let eligible = entry.eligible;
-        if (eligible.length === 0) {
+        const isFallback = eligible.length === 0;
+        if (isFallback) {
             eligible = ships.filter(ship => ship.date && entry.payout.date >= ship.date);
         }
-        const bestShip = pickBestShip(eligible, entry.payout);
+        const bestShip = pickBestShip(eligible, entry.payout, expectedRate, isFallback);
         if (bestShip) {
             assignments.get(bestShip).push(entry.payout);
         }
@@ -949,6 +1199,7 @@ async function addProjectCardCookieStats() {
         if (existing) existing.remove();
         const existingDetails = card.querySelector('.flavortown-project-cookies-details');
         if (existingDetails) existingDetails.remove();
+        card.querySelectorAll('.flavortown-vote-estimate, .flavortown-vote-estimate-pill, .flavortown-vote-estimate-accordion').forEach(el => el.remove());
 
         const statsContainer = card.querySelector('.project-card__stats');
         if (!statsContainer) return;
@@ -993,9 +1244,10 @@ async function addProjectCardCookieStats() {
         statsRow.querySelectorAll('h5').forEach(stat => applyRowStatLayout(stat));
 
         const hours = minutes > 0 ? minutes / 60 : null;
-        const rate = hours ? totalCookies / hours : null;
+        const rate = hours ? getMultiplierFromCookies(totalCookies, hours) : null;
         const rateLine = formatCookieRateLine(rate);
         const percentileLine = formatCookiePercentileLine(rate);
+        const estimate = rate ? buildVoteEstimate(rate) : null;
 
         const cookieStat = document.createElement('h5');
         cookieStat.className = 'flavortown-project-cookies';
@@ -1032,7 +1284,18 @@ async function addProjectCardCookieStats() {
 
             detailsRow.appendChild(rateBox);
             detailsRow.appendChild(percentileBox);
+
+            const estimateResult = estimate ? createVoteEstimateElement(estimate) : null;
+            if (estimateResult && estimateResult.scorePill) {
+                applyDetailStyle(estimateResult.scorePill);
+                detailsRow.appendChild(estimateResult.scorePill);
+            }
+
             statsContainer.appendChild(detailsRow);
+
+            if (estimateResult && estimateResult.accordion) {
+                statsContainer.appendChild(estimateResult.accordion);
+            }
         }
     };
 
@@ -1079,6 +1342,9 @@ async function addProjectShowCookieStat() {
 
     const projectName = getCurrentProjectName();
     if (!projectName) return;
+
+    const projectIdMatch = window.location.pathname.match(/\/projects\/(\d+)/);
+    const projectId = projectIdMatch ? projectIdMatch[1] : null;
 
     const payouts = await fetchShipPayouts();
     if (!payouts.length) {
@@ -1129,15 +1395,13 @@ async function addProjectShowCookieStat() {
     });
 
     if (minutes === 0) {
-        const projectIdMatch = window.location.pathname.match(/\/projects\/(\d+)/);
-        const projectId = projectIdMatch ? projectIdMatch[1] : null;
         if (projectId) {
             minutes = getCachedShipMinutes(projectId) || 0;
         }
     }
 
     const hours = minutes > 0 ? minutes / 60 : null;
-    const rate = hours ? totalCookies / hours : null;
+    const rate = hours ? getMultiplierFromCookies(totalCookies, hours) : null;
     const rateLine = formatCookieRateLine(rate);
     const percentileLine = formatCookiePercentileLine(rate);
 
@@ -1158,30 +1422,59 @@ async function addProjectShowCookieStat() {
     const detailsParent = statsWrapper.parentNode || statsWrapper;
     const existingDetails = detailsParent.querySelector('.flavortown-project-cookies-details');
     if (existingDetails) existingDetails.remove();
+    detailsParent.querySelectorAll('.flavortown-vote-estimate, .flavortown-vote-estimate-pill, .flavortown-vote-estimate-accordion, .flavortown-project-category-stats').forEach(el => el.remove());
 
     if (minutes > 0) {
+        const estimate = rate ? buildVoteEstimate(rate) : null;
+
         const detailsRow = document.createElement('div');
-        detailsRow.className = 'flavortown-project-cookies-details';
-        detailsRow.style.cssText = 'width: 100%; margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center;';
+        detailsRow.className = 'project-show-card__stats flavortown-project-cookies-details';
 
-        const rateBox = document.createElement('h5');
-        rateBox.textContent = rateLine;
-        rateBox.style.cssText = 'margin: 0; display: inline-flex; align-items: center; gap: 6px; line-height: 1.1;';
+        const createProjectShowStat = (text, iconSvg = '') => {
+            const stat = document.createElement('div');
+            stat.className = 'project-show-card__stat';
+            stat.innerHTML = iconSvg ? `${iconSvg}<span>${text}</span>` : `<span>${text}</span>`;
+            return stat;
+        };
 
-        const percentileBox = document.createElement('h5');
-        percentileBox.textContent = percentileLine;
-        percentileBox.style.cssText = 'margin: 0; display: inline-flex; align-items: center; gap: 6px; line-height: 1.1;';
+        const clockIcon = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="opacity: 0.7;">
+                <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.2 3.2.8-1.3-4.5-2.7V7z"/>
+            </svg>
+        `;
+        const trophyIcon = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="opacity: 0.7;">
+                <path d="M19 4h-3V3H8v1H5v4c0 2.76 2.24 5 5 5h4c2.76 0 5-2.24 5-5V4zm-2 4c0 1.66-1.34 3-3 3h-4c-1.66 0-3-1.34-3-3V6h10v2zM8 15h8v2H8v-2zm-1 3h10v2H7v-2z"/>
+            </svg>
+        `;
 
-        detailsRow.appendChild(rateBox);
-        detailsRow.appendChild(percentileBox);
+        detailsRow.appendChild(createProjectShowStat(rateLine, clockIcon));
+        detailsRow.appendChild(createProjectShowStat(percentileLine, trophyIcon));
+        if (estimate?.overallScore) {
+            const scoreText = `~ avg ⭐ ${formatScoreValue(estimate.overallScore)}`;
+            detailsRow.appendChild(createProjectShowStat(scoreText));
+        }
+
         const detailsParent = statsWrapper.parentNode || statsWrapper;
         detailsParent.insertBefore(detailsRow, statsWrapper.nextSibling);
+
+        if (estimate?.categories) {
+            const categoriesRow = document.createElement('div');
+            categoriesRow.className = 'project-show-card__stats flavortown-project-category-stats';
+
+            categoriesRow.appendChild(createProjectShowStat(`Originality ★${formatScoreValue(estimate.categories.originality)}`));
+            categoriesRow.appendChild(createProjectShowStat(`Technical ★${formatScoreValue(estimate.categories.technical)}`));
+            categoriesRow.appendChild(createProjectShowStat(`Usability ★${formatScoreValue(estimate.categories.usability)}`));
+            categoriesRow.appendChild(createProjectShowStat(`Storytelling ★${formatScoreValue(estimate.categories.storytelling)}`));
+
+            detailsParent.insertBefore(categoriesRow, detailsRow.nextSibling);
+        }
     }
 }
 
 function getShipStatsData(statsElement) {
     const minutesValue = statsElement.dataset.shipMinutes;
-    let minutes = minutesValue ? parseInt(minutesValue, 10) : 0;
+    let minutes = minutesValue ? parseFloat(minutesValue) : 0;
     if (!minutes || minutes <= 0) {
         const timeSpan = Array.from(statsElement.querySelectorAll('span'))
             .find(span => span.textContent.includes('Total time'));
@@ -1277,10 +1570,11 @@ async function addShipPayoutStats() {
         const totalCookies = shipPayouts.reduce((sum, payout) => sum + payout.amount, 0);
         if (totalCookies <= 0) return;
 
-        const rate = ship.hours > 0 ? totalCookies / ship.hours : null;
+        const rate = ship.hours > 0 ? getMultiplierFromCookies(totalCookies, ship.hours) : null;
         const rateLine = formatCookieRateLine(rate);
         const percentileLine = formatCookiePercentileLine(rate);
         const detailsText = rateLine === '--' ? '' : ` (${rateLine}, ${percentileLine})`;
+        const estimate = rate ? buildVoteEstimate(rate) : null;
 
         const cookieStat = document.createElement('div');
         cookieStat.className = 'flavortown-ship-cookies';
@@ -1291,6 +1585,20 @@ async function addShipPayoutStats() {
         `;
 
         ship.statsElement.appendChild(cookieStat);
+
+        if (estimate) {
+            ship.statsElement.querySelectorAll('.flavortown-vote-estimate, .flavortown-vote-estimate-pill, .flavortown-vote-estimate-accordion').forEach(el => el.remove());
+            const estimateResult = createVoteEstimateElement(estimate);
+            if (estimateResult) {
+                if (estimateResult.scorePill) {
+                    estimateResult.scorePill.style.cssText = 'display: inline-flex; align-items: center; gap: 6px; font-weight: 600; margin-left: 8px;';
+                    cookieStat.appendChild(estimateResult.scorePill);
+                }
+                if (estimateResult.accordion) {
+                    ship.statsElement.appendChild(estimateResult.accordion);
+                }
+            }
+        }
     });
 }
 
@@ -7051,9 +7359,10 @@ function createVoteCard(vote, usersMap) {
     voteCard.style.cssText = `
         padding: 10px 12px;
         background: var(--catppuccin-base, var(--color-cream, rgba(255,255,255,0.5)));
+        border: 1px solid var(--catppuccin-surface2, var(--color-brown-light, #c4b5a5));
         border-radius: 8px;
         font-size: 0.9em;
-        color: var(--catppuccin-text, var(--color-text-primary, inherit));
+        color: var(--catppuccin-text, var(--color-brown, #5d4e37));
     `;
 
     const feedbackText = truncateFeedback(vote.feedback);
@@ -7066,12 +7375,12 @@ function createVoteCard(vote, usersMap) {
 
     voteCard.innerHTML = `
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-            <span style="color: var(--catppuccin-subtext0, var(--color-text-muted, #666)); font-size: 0.85em;">
+            <span style="color: var(--catppuccin-subtext0, var(--color-brown-light, #8b7355)); font-size: 0.85em;">
                 ${getRelativeTime(vote.timestamp)}
             </span>
-            ${voterDisplay ? `<span style="font-size: 0.8em; color: var(--catppuccin-subtext1, var(--color-text-secondary, #555));">${voterDisplay}</span>` : ''}
+            ${voterDisplay ? `<span style="font-size: 0.8em; color: var(--catppuccin-subtext1, var(--color-brown-light, #8b7355));">${voterDisplay}</span>` : ''}
         </div>
-        <div class="vote-feedback-text" style="line-height: 1.4; color: var(--catppuccin-text, var(--color-text-primary, inherit));">
+        <div class="vote-feedback-text" style="line-height: 1.4; color: var(--catppuccin-text, var(--color-brown, #5d4e37));">
             ${feedbackText || '<em style="opacity: 0.6;">No feedback provided</em>'}
         </div>
         ${hasMore ? `<button class="vote-expand-btn" style="
@@ -7104,9 +7413,10 @@ function createVotesContainer(votes, usersMap) {
     votesContainer.style.cssText = `
         margin-top: 12px;
         padding: 14px;
-        background: var(--catppuccin-surface0, var(--color-cream-dark, rgba(0,0,0,0.05)));
+        background: var(--catppuccin-surface0, var(--color-cream-dark, #efe6d5));
         border-radius: 10px;
         border-left: 3px solid var(--catppuccin-mauve, var(--color-accent, var(--color-brown, #b4854a)));
+        color: var(--catppuccin-text, var(--color-brown, #5d4e37));
     `;
 
     const header = document.createElement('div');
@@ -7117,7 +7427,7 @@ function createVotesContainer(votes, usersMap) {
         margin-bottom: 10px;
         font-weight: 600;
         font-size: 0.9em;
-        color: var(--catppuccin-text, var(--color-text-primary, inherit));
+        color: var(--catppuccin-text, var(--color-brown, #5d4e37));
     `;
     header.innerHTML = `
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="var(--catppuccin-yellow, var(--color-brown, #d4a857))" style="opacity: 0.9;">
@@ -7615,6 +7925,12 @@ const TUTORIAL_PHASE_3 = [
 ];
 
 const VERSION_FEATURES = {
+    '2.1.0': [
+        { title: 'Zero-flash themes', description: 'Themes now preload before paint to avoid the default flash.', icon: '✨' },
+        { title: 'Vote estimation', description: 'Estimated overall stars and category medians from payout rates.', icon: '⭐' },
+        { title: 'Vote stats', description: 'See cookies/hour multiplier and percentile on projects and ships.', icon: '📊' },
+        { title: 'Shop projections', description: 'Projected progress plus time-to-item based on your pace.', icon: '🛒' }
+    ],
     '1.9.0': [
         { title: 'Speed reader in votes', description: 'Read devlogs and ships fast.', icon: '⚡' },
         { title: 'Community votes fixes', description: 'Some clustering logic fixes and data fetching issues.', icon: '🛠️' }
@@ -9336,8 +9652,6 @@ async function resumeTutorial(savedState) {
 }
 
 async function initOnboarding() {
-    scanUserContext().catch(e => console.warn('Tutorial scan failed:', e));
-
     const state = await getOnboardingState();
 
     if (state.onboardingComplete) {

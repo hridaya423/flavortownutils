@@ -57,6 +57,7 @@ jobs:
         cp popup.css temp-chrome-extension/
         cp icon64.png temp-chrome-extension/
         cp icon128.png temp-chrome-extension/
+        cp theme-preload.js temp-chrome-extension/
         cp themes/*.css temp-chrome-extension/themes/
         
         cd temp-chrome-extension
@@ -80,6 +81,7 @@ jobs:
         cp popup.css temp-firefox-extension/
         cp icon64.png temp-firefox-extension/
         cp icon128.png temp-firefox-extension/
+        cp theme-preload.js temp-firefox-extension/
         cp themes/*.css temp-firefox-extension/themes/
         
         cd temp-firefox-extension

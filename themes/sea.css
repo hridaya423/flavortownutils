@@ -1581,6 +1581,23 @@ a:hover {
     filter: drop-shadow(5px 0 0 var(--sea-mid)) drop-shadow(-5px 0 0 var(--sea-mid)) drop-shadow(0 5px 0 var(--sea-mid)) drop-shadow(0 -5px 0 var(--sea-mid)) !important;
 }
 
+.flavortown-vote-estimate-accordion {
+    border-color: var(--sea-mid) !important;
+    background: var(--sea-dark) !important;
+    color: var(--sea-white) !important;
+}
+
+.flavortown-vote-estimate-accordion__toggle {
+    background: var(--sea-mid) !important;
+    border-bottom-color: var(--sea-surface) !important;
+    color: var(--sea-white) !important;
+}
+
+.flavortown-vote-estimate-accordion__categories {
+    background: var(--sea-dark) !important;
+    color: var(--sea-foam) !important;
+}
+
 .projects-board__create-card::before {
     opacity: 0.3 !important;
 }
