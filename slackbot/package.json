@@ -4,7 +4,8 @@
   "description": "Fetches votes from Slack for Flavortown Utils extension",
   "main": "fetch-votes.js",
   "scripts": {
-    "fetch": "node fetch-votes.js"
+    "fetch": "node fetch-votes.js",
+    "fetch-emojis": "node fetch-emojis.js"
   },
   "engines": {
     "node": ">=18.0.0"

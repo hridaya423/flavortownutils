@@ -1,15 +1,15 @@
-name: Fetch Slack Votes
+name: Fetch Slack Emojis
 
 on:
   schedule:
-    - cron: '0 * * * *'
+    - cron: '0 0 */15 * *'
   workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  fetch-votes:
+  fetch-emojis:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,17 +21,17 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Fetch votes from Slack
+      - name: Fetch emojis from Slack
         env:
           SLACK_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
         run: |
           cd slackbot
-          node fetch-votes.js
+          node fetch-emojis.js
 
       - name: Check for changes
         id: changes
         run: |
-          git add data/votes.json data/lbfeed.json
+          git add data/emojis.json
           if git diff --staged --quiet; then
             echo "changed=false" >> $GITHUB_OUTPUT
           else
@@ -43,5 +43,5 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git commit -m "Update votes data [automated]"
+          git commit -m "Update emoji data [automated]"
           git push

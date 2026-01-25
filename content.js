@@ -1872,6 +1872,8 @@ function parseMarkdown(text) {
         html = html.replace(/^-\s+(.+)$/gm, '<li class="flavortown-md-li">$1</li>');
         html = html.replace(/^\d+\.\s+(.+)$/gm, '<li class="flavortown-md-oli">$1</li>');
 
+        html = replaceEmojiTokensInHtml(html);
+
         const lines = html.split('\n');
         html = lines.map(line => {
             if (line.trim() === '') return '';
@@ -1885,6 +1887,18 @@ function parseMarkdown(text) {
         console.error('Flavortown parseMarkdown error:', e);
         return `<p>${text}</p>`;
     }
+}
+
+function replaceEmojiTokensInHtml(html) {
+    if (!html || !slackEmojiMap || !Object.keys(slackEmojiMap).length) return html;
+
+    return html.replace(/:([a-z0-9_+\-]{1,40}):/gi, (match, name) => {
+        const entry = slackEmojiMap[name];
+        if (!entry || !entry.url) return match;
+        const safeName = name.replace(/"/g, '');
+        const url = entry.url;
+        return `<img src="${url}" alt=":${safeName}:" title=":${safeName}:" class="flavortown-slack-emoji" style="height: 1.1em; width: 1.1em; vertical-align: -0.15em; display: inline-block;" />`;
+    });
 }
 
 function addLivePreview(textarea, toolbar) {
@@ -2166,6 +2180,11 @@ function inlineDevlogForm() {
             const devlogTextarea = wrapper.querySelector('#post_devlog_body');
             if (devlogTextarea) {
                 addMarkdownToolbar(devlogTextarea);
+                initSlackEmojiAutocomplete(devlogTextarea, wrapper);
+                const form = wrapper.querySelector('form') || wrapper.closest('form');
+                if (form) {
+                    attachSlackEmojiSubmitHandler(form, devlogTextarea);
+                }
             }
 
             if (window.Stimulus && window.Stimulus.application) {
@@ -2277,6 +2296,7 @@ function createDevlogEditUI(postElement, postBody, currentText, originalHtml, cs
         overflow-y: auto;
         outline: none;
     `;
+
 
     const autoExpand = () => {
         textarea.style.height = 'auto';
@@ -4279,6 +4299,8 @@ function init() {
     addProjectShowCookieStat();
     inlineDevlogForm();
     setupInlineDevlogEditing();
+    enhanceCommentEmojiInputs();
+    watchCommentEmojiInputs();
     enhanceShopGoals();
     initShopAccessories();
     addShopCardEfficiency();
@@ -5637,6 +5659,8 @@ document.addEventListener('turbo:load', () => {
     addSkipButton();
     enhanceKitchenDashboard();
     setTimeout(enhanceLeaderboardPage, 0);
+    enhanceCommentEmojiInputs();
+    watchCommentEmojiInputs();
     addDoomscrollMode();
     addAdminViewButton();
     addSidebarItems();
@@ -7519,6 +7543,7 @@ setupCommandPalette();
 
 const VOTES_JSON_URL = 'https://raw.githubusercontent.com/hridaya423/flavortownutils/refs/heads/main/data/votes.json';
 const LEADERBOARD_FEED_URL = 'https://raw.githubusercontent.com/hridaya423/flavortownutils/refs/heads/main/data/lbfeed.json';
+var SLACK_EMOJI_URL = 'https://raw.githubusercontent.com/hridaya423/flavortownutils/refs/heads/main/data/emojis.json';
 
 async function fetchVotesData() {
     try {
@@ -7529,6 +7554,286 @@ async function fetchVotesData() {
         console.error('Failed to fetch votes data:', e);
         return null;
     }
+}
+
+var slackEmojiMap = null;
+var slackEmojiIndex = [];
+var slackEmojiPromise = null;
+
+async function fetchSlackEmojiMap() {
+    if (slackEmojiMap) return slackEmojiMap;
+    if (slackEmojiPromise) return slackEmojiPromise;
+
+    slackEmojiPromise = fetch(SLACK_EMOJI_URL)
+        .then(response => {
+            if (!response.ok) return null;
+            return response.json();
+        })
+        .then(data => {
+            const emojiData = data && typeof data === 'object' ? (data.emoji || data) : null;
+            if (!emojiData || typeof emojiData !== 'object') {
+                slackEmojiMap = {};
+                slackEmojiIndex = [];
+                return slackEmojiMap;
+            }
+
+            const map = {};
+            Object.keys(emojiData).forEach(name => {
+                const entry = emojiData[name];
+                const url = typeof entry === 'string' ? entry : entry?.url;
+                if (!url || !url.startsWith('http')) return;
+                map[name] = {
+                    url,
+                    animated: typeof entry === 'object' ? !!entry.animated : url.toLowerCase().endsWith('.gif'),
+                };
+            });
+
+            slackEmojiMap = map;
+            slackEmojiIndex = Object.keys(map).sort();
+            return slackEmojiMap;
+        })
+        .catch(e => {
+            console.error('Failed to fetch slack emojis:', e);
+            slackEmojiMap = {};
+            slackEmojiIndex = [];
+            return slackEmojiMap;
+        })
+        .finally(() => {
+            slackEmojiPromise = null;
+        });
+
+    return slackEmojiPromise;
+}
+
+function getEmojiQuery(text, cursor) {
+    if (!text || cursor === null || cursor === undefined) return null;
+    const before = text.slice(0, cursor);
+    const match = before.match(/:([a-z0-9_+\-]{1,40})$/i);
+    if (!match) return null;
+
+    const token = `:${match[1]}`;
+    const start = before.lastIndexOf(token);
+    if (start < 0) return null;
+    return {
+        start,
+        end: cursor,
+        query: match[1].toLowerCase(),
+    };
+}
+
+function getEmojiMatches(query) {
+    if (!query) return [];
+    const startsWith = [];
+    const includes = [];
+    const maxResults = 10;
+
+    for (const name of slackEmojiIndex) {
+        if (startsWith.length >= maxResults) break;
+        if (name.startsWith(query)) startsWith.push(name);
+    }
+
+    if (startsWith.length < maxResults) {
+        for (const name of slackEmojiIndex) {
+            if (startsWith.length + includes.length >= maxResults) break;
+            if (startsWith.includes(name)) continue;
+            if (name.includes(query)) includes.push(name);
+        }
+    }
+
+    return startsWith.concat(includes).slice(0, maxResults);
+}
+
+function replaceEmojiTokensWithImages(text) {
+    if (!text || !slackEmojiMap || !Object.keys(slackEmojiMap).length) return text;
+
+    return text.replace(/:([a-z0-9_+\-]{1,40}):/gi, (match, name) => {
+        const entry = slackEmojiMap[name];
+        if (!entry || !entry.url) return match;
+        const safeName = name.replace(/"/g, '');
+        return `![${safeName}](${entry.url})`;
+    });
+}
+
+function initSlackEmojiAutocomplete(textarea, container) {
+    if (!textarea || textarea.dataset.flavortownEmojiInit === 'true') return;
+    textarea.dataset.flavortownEmojiInit = 'true';
+
+    const anchor = textarea.closest('.input') || container || textarea.parentElement;
+    if (!anchor) return;
+
+    if (getComputedStyle(anchor).position === 'static') {
+        anchor.style.position = 'relative';
+    }
+
+    const dropdown = document.createElement('div');
+    dropdown.className = 'flavortown-emoji-suggest';
+    dropdown.style.display = 'none';
+    const list = document.createElement('div');
+    list.className = 'flavortown-emoji-suggest__list';
+    dropdown.appendChild(list);
+    document.body.appendChild(dropdown);
+
+    let isOpen = false;
+    let activeQuery = null;
+    let matches = [];
+    let selectedIndex = 0;
+
+    const closeDropdown = () => {
+        dropdown.style.display = 'none';
+        dropdown.setAttribute('aria-hidden', 'true');
+        isOpen = false;
+        activeQuery = null;
+        matches = [];
+        selectedIndex = 0;
+    };
+
+    const positionDropdown = () => {
+        if (!isOpen) return;
+        const rect = textarea.getBoundingClientRect();
+        const padding = 12;
+        const maxWidth = Math.min(rect.width, window.innerWidth - padding * 2);
+        let left = rect.left;
+        let top = rect.bottom + 8;
+        dropdown.style.width = `${maxWidth}px`;
+
+        const dropdownHeight = dropdown.offsetHeight || 240;
+        if (left + maxWidth > window.innerWidth - padding) {
+            left = Math.max(padding, window.innerWidth - padding - maxWidth);
+        }
+        if (top + dropdownHeight > window.innerHeight - padding) {
+            top = Math.max(padding, rect.top - dropdownHeight - 8);
+        }
+
+        dropdown.style.left = `${left}px`;
+        dropdown.style.top = `${top}px`;
+    };
+
+    const renderDropdown = () => {
+        list.innerHTML = '';
+        if (!matches.length) {
+            closeDropdown();
+            return;
+        }
+
+        matches.forEach((name, index) => {
+            const entry = slackEmojiMap[name];
+            if (!entry) return;
+            const item = document.createElement('button');
+            item.type = 'button';
+            item.className = `flavortown-emoji-suggest__item${index === selectedIndex ? ' is-selected' : ''}`;
+            item.dataset.name = name;
+            item.innerHTML = `
+                <img class="flavortown-emoji-suggest__img" src="${entry.url}" alt=":${name}:" />
+                <span class="flavortown-emoji-suggest__name">:${name}:</span>
+            `;
+            item.addEventListener('mousedown', (event) => {
+                event.preventDefault();
+                insertEmoji(name);
+            });
+            list.appendChild(item);
+        });
+
+        dropdown.style.display = 'block';
+        dropdown.removeAttribute('aria-hidden');
+        isOpen = true;
+        positionDropdown();
+    };
+
+    const insertEmoji = (name) => {
+        if (!activeQuery) return;
+        const value = textarea.value;
+        const before = value.slice(0, activeQuery.start);
+        const after = value.slice(activeQuery.end);
+        const insertText = `:${name}: `;
+        textarea.value = `${before}${insertText}${after}`;
+        const cursor = before.length + insertText.length;
+        textarea.selectionStart = cursor;
+        textarea.selectionEnd = cursor;
+        textarea.dispatchEvent(new Event('input', { bubbles: true }));
+        closeDropdown();
+        textarea.focus();
+    };
+
+    const updateSuggestions = () => {
+        if (!slackEmojiMap || !slackEmojiIndex.length) {
+            closeDropdown();
+            return;
+        }
+        const queryInfo = getEmojiQuery(textarea.value, textarea.selectionStart);
+        if (!queryInfo || !queryInfo.query) {
+            closeDropdown();
+            return;
+        }
+
+        const nextMatches = getEmojiMatches(queryInfo.query);
+        if (!nextMatches.length) {
+            closeDropdown();
+            return;
+        }
+
+        activeQuery = queryInfo;
+        matches = nextMatches;
+        selectedIndex = 0;
+        renderDropdown();
+    };
+
+    textarea.addEventListener('input', updateSuggestions);
+    textarea.addEventListener('click', updateSuggestions);
+
+    textarea.addEventListener('keydown', (event) => {
+        if (!isOpen) return;
+        if (event.key === 'ArrowDown') {
+            event.preventDefault();
+            selectedIndex = (selectedIndex + 1) % matches.length;
+            renderDropdown();
+        } else if (event.key === 'ArrowUp') {
+            event.preventDefault();
+            selectedIndex = (selectedIndex - 1 + matches.length) % matches.length;
+            renderDropdown();
+        } else if (event.key === 'Enter' || event.key === 'Tab') {
+            event.preventDefault();
+            insertEmoji(matches[selectedIndex]);
+        } else if (event.key === 'Escape') {
+            event.preventDefault();
+            closeDropdown();
+        }
+    });
+
+    document.addEventListener('click', (event) => {
+        if (!anchor.contains(event.target) && !dropdown.contains(event.target)) {
+            closeDropdown();
+        }
+    });
+
+    window.addEventListener('resize', positionDropdown);
+    window.addEventListener('scroll', positionDropdown, true);
+
+    fetchSlackEmojiMap().then(() => {
+        updateSuggestions();
+    });
+}
+
+function attachSlackEmojiSubmitHandler(form, textarea) {
+    if (!form || !textarea || form.dataset.flavortownEmojiSubmit === 'true') return;
+    form.dataset.flavortownEmojiSubmit = 'true';
+
+    form.addEventListener('submit', () => {
+        if (!slackEmojiMap || !Object.keys(slackEmojiMap).length) return;
+        textarea.value = replaceEmojiTokensWithImages(textarea.value);
+    });
+}
+
+function enhanceCommentEmojiInputs() {
+    const inputs = document.querySelectorAll('.comment-form__input');
+    if (!inputs.length) return;
+
+    inputs.forEach(input => {
+        initSlackEmojiAutocomplete(input, input.closest('.comment-form') || input.parentElement);
+        const form = input.closest('form');
+        if (form) {
+            attachSlackEmojiSubmitHandler(form, input);
+        }
+    });
 }
 
 let leaderboardFeedCache = null;
@@ -8014,6 +8319,18 @@ async function enhanceLeaderboardPage() {
             openLeaderboardHistoryModal({ userName, entries: entriesForUser, linkEl: link, profileUrl });
         });
     });
+}
+
+var COMMENT_EMOJI_OBSERVER_KEY = 'flavortownCommentEmojiObserver';
+function watchCommentEmojiInputs() {
+    if (document.body.dataset[COMMENT_EMOJI_OBSERVER_KEY] === 'true') return;
+    document.body.dataset[COMMENT_EMOJI_OBSERVER_KEY] = 'true';
+
+    const observer = new MutationObserver(() => {
+        enhanceCommentEmojiInputs();
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
 }
 
 function getRecentDelta(entries, days) {
