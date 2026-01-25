@@ -1763,6 +1763,113 @@ a:hover {
     color: var(--sea-white) !important;
 }
 
+.settings-form .settings-form__checkbox span {
+    color: var(--sea-white) !important;
+}
+
+.settings-form__checkbox input[type="checkbox"] {
+    accent-color: var(--sea-cyan) !important;
+}
+
+.sidebar .modal__title {
+    background-color: var(--sea-mid) !important;
+    color: var(--sea-white) !important;
+}
+
+.settings-form .settings-form__label {
+    color: var(--sea-white) !important;
+}
+
+.modal__actions-close {
+    border-color: var(--sea-surface) !important;
+}
+
+.admin-section .admin-section__header {
+    color: var(--sea-white) !important;
+}
+
+.admin-section__summary {
+    color: var(--sea-white) !important;
+}
+
+.admin-section {
+    background: var(--sea-dark) !important;
+    border-color: var(--sea-mid) !important;
+}
+
+.admin-btn--primary {
+    background: var(--sea-cyan) !important;
+    color: var(--sea-abyss) !important;
+}
+
+.sidebar .balance-history__table th {
+    border-bottom-color: var(--sea-surface) !important;
+    color: var(--sea-cyan) !important;
+}
+
+.input--blue .input__label {
+    background-color: var(--sea-mid) !important;
+    color: var(--sea-cyan) !important;
+}
+
+.input--blue .input__icon {
+    background-color: var(--sea-mid) !important;
+    color: var(--sea-cyan) !important;
+}
+
+.input--blue .input__icon svg,
+.input--blue .input__icon svg path {
+    fill: var(--sea-cyan) !important;
+}
+
+
+.ship-event-scores__table {
+    background: var(--sea-dark) !important;
+}
+
+.my-orders__title {
+    color: var(--sea-white) !important;
+}
+
+.markdown-content {
+    color: var(--sea-white) !important;
+    background-color: var(--sea-deep) !important;
+    border-color: var(--sea-mid) !important;
+}
+
+.shop-order__details .shop-order__address .dropdown__button,
+.shop-order__details .shop-order__address .dropdown__selected {
+    background-color: var(--sea-dark) !important;
+    border-color: var(--sea-mid) !important;
+    color: var(--sea-white) !important;
+}
+
+.shop-order__details .shop-order__address .dropdown__button .dropdown__selected {
+    background-color: var(--sea-dark) !important;
+    color: var(--sea-white) !important;
+}
+
+.achievements__stats-text {
+    color: var(--sea-foam) !important;
+}
+
+.achievements__stats-total {
+    color: var(--sea-white) !important;
+}
+
+.achievements__icon-svg {
+    fill: var(--sea-cyan) !important;
+}
+
+.achievements__icon-svg path {
+    fill: var(--sea-cyan) !important;
+}
+
+.achievements__stats-bar {
+    background: var(--sea-mid) !important;
+    border-color: var(--sea-surface) !important;
+}
+
 .api-key-container {
     background-color: var(--sea-abyss) !important;
 }
@@ -2890,8 +2997,23 @@ a:hover {
 }
 
 .shop-order__content {
-    background-image: none !important;
+    position: relative !important;
+    overflow: hidden !important;
+    background-image: url(/assets/mask/pattern-867a32b4.webp) !important;
     background-color: var(--sea-dark) !important;
+    background-size: 480px auto !important;
+    background-blend-mode: soft-light !important;
+}
+
+.shop-order__content::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url(/assets/mask/pattern-867a32b4.webp);
+    background-size: 480px auto;
+    opacity: 0.2;
+    filter: hue-rotate(180deg) saturate(0.9);
+    pointer-events: none;
 }
 
 .shop-order__image {

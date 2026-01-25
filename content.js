@@ -7797,6 +7797,19 @@ const TUTORIAL_PHASE_2 = [
         interactive: 'navigate-project-devlog'
     },
     {
+        id: 'vote-stats',
+        title: 'Vote stats',
+        description: 'If you have a shipped project, we estimate your cookies/hour, percentile, and score from payouts.',
+        afterNavDescription: 'These stats are based on your payout rate and show your estimated score.',
+        target: null,
+        afterNavTarget: '.flavortown-project-cookies-details, .flavortown-project-category-stats',
+        position: 'center',
+        icon: '⭐',
+        interactive: 'navigate-project-vote-stats',
+        requiresProjectWithShips: true,
+        requiresElement: true
+    },
+    {
         id: 'shots-integration',
         title: 'Image styling',
         description: 'Built-in shots.so integration for beautifying your devlog images. Look for it when uploading attachments.',
@@ -7836,11 +7849,11 @@ const TUTORIAL_PHASE_2 = [
     },
     {
         id: 'shop-time-calc',
-        title: 'Time calculator',
-        description: 'See how long it\'ll take to earn enough cookies. Let me take you to the shop...',
-        afterNavDescription: 'Here\'s the time calculator! Slide to adjust your earning rate and see time estimates.',
+        title: 'Personalized pace',
+        description: 'See how long it\'ll take to earn an item using your current earning pace.',
+        afterNavDescription: 'These lines show your remaining and total time based on your pace.',
         target: null,
-        afterNavTarget: '.flavortown-efficiency',
+        afterNavTarget: '.flavortown-efficiency__hours',
         position: 'center',
         icon: '⏱️',
         interactive: 'navigate-shop-time-calc'
@@ -7863,6 +7876,33 @@ const TUTORIAL_PHASE_2 = [
         position: 'center',
         icon: '⭐',
         interactive: 'show-shop-goals'
+    },
+    {
+        id: 'shop-goals-priority',
+        title: 'Priority goals',
+        description: 'Mark a few items as priority and see their combined progress at a glance.',
+        target: '.flavortown-priority-section',
+        position: 'center',
+        icon: '🎯',
+        requiresElement: true
+    },
+    {
+        id: 'shop-goals-progress-mode',
+        title: 'Cumulative vs individual',
+        description: 'Toggle between cumulative progress and item-by-item progress.',
+        target: '.flavortown-progress-toggle__btn[data-kind="stack"]',
+        position: 'center',
+        icon: '📊',
+        requiresElement: true
+    },
+    {
+        id: 'shop-goals-projection',
+        title: 'Actual vs projected',
+        description: 'Switch between actual progress and projected progress using your pace.',
+        target: '.flavortown-progress-toggle__btn[data-kind="projection"]',
+        position: 'center',
+        icon: '🔮',
+        requiresElement: true
     },
     {
         id: 'phase2-choice',
@@ -7904,14 +7944,6 @@ const TUTORIAL_PHASE_3 = [
         target: null,
         position: 'center',
         icon: '🏆'
-    },
-    {
-        id: 'better-images',
-        title: 'Full-size images',
-        description: 'Devlog images aren\'t cropped anymore. See them as they were meant to be.',
-        target: null,
-        position: 'center',
-        icon: '🖼️'
     },
     {
         id: 'done',
@@ -8761,6 +8793,42 @@ class TutorialController {
             }, 200, step.id);
         }
 
+        if (step.interactive === 'navigate-project-vote-stats') {
+            if (this.handledStepId === step.id) return;
+            this.handledStepId = step.id;
+
+            const pathname = window.location.pathname;
+            const isProjectDetailPage = /^\/projects\/\d+$/.test(pathname);
+            const statsSelectors = '.flavortown-project-cookies-details, .flavortown-project-category-stats';
+            const targetProject = tutorialUserContext.projectWithShips;
+
+            if (!targetProject?.id) {
+                this.next();
+                return;
+            }
+
+            if (!isProjectDetailPage || !pathname.endsWith(`/${targetProject.id}`)) {
+                saveTutorialState(this.currentPhase, this.currentStep, statsSelectors, false, step.id, this.stepOrder);
+                window.location.href = `/projects/${targetProject.id}`;
+                return;
+            }
+
+            this.setInteractiveTimeout(() => {
+                const statsEl = document.querySelector(statsSelectors);
+                if (!statsEl) {
+                    this.next();
+                    return;
+                }
+                statsEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                this.setInteractiveTimeout(() => {
+                    if (this.steps[this.currentStep]?.id !== step.id) return;
+                    this.createSpotlight(statsEl, step.id);
+                    this.createModal(step, this.currentStep);
+                }, 400, step.id);
+            }, 400, step.id);
+            return;
+        }
+
         if (step.interactive === 'navigate-dashboard') {
             this.navigationStepId = step.id;
             this.pendingNavigationTimeout = setTimeout(() => {
@@ -8884,6 +8952,7 @@ class TutorialController {
             this.handledStepId = step.id;
 
             const onShop = window.location.pathname === '/shop';
+            const hoursSelector = '.flavortown-efficiency__hours';
 
             if (!onShop) {
                 this.navigationStepId = step.id;
@@ -8891,7 +8960,7 @@ class TutorialController {
                     if (this.steps[this.currentStep]?.interactive !== 'navigate-shop-time-calc') {
                         return;
                     }
-                    saveTutorialState(this.currentPhase, this.currentStep, '.flavortown-efficiency', false, step.id, this.stepOrder);
+                    saveTutorialState(this.currentPhase, this.currentStep, hoursSelector, false, step.id, this.stepOrder);
                     window.location.href = '/shop';
                 }, 1000);
                 return;
@@ -8899,23 +8968,15 @@ class TutorialController {
 
             this.setInteractiveTimeout(() => {
                 const efficiency = document.querySelector('.flavortown-efficiency');
-                if (efficiency) {
-                    efficiency.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                if (!efficiency) return;
+                efficiency.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-                    setTimeout(() => {
-                        if (this.steps[this.currentStep]?.id !== step.id) return;
-                        const accordion = efficiency.querySelector('.flavortown-efficiency__accordion');
-                        if (accordion && !accordion.hasAttribute('open')) {
-                            accordion.setAttribute('open', '');
-                        }
-
-                        setTimeout(() => {
-                            if (this.steps[this.currentStep]?.id !== step.id) return;
-                            this.createSpotlight(efficiency, step.id);
-                            this.createModal(step, this.currentStep);
-                        }, 400);
-                    }, 600);
-                }
+                setTimeout(() => {
+                    if (this.steps[this.currentStep]?.id !== step.id) return;
+                    const hoursEl = efficiency.querySelector(hoursSelector) || efficiency;
+                    this.createSpotlight(hoursEl, step.id);
+                    this.createModal(step, this.currentStep);
+                }, 500);
             }, 500, step.id);
             return;
         }
@@ -9134,6 +9195,29 @@ class TutorialController {
             this.targetObserverStepId = null;
         }
 
+        if (step.requiresProjectWithShips) {
+            if (!tutorialUserContext.scanned) {
+                scanUserContext().then(() => {
+                    if (this.steps[this.currentStep]?.id === step.id) {
+                        this.showStep(index);
+                    }
+                }).catch(() => {
+                    if (this.steps[this.currentStep]?.id === step.id) {
+                        this.showStep(index);
+                    }
+                });
+                return;
+            }
+            if (!tutorialUserContext.projectWithShips) {
+                if (this.currentStep < this.steps.length - 1) {
+                    this.showStep(this.currentStep + 1);
+                } else {
+                    this.end();
+                }
+                return;
+            }
+        }
+
         if (step.id === 'community-votes' || step.skip) {
             if (this.currentStep < this.steps.length - 1) {
                 this.showStep(this.currentStep + 1);
@@ -9175,6 +9259,14 @@ class TutorialController {
         }
 
         if (step.interactive === 'navigate-project-devlog') {
+            const pathname = window.location.pathname;
+            const isProjectDetailPage = /^\/projects\/\d+/.test(pathname);
+            if (!isProjectDetailPage) {
+                targetSelectors.length = 0;
+            }
+        }
+
+        if (step.interactive === 'navigate-project-vote-stats') {
             const pathname = window.location.pathname;
             const isProjectDetailPage = /^\/projects\/\d+/.test(pathname);
             if (!isProjectDetailPage) {
