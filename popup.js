@@ -85,6 +85,8 @@ const POPUP_THEMES = {
 };
 
 const LOCAL_STORAGE_SYNC_ENABLED_KEY = 'flavortownLocalStorageSyncEnabled';
+const LOCAL_STORAGE_SYNC_KEY = 'flavortownLocalStorageSync';
+const LOCAL_STORAGE_IMPORT_KEY = 'flavortownLocalStorageImport';
 const EXPORT_VERSION = 1;
 const LOCAL_STORAGE_EXPORT_KEYS = [
     'flavortown_progress_mode',
@@ -359,6 +361,19 @@ async function handleImportFile(event) {
         }
 
         if (payload.localStorage && typeof payload.localStorage === 'object') {
+            const importPayload = {
+                version: EXPORT_VERSION,
+                updatedAt: Date.now(),
+                data: payload.localStorage
+            };
+            try {
+                await browserAPI.storage.sync.set({
+                    [LOCAL_STORAGE_IMPORT_KEY]: importPayload,
+                    [LOCAL_STORAGE_SYNC_KEY]: importPayload
+                });
+            } catch (syncError) {
+                console.warn('Sync import skipped:', syncError);
+            }
             await importLocalStorageSnapshot(payload.localStorage);
         }
 

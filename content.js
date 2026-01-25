@@ -104,6 +104,7 @@ const PROJECT_UNSHIPPED_CACHE_KEY = 'flavortown_project_unshipped';
 const PROJECT_UNSHIPPED_CACHE_TTL = 24 * 60 * 60 * 1000;
 const LOCAL_STORAGE_SYNC_ENABLED_KEY = 'flavortownLocalStorageSyncEnabled';
 const LOCAL_STORAGE_SYNC_KEY = 'flavortownLocalStorageSync';
+const LOCAL_STORAGE_IMPORT_KEY = 'flavortownLocalStorageImport';
 const LOCAL_STORAGE_SYNC_UPDATED_AT_KEY = 'flavortownLocalStorageSyncUpdatedAt';
 const LOCAL_STORAGE_SYNC_MAX_BYTES = 90000;
 const LOCAL_STORAGE_SYNC_KEYS = [
@@ -133,8 +134,12 @@ function loadTheme() {
 }
 
 function initLocalStorageSync() {
-    browserAPI.storage.sync.get([LOCAL_STORAGE_SYNC_ENABLED_KEY, LOCAL_STORAGE_SYNC_KEY], (result) => {
+    browserAPI.storage.sync.get([LOCAL_STORAGE_SYNC_ENABLED_KEY, LOCAL_STORAGE_SYNC_KEY, LOCAL_STORAGE_IMPORT_KEY], (result) => {
         const enabled = !!result[LOCAL_STORAGE_SYNC_ENABLED_KEY];
+        const importPayload = result[LOCAL_STORAGE_IMPORT_KEY];
+        if (importPayload) {
+            applyLocalStorageImport(importPayload);
+        }
         const payload = result[LOCAL_STORAGE_SYNC_KEY];
         if (enabled) {
             enableLocalStorageSync(payload);
@@ -145,6 +150,10 @@ function initLocalStorageSync() {
 
     browserAPI.storage.onChanged.addListener((changes, area) => {
         if (area !== 'sync') return;
+
+        if (changes[LOCAL_STORAGE_IMPORT_KEY]?.newValue) {
+            applyLocalStorageImport(changes[LOCAL_STORAGE_IMPORT_KEY].newValue);
+        }
 
         if (changes[LOCAL_STORAGE_SYNC_ENABLED_KEY]) {
             const enabled = !!changes[LOCAL_STORAGE_SYNC_ENABLED_KEY].newValue;
@@ -159,6 +168,12 @@ function initLocalStorageSync() {
             applyLocalStorageSyncPayload(changes[LOCAL_STORAGE_SYNC_KEY].newValue);
         }
     });
+}
+
+function applyLocalStorageImport(payload) {
+    if (!payload || typeof payload !== 'object' || !payload.data) return;
+    applyLocalStorageSnapshot(payload.data, payload.updatedAt || Date.now());
+    browserAPI.storage.sync.remove(LOCAL_STORAGE_IMPORT_KEY);
 }
 
 function enableLocalStorageSync(payload) {
@@ -238,10 +253,16 @@ function applyLocalStorageSnapshot(snapshot, updatedAt) {
         LOCAL_STORAGE_SYNC_KEYS.forEach((key) => {
             if (!(key in snapshot)) return;
             const value = snapshot[key];
+            const prevValue = localStorage.getItem(key);
             if (value === null || value === undefined) {
                 originalLocalStorageRemoveItem(key);
+                emitLocalStorageEvent(key, null, prevValue);
             } else {
-                originalLocalStorageSetItem(key, String(value));
+                const normalized = typeof value === 'string' ? value : JSON.stringify(value);
+                originalLocalStorageSetItem(key, normalized);
+                if (normalized !== prevValue) {
+                    emitLocalStorageEvent(key, normalized, prevValue);
+                }
             }
         });
         if (updatedAt) {
@@ -249,6 +270,22 @@ function applyLocalStorageSnapshot(snapshot, updatedAt) {
         }
     } finally {
         isApplyingLocalStorageSync = false;
+    }
+}
+
+function emitLocalStorageEvent(key, newValue, oldValue) {
+    try {
+        const event = new StorageEvent('storage', {
+            key,
+            newValue,
+            oldValue,
+            storageArea: localStorage,
+            url: window.location.href
+        });
+        window.dispatchEvent(event);
+    } catch (e) {
+        const fallbackEvent = new Event('storage');
+        window.dispatchEvent(fallbackEvent);
     }
 }
 
