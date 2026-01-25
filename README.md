@@ -59,6 +59,7 @@
 - Inline version history
 - Speed read devlogs
 - Sync goals/settings through multiple devices!
+- See people's history of balance in lb
 ## Feature showcase:
 
 <img width="480" height="360" alt="image" src="https://github.com/user-attachments/assets/c3d7205b-2021-462d-8a34-83154410b646" />

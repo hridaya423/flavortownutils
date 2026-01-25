@@ -4288,6 +4288,7 @@ function init() {
     addProjectCardCookieStats();
     addSkipButton();
     enhanceKitchenDashboard();
+    setTimeout(enhanceLeaderboardPage, 0);
     enhanceAdminPage();
 
     setTimeout(checkAchievements, 2000);
@@ -5635,6 +5636,7 @@ document.addEventListener('turbo:load', () => {
     initProjectBoardStats();
     addSkipButton();
     enhanceKitchenDashboard();
+    setTimeout(enhanceLeaderboardPage, 0);
     addDoomscrollMode();
     addAdminViewButton();
     addSidebarItems();
@@ -7516,6 +7518,7 @@ setupCommandPalette();
 
 
 const VOTES_JSON_URL = 'https://raw.githubusercontent.com/hridaya423/flavortownutils/refs/heads/main/data/votes.json';
+const LEADERBOARD_FEED_URL = 'https://raw.githubusercontent.com/hridaya423/flavortownutils/refs/heads/main/data/lbfeed.json';
 
 async function fetchVotesData() {
     try {
@@ -7526,6 +7529,560 @@ async function fetchVotesData() {
         console.error('Failed to fetch votes data:', e);
         return null;
     }
+}
+
+let leaderboardFeedCache = null;
+let leaderboardFeedPromise = null;
+let leaderboardHistoryModal = null;
+let leaderboardHistoryLink = null;
+let leaderboardHistoryCleanup = null;
+
+async function fetchLeaderboardFeed() {
+    if (leaderboardFeedCache) return leaderboardFeedCache;
+    if (leaderboardFeedPromise) return leaderboardFeedPromise;
+
+    leaderboardFeedPromise = fetch(LEADERBOARD_FEED_URL)
+        .then(response => {
+            if (!response.ok) return null;
+            return response.json();
+        })
+        .then(data => {
+            leaderboardFeedCache = data && typeof data === 'object' ? data : {};
+            return leaderboardFeedCache;
+        })
+        .catch(e => {
+            console.error('Failed to fetch leaderboard feed:', e);
+            leaderboardFeedCache = {};
+            return leaderboardFeedCache;
+        })
+        .finally(() => {
+            leaderboardFeedPromise = null;
+        });
+
+    return leaderboardFeedPromise;
+}
+
+function normalizeLeaderboardUserKey(name) {
+    return (name || '')
+        .replace(/^@/, '')
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g, '');
+}
+
+function parseLeaderboardEntries(rawEntries) {
+    if (!Array.isArray(rawEntries)) return [];
+
+    return rawEntries
+        .map(entry => {
+            if (!entry) return null;
+            const ts = entry.ts || entry.timestamp;
+            const date = ts ? new Date(ts) : null;
+            if (!date || Number.isNaN(date.getTime())) return null;
+
+            const delta = Number(entry.delta);
+            const balance = Number(entry.balance);
+            if (!Number.isFinite(delta) || !Number.isFinite(balance)) return null;
+
+            const rawReason = entry.reason ?? entry.achievement ?? '';
+            const reason = rawReason ? String(rawReason) : '';
+            const reasonType = entry.reasonType
+                ? String(entry.reasonType)
+                : (entry.achievement ? 'achievement' : '');
+
+            return {
+                date,
+                delta,
+                balance,
+                reason,
+                reasonType,
+            };
+        })
+        .filter(Boolean)
+        .sort((a, b) => a.date - b.date);
+}
+
+function buildLeaderboardDataPoints(entries) {
+    return entries.map(entry => {
+        let reasonLabel = 'Balance change';
+        if (entry.reason) {
+            if (entry.reasonType === 'achievement') {
+                reasonLabel = `Achievement: ${entry.reason}`;
+            } else {
+                reasonLabel = entry.reason;
+            }
+        }
+        return {
+            date: entry.date,
+            balance: entry.balance,
+            reason: reasonLabel,
+            amount: entry.delta,
+        };
+    });
+}
+
+function getLeaderboardStats(entries) {
+    const totalEarned = entries.reduce((sum, entry) => sum + (entry.delta > 0 ? entry.delta : 0), 0);
+    const totalSpent = Math.abs(entries.reduce((sum, entry) => sum + (entry.delta < 0 ? entry.delta : 0), 0));
+    const netChange = entries.reduce((sum, entry) => sum + entry.delta, 0);
+    const latestEntry = entries.length ? entries[entries.length - 1] : null;
+    const recentReason = [...entries].reverse().find(entry => entry.reason);
+
+    return {
+        totalEarned,
+        totalSpent,
+        netChange,
+        latestEntry,
+        recentReason,
+    };
+}
+
+function formatSignedValue(value) {
+    if (!Number.isFinite(value) || value === 0) return '0';
+    return value > 0 ? `+${value}` : `${value}`;
+}
+
+function drawLeaderboardGraph(canvas, dataPoints) {
+    if (!canvas || !dataPoints || dataPoints.length < 2) return;
+
+    const ctx = canvas.getContext('2d');
+    const dpr = window.devicePixelRatio || 1;
+    const rect = canvas.getBoundingClientRect();
+
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
+    canvas.style.width = rect.width + 'px';
+    canvas.style.height = rect.height + 'px';
+    ctx.scale(dpr, dpr);
+
+    const padding = 50;
+    const width = rect.width - padding * 2;
+    const height = rect.height - padding * 2;
+
+    const styles = getComputedStyle(document.documentElement);
+    const themeStyles = document.getElementById('flavortown-theme');
+    const isDarkTheme = !!themeStyles;
+    let textColor;
+    let gridColor;
+    if (isDarkTheme) {
+        textColor = '#cdd6f4';
+        gridColor = '#45475a';
+    } else {
+        textColor = styles.getPropertyValue('--color-text-primary')?.trim() || '#333';
+        gridColor = styles.getPropertyValue('--color-border')?.trim() || '#e2d8cc';
+    }
+
+    const minBalance = Math.min(...dataPoints.map(d => d.balance));
+    const maxBalance = Math.max(...dataPoints.map(d => d.balance));
+    const balanceRange = maxBalance - minBalance || 1;
+
+    ctx.strokeStyle = gridColor;
+    ctx.lineWidth = 1;
+    for (let i = 0; i <= 5; i++) {
+        const y = padding + (height / 5) * i;
+        ctx.beginPath();
+        ctx.moveTo(padding, y);
+        ctx.lineTo(rect.width - padding, y);
+        ctx.stroke();
+
+        const value = Math.round(maxBalance - (balanceRange / 5) * i);
+        ctx.fillStyle = textColor;
+        ctx.font = '12px system-ui';
+        ctx.textAlign = 'right';
+        ctx.fillText(value.toString(), padding - 10, y + 4);
+    }
+
+    const pointPositions = dataPoints.map((point, i) => ({
+        x: padding + (width / (dataPoints.length - 1)) * i,
+        y: padding + height - ((point.balance - minBalance) / balanceRange) * height,
+        data: point
+    }));
+
+    for (let i = 1; i < pointPositions.length; i++) {
+        const prev = pointPositions[i - 1];
+        const curr = pointPositions[i];
+        const isGain = curr.data.amount >= 0;
+
+        const segmentGradient = ctx.createLinearGradient(0, padding, 0, padding + height);
+        if (isGain) {
+            segmentGradient.addColorStop(0, 'rgba(56, 161, 105, 0.4)');
+            segmentGradient.addColorStop(1, 'rgba(56, 161, 105, 0.05)');
+        } else {
+            segmentGradient.addColorStop(0, 'rgba(229, 62, 62, 0.4)');
+            segmentGradient.addColorStop(1, 'rgba(229, 62, 62, 0.05)');
+        }
+
+        ctx.beginPath();
+        ctx.moveTo(prev.x, prev.y);
+
+        const cpX = (prev.x + curr.x) / 2;
+        ctx.bezierCurveTo(cpX, prev.y, cpX, curr.y, curr.x, curr.y);
+
+        ctx.lineTo(curr.x, padding + height);
+        ctx.lineTo(prev.x, padding + height);
+        ctx.closePath();
+        ctx.fillStyle = segmentGradient;
+        ctx.fill();
+    }
+
+    ctx.lineWidth = 3;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+
+    for (let i = 1; i < pointPositions.length; i++) {
+        const prev = pointPositions[i - 1];
+        const curr = pointPositions[i];
+        const isGain = curr.data.amount >= 0;
+
+        ctx.beginPath();
+        ctx.moveTo(prev.x, prev.y);
+        const cpX = (prev.x + curr.x) / 2;
+        ctx.bezierCurveTo(cpX, prev.y, cpX, curr.y, curr.x, curr.y);
+        ctx.strokeStyle = isGain ? '#38a169' : '#e53e3e';
+        ctx.stroke();
+    }
+
+    pointPositions.forEach(point => {
+        const isGain = point.data.amount >= 0;
+        const pointColor = isGain ? '#38a169' : '#e53e3e';
+
+        ctx.beginPath();
+        ctx.arc(point.x, point.y, 6, 0, Math.PI * 2);
+        ctx.fillStyle = pointColor;
+        ctx.fill();
+        ctx.strokeStyle = '#fff';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+    });
+
+    ctx.fillStyle = textColor;
+    ctx.font = '11px system-ui';
+    ctx.textAlign = 'center';
+    if (dataPoints.length > 0) {
+        const maxLabels = Math.min(dataPoints.length, 5);
+        const step = Math.max(1, Math.floor((dataPoints.length - 1) / (maxLabels - 1)));
+
+        for (let i = 0; i < dataPoints.length; i += step) {
+            const x = padding + (width / (dataPoints.length - 1)) * i;
+            const dateStr = dataPoints[i].date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            ctx.fillText(dateStr, x, rect.height - 10);
+        }
+        if (step > 1) {
+            const lastX = padding + width;
+            const lastDateStr = dataPoints[dataPoints.length - 1].date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            ctx.fillText(lastDateStr, lastX, rect.height - 10);
+        }
+    }
+
+    canvas._leaderboardPointPositions = pointPositions;
+    canvas._leaderboardDpr = dpr;
+
+    if (!canvas._leaderboardTooltipAttached) {
+        const tooltip = document.createElement('div');
+        tooltip.className = 'flavortown-leaderboard-graph-tooltip';
+        tooltip.style.cssText = `
+            position: absolute;
+            display: none;
+            background: var(--color-surface, #fff);
+            border: 2px solid var(--color-border, #e2d8cc);
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 0.9em;
+            pointer-events: none;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            max-width: 220px;
+            white-space: nowrap;
+        `;
+
+        canvas.parentNode.style.position = 'relative';
+        canvas.parentNode.appendChild(tooltip);
+
+        canvas.addEventListener('mousemove', (e) => {
+            const pointPositions = canvas._leaderboardPointPositions;
+            if (!pointPositions || !tooltip) return;
+
+            const canvasRect = canvas.getBoundingClientRect();
+            const mouseX = e.clientX - canvasRect.left;
+            const mouseY = e.clientY - canvasRect.top;
+
+            let closestPoint = null;
+            let closestDist = Infinity;
+            pointPositions.forEach(p => {
+                const dist = Math.sqrt((p.x - mouseX) ** 2 + (p.y - mouseY) ** 2);
+                if (dist < closestDist && dist < 50) {
+                    closestDist = dist;
+                    closestPoint = p;
+                }
+            });
+
+            if (closestPoint) {
+                const amountStr = closestPoint.data.amount >= 0 ? `+${closestPoint.data.amount}` : `${closestPoint.data.amount}`;
+                const dateStr = closestPoint.data.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                tooltip.innerHTML = `
+                    <div style="font-weight: 700; margin-bottom: 4px;">🍪 ${closestPoint.data.balance}</div>
+                    <div style="color: ${closestPoint.data.amount >= 0 ? '#38a169' : '#e53e3e'}; font-weight: 600;">${amountStr}</div>
+                    <div style="font-size: 0.85em; color: var(--color-text-muted, #888); margin-top: 4px;">${closestPoint.data.reason}</div>
+                    <div style="font-size: 0.8em; color: var(--color-text-muted, #888);">${dateStr}</div>
+                `;
+                tooltip.style.display = 'block';
+
+                const canvasOffsetX = canvas.offsetLeft || 0;
+                const canvasOffsetY = canvas.offsetTop || 0;
+                const tooltipWidth = tooltip.offsetWidth || 220;
+                let tooltipX = closestPoint.x + canvasOffsetX + 15;
+                const parentWidth = canvas.parentNode.clientWidth || canvas.offsetWidth;
+                if (tooltipX + tooltipWidth > parentWidth) {
+                    tooltipX = closestPoint.x + canvasOffsetX - tooltipWidth - 15;
+                }
+                if (tooltipX < 8) tooltipX = 8;
+                tooltip.style.left = `${tooltipX}px`;
+                tooltip.style.top = `${closestPoint.y + canvasOffsetY - 20}px`;
+            } else {
+                tooltip.style.display = 'none';
+            }
+        });
+
+        canvas.addEventListener('mouseleave', () => {
+            if (tooltip) tooltip.style.display = 'none';
+        });
+
+        canvas._leaderboardTooltipAttached = true;
+    }
+}
+
+function closeLeaderboardHistoryModal() {
+    if (leaderboardHistoryCleanup) {
+        leaderboardHistoryCleanup();
+        leaderboardHistoryCleanup = null;
+    }
+    if (leaderboardHistoryModal) {
+        leaderboardHistoryModal.remove();
+        leaderboardHistoryModal = null;
+    }
+    if (leaderboardHistoryLink) {
+        leaderboardHistoryLink.classList.remove('flavortown-leaderboard-user-link--armed');
+        leaderboardHistoryLink = null;
+    }
+    document.body.style.overflow = '';
+}
+
+function openLeaderboardHistoryModal({ userName, entries, linkEl, profileUrl }) {
+    closeLeaderboardHistoryModal();
+
+    const stats = getLeaderboardStats(entries);
+    const lastChange = stats.latestEntry
+        ? `${stats.latestEntry.delta >= 0 ? '+' : ''}${stats.latestEntry.delta} on ${stats.latestEntry.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`
+        : '';
+
+    const dataPoints = buildLeaderboardDataPoints(entries);
+
+    let graphMarkup = '';
+    if (!entries.length) {
+        graphMarkup = '<div class="flavortown-leaderboard-empty">No earnings history yet.</div>';
+    } else if (dataPoints.length < 2) {
+        graphMarkup = '<div class="flavortown-leaderboard-empty">Only one entry so far. Check back after a few more payouts.</div>';
+    } else {
+        graphMarkup = `
+            <div class="flavortown-graph-container">
+                <h3>Cookies Over Time</h3>
+                <canvas class="flavortown-leaderboard-graph" width="800" height="260"></canvas>
+            </div>
+        `;
+    }
+
+    let reasonMarkup = '';
+    if (stats.recentReason?.reason) {
+        const reasonLabel = stats.recentReason.reasonType === 'achievement'
+            ? 'Latest achievement'
+            : 'Latest reason';
+        reasonMarkup = `<div class="flavortown-leaderboard-modal__reason">${reasonLabel}: ${stats.recentReason.reason}</div>`;
+    }
+
+    const modal = document.createElement('div');
+    modal.className = 'flavortown-leaderboard-modal';
+    modal.innerHTML = `
+        <div class="flavortown-leaderboard-modal__dialog" role="dialog" aria-modal="true" aria-label="${userName} earnings history">
+            <button class="flavortown-leaderboard-modal__close" type="button" aria-label="Close">x</button>
+            <div class="flavortown-leaderboard-modal__header">
+                <div class="flavortown-leaderboard-modal__title">
+                    <h2>
+                        <a class="flavortown-leaderboard-modal__name" href="${profileUrl || '#'}">${userName}</a>
+                    </h2>
+                    <p class="flavortown-leaderboard-modal__subtitle">Leaderboard earnings history</p>
+                    ${lastChange ? `<p class="flavortown-leaderboard-modal__meta">Last change: ${lastChange}</p>` : ''}
+                </div>
+            </div>
+            <div class="flavortown-leaderboard-modal__stats">
+                <div class="flavortown-leaderboard-stat">
+                    <span class="flavortown-leaderboard-stat__label">Total Earned</span>
+                    <span class="flavortown-leaderboard-stat__value is-positive">${stats.totalEarned ? `+${stats.totalEarned}` : '0'}</span>
+                </div>
+                <div class="flavortown-leaderboard-stat">
+                    <span class="flavortown-leaderboard-stat__label">Total Spent</span>
+                    <span class="flavortown-leaderboard-stat__value is-negative">${stats.totalSpent ? `-${stats.totalSpent}` : '0'}</span>
+                </div>
+                <div class="flavortown-leaderboard-stat">
+                    <span class="flavortown-leaderboard-stat__label">Net Change</span>
+                    <span class="flavortown-leaderboard-stat__value ${stats.netChange < 0 ? 'is-negative' : stats.netChange > 0 ? 'is-positive' : ''}">${formatSignedValue(stats.netChange)}</span>
+                </div>
+            </div>
+            ${reasonMarkup}
+            ${graphMarkup}
+        </div>
+    `;
+
+    leaderboardHistoryModal = modal;
+    leaderboardHistoryLink = linkEl || null;
+
+    document.body.appendChild(modal);
+    document.body.style.overflow = 'hidden';
+
+    const closeBtn = modal.querySelector('.flavortown-leaderboard-modal__close');
+    if (closeBtn) closeBtn.addEventListener('click', closeLeaderboardHistoryModal);
+
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeLeaderboardHistoryModal();
+        }
+    });
+
+    modal.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeLeaderboardHistoryModal();
+        }
+    });
+
+    modal.tabIndex = -1;
+    setTimeout(() => modal.focus(), 0);
+
+    if (leaderboardHistoryLink) {
+        leaderboardHistoryLink.classList.add('flavortown-leaderboard-user-link--armed');
+    }
+
+    const canvas = modal.querySelector('.flavortown-leaderboard-graph');
+    if (canvas && dataPoints.length > 1) {
+        const draw = () => drawLeaderboardGraph(canvas, dataPoints);
+        requestAnimationFrame(draw);
+
+        const onThemeChange = () => setTimeout(draw, 150);
+        const onResize = () => draw();
+        document.addEventListener('flavortown-theme-changed', onThemeChange);
+        window.addEventListener('resize', onResize);
+
+        leaderboardHistoryCleanup = () => {
+            document.removeEventListener('flavortown-theme-changed', onThemeChange);
+            window.removeEventListener('resize', onResize);
+        };
+    }
+}
+
+async function enhanceLeaderboardPage() {
+    if (window.location.pathname !== '/leaderboard') return;
+
+    const userLinks = document.querySelectorAll('.user .content h2 a[href^="/users/"]');
+    if (!userLinks.length) return;
+
+    await fetchLeaderboardFeed();
+
+    const feed = leaderboardFeedCache || {};
+    const entriesMap = feed.entries || feed;
+    const usersMap = feed.users || {};
+
+    userLinks.forEach(link => {
+        const userName = link.textContent.trim();
+        const userCard = link.closest('.user');
+        const avatarSrc = userCard?.querySelector('img')?.getAttribute('src') || '';
+        const avatarMatch = avatarSrc.match(/\/users\/([^/]+)\//i);
+        const avatarKey = avatarMatch ? avatarMatch[1] : '';
+        const userKey = normalizeLeaderboardUserKey(avatarKey || userName);
+        const entriesForUser = resolveLeaderboardEntries({ userName, userKey, entriesMap, usersMap });
+        updateLeaderboardCardDelta({ userCard, entries: entriesForUser, days: 5 });
+
+        if (link.dataset.flavortownLeaderboardHistory === 'true') return;
+        link.dataset.flavortownLeaderboardHistory = 'true';
+        link.classList.add('flavortown-leaderboard-user-link');
+
+        link.addEventListener('click', (e) => {
+            if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+            if (link.classList.contains('flavortown-leaderboard-user-link--armed')) {
+                closeLeaderboardHistoryModal();
+                return;
+            }
+
+            e.preventDefault();
+            const profileUrl = link.getAttribute('href') || '#';
+            openLeaderboardHistoryModal({ userName, entries: entriesForUser, linkEl: link, profileUrl });
+        });
+    });
+}
+
+function getRecentDelta(entries, days) {
+    if (!Array.isArray(entries) || !entries.length) return 0;
+    const now = Date.now();
+    const windowMs = (days || 0) * 24 * 60 * 60 * 1000;
+    if (!windowMs) return 0;
+
+    return entries
+        .filter(entry => entry?.date && (now - entry.date.getTime()) <= windowMs)
+        .reduce((sum, entry) => sum + (Number.isFinite(entry.delta) ? entry.delta : 0), 0);
+}
+
+function resolveLeaderboardEntries({ userName, userKey, entriesMap, usersMap }) {
+    let entries = parseLeaderboardEntries(entriesMap[userKey] || []);
+
+    if (!entries.length && usersMap && userName) {
+        const nameKey = normalizeLeaderboardUserKey(userName);
+        const matchedUserId = Object.keys(usersMap).find(userId => {
+            const user = usersMap[userId] || {};
+            const candidates = [user.username, user.displayName, user.realName]
+                .filter(Boolean)
+                .map(name => normalizeLeaderboardUserKey(name));
+            return candidates.includes(nameKey);
+        });
+
+        if (matchedUserId) {
+            const fallbackKey = normalizeLeaderboardUserKey(matchedUserId);
+            entries = parseLeaderboardEntries(entriesMap[fallbackKey] || []);
+        }
+    }
+
+    return entries;
+}
+
+function updateLeaderboardCardDelta({ userCard, entries, days }) {
+    if (!userCard || !entries || !entries.length) return;
+
+    const cookiesEl = userCard.querySelector('p');
+    if (!cookiesEl) return;
+
+    let baseCount = cookiesEl.dataset.flavortownCookiesCount;
+    if (!baseCount) {
+        const countMatch = (cookiesEl.textContent || '').match(/([\d,]+)/);
+        if (countMatch) {
+            baseCount = countMatch[1];
+        }
+        cookiesEl.dataset.flavortownCookiesCount = baseCount || cookiesEl.textContent.trim();
+    }
+
+    const delta = getRecentDelta(entries, days || 5);
+
+    cookiesEl.innerHTML = '';
+    const countSpan = document.createElement('span');
+    countSpan.className = 'flavortown-leaderboard-cookie-count';
+    countSpan.textContent = cookiesEl.dataset.flavortownCookiesCount || '';
+
+    const deltaSpan = document.createElement('span');
+    deltaSpan.className = `flavortown-leaderboard-recent-delta ${delta < 0 ? 'is-negative' : delta > 0 ? 'is-positive' : ''}`;
+    deltaSpan.textContent = ` (${formatSignedValue(delta)} past 5d)`;
+
+    const iconSpan = document.createElement('span');
+    iconSpan.className = 'flavortown-leaderboard-cookie-icon';
+    iconSpan.textContent = '🍪';
+
+    cookiesEl.appendChild(countSpan);
+    cookiesEl.appendChild(deltaSpan);
+    cookiesEl.appendChild(document.createTextNode(' '));
+    cookiesEl.appendChild(iconSpan);
 }
 
 function getRelativeTime(timestamp) {

@@ -2173,6 +2173,206 @@
     border-radius: 8px;
 }
 
+.flavortown-leaderboard-user-link {
+    text-decoration: underline dotted;
+    text-underline-offset: 3px;
+    cursor: pointer;
+}
+
+.flavortown-leaderboard-user-link--armed {
+    color: var(--color-accent, #8b7355);
+}
+
+.flavortown-leaderboard-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 10050;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(20, 16, 12, 0.6);
+    padding: 24px;
+}
+
+.flavortown-leaderboard-modal__dialog {
+    width: min(920px, 96vw);
+    max-height: 90vh;
+    overflow: auto;
+    background: var(--color-surface, #fff);
+    border: 2px solid var(--color-border, #e2d8cc);
+    border-radius: 18px;
+    padding: 24px 26px 28px;
+    position: relative;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+}
+
+.flavortown-leaderboard-modal__close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--color-border, #e2d8cc);
+    border-radius: 8px;
+    background: transparent;
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+    color: var(--color-text-primary, #333);
+}
+
+.flavortown-leaderboard-modal__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 12px;
+}
+
+.flavortown-leaderboard-modal__title h2 {
+    margin: 0;
+    font-size: 1.6em;
+    color: var(--color-text-primary, #333);
+}
+
+.flavortown-leaderboard-modal__name {
+    color: inherit;
+    text-decoration: none;
+}
+
+.flavortown-leaderboard-modal__name:hover {
+    text-decoration: underline;
+}
+
+.flavortown-leaderboard-modal__subtitle {
+    margin: 6px 0 0;
+    font-size: 0.95em;
+    color: var(--color-text-muted, #888);
+}
+
+.flavortown-leaderboard-modal__meta {
+    margin: 6px 0 0;
+    font-size: 0.85em;
+    color: var(--color-text-muted, #888);
+}
+
+.flavortown-leaderboard-modal__hint {
+    font-size: 0.85em;
+    color: var(--color-text-muted, #888);
+    text-align: right;
+    max-width: 200px;
+}
+
+.flavortown-leaderboard-modal__stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin: 16px 0 20px;
+}
+
+.flavortown-leaderboard-stat {
+    background: var(--color-surface, #fff);
+    border: 2px solid var(--color-border, #e2d8cc);
+    border-radius: 12px;
+    padding: 14px;
+    text-align: center;
+}
+
+.flavortown-leaderboard-stat__label {
+    display: block;
+    font-size: 0.78em;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: var(--color-text-muted, #888);
+    margin-bottom: 6px;
+}
+
+.flavortown-leaderboard-stat__value {
+    display: block;
+    font-size: 1.2em;
+    font-weight: 700;
+    color: var(--color-text-primary, #333);
+}
+
+ 
+.flavortown-leaderboard-recent-delta {
+    font-size: 0.75em;
+    margin-left: 6px;
+    color: var(--color-text-muted, #888);
+}
+
+.flavortown-leaderboard-recent-delta.is-positive {
+    color: #38a169;
+}
+
+.flavortown-leaderboard-recent-delta.is-negative {
+    color: #e53e3e;
+}
+
+.flavortown-leaderboard-cookie-icon {
+    margin-left: 4px;
+}
+
+.flavortown-leaderboard-stat__value.is-positive {
+    color: #38a169;
+}
+
+.flavortown-leaderboard-stat__value.is-negative {
+    color: #e53e3e;
+}
+
+.flavortown-leaderboard-modal__reason {
+    margin-bottom: 16px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: var(--color-surface, #fff);
+    border: 1px solid var(--color-border, #e2d8cc);
+    font-size: 0.9em;
+    color: var(--color-text-primary, #333);
+}
+
+.flavortown-leaderboard-graph {
+    width: 100%;
+    height: 260px;
+    display: block;
+    border-radius: 8px;
+}
+
+.flavortown-leaderboard-empty {
+    border: 2px dashed var(--color-border, #e2d8cc);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    color: var(--color-text-muted, #888);
+    background: var(--color-background, #f9f6f0);
+}
+
+.flavortown-leaderboard-graph-tooltip {
+    border-radius: 8px;
+}
+
+@media (max-width: 768px) {
+    .flavortown-leaderboard-modal__header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .flavortown-leaderboard-modal__hint {
+        text-align: left;
+        max-width: none;
+    }
+
+    .flavortown-leaderboard-modal__stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 520px) {
+    .flavortown-leaderboard-modal__stats {
+        grid-template-columns: 1fr;
+    }
+}
+
 .flavortown-goal-item {
     position: relative;
     overflow: hidden;
