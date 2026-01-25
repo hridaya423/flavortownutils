@@ -7543,7 +7543,9 @@ setupCommandPalette();
 
 const VOTES_JSON_URL = 'https://raw.githubusercontent.com/hridaya423/flavortownutils/refs/heads/main/data/votes.json';
 const LEADERBOARD_FEED_URL = 'https://raw.githubusercontent.com/hridaya423/flavortownutils/refs/heads/main/data/lbfeed.json';
-var SLACK_EMOJI_URL = 'https://raw.githubusercontent.com/hridaya423/flavortownutils/refs/heads/main/data/emojis.json';
+function getSlackEmojiUrl() {
+    return 'https://raw.githubusercontent.com/hridaya423/flavortownutils/refs/heads/main/data/emojis.json';
+}
 
 async function fetchVotesData() {
     try {
@@ -7564,7 +7566,8 @@ async function fetchSlackEmojiMap() {
     if (slackEmojiMap) return slackEmojiMap;
     if (slackEmojiPromise) return slackEmojiPromise;
 
-    slackEmojiPromise = fetch(SLACK_EMOJI_URL)
+    const emojiUrl = getSlackEmojiUrl();
+    slackEmojiPromise = fetch(emojiUrl)
         .then(response => {
             if (!response.ok) return null;
             return response.json();
