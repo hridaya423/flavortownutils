@@ -1491,6 +1491,107 @@ a:hover {
     border-color: var(--overcooked-kelp) !important;
 }
 
+.flavortown-search-input-wrapper {
+    background: var(--overcooked-dark) !important;
+    box-shadow: 0 4px 12px rgba(26, 15, 15, 0.3) !important;
+}
+
+.flavortown-search-icon {
+    color: var(--overcooked-foam) !important;
+}
+
+.flavortown-search-input {
+    color: var(--overcooked-white) !important;
+}
+
+.flavortown-search-input::placeholder {
+    color: var(--overcooked-foam) !important;
+}
+
+.flavortown-search-results {
+    background: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-mid) !important;
+}
+
+.flavortown-search-header {
+    border-bottom-color: var(--overcooked-mid) !important;
+}
+
+.flavortown-search-count {
+    color: var(--overcooked-white) !important;
+}
+
+.flavortown-search-close {
+    background: var(--overcooked-mid) !important;
+    color: var(--overcooked-white) !important;
+    border-color: var(--overcooked-surface) !important;
+}
+
+.flavortown-search-close:hover {
+    background: var(--overcooked-surface) !important;
+}
+
+.flavortown-project-card {
+    background: var(--overcooked-deep) !important;
+    border-color: var(--overcooked-mid) !important;
+}
+
+.flavortown-project-card:hover {
+    border-color: var(--overcooked-cyan) !important;
+    box-shadow: 0 6px 20px rgba(26, 15, 15, 0.4) !important;
+}
+
+.flavortown-project-title {
+    color: var(--overcooked-white) !important;
+}
+
+.flavortown-project-desc {
+    color: var(--overcooked-foam) !important;
+}
+
+.flavortown-project-btn--demo {
+    background: var(--overcooked-kelp) !important;
+    color: var(--overcooked-abyss) !important;
+    border-color: var(--overcooked-foam) !important;
+}
+
+.flavortown-project-btn--demo:hover {
+    background: var(--overcooked-foam) !important;
+    transform: translateY(-2px) !important;
+}
+
+.flavortown-project-btn--repo {
+    background: var(--overcooked-surface) !important;
+    color: var(--overcooked-white) !important;
+    border-color: var(--overcooked-mid) !important;
+}
+
+.flavortown-project-btn--repo:hover {
+    background: var(--overcooked-mid) !important;
+    transform: translateY(-2px) !important;
+}
+
+.flavortown-search-loading,
+.flavortown-search-error,
+.flavortown-search-empty {
+    color: var(--overcooked-foam) !important;
+}
+
+.flavortown-search-error {
+    background: var(--overcooked-deep) !important;
+    border-color: var(--overcooked-surface) !important;
+}
+
+.flavortown-search-more {
+    background: transparent !important;
+    color: var(--overcooked-cyan) !important;
+    border: 1px solid var(--overcooked-surface) !important;
+}
+
+.flavortown-search-more:hover {
+    background: var(--overcooked-mid) !important;
+}
+
 .achievements__stats {
     background-color: var(--overcooked-dark) !important;
     border-radius: 12px !important;

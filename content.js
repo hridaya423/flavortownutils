@@ -3954,6 +3954,7 @@ function addExploreSearch() {
                     <button class="flavortown-search-close">✕ Clear</button>
                 </div>
                 <div class="flavortown-search-grid"></div>
+                <button class="flavortown-search-more" type="button" style="display: none;">Show 5 more</button>
                 <div class="flavortown-search-loading" style="display: none;">Searching...</div>
                 <div class="flavortown-search-error" style="display: none;"></div>
             </div>
@@ -3965,10 +3966,60 @@ function addExploreSearch() {
     const input = searchContainer.querySelector('.flavortown-search-input');
     const resultsContainer = searchContainer.querySelector('.flavortown-search-results');
     const resultsGrid = searchContainer.querySelector('.flavortown-search-grid');
+    const moreBtn = searchContainer.querySelector('.flavortown-search-more');
     const loadingEl = searchContainer.querySelector('.flavortown-search-loading');
     const errorEl = searchContainer.querySelector('.flavortown-search-error');
     const countEl = searchContainer.querySelector('.flavortown-search-count');
     const closeBtn = searchContainer.querySelector('.flavortown-search-close');
+
+    let currentResults = [];
+    let shownCount = 0;
+
+    const scoreProject = (query, project) => {
+        const q = query.toLowerCase();
+        const title = (project.title || '').toLowerCase();
+        const desc = (project.description || '').toLowerCase();
+        let score = 0;
+
+        if (title === q) score += 100;
+        if (title.startsWith(q)) score += 80;
+        if (title.includes(q)) score += 40;
+        if (title.split(/\s+/).includes(q)) score += 60;
+        if (desc.includes(q)) score += 10;
+
+        return score;
+    };
+
+    const renderNextResults = () => {
+        const nextBatch = currentResults.slice(shownCount, shownCount + 5);
+        nextBatch.forEach(project => {
+            resultsGrid.insertAdjacentHTML('beforeend', `
+                <div class="flavortown-project-card">
+                    <a href="/projects/${project.id}" class="flavortown-project-link">
+                        <h4 class="flavortown-project-title">${project.title}</h4>
+                        <p class="flavortown-project-desc">${project.description?.slice(0, 120) || ''}${project.description?.length > 120 ? '...' : ''}</p>
+                    </a>
+                    <div class="flavortown-project-actions">
+                        ${project.demo_url ? `<a href="${project.demo_url}" target="_blank" class="flavortown-project-btn flavortown-project-btn--demo">🚀 Demo</a>` : ''}
+                        ${project.repo_url ? `<a href="${project.repo_url}" target="_blank" class="flavortown-project-btn flavortown-project-btn--repo">📦 Repo</a>` : ''}
+                    </div>
+                </div>
+            `);
+        });
+        shownCount += nextBatch.length;
+
+        const remaining = currentResults.length - shownCount;
+        if (remaining > 0) {
+            const nextCount = Math.min(5, remaining);
+            moreBtn.textContent = `Show ${nextCount} more`;
+            moreBtn.style.display = 'block';
+        } else {
+            moreBtn.style.display = 'none';
+        }
+
+        const total = currentResults.length;
+        countEl.textContent = `Showing ${shownCount} of ${total} projects`;
+    };
 
     async function doSearch(query) {
         const apiKey = localStorage.getItem('flavortown_api_key');
@@ -4006,23 +4057,21 @@ function addExploreSearch() {
             if (!data.projects || data.projects.length === 0) {
                 countEl.textContent = 'No projects found';
                 resultsGrid.innerHTML = '<p class="flavortown-search-empty">No matching projects found.</p>';
+                moreBtn.style.display = 'none';
                 return;
             }
 
-            countEl.textContent = `${data.projects.length} project${data.projects.length !== 1 ? 's' : ''} found`;
+            currentResults = data.projects
+                .map((project, index) => ({ project, index, score: scoreProject(query, project) }))
+                .sort((a, b) => {
+                    if (b.score !== a.score) return b.score - a.score;
+                    return a.index - b.index;
+                })
+                .map(entry => entry.project);
 
-            resultsGrid.innerHTML = data.projects.map(project => `
-                <div class="flavortown-project-card">
-                    <a href="/projects/${project.id}" class="flavortown-project-link">
-                        <h4 class="flavortown-project-title">${project.title}</h4>
-                        <p class="flavortown-project-desc">${project.description?.slice(0, 120) || ''}${project.description?.length > 120 ? '...' : ''}</p>
-                    </a>
-                    <div class="flavortown-project-actions">
-                        ${project.demo_url ? `<a href="${project.demo_url}" target="_blank" class="flavortown-project-btn flavortown-project-btn--demo">🚀 Demo</a>` : ''}
-                        ${project.repo_url ? `<a href="${project.repo_url}" target="_blank" class="flavortown-project-btn flavortown-project-btn--repo">📦 Repo</a>` : ''}
-                    </div>
-                </div>
-            `).join('');
+            resultsGrid.innerHTML = '';
+            shownCount = 0;
+            renderNextResults();
 
         } catch (err) {
             console.error('Flavortown: Search error', err);
@@ -4043,6 +4092,13 @@ function addExploreSearch() {
         resultsContainer.style.display = 'none';
         resultsGrid.innerHTML = '';
         input.value = '';
+        currentResults = [];
+        shownCount = 0;
+        moreBtn.style.display = 'none';
+    });
+
+    moreBtn.addEventListener('click', () => {
+        renderNextResults();
     });
 }
 

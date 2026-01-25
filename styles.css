@@ -1619,6 +1619,24 @@
     font-size: 1.1em;
 }
 
+.flavortown-search-more {
+    margin-top: 6px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    border: 2px solid #e6d5c3;
+    background: #fff;
+    color: #5d4e37;
+    font-size: 0.9em;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.flavortown-search-more:hover {
+    border-color: #c9a86c;
+    transform: translateY(-1px);
+}
+
 .flavortown-search-error {
     color: #c53030;
     background: linear-gradient(135deg, #fff5f5 0%, #ffe8e8 100%);

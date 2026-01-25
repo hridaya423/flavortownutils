@@ -1484,6 +1484,107 @@ a:hover {
     border-color: var(--sea-kelp) !important;
 }
 
+.flavortown-search-input-wrapper {
+    background: var(--sea-dark) !important;
+    box-shadow: 0 4px 12px rgba(10, 22, 40, 0.3) !important;
+}
+
+.flavortown-search-icon {
+    color: var(--sea-foam) !important;
+}
+
+.flavortown-search-input {
+    color: var(--sea-white) !important;
+}
+
+.flavortown-search-input::placeholder {
+    color: var(--sea-foam) !important;
+}
+
+.flavortown-search-results {
+    background: var(--sea-dark) !important;
+    border-color: var(--sea-mid) !important;
+}
+
+.flavortown-search-header {
+    border-bottom-color: var(--sea-mid) !important;
+}
+
+.flavortown-search-count {
+    color: var(--sea-white) !important;
+}
+
+.flavortown-search-close {
+    background: var(--sea-mid) !important;
+    color: var(--sea-white) !important;
+    border-color: var(--sea-surface) !important;
+}
+
+.flavortown-search-close:hover {
+    background: var(--sea-surface) !important;
+}
+
+.flavortown-project-card {
+    background: var(--sea-deep) !important;
+    border-color: var(--sea-mid) !important;
+}
+
+.flavortown-project-card:hover {
+    border-color: var(--sea-cyan) !important;
+    box-shadow: 0 6px 20px rgba(10, 22, 40, 0.4) !important;
+}
+
+.flavortown-project-title {
+    color: var(--sea-white) !important;
+}
+
+.flavortown-project-desc {
+    color: var(--sea-foam) !important;
+}
+
+.flavortown-project-btn--demo {
+    background: var(--sea-kelp) !important;
+    color: var(--sea-abyss) !important;
+    border-color: var(--sea-foam) !important;
+}
+
+.flavortown-project-btn--demo:hover {
+    background: var(--sea-foam) !important;
+    transform: translateY(-2px) !important;
+}
+
+.flavortown-project-btn--repo {
+    background: var(--sea-surface) !important;
+    color: var(--sea-white) !important;
+    border-color: var(--sea-mid) !important;
+}
+
+.flavortown-project-btn--repo:hover {
+    background: var(--sea-mid) !important;
+    transform: translateY(-2px) !important;
+}
+
+.flavortown-search-loading,
+.flavortown-search-error,
+.flavortown-search-empty {
+    color: var(--sea-foam) !important;
+}
+
+.flavortown-search-error {
+    background: var(--sea-deep) !important;
+    border-color: var(--sea-surface) !important;
+}
+
+.flavortown-search-more {
+    background: transparent !important;
+    color: var(--sea-cyan) !important;
+    border: 1px solid var(--sea-surface) !important;
+}
+
+.flavortown-search-more:hover {
+    background: var(--sea-mid) !important;
+}
+
 .achievements__stats {
     background-color: var(--sea-dark) !important;
     border-radius: 12px !important;
