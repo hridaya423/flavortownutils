@@ -898,88 +898,86 @@ function getCookieRange(hours) {
     return { minCookies, maxCookies, expectedCookies };
 }
 
-function getShipRatePenalty(ship, payout) {
-    if (!ship || !isFinite(ship.hours) || ship.hours <= 0) return Number.POSITIVE_INFINITY;
-    if (payout.amount < ship.minCookies) {
-        return (ship.minCookies - payout.amount) / ship.hours;
-    }
-    if (payout.amount > ship.maxCookies) {
-        return (payout.amount - ship.maxCookies) / ship.hours;
-    }
-    return 0;
-}
+function getPayoutAssignmentCost(ship, payout, expectedRate) {
+    if (!ship || !payout || !ship.date || !payout.date) return null;
+    if (!isFinite(ship.hours) || ship.hours <= 0) return null;
+    if (payout.date < ship.date) return null;
 
-function pickBestShip(ships, payout, expectedRate = null, fallback = false) {
-    if (!ships.length) return null;
-    const payoutDate = payout.date;
-    const sorted = ships.slice().sort((a, b) => {
-        if (fallback) {
-            const penaltyA = getShipRatePenalty(a, payout);
-            const penaltyB = getShipRatePenalty(b, payout);
-            if (penaltyA !== penaltyB) return penaltyA - penaltyB;
-        } else {
-            const rangeA = a.maxCookies - a.minCookies;
-            const rangeB = b.maxCookies - b.minCookies;
-            if (rangeA !== rangeB) return rangeA - rangeB;
-        }
+    const rate = getMultiplierFromCookies(payout.amount, ship.hours);
+    if (!rate || !isFinite(rate)) return null;
+    if (rate < COOKIE_RATE_MIN || rate > COOKIE_RATE_MAX) return null;
 
-        const daysSinceA = payoutDate - a.date;
-        const daysSinceB = payoutDate - b.date;
-        if (daysSinceA !== daysSinceB) return daysSinceA - daysSinceB;
+    const avgRate = (COOKIE_RATE_MIN + COOKIE_RATE_MAX) / 2;
+    const targetRate = expectedRate && isFinite(expectedRate) ? expectedRate : avgRate;
+    const rateDiff = Math.abs(rate - targetRate);
+    const cookieDiff = Math.abs(rate - avgRate);
+    const timeDiffDays = Math.abs(payout.date - ship.date) / (1000 * 60 * 60 * 24);
 
-        const diffA = Math.abs(payout.amount - a.expectedCookies);
-        const diffB = Math.abs(payout.amount - b.expectedCookies);
-        if (diffA !== diffB) return diffA - diffB;
-
-        if (expectedRate && isFinite(expectedRate)) {
-            const rateA = payout.amount / (a.hours || 1);
-            const rateB = payout.amount / (b.hours || 1);
-            const rateDiffA = Math.abs(rateA - expectedRate);
-            const rateDiffB = Math.abs(rateB - expectedRate);
-            if (rateDiffA !== rateDiffB) return rateDiffA - rateDiffB;
-        }
-
-        return 0;
-    });
-
-    return sorted[0];
+    return rateDiff + cookieDiff + (timeDiffDays * 0.01);
 }
 
 function assignPayoutsToShips(payouts, ships) {
     const assignments = new Map();
     ships.forEach(ship => assignments.set(ship, []));
 
-    const totalShipHours = ships.reduce((sum, ship) => sum + (ship.hours || 0), 0);
-    const totalCookies = payouts.reduce((sum, payout) => sum + payout.amount, 0);
+    if (!ships.length || !payouts.length) return assignments;
+
+    const validShips = ships.filter(ship => ship.date && isFinite(ship.hours) && ship.hours > 0);
+    const validPayouts = payouts.filter(payout => payout.date && isFinite(payout.amount));
+
+    if (!validShips.length || !validPayouts.length) return assignments;
+
+    const totalShipHours = validShips.reduce((sum, ship) => sum + ship.hours, 0);
+    const totalCookies = validPayouts.reduce((sum, payout) => sum + payout.amount, 0);
     const expectedRate = totalShipHours > 0
         ? clampValue(totalCookies / totalShipHours, COOKIE_RATE_MIN, COOKIE_RATE_MAX)
         : null;
 
-    const pending = payouts.map(payout => {
-        const eligible = ships.filter(ship =>
-            ship.date &&
-            payout.date >= ship.date &&
-            payout.amount >= ship.minCookies &&
-            payout.amount <= ship.maxCookies
-        );
-        return { payout, eligible };
-    });
+    const shipEntries = validShips.map(ship => {
+        const candidates = validPayouts.map((payout, index) => {
+            const cost = getPayoutAssignmentCost(ship, payout, expectedRate);
+            if (cost === null) return null;
+            return { payout, index, cost };
+        }).filter(Boolean);
+        return { ship, candidates };
+    }).sort((a, b) => a.candidates.length - b.candidates.length);
 
-    pending.sort((a, b) => {
-        if (a.eligible.length !== b.eligible.length) return a.eligible.length - b.eligible.length;
-        return b.payout.amount - a.payout.amount;
-    });
+    const best = { count: -1, cost: Infinity, pairs: new Map() };
+    const used = new Set();
 
-    pending.forEach(entry => {
-        let eligible = entry.eligible;
-        const isFallback = eligible.length === 0;
-        if (isFallback) {
-            eligible = ships.filter(ship => ship.date && entry.payout.date >= ship.date);
+    const search = (idx, count, cost, pairs) => {
+        const remainingShips = shipEntries.length - idx;
+        const remainingPayouts = validPayouts.length - used.size;
+        const maxPossible = count + Math.min(remainingShips, remainingPayouts);
+        if (maxPossible < best.count) return;
+
+        if (idx >= shipEntries.length) {
+            if (count > best.count || (count === best.count && cost < best.cost)) {
+                best.count = count;
+                best.cost = cost;
+                best.pairs = new Map(pairs);
+            }
+            return;
         }
-        const bestShip = pickBestShip(eligible, entry.payout, expectedRate, isFallback);
-        if (bestShip) {
-            assignments.get(bestShip).push(entry.payout);
-        }
+
+        const entry = shipEntries[idx];
+
+        search(idx + 1, count, cost, pairs);
+
+        entry.candidates.forEach(candidate => {
+            if (used.has(candidate.index)) return;
+            used.add(candidate.index);
+            pairs.set(entry.ship, candidate.payout);
+            search(idx + 1, count + 1, cost + candidate.cost, pairs);
+            pairs.delete(entry.ship);
+            used.delete(candidate.index);
+        });
+    };
+
+    search(0, 0, 0, new Map());
+
+    best.pairs.forEach((payout, ship) => {
+        assignments.get(ship).push(payout);
     });
 
     return assignments;
@@ -1746,10 +1744,11 @@ async function addShipPayoutStats() {
         if (totalCookies <= 0) return;
 
         const rate = ship.hours > 0 ? getMultiplierFromCookies(totalCookies, ship.hours) : null;
-        const rateLine = formatCookieRateLine(rate);
-        const percentileLine = formatCookiePercentileLine(rate);
-        const detailsText = rateLine === '--' ? '' : ` (${rateLine}, ${percentileLine})`;
-        const estimate = rate ? buildVoteEstimate(rate) : null;
+        const rateValid = rate && isFinite(rate) && rate >= COOKIE_RATE_MIN && rate <= COOKIE_RATE_MAX;
+        const rateLine = rateValid ? formatCookieRateLine(rate) : '--';
+        const percentileLine = rateValid ? formatCookiePercentileLine(rate) : '--';
+        const detailsText = rateValid ? ` (${rateLine}, ${percentileLine})` : '';
+        const estimate = rateValid ? buildVoteEstimate(rate) : null;
 
         const cookieStat = document.createElement('div');
         cookieStat.className = 'flavortown-ship-cookies';
@@ -7493,37 +7492,54 @@ function parseRelativeTime(relativeStr) {
 }
 
 function clusterVotesToShips(votes, ships) {
-    const MAX_WINDOW_DAYS = Infinity;
-
-    const normalizedShips = ships.map(ship => {
-        const startOfDay = new Date(ship.date);
-        startOfDay.setHours(0, 0, 0, 0);
-        return { ...ship, normalizedDate: startOfDay };
-    });
-
     const clustered = new Map();
     ships.forEach(ship => clustered.set(ship, []));
 
-    votes.forEach(vote => {
-        const voteDate = new Date(vote.timestamp);
+    if (!votes.length || !ships.length) return clustered;
 
-        let bestOriginalShip = null;
+    const validShips = ships.filter(ship => ship.date && !isNaN(ship.date.getTime()));
+    const validVotes = votes.filter(vote => vote.timestamp && !isNaN(new Date(vote.timestamp).getTime()));
+
+    if (!validShips.length || !validVotes.length) return clustered;
+
+    const sortedShips = validShips.slice().sort((a, b) => a.date - b.date);
+    const sortedVotes = validVotes.slice().sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+
+    const shipMin = sortedShips[0].date.getTime();
+    const shipMax = sortedShips[sortedShips.length - 1].date.getTime();
+    const voteMin = new Date(sortedVotes[0].timestamp).getTime();
+    const voteMax = new Date(sortedVotes[sortedVotes.length - 1].timestamp).getTime();
+
+    const shipRange = shipMax - shipMin;
+    const voteRange = voteMax - voteMin;
+
+    const mappedShips = sortedShips.map((ship, index) => {
+        let mappedTime = voteMin;
+        if (shipRange > 0) {
+            const t = (ship.date.getTime() - shipMin) / shipRange;
+            mappedTime = voteMin + (voteRange > 0 ? t * voteRange : 0);
+        } else if (sortedShips.length > 1 && voteRange > 0) {
+            const step = voteRange / (sortedShips.length - 1);
+            mappedTime = voteMin + step * index;
+        }
+        return { ship, mappedTime };
+    });
+
+    validVotes.forEach(vote => {
+        const voteTime = new Date(vote.timestamp).getTime();
+        let bestShip = null;
         let smallestGap = Infinity;
 
-        for (let i = 0; i < normalizedShips.length; i++) {
-            const normShip = normalizedShips[i];
-            const daysSinceShip = (voteDate - normShip.normalizedDate) / (1000 * 60 * 60 * 24);
-
-            if (daysSinceShip >= 0 && daysSinceShip <= MAX_WINDOW_DAYS) {
-                if (daysSinceShip < smallestGap) {
-                    smallestGap = daysSinceShip;
-                    bestOriginalShip = ships[i];
-                }
+        mappedShips.forEach(entry => {
+            const gap = Math.abs(voteTime - entry.mappedTime);
+            if (gap < smallestGap) {
+                smallestGap = gap;
+                bestShip = entry.ship;
             }
-        }
+        });
 
-        if (bestOriginalShip) {
-            clustered.get(bestOriginalShip).push(vote);
+        if (bestShip) {
+            clustered.get(bestShip).push(vote);
         }
     });
 
@@ -7616,16 +7632,41 @@ function createVotesContainer(votes, usersMap) {
     const votesList = document.createElement('div');
     votesList.style.cssText = 'display: flex; flex-direction: column; gap: 8px;';
 
-    votes.slice(0, 5).forEach(vote => {
-        votesList.appendChild(createVoteCard(vote, usersMap));
-    });
+    let shownCount = 0;
+    const renderNextBatch = () => {
+        const nextVotes = votes.slice(shownCount, shownCount + 5);
+        nextVotes.forEach(vote => {
+            votesList.insertBefore(createVoteCard(vote, usersMap), moreButton);
+        });
+        shownCount += nextVotes.length;
+        updateMoreButton();
+    };
 
-    if (votes.length > 5) {
-        const moreNote = document.createElement('div');
-        moreNote.style.cssText = 'font-size: 0.85em; opacity: 0.7; text-align: center; padding-top: 8px;';
-        moreNote.textContent = `+ ${votes.length - 5} more votes`;
-        votesList.appendChild(moreNote);
-    }
+    const moreButton = document.createElement('button');
+    moreButton.type = 'button';
+    moreButton.style.cssText = `
+        background: none;
+        border: none;
+        color: var(--catppuccin-mauve, var(--color-accent, var(--color-brown, #b4854a)));
+        cursor: pointer;
+        font-size: 0.85em;
+        opacity: 0.85;
+        text-align: center;
+        padding-top: 6px;
+    `;
+    const updateMoreButton = () => {
+        const remaining = votes.length - shownCount;
+        if (remaining <= 0) {
+            moreButton.remove();
+            return;
+        }
+        const nextCount = Math.min(5, remaining);
+        moreButton.textContent = `+ ${remaining} more votes (show ${nextCount})`;
+    };
+    moreButton.addEventListener('click', renderNextBatch);
+
+    votesList.appendChild(moreButton);
+    renderNextBatch();
 
     votesContainer.appendChild(votesList);
     return votesContainer;
