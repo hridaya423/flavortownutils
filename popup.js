@@ -158,9 +158,6 @@ function setupEventListeners() {
     });
 
     document.getElementById('exportBtn')?.addEventListener('click', exportData);
-    document.getElementById('importBtn')?.addEventListener('click', () => {
-        document.getElementById('importFile')?.click();
-    });
     document.getElementById('importFile')?.addEventListener('change', handleImportFile);
 }
 

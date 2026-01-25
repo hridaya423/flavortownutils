@@ -131,8 +131,8 @@
             </div>
             <div class="popup__sync">
                 <button class="popup__sync-btn" id="exportBtn" type="button">Export Data</button>
-                <button class="popup__sync-btn popup__sync-btn--ghost" id="importBtn" type="button">Import Data</button>
-                <input type="file" id="importFile" accept="application/json" hidden>
+                <label class="popup__sync-btn popup__sync-btn--ghost" for="importFile">Import Data</label>
+                <input type="file" id="importFile" class="popup__sync-file" accept="application/json" tabindex="-1">
             </div>
             <div class="popup__status" id="status"></div>
         </footer>

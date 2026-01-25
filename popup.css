@@ -297,6 +297,9 @@ body {
 }
 
 .popup__sync-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     padding: 8px 10px;
     border-radius: 8px;
     border: 1px solid var(--popup-border);
@@ -317,6 +320,17 @@ body {
 .popup__sync-btn--ghost {
     background: transparent;
     color: var(--popup-text);
+}
+
+.popup__sync-file {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    border: 0;
 }
 
 .popup__status {
