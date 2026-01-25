@@ -102,6 +102,26 @@ const SHIP_TIME_CACHE_KEY = 'flavortown_ship_minutes';
 const SHIP_TIME_CACHE_TTL = 24 * 60 * 60 * 1000;
 const PROJECT_UNSHIPPED_CACHE_KEY = 'flavortown_project_unshipped';
 const PROJECT_UNSHIPPED_CACHE_TTL = 24 * 60 * 60 * 1000;
+const LOCAL_STORAGE_SYNC_ENABLED_KEY = 'flavortownLocalStorageSyncEnabled';
+const LOCAL_STORAGE_SYNC_KEY = 'flavortownLocalStorageSync';
+const LOCAL_STORAGE_SYNC_UPDATED_AT_KEY = 'flavortownLocalStorageSyncUpdatedAt';
+const LOCAL_STORAGE_SYNC_MAX_BYTES = 90000;
+const LOCAL_STORAGE_SYNC_KEYS = [
+    'flavortown_progress_mode',
+    'flavortown_projection_mode',
+    'shop_wishlist',
+    'shop_wishlist_priorities',
+    'shop_wishlist_order',
+    'flavortown_project_stats',
+    'flavortown_tutorial_state',
+    'flavortown_cmd_recent'
+];
+let localStorageSyncTimer = null;
+let isApplyingLocalStorageSync = false;
+let localStorageSyncEnabled = false;
+let localStoragePatched = false;
+const originalLocalStorageSetItem = localStorage.setItem.bind(localStorage);
+const originalLocalStorageRemoveItem = localStorage.removeItem.bind(localStorage);
 
 function loadTheme() {
     browserAPI.storage.sync.get(['theme', 'customColors', 'catppuccinAccent'], (result) => {
@@ -110,6 +130,151 @@ function loadTheme() {
         const catppuccinAccent = result.catppuccinAccent || 'mauve';
         applyTheme(theme, customColors, catppuccinAccent);
     });
+}
+
+function initLocalStorageSync() {
+    browserAPI.storage.sync.get([LOCAL_STORAGE_SYNC_ENABLED_KEY, LOCAL_STORAGE_SYNC_KEY], (result) => {
+        const enabled = !!result[LOCAL_STORAGE_SYNC_ENABLED_KEY];
+        const payload = result[LOCAL_STORAGE_SYNC_KEY];
+        if (enabled) {
+            enableLocalStorageSync(payload);
+        } else {
+            disableLocalStorageSync();
+        }
+    });
+
+    browserAPI.storage.onChanged.addListener((changes, area) => {
+        if (area !== 'sync') return;
+
+        if (changes[LOCAL_STORAGE_SYNC_ENABLED_KEY]) {
+            const enabled = !!changes[LOCAL_STORAGE_SYNC_ENABLED_KEY].newValue;
+            if (enabled) {
+                enableLocalStorageSync(changes[LOCAL_STORAGE_SYNC_KEY]?.newValue);
+            } else {
+                disableLocalStorageSync();
+            }
+        }
+
+        if (localStorageSyncEnabled && changes[LOCAL_STORAGE_SYNC_KEY]) {
+            applyLocalStorageSyncPayload(changes[LOCAL_STORAGE_SYNC_KEY].newValue);
+        }
+    });
+}
+
+function enableLocalStorageSync(payload) {
+    if (localStorageSyncEnabled && localStoragePatched) {
+        if (payload) applyLocalStorageSyncPayload(payload);
+        return;
+    }
+    localStorageSyncEnabled = true;
+    patchLocalStorageSyncHandlers();
+    const payloadUpdatedAt = Number(payload?.updatedAt || 0);
+    const localUpdatedAt = Number(localStorage.getItem(LOCAL_STORAGE_SYNC_UPDATED_AT_KEY) || 0);
+    if (payload && payloadUpdatedAt > localUpdatedAt) {
+        applyLocalStorageSyncPayload(payload);
+    }
+    if (!payload || localUpdatedAt > payloadUpdatedAt) {
+        scheduleLocalStorageSyncWrite();
+    }
+}
+
+function disableLocalStorageSync() {
+    localStorageSyncEnabled = false;
+    clearTimeout(localStorageSyncTimer);
+    localStorageSyncTimer = null;
+    if (localStoragePatched) {
+        localStorage.setItem = originalLocalStorageSetItem;
+        localStorage.removeItem = originalLocalStorageRemoveItem;
+        localStoragePatched = false;
+    }
+}
+
+function patchLocalStorageSyncHandlers() {
+    if (localStoragePatched) return;
+    localStoragePatched = true;
+    localStorage.setItem = (key, value) => {
+        originalLocalStorageSetItem(key, value);
+        if (!isApplyingLocalStorageSync && shouldSyncLocalStorageKey(key)) {
+            scheduleLocalStorageSyncWrite();
+        }
+    };
+
+    localStorage.removeItem = (key) => {
+        originalLocalStorageRemoveItem(key);
+        if (!isApplyingLocalStorageSync && shouldSyncLocalStorageKey(key)) {
+            scheduleLocalStorageSyncWrite();
+        }
+    };
+}
+
+function shouldSyncLocalStorageKey(key) {
+    if (!key || key === LOCAL_STORAGE_SYNC_UPDATED_AT_KEY) return false;
+    return LOCAL_STORAGE_SYNC_KEYS.includes(key);
+}
+
+function getLocalStorageSnapshot(keys = LOCAL_STORAGE_SYNC_KEYS) {
+    const snapshot = {};
+    keys.forEach((key) => {
+        const value = localStorage.getItem(key);
+        if (value !== null) {
+            snapshot[key] = value;
+        }
+    });
+    return snapshot;
+}
+
+function applyLocalStorageSyncPayload(payload) {
+    if (!payload || typeof payload !== 'object' || !payload.data) return;
+    const updatedAt = Number(payload.updatedAt || 0);
+    const localUpdatedAt = Number(localStorage.getItem(LOCAL_STORAGE_SYNC_UPDATED_AT_KEY) || 0);
+    if (updatedAt && updatedAt <= localUpdatedAt) return;
+    applyLocalStorageSnapshot(payload.data, updatedAt || Date.now());
+}
+
+function applyLocalStorageSnapshot(snapshot, updatedAt) {
+    if (!snapshot || typeof snapshot !== 'object') return;
+    isApplyingLocalStorageSync = true;
+    try {
+        LOCAL_STORAGE_SYNC_KEYS.forEach((key) => {
+            if (!(key in snapshot)) return;
+            const value = snapshot[key];
+            if (value === null || value === undefined) {
+                originalLocalStorageRemoveItem(key);
+            } else {
+                originalLocalStorageSetItem(key, String(value));
+            }
+        });
+        if (updatedAt) {
+            originalLocalStorageSetItem(LOCAL_STORAGE_SYNC_UPDATED_AT_KEY, String(updatedAt));
+        }
+    } finally {
+        isApplyingLocalStorageSync = false;
+    }
+}
+
+function scheduleLocalStorageSyncWrite() {
+    if (!localStorageSyncEnabled) return;
+    if (isApplyingLocalStorageSync) return;
+    clearTimeout(localStorageSyncTimer);
+    localStorageSyncTimer = setTimeout(writeLocalStorageSync, 800);
+}
+
+function writeLocalStorageSync() {
+    if (!localStorageSyncEnabled) return;
+    if (isApplyingLocalStorageSync) return;
+    const data = getLocalStorageSnapshot();
+    const payload = {
+        version: 1,
+        updatedAt: Date.now(),
+        data
+    };
+    const serialized = JSON.stringify(payload);
+    if (serialized.length > LOCAL_STORAGE_SYNC_MAX_BYTES) {
+        console.warn('Local storage sync payload too large, skipping sync');
+        return;
+    }
+    browserAPI.storage.sync.set({ [LOCAL_STORAGE_SYNC_KEY]: payload });
+    originalLocalStorageSetItem(LOCAL_STORAGE_SYNC_UPDATED_AT_KEY, String(payload.updatedAt));
 }
 
 function readThemeCache() {
@@ -392,6 +557,16 @@ function hslToRgb(h, s, l) {
 browserAPI.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.type === 'APPLY_THEME') {
         applyTheme(message.theme, message.customColors || {}, message.catppuccinAccent || 'mauve');
+        sendResponse({ success: true });
+    }
+    if (message.type === 'EXPORT_DATA') {
+        const keys = Array.isArray(message.keys) ? message.keys : LOCAL_STORAGE_SYNC_KEYS;
+        const localStorageData = getLocalStorageSnapshot(keys);
+        sendResponse({ localStorage: localStorageData });
+    }
+    if (message.type === 'IMPORT_DATA') {
+        applyLocalStorageSnapshot(message.localStorage || {}, Date.now());
+        scheduleLocalStorageSyncWrite();
         sendResponse({ success: true });
     }
     return true;
@@ -4003,6 +4178,7 @@ function checkForUpdates() {
 }
 
 function init() {
+    initLocalStorageSync();
     loadTheme();
     checkForUpdates();
     addDevlogFrequencyStat();

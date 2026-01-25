@@ -84,9 +84,23 @@ const POPUP_THEMES = {
     'custom': null
 };
 
+const LOCAL_STORAGE_SYNC_ENABLED_KEY = 'flavortownLocalStorageSyncEnabled';
+const EXPORT_VERSION = 1;
+const LOCAL_STORAGE_EXPORT_KEYS = [
+    'flavortown_progress_mode',
+    'flavortown_projection_mode',
+    'shop_wishlist',
+    'shop_wishlist_priorities',
+    'shop_wishlist_order',
+    'flavortown_project_stats',
+    'flavortown_tutorial_state',
+    'flavortown_cmd_recent'
+];
+
 let currentTheme = 'default';
 let customColors = { ...DEFAULT_CUSTOM_COLORS };
 let catppuccinAccent = 'mauve';
+let localStorageSyncEnabled = false;
 
 document.addEventListener('DOMContentLoaded', async () => {
     await loadSettings();
@@ -95,12 +109,18 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 async function loadSettings() {
-    const result = await browserAPI.storage.sync.get(['theme', 'customColors', 'catppuccinAccent']);
+    const result = await browserAPI.storage.sync.get([
+        'theme',
+        'customColors',
+        'catppuccinAccent',
+        LOCAL_STORAGE_SYNC_ENABLED_KEY
+    ]);
     currentTheme = result.theme || 'default';
     catppuccinAccent = result.catppuccinAccent || 'mauve';
     if (result.customColors) {
         customColors = { ...DEFAULT_CUSTOM_COLORS, ...result.customColors };
     }
+    localStorageSyncEnabled = !!result[LOCAL_STORAGE_SYNC_ENABLED_KEY];
 }
 
 function setupEventListeners() {
@@ -125,6 +145,21 @@ function setupEventListeners() {
             saveAndApply();
         });
     });
+
+    const syncToggle = document.getElementById('autoSyncToggle');
+    syncToggle?.addEventListener('change', async (event) => {
+        localStorageSyncEnabled = event.target.checked;
+        await browserAPI.storage.sync.set({
+            [LOCAL_STORAGE_SYNC_ENABLED_KEY]: localStorageSyncEnabled
+        });
+        showStatus(localStorageSyncEnabled ? 'Auto-sync on' : 'Auto-sync off');
+    });
+
+    document.getElementById('exportBtn')?.addEventListener('click', exportData);
+    document.getElementById('importBtn')?.addEventListener('click', () => {
+        document.getElementById('importFile')?.click();
+    });
+    document.getElementById('importFile')?.addEventListener('change', handleImportFile);
 }
 
 function setTheme(theme) {
@@ -157,6 +192,14 @@ function updateUI() {
 
     updateCustomPreview();
     applyPopupTheme();
+    updateSyncToggleUI();
+}
+
+function updateSyncToggleUI() {
+    const syncToggle = document.getElementById('autoSyncToggle');
+    if (syncToggle) {
+        syncToggle.checked = localStorageSyncEnabled;
+    }
 }
 
 function updateAccentToggleUI() {
@@ -277,4 +320,99 @@ function showStatus(text, isError = false) {
     setTimeout(() => {
         status.textContent = '';
     }, 2000);
+}
+
+async function exportData() {
+    try {
+        const syncData = await browserAPI.storage.sync.get(null);
+        const localStorageData = await getLocalStorageSnapshot();
+
+        const payload = {
+            version: EXPORT_VERSION,
+            exportedAt: new Date().toISOString(),
+            sync: syncData,
+            localStorage: localStorageData
+        };
+
+        downloadJson(payload, `flavortown-utils-backup-${Date.now()}.json`);
+        showStatus('Exported data');
+    } catch (error) {
+        console.error('Export failed:', error);
+        showStatus('Export failed', true);
+    }
+}
+
+async function handleImportFile(event) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    try {
+        const text = await file.text();
+        const payload = JSON.parse(text);
+
+        if (!payload || typeof payload !== 'object') {
+            throw new Error('Invalid payload');
+        }
+
+        if (payload.sync && typeof payload.sync === 'object') {
+            await browserAPI.storage.sync.set(payload.sync);
+        }
+
+        if (payload.localStorage && typeof payload.localStorage === 'object') {
+            await importLocalStorageSnapshot(payload.localStorage);
+        }
+
+        await loadSettings();
+        updateUI();
+        showStatus('Imported data');
+    } catch (error) {
+        console.error('Import failed:', error);
+        showStatus('Import failed', true);
+    } finally {
+        event.target.value = '';
+    }
+}
+
+async function getLocalStorageSnapshot() {
+    const tabs = await browserAPI.tabs.query({ url: 'https://flavortown.hackclub.com/*' });
+    for (const tab of tabs) {
+        try {
+            const response = await browserAPI.tabs.sendMessage(tab.id, {
+                type: 'EXPORT_DATA',
+                keys: LOCAL_STORAGE_EXPORT_KEYS
+            });
+            if (response?.localStorage) {
+                return response.localStorage;
+            }
+        } catch (error) {
+            console.warn('Export tab not ready:', tab.id, error.message);
+        }
+    }
+    return {};
+}
+
+async function importLocalStorageSnapshot(localStorageData) {
+    const tabs = await browserAPI.tabs.query({ url: 'https://flavortown.hackclub.com/*' });
+    if (!tabs.length) return;
+
+    await Promise.all(tabs.map(async (tab) => {
+        try {
+            await browserAPI.tabs.sendMessage(tab.id, {
+                type: 'IMPORT_DATA',
+                localStorage: localStorageData
+            });
+        } catch (error) {
+            console.warn('Import tab not ready:', tab.id, error.message);
+        }
+    }));
+}
+
+function downloadJson(data, filename) {
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    link.click();
+    URL.revokeObjectURL(url);
 }
