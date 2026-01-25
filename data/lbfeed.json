@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-01-25T19:36:55.599Z",
+  "lastUpdated": "2026-01-25T22:20:35.096Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -3808,6 +3808,14 @@
         "balance": 88,
         "reason": "user grant",
         "reasonType": "",
+        "userId": "U089903JZDH"
+      },
+      {
+        "ts": "2026-01-25T20:35:26.460Z",
+        "delta": 3,
+        "balance": 91,
+        "reason": "Michelin Star",
+        "reasonType": "achievement",
         "userId": "U089903JZDH"
       }
     ],
@@ -18341,6 +18349,12 @@
     ]
   },
   "users": {
+    "U089903JZDH": {
+      "id": "U089903JZDH",
+      "username": "coder.tomsk",
+      "displayName": "lily the milk cool",
+      "avatar": "https://avatars.slack-edge.com/2026-01-17/10345616619760_80993ae87bf0480da98e_72.jpg"
+    },
     "U09683EA86L": {
       "id": "U09683EA86L",
       "username": "etilia",
@@ -18397,12 +18411,6 @@
       "username": "floppy1703",
       "displayName": "Floppy",
       "avatar": "https://avatars.slack-edge.com/2025-09-05/9462910104643_f0e10508c7313006fa21_72.jpg"
-    },
-    "U089903JZDH": {
-      "id": "U089903JZDH",
-      "username": "coder.tomsk",
-      "displayName": "lily the milk cool",
-      "avatar": "https://avatars.slack-edge.com/2026-01-17/10345616619760_80993ae87bf0480da98e_72.jpg"
     },
     "U0823J6HMTP": {
       "id": "U0823J6HMTP",
@@ -20798,7 +20806,7 @@
     "U08L7671TDG": {
       "id": "U08L7671TDG",
       "username": "venco",
-      "displayName": "Esther",
+      "displayName": "Ωstheω",
       "avatar": "https://avatars.slack-edge.com/2025-08-08/9312619171047_9e888f0229c71ea2b547_72.png"
     },
     "U081F64111C": {
