@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-01-25T23:20:53.377Z",
+  "lastUpdated": "2026-01-26T01:50:41.598Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -7985,6 +7985,14 @@
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U096NGLTF4K"
+      },
+      {
+        "ts": "2026-01-25T23:24:55.087Z",
+        "delta": -800,
+        "balance": 1128,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U096NGLTF4K"
       }
     ],
     "u096qel0w5u": [
@@ -8662,6 +8670,14 @@
         "ts": "2026-01-24T16:58:53.328Z",
         "delta": 48,
         "balance": 94,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U099JENAUGP"
+      },
+      {
+        "ts": "2026-01-26T01:15:07.811Z",
+        "delta": 223,
+        "balance": 317,
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U099JENAUGP"
@@ -10860,6 +10876,14 @@
         "balance": 31,
         "reason": "unknown",
         "reasonType": "",
+        "userId": "U0A19UWEN3G"
+      },
+      {
+        "ts": "2026-01-26T01:31:44.328Z",
+        "delta": 10,
+        "balance": 41,
+        "reason": "Line Cook",
+        "reasonType": "achievement",
         "userId": "U0A19UWEN3G"
       }
     ],
@@ -18157,6 +18181,16 @@
         "userId": "U0A9S13HQF3"
       }
     ],
+    "u0a9v5e6945": [
+      {
+        "ts": "2026-01-25T23:29:20.573Z",
+        "delta": 10,
+        "balance": 28,
+        "reason": "Line Cook",
+        "reasonType": "achievement",
+        "userId": "U0A9V5E6945"
+      }
+    ],
     "u0a9v6r0ajd": [
       {
         "ts": "2026-01-21T15:56:44.284Z",
@@ -18381,6 +18415,27 @@
     ]
   },
   "users": {
+    "U0A19UWEN3G": {
+      "id": "U0A19UWEN3G",
+      "username": "heitorjcastilho",
+      "avatar": "https://avatars.slack-edge.com/2025-12-30/10210516118930_a18096c10756fe9925c5_72.png"
+    },
+    "U099JENAUGP": {
+      "id": "U099JENAUGP",
+      "username": "jakebuckhouse",
+      "avatar": "https://avatars.slack-edge.com/2025-11-30/10020041914373_9151e4cf03a368cae425_72.png"
+    },
+    "U0A9V5E6945": {
+      "id": "U0A9V5E6945",
+      "username": "anantparikh014",
+      "displayName": "Ananta the Developer",
+      "avatar": "https://avatars.slack-edge.com/2026-01-22/10348595525747_23e48bb68f25511aafa6_72.png"
+    },
+    "U096NGLTF4K": {
+      "id": "U096NGLTF4K",
+      "username": "lordseriouspig",
+      "avatar": "https://avatars.slack-edge.com/2025-08-03/9311717326353_c74908988c852687be47_72.jpg"
+    },
     "U0A77LT77PC": {
       "id": "U0A77LT77PC",
       "username": "y2marcos1010",
@@ -18513,11 +18568,6 @@
       "username": "brightabaka1",
       "displayName": "Bright Abaka Ekuman",
       "avatar": "https://avatars.slack-edge.com/2025-12-17/10137417274310_ca82aabc443e08ace554_72.png"
-    },
-    "U096NGLTF4K": {
-      "id": "U096NGLTF4K",
-      "username": "lordseriouspig",
-      "avatar": "https://avatars.slack-edge.com/2025-08-03/9311717326353_c74908988c852687be47_72.jpg"
     },
     "U080DSMN3E1": {
       "id": "U080DSMN3E1",
@@ -18717,11 +18767,6 @@
       "username": "s6czg0v7w",
       "displayName": "PuppyTransGirl",
       "avatar": "https://avatars.slack-edge.com/2025-12-31/10223867650513_b1d0b7301c3012d5ee8f_72.jpg"
-    },
-    "U099JENAUGP": {
-      "id": "U099JENAUGP",
-      "username": "jakebuckhouse",
-      "avatar": "https://avatars.slack-edge.com/2025-11-30/10020041914373_9151e4cf03a368cae425_72.png"
     },
     "U085HNYPWLT": {
       "id": "U085HNYPWLT",
@@ -19411,7 +19456,7 @@
       "id": "U07A0D5K3T2",
       "username": "fireentity",
       "displayName": "fireentity",
-      "avatar": "https://avatars.slack-edge.com/2026-01-09/10262824931971_0bba6cda34a7c2ccf424_72.png"
+      "avatar": "https://avatars.slack-edge.com/2026-01-25/10366267208261_67f1722b83d95e8cc166_72.png"
     },
     "U0A7ZECG8RL": {
       "id": "U0A7ZECG8RL",
@@ -21461,11 +21506,6 @@
       "username": "maxgamerop21221",
       "displayName": "Max_Gamet",
       "avatar": "https://secure.gravatar.com/avatar/791aa28436c41db51804b11891a049bd.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0024-72.png"
-    },
-    "U0A19UWEN3G": {
-      "id": "U0A19UWEN3G",
-      "username": "heitorjcastilho",
-      "avatar": "https://avatars.slack-edge.com/2025-12-30/10210516118930_a18096c10756fe9925c5_72.png"
     },
     "U078EGNPWAZ": {
       "id": "U078EGNPWAZ",
