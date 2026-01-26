@@ -104,6 +104,7 @@ const SHIP_TIME_CACHE_TTL = 24 * 60 * 60 * 1000;
 const PROJECT_UNSHIPPED_CACHE_KEY = 'flavortown_project_unshipped';
 const PROJECT_UNSHIPPED_CACHE_TTL = 24 * 60 * 60 * 1000;
 const PROJECT_UNSHIPPED_CLEANUP_KEY = 'flavortown_project_unshipped_cleanup';
+const SHOP_WISHLIST_ORDERED_ITEMS_KEY = 'flavortown_shop_wishlist_ordered';
 const LOCAL_STORAGE_SYNC_ENABLED_KEY = 'flavortownLocalStorageSyncEnabled';
 const LOCAL_STORAGE_SYNC_KEY = 'flavortownLocalStorageSync';
 const LOCAL_STORAGE_IMPORT_KEY = 'flavortownLocalStorageImport';
@@ -3535,6 +3536,244 @@ function enhanceShopGoals() {
     }
 }
 
+function normalizeShopItemName(name) {
+    return (name || '')
+        .split(' (')[0]
+        .toLowerCase()
+        .replace(/\s+/g, ' ')
+        .trim();
+}
+
+function getOrderNumberFromItem(orderItem) {
+    const labelEls = orderItem.querySelectorAll('.my-orders__header-label');
+    for (const label of labelEls) {
+        const text = label.textContent || '';
+        const match = text.match(/Order\s*#\s*(\d+)/i);
+        if (match) return match[1];
+    }
+    return null;
+}
+
+function getOrderQuantityFromItem(orderItem) {
+    const rows = orderItem.querySelectorAll('.my-orders__detail-row');
+    for (const row of rows) {
+        const label = row.querySelector('.my-orders__label')?.textContent || '';
+        if (label.toLowerCase().includes('quantity')) {
+            const valueText = row.querySelector('.my-orders__value')?.textContent || '';
+            const qty = parseInt(valueText.replace(/[^0-9]/g, ''), 10);
+            return Number.isFinite(qty) && qty > 0 ? qty : 1;
+        }
+    }
+    return 1;
+}
+
+function getOrderItemName(orderItem) {
+    const nameEl = orderItem.querySelector('.my-orders__item-name');
+    return nameEl ? nameEl.textContent.trim() : null;
+}
+
+function applyOrderToWishlist(wishlist, itemName, qtyToRemove, changes) {
+    const normalizedTarget = normalizeShopItemName(itemName);
+    if (!normalizedTarget) return 0;
+
+    const matches = Object.entries(wishlist).filter(([, item]) => {
+        const name = normalizeShopItemName(item?.name || '');
+        return name && name === normalizedTarget;
+    });
+
+    if (!matches.length) return 0;
+
+    let remaining = qtyToRemove;
+    matches.forEach(([id, item]) => {
+        if (remaining <= 0) return;
+        const currentQty = Math.max(1, item.quantity || 1);
+        if (remaining >= currentQty) {
+            remaining -= currentQty;
+            if (changes) {
+                changes.push({
+                    id,
+                    name: item?.name || itemName,
+                    removedQty: currentQty,
+                    remainingQty: 0
+                });
+            }
+            delete wishlist[id];
+        } else {
+            item.quantity = currentQty - remaining;
+            if (changes) {
+                changes.push({
+                    id,
+                    name: item?.name || itemName,
+                    removedQty: remaining,
+                    remainingQty: item.quantity
+                });
+            }
+            remaining = 0;
+        }
+    });
+
+    return qtyToRemove - remaining;
+}
+
+function syncShopGoalsWithOrders(doc, options = {}) {
+    const root = doc || document;
+    const wishlistData = localStorage.getItem('shop_wishlist');
+    if (!wishlistData) return;
+
+    let wishlist = {};
+    try {
+        wishlist = JSON.parse(wishlistData) || {};
+    } catch (e) {
+        return;
+    }
+
+    const processedRaw = localStorage.getItem(SHOP_WISHLIST_ORDERED_ITEMS_KEY);
+    let processed = {};
+    try {
+        processed = processedRaw ? JSON.parse(processedRaw) : {};
+    } catch (e) {
+        processed = {};
+    }
+
+    const orderItems = root.querySelectorAll('.my-orders__item');
+    if (!orderItems.length) return;
+
+    let wishlistChanged = false;
+    let processedChanged = false;
+    const changes = [];
+
+    orderItems.forEach(orderItem => {
+        const orderId = getOrderNumberFromItem(orderItem);
+        const itemName = getOrderItemName(orderItem);
+        if (!orderId || !itemName) return;
+
+        const key = `${orderId}:${normalizeShopItemName(itemName)}`;
+        if (processed[key]) return;
+
+        const qty = getOrderQuantityFromItem(orderItem);
+        if (qty > 0) {
+            const removed = applyOrderToWishlist(wishlist, itemName, qty, changes);
+            if (removed > 0) wishlistChanged = true;
+        }
+
+        processed[key] = { processedAt: Date.now(), quantity: qty };
+        processedChanged = true;
+    });
+
+    if (changes.length) {
+        showShopGoalsOrderToast(changes);
+    }
+
+    const commit = () => {
+        if (wishlistChanged) {
+            localStorage.setItem('shop_wishlist', JSON.stringify(wishlist));
+            window.dispatchEvent(new Event('storage'));
+        }
+
+        if (processedChanged) {
+            localStorage.setItem(SHOP_WISHLIST_ORDERED_ITEMS_KEY, JSON.stringify(processed));
+        }
+    };
+
+    if (options.animate && changes.length) {
+        applyGoalChangeAnimations(changes);
+        setTimeout(commit, 260);
+    } else {
+        commit();
+    }
+}
+
+function applyGoalChangeAnimations(changes) {
+    const byId = new Map();
+    changes.forEach(change => {
+        if (!change?.id) return;
+        byId.set(change.id, change);
+    });
+
+    byId.forEach(change => {
+        const goalEl = document.querySelector(`.flavortown-goal-item[data-goal-id="${change.id}"]`);
+        if (!goalEl) return;
+        if (change.remainingQty === 0) {
+            goalEl.classList.add('flavortown-goal-item--removing');
+        } else {
+            goalEl.classList.add('flavortown-goal-item--updated');
+            const qtyEl = goalEl.querySelector('.goal-item__qty-compact span');
+            if (qtyEl) qtyEl.textContent = change.remainingQty;
+            setTimeout(() => goalEl.classList.remove('flavortown-goal-item--updated'), 600);
+        }
+    });
+}
+
+function showShopGoalsOrderToast(changes) {
+    const existingToast = document.querySelector('.flavortown-order-sync-toast');
+    if (existingToast) existingToast.remove();
+
+    const summaryMap = new Map();
+    changes.forEach(change => {
+        const name = normalizeShopItemName(change.name || 'item') || (change.name || 'item');
+        const entry = summaryMap.get(name) || { name: change.name || name, qty: 0 };
+        entry.qty += change.removedQty || 0;
+        summaryMap.set(name, entry);
+    });
+
+    const summary = Array.from(summaryMap.values());
+    summary.sort((a, b) => b.qty - a.qty);
+    const summaryText = summary
+        .slice(0, 3)
+        .map(item => `${item.qty}x ${item.name}`)
+        .join(', ');
+    const moreCount = summary.length - 3;
+
+    const toast = document.createElement('div');
+    toast.className = 'flavortown-achievement-toast flavortown-order-sync-toast';
+    toast.innerHTML = `
+        <div class="flavortown-achievement-toast__content">
+            <div class="flavortown-achievement-toast__title">🧾 Goals updated from recent orders</div>
+            <div class="flavortown-achievement-toast__names">
+                Removed: ${summaryText}${moreCount > 0 ? ` +${moreCount} more` : ''}
+            </div>
+            <div class="flavortown-order-sync-toast__note">Applied quantities based on your purchase history.</div>
+        </div>
+        <button class="flavortown-achievement-toast__close">×</button>
+    `;
+
+    document.body.appendChild(toast);
+    requestAnimationFrame(() => toast.classList.add('is-visible'));
+
+    const closeBtn = toast.querySelector('.flavortown-achievement-toast__close');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            toast.classList.remove('is-visible');
+            setTimeout(() => toast.remove(), 300);
+        });
+    }
+
+    setTimeout(() => {
+        if (toast.parentNode) {
+            toast.classList.remove('is-visible');
+            setTimeout(() => toast.remove(), 300);
+        }
+    }, 5000);
+}
+
+async function runShopOrdersSync() {
+    if (window.location.pathname === '/shop/my_orders') {
+        syncShopGoalsWithOrders(document, { animate: true });
+        return;
+    }
+
+    if (window.location.pathname !== '/shop') return;
+
+    try {
+        const response = await fetch('/shop/my_orders', { credentials: 'same-origin' });
+        if (!response.ok) return;
+        const html = await response.text();
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        syncShopGoalsWithOrders(doc, { animate: true });
+    } catch (e) {
+    }
+}
+
 async function initShopAccessories() {
     if (!window.location.pathname.startsWith('/shop') || window.location.pathname.includes('/order')) {
         return;
@@ -4401,6 +4640,7 @@ function init() {
     watchCommentEmojiInputs();
     cleanupUnownedUnshippedCache();
     enhanceShopGoals();
+    runShopOrdersSync();
     initShopAccessories();
     addShopCardEfficiency();
     addExploreSearch();
@@ -5750,6 +5990,7 @@ document.addEventListener('turbo:load', () => {
     inlineDevlogForm();
     setupInlineDevlogEditing();
     enhanceShopGoals();
+    runShopOrdersSync();
     initShopAccessories();
     addShopCardEfficiency();
     addExploreSearch();
