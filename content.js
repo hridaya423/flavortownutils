@@ -67,6 +67,7 @@ const PAYOUT_TICKETS_PER_DOLLAR = 5;
 const PERCENTILE_HILL_SHAPE = 1.08;
 const THEME_CACHE_KEY = 'flavortown-theme-cache';
 const THEME_PRELOAD_STYLE_ID = 'flavortown-theme-preload';
+const SLACK_EMOJI_URL = 'https://cachet.dunkirk.sh/emojis';
 const THEME_PALETTE_VARS = [
     '--color-cream',
     '--color-cream-dark',
@@ -7562,10 +7563,6 @@ setupCommandPalette();
 
 const VOTES_JSON_URL = 'https://raw.githubusercontent.com/hridaya423/flavortownutils/refs/heads/main/data/votes.json';
 const LEADERBOARD_FEED_URL = 'https://raw.githubusercontent.com/hridaya423/flavortownutils/refs/heads/main/data/lbfeed.json';
-function getSlackEmojiUrl() {
-    return 'https://raw.githubusercontent.com/hridaya423/flavortownutils/refs/heads/main/data/emojis.json';
-}
-
 const SLACK_EMOJI_MARKDOWN_SIZE = 30;
 
 async function fetchVotesData() {
@@ -7587,30 +7584,32 @@ async function fetchSlackEmojiMap() {
     if (slackEmojiMap) return slackEmojiMap;
     if (slackEmojiPromise) return slackEmojiPromise;
 
-    const emojiUrl = getSlackEmojiUrl();
-    slackEmojiPromise = fetch(emojiUrl)
-        .then(response => {
-            if (!response.ok) return null;
-            return response.json();
-        })
+    const emojiUrl = SLACK_EMOJI_URL;
+    slackEmojiPromise = fetchEmojiListViaBackground(emojiUrl)
         .then(data => {
-            const emojiData = data && typeof data === 'object' ? (data.emoji || data) : null;
-            if (!emojiData || typeof emojiData !== 'object') {
+            if (!data) {
                 slackEmojiMap = {};
                 slackEmojiIndex = [];
                 return slackEmojiMap;
             }
 
-            const map = {};
-            Object.keys(emojiData).forEach(name => {
-                const entry = emojiData[name];
-                const url = typeof entry === 'string' ? entry : entry?.url;
-                if (!url || !url.startsWith('http')) return;
-                map[name] = {
-                    url,
-                    animated: typeof entry === 'object' ? !!entry.animated : url.toLowerCase().endsWith('.gif'),
-                };
-            });
+            let map = {};
+            if (Array.isArray(data)) {
+                map = buildEmojiMapFromCachet(data);
+            } else if (data && typeof data === 'object') {
+                const emojiData = data.emoji || data;
+                if (emojiData && typeof emojiData === 'object' && !Array.isArray(emojiData)) {
+                    Object.keys(emojiData).forEach(name => {
+                        const entry = emojiData[name];
+                        const url = typeof entry === 'string' ? entry : entry?.url;
+                        if (!url || !url.startsWith('http')) return;
+                        map[name] = {
+                            url,
+                            animated: typeof entry === 'object' ? !!entry.animated : url.toLowerCase().endsWith('.gif'),
+                        };
+                    });
+                }
+            }
 
             slackEmojiMap = map;
             slackEmojiIndex = Object.keys(map).sort();
@@ -7627,6 +7626,70 @@ async function fetchSlackEmojiMap() {
         });
 
     return slackEmojiPromise;
+}
+
+function fetchEmojiListViaBackground(url) {
+    return new Promise((resolve, reject) => {
+        try {
+            browserAPI.runtime.sendMessage({ type: 'FETCH_EMOJI_LIST', url }, (response) => {
+                const err = browserAPI.runtime.lastError;
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                if (!response || !response.ok) {
+                    reject(new Error(response?.error || 'Failed to fetch emojis'));
+                    return;
+                }
+                resolve(response.data);
+            });
+        } catch (error) {
+            reject(error);
+        }
+    });
+}
+
+function buildEmojiMapFromCachet(list) {
+    const entries = new Map();
+
+    list.forEach(item => {
+        if (!item || !item.name) return;
+        entries.set(item.name, {
+            url: item.imageUrl || '',
+            alias: item.alias || ''
+        });
+    });
+
+    const resolved = {};
+
+    const resolveUrl = (name, visited = new Set()) => {
+        if (!name || visited.has(name)) return '';
+        visited.add(name);
+        const entry = entries.get(name);
+        if (!entry) return '';
+        if (entry.url && entry.url.startsWith('http')) return entry.url;
+        if (entry.alias) {
+            const aliasName = entry.alias
+                .replace(/^alias:/i, '')
+                .replace(/^:/, '')
+                .replace(/:$/, '')
+                .trim();
+            if (!aliasName || aliasName === name) return '';
+            return resolveUrl(aliasName, visited);
+        }
+        return '';
+    };
+
+    entries.forEach((_, name) => {
+        const url = resolveUrl(name);
+        if (!url) return;
+        resolved[name] = {
+            url,
+            animated: url.toLowerCase().endsWith('.gif')
+        };
+    });
+
+    return resolved;
 }
 
 function getEmojiQuery(text, cursor) {

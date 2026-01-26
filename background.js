@@ -30,6 +30,30 @@ browserAPI.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
         return true;
     }
+
+    if (message.type === 'FETCH_EMOJI_LIST') {
+        const url = message.url;
+        if (!url) {
+            sendResponse({ ok: false, error: 'Missing url' });
+            return false;
+        }
+
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                sendResponse({ ok: true, data });
+            })
+            .catch(err => {
+                sendResponse({ ok: false, error: err.message });
+            });
+
+        return true;
+    }
 });
 
 function loadImageIntoShotsso(imageDataUrl, secondImageDataUrl) {
@@ -260,4 +284,3 @@ function loadImageIntoShotsso(imageDataUrl, secondImageDataUrl) {
         }
     })();
 }
-

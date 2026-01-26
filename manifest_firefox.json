@@ -9,7 +9,8 @@
         "clipboardRead",
         "clipboardWrite",
         "https://flavortown.hackclub.com/*",
-        "https://shots.so/*"
+        "https://shots.so/*",
+        "https://cachet.dunkirk.sh/*"
     ],
     "browser_action": {
         "default_popup": "popup.html",

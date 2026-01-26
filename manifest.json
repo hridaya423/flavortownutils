@@ -11,7 +11,8 @@
     ],
     "host_permissions": [
         "https://shots.so/*",
-        "https://flavortown.hackclub.com/*"
+        "https://flavortown.hackclub.com/*",
+        "https://cachet.dunkirk.sh/*"
     ],
     "action": {
         "default_popup": "popup.html",
