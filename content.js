@@ -103,6 +103,7 @@ const SHIP_TIME_CACHE_KEY = 'flavortown_ship_minutes';
 const SHIP_TIME_CACHE_TTL = 24 * 60 * 60 * 1000;
 const PROJECT_UNSHIPPED_CACHE_KEY = 'flavortown_project_unshipped';
 const PROJECT_UNSHIPPED_CACHE_TTL = 24 * 60 * 60 * 1000;
+const PROJECT_UNSHIPPED_CLEANUP_KEY = 'flavortown_project_unshipped_cleanup';
 const LOCAL_STORAGE_SYNC_ENABLED_KEY = 'flavortownLocalStorageSyncEnabled';
 const LOCAL_STORAGE_SYNC_KEY = 'flavortownLocalStorageSync';
 const LOCAL_STORAGE_IMPORT_KEY = 'flavortownLocalStorageImport';
@@ -1196,8 +1197,85 @@ function getCachedProjectUnshipped(projectId) {
     return cache[projectId] || null;
 }
 
+function getCurrentUserName() {
+    const nameEl = document.querySelector('.sidebar__user-name');
+    if (!nameEl) return null;
+    return nameEl.textContent.trim();
+}
+
+function getProjectOwnerName() {
+    const byline = document.querySelector('.project-show-card__byline');
+    if (!byline) return null;
+    const link = byline.querySelector('a');
+    if (link) return link.textContent.trim();
+    const text = byline.textContent || '';
+    const match = text.match(/Created by:\s*(.+)/i);
+    return match ? match[1].trim() : null;
+}
+
+function getProjectOwnerNameFromDocument(doc) {
+    if (!doc) return null;
+    const byline = doc.querySelector('.project-show-card__byline');
+    if (!byline) return null;
+    const link = byline.querySelector('a');
+    if (link) return link.textContent.trim();
+    const text = byline.textContent || '';
+    const match = text.match(/Created by:\s*(.+)/i);
+    return match ? match[1].trim() : null;
+}
+
+function normalizeOwnerName(name) {
+    return (name || '').toLowerCase().replace(/\s+/g, ' ').trim();
+}
+
+function isProjectOwnedByCurrentUser() {
+    if (!/\/projects\/\d+$/.test(window.location.pathname)) return false;
+    const currentUser = getCurrentUserName();
+    const owner = getProjectOwnerName();
+    if (!currentUser || !owner) return false;
+    return normalizeOwnerName(currentUser) === normalizeOwnerName(owner);
+}
+
+async function cleanupUnownedUnshippedCache() {
+    const currentUser = getCurrentUserName();
+    if (!currentUser) return;
+
+    const lastRun = parseInt(localStorage.getItem(PROJECT_UNSHIPPED_CLEANUP_KEY) || '0', 10);
+    const now = Date.now();
+    if (lastRun && now - lastRun < 24 * 60 * 60 * 1000) return;
+    localStorage.setItem(PROJECT_UNSHIPPED_CLEANUP_KEY, String(now));
+
+    const cache = readProjectUnshippedCache();
+    const projectIds = Object.keys(cache);
+    if (!projectIds.length) return;
+
+    const normalizedUser = normalizeOwnerName(currentUser);
+    let changed = false;
+
+    for (const projectId of projectIds) {
+        try {
+            const response = await fetch(`/projects/${projectId}`, { credentials: 'same-origin' });
+            if (!response.ok) continue;
+            const html = await response.text();
+            const doc = new DOMParser().parseFromString(html, 'text/html');
+            const owner = getProjectOwnerNameFromDocument(doc);
+            if (!owner) continue;
+            if (normalizeOwnerName(owner) !== normalizedUser) {
+                delete cache[projectId];
+                changed = true;
+            }
+        } catch (e) {
+        }
+    }
+
+    if (changed) {
+        writeProjectUnshippedCache(cache);
+    }
+}
+
 function setCachedProjectUnshipped(projectId, entry) {
     if (!projectId || !entry) return;
+    if (!isProjectOwnedByCurrentUser()) return;
     const cache = readProjectUnshippedCache();
     cache[projectId] = {
         totalMinutes: Math.max(0, entry.totalMinutes || 0),
@@ -4321,6 +4399,7 @@ function init() {
     setupInlineDevlogEditing();
     enhanceCommentEmojiInputs();
     watchCommentEmojiInputs();
+    cleanupUnownedUnshippedCache();
     enhanceShopGoals();
     initShopAccessories();
     addShopCardEfficiency();
@@ -5681,6 +5760,7 @@ document.addEventListener('turbo:load', () => {
     setTimeout(enhanceLeaderboardPage, 0);
     enhanceCommentEmojiInputs();
     watchCommentEmojiInputs();
+    cleanupUnownedUnshippedCache();
     addDoomscrollMode();
     addAdminViewButton();
     addSidebarItems();
