@@ -3728,7 +3728,7 @@ function showShopGoalsOrderToast(changes) {
     toast.className = 'flavortown-achievement-toast flavortown-order-sync-toast';
     toast.innerHTML = `
         <div class="flavortown-achievement-toast__content">
-            <div class="flavortown-achievement-toast__title">🧾 Goals updated from recent orders</div>
+            <div class="flavortown-achievement-toast__title">Goals updated from recent orders</div>
             <div class="flavortown-achievement-toast__names">
                 Removed: ${summaryText}${moreCount > 0 ? ` +${moreCount} more` : ''}
             </div>
@@ -5773,6 +5773,14 @@ function addDoomscrollMode() {
                 }
             });
         }
+
+        card.addEventListener('dblclick', (e) => {
+            const isInteractive = e.target.closest('button, a, input, textarea, .flavortown-doomscroll__comment-form, .flavortown-doomscroll__actions');
+            if (isInteractive) return;
+            if (!likeBtn) return;
+            if (likeBtn.classList.contains('is-liked')) return;
+            likeBtn.click();
+        });
 
         const commentInput = card.querySelector('.flavortown-doomscroll__comment-input');
         const commentSubmit = card.querySelector('.flavortown-doomscroll__comment-submit');
