@@ -1,7 +1,14 @@
 {
-  "lastUpdated": "2026-01-26T09:32:50.710Z",
-  "totalVotes": 1513,
+  "lastUpdated": "2026-01-26T10:25:18.549Z",
+  "totalVotes": 1514,
   "votes": [
+    {
+      "project": "net-dashboard",
+      "feedback": "The project is itself amazing, but the README.md file requires an installation guide in the running locally part, not sure about the docker one. A non-tech consumer or beginner might not understand what to do initially since his pip install script might not work. But others are great in my opinion. KUDOS Mate ;).",
+      "votedBy": "U0AAT8UBY6N",
+      "timestamp": "2026-01-26T10:10:10.941Z",
+      "slackTs": "1769422210.941879"
+    },
     {
       "project": "Contribute to <http://ysws.hackclub.com|ysws.hackclub.com>",
       "feedback": "Great for inspiring people to do programming!",
@@ -11514,6 +11521,12 @@
       "username": "pluscompanyhqdept",
       "displayName": "pluscompanyhqdept",
       "avatar": "https://secure.gravatar.com/avatar/af7a795b05f689fa15e9ab4c8bc7bd02.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0019-72.png"
+    },
+    "U0AAT8UBY6N": {
+      "id": "U0AAT8UBY6N",
+      "username": "khandehemakesh",
+      "displayName": "khandehemakesh",
+      "avatar": "https://secure.gravatar.com/avatar/e88c568b7a8bfa4e08ef7815d3802f86.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0011-72.png"
     }
   }
 }

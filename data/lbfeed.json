@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-01-26T09:34:06.180Z",
+  "lastUpdated": "2026-01-26T10:26:59.804Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -8643,6 +8643,24 @@
         "userId": "U0997QRM51V"
       }
     ],
+    "u099d74caur": [
+      {
+        "ts": "2026-01-26T09:35:51.475Z",
+        "delta": 15,
+        "balance": 27,
+        "reason": "Cookbook Author",
+        "reasonType": "achievement",
+        "userId": "U099D74CAUR"
+      },
+      {
+        "ts": "2026-01-26T09:37:42.964Z",
+        "delta": 10,
+        "balance": 37,
+        "reason": "Line Cook",
+        "reasonType": "achievement",
+        "userId": "U099D74CAUR"
+      }
+    ],
     "u099jenaugp": [
       {
         "ts": "2025-12-24T00:18:48.733Z",
@@ -13655,6 +13673,16 @@
         "userId": "U0A5NKH93BJ"
       }
     ],
+    "u0a5tl58utw": [
+      {
+        "ts": "2026-01-26T10:06:41.161Z",
+        "delta": 10,
+        "balance": 10,
+        "reason": "user grant",
+        "reasonType": "",
+        "userId": "U0A5TL58UTW"
+      }
+    ],
     "u0a5u53hd0f": [
       {
         "ts": "2026-01-01T17:51:16.380Z",
@@ -18607,6 +18635,17 @@
     ]
   },
   "users": {
+    "U0A5TL58UTW": {
+      "id": "U0A5TL58UTW",
+      "username": "reii.meteoritics",
+      "displayName": "Luci",
+      "avatar": "https://avatars.slack-edge.com/2026-01-01/10213685935029_bb9a4797b03a7a91ccdd_72.png"
+    },
+    "U099D74CAUR": {
+      "id": "U099D74CAUR",
+      "username": "mittal.rishabh2010",
+      "avatar": "https://secure.gravatar.com/avatar/bf9d674ef449e90503cb78983935a26a.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0018-72.png"
+    },
     "U0A7CQD6W1E": {
       "id": "U0A7CQD6W1E",
       "username": "m8000",
