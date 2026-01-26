@@ -9389,13 +9389,24 @@ const TUTORIAL_PHASE_2 = [
     {
         id: 'inline-devlog',
         title: 'Inline devlog posting',
-        description: 'Post devlogs right from your project page, no more extra step of clicking a button Let me show you...',
+        description: 'Post devlogs right from your project page, no extra step of clicking a button. Let me show you...',
         afterNavDescription: 'Here you go! Look for the devlog form right here on the project page. Quick and easy.',
         target: null,
         afterNavTarget: '.flavortown-inline-devlog, .post-form, form[action*="devlogs"]',
         position: 'center',
         icon: '📝',
         interactive: 'navigate-project-devlog'
+    },
+    {
+        id: 'inline-devlog-emoji',
+        title: 'Slack emojis in devlogs and comments',
+        description: 'Try typing a Slack emoji like :yay: to see the autocomplete. You can also use them in comments! ',
+        target: '.flavortown-inline-devlog textarea, .post-form textarea, form[action*="devlogs"] textarea',
+        position: 'center',
+        icon: '😺',
+        requiresElement: true,
+        allowInteraction: true,
+        autoFocusTarget: true
     },
     {
         id: 'vote-stats',
@@ -9558,6 +9569,14 @@ const TUTORIAL_PHASE_3 = [
 ];
 
 const VERSION_FEATURES = {
+    '2.2.0': [
+        { title: 'Slack emojis in devlogs & comments', description: 'Type :emoji: with autocomplete, and it renders for everyone.', icon: '💬' },
+        { title: 'Leaderboard balance history', description: 'Click a user to see their cookie history graph and stats.', icon: '📈' },
+        { title: 'Recent balance change on leaderboard', description: 'See the past 5 day change right next to each user.', icon: '🍪' },
+        { title: 'Shop goals auto-change', description: 'Orders now reduce goal quantities with a quick toast + animation.', icon: '🛒' },
+        { title: 'Syncing settings/data across devices', description: 'Your settings and data are now synced across all devices.', icon: '🔄' },
+        { title: 'Tutorial improvements', description: 'Add major new features to the onboarding experience for new users', icon: '💡' }
+    ],
     '2.1.0': [
         { title: 'Zero-flash themes', description: 'Themes now preload before paint to avoid the default flash.', icon: '✨' },
         { title: 'Vote estimation', description: 'Estimated overall stars and category medians from payout rates.', icon: '⭐' },
@@ -10879,6 +10898,10 @@ class TutorialController {
         const found = this.findTargetMatch(targetSelectors, false);
         let target = found ? found.el : null;
 
+        if (this.overlay) {
+            this.overlay.style.pointerEvents = step.allowInteraction ? 'none' : 'auto';
+        }
+
         if (found && step.afterNavTarget && (!step.target || found.selector !== step.target)) {
             displayStep = { ...step };
             if (step.afterNavDescription) {
@@ -10948,10 +10971,16 @@ class TutorialController {
                     if (this.currentStep !== index) return;
                     this.createSpotlight(target, step.id);
                     this.createModal(displayStep, index);
+                    if (step.autoFocusTarget && typeof target.focus === 'function') {
+                        setTimeout(() => target.focus(), 150);
+                    }
                 }, 600);
                 return;
             }
             this.createSpotlight(target, step.id);
+            if (step.autoFocusTarget && typeof target.focus === 'function') {
+                setTimeout(() => target.focus(), 150);
+            }
         } else if (this.overlay) {
             this.overlay.style.opacity = '1';
         }
