@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-01-26T05:33:39.816Z",
+  "lastUpdated": "2026-01-26T06:36:18.614Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -2475,6 +2475,16 @@
         "reason": "unknown",
         "reasonType": "",
         "userId": "U08085HEAV8"
+      }
+    ],
+    "u080a3qp42c": [
+      {
+        "ts": "2026-01-26T06:03:50.917Z",
+        "delta": -10,
+        "balance": 8,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U080A3QP42C"
       }
     ],
     "u080dsmn3e1": [
@@ -18549,6 +18559,12 @@
     ]
   },
   "users": {
+    "U080A3QP42C": {
+      "id": "U080A3QP42C",
+      "username": "echo",
+      "displayName": "Rowan",
+      "avatar": "https://avatars.slack-edge.com/2025-12-28/10184647732855_88e7d912bc07eca7dc04_72.jpg"
+    },
     "U09E9GMP2TX": {
       "id": "U09E9GMP2TX",
       "username": "shaswatkumar9868",
