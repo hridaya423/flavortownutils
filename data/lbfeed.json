@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-01-26T14:29:17.569Z",
+  "lastUpdated": "2026-01-26T15:29:24.276Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -895,6 +895,16 @@
         "reason": "user grant",
         "reasonType": "",
         "userId": "U07950S3GMC"
+      }
+    ],
+    "u0795gzag6m": [
+      {
+        "ts": "2026-01-26T15:27:07.721Z",
+        "delta": 3,
+        "balance": 13,
+        "reason": "Order Up!",
+        "reasonType": "achievement",
+        "userId": "U0795GZAG6M"
       }
     ],
     "u079e6v7r28": [
@@ -5200,6 +5210,14 @@
         "balance": 5,
         "reason": "shop purchase",
         "reasonType": "",
+        "userId": "U0905G0BRU5"
+      },
+      {
+        "ts": "2026-01-26T15:03:46.683Z",
+        "delta": 5,
+        "balance": 10,
+        "reason": "Very Fried",
+        "reasonType": "achievement",
         "userId": "U0905G0BRU5"
       }
     ],
@@ -18693,6 +18711,18 @@
     ]
   },
   "users": {
+    "U0795GZAG6M": {
+      "id": "U0795GZAG6M",
+      "username": "gabs",
+      "displayName": "Gabs",
+      "avatar": "https://secure.gravatar.com/avatar/2b56ad17ddceebd76b99e77d699a5bcf.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0014-72.png"
+    },
+    "U0905G0BRU5": {
+      "id": "U0905G0BRU5",
+      "username": "moritz.leisner",
+      "displayName": "Fantamomo",
+      "avatar": "https://secure.gravatar.com/avatar/77e1e7f3943b1d97a1414576883ad736.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0006-72.png"
+    },
     "U054VC2KM9P": {
       "id": "U054VC2KM9P",
       "username": "amber",
@@ -20127,12 +20157,6 @@
       "username": "naranbhusal02",
       "displayName": "Naran",
       "avatar": "https://avatars.slack-edge.com/2025-04-07/8720332079652_6ec68352d4eb2916c8ff_72.png"
-    },
-    "U0905G0BRU5": {
-      "id": "U0905G0BRU5",
-      "username": "moritz.leisner",
-      "displayName": "Fantamomo",
-      "avatar": "https://secure.gravatar.com/avatar/77e1e7f3943b1d97a1414576883ad736.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0006-72.png"
     },
     "U0A7DL5C85A": {
       "id": "U0A7DL5C85A",
@@ -21787,7 +21811,7 @@
       "id": "U085L7P77EV",
       "username": "aregazatyank",
       "displayName": "Areg Azatyan",
-      "avatar": "https://avatars.slack-edge.com/2026-01-26/10370013545973_a1d398fd1fb6a09596b0_72.jpg"
+      "avatar": "https://avatars.slack-edge.com/2026-01-26/10386530748977_f9be970e88ac730568d7_72.jpg"
     },
     "U07V73EEF42": {
       "id": "U07V73EEF42",
