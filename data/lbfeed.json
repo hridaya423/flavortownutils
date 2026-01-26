@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-01-26T10:26:59.804Z",
+  "lastUpdated": "2026-01-26T11:21:28.501Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -10737,6 +10737,14 @@
         "reason": "Michelin Star",
         "reasonType": "achievement",
         "userId": "U0A0A0S987Q"
+      },
+      {
+        "ts": "2026-01-26T10:49:44.954Z",
+        "delta": 15,
+        "balance": 55,
+        "reason": "Cookbook Author",
+        "reasonType": "achievement",
+        "userId": "U0A0A0S987Q"
       }
     ],
     "u0a0e74d8lc": [
@@ -18635,6 +18643,12 @@
     ]
   },
   "users": {
+    "U0A0A0S987Q": {
+      "id": "U0A0A0S987Q",
+      "username": "sanderhoudijk10",
+      "displayName": "sanderhd",
+      "avatar": "https://avatars.slack-edge.com/2026-01-20/10332803089654_d66821c6755b103227d6_72.jpg"
+    },
     "U0A5TL58UTW": {
       "id": "U0A5TL58UTW",
       "username": "reii.meteoritics",
@@ -19918,12 +19932,6 @@
       "username": "bvadasz04",
       "displayName": "bvadasz04",
       "avatar": "https://secure.gravatar.com/avatar/28904b1b334d9718d88caba339ad0662.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0023-72.png"
-    },
-    "U0A0A0S987Q": {
-      "id": "U0A0A0S987Q",
-      "username": "sanderhoudijk10",
-      "displayName": "sanderhd",
-      "avatar": "https://avatars.slack-edge.com/2026-01-20/10332803089654_d66821c6755b103227d6_72.jpg"
     },
     "U0A1SGYEXPW": {
       "id": "U0A1SGYEXPW",
@@ -21724,7 +21732,7 @@
       "id": "U085L7P77EV",
       "username": "aregazatyank",
       "displayName": "Areg Azatyan",
-      "avatar": "https://avatars.slack-edge.com/2026-01-26/10368397432501_4cf371f73009ea3a74f5_72.jpg"
+      "avatar": "https://avatars.slack-edge.com/2026-01-26/10369009011877_804061add82ee1cf12e0_72.jpg"
     },
     "U07V73EEF42": {
       "id": "U07V73EEF42",
