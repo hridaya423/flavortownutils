@@ -1858,7 +1858,16 @@ function parseMarkdown(text) {
         html = html.replace(/~~([^~]+)~~/g, '<del>$1</del>');
         html = html.replace(/&lt;u&gt;(.+?)&lt;\/u&gt;/g, '<u>$1</u>');
 
-        html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" class="flavortown-md-img">');
+        html = html.replace(/!\[([^\]]*)\]\(([^)\s]+)(?:\s*=\s*(\d+)(?:x(\d+))?)?\)/g, (_, alt, url, width, height) => {
+            let sizeAttrs = '';
+            if (width) {
+                sizeAttrs += ` width="${width}"`;
+                if (height) {
+                    sizeAttrs += ` height="${height}"`;
+                }
+            }
+            return `<img src="${url}" alt="${alt}" class="flavortown-md-img"${sizeAttrs}>`;
+        });
 
         html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
 
@@ -1896,9 +1905,17 @@ function replaceEmojiTokensInHtml(html) {
         const entry = slackEmojiMap[name];
         if (!entry || !entry.url) return match;
         const safeName = name.replace(/"/g, '');
-        const url = entry.url;
-        return `<img src="${url}" alt=":${safeName}:" title=":${safeName}:" class="flavortown-slack-emoji" style="height: 1.1em; width: 1.1em; vertical-align: -0.15em; display: inline-block;" />`;
+        const url = buildEmojiProxyUrl(entry.url);
+        const size = SLACK_EMOJI_MARKDOWN_SIZE;
+        return `<img src="${url}" alt=":${safeName}:" title=":${safeName}:" class="flavortown-slack-emoji" style="height: ${size}px; width: ${size}px; vertical-align: -0.15em; display: inline-block;" />`;
     });
+}
+
+function buildEmojiProxyUrl(url) {
+    if (!url) return '';
+    const encoded = encodeURIComponent(url);
+    const size = SLACK_EMOJI_MARKDOWN_SIZE;
+    return `https://images.weserv.nl/?url=${encoded}&w=${size}&h=${size}&fit=contain&n=-1`;
 }
 
 function addLivePreview(textarea, toolbar) {
@@ -2340,6 +2357,7 @@ function createDevlogEditUI(postElement, postBody, currentText, originalHtml, cs
     postBody.appendChild(editWrapper);
 
     addInlineEditToolbar(textarea, inputWrapper);
+    initSlackEmojiAutocomplete(textarea, inputWrapper);
 
     textarea.focus();
 
@@ -2431,8 +2449,9 @@ async function saveDevlogEdit(newBody, csrfToken, formAction, postBody, editWrap
     saveBtn.disabled = true;
 
     try {
+        const processedBody = replaceEmojiTokensWithImages(newBody);
         const formData = new FormData();
-        formData.append('post_devlog[body]', newBody);
+        formData.append('post_devlog[body]', processedBody);
         formData.append('authenticity_token', csrfToken);
         formData.append('_method', 'patch');
 
@@ -2459,7 +2478,7 @@ async function saveDevlogEdit(newBody, csrfToken, formAction, postBody, editWrap
                 }
             }
 
-            const updatedHtml = simpleMarkdownToHtml(newBody);
+            const updatedHtml = simpleMarkdownToHtml(processedBody);
             postBody.innerHTML = updatedHtml;
         } else {
             throw new Error('Save failed');
@@ -7547,6 +7566,8 @@ function getSlackEmojiUrl() {
     return 'https://raw.githubusercontent.com/hridaya423/flavortownutils/refs/heads/main/data/emojis.json';
 }
 
+const SLACK_EMOJI_MARKDOWN_SIZE = 30;
+
 async function fetchVotesData() {
     try {
         const response = await fetch(VOTES_JSON_URL);
@@ -7653,7 +7674,8 @@ function replaceEmojiTokensWithImages(text) {
         const entry = slackEmojiMap[name];
         if (!entry || !entry.url) return match;
         const safeName = name.replace(/"/g, '');
-        return `![${safeName}](${entry.url})`;
+        const proxyUrl = buildEmojiProxyUrl(entry.url);
+        return `![${safeName}](${proxyUrl})`;
     });
 }
 
