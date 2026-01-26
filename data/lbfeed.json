@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-01-26T11:21:28.501Z",
+  "lastUpdated": "2026-01-26T12:45:57.119Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -2319,6 +2319,32 @@
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U07UV4R2G4T"
+      }
+    ],
+    "u07v12xbsf6": [
+      {
+        "ts": "2026-01-26T12:28:55.561Z",
+        "delta": 2,
+        "balance": 10,
+        "reason": "Recipe Notes",
+        "reasonType": "achievement",
+        "userId": "U07V12XBSF6"
+      },
+      {
+        "ts": "2026-01-26T12:28:56.872Z",
+        "delta": 3,
+        "balance": 13,
+        "reason": "Order Up!",
+        "reasonType": "achievement",
+        "userId": "U07V12XBSF6"
+      },
+      {
+        "ts": "2026-01-26T12:28:57.000Z",
+        "delta": 3,
+        "balance": 16,
+        "reason": "Michelin Star",
+        "reasonType": "achievement",
+        "userId": "U07V12XBSF6"
       }
     ],
     "u07v73eef42": [
@@ -15593,6 +15619,14 @@
         "reason": "Michelin Star",
         "reasonType": "achievement",
         "userId": "U0A77LT77PC"
+      },
+      {
+        "ts": "2026-01-26T11:28:32.926Z",
+        "delta": 10,
+        "balance": 43,
+        "reason": "Line Cook",
+        "reasonType": "achievement",
+        "userId": "U0A77LT77PC"
       }
     ],
     "u0a77s7p37c": [
@@ -18485,6 +18519,14 @@
         "reason": "Michelin Star",
         "reasonType": "achievement",
         "userId": "U0AA95YCSAU"
+      },
+      {
+        "ts": "2026-01-26T12:21:49.054Z",
+        "delta": 3,
+        "balance": 21,
+        "reason": "tutorial",
+        "reasonType": "",
+        "userId": "U0AA95YCSAU"
       }
     ],
     "u0aas4e80n6": [
@@ -18643,6 +18685,23 @@
     ]
   },
   "users": {
+    "U07V12XBSF6": {
+      "id": "U07V12XBSF6",
+      "username": "praneetnrana",
+      "avatar": "https://avatars.slack-edge.com/2024-11-06/7981633353766_2c1d416704c08bf78e03_72.png"
+    },
+    "U0AA95YCSAU": {
+      "id": "U0AA95YCSAU",
+      "username": "idreesmuhammadqazi",
+      "displayName": "idreesmuhammadqazi",
+      "avatar": "https://secure.gravatar.com/avatar/03efafc9e7166743c545039051f50bff.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0019-72.png"
+    },
+    "U0A77LT77PC": {
+      "id": "U0A77LT77PC",
+      "username": "y2marcos1010",
+      "displayName": "marcos",
+      "avatar": "https://avatars.slack-edge.com/2026-01-07/10245440465526_fe906df01566f8d86aa0_72.png"
+    },
     "U0A0A0S987Q": {
       "id": "U0A0A0S987Q",
       "username": "sanderhoudijk10",
@@ -18671,12 +18730,6 @@
       "username": "me1758",
       "displayName": "Hyeonjin",
       "avatar": "https://secure.gravatar.com/avatar/b7883dd3defa91f26fe271809c9ca024.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0015-72.png"
-    },
-    "U0AA95YCSAU": {
-      "id": "U0AA95YCSAU",
-      "username": "idreesmuhammadqazi",
-      "displayName": "idreesmuhammadqazi",
-      "avatar": "https://secure.gravatar.com/avatar/03efafc9e7166743c545039051f50bff.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0019-72.png"
     },
     "U080DSMN3E1": {
       "id": "U080DSMN3E1",
@@ -18763,12 +18816,6 @@
       "id": "U096NGLTF4K",
       "username": "lordseriouspig",
       "avatar": "https://avatars.slack-edge.com/2025-08-03/9311717326353_c74908988c852687be47_72.jpg"
-    },
-    "U0A77LT77PC": {
-      "id": "U0A77LT77PC",
-      "username": "y2marcos1010",
-      "displayName": "marcos",
-      "avatar": "https://avatars.slack-edge.com/2026-01-07/10245440465526_fe906df01566f8d86aa0_72.png"
     },
     "U07LKN2HXT3": {
       "id": "U07LKN2HXT3",
@@ -21732,7 +21779,7 @@
       "id": "U085L7P77EV",
       "username": "aregazatyank",
       "displayName": "Areg Azatyan",
-      "avatar": "https://avatars.slack-edge.com/2026-01-26/10369009011877_804061add82ee1cf12e0_72.jpg"
+      "avatar": "https://avatars.slack-edge.com/2026-01-26/10401111594832_0c1416906c1b25cef025_72.jpg"
     },
     "U07V73EEF42": {
       "id": "U07V73EEF42",
