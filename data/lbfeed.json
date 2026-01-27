@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-01-27T10:28:09.936Z",
+  "lastUpdated": "2026-01-27T11:22:57.141Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -5974,6 +5974,14 @@
         "balance": 16,
         "reason": "Michelin Star",
         "reasonType": "achievement",
+        "userId": "U091L5DCGUF"
+      },
+      {
+        "ts": "2026-01-27T11:16:20.457Z",
+        "delta": 17,
+        "balance": 33,
+        "reason": "payout",
+        "reasonType": "payout",
         "userId": "U091L5DCGUF"
       }
     ],
@@ -11964,6 +11972,14 @@
         "balance": 28,
         "reason": "Michelin Star",
         "reasonType": "achievement",
+        "userId": "U0A1KGW04LE"
+      },
+      {
+        "ts": "2026-01-27T11:15:54.103Z",
+        "delta": 7,
+        "balance": 35,
+        "reason": "tutorial",
+        "reasonType": "",
         "userId": "U0A1KGW04LE"
       }
     ],
@@ -19821,6 +19837,17 @@
     ]
   },
   "users": {
+    "U091L5DCGUF": {
+      "id": "U091L5DCGUF",
+      "username": "ohmtzoe",
+      "displayName": "Natpakan Tabudda (Ohm)",
+      "avatar": "https://avatars.slack-edge.com/2025-06-18/9054211448167_7b7545bf1556deaa052b_72.jpg"
+    },
+    "U0A1KGW04LE": {
+      "id": "U0A1KGW04LE",
+      "username": "awesomerocket1000",
+      "avatar": "https://avatars.slack-edge.com/2026-01-11/10287239783745_1056f486ad96e66c08bb_72.gif"
+    },
     "U0A19UWEN3G": {
       "id": "U0A19UWEN3G",
       "username": "heitorjcastilho",
@@ -20435,11 +20462,6 @@
       "id": "U0AAS4E80N6",
       "username": "louiskhooxunfu",
       "avatar": "https://secure.gravatar.com/avatar/a41e9ee81cea998b989dc616d257d219.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0000-72.png"
-    },
-    "U0A1KGW04LE": {
-      "id": "U0A1KGW04LE",
-      "username": "awesomerocket1000",
-      "avatar": "https://avatars.slack-edge.com/2026-01-11/10287239783745_1056f486ad96e66c08bb_72.gif"
     },
     "U093W83M9F0": {
       "id": "U093W83M9F0",
@@ -22656,12 +22678,6 @@
       "username": "melodictyper",
       "displayName": "Melodic",
       "avatar": "https://avatars.slack-edge.com/2025-06-30/9113446513287_7ed56e0b06a779c3191a_72.jpg"
-    },
-    "U091L5DCGUF": {
-      "id": "U091L5DCGUF",
-      "username": "ohmtzoe",
-      "displayName": "Natpakan Tabudda (Ohm)",
-      "avatar": "https://avatars.slack-edge.com/2025-06-18/9054211448167_7b7545bf1556deaa052b_72.jpg"
     },
     "U0807ADEC6L": {
       "id": "U0807ADEC6L",
