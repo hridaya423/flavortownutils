@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-01-27T21:25:44.980Z",
+  "lastUpdated": "2026-01-27T21:45:47.965Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -10027,6 +10027,14 @@
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U09A7GEM760"
+      },
+      {
+        "ts": "2026-01-27T21:31:36.474Z",
+        "delta": 5,
+        "balance": 124,
+        "reason": "tutorial",
+        "reasonType": "",
+        "userId": "U09A7GEM760"
       }
     ],
     "u09a9m4taf5": [
@@ -10704,6 +10712,14 @@
         "balance": 53,
         "reason": "Cookbook Author",
         "reasonType": "achievement",
+        "userId": "U09GESRAC8J"
+      },
+      {
+        "ts": "2026-01-27T21:37:08.497Z",
+        "delta": 46,
+        "balance": 99,
+        "reason": "payout",
+        "reasonType": "payout",
         "userId": "U09GESRAC8J"
       }
     ],
@@ -20519,6 +20535,16 @@
     ]
   },
   "users": {
+    "U09GESRAC8J": {
+      "id": "U09GESRAC8J",
+      "username": "logmedha09",
+      "avatar": "https://avatars.slack-edge.com/2025-10-04/9631445759459_d42e2da9679aa9101783_72.png"
+    },
+    "U09A7GEM760": {
+      "id": "U09A7GEM760",
+      "username": "sadiyameem123",
+      "avatar": "https://avatars.slack-edge.com/2025-12-13/10144998433360_d12c0c70edd22615e94d_72.png"
+    },
     "U0A58CRBLKT": {
       "id": "U0A58CRBLKT",
       "username": "joaquimcassano",
@@ -20991,11 +21017,6 @@
       "username": "diceysnikey",
       "displayName": "diceysnikey",
       "avatar": "https://avatars.slack-edge.com/2026-01-05/10232020814470_072072deb9d6daa9e0ff_72.png"
-    },
-    "U09A7GEM760": {
-      "id": "U09A7GEM760",
-      "username": "sadiyameem123",
-      "avatar": "https://avatars.slack-edge.com/2025-12-13/10144998433360_d12c0c70edd22615e94d_72.png"
     },
     "U09JFS1BU2V": {
       "id": "U09JFS1BU2V",
@@ -22813,11 +22834,6 @@
       "username": "wavyware1",
       "displayName": "wavyware1",
       "avatar": "https://avatars.slack-edge.com/2026-01-11/10272039604614_9e9e5d1340d38a512b86_72.jpg"
-    },
-    "U09GESRAC8J": {
-      "id": "U09GESRAC8J",
-      "username": "logmedha09",
-      "avatar": "https://avatars.slack-edge.com/2025-10-04/9631445759459_d42e2da9679aa9101783_72.png"
     },
     "U0926U54UJV": {
       "id": "U0926U54UJV",
