@@ -2401,11 +2401,19 @@ a:hover {
 }
 
 .shop-order__accessory-option-block {
-    background-color: var(--sea-mid) !important;
+    position: relative !important;
+    overflow: hidden !important;
+    background: var(--sea-mid) !important;
+    background-image: none !important;
     border: 2px solid var(--sea-surface) !important;
     color: var(--sea-white) !important;
     border-radius: 8px !important;
     transition: all 0.2s ease !important;
+}
+
+.shop-order__accessories .shop-order__accessory-option-block {
+    background: var(--sea-mid) !important;
+    background-image: none !important;
 }
 
 .shop-order__accessory-option-block:hover {

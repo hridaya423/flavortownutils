@@ -652,6 +652,47 @@ function addDevlogFrequencyStat() {
     statsContainer.appendChild(frequencyStat);
 }
 
+function addVotesDevlogFrequencyStat() {
+    if (!window.location.pathname.startsWith('/votes/new')) return;
+
+    const cards = document.querySelectorAll('.votes-new__project-card');
+    if (!cards.length) return;
+
+    cards.forEach(card => {
+        if (card.querySelector('.flavortown-votes-devlog-frequency')) return;
+
+        const statsContainer = card.querySelector('.votes-new__project-card-stats');
+        if (!statsContainer) return;
+
+        const statTexts = Array.from(statsContainer.querySelectorAll('.votes-new__project-card-stat span'))
+            .map(span => span.textContent.trim())
+            .filter(Boolean);
+
+        const devlogText = statTexts.find(text => /devlogs?/i.test(text));
+        const timeText = statTexts.find(text => /\d+h|\d+m|\d+s/i.test(text));
+        if (!devlogText || !timeText) return;
+
+        const devlogMatch = devlogText.match(/(\d+)\s*devlogs?/i);
+        const devlogCount = devlogMatch ? parseInt(devlogMatch[1], 10) : 0;
+        const totalMinutes = parseDurationToMinutes(timeText);
+        if (!devlogCount || !totalMinutes) return;
+
+        const avgMinutes = Math.max(1, Math.round(totalMinutes / devlogCount));
+        const avgHours = Math.floor(avgMinutes / 60);
+        const avgMins = avgMinutes % 60;
+        const avgText = `${avgHours > 0 ? `${avgHours}h ` : ''}${avgMins}m`;
+
+        const freqStat = document.createElement('div');
+        freqStat.className = 'votes-new__project-card-stat flavortown-votes-devlog-frequency';
+        freqStat.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.2 3.2.8-1.3-4.5-2.7V7z"/></svg>
+            <span>1 devlog every ${avgText}</span>
+        `;
+
+        statsContainer.appendChild(freqStat);
+    });
+}
+
 function addShipStats() {
     if (!/\/projects\/\d+$/.test(window.location.pathname)) {
         return;
@@ -750,6 +791,988 @@ function projectNameMatches(nameA, nameB) {
     const normalizedA = normalizeProjectName(nameA);
     const normalizedB = normalizeProjectName(nameB);
     return normalizedA === normalizedB || normalizedA.includes(normalizedB) || normalizedB.includes(normalizedA);
+}
+
+const PROJECT_REPO_MAP_KEY = 'flavortown-project-repo-map';
+const PROJECT_REPO_MAP_TTL = 2 * 60 * 60 * 1000;
+const GITHUB_USERNAME_KEY = 'flavortown-github-username';
+const GITHUB_REPOS_CACHE_PREFIX = 'flavortown-github-repos-';
+const GITHUB_REPOS_CACHE_TTL = 15 * 60 * 1000;
+const REPO_SUGGESTION_DISMISS_KEY = 'flavortown-repo-suggest-dismissed';
+const REPO_SUGGESTION_PENDING_KEY = 'flavortown-repo-suggest-pending';
+let githubUsernameLookupPromise = null;
+let githubReposLookupPromise = null;
+
+function readProjectRepoMap() {
+    try {
+        const raw = localStorage.getItem(PROJECT_REPO_MAP_KEY);
+        if (!raw) return {};
+        const parsed = JSON.parse(raw);
+        if (!parsed || typeof parsed !== 'object') return {};
+        const now = Date.now();
+        if (parsed.updatedAt && now - parsed.updatedAt > PROJECT_REPO_MAP_TTL) return {};
+        return parsed.data || {};
+    } catch (e) {
+        return {};
+    }
+}
+
+function writeProjectRepoMap(data) {
+    try {
+        localStorage.setItem(PROJECT_REPO_MAP_KEY, JSON.stringify({
+            updatedAt: Date.now(),
+            data: data || {}
+        }));
+    } catch (e) {
+    }
+}
+
+function getDismissedRepoSuggestions() {
+    try {
+        const raw = localStorage.getItem(REPO_SUGGESTION_DISMISS_KEY);
+        return raw ? JSON.parse(raw) : {};
+    } catch (e) {
+        return {};
+    }
+}
+
+function setDismissedRepoSuggestion(key) {
+    if (!key) return;
+    const dismissed = getDismissedRepoSuggestions();
+    dismissed[key] = Date.now();
+    try {
+        localStorage.setItem(REPO_SUGGESTION_DISMISS_KEY, JSON.stringify(dismissed));
+    } catch (e) {
+    }
+}
+
+function extractGithubUsernameFromUrl(url) {
+    if (!url) return null;
+    const match = url.match(/github\.com\/?([^/?#]+)/i);
+    return match ? match[1] : null;
+}
+
+function normalizeGithubRepoUrl(url) {
+    if (!url) return null;
+    try {
+        const parsed = new URL(url, window.location.origin);
+        if (!parsed.hostname.includes('github.com')) return null;
+        const parts = parsed.pathname.split('/').filter(Boolean);
+        if (parts.length < 2) return null;
+        const owner = parts[0];
+        const repo = parts[1].replace(/\.git$/i, '');
+        if (!owner || !repo) return null;
+        return `https://github.com/${owner}/${repo}`;
+    } catch (e) {
+        return null;
+    }
+}
+
+function extractGithubProfileUsername(url) {
+    if (!url) return null;
+    try {
+        const parsed = new URL(url, window.location.origin);
+        if (!parsed.hostname.includes('github.com')) return null;
+        const parts = parsed.pathname.split('/').filter(Boolean);
+        if (parts.length !== 1) return null;
+        return parts[0];
+    } catch (e) {
+        return null;
+    }
+}
+
+function normalizeRepoName(name) {
+    return normalizeProjectName(name || '');
+}
+
+async function fetchProjectsIndexData() {
+    try {
+        const res = await fetch('/projects', { credentials: 'same-origin' });
+        if (!res.ok) return [];
+        const html = await res.text();
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        const cards = Array.from(doc.querySelectorAll('.project-card'));
+        return cards.map(card => {
+            const link = card.querySelector('a[href*="/projects/"]');
+            const href = link ? link.getAttribute('href') : null;
+            const name = card.querySelector('.project-card__title-link')?.textContent?.trim() || null;
+            const stats = Array.from(card.querySelectorAll('.project-card__stats h5'));
+            let minutes = 0;
+            stats.forEach(stat => {
+                const parsed = parseDurationToMinutes(stat.textContent || '');
+                if (parsed > minutes) minutes = parsed;
+            });
+            const shipped = !!card.querySelector('.badge--shipped, .badge-shipped, .project-card__badge--shipped, .shipped');
+            return { name, href, minutes, shipped };
+        }).filter(item => item.name && item.href);
+    } catch (e) {
+        return [];
+    }
+}
+
+function extractRepoUrlFromProjectDoc(doc) {
+    if (!doc) return null;
+    const repoButton = Array.from(doc.querySelectorAll('.project-show-card a.btn[href*="github.com"], .project-show-card a[href*="github.com"]'))
+        .find(link => {
+            const text = (link.textContent || '').trim().toLowerCase();
+            return text.includes('repo') || text.includes('repository');
+        });
+    const repoUrl = repoButton ? repoButton.getAttribute('href') : null;
+    return normalizeGithubRepoUrl(repoUrl);
+}
+
+async function getRepoUrlForProjectName(projectName) {
+    if (!projectName) return null;
+    const normalizedName = normalizeProjectName(projectName);
+    const repoMap = readProjectRepoMap();
+    if (repoMap[normalizedName]) return repoMap[normalizedName];
+
+    const projects = await fetchProjectsIndexData();
+    const match = projects.find(project => normalizeProjectName(project.name) === normalizedName);
+    if (!match || !match.href) return null;
+
+    try {
+        const res = await fetch(match.href, { credentials: 'same-origin' });
+        if (!res.ok) return null;
+        const html = await res.text();
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        const owner = getProjectOwnerNameFromDocument(doc);
+        if (owner && normalizeOwnerName(owner) !== normalizeOwnerName(getCurrentUserName())) return null;
+        const repoUrl = extractRepoUrlFromProjectDoc(doc);
+        if (repoUrl) {
+            repoMap[normalizedName] = repoUrl;
+            writeProjectRepoMap(repoMap);
+        }
+        return repoUrl || null;
+    } catch (e) {
+        return null;
+    }
+}
+
+function getCachedGithubUsernameEntry() {
+    const raw = localStorage.getItem(GITHUB_USERNAME_KEY);
+    if (!raw) return null;
+    try {
+        const parsed = JSON.parse(raw);
+        if (parsed && parsed.username) return parsed;
+    } catch (e) {
+    }
+    return { username: raw, source: 'legacy' };
+}
+
+function getCachedGithubUsername() {
+    const entry = getCachedGithubUsernameEntry();
+    return entry ? entry.username : null;
+}
+
+function setCachedGithubUsername(username, source = 'project-scan') {
+    if (!username) return;
+    try {
+        localStorage.setItem(GITHUB_USERNAME_KEY, JSON.stringify({
+            username,
+            source,
+            updatedAt: Date.now()
+        }));
+    } catch (e) {
+    }
+}
+
+async function fetchGithubUsernameFromProfile() {
+    const profileLink = document.querySelector('a[href^="/users/"]');
+    if (!profileLink) return null;
+    const href = profileLink.getAttribute('href');
+    if (!href) return null;
+
+    try {
+        const res = await fetch(href, { credentials: 'same-origin' });
+        if (!res.ok) return null;
+        const html = await res.text();
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        const ghLinks = Array.from(doc.querySelectorAll('a[href*="github.com/"]'));
+        const profileLink = ghLinks.find(link => extractGithubProfileUsername(link.getAttribute('href')));
+        const username = profileLink ? extractGithubProfileUsername(profileLink.getAttribute('href')) : null;
+        if (username) setCachedGithubUsername(username, 'profile');
+        return username || null;
+    } catch (e) {
+        return null;
+    }
+}
+
+async function findGithubUsernameFromProjectsIndex() {
+    const projects = await fetchProjectsIndexData();
+    if (!projects.length) return null;
+
+    const sorted = projects.slice().sort((a, b) => {
+        if (!!a.shipped !== !!b.shipped) return a.shipped ? -1 : 1;
+        return (b.minutes || 0) - (a.minutes || 0);
+    });
+
+    const currentUser = getCurrentUserName();
+    if (!currentUser) return null;
+
+    const repoMap = readProjectRepoMap();
+
+    for (const project of sorted) {
+        try {
+            const res = await fetch(project.href, { credentials: 'same-origin' });
+            if (!res.ok) continue;
+            const html = await res.text();
+            const doc = new DOMParser().parseFromString(html, 'text/html');
+            const owner = getProjectOwnerNameFromDocument(doc);
+            if (!owner || normalizeOwnerName(owner) !== normalizeOwnerName(currentUser)) continue;
+
+            const repoUrl = extractRepoUrlFromProjectDoc(doc);
+            if (!repoUrl) continue;
+            const normalizedRepo = normalizeGithubRepoUrl(repoUrl);
+            if (!normalizedRepo) continue;
+
+            const username = extractGithubUsernameFromUrl(normalizedRepo);
+            if (!username) continue;
+
+            const normalizedName = normalizeProjectName(project.name);
+            if (normalizedName) {
+                repoMap[normalizedName] = normalizedRepo;
+                writeProjectRepoMap(repoMap);
+            }
+
+            setCachedGithubUsername(username, 'project-scan');
+            return username;
+        } catch (e) {
+        }
+    }
+
+    return null;
+}
+
+async function resolveGithubUsername() {
+    if (githubUsernameLookupPromise) return githubUsernameLookupPromise;
+
+    githubUsernameLookupPromise = (async () => {
+        const cached = getCachedGithubUsernameEntry();
+        if (cached && cached.source === 'project-scan') return cached.username;
+
+        const fromProjects = await findGithubUsernameFromProjectsIndex();
+        if (fromProjects) return fromProjects;
+
+        if (cached && cached.source === 'profile') return cached.username;
+
+        const profile = await fetchGithubUsernameFromProfile();
+        return profile || null;
+    })();
+
+    const result = await githubUsernameLookupPromise;
+    if (!result) {
+        githubUsernameLookupPromise = null;
+    }
+    return result;
+}
+
+function readGithubReposCache(username) {
+    if (!username) return null;
+    try {
+        const raw = localStorage.getItem(`${GITHUB_REPOS_CACHE_PREFIX}${username}`);
+        if (!raw) return null;
+        const parsed = JSON.parse(raw);
+        if (!parsed || !Array.isArray(parsed.data)) return null;
+        const sample = parsed.data[0];
+        if (sample && typeof sample.homepage === 'undefined' && typeof sample.has_pages === 'undefined') {
+            return null;
+        }
+        if (parsed.updatedAt && Date.now() - parsed.updatedAt > GITHUB_REPOS_CACHE_TTL) return null;
+        return parsed.data;
+    } catch (e) {
+        return null;
+    }
+}
+
+function writeGithubReposCache(username, repos) {
+    if (!username) return;
+    try {
+        localStorage.setItem(`${GITHUB_REPOS_CACHE_PREFIX}${username}`, JSON.stringify({
+            updatedAt: Date.now(),
+            data: repos || []
+        }));
+    } catch (e) {
+    }
+}
+
+async function fetchGithubRepos(username) {
+    if (!username) return [];
+    const cached = readGithubReposCache(username);
+    if (cached) return cached;
+
+    try {
+        const res = await fetch(`https://api.github.com/users/${username}/repos?per_page=100&sort=updated`, {
+            headers: { 'Accept': 'application/vnd.github+json' }
+        });
+        if (!res.ok) return [];
+        const data = await res.json();
+        const repos = Array.isArray(data) ? data.map(repo => ({
+            name: repo.name,
+            full_name: repo.full_name,
+            html_url: repo.html_url,
+            homepage: repo.homepage,
+            has_pages: repo.has_pages,
+            owner: repo.owner ? { login: repo.owner.login } : null
+        })) : [];
+        writeGithubReposCache(username, repos);
+        return repos;
+    } catch (e) {
+        return [];
+    }
+}
+
+async function resolveGithubRepos() {
+    const username = await resolveGithubUsername();
+    if (!username) return [];
+    if (githubReposLookupPromise) return githubReposLookupPromise;
+
+    githubReposLookupPromise = fetchGithubRepos(username);
+    const result = await githubReposLookupPromise;
+    if (!result || !result.length) {
+        githubReposLookupPromise = null;
+    }
+    return result || [];
+}
+
+function findBestRepoMatch(projectName, repos) {
+    if (!projectName || !repos || !repos.length) return null;
+    const normalizedProject = normalizeRepoName(projectName);
+    let best = null;
+    let bestScore = 0;
+
+    repos.forEach(repo => {
+        const repoName = normalizeRepoName(repo.name);
+        if (!repoName) return;
+        let score = 0;
+        if (repoName === normalizedProject) score = 3;
+        else if (repoName.includes(normalizedProject) || normalizedProject.includes(repoName)) score = 2;
+        else if (repoName.startsWith(normalizedProject) || normalizedProject.startsWith(repoName)) score = 1;
+        if (score > bestScore) {
+            bestScore = score;
+            best = repo;
+        }
+    });
+
+    return bestScore > 0 ? best : null;
+}
+
+function getDemoUrlFromRepo(repo) {
+    if (!repo) return null;
+    const homepage = (repo.homepage || '').trim();
+    const normalizedHomepage = normalizeDemoUrl(homepage);
+    if (normalizedHomepage && isLikelyValidDemoUrl(normalizedHomepage)) return normalizedHomepage;
+
+    if (repo.has_pages && repo.owner?.login && repo.name) {
+        const url = `https://${repo.owner.login}.github.io/${repo.name}`;
+        if (isLikelyValidDemoUrl(url)) return url;
+    }
+
+    return null;
+}
+
+function normalizeDemoUrl(url) {
+    if (!url) return null;
+    const trimmed = url.trim();
+    if (!trimmed) return null;
+    if (/^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(trimmed)) return trimmed;
+    return `https://${trimmed}`;
+}
+
+function isLikelyValidDemoUrl(url) {
+    if (!url) return false;
+    try {
+        const parsed = new URL(url, window.location.origin);
+        if (!['http:', 'https:'].includes(parsed.protocol)) return false;
+        if (parsed.hostname.includes('github.com')) return false;
+        if (parsed.hostname.includes('api.github.com')) return false;
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+
+function createRepoSuggestionCard({ title, repoUrl, actionLabel, onConfirm, onDismiss }) {
+    const card = document.createElement('div');
+    card.className = 'flavortown-repo-suggestion';
+    card.innerHTML = `
+        <div class="flavortown-repo-suggestion__label">${title}</div>
+        <div class="flavortown-repo-suggestion__row">
+            <span class="flavortown-repo-suggestion__repo">${repoUrl}</span>
+            <div class="flavortown-repo-suggestion__actions">
+                <button type="button" class="flavortown-repo-suggestion__btn flavortown-repo-suggestion__btn--primary">${actionLabel}</button>
+                <button type="button" class="flavortown-repo-suggestion__btn flavortown-repo-suggestion__btn--ghost">Not now</button>
+            </div>
+        </div>
+    `;
+
+    const [primaryBtn, dismissBtn] = card.querySelectorAll('button');
+    if (primaryBtn) primaryBtn.addEventListener('click', onConfirm);
+    if (dismissBtn) dismissBtn.addEventListener('click', onDismiss);
+    return card;
+}
+
+function createProjectLinksSuggestionCard({
+    label,
+    repoUrl,
+    demoUrl,
+    repoActionLabel,
+    demoActionLabel,
+    onRepo,
+    onDemo,
+    onDismiss,
+    onApplyAll
+}) {
+    const card = document.createElement('div');
+    card.className = 'flavortown-repo-suggestion flavortown-links-suggestion';
+
+    const headerLabel = label || 'I found links for this project';
+    const repoBtnLabel = repoActionLabel || 'Link repo';
+    const demoBtnLabel = demoActionLabel || 'Link demo';
+
+    const rows = [];
+    if (repoUrl) {
+        rows.push(`
+            <div class="flavortown-repo-suggestion__row">
+                <span class="flavortown-repo-suggestion__repo">
+                    <span class="flavortown-repo-suggestion__tag">Repo</span>
+                    <span class="flavortown-repo-suggestion__url">${repoUrl}</span>
+                </span>
+                <div class="flavortown-repo-suggestion__actions">
+                    <button type="button" class="flavortown-repo-suggestion__btn flavortown-repo-suggestion__btn--primary" data-action="repo">${repoBtnLabel}</button>
+                </div>
+            </div>
+        `);
+    }
+
+    if (demoUrl) {
+        rows.push(`
+            <div class="flavortown-repo-suggestion__row">
+                <span class="flavortown-repo-suggestion__repo">
+                    <span class="flavortown-repo-suggestion__tag">Demo</span>
+                    <span class="flavortown-repo-suggestion__url">${demoUrl}</span>
+                </span>
+                <div class="flavortown-repo-suggestion__actions">
+                    <button type="button" class="flavortown-repo-suggestion__btn flavortown-repo-suggestion__btn--primary" data-action="demo">${demoBtnLabel}</button>
+                </div>
+            </div>
+        `);
+    }
+
+    card.innerHTML = `
+        <div class="flavortown-repo-suggestion__header">
+            <div class="flavortown-repo-suggestion__label">${headerLabel}</div>
+            <div class="flavortown-repo-suggestion__header-actions">
+                <button type="button" class="flavortown-repo-suggestion__apply" aria-label="Autofill all">✓</button>
+                <button type="button" class="flavortown-repo-suggestion__close" aria-label="Dismiss">×</button>
+            </div>
+        </div>
+        ${rows.join('')}
+    `;
+
+    const repoBtn = card.querySelector('[data-action="repo"]');
+    const demoBtn = card.querySelector('[data-action="demo"]');
+    const dismissBtn = card.querySelector('.flavortown-repo-suggestion__close');
+    const applyAllBtn = card.querySelector('.flavortown-repo-suggestion__apply');
+
+    if (repoBtn) repoBtn.addEventListener('click', onRepo);
+    if (demoBtn) demoBtn.addEventListener('click', onDemo);
+    if (dismissBtn) dismissBtn.addEventListener('click', onDismiss);
+    if (applyAllBtn) applyAllBtn.addEventListener('click', onApplyAll);
+
+    return card;
+}
+
+async function getRepoSuggestionForProjectName(projectName) {
+    const repoFromProjects = await getRepoUrlForProjectName(projectName);
+    if (repoFromProjects) {
+        const normalized = normalizeGithubRepoUrl(repoFromProjects);
+        if (normalized) return { repoUrl: normalized, source: 'project' };
+    }
+
+    const username = await resolveGithubUsername();
+    if (!username) return null;
+
+    const repos = await resolveGithubRepos();
+    const match = findBestRepoMatch(projectName, repos);
+    if (!match || !match.html_url) return null;
+    const normalized = normalizeGithubRepoUrl(match.html_url);
+    if (!normalized) return null;
+    return { repoUrl: normalized, source: 'github' };
+}
+
+async function getLinkSuggestionsForProjectName(projectName) {
+    const repoSuggestion = await getRepoSuggestionForProjectName(projectName);
+    const demoSuggestion = await getDemoSuggestionForProjectName(projectName);
+    return {
+        repoUrl: repoSuggestion?.repoUrl || null,
+        demoUrl: demoSuggestion?.demoUrl || null
+    };
+}
+
+async function getDemoSuggestionForProjectName(projectName) {
+    const repos = await resolveGithubRepos();
+    const match = findBestRepoMatch(projectName, repos);
+    if (!match) return null;
+    const demoUrl = getDemoUrlFromRepo(match);
+    if (!demoUrl) return null;
+    return { demoUrl };
+}
+
+function findDemoInput() {
+    const direct = document.querySelector('#project_demo_url')
+        || document.querySelector('input[name="project[demo_url]"]')
+        || document.querySelector('input[name="project[demo]"]');
+    if (direct) return direct;
+
+    const fuzzy = document.querySelector(
+        'input[type="url"][id*="demo" i], input[type="text"][id*="demo" i], input[type="url"][name*="demo" i], input[type="text"][name*="demo" i]'
+    );
+    if (fuzzy) return fuzzy;
+
+    const labels = Array.from(document.querySelectorAll('.input__label'));
+    const label = labels.find(el => (el.textContent || '').toLowerCase().includes('demo'));
+    if (!label) return null;
+    const container = label.closest('.input') || label.closest('.projects-new__field') || label.parentElement;
+    return container ? container.querySelector('input[type="url"], input[type="text"]') : null;
+}
+
+function findRepoInput() {
+    const direct = document.querySelector('#project_repo_url')
+        || document.querySelector('input[name="project[repo_url]"]')
+        || document.querySelector('input[name="project[repo]"]');
+    if (direct) return direct;
+
+    const fuzzy = document.querySelector(
+        'input[type="url"][id*="repo" i], input[type="text"][id*="repo" i], input[type="url"][name*="repo" i], input[type="text"][name*="repo" i]'
+    );
+    return fuzzy || null;
+}
+
+function extractDemoUrlFromProjectDoc(doc) {
+    if (!doc) return null;
+    const demoLink = Array.from(doc.querySelectorAll('.project-show-card a'))
+        .find(link => (link.textContent || '').toLowerCase().includes('demo'));
+    return demoLink ? demoLink.getAttribute('href') : null;
+}
+
+function shouldDismissRepoSuggestion(key) {
+    const dismissed = getDismissedRepoSuggestions();
+    return !!dismissed[key];
+}
+
+function initProjectRepoSuggestionOnNewProject() {
+    if (window.location.pathname !== '/projects/new') return;
+    if (window.__flavortownRepoSuggestNew) return;
+    window.__flavortownRepoSuggestNew = true;
+    const titleField = document.querySelector('#project_title');
+    if (!titleField) return;
+
+    const titleContainer = titleField.closest('.projects-new__field--title') || titleField.closest('.input');
+    if (!titleContainer) return;
+
+    let currentCard = null;
+    let currentValue = '';
+    let timer = null;
+
+    const removeCard = () => {
+        if (currentCard) currentCard.remove();
+        currentCard = null;
+        titleContainer.classList.remove('flavortown-title-match');
+    };
+
+    const showSuggestion = (repoUrl, key) => {
+        removeCard();
+        const card = createRepoSuggestionCard({
+            title: 'Found a repo that matches this project name',
+            repoUrl,
+            actionLabel: 'Autofill repo',
+            onConfirm: () => {
+                const repoInput = document.querySelector('#project_repo_url');
+                if (repoInput) {
+                    repoInput.value = repoUrl;
+                    repoInput.dispatchEvent(new Event('input', { bubbles: true }));
+                    repoInput.dispatchEvent(new Event('change', { bubbles: true }));
+                    repoInput.focus();
+                }
+                setDismissedRepoSuggestion(key);
+                removeCard();
+            },
+            onDismiss: () => {
+                setDismissedRepoSuggestion(key);
+                removeCard();
+            }
+        });
+        currentCard = card;
+        titleContainer.appendChild(card);
+        titleContainer.classList.add('flavortown-title-match');
+    };
+
+    const handleInput = async () => {
+        const value = titleField.value.trim();
+        currentValue = value;
+        if (!value) {
+            removeCard();
+            return;
+        }
+        const dismissKey = `new:${normalizeProjectName(value)}`;
+        if (shouldDismissRepoSuggestion(dismissKey)) return;
+
+        const repoInput = document.querySelector('#project_repo_url');
+        if (repoInput && repoInput.value.trim()) {
+            removeCard();
+            return;
+        }
+
+        const suggestion = await getRepoSuggestionForProjectName(value);
+        if (!suggestion || !suggestion.repoUrl) return;
+        if (value !== currentValue) return;
+        showSuggestion(suggestion.repoUrl, dismissKey);
+    };
+
+    const schedule = () => {
+        if (timer) window.clearTimeout(timer);
+        timer = window.setTimeout(handleInput, 350);
+    };
+
+    titleField.addEventListener('input', schedule);
+    titleField.addEventListener('blur', handleInput);
+}
+
+function initProjectDemoSuggestionOnNewProject() {
+    if (window.location.pathname !== '/projects/new') return;
+    if (window.__flavortownDemoSuggestNew) return;
+    window.__flavortownDemoSuggestNew = true;
+    const titleField = document.querySelector('#project_title');
+    if (!titleField) return;
+
+    let demoInput = findDemoInput();
+    if (!demoInput) {
+        const observer = new MutationObserver(() => {
+            demoInput = findDemoInput();
+            if (demoInput) {
+                observer.disconnect();
+                initProjectDemoSuggestionOnNewProject();
+            }
+        });
+        observer.observe(document.body, { childList: true, subtree: true });
+        setTimeout(() => observer.disconnect(), 5000);
+        return;
+    }
+
+    const demoContainer = demoInput.closest('.projects-new__field') || demoInput.closest('.input') || demoInput.parentElement;
+    if (!demoContainer) return;
+
+    let currentCard = null;
+    let currentValue = '';
+    let timer = null;
+
+    const removeCard = () => {
+        if (currentCard) currentCard.remove();
+        currentCard = null;
+    };
+
+    const showSuggestion = (demoUrl, key) => {
+        removeCard();
+        const card = createRepoSuggestionCard({
+            title: 'Found a demo link from this repo',
+            repoUrl: demoUrl,
+            actionLabel: 'Autofill demo',
+            onConfirm: () => {
+                if (demoInput) {
+                    demoInput.value = demoUrl;
+                    demoInput.dispatchEvent(new Event('input', { bubbles: true }));
+                    demoInput.dispatchEvent(new Event('change', { bubbles: true }));
+                    demoInput.focus();
+                }
+                setDismissedRepoSuggestion(key);
+                removeCard();
+            },
+            onDismiss: () => {
+                setDismissedRepoSuggestion(key);
+                removeCard();
+            }
+        });
+        currentCard = card;
+        demoContainer.appendChild(card);
+    };
+
+    const handleInput = async () => {
+        const value = titleField.value.trim();
+        currentValue = value;
+        if (!value) {
+            removeCard();
+            return;
+        }
+        if (demoInput.value.trim()) {
+            removeCard();
+            return;
+        }
+        const dismissKey = `new-demo:${normalizeProjectName(value)}`;
+        if (shouldDismissRepoSuggestion(dismissKey)) return;
+
+        const suggestion = await getDemoSuggestionForProjectName(value);
+        if (!suggestion || !suggestion.demoUrl) return;
+        if (value !== currentValue) return;
+        showSuggestion(suggestion.demoUrl, dismissKey);
+    };
+
+    const schedule = () => {
+        if (timer) window.clearTimeout(timer);
+        timer = window.setTimeout(handleInput, 350);
+    };
+
+    titleField.addEventListener('input', schedule);
+    titleField.addEventListener('blur', handleInput);
+}
+
+function initProjectLinkSuggestionOnNewProject() {
+    if (window.location.pathname !== '/projects/new') return;
+    if (window.__flavortownLinkSuggestNew) return;
+    window.__flavortownLinkSuggestNew = true;
+    const titleField = document.querySelector('#project_title');
+    if (!titleField) return;
+
+    const titleContainer = titleField.closest('.projects-new__field--title') || titleField.closest('.input');
+    if (!titleContainer) return;
+
+    let currentCard = null;
+    let currentValue = '';
+    let timer = null;
+
+    const removeCard = () => {
+        if (currentCard) currentCard.remove();
+        currentCard = null;
+        titleContainer.classList.remove('flavortown-title-match');
+    };
+
+    const showSuggestion = ({ repoUrl, demoUrl, dismissKey }) => {
+        removeCard();
+        const card = createProjectLinksSuggestionCard({
+            label: 'Found links for this project',
+            repoUrl,
+            demoUrl,
+            repoActionLabel: 'Autofill repo',
+            demoActionLabel: 'Autofill demo',
+            onRepo: () => {
+                const repoInput = findRepoInput();
+                if (repoInput && repoUrl) {
+                    repoInput.value = repoUrl;
+                    repoInput.dispatchEvent(new Event('input', { bubbles: true }));
+                    repoInput.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+                setTimeout(handleInput, 0);
+            },
+            onDemo: () => {
+                const demoInput = findDemoInput();
+                if (demoInput && demoUrl) {
+                    demoInput.value = demoUrl;
+                    demoInput.dispatchEvent(new Event('input', { bubbles: true }));
+                    demoInput.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+                setTimeout(handleInput, 0);
+            },
+            onDismiss: () => {
+                setDismissedRepoSuggestion(dismissKey);
+                removeCard();
+            },
+            onApplyAll: () => {
+                const repoInput = findRepoInput();
+                const demoInput = findDemoInput();
+                if (repoInput && repoUrl && !repoInput.value.trim()) {
+                    repoInput.value = repoUrl;
+                    repoInput.dispatchEvent(new Event('input', { bubbles: true }));
+                    repoInput.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+                if (demoInput && demoUrl && !demoInput.value.trim()) {
+                    demoInput.value = demoUrl;
+                    demoInput.dispatchEvent(new Event('input', { bubbles: true }));
+                    demoInput.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+                setDismissedRepoSuggestion(dismissKey);
+                removeCard();
+            }
+        });
+        currentCard = card;
+        titleContainer.appendChild(card);
+        titleContainer.classList.add('flavortown-title-match');
+    };
+
+    const handleInput = async () => {
+        const value = titleField.value.trim();
+        currentValue = value;
+        if (!value) {
+            removeCard();
+            return;
+        }
+
+        const dismissKey = `new-links:${normalizeProjectName(value)}`;
+        if (shouldDismissRepoSuggestion(dismissKey)) return;
+
+        const repoInput = findRepoInput();
+        const demoInput = findDemoInput();
+
+        const repoFilled = !!(repoInput && repoInput.value.trim());
+        const demoFilled = !!(demoInput && demoInput.value.trim());
+
+        if (repoFilled && demoFilled) {
+            removeCard();
+            return;
+        }
+
+        const suggestions = await getLinkSuggestionsForProjectName(value);
+        if (value !== currentValue) return;
+
+        const repoUrl = !repoFilled && repoInput ? suggestions.repoUrl : null;
+        const demoUrl = !demoFilled && demoInput ? suggestions.demoUrl : null;
+
+        if (!repoUrl && !demoUrl) {
+            removeCard();
+            return;
+        }
+
+        showSuggestion({ repoUrl, demoUrl, dismissKey });
+    };
+
+    const schedule = () => {
+        if (timer) window.clearTimeout(timer);
+        timer = window.setTimeout(handleInput, 350);
+    };
+
+    titleField.addEventListener('input', schedule);
+    titleField.addEventListener('blur', handleInput);
+
+    if (!findDemoInput()) {
+        const observer = new MutationObserver(() => {
+            if (findDemoInput()) {
+                observer.disconnect();
+                handleInput();
+            }
+        });
+        observer.observe(document.body, { childList: true, subtree: true });
+        setTimeout(() => observer.disconnect(), 5000);
+    }
+}
+
+function storePendingRepoLink(projectId, repoUrl, demoUrl = null) {
+    if (!projectId || (!repoUrl && !demoUrl)) return;
+    try {
+        sessionStorage.setItem(REPO_SUGGESTION_PENDING_KEY, JSON.stringify({ projectId, repoUrl, demoUrl }));
+    } catch (e) {
+    }
+}
+
+function readPendingRepoLink() {
+    try {
+        const raw = sessionStorage.getItem(REPO_SUGGESTION_PENDING_KEY);
+        if (!raw) return null;
+        return JSON.parse(raw);
+    } catch (e) {
+        return null;
+    }
+}
+
+function clearPendingRepoLink() {
+    try {
+        sessionStorage.removeItem(REPO_SUGGESTION_PENDING_KEY);
+    } catch (e) {
+    }
+}
+
+function initProjectRepoAutoLinkOnEdit() {
+    const match = window.location.pathname.match(/^\/projects\/(\d+)\/edit/);
+    if (!match) return;
+    if (window.__flavortownRepoSuggestEdit) return;
+    window.__flavortownRepoSuggestEdit = true;
+    const pending = readPendingRepoLink();
+    if (!pending || pending.projectId !== match[1]) return;
+
+    const repoInput = document.querySelector('#project_repo_url');
+    const demoInput = findDemoInput();
+    const submitBtn = document.querySelector('button[type="submit"], .btn.btn--blue');
+    if (!submitBtn) return;
+
+    if (repoInput && pending.repoUrl && !repoInput.value.trim()) {
+        repoInput.value = pending.repoUrl;
+        repoInput.dispatchEvent(new Event('input', { bubbles: true }));
+        repoInput.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+
+    if (demoInput && pending.demoUrl && !demoInput.value.trim()) {
+        demoInput.value = pending.demoUrl;
+        demoInput.dispatchEvent(new Event('input', { bubbles: true }));
+        demoInput.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+    clearPendingRepoLink();
+    submitBtn.click();
+}
+
+async function initProjectLinkSuggestionOnProjectShow() {
+    if (!/\/projects\/\d+$/.test(window.location.pathname)) return;
+    if (window.__flavortownLinkSuggestShow) return;
+    window.__flavortownLinkSuggestShow = true;
+    if (!isProjectOwnedByCurrentUser()) return;
+    if (document.querySelector('.flavortown-links-suggestion')) return;
+
+    const projectName = getCurrentProjectName();
+    if (!projectName) return;
+    const projectIdMatch = window.location.pathname.match(/\/projects\/(\d+)/);
+    const projectId = projectIdMatch ? projectIdMatch[1] : null;
+    if (!projectId) return;
+
+    const dismissKey = `show-links:${projectId}`;
+    if (shouldDismissRepoSuggestion(dismissKey)) return;
+
+    const showCard = document.querySelector('.project-show-card');
+    if (!showCard) return;
+    const hasRepoLink = !!extractRepoUrlFromProjectDoc(document);
+    const hasDemoLink = !!extractDemoUrlFromProjectDoc(document);
+    if (hasRepoLink && hasDemoLink) return;
+
+    const suggestions = await getLinkSuggestionsForProjectName(projectName);
+    const repoUrl = !hasRepoLink ? suggestions.repoUrl : null;
+    const demoUrl = !hasDemoLink ? suggestions.demoUrl : null;
+    if (!repoUrl && !demoUrl) return;
+
+    const byline = showCard.querySelector('.project-show-card__byline');
+    if (!byline) return;
+
+    const card = createProjectLinksSuggestionCard({
+        repoUrl,
+        demoUrl,
+        onRepo: () => {
+            if (!repoUrl) return;
+            const editLink = showCard.querySelector('a[href$="/edit"]');
+            if (!editLink) return;
+            storePendingRepoLink(projectId, repoUrl, null);
+            editLink.click();
+        },
+        onDemo: () => {
+            if (!demoUrl) return;
+            const editLink = showCard.querySelector('a[href$="/edit"]');
+            if (!editLink) return;
+            storePendingRepoLink(projectId, null, demoUrl);
+            editLink.click();
+        },
+        onDismiss: () => {
+            setDismissedRepoSuggestion(dismissKey);
+            card.remove();
+        },
+        onApplyAll: () => {
+            const editLink = showCard.querySelector('a[href$="/edit"]');
+            if (!editLink) return;
+            storePendingRepoLink(projectId, repoUrl || null, demoUrl || null);
+            editLink.click();
+        }
+    });
+
+    byline.insertAdjacentElement('afterend', card);
+}
+
+function initProjectRepoSuggestions() {
+    initProjectLinkSuggestionOnNewProject();
+    initProjectLinkSuggestionOnProjectShow();
+    initProjectRepoAutoLinkOnEdit();
 }
 
 function parseDurationToMinutes(text) {
@@ -4631,6 +5654,7 @@ function init() {
     loadTheme();
     checkForUpdates();
     addDevlogFrequencyStat();
+    addVotesDevlogFrequencyStat();
     addShipStats();
     addShipPayoutStats();
     addProjectShowCookieStat();
@@ -4651,6 +5675,7 @@ function init() {
     enhanceKitchenDashboard();
     setTimeout(enhanceLeaderboardPage, 0);
     enhanceAdminPage();
+    initProjectRepoSuggestions();
 
     setTimeout(checkAchievements, 2000);
     setTimeout(initVotesFeature, 1000);
@@ -5989,11 +7014,19 @@ document.addEventListener('turbo:load', () => {
         window.__flavortownGoalsEnhanced = false;
         window.__shopAccessoriesInit = false;
         votesRotationChecked = false;
+        window.__flavortownRepoSuggestNew = false;
+        window.__flavortownRepoSuggestShow = false;
+        window.__flavortownRepoSuggestEdit = false;
+        window.__flavortownDemoSuggestNew = false;
+        window.__flavortownDemoSuggestShow = false;
+        window.__flavortownLinkSuggestShow = false;
+        window.__flavortownLinkSuggestNew = false;
         sessionStorage.removeItem(VOTES_SKIP_TRIGGER_KEY);
         lastPathname = window.location.pathname;
     }
     sessionStorage.removeItem(VOTES_SKIP_TRIGGER_KEY);
     addDevlogFrequencyStat();
+    addVotesDevlogFrequencyStat();
     addShipStats();
     inlineDevlogForm();
     setupInlineDevlogEditing();
@@ -6017,6 +7050,7 @@ document.addEventListener('turbo:load', () => {
     initShotsEditor();
     enhanceAdminPage();
     initVotesFeature();
+    initProjectRepoSuggestions();
 });
 
 function initShotsEditor() {
