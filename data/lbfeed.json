@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-01-27T05:26:38.142Z",
+  "lastUpdated": "2026-01-27T06:34:40.245Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -3768,6 +3768,14 @@
         "balance": 35,
         "reason": "tutorial",
         "reasonType": "",
+        "userId": "U085L7P77EV"
+      },
+      {
+        "ts": "2026-01-27T05:28:56.461Z",
+        "delta": 15,
+        "balance": 50,
+        "reason": "payout",
+        "reasonType": "payout",
         "userId": "U085L7P77EV"
       }
     ],
@@ -15061,6 +15069,14 @@
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U0A6CUVDKAB"
+      },
+      {
+        "ts": "2026-01-27T06:17:47.443Z",
+        "delta": -133,
+        "balance": 397,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A6CUVDKAB"
       }
     ],
     "u0a6dsnsv7a": [
@@ -19593,6 +19609,18 @@
     ]
   },
   "users": {
+    "U0A6CUVDKAB": {
+      "id": "U0A6CUVDKAB",
+      "username": "diceysnikey",
+      "displayName": "diceysnikey",
+      "avatar": "https://avatars.slack-edge.com/2026-01-05/10232020814470_072072deb9d6daa9e0ff_72.png"
+    },
+    "U085L7P77EV": {
+      "id": "U085L7P77EV",
+      "username": "aregazatyank",
+      "displayName": "Areg Azatyan",
+      "avatar": "https://avatars.slack-edge.com/2026-01-27/10379089928930_a474baef31ffef266975_72.jpg"
+    },
     "U09A7GEM760": {
       "id": "U09A7GEM760",
       "username": "sadiyameem123",
@@ -19653,12 +19681,6 @@
       "username": "mostlime",
       "avatar": "https://secure.gravatar.com/avatar/18fda47408f5933445a331e2afb21ee8.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0009-72.png"
     },
-    "U085L7P77EV": {
-      "id": "U085L7P77EV",
-      "username": "aregazatyank",
-      "displayName": "Areg Azatyan",
-      "avatar": "https://avatars.slack-edge.com/2026-01-27/10372531009251_1b67df9946af8e561678_72.jpg"
-    },
     "U092CJSNZNC": {
       "id": "U092CJSNZNC",
       "username": "mittal.rohan2010",
@@ -19703,12 +19725,6 @@
       "id": "U09CY2QAZMJ",
       "username": "tonyforself",
       "avatar": "https://avatars.slack-edge.com/2025-12-29/10197320008051_09090f790fd53d59b8a8_72.jpg"
-    },
-    "U0A6CUVDKAB": {
-      "id": "U0A6CUVDKAB",
-      "username": "diceysnikey",
-      "displayName": "diceysnikey",
-      "avatar": "https://avatars.slack-edge.com/2026-01-05/10232020814470_072072deb9d6daa9e0ff_72.png"
     },
     "U093DK2JL0Y": {
       "id": "U093DK2JL0Y",
