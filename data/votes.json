@@ -1,7 +1,21 @@
 {
-  "lastUpdated": "2026-01-28T06:43:55.113Z",
-  "totalVotes": 2071,
+  "lastUpdated": "2026-01-28T07:31:37.597Z",
+  "totalVotes": 2073,
   "votes": [
+    {
+      "project": "Chef Morpheus's First Project",
+      "feedback": "Looks cool, but the devlogging isnt the greatest",
+      "votedBy": "U09683EA86L",
+      "timestamp": "2026-01-28T07:27:22.158Z",
+      "slackTs": "1769585242.158259"
+    },
+    {
+      "project": "MEDULI",
+      "feedback": "Im confused by \"Use cases- Hackathons and Competitions\" in the github readme... also, seems a bit risky to try and diagnose people with things like this",
+      "votedBy": "U09683EA86L",
+      "timestamp": "2026-01-28T07:18:43.609Z",
+      "slackTs": "1769584723.609119"
+    },
     {
       "project": "Aaloo",
       "feedback": "The Aloo looks warm and cozy as said! I am not sure if it's much of use to everyone but I am going to have it on my desktop!!",
@@ -15546,6 +15560,12 @@
       "username": "saisantoshpal2010",
       "displayName": "sAI",
       "avatar": "https://avatars.slack-edge.com/2025-11-01/9824931289556_ea679b58cdb3c18ac186_72.jpg"
+    },
+    "U09683EA86L": {
+      "id": "U09683EA86L",
+      "username": "etilia",
+      "displayName": "Etilia",
+      "avatar": "https://avatars.slack-edge.com/2025-08-28/9424209622534_c62c420d32e3b941e363_72.png"
     }
   }
 }
