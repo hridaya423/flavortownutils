@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-01-28T14:03:51.778Z",
+  "lastUpdated": "2026-01-28T15:00:13.727Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -376,6 +376,22 @@
         "ts": "2026-01-26T23:57:29.518Z",
         "delta": 284,
         "balance": 359,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U0666VATMT5"
+      },
+      {
+        "ts": "2026-01-28T14:16:30.043Z",
+        "delta": 264,
+        "balance": 623,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U0666VATMT5"
+      },
+      {
+        "ts": "2026-01-28T14:17:28.878Z",
+        "delta": 459,
+        "balance": 1082,
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U0666VATMT5"
@@ -7270,6 +7286,22 @@
         "ts": "2026-01-28T09:11:08.649Z",
         "delta": 16,
         "balance": 59,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U0924GFMY1X"
+      },
+      {
+        "ts": "2026-01-28T14:24:22.613Z",
+        "delta": 64,
+        "balance": 123,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U0924GFMY1X"
+      },
+      {
+        "ts": "2026-01-28T14:36:15.803Z",
+        "delta": 303,
+        "balance": 426,
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U0924GFMY1X"
@@ -17625,6 +17657,14 @@
         "reason": "Cookbook Author",
         "reasonType": "achievement",
         "userId": "U0A7776A2MT"
+      },
+      {
+        "ts": "2026-01-28T14:25:42.000Z",
+        "delta": 11,
+        "balance": 44,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U0A7776A2MT"
       }
     ],
     "u0a778jgv18": [
@@ -20951,6 +20991,23 @@
     ]
   },
   "users": {
+    "U0924GFMY1X": {
+      "id": "U0924GFMY1X",
+      "username": "adon.omeri",
+      "displayName": "Adon Omeri",
+      "avatar": "https://secure.gravatar.com/avatar/bebcb67885920b62df9b3355743e80ed.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0001-72.png"
+    },
+    "U0A7776A2MT": {
+      "id": "U0A7776A2MT",
+      "username": "kavyanshkhaitan11",
+      "avatar": "https://secure.gravatar.com/avatar/2dd3b461e79afda6fbbc61878d93304e.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0003-72.png"
+    },
+    "U0666VATMT5": {
+      "id": "U0666VATMT5",
+      "username": "saif",
+      "displayName": "Saif Abdelrazek (A8K)",
+      "avatar": "https://avatars.slack-edge.com/2025-04-04/8718809197329_286f155c27b6ce1c9cb2_72.jpg"
+    },
     "U0A7U42QFV3": {
       "id": "U0A7U42QFV3",
       "username": "albumanyt69420",
@@ -21039,12 +21096,6 @@
       "id": "U091KE59H5H",
       "username": "joooooshp",
       "avatar": "https://avatars.slack-edge.com/2025-12-26/10191934212674_e3a860ccf84ec572a0a4_72.png"
-    },
-    "U0924GFMY1X": {
-      "id": "U0924GFMY1X",
-      "username": "adon.omeri",
-      "displayName": "Adon Omeri",
-      "avatar": "https://secure.gravatar.com/avatar/bebcb67885920b62df9b3355743e80ed.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0001-72.png"
     },
     "U0A61G78DMG": {
       "id": "U0A61G78DMG",
@@ -21696,12 +21747,6 @@
       "username": "jakebuckhouse",
       "avatar": "https://avatars.slack-edge.com/2025-11-30/10020041914373_9151e4cf03a368cae425_72.png"
     },
-    "U0666VATMT5": {
-      "id": "U0666VATMT5",
-      "username": "saif",
-      "displayName": "Saif Abdelrazek (A8K)",
-      "avatar": "https://avatars.slack-edge.com/2025-04-04/8718809197329_286f155c27b6ce1c9cb2_72.jpg"
-    },
     "U0A5WME44L8": {
       "id": "U0A5WME44L8",
       "username": "lisardowo",
@@ -22096,11 +22141,6 @@
       "id": "U091XKGS8SF",
       "username": "jmeow3587",
       "avatar": "https://avatars.slack-edge.com/2026-01-08/10255010542579_2f8b32551704851ce1cd_72.jpg"
-    },
-    "U0A7776A2MT": {
-      "id": "U0A7776A2MT",
-      "username": "kavyanshkhaitan11",
-      "avatar": "https://secure.gravatar.com/avatar/2dd3b461e79afda6fbbc61878d93304e.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0003-72.png"
     },
     "U0A759TPU76": {
       "id": "U0A759TPU76",
