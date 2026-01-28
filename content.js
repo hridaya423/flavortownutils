@@ -1669,15 +1669,97 @@ function getCsrfToken() {
     return document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || null;
 }
 
+async function getHackatimeProjectFields(projectId) {
+    const extractFields = (root) => {
+        const container = root.querySelector('.hackatime-project-selector') || root;
+        const candidates = Array.from(container.querySelectorAll(
+            'input[name*="hackatime" i], select[name*="hackatime" i], textarea[name*="hackatime" i], input[id*="hackatime" i], select[id*="hackatime" i], textarea[id*="hackatime" i]'
+        ));
+        const fields = [];
+
+        candidates.forEach(el => {
+            const name = el.getAttribute('name');
+            if (!name) return;
+
+            const tag = el.tagName.toLowerCase();
+            const type = (el.getAttribute('type') || '').toLowerCase();
+            if ((type === 'checkbox' || type === 'radio') && !el.checked) return;
+
+            let value = el.value;
+            if (value === '' || value === null || value === undefined) {
+                const attrValue = el.getAttribute('value');
+                if (tag === 'select') {
+                    const selectedOption = el.querySelector('option[selected]');
+                    if (selectedOption) {
+                        value = selectedOption.getAttribute('value') || selectedOption.textContent || '';
+                    }
+                }
+                if ((value === '' || value === null || value === undefined) && attrValue !== null) {
+                    value = attrValue;
+                }
+            }
+
+            if (value === '' || value === null || value === undefined) return;
+            fields.push({ name, value });
+        });
+
+        if (!fields.length) {
+            const selector = root.querySelector('.hackatime-project-selector');
+            if (selector) {
+                const attributeName = selector.getAttribute('data-attribute') || 'hackatime_project_ids';
+                const initialValue = selector.getAttribute('data-hackatime-project-selector-initial-projects-value') || '';
+                let parsed = null;
+                if (initialValue) {
+                    try {
+                        const cleaned = initialValue.replace(/&quot;/g, '"').replace(/&amp;/g, '&');
+                        parsed = JSON.parse(cleaned);
+                    } catch (e) {
+                        parsed = null;
+                    }
+                }
+
+                if (Array.isArray(parsed)) {
+                    parsed.forEach(entry => {
+                        const id = entry && (entry.id || entry.project_id);
+                        if (!id) return;
+                        fields.push({ name: `project[${attributeName}][]`, value: String(id) });
+                    });
+                }
+            }
+        }
+
+        return fields;
+    };
+
+    const fromPage = extractFields(document);
+    if (fromPage.length) return fromPage;
+
+    if (!projectId) return [];
+
+    try {
+        const response = await fetch(`/projects/${projectId}/edit`, { credentials: 'include' });
+        if (!response.ok) return [];
+        const html = await response.text();
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        return extractFields(doc);
+    } catch (e) {
+        return [];
+    }
+}
+
 async function updateProjectLinks(projectId, { repoUrl, demoUrl }) {
     if (!projectId || (!repoUrl && !demoUrl)) return false;
     const token = getCsrfToken();
     if (!token) return false;
 
+    const hackatimeFields = await getHackatimeProjectFields(projectId);
     const params = new URLSearchParams();
     params.append('_method', 'patch');
     if (repoUrl) params.append('project[repo_url]', repoUrl);
     if (demoUrl) params.append('project[demo_url]', demoUrl);
+    hackatimeFields.forEach(field => {
+        params.append(field.name, field.value);
+    });
 
     try {
         const response = await fetch(`/projects/${projectId}`, {
@@ -2621,7 +2703,6 @@ async function addProjectShowCookieStat() {
 
     const payouts = await fetchShipPayouts();
     if (!payouts.length) {
-        logShipPayoutDebug('warn', 'Project show: no payouts found');
         if (projectId) {
             const totalMinutes = getTotalDevlogMinutesFromDocument(document);
             if (totalMinutes > 0) {
@@ -2638,7 +2719,6 @@ async function addProjectShowCookieStat() {
 
     const projectPayouts = payouts.filter(payout => projectNameMatches(payout.projectName, projectName));
     if (!projectPayouts.length) {
-        logShipPayoutDebug('warn', 'Project show: no payouts matched project', projectName);
         if (projectId) {
             const totalMinutes = getTotalDevlogMinutesFromDocument(document);
             if (totalMinutes > 0) {
