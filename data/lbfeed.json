@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-01-28T09:41:12.125Z",
+  "lastUpdated": "2026-01-28T10:35:54.079Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -34,6 +34,14 @@
         "balance": 178,
         "reason": "payout",
         "reasonType": "payout",
+        "userId": "U04DNS0LAM9"
+      },
+      {
+        "ts": "2026-01-28T09:52:16.209Z",
+        "delta": 3,
+        "balance": 181,
+        "reason": "Michelin Star",
+        "reasonType": "achievement",
         "userId": "U04DNS0LAM9"
       }
     ],
@@ -20815,6 +20823,12 @@
     ]
   },
   "users": {
+    "U04DNS0LAM9": {
+      "id": "U04DNS0LAM9",
+      "username": "olusegunkd2017",
+      "displayName": "segun",
+      "avatar": "https://avatars.slack-edge.com/2025-10-11/9672415976883_de8f0dfb9dbc36729a6b_72.png"
+    },
     "U091KE59H5H": {
       "id": "U091KE59H5H",
       "username": "joooooshp",
@@ -20893,12 +20907,6 @@
       "username": "jaytirthjoshi",
       "displayName": "Jay",
       "avatar": "https://avatars.slack-edge.com/2026-01-12/10283520234852_fcbab6aa4367241d4ca8_72.png"
-    },
-    "U04DNS0LAM9": {
-      "id": "U04DNS0LAM9",
-      "username": "olusegunkd2017",
-      "displayName": "segun",
-      "avatar": "https://avatars.slack-edge.com/2025-10-11/9672415976883_de8f0dfb9dbc36729a6b_72.png"
     },
     "U09GESRAC8J": {
       "id": "U09GESRAC8J",
