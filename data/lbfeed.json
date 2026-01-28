@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-01-28T21:35:43.016Z",
+  "lastUpdated": "2026-01-28T22:34:01.100Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -6801,6 +6801,16 @@
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U091Q62131A"
+      }
+    ],
+    "u091rhatjbw": [
+      {
+        "ts": "2026-01-28T22:25:18.528Z",
+        "delta": 57,
+        "balance": 67,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U091RHATJBW"
       }
     ],
     "u091s46dvng": [
@@ -19993,6 +20003,14 @@
         "reason": "Cookbook Author",
         "reasonType": "achievement",
         "userId": "U0A87N7JQUV"
+      },
+      {
+        "ts": "2026-01-28T22:24:03.983Z",
+        "delta": 3,
+        "balance": 46,
+        "reason": "tutorial",
+        "reasonType": "",
+        "userId": "U0A87N7JQUV"
       }
     ],
     "u0a8a7q180p": [
@@ -21435,6 +21453,18 @@
     ]
   },
   "users": {
+    "U091RHATJBW": {
+      "id": "U091RHATJBW",
+      "username": "rchen7530",
+      "displayName": "Ryan Chen",
+      "avatar": "https://secure.gravatar.com/avatar/08f3344b3ab6dadb30365ac128c07783.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0017-72.png"
+    },
+    "U0A87N7JQUV": {
+      "id": "U0A87N7JQUV",
+      "username": "hatted-bristly.1n",
+      "displayName": "Phenix Hartogh",
+      "avatar": "https://avatars.slack-edge.com/2026-01-13/10267774530039_6e7c38c7d0a4c5c2cf56_72.png"
+    },
     "U0A58CRBLKT": {
       "id": "U0A58CRBLKT",
       "username": "joaquimcassano",
@@ -23198,12 +23228,6 @@
       "username": "bennet-wegener",
       "displayName": "bennet-wegener",
       "avatar": "https://secure.gravatar.com/avatar/c294123ce3aa38754f5d04154ac55d9b.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0026-72.png"
-    },
-    "U0A87N7JQUV": {
-      "id": "U0A87N7JQUV",
-      "username": "hatted-bristly.1n",
-      "displayName": "Phenix Hartogh",
-      "avatar": "https://avatars.slack-edge.com/2026-01-13/10267774530039_6e7c38c7d0a4c5c2cf56_72.png"
     },
     "U0A8GDTG4LQ": {
       "id": "U0A8GDTG4LQ",
