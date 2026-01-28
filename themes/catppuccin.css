@@ -859,6 +859,14 @@ a:hover {
     color: var(--ctp-mauve) !important;
 }
 
+.projects-ship__step {
+    background-color: var(--ctp-surface0) !important;
+}
+
+.projects-ship__project-name {
+    color: var(--ctp-red) !important;
+}
+
 .button_to {
     display: inline !important;
 }

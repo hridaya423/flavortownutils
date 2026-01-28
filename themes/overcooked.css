@@ -855,6 +855,14 @@ a:hover {
     color: var(--overcooked-cyan) !important;
 }
 
+.projects-ship__step {
+    background-color: var(--overcooked-dark) !important;
+}
+
+.projects-ship__project-name {
+    color: var(--overcooked-coral) !important;
+}
+
 .button_to {
     display: inline !important;
 }

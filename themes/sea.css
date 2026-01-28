@@ -848,6 +848,14 @@ a:hover {
     color: var(--sea-cyan) !important;
 }
 
+.projects-ship__step {
+    background-color: var(--sea-dark) !important;
+}
+
+.projects-ship__project-name {
+    color: var(--sea-coral) !important;
+}
+
 .button_to {
     display: inline !important;
 }
