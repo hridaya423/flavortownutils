@@ -698,7 +698,7 @@ function addShipStats() {
         return;
     }
 
-    const shipPosts = document.querySelectorAll('.post.post--ship');
+    const shipPosts = document.querySelectorAll('article.post--ship, .post--ship');
     if (!shipPosts.length) return;
 
     shipPosts.forEach((shipPost) => {
@@ -708,7 +708,7 @@ function addShipStats() {
         let devlogCount = 0;
 
         const timeEl = shipPost.querySelector('.post__time');
-        const shipDate = timeEl ? parseRelativeTime(timeEl.textContent.trim()) : null;
+        const shipDate = timeEl ? parseDateFromTimeElement(timeEl) : null;
 
         let currentElement = shipPost.nextElementSibling;
         while (currentElement) {
@@ -776,6 +776,15 @@ function addShipStats() {
             }
         }
     });
+}
+
+function ensureShipStatsReady() {
+    if (!/\/projects\/\d+$/.test(window.location.pathname)) return;
+    const shipPosts = document.querySelectorAll('article.post--ship, .post--ship');
+    if (!shipPosts.length) return;
+    if (document.querySelector('.flavortown-ship-stats')) return;
+
+    addShipStats();
 }
 
 function normalizeProjectName(name) {
@@ -1662,6 +1671,38 @@ function storePendingRepoLink(projectId, repoUrl, demoUrl = null) {
     }
 }
 
+function getCsrfToken() {
+    return document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || null;
+}
+
+async function updateProjectLinks(projectId, { repoUrl, demoUrl }) {
+    if (!projectId || (!repoUrl && !demoUrl)) return false;
+    const token = getCsrfToken();
+    if (!token) return false;
+
+    const params = new URLSearchParams();
+    params.append('_method', 'patch');
+    if (repoUrl) params.append('project[repo_url]', repoUrl);
+    if (demoUrl) params.append('project[demo_url]', demoUrl);
+
+    try {
+        const response = await fetch(`/projects/${projectId}`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                'X-CSRF-Token': token,
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: params.toString()
+        });
+
+        return response.ok;
+    } catch (e) {
+        return false;
+    }
+}
+
 function readPendingRepoLink() {
     try {
         const raw = sessionStorage.getItem(REPO_SUGGESTION_PENDING_KEY);
@@ -1742,27 +1783,33 @@ async function initProjectLinkSuggestionOnProjectShow() {
         demoUrl,
         onRepo: () => {
             if (!repoUrl) return;
-            const editLink = showCard.querySelector('a[href$="/edit"]');
-            if (!editLink) return;
-            storePendingRepoLink(projectId, repoUrl, null);
-            editLink.click();
+            updateProjectLinks(projectId, { repoUrl, demoUrl: null }).then(success => {
+                if (success) {
+                    card.remove();
+                    window.location.reload();
+                }
+            });
         },
         onDemo: () => {
             if (!demoUrl) return;
-            const editLink = showCard.querySelector('a[href$="/edit"]');
-            if (!editLink) return;
-            storePendingRepoLink(projectId, null, demoUrl);
-            editLink.click();
+            updateProjectLinks(projectId, { repoUrl: null, demoUrl }).then(success => {
+                if (success) {
+                    card.remove();
+                    window.location.reload();
+                }
+            });
         },
         onDismiss: () => {
             setDismissedRepoSuggestion(dismissKey);
             card.remove();
         },
         onApplyAll: () => {
-            const editLink = showCard.querySelector('a[href$="/edit"]');
-            if (!editLink) return;
-            storePendingRepoLink(projectId, repoUrl || null, demoUrl || null);
-            editLink.click();
+            updateProjectLinks(projectId, { repoUrl: repoUrl || null, demoUrl: demoUrl || null }).then(success => {
+                if (success) {
+                    card.remove();
+                    window.location.reload();
+                }
+            });
         }
     });
 
@@ -2054,12 +2101,13 @@ function readShipPayoutCache() {
         if (!parsed || !parsed.timestamp || !Array.isArray(parsed.payouts)) return null;
         if (Date.now() - parsed.timestamp > SHIP_PAYOUT_CACHE_TTL) return null;
 
-        return parsed.payouts
+        const payouts = parsed.payouts
             .map(payout => ({
                 ...payout,
                 date: payout.date ? new Date(payout.date) : null
             }))
             .filter(payout => payout.date && !isNaN(payout.date.getTime()));
+        return payouts.length ? payouts : null;
     } catch (e) {
         return null;
     }
@@ -2078,19 +2126,35 @@ function writeShipPayoutCache(payouts) {
     }
 }
 
+
 function parseShipPayoutsFromBalance(doc) {
+    if (!doc) return [];
     let rows = doc.querySelectorAll('.balance-history__table tbody tr');
     if (rows.length === 0) {
         rows = doc.querySelectorAll('table tbody tr');
     }
 
+    if (rows.length === 0) {
+        const streamTemplates = doc.querySelectorAll('turbo-stream template');
+        if (streamTemplates.length) {
+            const parsedRows = [];
+            streamTemplates.forEach(template => {
+                const fragmentDoc = new DOMParser().parseFromString(template.innerHTML, 'text/html');
+                const templateRows = fragmentDoc.querySelectorAll('.balance-history__table tbody tr, table tbody tr');
+                parsedRows.push(...Array.from(templateRows));
+            });
+            rows = parsedRows;
+        }
+    }
+
     const payouts = [];
+
 
     rows.forEach(row => {
         const cells = row.querySelectorAll('td');
         if (cells.length < 3) return;
 
-        const reason = cells[0].textContent.trim();
+        const reason = cells[0].textContent.replace(/\s+/g, ' ').trim();
         const match = reason.match(/ship event payout:\s*(.+)$/i);
         if (!match) return;
 
@@ -2103,9 +2167,8 @@ function parseShipPayoutsFromBalance(doc) {
         if (amountText.includes('-')) amount = -amount;
         if (amount <= 0) return;
 
-        const dateText = cells[2].textContent.trim();
-        const date = new Date(dateText);
-        if (isNaN(date.getTime())) return;
+        const date = parseDateFromCell(cells[2]);
+        if (!date || isNaN(date.getTime())) return;
 
         payouts.push({ projectName, amount, date });
     });
@@ -2118,8 +2181,10 @@ async function fetchShipPayouts() {
     if (cached) return cached;
 
     try {
-        const response = await fetch('/my/balance', {
-            credentials: 'same-origin',
+        const balanceUrl = new URL('/my/balance', window.location.origin).toString();
+        
+        const response = await fetch(balanceUrl, {
+            credentials: 'include',
             headers: {
                 'Accept': 'text/html, application/xhtml+xml',
                 'Turbo-Frame': 'balance_history',
@@ -2131,7 +2196,24 @@ async function fetchShipPayouts() {
 
         const html = await response.text();
         const doc = new DOMParser().parseFromString(html, 'text/html');
-        const payouts = parseShipPayoutsFromBalance(doc);
+        let payouts = parseShipPayoutsFromBalance(doc);
+
+        if (payouts.length === 0) {
+            const fallbackResponse = await fetch(balanceUrl, {
+                credentials: 'include',
+                headers: {
+                    'Accept': 'text/html, application/xhtml+xml',
+                    'X-Flavortown-Ext-135': 'true'
+                }
+            });
+
+            if (fallbackResponse.ok) {
+                const fallbackHtml = await fallbackResponse.text();
+                const fallbackDoc = new DOMParser().parseFromString(fallbackHtml, 'text/html');
+                payouts = parseShipPayoutsFromBalance(fallbackDoc);
+            }
+        }
+
         if (payouts.length > 0) {
             writeShipPayoutCache(payouts);
         }
@@ -2364,7 +2446,7 @@ function buildShipStatsFromDocument(doc) {
         if (!minutes || minutes <= 0) return;
 
         const timeEl = shipPost.querySelector('.post__time');
-        const shipDate = timeEl ? parseRelativeTime(timeEl.textContent.trim()) : null;
+        const shipDate = timeEl ? parseDateFromTimeElement(timeEl) : null;
         if (!shipDate || isNaN(shipDate.getTime())) return;
 
         const hours = minutes / 60;
@@ -2661,6 +2743,7 @@ async function addProjectShowCookieStat() {
 
     const payouts = await fetchShipPayouts();
     if (!payouts.length) {
+        logShipPayoutDebug('warn', 'Project show: no payouts found');
         if (projectId) {
             const totalMinutes = getTotalDevlogMinutesFromDocument(document);
             if (totalMinutes > 0) {
@@ -2677,6 +2760,7 @@ async function addProjectShowCookieStat() {
 
     const projectPayouts = payouts.filter(payout => projectNameMatches(payout.projectName, projectName));
     if (!projectPayouts.length) {
+        logShipPayoutDebug('warn', 'Project show: no payouts matched project', projectName);
         if (projectId) {
             const totalMinutes = getTotalDevlogMinutesFromDocument(document);
             if (totalMinutes > 0) {
@@ -2802,7 +2886,7 @@ function getShipStatsData(statsElement) {
     if (!shipDate || isNaN(shipDate.getTime())) {
         const shipPost = statsElement.closest('article.post--ship');
         const timeEl = shipPost ? shipPost.querySelector('.post__time') : null;
-        shipDate = timeEl ? parseRelativeTime(timeEl.textContent.trim()) : null;
+        shipDate = timeEl ? parseDateFromTimeElement(timeEl) : null;
     }
     if (!shipDate || isNaN(shipDate.getTime())) return null;
 
@@ -2824,7 +2908,11 @@ function getShipStatsData(statsElement) {
 async function addShipPayoutStats() {
     if (!/\/projects\/\d+$/.test(window.location.pathname)) return;
 
-    const shipStats = document.querySelectorAll('.flavortown-ship-stats');
+    let shipStats = document.querySelectorAll('.flavortown-ship-stats');
+    if (!shipStats.length) {
+        addShipStats();
+        shipStats = document.querySelectorAll('.flavortown-ship-stats');
+    }
     if (!shipStats.length) return;
 
     const projectIdMatch = window.location.pathname.match(/\/projects\/(\d+)/);
@@ -5655,6 +5743,7 @@ function init() {
     checkForUpdates();
     addDevlogFrequencyStat();
     addVotesDevlogFrequencyStat();
+    ensureShipStatsReady();
     addShipStats();
     addShipPayoutStats();
     addProjectShowCookieStat();
@@ -7027,7 +7116,10 @@ document.addEventListener('turbo:load', () => {
     sessionStorage.removeItem(VOTES_SKIP_TRIGGER_KEY);
     addDevlogFrequencyStat();
     addVotesDevlogFrequencyStat();
+    ensureShipStatsReady();
     addShipStats();
+    addShipPayoutStats();
+    addProjectShowCookieStat();
     inlineDevlogForm();
     setupInlineDevlogEditing();
     enhanceShopGoals();
@@ -9889,24 +9981,195 @@ function parseRelativeTime(relativeStr) {
     const str = relativeStr.toLowerCase().trim();
 
     if (str.includes('just now') || str.includes('moment')) return now;
+    if (str === 'today') return now;
+    if (str === 'yesterday') return new Date(now.getTime() - 24 * 60 * 60 * 1000);
 
     const match = str.match(/(\d+)\s*(second|minute|hour|day|week|month|year)s?\s*ago/i);
-    if (!match) return null;
+    if (match) {
+        const num = parseInt(match[1]);
+        const unit = match[2].toLowerCase();
 
-    const num = parseInt(match[1]);
-    const unit = match[2].toLowerCase();
+        const ms = {
+            second: 1000,
+            minute: 60 * 1000,
+            hour: 60 * 60 * 1000,
+            day: 24 * 60 * 60 * 1000,
+            week: 7 * 24 * 60 * 60 * 1000,
+            month: 30 * 24 * 60 * 60 * 1000,
+            year: 365 * 24 * 60 * 60 * 1000,
+        };
 
-    const ms = {
-        second: 1000,
-        minute: 60 * 1000,
-        hour: 60 * 60 * 1000,
-        day: 24 * 60 * 60 * 1000,
-        week: 7 * 24 * 60 * 60 * 1000,
-        month: 30 * 24 * 60 * 60 * 1000,
-        year: 365 * 24 * 60 * 60 * 1000,
-    };
+        return new Date(now.getTime() - num * ms[unit]);
+    }
 
-    return new Date(now.getTime() - num * ms[unit]);
+    const shortMatch = str.match(/(\d+)\s*(s|sec|secs|second|seconds|m|min|mins|minute|minutes|h|hr|hrs|hour|hours|d|day|days|w|wk|wks|week|weeks|mo|mon|mos|month|months|y|yr|yrs|year|years)\s*ago?/i);
+    if (shortMatch) {
+        const num = parseInt(shortMatch[1]);
+        const unitKey = shortMatch[2].toLowerCase();
+        const unitMap = {
+            s: 'second',
+            sec: 'second',
+            secs: 'second',
+            second: 'second',
+            seconds: 'second',
+            m: 'minute',
+            min: 'minute',
+            mins: 'minute',
+            minute: 'minute',
+            minutes: 'minute',
+            h: 'hour',
+            hr: 'hour',
+            hrs: 'hour',
+            hour: 'hour',
+            hours: 'hour',
+            d: 'day',
+            day: 'day',
+            days: 'day',
+            w: 'week',
+            wk: 'week',
+            wks: 'week',
+            week: 'week',
+            weeks: 'week',
+            mo: 'month',
+            mon: 'month',
+            mos: 'month',
+            month: 'month',
+            months: 'month',
+            y: 'year',
+            yr: 'year',
+            yrs: 'year',
+            year: 'year',
+            years: 'year'
+        };
+        const unit = unitMap[unitKey];
+        if (!unit) return null;
+
+        const ms = {
+            second: 1000,
+            minute: 60 * 1000,
+            hour: 60 * 60 * 1000,
+            day: 24 * 60 * 60 * 1000,
+            week: 7 * 24 * 60 * 60 * 1000,
+            month: 30 * 24 * 60 * 60 * 1000,
+            year: 365 * 24 * 60 * 60 * 1000,
+        };
+
+        return new Date(now.getTime() - num * ms[unit]);
+    }
+
+    return parseAbsoluteDateText(relativeStr);
+}
+
+function parseAbsoluteDateText(text) {
+    if (!text) return null;
+    const cleaned = text
+        .replace(/\s+/g, ' ')
+        .replace(/(\d+)(st|nd|rd|th)/gi, '$1')
+        .replace(/\s+at\s+/i, ' ')
+        .replace(/\s+·\s+/g, ' ')
+        .trim();
+    if (!cleaned) return null;
+    const date = new Date(cleaned);
+    if (!isNaN(date.getTime())) return date;
+
+    const isoMatch = cleaned.match(/(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})(?:\s+(\d{1,2})(?::(\d{2}))?\s*(am|pm)?)?/i);
+    if (isoMatch) {
+        const year = parseInt(isoMatch[1], 10);
+        const month = parseInt(isoMatch[2], 10) - 1;
+        const day = parseInt(isoMatch[3], 10);
+        let hour = isoMatch[4] ? parseInt(isoMatch[4], 10) : 0;
+        const minute = isoMatch[5] ? parseInt(isoMatch[5], 10) : 0;
+        const meridiem = isoMatch[6] ? isoMatch[6].toLowerCase() : null;
+        if (meridiem) {
+            if (meridiem === 'pm' && hour < 12) hour += 12;
+            if (meridiem === 'am' && hour === 12) hour = 0;
+        }
+        const isoDate = new Date(year, month, day, hour, minute);
+        if (!isNaN(isoDate.getTime())) return isoDate;
+    }
+
+    const monthMatch = cleaned.match(/([a-zA-Z]+)\s+(\d{1,2})(?:,)?\s+(\d{4})(?:\s+(\d{1,2})(?::(\d{2}))?\s*(am|pm)?)?/i);
+    if (monthMatch) {
+        const monthName = monthMatch[1].toLowerCase();
+        const monthKey = monthName.startsWith('sept') ? 'sep' : monthName.slice(0, 3);
+        const monthMap = {
+            jan: 0,
+            feb: 1,
+            mar: 2,
+            apr: 3,
+            may: 4,
+            jun: 5,
+            jul: 6,
+            aug: 7,
+            sep: 8,
+            oct: 9,
+            nov: 10,
+            dec: 11
+        };
+        const month = monthMap[monthKey];
+        if (month !== undefined) {
+            const day = parseInt(monthMatch[2], 10);
+            const year = parseInt(monthMatch[3], 10);
+            let hour = monthMatch[4] ? parseInt(monthMatch[4], 10) : 0;
+            const minute = monthMatch[5] ? parseInt(monthMatch[5], 10) : 0;
+            const meridiem = monthMatch[6] ? monthMatch[6].toLowerCase() : null;
+            if (meridiem) {
+                if (meridiem === 'pm' && hour < 12) hour += 12;
+                if (meridiem === 'am' && hour === 12) hour = 0;
+            }
+            const monthDate = new Date(year, month, day, hour, minute);
+            if (!isNaN(monthDate.getTime())) return monthDate;
+        }
+    }
+
+    return null;
+}
+
+function parseDateFromTimeElement(timeEl) {
+    if (!timeEl) return null;
+    const timeTag = timeEl.matches('time') ? timeEl : timeEl.querySelector('time');
+    if (timeTag) {
+        const datetime = timeTag.getAttribute('datetime');
+        if (datetime) {
+            const date = new Date(datetime);
+            if (!isNaN(date.getTime())) return date;
+        }
+    }
+
+    const timestamp = timeEl.getAttribute('data-timestamp') || timeEl.dataset?.timestamp;
+    if (timestamp) {
+        const parsedTs = parseInt(timestamp, 10);
+        if (!isNaN(parsedTs)) {
+            const normalizedTs = parsedTs < 1000000000000 ? parsedTs * 1000 : parsedTs;
+            const date = new Date(normalizedTs);
+            if (!isNaN(date.getTime())) return date;
+        }
+    }
+
+    const text = timeEl.textContent.trim();
+    return parseRelativeTime(text);
+}
+
+function parseDateFromCell(cell) {
+    if (!cell) return null;
+    const timeTag = cell.querySelector('time');
+    if (timeTag) {
+        const date = parseDateFromTimeElement(timeTag);
+        if (date) return date;
+    }
+
+    const timestamp = cell.getAttribute('data-timestamp') || cell.dataset?.timestamp;
+    if (timestamp) {
+        const parsedTs = parseInt(timestamp, 10);
+        if (!isNaN(parsedTs)) {
+            const normalizedTs = parsedTs < 1000000000000 ? parsedTs * 1000 : parsedTs;
+            const date = new Date(normalizedTs);
+            if (!isNaN(date.getTime())) return date;
+        }
+    }
+
+    const dateText = cell.textContent.trim();
+    return parseRelativeTime(dateText);
 }
 
 function clusterVotesToShips(votes, ships) {
@@ -10118,7 +10381,7 @@ async function addProjectVotesDisplay() {
 
         if (timeEl) {
             const relativeTime = timeEl.textContent.trim();
-            const date = parseRelativeTime(relativeTime);
+            const date = parseDateFromTimeElement(timeEl);
 
             if (date) {
                 ships.push({
