@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-01-28T07:33:24.274Z",
+  "lastUpdated": "2026-01-28T08:41:12.547Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -10571,6 +10571,14 @@
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U09DJMWTL07"
+      },
+      {
+        "ts": "2026-01-28T08:26:11.861Z",
+        "delta": 76,
+        "balance": 503,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U09DJMWTL07"
       }
     ],
     "u09dynhjn5b": [
@@ -12784,6 +12792,14 @@
         "balance": 43,
         "reason": "Michelin Star",
         "reasonType": "achievement",
+        "userId": "U0A1SGVTEQP"
+      },
+      {
+        "ts": "2026-01-28T08:19:39.147Z",
+        "delta": 27,
+        "balance": 70,
+        "reason": "payout",
+        "reasonType": "payout",
         "userId": "U0A1SGVTEQP"
       }
     ],
@@ -15283,6 +15299,16 @@
         "userId": "U0A5HTUE2F3"
       }
     ],
+    "u0a5kfabmny": [
+      {
+        "ts": "2026-01-28T08:24:57.542Z",
+        "delta": 7,
+        "balance": 17,
+        "reason": "tutorial",
+        "reasonType": "",
+        "userId": "U0A5KFABMNY"
+      }
+    ],
     "u0a5kpmdrmj": [
       {
         "ts": "2026-01-02T21:04:54.058Z",
@@ -15646,6 +15672,22 @@
         "balance": 876,
         "reason": "payout",
         "reasonType": "payout",
+        "userId": "U0A5X6H719U"
+      },
+      {
+        "ts": "2026-01-28T07:54:30.266Z",
+        "delta": -176,
+        "balance": 700,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A5X6H719U"
+      },
+      {
+        "ts": "2026-01-28T08:10:19.229Z",
+        "delta": 176,
+        "balance": 876,
+        "reason": "shop purchase",
+        "reasonType": "",
         "userId": "U0A5X6H719U"
       }
     ],
@@ -19099,6 +19141,14 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0A81UKS2JU"
+      },
+      {
+        "ts": "2026-01-28T08:15:33.638Z",
+        "delta": 117,
+        "balance": 135,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U0A81UKS2JU"
       }
     ],
     "u0a82775c1e": [
@@ -20739,6 +20789,34 @@
     ]
   },
   "users": {
+    "U09DJMWTL07": {
+      "id": "U09DJMWTL07",
+      "username": "shreemahor5",
+      "displayName": "shreemahor",
+      "avatar": "https://secure.gravatar.com/avatar/18d6290607effc6e85d50d92411940f3.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0000-72.png"
+    },
+    "U0A5KFABMNY": {
+      "id": "U0A5KFABMNY",
+      "username": "rlerner",
+      "displayName": "rlerner",
+      "avatar": "https://secure.gravatar.com/avatar/14d35d6ee52f292841958663f0929fbd.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0014-72.png"
+    },
+    "U0A1SGVTEQP": {
+      "id": "U0A1SGVTEQP",
+      "username": "thomasewhite5",
+      "avatar": "https://secure.gravatar.com/avatar/838a46799fc349117e62d13c7a6f43e9.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0016-72.png"
+    },
+    "U0A81UKS2JU": {
+      "id": "U0A81UKS2JU",
+      "username": "punithkumar.cse",
+      "avatar": "https://avatars.slack-edge.com/2026-01-07/10253485303972_5f0a1732b9735f23cf8b_72.jpg"
+    },
+    "U0A5X6H719U": {
+      "id": "U0A5X6H719U",
+      "username": "ofx.proton",
+      "displayName": "A X O S",
+      "avatar": "https://avatars.slack-edge.com/2026-01-22/10341433011555_f2c395d7edb0f8f3150c_72.jpg"
+    },
     "U08FQEADNT0": {
       "id": "U08FQEADNT0",
       "username": "origamiking3612",
@@ -20761,12 +20839,6 @@
       "username": "korbinvanettedev",
       "displayName": "korbinvanettedev",
       "avatar": "https://secure.gravatar.com/avatar/a64ad70863a777fd78e15d79601368a8.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0024-72.png"
-    },
-    "U0A5X6H719U": {
-      "id": "U0A5X6H719U",
-      "username": "ofx.proton",
-      "displayName": "A X O S",
-      "avatar": "https://avatars.slack-edge.com/2026-01-22/10341433011555_f2c395d7edb0f8f3150c_72.jpg"
     },
     "U07GV6PJU57": {
       "id": "U07GV6PJU57",
@@ -21119,12 +21191,6 @@
       "displayName": "apsanpoudel66",
       "avatar": "https://avatars.slack-edge.com/2025-12-22/10198244323872_5ef66ee1c65ce319fa2f_72.jpg"
     },
-    "U09DJMWTL07": {
-      "id": "U09DJMWTL07",
-      "username": "shreemahor5",
-      "displayName": "shreemahor",
-      "avatar": "https://secure.gravatar.com/avatar/18d6290607effc6e85d50d92411940f3.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0000-72.png"
-    },
     "U0A6A0J7UE6": {
       "id": "U0A6A0J7UE6",
       "username": "tusharsinha199",
@@ -21190,7 +21256,7 @@
       "id": "U085L7P77EV",
       "username": "aregazatyank",
       "displayName": "Areg Azatyan",
-      "avatar": "https://avatars.slack-edge.com/2026-01-28/10372911880983_dc7488a955fb67e3cd0c_72.jpg"
+      "avatar": "https://avatars.slack-edge.com/2026-01-28/10392356405396_6b56265a2b1202910894_72.jpg"
     },
     "U091L5DCGUF": {
       "id": "U091L5DCGUF",
@@ -22632,11 +22698,6 @@
       "username": "poorneshk9",
       "avatar": "https://secure.gravatar.com/avatar/d85d84ab4053ce8598c739e60a01042d.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0019-72.png"
     },
-    "U0A1SGVTEQP": {
-      "id": "U0A1SGVTEQP",
-      "username": "thomasewhite5",
-      "avatar": "https://secure.gravatar.com/avatar/838a46799fc349117e62d13c7a6f43e9.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0016-72.png"
-    },
     "U07UH9DQA4B": {
       "id": "U07UH9DQA4B",
       "username": "izan",
@@ -22814,11 +22875,6 @@
       "id": "U0A2K2WS709",
       "username": "daviipkp",
       "avatar": "https://avatars.slack-edge.com/2025-12-21/10166525632101_67b369dacb6ba131739f_72.jpg"
-    },
-    "U0A81UKS2JU": {
-      "id": "U0A81UKS2JU",
-      "username": "punithkumar.cse",
-      "avatar": "https://avatars.slack-edge.com/2026-01-07/10253485303972_5f0a1732b9735f23cf8b_72.jpg"
     },
     "U080V8UG5BR": {
       "id": "U080V8UG5BR",
