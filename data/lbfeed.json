@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-01-28T11:29:22.702Z",
+  "lastUpdated": "2026-01-28T11:48:58.046Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -7187,6 +7187,14 @@
         "delta": 2,
         "balance": 12,
         "reason": "Hello, Kitchen!",
+        "reasonType": "achievement",
+        "userId": "U0923KXMGUR"
+      },
+      {
+        "ts": "2026-01-28T11:33:46.279Z",
+        "delta": 15,
+        "balance": 27,
+        "reason": "Cookbook Author",
         "reasonType": "achievement",
         "userId": "U0923KXMGUR"
       }
@@ -20871,6 +20879,12 @@
     ]
   },
   "users": {
+    "U0923KXMGUR": {
+      "id": "U0923KXMGUR",
+      "username": "mathdudex09",
+      "displayName": "xFN10x",
+      "avatar": "https://avatars.slack-edge.com/2025-08-03/9295106914389_7daba3e74ddbaf58bb1c_72.png"
+    },
     "U07H3E1CW7J": {
       "id": "U07H3E1CW7J",
       "username": "balogh.barnabas2008",
@@ -23133,12 +23147,6 @@
       "id": "U0A778JGV18",
       "username": "vikramhero26",
       "avatar": "https://secure.gravatar.com/avatar/aad19f83b3e96cac463f1e6db4a94831.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0021-72.png"
-    },
-    "U0923KXMGUR": {
-      "id": "U0923KXMGUR",
-      "username": "mathdudex09",
-      "displayName": "xFN10x",
-      "avatar": "https://avatars.slack-edge.com/2025-08-03/9295106914389_7daba3e74ddbaf58bb1c_72.png"
     },
     "U0A813RB2HG": {
       "id": "U0A813RB2HG",
