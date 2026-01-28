@@ -701,14 +701,23 @@ function addShipStats() {
     const shipPosts = document.querySelectorAll('article.post--ship, .post--ship');
     if (!shipPosts.length) return;
 
+    const buildPayoutItem = (label, value) => {
+        const item = document.createElement('div');
+        item.className = 'post__payout-item';
+        item.innerHTML = `
+            <span class="post__payout-label">${label}:</span>
+            <span class="post__payout-value">${value}</span>
+        `;
+        return item;
+    };
+
     shipPosts.forEach((shipPost) => {
-        if (shipPost.querySelector('.flavortown-ship-stats')) return;
+        const footer = shipPost.querySelector('.post__payout-footer');
+        if (!footer) return;
+        if (footer.dataset.flavortownExtras === 'true') return;
 
         let totalMinutes = 0;
         let devlogCount = 0;
-
-        const timeEl = shipPost.querySelector('.post__time');
-        const shipDate = timeEl ? parseDateFromTimeElement(timeEl) : null;
 
         let currentElement = shipPost.nextElementSibling;
         while (currentElement) {
@@ -728,53 +737,40 @@ function addShipStats() {
             currentElement = currentElement.nextElementSibling;
         }
 
-        if (devlogCount === 0) return;
+        const payoutItems = Array.from(footer.querySelectorAll('.post__payout-item'));
+        const getPayoutValue = (labelMatch) => {
+            const item = payoutItems.find(entry => {
+                const labelText = entry.querySelector('.post__payout-label')?.textContent || '';
+                return labelText.toLowerCase().includes(labelMatch);
+            });
+            return item ? item.querySelector('.post__payout-value')?.textContent?.trim() : '';
+        };
 
-        const totalHours = Math.floor(totalMinutes / 60);
-        const remainingMins = totalMinutes % 60;
+        const hoursValue = parseNumberFromText(getPayoutValue('hours'));
+        const cookiesValue = parseNumberFromText(getPayoutValue('cookies'));
+        const multiplierValue = parseNumberFromText(getPayoutValue('multiplier'));
+        const rate = multiplierValue || (hoursValue && cookiesValue ? getMultiplierFromCookies(cookiesValue, hoursValue) : null);
+        const estimate = rate ? buildVoteEstimate(rate) : null;
 
-        const statsDiv = document.createElement('div');
-        statsDiv.className = 'flavortown-ship-stats';
-        statsDiv.style.cssText = `
-            display: flex;
-            flex-wrap: wrap;
-            gap: 16px;
-            margin-top: 12px;
-            padding: 12px 16px;
-            background: var(--catppuccin-surface0, var(--color-cream-dark, rgba(0,0,0,0.05)));
-            border-radius: 8px;
-            font-size: 0.9em;
-        `;
+        footer.appendChild(buildPayoutItem('Devlogs', devlogCount ? String(devlogCount) : '--'));
+        footer.appendChild(buildPayoutItem('Percentile', rate ? formatCookiePercentileLine(rate) : '--'));
+        footer.appendChild(buildPayoutItem('Avg stars', estimate?.overallScore ? `★ ${formatScoreValue(estimate.overallScore)}` : '--'));
 
-        statsDiv.dataset.shipMinutes = totalMinutes.toString();
-        if (shipDate) {
-            statsDiv.dataset.shipDate = shipDate.toISOString();
+        if (estimate?.categories) {
+            const mediansText = [
+                `Originality ★${formatScoreValue(estimate.categories.originality)}`,
+                `Technical ★${formatScoreValue(estimate.categories.technical)}`,
+                `Usability ★${formatScoreValue(estimate.categories.usability)}`,
+                `Storytelling ★${formatScoreValue(estimate.categories.storytelling)}`
+            ].join(' • ');
+            footer.appendChild(buildPayoutItem('Est. medians', mediansText));
         }
 
-        statsDiv.innerHTML = `
-            <div style="display: flex; align-items: center; gap: 6px;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="opacity: 0.7;">
-                    <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.2 3.2.8-1.3-4.5-2.7V7z"/>
-                </svg>
-                <span><strong>Total time:</strong> ${totalHours}h ${remainingMins}m</span>
-            </div>
-            <div style="display: flex; align-items: center; gap: 6px;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="opacity: 0.7;">
-                    <path d="m19.18 7.132-4.206-4.306c-.512-.513-1.23-.82-2.05-.82H6.871C5.333 1.903 4 3.236 4 4.774v14.355A2.866 2.866 0 0 0 6.872 22h10.256A2.866 2.866 0 0 0 20 19.129V9.081c0-.718-.308-1.436-.82-1.949M8.923 10.106H12c.41 0 .82.308.82.82 0 .513-.307.82-.82.82H8.923a.81.81 0 0 1-.82-.82c0-.513.41-.82.82-.82m6.154 5.742H8.923c-.41 0-.82-.308-.82-.82s.307-.82.82-.82h6.154c.41 0 .82.307.82.82s-.41.82-.82.82"/>
-                </svg>
-                <span><strong>${devlogCount}</strong> devlog${devlogCount !== 1 ? 's' : ''} on this ship</span>
-            </div>
-        `;
-
-        const postBody = shipPost.querySelector('.post__body');
-        if (postBody) {
-            postBody.after(statsDiv);
-        } else {
-            const shipTitle = shipPost.querySelector('.post__ship-title');
-            if (shipTitle) {
-                shipTitle.after(statsDiv);
-            }
+        if (totalMinutes > 0) {
+            shipPost.dataset.flavortownShipMinutes = String(totalMinutes);
         }
+
+        footer.dataset.flavortownExtras = 'true';
     });
 }
 
@@ -782,8 +778,6 @@ function ensureShipStatsReady() {
     if (!/\/projects\/\d+$/.test(window.location.pathname)) return;
     const shipPosts = document.querySelectorAll('article.post--ship, .post--ship');
     if (!shipPosts.length) return;
-    if (document.querySelector('.flavortown-ship-stats')) return;
-
     addShipStats();
 }
 
@@ -1836,6 +1830,12 @@ function parseDurationToMinutes(text) {
     return minutes;
 }
 
+function parseNumberFromText(text) {
+    if (!text) return null;
+    const match = text.replace(/,/g, '').match(/[\d.]+/);
+    return match ? parseFloat(match[0]) : null;
+}
+
 function formatCookieRate(rate) {
     if (rate === null || rate === undefined || !isFinite(rate)) return '--';
     return rate.toFixed(1);
@@ -1999,99 +1999,6 @@ function createVoteEstimateElement(estimate, options = {}) {
     return { scorePill, accordion };
 }
 
-function getCookieRange(hours) {
-    if (!hours || hours <= 0) return null;
-    const normalizedHours = normalizePayoutHours(hours) || hours;
-    const minCookies = Math.max(1, Math.ceil(normalizedHours * COOKIE_RATE_MIN));
-    const maxCookies = Math.max(minCookies, Math.floor(normalizedHours * COOKIE_RATE_MAX));
-    const expectedCookies = normalizedHours * ((COOKIE_RATE_MIN + COOKIE_RATE_MAX) / 2);
-    return { minCookies, maxCookies, expectedCookies };
-}
-
-function getPayoutAssignmentCost(ship, payout, expectedRate) {
-    if (!ship || !payout || !ship.date || !payout.date) return null;
-    if (!isFinite(ship.hours) || ship.hours <= 0) return null;
-    if (payout.date < ship.date) return null;
-
-    const rate = getMultiplierFromCookies(payout.amount, ship.hours);
-    if (!rate || !isFinite(rate)) return null;
-    if (rate < COOKIE_RATE_MIN || rate > COOKIE_RATE_MAX) return null;
-
-    const avgRate = (COOKIE_RATE_MIN + COOKIE_RATE_MAX) / 2;
-    const targetRate = expectedRate && isFinite(expectedRate) ? expectedRate : avgRate;
-    const rateDiff = Math.abs(rate - targetRate);
-    const cookieDiff = Math.abs(rate - avgRate);
-    const timeDiffDays = Math.abs(payout.date - ship.date) / (1000 * 60 * 60 * 24);
-
-    return rateDiff + cookieDiff + (timeDiffDays * 0.01);
-}
-
-function assignPayoutsToShips(payouts, ships) {
-    const assignments = new Map();
-    ships.forEach(ship => assignments.set(ship, []));
-
-    if (!ships.length || !payouts.length) return assignments;
-
-    const validShips = ships.filter(ship => ship.date && isFinite(ship.hours) && ship.hours > 0);
-    const validPayouts = payouts.filter(payout => payout.date && isFinite(payout.amount));
-
-    if (!validShips.length || !validPayouts.length) return assignments;
-
-    const totalShipHours = validShips.reduce((sum, ship) => sum + ship.hours, 0);
-    const totalCookies = validPayouts.reduce((sum, payout) => sum + payout.amount, 0);
-    const expectedRate = totalShipHours > 0
-        ? clampValue(totalCookies / totalShipHours, COOKIE_RATE_MIN, COOKIE_RATE_MAX)
-        : null;
-
-    const shipEntries = validShips.map(ship => {
-        const candidates = validPayouts.map((payout, index) => {
-            const cost = getPayoutAssignmentCost(ship, payout, expectedRate);
-            if (cost === null) return null;
-            return { payout, index, cost };
-        }).filter(Boolean);
-        return { ship, candidates };
-    }).sort((a, b) => a.candidates.length - b.candidates.length);
-
-    const best = { count: -1, cost: Infinity, pairs: new Map() };
-    const used = new Set();
-
-    const search = (idx, count, cost, pairs) => {
-        const remainingShips = shipEntries.length - idx;
-        const remainingPayouts = validPayouts.length - used.size;
-        const maxPossible = count + Math.min(remainingShips, remainingPayouts);
-        if (maxPossible < best.count) return;
-
-        if (idx >= shipEntries.length) {
-            if (count > best.count || (count === best.count && cost < best.cost)) {
-                best.count = count;
-                best.cost = cost;
-                best.pairs = new Map(pairs);
-            }
-            return;
-        }
-
-        const entry = shipEntries[idx];
-
-        search(idx + 1, count, cost, pairs);
-
-        entry.candidates.forEach(candidate => {
-            if (used.has(candidate.index)) return;
-            used.add(candidate.index);
-            pairs.set(entry.ship, candidate.payout);
-            search(idx + 1, count + 1, cost + candidate.cost, pairs);
-            pairs.delete(entry.ship);
-            used.delete(candidate.index);
-        });
-    };
-
-    search(0, 0, 0, new Map());
-
-    best.pairs.forEach((payout, ship) => {
-        assignments.get(ship).push(payout);
-    });
-
-    return assignments;
-}
 
 function readShipPayoutCache() {
     try {
@@ -2435,71 +2342,7 @@ function getTotalDevlogMinutesFromDocument(doc) {
     return totalMinutes;
 }
 
-function buildShipStatsFromDocument(doc) {
-    const shipPosts = doc.querySelectorAll('article.post--ship, .post--ship');
-    if (!shipPosts.length) return [];
-
-    const ships = [];
-
-    shipPosts.forEach(shipPost => {
-        const minutes = collectShipMinutesFromPost(shipPost);
-        if (!minutes || minutes <= 0) return;
-
-        const timeEl = shipPost.querySelector('.post__time');
-        const shipDate = timeEl ? parseDateFromTimeElement(timeEl) : null;
-        if (!shipDate || isNaN(shipDate.getTime())) return;
-
-        const hours = minutes / 60;
-        const range = getCookieRange(hours);
-        if (!range) return;
-
-        ships.push({
-            date: shipDate,
-            minutes,
-            hours,
-            minCookies: range.minCookies,
-            maxCookies: range.maxCookies,
-            expectedCookies: range.expectedCookies
-        });
-    });
-
-    return ships;
-}
-
-function calculatePaidShipTotals(ships, projectPayouts) {
-    if (!ships.length || !projectPayouts || !projectPayouts.length) {
-        return { paidShipMinutes: 0, paidCookies: 0 };
-    }
-
-    const assignments = assignPayoutsToShips(projectPayouts, ships);
-    let paidShipMinutes = 0;
-    let paidCookies = 0;
-
-    assignments.forEach((payouts, ship) => {
-        if (!payouts.length) return;
-        paidShipMinutes += ship.minutes;
-        paidCookies += payouts.reduce((sum, payout) => sum + payout.amount, 0);
-    });
-
-    return { paidShipMinutes, paidCookies };
-}
-
-function computeUnshippedStats(totalMinutes, ships, projectPayouts) {
-    const totalShipMinutes = ships.reduce((sum, ship) => sum + ship.minutes, 0);
-    const safeTotalMinutes = totalMinutes > 0 ? totalMinutes : totalShipMinutes;
-    const { paidShipMinutes, paidCookies } = calculatePaidShipTotals(ships, projectPayouts);
-    const unshippedMinutes = Math.max(0, safeTotalMinutes - paidShipMinutes);
-
-    return {
-        totalMinutes: safeTotalMinutes,
-        totalShipMinutes,
-        paidShipMinutes,
-        paidCookies,
-        unshippedMinutes
-    };
-}
-
-async function fetchProjectUnshippedStats(projectId, projectPayouts) {
+async function fetchProjectUnshippedStats(projectId) {
     if (!projectId) return null;
 
     try {
@@ -2509,8 +2352,43 @@ async function fetchProjectUnshippedStats(projectId, projectPayouts) {
         const html = await response.text();
         const doc = new DOMParser().parseFromString(html, 'text/html');
         const totalMinutes = getTotalDevlogMinutesFromDocument(doc);
-        const ships = buildShipStatsFromDocument(doc);
-        const stats = computeUnshippedStats(totalMinutes, ships, projectPayouts);
+        const shipPosts = doc.querySelectorAll('article.post--ship, .post--ship');
+        let totalShipMinutes = 0;
+        let paidShipMinutes = 0;
+        let paidCookies = 0;
+
+        shipPosts.forEach(shipPost => {
+            const shipMinutes = collectShipMinutesFromPost(shipPost);
+            if (shipMinutes > 0) totalShipMinutes += shipMinutes;
+
+            const footer = shipPost.querySelector('.post__payout-footer');
+            if (!footer) return;
+
+            const payoutItems = Array.from(footer.querySelectorAll('.post__payout-item'));
+            const getPayoutValue = (labelMatch) => {
+                const item = payoutItems.find(entry => {
+                    const labelText = entry.querySelector('.post__payout-label')?.textContent || '';
+                    return labelText.toLowerCase().includes(labelMatch);
+                });
+                return item ? item.querySelector('.post__payout-value')?.textContent?.trim() : '';
+            };
+
+            const cookiesValue = parseNumberFromText(getPayoutValue('cookies'));
+            if (cookiesValue && cookiesValue > 0) {
+                if (shipMinutes > 0) paidShipMinutes += shipMinutes;
+                paidCookies += cookiesValue;
+            }
+        });
+
+        const safeTotalMinutes = totalMinutes > 0 ? totalMinutes : totalShipMinutes;
+        const unshippedMinutes = Math.max(0, safeTotalMinutes - paidShipMinutes);
+        const stats = {
+            totalMinutes: safeTotalMinutes,
+            totalShipMinutes,
+            paidShipMinutes,
+            paidCookies,
+            unshippedMinutes
+        };
 
         if (stats.totalShipMinutes > 0) {
             setCachedShipMinutes(projectId, stats.totalShipMinutes);
@@ -2722,7 +2600,7 @@ async function addProjectCardCookieStats() {
         renderCardStat(card, totalCookies, cachedMinutes);
 
         if (projectId && (!cachedMinutes || !cachedUnshipped)) {
-            fetchProjectUnshippedStats(projectId, projectPayouts).then(stats => {
+            fetchProjectUnshippedStats(projectId).then(stats => {
                 if (stats && stats.totalShipMinutes > 0) {
                     renderCardStat(card, totalCookies, stats.totalShipMinutes);
                 }
@@ -2783,12 +2661,16 @@ async function addProjectShowCookieStat() {
 
     const statsContainer = statsWrapper.querySelector('.project-show-card__stats') || statsWrapper;
 
-    const shipStats = document.querySelectorAll('.flavortown-ship-stats');
+    const shipPosts = document.querySelectorAll('article.post--ship, .post--ship');
     let minutes = 0;
-    shipStats.forEach(stat => {
-        const minutesValue = stat.dataset.shipMinutes;
-        const value = minutesValue ? parseInt(minutesValue, 10) : 0;
-        if (value > 0) minutes += value;
+    shipPosts.forEach(shipPost => {
+        const cachedMinutes = shipPost.dataset.flavortownShipMinutes;
+        const parsedMinutes = cachedMinutes ? parseFloat(cachedMinutes) : 0;
+        if (parsedMinutes > 0) {
+            minutes += parsedMinutes;
+        } else {
+            minutes += collectShipMinutesFromPost(shipPost);
+        }
     });
 
     if (minutes === 0) {
@@ -2869,140 +2751,6 @@ async function addProjectShowCookieStat() {
     }
 }
 
-function getShipStatsData(statsElement) {
-    const minutesValue = statsElement.dataset.shipMinutes;
-    let minutes = minutesValue ? parseFloat(minutesValue) : 0;
-    if (!minutes || minutes <= 0) {
-        const timeSpan = Array.from(statsElement.querySelectorAll('span'))
-            .find(span => span.textContent.includes('Total time'));
-        if (timeSpan) {
-            minutes = parseDurationToMinutes(timeSpan.textContent);
-        }
-    }
-    if (!minutes || minutes <= 0) return null;
-
-    const dateValue = statsElement.dataset.shipDate;
-    let shipDate = dateValue ? new Date(dateValue) : null;
-    if (!shipDate || isNaN(shipDate.getTime())) {
-        const shipPost = statsElement.closest('article.post--ship');
-        const timeEl = shipPost ? shipPost.querySelector('.post__time') : null;
-        shipDate = timeEl ? parseDateFromTimeElement(timeEl) : null;
-    }
-    if (!shipDate || isNaN(shipDate.getTime())) return null;
-
-    const hours = minutes / 60;
-    const range = getCookieRange(hours);
-    if (!range) return null;
-
-    return {
-        statsElement,
-        date: shipDate,
-        minutes,
-        hours,
-        minCookies: range.minCookies,
-        maxCookies: range.maxCookies,
-        expectedCookies: range.expectedCookies
-    };
-}
-
-async function addShipPayoutStats() {
-    if (!/\/projects\/\d+$/.test(window.location.pathname)) return;
-
-    let shipStats = document.querySelectorAll('.flavortown-ship-stats');
-    if (!shipStats.length) {
-        addShipStats();
-        shipStats = document.querySelectorAll('.flavortown-ship-stats');
-    }
-    if (!shipStats.length) return;
-
-    const projectIdMatch = window.location.pathname.match(/\/projects\/(\d+)/);
-    const projectId = projectIdMatch ? projectIdMatch[1] : null;
-
-    const projectName = getCurrentProjectName();
-    if (!projectName) return;
-
-    const payouts = await fetchShipPayouts();
-    if (!payouts.length) return;
-
-    const projectPayouts = payouts.filter(payout => projectNameMatches(payout.projectName, projectName));
-    if (!projectPayouts.length) return;
-
-    const ships = Array.from(shipStats)
-        .filter(stat => !stat.querySelector('.flavortown-ship-cookies'))
-        .map(stat => getShipStatsData(stat))
-        .filter(Boolean);
-
-    if (!ships.length) return;
-
-    let totalShipMinutes = 0;
-    if (projectId) {
-        totalShipMinutes = ships.reduce((sum, ship) => sum + ship.minutes, 0);
-        if (totalShipMinutes > 0) {
-            setCachedShipMinutes(projectId, totalShipMinutes);
-        }
-    }
-
-    const assignments = assignPayoutsToShips(projectPayouts, ships);
-    if (projectId) {
-        let paidShipMinutes = 0;
-        let paidCookies = 0;
-        assignments.forEach((payouts, ship) => {
-            if (!payouts.length) return;
-            paidShipMinutes += ship.minutes;
-            paidCookies += payouts.reduce((sum, payout) => sum + payout.amount, 0);
-        });
-
-        const totalMinutes = getTotalDevlogMinutesFromDocument(document);
-        const safeTotalMinutes = totalMinutes > 0 ? totalMinutes : totalShipMinutes;
-        const unshippedMinutes = Math.max(0, safeTotalMinutes - paidShipMinutes);
-
-        setCachedProjectUnshipped(projectId, {
-            totalMinutes: safeTotalMinutes,
-            paidShipMinutes,
-            paidCookies,
-            unshippedMinutes
-        });
-    }
-
-    ships.forEach(ship => {
-        const shipPayouts = assignments.get(ship) || [];
-        if (!shipPayouts.length) return;
-
-        const totalCookies = shipPayouts.reduce((sum, payout) => sum + payout.amount, 0);
-        if (totalCookies <= 0) return;
-
-        const rate = ship.hours > 0 ? getMultiplierFromCookies(totalCookies, ship.hours) : null;
-        const rateValid = rate && isFinite(rate) && rate >= COOKIE_RATE_MIN && rate <= COOKIE_RATE_MAX;
-        const rateLine = rateValid ? formatCookieRateLine(rate) : '--';
-        const percentileLine = rateValid ? formatCookiePercentileLine(rate) : '--';
-        const detailsText = rateValid ? ` (${rateLine}, ${percentileLine})` : '';
-        const estimate = rateValid ? buildVoteEstimate(rate) : null;
-
-        const cookieStat = document.createElement('div');
-        cookieStat.className = 'flavortown-ship-cookies';
-        cookieStat.style.cssText = 'display: flex; align-items: center; gap: 6px;';
-        cookieStat.innerHTML = `
-            <span style="font-size: 16px; opacity: 0.8;">🍪</span>
-            <span><strong>${totalCookies.toLocaleString()}</strong> cookies${detailsText}</span>
-        `;
-
-        ship.statsElement.appendChild(cookieStat);
-
-        if (estimate) {
-            ship.statsElement.querySelectorAll('.flavortown-vote-estimate, .flavortown-vote-estimate-pill, .flavortown-vote-estimate-accordion').forEach(el => el.remove());
-            const estimateResult = createVoteEstimateElement(estimate);
-            if (estimateResult) {
-                if (estimateResult.scorePill) {
-                    estimateResult.scorePill.style.cssText = 'display: inline-flex; align-items: center; gap: 6px; font-weight: 600; margin-left: 8px;';
-                    cookieStat.appendChild(estimateResult.scorePill);
-                }
-                if (estimateResult.accordion) {
-                    ship.statsElement.appendChild(estimateResult.accordion);
-                }
-            }
-        }
-    });
-}
 
 let inlineFormLoading = false;
 
@@ -5745,7 +5493,6 @@ function init() {
     addVotesDevlogFrequencyStat();
     ensureShipStatsReady();
     addShipStats();
-    addShipPayoutStats();
     addProjectShowCookieStat();
     inlineDevlogForm();
     setupInlineDevlogEditing();
@@ -6322,7 +6069,6 @@ async function enhanceKitchenDashboard() {
             }
         });
 
-        let totalProjects = 0;
         let totalMinutes = 0;
         let totalDevlogs = 0;
         let devlogFrequency = '';
@@ -6331,8 +6077,6 @@ async function enhanceKitchenDashboard() {
             const cachedStats = localStorage.getItem('flavortown_project_stats');
             if (cachedStats) {
                 const stats = JSON.parse(cachedStats);
-                totalProjects = Object.keys(stats).length;
-
                 Object.values(stats).forEach(project => {
                     totalMinutes += project.minutes || 0;
                     totalDevlogs += project.devlogs || 0;
@@ -6373,6 +6117,7 @@ async function enhanceKitchenDashboard() {
         let achievementPercent = '';
         let leaderboardRank = '';
         let leaderboardCookies = '';
+        let leaderboardPercentile = '';
 
         const kitchenStats = document.querySelector('.kitchen-stats');
         if (kitchenStats) {
@@ -6393,25 +6138,38 @@ async function enhanceKitchenDashboard() {
             kitchenStats.style.display = 'none';
         }
 
+        const rankNumber = leaderboardRank ? parseInt(leaderboardRank.replace(/[^\d]/g, ''), 10) : 0;
+        if (rankNumber) {
+            try {
+                const leaderboardResponse = await fetch('https://flavortown.hackclub.com/leaderboard', {
+                    headers: {
+                        'Accept': 'text/html, application/xhtml+xml',
+                        'X-Flavortown-Ext-135': 'true'
+                    },
+                    credentials: 'include'
+                });
+                const leaderboardHtml = await leaderboardResponse.text();
+                const leaderboardDoc = parser.parseFromString(leaderboardHtml, 'text/html');
+                const subtitle = leaderboardDoc.querySelector('.leaderboard-hero .subtitle, p.subtitle');
+                const subtitleText = subtitle ? subtitle.textContent : '';
+                const totalMatch = subtitleText.match(/(\d[\d,]*)\s+users/i) || subtitleText.match(/(\d[\d,]*)/);
+                if (totalMatch) {
+                    const totalUsers = parseInt(totalMatch[1].replace(/,/g, ''), 10);
+                    if (totalUsers) {
+                        const percentile = Math.max(1, Math.ceil((rankNumber / totalUsers) * 100));
+                        leaderboardPercentile = `Top ${percentile}%`;
+                    }
+                }
+            } catch (e) {
+                console.log('Could not load leaderboard totals:', e);
+            }
+        }
+
         const dashboard = document.createElement('div');
         dashboard.className = 'flavortown-kitchen-dashboard';
         dashboard.innerHTML = `
             <div class="flavortown-dashboard-header">
                 <h2>🍪 Your Cookie Stats</h2>
-            </div>
-            <div class="flavortown-stat-cards">
-                <div class="flavortown-stat-card flavortown-stat-card--balance">
-                    <span class="flavortown-stat-card__label">Current Balance</span>
-                    <span class="flavortown-stat-card__value">🍪 ${currentBalance}</span>
-                </div>
-                <div class="flavortown-stat-card flavortown-stat-card--earned">
-                    <span class="flavortown-stat-card__label">Total Earned</span>
-                    <span class="flavortown-stat-card__value">+${totalEarned}</span>
-                </div>
-                <div class="flavortown-stat-card flavortown-stat-card--spent">
-                    <span class="flavortown-stat-card__label">Total Spent</span>
-                    <span class="flavortown-stat-card__value">-${totalSpent}</span>
-                </div>
             </div>
             <div class="flavortown-graph-container">
                 <h3>Cookies Over Time</h3>
@@ -6421,9 +6179,13 @@ async function enhanceKitchenDashboard() {
                 <h2>📊 Your Progress</h2>
             </div>
             <div class="flavortown-stat-cards">
-                <div class="flavortown-stat-card">
-                    <span class="flavortown-stat-card__label">Total Projects</span>
-                    <span class="flavortown-stat-card__value">📁 ${totalProjects}</span>
+                <div class="flavortown-stat-card flavortown-stat-card--earned">
+                    <span class="flavortown-stat-card__label">Total Earned</span>
+                    <span class="flavortown-stat-card__value">+${totalEarned}</span>
+                </div>
+                <div class="flavortown-stat-card flavortown-stat-card--spent">
+                    <span class="flavortown-stat-card__label">Total Spent</span>
+                    <span class="flavortown-stat-card__value">-${totalSpent}</span>
                 </div>
                 <div class="flavortown-stat-card">
                     <span class="flavortown-stat-card__label">Total Time</span>
@@ -6446,7 +6208,7 @@ async function enhanceKitchenDashboard() {
                 <div class="flavortown-stat-card">
                     <span class="flavortown-stat-card__label">Leaderboard</span>
                     <span class="flavortown-stat-card__value">🏅 ${leaderboardRank}</span>
-                    <span class="flavortown-stat-card__sublabel" style="font-size: 0.8em; opacity: 0.7;">${leaderboardCookies}</span>
+                    <span class="flavortown-stat-card__sublabel" style="font-size: 0.8em; opacity: 0.7;">${leaderboardPercentile || leaderboardCookies}</span>
                 </div>
                 ` : ''}
             </div>
@@ -7118,7 +6880,6 @@ document.addEventListener('turbo:load', () => {
     addVotesDevlogFrequencyStat();
     ensureShipStatsReady();
     addShipStats();
-    addShipPayoutStats();
     addProjectShowCookieStat();
     inlineDevlogForm();
     setupInlineDevlogEditing();
