@@ -6021,7 +6021,9 @@ async function enhanceKitchenDashboard() {
     if (kitchenComic) kitchenComic.remove();
 
     try {
-        const response = await fetch('/my/balance', {
+        const balanceUrl = new URL('/my/balance', window.location.origin).toString();
+        const response = await fetch(balanceUrl, {
+            credentials: 'include',
             headers: {
                 'Accept': 'text/html, application/xhtml+xml',
                 'Turbo-Frame': 'balance_history',
@@ -6030,11 +6032,43 @@ async function enhanceKitchenDashboard() {
         });
         const html = await response.text();
         const parser = new DOMParser();
-        const doc = parser.parseFromString(html, 'text/html');
+        let doc = parser.parseFromString(html, 'text/html');
 
-        let rows = doc.querySelectorAll('.balance-history__table tbody tr');
+        const extractBalanceRows = (sourceDoc) => {
+            let rows = sourceDoc.querySelectorAll('.balance-history__table tbody tr');
+            if (rows.length === 0) {
+                rows = sourceDoc.querySelectorAll('table tbody tr');
+            }
+            if (rows.length === 0) {
+                const streamTemplates = sourceDoc.querySelectorAll('turbo-stream template');
+                if (streamTemplates.length) {
+                    const parsedRows = [];
+                    streamTemplates.forEach(template => {
+                        const fragmentDoc = parser.parseFromString(template.innerHTML, 'text/html');
+                        const templateRows = fragmentDoc.querySelectorAll('.balance-history__table tbody tr, table tbody tr');
+                        parsedRows.push(...Array.from(templateRows));
+                    });
+                    rows = parsedRows;
+                }
+            }
+            return rows;
+        };
+
+        let rows = extractBalanceRows(doc);
         if (rows.length === 0) {
-            rows = doc.querySelectorAll('table tbody tr');
+            const fallbackResponse = await fetch(balanceUrl, {
+                credentials: 'include',
+                headers: {
+                    'Accept': 'text/html, application/xhtml+xml',
+                    'X-Flavortown-Ext-135': 'true'
+                }
+            });
+
+            if (fallbackResponse.ok) {
+                const fallbackHtml = await fallbackResponse.text();
+                doc = parser.parseFromString(fallbackHtml, 'text/html');
+                rows = extractBalanceRows(doc);
+            }
         }
 
         const transactions = [];
