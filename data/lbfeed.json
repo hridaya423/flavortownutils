@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-01-29T21:34:25.971Z",
+  "lastUpdated": "2026-01-29T22:35:10.971Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -9872,6 +9872,14 @@
         "ts": "2026-01-29T00:19:51.912Z",
         "delta": 124,
         "balance": 240,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U09736L44JZ"
+      },
+      {
+        "ts": "2026-01-29T22:23:58.503Z",
+        "delta": 73,
+        "balance": 313,
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U09736L44JZ"
@@ -20689,6 +20697,14 @@
         "reason": "tutorial",
         "reasonType": "",
         "userId": "U0A8A7Q180P"
+      },
+      {
+        "ts": "2026-01-29T22:20:14.472Z",
+        "delta": 1,
+        "balance": 58,
+        "reason": "tutorial",
+        "reasonType": "",
+        "userId": "U0A8A7Q180P"
       }
     ],
     "u0a8akzj01w": [
@@ -22133,6 +22149,16 @@
     ]
   },
   "users": {
+    "U09736L44JZ": {
+      "id": "U09736L44JZ",
+      "username": "satyamrajgaya434",
+      "avatar": "https://avatars.slack-edge.com/2025-09-19/9577172238240_ca93b692b12938796d47_72.jpg"
+    },
+    "U0A8A7Q180P": {
+      "id": "U0A8A7Q180P",
+      "username": "harrisonnefzger28",
+      "avatar": "https://secure.gravatar.com/avatar/6a271438e47adea9e8fbd25883cb1512.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0011-72.png"
+    },
     "U0A4AFT9Q73": {
       "id": "U0A4AFT9Q73",
       "username": "shahzaibibrahimm",
@@ -22465,11 +22491,6 @@
       "displayName": "ariel.acosta",
       "avatar": "https://secure.gravatar.com/avatar/3e207d54a3fa7b154c297aed61a4b1ba.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0019-72.png"
     },
-    "U09736L44JZ": {
-      "id": "U09736L44JZ",
-      "username": "satyamrajgaya434",
-      "avatar": "https://avatars.slack-edge.com/2025-09-19/9577172238240_ca93b692b12938796d47_72.jpg"
-    },
     "U09A7GEM760": {
       "id": "U09A7GEM760",
       "username": "sadiyameem123",
@@ -22636,11 +22657,6 @@
       "username": "amber",
       "displayName": "transcental",
       "avatar": "https://avatars.slack-edge.com/2026-01-13/10280038207795_fa78a1f66c98af76fbb1_72.jpg"
-    },
-    "U0A8A7Q180P": {
-      "id": "U0A8A7Q180P",
-      "username": "harrisonnefzger28",
-      "avatar": "https://secure.gravatar.com/avatar/6a271438e47adea9e8fbd25883cb1512.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0011-72.png"
     },
     "U0A72TGKF7V": {
       "id": "U0A72TGKF7V",
