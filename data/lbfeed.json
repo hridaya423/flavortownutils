@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-01-29T09:52:35.571Z",
+  "lastUpdated": "2026-01-29T10:44:00.514Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -8807,6 +8807,14 @@
         "reason": "Cookbook Author",
         "reasonType": "achievement",
         "userId": "U093VDE9Q7N"
+      },
+      {
+        "ts": "2026-01-29T10:32:44.982Z",
+        "delta": 9,
+        "balance": 37,
+        "reason": "tutorial",
+        "reasonType": "",
+        "userId": "U093VDE9Q7N"
       }
     ],
     "u093w83m9f0": [
@@ -13203,6 +13211,14 @@
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U0A1NME3EJD"
+      },
+      {
+        "ts": "2026-01-29T10:08:29.505Z",
+        "delta": 5,
+        "balance": 829,
+        "reason": "Cooking",
+        "reasonType": "achievement",
+        "userId": "U0A1NME3EJD"
       }
     ],
     "u0a1nr7hksn": [
@@ -14398,6 +14414,14 @@
         "balance": 10,
         "reason": "Very Fried",
         "reasonType": "achievement",
+        "userId": "U0A4N2K2P8T"
+      },
+      {
+        "ts": "2026-01-29T10:35:13.342Z",
+        "delta": 1,
+        "balance": 11,
+        "reason": "tutorial",
+        "reasonType": "",
         "userId": "U0A4N2K2P8T"
       }
     ],
@@ -21635,6 +21659,23 @@
     ]
   },
   "users": {
+    "U0A4N2K2P8T": {
+      "id": "U0A4N2K2P8T",
+      "username": "thiago.teixeira51",
+      "displayName": "ChefThi",
+      "avatar": "https://secure.gravatar.com/avatar/3428c225c969b9f9cf45378b7b76939d.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0012-72.png"
+    },
+    "U093VDE9Q7N": {
+      "id": "U093VDE9Q7N",
+      "username": "oliversim99",
+      "displayName": "Oliver Sim",
+      "avatar": "https://secure.gravatar.com/avatar/5c9e1074bf700ee51fa8cf0a2ccee0b6.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0023-72.png"
+    },
+    "U0A1NME3EJD": {
+      "id": "U0A1NME3EJD",
+      "username": "nok",
+      "avatar": "https://avatars.slack-edge.com/2026-01-13/10282812823125_9fcc7248e736e16e62f6_72.png"
+    },
     "U09DY9N8RAS": {
       "id": "U09DY9N8RAS",
       "username": "akhilchaturvedi.delhi",
@@ -21868,7 +21909,7 @@
       "id": "U0938MZG8Q6",
       "username": "christiandubsky20",
       "displayName": "christian",
-      "avatar": "https://avatars.slack-edge.com/2026-01-29/10426384718048_d49a8add976f1928db73_72.png"
+      "avatar": "https://avatars.slack-edge.com/2026-01-29/10426687688144_84c665e950382a8ee27c_72.png"
     },
     "U07UH9DQA4B": {
       "id": "U07UH9DQA4B",
@@ -22748,12 +22789,6 @@
       "username": "me1978",
       "avatar": "https://avatars.slack-edge.com/2026-01-13/10292071246820_9386a1b8c19f67927074_72.png"
     },
-    "U093VDE9Q7N": {
-      "id": "U093VDE9Q7N",
-      "username": "oliversim99",
-      "displayName": "Oliver Sim",
-      "avatar": "https://secure.gravatar.com/avatar/5c9e1074bf700ee51fa8cf0a2ccee0b6.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0023-72.png"
-    },
     "U0905G0BRU5": {
       "id": "U0905G0BRU5",
       "username": "moritz.leisner",
@@ -23258,11 +23293,6 @@
       "username": "theodarville",
       "displayName": "scorpion7slayer",
       "avatar": "https://secure.gravatar.com/avatar/774b9a0814260f1cf543687bfe6e1d6f.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0026-72.png"
-    },
-    "U0A1NME3EJD": {
-      "id": "U0A1NME3EJD",
-      "username": "nok",
-      "avatar": "https://avatars.slack-edge.com/2026-01-13/10282812823125_9fcc7248e736e16e62f6_72.png"
     },
     "U09894HL8AU": {
       "id": "U09894HL8AU",
@@ -24898,12 +24928,6 @@
       "username": "ayovreis",
       "displayName": "ayo",
       "avatar": "https://avatars.slack-edge.com/2026-01-02/10212108129715_8d75a78bebc02f95be36_72.jpg"
-    },
-    "U0A4N2K2P8T": {
-      "id": "U0A4N2K2P8T",
-      "username": "thiago.teixeira51",
-      "displayName": "ChefThi",
-      "avatar": "https://secure.gravatar.com/avatar/3428c225c969b9f9cf45378b7b76939d.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0012-72.png"
     },
     "U092G706V1A": {
       "id": "U092G706V1A",
