@@ -7020,75 +7020,75 @@ document.addEventListener('turbo:load', () => {
     initProjectRepoSuggestions();
 });
 
-function initShotsEditor() {
-    function addShotsButton() {
-        const fileUploadArea = document.querySelector('.file-upload');
-        if (!fileUploadArea) return false;
-        if (document.querySelector('.flavortown-shots-btn')) return true;
-
-        const attachmentContainer = fileUploadArea.closest('.form-group') ||
-            fileUploadArea.closest('[class*="attachment"]') ||
-            fileUploadArea.parentElement;
-
-        const shotsBtn = document.createElement('button');
-        shotsBtn.type = 'button';
-        shotsBtn.className = 'flavortown-shots-btn';
-        shotsBtn.innerHTML = '✨ Style';
-        shotsBtn.title = 'Style your screenshot with shots.so - add backgrounds, frames, and effects';
-        shotsBtn.style.cssText = `
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            z-index: 10;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            padding: 5px 12px;
-            background: rgba(255, 255, 255, 0.85);
-            color: #5a7052;
-            border: 1px solid rgba(90, 112, 82, 0.3);
-            border-radius: 6px;
-            font-weight: 600;
-            font-size: 0.8em;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            backdrop-filter: blur(4px);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        `;
-        shotsBtn.onmouseenter = () => {
-            shotsBtn.style.background = 'rgba(90, 112, 82, 0.15)';
-            shotsBtn.style.borderColor = 'rgba(90, 112, 82, 0.5)';
-        };
-        shotsBtn.onmouseleave = () => {
-            shotsBtn.style.background = 'rgba(255, 255, 255, 0.85)';
-            shotsBtn.style.borderColor = 'rgba(90, 112, 82, 0.3)';
-        };
-        shotsBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            openShotsModal();
-        });
-
+function ensureUploadToolsContainer(fileUploadArea) {
+    let container = fileUploadArea.querySelector('.flavortown-upload-tools');
+    if (!container) {
+        container = document.createElement('div');
+        container.className = 'flavortown-upload-tools';
         const uploadAreaStyle = window.getComputedStyle(fileUploadArea);
         if (uploadAreaStyle.position === 'static') {
             fileUploadArea.style.position = 'relative';
         }
+        fileUploadArea.appendChild(container);
+    }
+    return container;
+}
 
-        fileUploadArea.appendChild(shotsBtn);
+function createUploadToolButton({ className, label, title, onClick }) {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = `flavortown-upload-tool-btn ${className}`;
+    btn.innerHTML = label;
+    btn.title = title;
+    btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        onClick();
+    });
+    return btn;
+}
+
+function initShotsEditor() {
+    function addUploadTools() {
+        const fileUploadArea = document.querySelector('.file-upload');
+        if (!fileUploadArea) return false;
+
+        const container = ensureUploadToolsContainer(fileUploadArea);
+
+        if (!container.querySelector('.flavortown-shots-btn')) {
+            const shotsBtn = createUploadToolButton({
+                className: 'flavortown-shots-btn',
+                label: '✨ Style',
+                title: 'Style your screenshot with shots.so - add backgrounds, frames, and effects',
+                onClick: () => openShotsModal()
+            });
+            container.appendChild(shotsBtn);
+        }
+
+        if (!container.querySelector('.flavortown-annotate-btn')) {
+            const annotateBtn = createUploadToolButton({
+                className: 'flavortown-annotate-btn',
+                label: '🛠️ Edit',
+                title: 'Annotate and crop attachments locally',
+                onClick: () => openAnnotatorModal()
+            });
+            container.appendChild(annotateBtn);
+        }
+
         return true;
     }
 
-    if (addShotsButton()) return;
+    if (addUploadTools()) return;
 
     const observer = new MutationObserver(() => {
-        if (addShotsButton()) {
+        if (addUploadTools()) {
             observer.disconnect();
         }
     });
     observer.observe(document.body, { childList: true, subtree: true });
 
     setTimeout(() => {
-        if (addShotsButton()) {
+        if (addUploadTools()) {
             observer.disconnect();
         }
     }, 2000);
@@ -7096,6 +7096,1594 @@ function initShotsEditor() {
 
 let _shotsOriginalFiles = [];
 let _shotsStyledFileIndex = -1;
+let _annotatorState = null;
+
+function getFileUploadInput() {
+    return document.querySelector('.file-upload input[type="file"]')
+        || document.querySelector('[data-file-upload-target="input"]')
+        || document.querySelector('input[type="file"]');
+}
+
+function getFileUploadFiles(fileInput) {
+    return fileInput ? Array.from(fileInput.files || []) : [];
+}
+
+function getActivePreviewIndex() {
+    const previewItems = document.querySelectorAll('.file-upload__preview-item, .file-upload__item');
+    if (!previewItems.length) return 0;
+    const activeItem = document.querySelector('.file-upload__preview-item.active, .file-upload__item.active');
+    if (!activeItem) return 0;
+    const index = Array.from(previewItems).indexOf(activeItem);
+    return index === -1 ? 0 : index;
+}
+
+function showAnnotatorToast(message) {
+    const existing = document.querySelector('.flavortown-annotator-toast');
+    if (existing) existing.remove();
+    const toast = document.createElement('div');
+    toast.className = 'flavortown-annotator-toast';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    requestAnimationFrame(() => toast.classList.add('is-visible'));
+    setTimeout(() => {
+        toast.classList.remove('is-visible');
+        setTimeout(() => toast.remove(), 300);
+    }, 2400);
+}
+
+function openAnnotatorModal() {
+    if (_annotatorState?.overlay) return;
+
+    const fileInput = getFileUploadInput();
+    if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
+        showAnnotatorToast('Add an image first to edit it.');
+        return;
+    }
+
+    const files = getFileUploadFiles(fileInput);
+    const imageEntries = files
+        .map((file, index) => {
+            if (!file.type.startsWith('image/')) return null;
+            return {
+                file,
+                index,
+                url: URL.createObjectURL(file),
+                state: null
+            };
+        })
+        .filter(Boolean);
+
+    if (!imageEntries.length) {
+        showAnnotatorToast('No image attachments found.');
+        return;
+    }
+
+    const activeIndex = Math.min(getActivePreviewIndex(), imageEntries.length - 1);
+
+    const overlay = document.createElement('div');
+    overlay.className = 'flavortown-annotator-overlay';
+    overlay.innerHTML = `
+        <div class="flavortown-annotator-modal" role="dialog" aria-modal="true">
+            <div class="flavortown-annotator-header">
+                <div class="flavortown-annotator-title">
+                    <span class="flavortown-annotator-icon">🛠️</span>
+                    <div>
+                        <div class="flavortown-annotator-heading">Annotate & Crop</div>
+                        <div class="flavortown-annotator-subtitle">Edits stay local until you save.</div>
+                    </div>
+                </div>
+                <div class="flavortown-annotator-nav">
+                    <button class="flavortown-annotator-nav-btn" data-action="prev" aria-label="Previous image">◀</button>
+                    <span class="flavortown-annotator-counter">1 / 1</span>
+                    <button class="flavortown-annotator-nav-btn" data-action="next" aria-label="Next image">▶</button>
+                </div>
+                <button class="flavortown-annotator-close" aria-label="Close">✕</button>
+            </div>
+            <div class="flavortown-annotator-toolbar">
+                <div class="flavortown-annotator-group flavortown-annotator-group--tools">
+                    <button class="flavortown-annotator-tool active" data-tool="arrow">Arrow</button>
+                    <button class="flavortown-annotator-tool" data-tool="line">Line</button>
+                    <button class="flavortown-annotator-tool" data-tool="curve">Curve</button>
+                    <button class="flavortown-annotator-tool" data-tool="rect">Rect</button>
+                    <button class="flavortown-annotator-tool" data-tool="ellipse">Ellipse</button>
+                    <button class="flavortown-annotator-tool" data-tool="highlight">Highlight</button>
+                    <button class="flavortown-annotator-tool" data-tool="text">Text</button>
+                    <button class="flavortown-annotator-tool" data-tool="crop">Crop</button>
+                </div>
+                <div class="flavortown-annotator-group flavortown-annotator-group--color">
+                    <label class="flavortown-annotator-label">Color</label>
+                    <input class="flavortown-annotator-color-input" id="flavortownAnnotatorColor" type="color" value="#ec8b33">
+                    <input class="flavortown-annotator-hex" id="flavortownAnnotatorHex" type="text" value="#ec8b33">
+                </div>
+                <div class="flavortown-annotator-group flavortown-annotator-group--shape">
+                    <label class="flavortown-annotator-label">Opacity</label>
+                    <input class="flavortown-annotator-range" id="flavortownAnnotatorOpacity" type="range" min="10" max="100" value="90">
+                </div>
+                <div class="flavortown-annotator-group flavortown-annotator-group--shape">
+                    <label class="flavortown-annotator-label">Stroke</label>
+                    <input class="flavortown-annotator-range" id="flavortownAnnotatorStroke" type="range" min="2" max="12" value="4">
+                    <label class="flavortown-annotator-toggle"><input type="checkbox" id="flavortownAnnotatorFill"> Fill</label>
+                </div>
+                <div class="flavortown-annotator-group flavortown-annotator-group--shape">
+                    <label class="flavortown-annotator-label">Rough</label>
+                    <label class="flavortown-annotator-toggle"><input type="checkbox" id="flavortownAnnotatorRough" checked> On</label>
+                    <input class="flavortown-annotator-range" id="flavortownAnnotatorRoughness" type="range" min="0" max="3" step="0.1" value="1.6">
+                </div>
+                <div class="flavortown-annotator-group flavortown-annotator-group--curve is-hidden">
+                    <label class="flavortown-annotator-label">Curve</label>
+                    <input class="flavortown-annotator-range" id="flavortownAnnotatorCurve" type="range" min="-1" max="1" step="0.05" value="0.25">
+                </div>
+                <div class="flavortown-annotator-group flavortown-annotator-group--text">
+                    <label class="flavortown-annotator-label">Text</label>
+                    <input class="flavortown-annotator-font-search" id="flavortownAnnotatorFontSearch" type="text" placeholder="Search fonts">
+                    <select class="flavortown-annotator-select flavortown-annotator-font" id="flavortownAnnotatorFont"></select>
+                    <select class="flavortown-annotator-select" id="flavortownAnnotatorTextSize">
+                        <option value="12">12px</option>
+                        <option value="16" selected>16px</option>
+                        <option value="20">20px</option>
+                        <option value="24">24px</option>
+                        <option value="32">32px</option>
+                        <option value="40">40px</option>
+                        <option value="48">48px</option>
+                        <option value="64">64px</option>
+                    </select>
+                    <select class="flavortown-annotator-select" id="flavortownAnnotatorTextWeight">
+                        <option value="400">Regular</option>
+                        <option value="600" selected>Semibold</option>
+                        <option value="700">Bold</option>
+                    </select>
+                    <label class="flavortown-annotator-toggle"><input type="checkbox" id="flavortownAnnotatorShadow" checked> Shadow</label>
+                </div>
+                <div class="flavortown-annotator-group flavortown-annotator-actions">
+                    <button class="flavortown-annotator-btn" data-action="undo">Undo</button>
+                    <button class="flavortown-annotator-btn" data-action="redo">Redo</button>
+                    <button class="flavortown-annotator-btn" data-action="clear">Reset</button>
+                </div>
+            </div>
+            <div class="flavortown-annotator-canvas-wrap">
+                <canvas class="flavortown-annotator-canvas"></canvas>
+                <canvas class="flavortown-annotator-overlay-canvas"></canvas>
+            </div>
+            <div class="flavortown-annotator-footer">
+                <div class="flavortown-annotator-status"></div>
+                <div class="flavortown-annotator-footer-actions">
+                    <button class="flavortown-annotator-footer-btn" data-action="close">Cancel</button>
+                    <button class="flavortown-annotator-footer-btn primary" data-action="save">Replace Attachment</button>
+                </div>
+            </div>
+            <datalist id="flavortownAnnotatorFontList"></datalist>
+        </div>
+    `;
+
+    document.body.appendChild(overlay);
+
+    _annotatorState = {
+        overlay,
+        fileInput,
+        files,
+        imageEntries,
+        activeIndex,
+        currentTool: 'arrow',
+        currentColorKey: 'accent',
+        currentColor: '#ec8b33',
+        strokeWidth: 4,
+        opacity: 0.9,
+        fillEnabled: false,
+        roughEnabled: true,
+        roughness: 1.6,
+        curveAmount: 0.25,
+        textSize: 16,
+        textWeight: 600,
+        textFont: 'Inter',
+        textShadow: false
+    };
+
+    setupAnnotatorUI();
+}
+
+function setupAnnotatorUI() {
+    const { overlay, imageEntries } = _annotatorState;
+    const closeBtn = overlay.querySelector('.flavortown-annotator-close');
+    const footerActions = overlay.querySelector('.flavortown-annotator-footer-actions');
+    const toolButtons = Array.from(overlay.querySelectorAll('.flavortown-annotator-tool'));
+    const colorInput = overlay.querySelector('#flavortownAnnotatorColor');
+    const hexInput = overlay.querySelector('#flavortownAnnotatorHex');
+    const opacityInput = overlay.querySelector('#flavortownAnnotatorOpacity');
+    const strokeInput = overlay.querySelector('#flavortownAnnotatorStroke');
+    const fillToggle = overlay.querySelector('#flavortownAnnotatorFill');
+    const roughToggle = overlay.querySelector('#flavortownAnnotatorRough');
+    const roughnessInput = overlay.querySelector('#flavortownAnnotatorRoughness');
+    const curveInput = overlay.querySelector('#flavortownAnnotatorCurve');
+    const textSizeSelect = overlay.querySelector('#flavortownAnnotatorTextSize');
+    const textWeightSelect = overlay.querySelector('#flavortownAnnotatorTextWeight');
+    const fontInput = overlay.querySelector('#flavortownAnnotatorFont');
+    const fontSearchInput = overlay.querySelector('#flavortownAnnotatorFontSearch');
+    const shadowToggle = overlay.querySelector('#flavortownAnnotatorShadow');
+    const actionButtons = Array.from(overlay.querySelectorAll('.flavortown-annotator-btn'));
+    const navButtons = Array.from(overlay.querySelectorAll('.flavortown-annotator-nav-btn'));
+    const fontList = overlay.querySelector('#flavortownAnnotatorFontList');
+    const textGroups = Array.from(overlay.querySelectorAll('.flavortown-annotator-group--text'));
+    const shapeGroups = Array.from(overlay.querySelectorAll('.flavortown-annotator-group--shape'));
+    const colorGroups = Array.from(overlay.querySelectorAll('.flavortown-annotator-group--color'));
+    const curveGroups = Array.from(overlay.querySelectorAll('.flavortown-annotator-group--curve'));
+
+    const canvas = overlay.querySelector('.flavortown-annotator-canvas');
+    const overlayCanvas = overlay.querySelector('.flavortown-annotator-overlay-canvas');
+    const status = overlay.querySelector('.flavortown-annotator-status');
+
+    const ctx = canvas.getContext('2d');
+    const overlayCtx = overlayCanvas.getContext('2d');
+    const dpr = Math.max(1, window.devicePixelRatio || 1);
+
+    let image = new Image();
+    let renderState = null;
+    let draft = null;
+    let cropDraft = null;
+    let isDrawing = false;
+    let loadedFonts = new Set();
+    let fullFontList = [];
+    let emojiMapCache = null;
+    const emojiImageCache = new Map();
+    let activeTextEditor = null;
+    let activeTextPoint = null;
+    let isClosingTextEditor = false;
+
+    function ensureEntryState(entry) {
+        if (entry.state) return;
+        entry.state = {
+            annotations: [],
+            cropRect: null,
+            history: [],
+            historyIndex: -1
+        };
+        pushHistory(entry.state);
+    }
+
+    function pushHistory(state) {
+        const snapshot = {
+            annotations: state.annotations.map(item => ({ ...item })),
+            cropRect: state.cropRect ? { ...state.cropRect } : null
+        };
+        state.history = state.history.slice(0, state.historyIndex + 1);
+        state.history.push(snapshot);
+        state.historyIndex = state.history.length - 1;
+    }
+
+    function applyHistory(state, index) {
+        if (!state.history[index]) return;
+        const snapshot = state.history[index];
+        state.annotations = snapshot.annotations.map(item => ({ ...item }));
+        state.cropRect = snapshot.cropRect ? { ...snapshot.cropRect } : null;
+        state.historyIndex = index;
+    }
+
+    function updateHistoryControls() {
+        const entry = imageEntries[_annotatorState.activeIndex];
+        const state = entry.state;
+        const undoBtn = overlay.querySelector('[data-action="undo"]');
+        const redoBtn = overlay.querySelector('[data-action="redo"]');
+        if (!state) return;
+        if (undoBtn) undoBtn.disabled = state.historyIndex <= 0;
+        if (redoBtn) redoBtn.disabled = state.historyIndex >= state.history.length - 1;
+    }
+
+    function updateNavControls() {
+        const counter = overlay.querySelector('.flavortown-annotator-counter');
+        if (counter) {
+            counter.textContent = `${_annotatorState.activeIndex + 1} / ${imageEntries.length}`;
+        }
+        navButtons.forEach(btn => {
+            const action = btn.dataset.action;
+            if (action === 'prev') {
+                btn.disabled = _annotatorState.activeIndex === 0;
+            }
+            if (action === 'next') {
+                btn.disabled = _annotatorState.activeIndex === imageEntries.length - 1;
+            }
+        });
+    }
+
+    function resolveColor(key) {
+        const styles = getComputedStyle(document.documentElement);
+        const map = {
+            accent: styles.getPropertyValue('--color-accent') || '#ec8b33',
+            green: styles.getPropertyValue('--color-green') || '#38a169',
+            yellow: styles.getPropertyValue('--color-yellow') || '#d97706',
+            red: styles.getPropertyValue('--color-red') || '#e53e3e',
+            text: styles.getPropertyValue('--color-text-primary') || '#5d4e37'
+        };
+        return (map[key] || '#5d4e37').trim();
+    }
+
+    function normalizeHex(value) {
+        if (!value) return null;
+        const trimmed = value.trim();
+        if (/^#[0-9a-fA-F]{6}$/.test(trimmed)) return trimmed;
+        const short = trimmed.match(/^#([0-9a-fA-F]{3})$/);
+        if (short) {
+            const [r, g, b] = short[1].split('');
+            return `#${r}${r}${g}${g}${b}${b}`;
+        }
+        return null;
+    }
+
+    function setCurrentColor(hex) {
+        const normalized = normalizeHex(hex);
+        if (!normalized) return;
+        _annotatorState.currentColor = normalized;
+        if (colorInput) colorInput.value = normalized;
+        if (hexInput) hexInput.value = normalized;
+    }
+
+    function getCurrentColor() {
+        return _annotatorState.currentColor || resolveColor(_annotatorState.currentColorKey);
+    }
+
+    function hexToRgb(hex) {
+        const normalized = normalizeHex(hex);
+        if (!normalized) return null;
+        const parsed = parseInt(normalized.slice(1), 16);
+        return {
+            r: (parsed >> 16) & 255,
+            g: (parsed >> 8) & 255,
+            b: parsed & 255
+        };
+    }
+
+    function relativeLuminance({ r, g, b }) {
+        const transform = (v) => {
+            const srgb = v / 255;
+            return srgb <= 0.03928 ? srgb / 12.92 : Math.pow((srgb + 0.055) / 1.055, 2.4);
+        };
+        return 0.2126 * transform(r) + 0.7152 * transform(g) + 0.0722 * transform(b);
+    }
+
+    function pickShadowColor(hex) {
+        const rgb = hexToRgb(hex);
+        if (!rgb) return 'rgba(0,0,0,0.35)';
+        const lum = relativeLuminance(rgb);
+        return lum > 0.6 ? 'rgba(0,0,0,0.35)' : 'rgba(255,255,255,0.35)';
+    }
+
+    function sendRuntimeMessage(payload) {
+        return new Promise((resolve) => {
+            try {
+                browserAPI.runtime.sendMessage(payload, (response) => {
+                    const err = browserAPI.runtime.lastError;
+                    if (err) {
+                        resolve({ ok: false, error: err.message });
+                        return;
+                    }
+                    resolve(response);
+                });
+            } catch (e) {
+                resolve({ ok: false, error: e.message });
+            }
+        });
+    }
+
+    const POPULAR_FONTS = [
+        'Inter', 'Roboto', 'Poppins', 'Montserrat', 'Lora', 'Merriweather',
+        'Playfair Display', 'Space Mono', 'DM Sans', 'Fira Code'
+    ];
+
+    async function loadGoogleFontsList() {
+        if (!fontList) return;
+        const cacheKey = 'flavortown_google_fonts_cache';
+        const cacheTtl = 7 * 24 * 60 * 60 * 1000;
+        try {
+            const cachedRaw = localStorage.getItem(cacheKey);
+            if (cachedRaw) {
+                const cached = JSON.parse(cachedRaw);
+                if (cached?.updatedAt && Date.now() - cached.updatedAt < cacheTtl) {
+                    populateFontList(cached.items || []);
+                    return;
+                }
+            }
+        } catch (e) {
+        }
+
+        const response = await sendRuntimeMessage({ type: 'GET_GOOGLE_FONTS_LIST' });
+        if (response?.ok && Array.isArray(response.items) && response.items.length) {
+            populateFontList(response.items);
+            localStorage.setItem(cacheKey, JSON.stringify({ updatedAt: Date.now(), items: response.items }));
+            return;
+        }
+
+        try {
+            const response = await fetch('https://fonts.google.com/metadata/fonts');
+            const text = await response.text();
+            const cleaned = text.replace(/^\)\]\}'\n/, '');
+            const data = JSON.parse(cleaned);
+            const items = (data?.familyMetadataList || [])
+                .map(item => item.family)
+                .filter(Boolean)
+                .sort((a, b) => a.localeCompare(b));
+            populateFontList(items);
+            localStorage.setItem(cacheKey, JSON.stringify({ updatedAt: Date.now(), items }));
+        } catch (e) {
+            populateFontList(['Inter', 'Space Mono', 'Roboto', 'Lato']);
+        }
+    }
+
+    function populateFontList(items) {
+        if (!fontInput) return;
+        fullFontList = items.filter(Boolean);
+        renderFontOptions('');
+    }
+
+    function renderFontOptions(query) {
+        if (!fontInput) return;
+        const filter = (query || '').trim().toLowerCase();
+        const popularSet = new Set(POPULAR_FONTS.map(name => name.toLowerCase()));
+        const deduped = Array.from(new Set(fullFontList));
+
+        const scoreMatch = (name) => {
+            const lower = name.toLowerCase();
+            if (!filter) return 0;
+            if (lower.startsWith(filter)) return 0;
+            if (lower.includes(filter)) return 1;
+            return 2;
+        };
+
+        fontInput.innerHTML = '';
+
+        if (filter) {
+            const matches = deduped.filter(name => name.toLowerCase().includes(filter));
+            matches.sort((a, b) => {
+                const scoreA = scoreMatch(a);
+                const scoreB = scoreMatch(b);
+                if (scoreA !== scoreB) return scoreA - scoreB;
+                return a.localeCompare(b);
+            });
+            const group = document.createElement('optgroup');
+            group.label = 'Matches';
+            matches.forEach(name => {
+                const option = document.createElement('option');
+                option.value = name;
+                option.textContent = name;
+                group.appendChild(option);
+            });
+            fontInput.appendChild(group);
+        } else {
+            const popular = POPULAR_FONTS.filter(name => deduped.some(item => item.toLowerCase() === name.toLowerCase()));
+            const rest = deduped.filter(name => !popularSet.has(name.toLowerCase()));
+            rest.sort((a, b) => a.localeCompare(b));
+
+            const addGroup = (label, list) => {
+                const group = document.createElement('optgroup');
+                group.label = label;
+                list.forEach(name => {
+                    const option = document.createElement('option');
+                    option.value = name;
+                    option.textContent = name;
+                    group.appendChild(option);
+                });
+                fontInput.appendChild(group);
+            };
+
+            addGroup('Popular', popular.length ? popular : POPULAR_FONTS);
+            addGroup('All fonts', rest);
+        }
+
+        if (_annotatorState.textFont && fontInput.value !== _annotatorState.textFont) {
+            fontInput.value = _annotatorState.textFont;
+        }
+    }
+
+    function loadGoogleFont(fontFamily) {
+        const name = fontFamily.trim();
+        if (!name) return;
+        if (loadedFonts.has(name)) return;
+        const link = document.createElement('link');
+        const familyParam = encodeURIComponent(name).replace(/%20/g, '+');
+        link.rel = 'stylesheet';
+        link.href = `https://fonts.googleapis.com/css2?family=${familyParam}:wght@300;400;500;600;700&display=swap`;
+        document.head.appendChild(link);
+        loadedFonts.add(name);
+    }
+
+    async function ensureEmojiMap() {
+        if (emojiMapCache) return emojiMapCache;
+        emojiMapCache = await fetchSlackEmojiMap();
+        return emojiMapCache;
+    }
+
+    async function ensureEmojiImage(name) {
+        if (emojiImageCache.has(name)) {
+            const cached = emojiImageCache.get(name);
+            if (cached.loaded) return cached.image;
+            return null;
+        }
+        emojiImageCache.set(name, { loaded: false, image: null });
+        const map = await ensureEmojiMap();
+        const entry = map?.[name];
+        const url = entry?.url;
+        if (!url) return null;
+
+        try {
+            const response = await sendRuntimeMessage({ type: 'FETCH_EMOJI_IMAGE', url });
+            if (!response?.ok || !response.dataUrl) return null;
+            const img = new Image();
+            img.onload = () => {
+                emojiImageCache.set(name, { loaded: true, image: img });
+                render();
+            };
+            img.onerror = () => {
+                emojiImageCache.set(name, { loaded: true, image: null });
+            };
+            img.src = response.dataUrl;
+            emojiImageCache.set(name, { loaded: false, image: img });
+            return null;
+        } catch (e) {
+            return null;
+        }
+    }
+
+    function parseEmojiTokens(text) {
+        if (!text) return [];
+        const parts = text.split(/(:[a-zA-Z0-9_+\-]+:)/g).filter(Boolean);
+        return parts.map(part => {
+            if (part.startsWith(':') && part.endsWith(':') && part.length > 2) {
+                return { type: 'emoji', value: part.slice(1, -1) };
+            }
+            return { type: 'text', value: part };
+        });
+    }
+
+    function drawTextWithEmojis(ctx, text, state) {
+        const drawState = getDrawState(state);
+        const point = toCanvasPoint({ x: text.x, y: text.y }, drawState);
+        if (!point) return;
+        ctx.save();
+        ctx.fillStyle = text.color;
+        ctx.font = `${text.weight} ${text.size * drawState.scale}px "${text.font}", Inter, system-ui, -apple-system, sans-serif`;
+        ctx.textBaseline = 'top';
+        if (text.shadow) {
+            ctx.shadowColor = text.shadowColor || pickShadowColor(text.color);
+            ctx.shadowBlur = 3 * drawState.scale;
+            ctx.shadowOffsetY = 1 * drawState.scale;
+        }
+
+        const tokens = parseEmojiTokens(text.value);
+        let cursorX = point.x;
+        const emojiSize = text.size * drawState.scale;
+
+        tokens.forEach(token => {
+            if (token.type === 'text') {
+                ctx.fillText(token.value, cursorX, point.y);
+                cursorX += ctx.measureText(token.value).width;
+                return;
+            }
+            if (token.type === 'emoji') {
+                const image = emojiImageCache.get(token.value)?.image;
+                if (image && image.complete) {
+                    ctx.drawImage(image, cursorX, point.y, emojiSize, emojiSize);
+                } else {
+                    ensureEmojiImage(token.value);
+                }
+                cursorX += emojiSize;
+            }
+        });
+        ctx.restore();
+    }
+
+    function resizeCanvas() {
+        const wrap = overlay.querySelector('.flavortown-annotator-canvas-wrap');
+        if (!wrap) return;
+        const rect = wrap.getBoundingClientRect();
+        const width = Math.max(1, rect.width);
+        const height = Math.max(1, rect.height);
+        canvas.width = width * dpr;
+        canvas.height = height * dpr;
+        canvas.style.width = `${width}px`;
+        canvas.style.height = `${height}px`;
+        overlayCanvas.width = width * dpr;
+        overlayCanvas.height = height * dpr;
+        overlayCanvas.style.width = `${width}px`;
+        overlayCanvas.style.height = `${height}px`;
+        renderState = calculateRenderState(width, height);
+        render();
+    }
+
+    function calculateRenderState(width, height) {
+        if (!image.naturalWidth || !image.naturalHeight) return null;
+        const scale = Math.min(width / image.naturalWidth, height / image.naturalHeight);
+        const displayWidth = image.naturalWidth * scale;
+        const displayHeight = image.naturalHeight * scale;
+        const offsetX = (width - displayWidth) / 2;
+        const offsetY = (height - displayHeight) / 2;
+        return { scale, displayWidth, displayHeight, offsetX, offsetY, width, height };
+    }
+
+    function toImagePoint(event) {
+        if (!renderState) return null;
+        const rect = overlayCanvas.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+        if (x < renderState.offsetX || y < renderState.offsetY) return null;
+        if (x > renderState.offsetX + renderState.displayWidth) return null;
+        if (y > renderState.offsetY + renderState.displayHeight) return null;
+        const imgX = (x - renderState.offsetX) / renderState.scale;
+        const imgY = (y - renderState.offsetY) / renderState.scale;
+        return { x: imgX, y: imgY };
+    }
+
+    function createSeed() {
+        return Math.floor(Math.random() * 1e9);
+    }
+
+    function seededRandom(seed) {
+        let t = seed + 0x6D2B79F5;
+        return function () {
+            t = Math.imul(t ^ (t >>> 15), t | 1);
+            t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+            return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+        };
+    }
+
+    function applyAlpha(hex, opacity) {
+        const rgb = hexToRgb(hex);
+        if (!rgb) return hex;
+        return `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${opacity})`;
+    }
+
+    function getDrawState(state) {
+        return state || renderState;
+    }
+
+    function drawCleanLine(ctx, line, state) {
+        const start = toCanvasPoint(line.start, state);
+        const end = toCanvasPoint(line.end, state);
+        if (!start || !end) return;
+        ctx.strokeStyle = applyAlpha(line.color, line.opacity ?? 1);
+        ctx.lineWidth = line.width * state.scale;
+        ctx.lineCap = 'butt';
+        ctx.lineJoin = 'round';
+        ctx.beginPath();
+        ctx.moveTo(start.x, start.y);
+        ctx.lineTo(end.x, end.y);
+        ctx.stroke();
+    }
+
+    function drawRoughLine(ctx, line, state) {
+        const start = toCanvasPoint(line.start, state);
+        const end = toCanvasPoint(line.end, state);
+        if (!start || !end) return;
+        const random = seededRandom(line.seed || 0);
+        const dx = end.x - start.x;
+        const dy = end.y - start.y;
+        const length = Math.hypot(dx, dy);
+        const roughness = (line.roughness || 1.2) * 3.5;
+        const segments = Math.max(3, Math.round(length / 60));
+
+        const buildPoints = () => {
+            const points = [];
+            for (let i = 0; i <= segments; i++) {
+                const t = i / segments;
+                const jitter = (random() - 0.5) * roughness * (1 - Math.abs(0.5 - t));
+                const jitter2 = (random() - 0.5) * roughness * (1 - Math.abs(0.5 - t));
+                points.push({
+                    x: start.x + dx * t + jitter,
+                    y: start.y + dy * t + jitter2
+                });
+            }
+            return points;
+        };
+
+        const drawStroke = () => {
+            const points = buildPoints();
+            ctx.strokeStyle = applyAlpha(line.color, line.opacity ?? 1);
+            ctx.lineWidth = line.width * state.scale;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.beginPath();
+            points.forEach((pt, index) => {
+                if (index === 0) ctx.moveTo(pt.x, pt.y);
+                else ctx.lineTo(pt.x, pt.y);
+            });
+            ctx.stroke();
+        };
+
+        drawStroke();
+        drawStroke();
+    }
+
+    function drawArrow(ctx, arrow, state) {
+        const drawState = getDrawState(state);
+        const start = toCanvasPoint(arrow.start, drawState);
+        const end = toCanvasPoint(arrow.end, drawState);
+        if (!start || !end) return;
+        const angle = Math.atan2(end.y - start.y, end.x - start.x);
+        const headLength = Math.max(6, arrow.width * 3) * drawState.scale;
+        const lineEndX = end.x - headLength * Math.cos(angle);
+        const lineEndY = end.y - headLength * Math.sin(angle);
+        const line = {
+            ...arrow,
+            start: arrow.start,
+            end: {
+                x: (lineEndX - drawState.offsetX) / drawState.scale,
+                y: (lineEndY - drawState.offsetY) / drawState.scale
+            }
+        };
+        if (arrow.rough) {
+            drawRoughLine(ctx, line, drawState);
+        } else {
+            drawCleanLine(ctx, line, drawState);
+        }
+
+        ctx.fillStyle = applyAlpha(arrow.color, arrow.opacity ?? 1);
+        ctx.beginPath();
+        ctx.moveTo(end.x, end.y);
+        ctx.lineTo(end.x - headLength * Math.cos(angle - Math.PI / 6), end.y - headLength * Math.sin(angle - Math.PI / 6));
+        ctx.lineTo(end.x - headLength * Math.cos(angle + Math.PI / 6), end.y - headLength * Math.sin(angle + Math.PI / 6));
+        ctx.closePath();
+        ctx.fill();
+    }
+
+    function drawLine(ctx, line, state) {
+        const drawState = getDrawState(state);
+        if (line.rough) {
+            drawRoughLine(ctx, line, drawState);
+        } else {
+            drawCleanLine(ctx, line, drawState);
+        }
+    }
+
+    function drawCurvedArrow(ctx, arrow, state) {
+        const drawState = getDrawState(state);
+        const start = toCanvasPoint(arrow.start, drawState);
+        const end = toCanvasPoint(arrow.end, drawState);
+        if (!start || !end) return;
+        const dx = end.x - start.x;
+        const dy = end.y - start.y;
+        const length = Math.hypot(dx, dy);
+        if (!length) return;
+        const curve = arrow.curve ?? 0.25;
+        const normal = { x: -dy / length, y: dx / length };
+        const offset = curve * length * 0.25;
+        const control = {
+            x: (start.x + end.x) / 2 + normal.x * offset,
+            y: (start.y + end.y) / 2 + normal.y * offset
+        };
+
+        const angle = Math.atan2(end.y - control.y, end.x - control.x);
+        const headLength = Math.max(6, arrow.width * 3) * drawState.scale;
+        const endAdjusted = {
+            x: end.x - headLength * Math.cos(angle),
+            y: end.y - headLength * Math.sin(angle)
+        };
+
+        const drawStroke = () => {
+            ctx.strokeStyle = applyAlpha(arrow.color, arrow.opacity ?? 1);
+            ctx.lineWidth = arrow.width * drawState.scale;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.beginPath();
+            ctx.moveTo(start.x, start.y);
+            ctx.quadraticCurveTo(control.x, control.y, endAdjusted.x, endAdjusted.y);
+            ctx.stroke();
+        };
+
+        if (arrow.rough) {
+            const random = seededRandom(arrow.seed || 0);
+            const jitter = (arrow.roughness || 1.2) * 3.5;
+            for (let i = 0; i < 2; i++) {
+                const ctrl = {
+                    x: control.x + (random() - 0.5) * jitter,
+                    y: control.y + (random() - 0.5) * jitter
+                };
+                ctx.strokeStyle = applyAlpha(arrow.color, arrow.opacity ?? 1);
+                ctx.lineWidth = arrow.width * drawState.scale;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                ctx.beginPath();
+                ctx.moveTo(start.x, start.y);
+                ctx.quadraticCurveTo(ctrl.x, ctrl.y, endAdjusted.x, endAdjusted.y);
+                ctx.stroke();
+            }
+        } else {
+            drawStroke();
+        }
+
+        ctx.fillStyle = applyAlpha(arrow.color, arrow.opacity ?? 1);
+        ctx.beginPath();
+        ctx.moveTo(end.x, end.y);
+        ctx.lineTo(end.x - headLength * Math.cos(angle - Math.PI / 6), end.y - headLength * Math.sin(angle - Math.PI / 6));
+        ctx.lineTo(end.x - headLength * Math.cos(angle + Math.PI / 6), end.y - headLength * Math.sin(angle + Math.PI / 6));
+        ctx.closePath();
+        ctx.fill();
+    }
+
+    function drawRect(ctx, rect, state) {
+        const drawState = getDrawState(state);
+        const topLeft = toCanvasPoint({ x: rect.x, y: rect.y }, drawState);
+        const bottomRight = toCanvasPoint({ x: rect.x + rect.width, y: rect.y + rect.height }, drawState);
+        if (!topLeft || !bottomRight) return;
+        const width = bottomRight.x - topLeft.x;
+        const height = bottomRight.y - topLeft.y;
+        if (width <= 0 || height <= 0) return;
+        if (rect.rough) {
+            const random = seededRandom(rect.seed || 0);
+            const jitter = (rect.roughness || 1.2) * 3;
+            ctx.save();
+            ctx.strokeStyle = applyAlpha(rect.color, rect.opacity ?? 1);
+            ctx.lineWidth = rect.widthValue * drawState.scale;
+            for (let i = 0; i < 2; i++) {
+                const offsetX = (random() - 0.5) * jitter;
+                const offsetY = (random() - 0.5) * jitter;
+                ctx.strokeRect(topLeft.x + offsetX, topLeft.y + offsetY, width, height);
+            }
+            ctx.restore();
+        }
+        if (rect.fill) {
+            ctx.fillStyle = applyAlpha(rect.color, rect.opacity ?? 0.3);
+            ctx.fillRect(topLeft.x, topLeft.y, width, height);
+        }
+        if (rect.stroke !== false) {
+            const line = {
+                start: { x: rect.x, y: rect.y },
+                end: { x: rect.x + rect.width, y: rect.y },
+                color: rect.color,
+                width: rect.widthValue,
+                rough: rect.rough,
+                roughness: rect.roughness,
+                seed: rect.seed,
+                opacity: rect.opacity
+            };
+            const line2 = { ...line, start: { x: rect.x + rect.width, y: rect.y }, end: { x: rect.x + rect.width, y: rect.y + rect.height } };
+            const line3 = { ...line, start: { x: rect.x + rect.width, y: rect.y + rect.height }, end: { x: rect.x, y: rect.y + rect.height } };
+            const line4 = { ...line, start: { x: rect.x, y: rect.y + rect.height }, end: { x: rect.x, y: rect.y } };
+            drawLine(ctx, line, drawState);
+            drawLine(ctx, line2, drawState);
+            drawLine(ctx, line3, drawState);
+            drawLine(ctx, line4, drawState);
+        }
+    }
+
+    function drawEllipse(ctx, ellipse, state) {
+        const drawState = getDrawState(state);
+        const center = toCanvasPoint({
+            x: ellipse.x + ellipse.width / 2,
+            y: ellipse.y + ellipse.height / 2
+        }, drawState);
+        if (!center) return;
+        const rx = (ellipse.width / 2) * drawState.scale;
+        const ry = (ellipse.height / 2) * drawState.scale;
+        if (rx <= 0 || ry <= 0 || Number.isNaN(rx) || Number.isNaN(ry)) return;
+        if (ellipse.fill) {
+            ctx.beginPath();
+            ctx.ellipse(center.x, center.y, rx, ry, 0, 0, Math.PI * 2);
+            ctx.fillStyle = applyAlpha(ellipse.color, ellipse.opacity ?? 0.3);
+            ctx.fill();
+        }
+        if (ellipse.stroke !== false && !ellipse.rough) {
+            ctx.beginPath();
+            ctx.ellipse(center.x, center.y, rx, ry, 0, 0, Math.PI * 2);
+            ctx.strokeStyle = applyAlpha(ellipse.color, ellipse.opacity ?? 1);
+            ctx.lineWidth = ellipse.widthValue * drawState.scale;
+            ctx.stroke();
+        }
+        if (ellipse.rough) {
+            const random = seededRandom(ellipse.seed || 0);
+            const jitter = (ellipse.roughness || 1.2) * 3.5;
+            ctx.strokeStyle = applyAlpha(ellipse.color, ellipse.opacity ?? 1);
+            ctx.lineWidth = ellipse.widthValue * drawState.scale;
+            for (let i = 0; i < 2; i++) {
+                ctx.beginPath();
+                ctx.ellipse(
+                    center.x + (random() - 0.5) * jitter,
+                    center.y + (random() - 0.5) * jitter,
+                    rx + (random() - 0.5) * jitter,
+                    ry + (random() - 0.5) * jitter,
+                    0,
+                    0,
+                    Math.PI * 2
+                );
+                ctx.stroke();
+            }
+        }
+    }
+
+    function drawHighlight(ctx, highlight, state) {
+        const drawState = getDrawState(state);
+        const topLeft = toCanvasPoint({ x: highlight.x, y: highlight.y }, drawState);
+        const bottomRight = toCanvasPoint({ x: highlight.x + highlight.width, y: highlight.y + highlight.height }, drawState);
+        if (!topLeft || !bottomRight) return;
+        const width = bottomRight.x - topLeft.x;
+        const height = bottomRight.y - topLeft.y;
+        if (width <= 0 || height <= 0) return;
+        ctx.fillStyle = applyAlpha(highlight.color, highlight.opacity ?? 0.25);
+        ctx.fillRect(topLeft.x, topLeft.y, width, height);
+    }
+
+    function drawText(ctx, text, state) {
+        drawTextWithEmojis(ctx, text, state);
+    }
+
+    function toCanvasPoint(point, state = renderState) {
+        if (!state) return null;
+        return {
+            x: state.offsetX + point.x * state.scale,
+            y: state.offsetY + point.y * state.scale
+        };
+    }
+
+    function renderCropOverlay(cropRect) {
+        overlayCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        overlayCtx.clearRect(0, 0, renderState.width, renderState.height);
+        if (!cropRect) return;
+        const topLeft = toCanvasPoint({ x: cropRect.x, y: cropRect.y });
+        const bottomRight = toCanvasPoint({ x: cropRect.x + cropRect.width, y: cropRect.y + cropRect.height });
+        if (!topLeft || !bottomRight) return;
+        const x = topLeft.x;
+        const y = topLeft.y;
+        const w = bottomRight.x - topLeft.x;
+        const h = bottomRight.y - topLeft.y;
+        overlayCtx.fillStyle = 'rgba(0,0,0,0.4)';
+        overlayCtx.fillRect(0, 0, renderState.width, renderState.height);
+        overlayCtx.clearRect(x, y, w, h);
+        overlayCtx.strokeStyle = getCurrentColor();
+        overlayCtx.lineWidth = 2;
+        overlayCtx.strokeRect(x, y, w, h);
+    }
+
+    function render() {
+        if (!renderState) return;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.clearRect(0, 0, renderState.width, renderState.height);
+        ctx.drawImage(
+            image,
+            renderState.offsetX,
+            renderState.offsetY,
+            renderState.displayWidth,
+            renderState.displayHeight
+        );
+
+        const entry = imageEntries[_annotatorState.activeIndex];
+        if (!entry.state) return;
+        entry.state.annotations.forEach(annotation => {
+            if (annotation.type === 'arrow') drawArrow(ctx, annotation);
+            if (annotation.type === 'curve') drawCurvedArrow(ctx, annotation);
+            if (annotation.type === 'line') drawLine(ctx, annotation);
+            if (annotation.type === 'rect') drawRect(ctx, annotation);
+            if (annotation.type === 'ellipse') drawEllipse(ctx, annotation);
+            if (annotation.type === 'highlight') drawHighlight(ctx, annotation);
+            if (annotation.type === 'text') drawText(ctx, annotation);
+        });
+        if (draft) {
+            if (draft.type === 'arrow') drawArrow(ctx, draft);
+            if (draft.type === 'curve') drawCurvedArrow(ctx, draft);
+            if (draft.type === 'line') drawLine(ctx, draft);
+            if (draft.type === 'rect') drawRect(ctx, draft);
+            if (draft.type === 'ellipse') drawEllipse(ctx, draft);
+            if (draft.type === 'highlight') drawHighlight(ctx, draft);
+        }
+        renderCropOverlay(entry.state.cropRect || cropDraft);
+        updateHistoryControls();
+    }
+
+    function setActiveTool(tool) {
+        _annotatorState.currentTool = tool;
+        toolButtons.forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.tool === tool);
+        });
+        if (tool !== 'text') {
+            closeTextEditor(true);
+        }
+        const showText = tool === 'text';
+        const showShape = ['arrow', 'line', 'curve', 'rect', 'ellipse', 'highlight'].includes(tool);
+        const showColor = tool !== 'crop';
+        const showCurve = tool === 'curve';
+        textGroups.forEach(group => group.classList.toggle('is-hidden', !showText));
+        shapeGroups.forEach(group => group.classList.toggle('is-hidden', !showShape));
+        colorGroups.forEach(group => group.classList.toggle('is-hidden', !showColor));
+        curveGroups.forEach(group => group.classList.toggle('is-hidden', !showCurve));
+        if (tool === 'crop') {
+            status.textContent = 'Drag to select crop area.';
+        } else if (tool === 'text') {
+            status.textContent = 'Click to place text.';
+        } else if (tool === 'highlight') {
+            status.textContent = 'Drag to highlight a region.';
+            if (_annotatorState.opacity > 0.4) {
+                _annotatorState.opacity = 0.25;
+                if (opacityInput) opacityInput.value = '25';
+            }
+        } else {
+            status.textContent = 'Click and drag to draw.';
+        }
+    }
+
+    function setActiveColor(colorKey) {
+        _annotatorState.currentColorKey = colorKey;
+        const resolved = resolveColor(colorKey);
+        setCurrentColor(resolved);
+    }
+
+    function closeTextEditor(commit = false) {
+        if (!activeTextEditor) return;
+        if (isClosingTextEditor) return;
+        isClosingTextEditor = true;
+        const editor = activeTextEditor;
+        const entry = imageEntries[_annotatorState.activeIndex];
+        if (commit && activeTextPoint) {
+        const textValue = editor.textContent.trim();
+            if (textValue) {
+                ensureEntryState(entry);
+                const size = _annotatorState.textSize / renderState.scale;
+                const color = getCurrentColor();
+                const font = _annotatorState.textFont || 'Inter';
+                loadGoogleFont(font);
+                entry.state.annotations.push({
+                    type: 'text',
+                    x: activeTextPoint.x,
+                    y: activeTextPoint.y,
+                    value: textValue,
+                    size,
+                    color,
+                    weight: _annotatorState.textWeight || 600,
+                    font,
+                    shadow: _annotatorState.textShadow,
+                    shadowColor: pickShadowColor(color)
+                });
+                pushHistory(entry.state);
+                render();
+            }
+        }
+        if (editor.parentNode && editor.parentNode.contains(editor)) {
+            editor.remove();
+        }
+        activeTextEditor = null;
+        activeTextPoint = null;
+        isClosingTextEditor = false;
+    }
+
+    function openInlineTextEditor(point) {
+        closeTextEditor(true);
+        const wrap = overlay.querySelector('.flavortown-annotator-canvas-wrap');
+        const canvasPoint = toCanvasPoint(point);
+        if (!wrap || !canvasPoint) return;
+        const editor = document.createElement('div');
+        editor.className = 'flavortown-annotator-inline-text';
+        editor.contentEditable = 'true';
+        editor.spellcheck = false;
+        editor.style.left = `${canvasPoint.x}px`;
+        editor.style.top = `${canvasPoint.y}px`;
+        editor.style.color = getCurrentColor();
+        editor.style.fontSize = `${_annotatorState.textSize}px`;
+        editor.style.fontWeight = String(_annotatorState.textWeight || 600);
+        editor.style.fontFamily = `"${_annotatorState.textFont || 'Inter'}", Inter, system-ui, -apple-system, sans-serif`;
+        if (_annotatorState.textShadow) {
+            editor.style.textShadow = `0 1px 2px ${pickShadowColor(getCurrentColor())}`;
+        } else {
+            editor.style.textShadow = 'none';
+        }
+        wrap.appendChild(editor);
+        editor.addEventListener('mousedown', (event) => event.stopPropagation());
+        editor.addEventListener('pointerdown', (event) => event.stopPropagation());
+        setTimeout(() => editor.focus(), 0);
+        activeTextEditor = editor;
+        activeTextPoint = point;
+        status.textContent = 'Type and press Enter to save.';
+
+        editor.addEventListener('blur', () => closeTextEditor(true), { once: true });
+        editor.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                closeTextEditor(true);
+            }
+            if (event.key === 'Escape') {
+                event.preventDefault();
+                closeTextEditor(false);
+            }
+        });
+    }
+
+    function updateActiveTextEditorStyle() {
+        if (!activeTextEditor) return;
+        activeTextEditor.style.color = getCurrentColor();
+        activeTextEditor.style.fontSize = `${_annotatorState.textSize}px`;
+        activeTextEditor.style.fontWeight = String(_annotatorState.textWeight || 600);
+        activeTextEditor.style.fontFamily = `"${_annotatorState.textFont || 'Inter'}", Inter, system-ui, -apple-system, sans-serif`;
+        if (_annotatorState.textShadow) {
+            activeTextEditor.style.textShadow = `0 1px 2px ${pickShadowColor(getCurrentColor())}`;
+        } else {
+            activeTextEditor.style.textShadow = 'none';
+        }
+    }
+
+    function finalizeDraft() {
+        const entry = imageEntries[_annotatorState.activeIndex];
+        if (!entry.state || !draft) return;
+
+        if (draft.type === 'arrow' || draft.type === 'line' || draft.type === 'curve') {
+            const dx = draft.end.x - draft.start.x;
+            const dy = draft.end.y - draft.start.y;
+            if (Math.hypot(dx, dy) < 6 / renderState.scale) {
+                draft = null;
+                render();
+                return;
+            }
+            entry.state.annotations.push({ ...draft });
+            pushHistory(entry.state);
+            draft = null;
+            render();
+            return;
+        }
+
+        if (draft.type === 'rect' || draft.type === 'ellipse' || draft.type === 'highlight') {
+            if (draft.width < 10 / renderState.scale || draft.height < 10 / renderState.scale) {
+                draft = null;
+                render();
+                return;
+            }
+            entry.state.annotations.push({ ...draft });
+            pushHistory(entry.state);
+            draft = null;
+            render();
+        }
+    }
+
+    function finalizeCrop() {
+        const entry = imageEntries[_annotatorState.activeIndex];
+        if (!entry.state || !cropDraft) return;
+        if (cropDraft.width < 10 || cropDraft.height < 10) {
+            cropDraft = null;
+            render();
+            return;
+        }
+        entry.state.cropRect = { ...cropDraft };
+        cropDraft = null;
+        pushHistory(entry.state);
+        render();
+    }
+
+    function resetCurrent() {
+        const entry = imageEntries[_annotatorState.activeIndex];
+        if (!entry.state) return;
+        entry.state.annotations = [];
+        entry.state.cropRect = null;
+        pushHistory(entry.state);
+        render();
+    }
+
+    async function saveCurrent() {
+        const entry = imageEntries[_annotatorState.activeIndex];
+        if (!entry.state) return;
+        closeTextEditor(true);
+        const exportCanvas = document.createElement('canvas');
+        const crop = entry.state.cropRect;
+        const exportWidth = crop ? crop.width : image.naturalWidth;
+        const exportHeight = crop ? crop.height : image.naturalHeight;
+        exportCanvas.width = exportWidth;
+        exportCanvas.height = exportHeight;
+        const exportCtx = exportCanvas.getContext('2d');
+        if (crop) {
+            exportCtx.drawImage(image, crop.x, crop.y, crop.width, crop.height, 0, 0, exportWidth, exportHeight);
+        } else {
+            exportCtx.drawImage(image, 0, 0, exportWidth, exportHeight);
+        }
+
+        const exportState = { scale: 1, offsetX: 0, offsetY: 0, width: exportWidth, height: exportHeight };
+
+        entry.state.annotations.forEach(annotation => {
+            if (annotation.type === 'arrow' || annotation.type === 'line' || annotation.type === 'curve') {
+                const adjusted = {
+                    ...annotation,
+                    start: {
+                        x: annotation.start.x - (crop ? crop.x : 0),
+                        y: annotation.start.y - (crop ? crop.y : 0)
+                    },
+                    end: {
+                        x: annotation.end.x - (crop ? crop.x : 0),
+                        y: annotation.end.y - (crop ? crop.y : 0)
+                    }
+                };
+                if (annotation.type === 'arrow') {
+                    drawArrow(exportCtx, adjusted, exportState);
+                } else if (annotation.type === 'curve') {
+                    drawCurvedArrow(exportCtx, adjusted, exportState);
+                } else {
+                    drawLine(exportCtx, adjusted, exportState);
+                }
+            }
+            if (annotation.type === 'rect' || annotation.type === 'ellipse' || annotation.type === 'highlight') {
+                const adjusted = {
+                    ...annotation,
+                    x: annotation.x - (crop ? crop.x : 0),
+                    y: annotation.y - (crop ? crop.y : 0)
+                };
+                if (annotation.type === 'rect') drawRect(exportCtx, adjusted, exportState);
+                if (annotation.type === 'ellipse') drawEllipse(exportCtx, adjusted, exportState);
+                if (annotation.type === 'highlight') drawHighlight(exportCtx, adjusted, exportState);
+            }
+            if (annotation.type === 'text') {
+                const adjusted = {
+                    ...annotation,
+                    x: annotation.x - (crop ? crop.x : 0),
+                    y: annotation.y - (crop ? crop.y : 0)
+                };
+                drawText(exportCtx, adjusted, exportState);
+            }
+        });
+
+        const originalFile = entry.file;
+        const exportType = originalFile.type === 'image/jpeg' ? 'image/jpeg' : 'image/png';
+        const blob = await new Promise(resolve => exportCanvas.toBlob(resolve, exportType, 0.92));
+        if (!blob) {
+            status.textContent = 'Export failed. Try again.';
+            return;
+        }
+
+        const newFile = new File([blob], originalFile.name, { type: exportType });
+        const newFiles = _annotatorState.files.slice();
+        newFiles[entry.index] = newFile;
+        const dt = new DataTransfer();
+        newFiles.forEach(file => dt.items.add(file));
+        _annotatorState.fileInput.files = dt.files;
+        ['input', 'change'].forEach(eventType => {
+            _annotatorState.fileInput.dispatchEvent(new Event(eventType, { bubbles: true, cancelable: true }));
+        });
+
+        if (entry.url) URL.revokeObjectURL(entry.url);
+        entry.file = newFile;
+        entry.url = URL.createObjectURL(newFile);
+        entry.state.annotations = [];
+        entry.state.cropRect = null;
+        entry.state.history = [];
+        entry.state.historyIndex = -1;
+        pushHistory(entry.state);
+        status.textContent = 'Attachment replaced.';
+        loadImage(entry.url);
+    }
+
+    function loadImage(url) {
+        image.onload = () => {
+            resizeCanvas();
+        };
+        image.src = url;
+    }
+
+    function cleanup() {
+        closeTextEditor(false);
+        imageEntries.forEach(entry => {
+            if (entry.url) URL.revokeObjectURL(entry.url);
+        });
+        window.removeEventListener('resize', resizeCanvas);
+        overlay.remove();
+        _annotatorState = null;
+    }
+
+    toolButtons.forEach(btn => {
+        btn.addEventListener('click', () => setActiveTool(btn.dataset.tool));
+    });
+
+    if (colorInput) {
+        const accent = resolveColor('accent');
+        colorInput.value = normalizeHex(accent) || '#ec8b33';
+    }
+    if (hexInput) {
+        hexInput.value = colorInput?.value || '#ec8b33';
+    }
+
+    if (colorInput) {
+        colorInput.addEventListener('input', (event) => {
+            _annotatorState.currentColorKey = 'custom';
+            setCurrentColor(event.target.value);
+            updateActiveTextEditorStyle();
+        });
+    }
+
+    if (hexInput) {
+        hexInput.addEventListener('input', (event) => {
+            const next = normalizeHex(event.target.value);
+            if (next) {
+                _annotatorState.currentColorKey = 'custom';
+                setCurrentColor(next);
+                updateActiveTextEditorStyle();
+            }
+        });
+    }
+
+    if (opacityInput) {
+        opacityInput.addEventListener('input', (event) => {
+            _annotatorState.opacity = Math.max(0.1, Math.min(1, Number(event.target.value) / 100));
+        });
+    }
+
+    strokeInput.addEventListener('input', (event) => {
+        _annotatorState.strokeWidth = Number(event.target.value) || 4;
+    });
+
+    if (fillToggle) {
+        fillToggle.addEventListener('change', (event) => {
+            _annotatorState.fillEnabled = !!event.target.checked;
+        });
+    }
+
+    if (roughToggle) {
+        roughToggle.addEventListener('change', (event) => {
+            _annotatorState.roughEnabled = !!event.target.checked;
+            if (roughnessInput) {
+                roughnessInput.style.display = _annotatorState.roughEnabled ? '' : 'none';
+            }
+        });
+    }
+
+    if (roughnessInput) {
+        roughnessInput.addEventListener('input', (event) => {
+            _annotatorState.roughness = Number(event.target.value) || 1.6;
+        });
+    }
+
+    if (curveInput) {
+        curveInput.addEventListener('input', (event) => {
+            _annotatorState.curveAmount = Number(event.target.value) || 0;
+            if (draft && draft.type === 'curve') {
+                draft.curve = _annotatorState.curveAmount;
+                render();
+            }
+        });
+    }
+
+    textSizeSelect.addEventListener('change', (event) => {
+        _annotatorState.textSize = Number(event.target.value) || 16;
+        updateActiveTextEditorStyle();
+    });
+
+    if (textWeightSelect) {
+        textWeightSelect.addEventListener('change', (event) => {
+            _annotatorState.textWeight = Number(event.target.value) || 600;
+            updateActiveTextEditorStyle();
+        });
+    }
+
+    if (fontInput) {
+        fontInput.addEventListener('change', (event) => {
+            const next = event.target.value.trim() || 'Inter';
+            _annotatorState.textFont = next;
+            loadGoogleFont(next);
+            updateActiveTextEditorStyle();
+        });
+
+        if (fontInput.value) {
+            _annotatorState.textFont = fontInput.value;
+            loadGoogleFont(fontInput.value);
+        }
+    }
+
+    if (fontSearchInput) {
+        fontSearchInput.addEventListener('input', (event) => {
+            renderFontOptions(event.target.value);
+        });
+    }
+
+    if (fontSearchInput) {
+        fontSearchInput.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                const firstOption = fontInput?.querySelector('option');
+                if (firstOption) {
+                    fontInput.value = firstOption.value;
+                    _annotatorState.textFont = firstOption.value;
+                    loadGoogleFont(firstOption.value);
+                    updateActiveTextEditorStyle();
+                }
+            }
+        });
+    }
+
+    if (shadowToggle) {
+        shadowToggle.addEventListener('change', (event) => {
+            _annotatorState.textShadow = !!event.target.checked;
+            updateActiveTextEditorStyle();
+        });
+    }
+
+    actionButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const action = btn.dataset.action;
+            const entry = imageEntries[_annotatorState.activeIndex];
+            ensureEntryState(entry);
+            if (action === 'undo') {
+                applyHistory(entry.state, Math.max(0, entry.state.historyIndex - 1));
+                render();
+            }
+            if (action === 'redo') {
+                applyHistory(entry.state, Math.min(entry.state.history.length - 1, entry.state.historyIndex + 1));
+                render();
+            }
+            if (action === 'clear') {
+                resetCurrent();
+            }
+        });
+    });
+
+    navButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const action = btn.dataset.action;
+            if (action === 'prev' && _annotatorState.activeIndex > 0) {
+                closeTextEditor(true);
+                _annotatorState.activeIndex -= 1;
+            }
+            if (action === 'next' && _annotatorState.activeIndex < imageEntries.length - 1) {
+                closeTextEditor(true);
+                _annotatorState.activeIndex += 1;
+            }
+            const entry = imageEntries[_annotatorState.activeIndex];
+            ensureEntryState(entry);
+            draft = null;
+            cropDraft = null;
+            loadImage(entry.url);
+            updateNavControls();
+        });
+    });
+
+    footerActions.addEventListener('click', (event) => {
+        const actionBtn = event.target.closest('button');
+        if (!actionBtn) return;
+        const action = actionBtn.dataset.action;
+        if (action === 'close') cleanup();
+        if (action === 'save') saveCurrent();
+    });
+
+    closeBtn.addEventListener('click', cleanup);
+
+    overlay.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            if (activeTextEditor) {
+                closeTextEditor(false);
+                return;
+            }
+            cleanup();
+        }
+
+        const isTextEditing = activeTextEditor && (event.target === activeTextEditor || activeTextEditor.contains(event.target));
+        if (isTextEditing) return;
+
+        if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'z' && !event.shiftKey) {
+            event.preventDefault();
+            const entry = imageEntries[_annotatorState.activeIndex];
+            ensureEntryState(entry);
+            applyHistory(entry.state, Math.max(0, entry.state.historyIndex - 1));
+            render();
+        }
+        if ((event.metaKey || event.ctrlKey) && (event.key.toLowerCase() === 'y' || (event.key.toLowerCase() === 'z' && event.shiftKey))) {
+            event.preventDefault();
+            const entry = imageEntries[_annotatorState.activeIndex];
+            ensureEntryState(entry);
+            applyHistory(entry.state, Math.min(entry.state.history.length - 1, entry.state.historyIndex + 1));
+            render();
+        }
+        if (event.key === 'ArrowLeft') {
+            navButtons.find(btn => btn.dataset.action === 'prev')?.click();
+        }
+        if (event.key === 'ArrowRight') {
+            navButtons.find(btn => btn.dataset.action === 'next')?.click();
+        }
+    });
+
+    overlayCanvas.addEventListener('pointerdown', (event) => {
+        const point = toImagePoint(event);
+        if (!point) return;
+        const entry = imageEntries[_annotatorState.activeIndex];
+        ensureEntryState(entry);
+        const color = getCurrentColor();
+        const widthValue = _annotatorState.strokeWidth / renderState.scale;
+        const rough = _annotatorState.roughEnabled;
+        const roughness = _annotatorState.roughness;
+        const opacity = _annotatorState.opacity;
+        const toolOpacity = _annotatorState.currentTool === 'highlight'
+            ? Math.min(opacity, 0.25)
+            : opacity;
+
+        if (['arrow', 'line', 'curve'].includes(_annotatorState.currentTool)) {
+            draft = {
+                type: _annotatorState.currentTool,
+                start: { ...point },
+                end: { ...point },
+                color,
+                width: widthValue,
+                rough,
+                roughness,
+                opacity,
+                curve: _annotatorState.currentTool === 'curve' ? _annotatorState.curveAmount : 0,
+                seed: createSeed()
+            };
+            isDrawing = true;
+        }
+        if (['rect', 'ellipse', 'highlight'].includes(_annotatorState.currentTool)) {
+            draft = {
+                type: _annotatorState.currentTool,
+                x: point.x,
+                y: point.y,
+                width: 0,
+                height: 0,
+                color,
+                widthValue,
+                rough,
+                roughness,
+                opacity: toolOpacity,
+                fill: _annotatorState.currentTool === 'highlight' ? true : _annotatorState.fillEnabled,
+                stroke: _annotatorState.currentTool !== 'highlight',
+                seed: createSeed()
+            };
+            isDrawing = true;
+        }
+        if (_annotatorState.currentTool === 'crop') {
+            cropDraft = { x: point.x, y: point.y, width: 0, height: 0 };
+            isDrawing = true;
+        }
+        if (_annotatorState.currentTool === 'text') {
+            openInlineTextEditor(point);
+        }
+    });
+
+    overlayCanvas.addEventListener('pointermove', (event) => {
+        if (!isDrawing) return;
+        const point = toImagePoint(event);
+        if (!point) return;
+        if (['arrow', 'line', 'curve'].includes(_annotatorState.currentTool) && draft) {
+            draft.end = { ...point };
+            render();
+        }
+        if (['rect', 'ellipse', 'highlight'].includes(_annotatorState.currentTool) && draft) {
+            const x = Math.min(draft.x, point.x);
+            const y = Math.min(draft.y, point.y);
+            const width = Math.abs(point.x - draft.x);
+            const height = Math.abs(point.y - draft.y);
+            draft = { ...draft, x, y, width, height };
+            render();
+        }
+        if (_annotatorState.currentTool === 'crop' && cropDraft) {
+            const x = Math.min(cropDraft.x, point.x);
+            const y = Math.min(cropDraft.y, point.y);
+            const width = Math.abs(point.x - cropDraft.x);
+            const height = Math.abs(point.y - cropDraft.y);
+            cropDraft = { x, y, width, height };
+            render();
+        }
+    });
+
+    const endDrawing = () => {
+        if (!isDrawing) return;
+        isDrawing = false;
+        if (_annotatorState.currentTool === 'crop') {
+            finalizeCrop();
+        } else {
+            finalizeDraft();
+        }
+    };
+
+    overlayCanvas.addEventListener('pointerup', endDrawing);
+    overlayCanvas.addEventListener('pointerleave', endDrawing);
+
+    window.addEventListener('resize', resizeCanvas);
+
+    const entry = imageEntries[_annotatorState.activeIndex];
+    ensureEntryState(entry);
+    updateNavControls();
+    setActiveTool('arrow');
+    setActiveColor('accent');
+    _annotatorState.opacity = 0.9;
+    _annotatorState.fillEnabled = false;
+    _annotatorState.roughEnabled = true;
+    _annotatorState.roughness = 1.6;
+    if (colorInput) colorInput.value = getCurrentColor();
+    if (hexInput) hexInput.value = getCurrentColor();
+    if (opacityInput) opacityInput.value = String(Math.round(_annotatorState.opacity * 100));
+    if (fillToggle) fillToggle.checked = _annotatorState.fillEnabled;
+    if (roughToggle) roughToggle.checked = _annotatorState.roughEnabled;
+    if (roughnessInput) roughnessInput.value = String(_annotatorState.roughness);
+    if (roughnessInput) roughnessInput.style.display = _annotatorState.roughEnabled ? '' : 'none';
+    if (fontInput) fontInput.value = _annotatorState.textFont || 'Inter';
+    if (textWeightSelect) textWeightSelect.value = String(_annotatorState.textWeight || 600);
+    if (shadowToggle) shadowToggle.checked = _annotatorState.textShadow;
+    loadGoogleFontsList();
+    loadImage(entry.url);
+    overlay.tabIndex = -1;
+    overlay.focus();
+}
 
 function openShotsModal() {
     const overlay = document.createElement('div');

@@ -54,6 +54,53 @@ browserAPI.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
         return true;
     }
+
+    if (message.type === 'GET_GOOGLE_FONTS_LIST') {
+        fetch('https://fonts.google.com/metadata/fonts')
+            .then(response => response.text())
+            .then(text => {
+                const cleaned = text.replace(/^\)\]\}'\n/, '');
+                const data = JSON.parse(cleaned);
+                const items = (data?.familyMetadataList || [])
+                    .map(item => item.family)
+                    .filter(Boolean)
+                    .sort((a, b) => a.localeCompare(b));
+                sendResponse({ ok: true, items });
+            })
+            .catch(err => {
+                sendResponse({ ok: false, error: err.message });
+            });
+        return true;
+    }
+
+    if (message.type === 'FETCH_EMOJI_IMAGE') {
+        const url = message.url;
+        if (!url) {
+            sendResponse({ ok: false, error: 'Missing url' });
+            return false;
+        }
+
+        fetch(url)
+            .then(async response => {
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const blob = await response.blob();
+                const arrayBuffer = await blob.arrayBuffer();
+                const bytes = new Uint8Array(arrayBuffer);
+                let binary = '';
+                const chunkSize = 0x8000;
+                for (let i = 0; i < bytes.length; i += chunkSize) {
+                    binary += String.fromCharCode(...bytes.subarray(i, i + chunkSize));
+                }
+                const base64 = btoa(binary);
+                const dataUrl = `data:${blob.type};base64,${base64}`;
+                sendResponse({ ok: true, dataUrl });
+            })
+            .catch(err => {
+                sendResponse({ ok: false, error: err.message });
+            });
+
+        return true;
+    }
 });
 
 function loadImageIntoShotsso(imageDataUrl, secondImageDataUrl) {
