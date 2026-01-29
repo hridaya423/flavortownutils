@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-01-29T05:50:47.868Z",
+  "lastUpdated": "2026-01-29T06:57:07.150Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -20773,6 +20773,14 @@
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U0A8KA80SPL"
+      },
+      {
+        "ts": "2026-01-29T06:50:31.237Z",
+        "delta": 10,
+        "balance": 101,
+        "reason": "tutorial",
+        "reasonType": "",
+        "userId": "U0A8KA80SPL"
       }
     ],
     "u0a8m0llabs": [
@@ -21559,6 +21567,12 @@
     ]
   },
   "users": {
+    "U0A8KA80SPL": {
+      "id": "U0A8KA80SPL",
+      "username": "maverickroneal",
+      "displayName": "maverickroneal",
+      "avatar": "https://secure.gravatar.com/avatar/c9fd9f9b1f59ea507c8b2c01cec8c321.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0018-72.png"
+    },
     "U0A7FN7RCMU": {
       "id": "U0A7FN7RCMU",
       "username": "bhoomivash10",
@@ -21752,12 +21766,6 @@
       "id": "U09MQ8PKNMU",
       "username": "omkanabar",
       "avatar": "https://secure.gravatar.com/avatar/52c3822c27475d91d998715d05044774.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0006-72.png"
-    },
-    "U0A8KA80SPL": {
-      "id": "U0A8KA80SPL",
-      "username": "maverickroneal",
-      "displayName": "maverickroneal",
-      "avatar": "https://secure.gravatar.com/avatar/c9fd9f9b1f59ea507c8b2c01cec8c321.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0018-72.png"
     },
     "U0938MZG8Q6": {
       "id": "U0938MZG8Q6",
