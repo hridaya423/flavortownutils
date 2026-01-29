@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-01-29T10:44:00.514Z",
+  "lastUpdated": "2026-01-29T11:36:58.632Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -342,6 +342,14 @@
         "balance": 10,
         "reason": "Recipe Notes",
         "reasonType": "achievement",
+        "userId": "U062UG485EE"
+      },
+      {
+        "ts": "2026-01-29T11:25:12.681Z",
+        "delta": 28,
+        "balance": 41,
+        "reason": "payout",
+        "reasonType": "payout",
         "userId": "U062UG485EE"
       }
     ],
@@ -21659,6 +21667,12 @@
     ]
   },
   "users": {
+    "U062UG485EE": {
+      "id": "U062UG485EE",
+      "username": "kieran.klukas",
+      "displayName": "krn",
+      "avatar": "https://avatars.slack-edge.com/2025-11-11/9877122677111_c67b6e3021c3018124b7_72.jpg"
+    },
     "U0A4N2K2P8T": {
       "id": "U0A4N2K2P8T",
       "username": "thiago.teixeira51",
@@ -21881,8 +21895,8 @@
     "U07Q0L51QMV": {
       "id": "U07Q0L51QMV",
       "username": "faizancurious",
-      "displayName": "HelloFaizan",
-      "avatar": "https://avatars.slack-edge.com/2025-02-21/8481460562806_bdfc0422615896fbf206_72.jpg"
+      "displayName": "Faizaaaaan",
+      "avatar": "https://avatars.slack-edge.com/2026-01-29/10396562274182_42cb5b442447d348e1de_72.jpg"
     },
     "U0A7U42QFV3": {
       "id": "U0A7U42QFV3",
@@ -21909,7 +21923,7 @@
       "id": "U0938MZG8Q6",
       "username": "christiandubsky20",
       "displayName": "christian",
-      "avatar": "https://avatars.slack-edge.com/2026-01-29/10426687688144_84c665e950382a8ee27c_72.png"
+      "avatar": "https://avatars.slack-edge.com/2026-01-29/10402075883716_d988bfef3350bc4484ee_72.png"
     },
     "U07UH9DQA4B": {
       "id": "U07UH9DQA4B",
@@ -22166,7 +22180,7 @@
     },
     "U08NXJL86KT": {
       "id": "U08NXJL86KT",
-      "username": "boardergamezdiscord",
+      "username": "froggington",
       "displayName": "Frog",
       "avatar": "https://avatars.slack-edge.com/2026-01-19/10325947619670_a388b45b5e0808b2f201_72.png"
     },
@@ -22454,7 +22468,7 @@
       "id": "U085L7P77EV",
       "username": "aregazatyank",
       "displayName": "Areg Azatyan",
-      "avatar": "https://avatars.slack-edge.com/2026-01-29/10394423374613_3bacdcbc00c629e2fc32_72.jpg"
+      "avatar": "https://avatars.slack-edge.com/2026-01-29/10402308633508_05ffd7cf5197be415e82_72.jpg"
     },
     "U091L5DCGUF": {
       "id": "U091L5DCGUF",
@@ -24836,12 +24850,6 @@
       "username": "nisarga01052008",
       "displayName": "nisarga01052008",
       "avatar": "https://avatars.slack-edge.com/2025-12-26/10189122277093_5ec73b9e36775937b1c0_72.png"
-    },
-    "U062UG485EE": {
-      "id": "U062UG485EE",
-      "username": "kieran.klukas",
-      "displayName": "krn",
-      "avatar": "https://avatars.slack-edge.com/2025-11-11/9877122677111_c67b6e3021c3018124b7_72.jpg"
     },
     "U07E70AR1UG": {
       "id": "U07E70AR1UG",
