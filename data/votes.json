@@ -1,7 +1,28 @@
 {
-  "lastUpdated": "2026-01-29T02:30:21.929Z",
-  "totalVotes": 2179,
+  "lastUpdated": "2026-01-29T04:41:45.561Z",
+  "totalVotes": 2182,
   "votes": [
+    {
+      "project": "macspoofer",
+      "feedback": "I liked it a lot, and It's really useful because I often worry at hotels because of how unsafe the wifi is.",
+      "votedBy": "U0A1UG5NG5U",
+      "timestamp": "2026-01-29T03:53:07.118Z",
+      "slackTs": "1769658787.118629"
+    },
+    {
+      "project": "Dhanika's Contest Math Notes",
+      "feedback": "you may be interested in these CSS features!\n\n<https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/light-dark> (works only on modern (2024+) browsers, but simpler)\n<https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-color-scheme> (since 2020, but a bit more complicated to set up)",
+      "votedBy": "Unknown",
+      "timestamp": "2026-01-29T02:52:15.988Z",
+      "slackTs": "1769655135.988939"
+    },
+    {
+      "project": "Chef Morpheus's First Project",
+      "feedback": "Where are the devlogs?\n\nthe animation order is also wrong (it starts with \"Access Granted\", then \"Connecting to Servers...\"?)",
+      "votedBy": "Unknown",
+      "timestamp": "2026-01-29T02:47:32.133Z",
+      "slackTs": "1769654852.133629"
+    },
     {
       "project": "MEDULI",
       "feedback": "Cool project! You should devlog a bit more though.",
@@ -16314,6 +16335,12 @@
       "username": "hasnainjaffri2010",
       "displayName": "Hasnain J",
       "avatar": "https://avatars.slack-edge.com/2025-06-24/9120147358832_65ff58da7b138c01248c_72.png"
+    },
+    "U0A1UG5NG5U": {
+      "id": "U0A1UG5NG5U",
+      "username": "desh.kian",
+      "displayName": "desh.kian",
+      "avatar": "https://secure.gravatar.com/avatar/729f7aa1363f860bc74463192cc09813.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0017-72.png"
     }
   }
 }
