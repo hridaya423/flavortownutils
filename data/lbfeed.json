@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-01-29T14:12:58.355Z",
+  "lastUpdated": "2026-01-29T15:07:53.413Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -19227,6 +19227,14 @@
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U0A7QDPDDB6"
+      },
+      {
+        "ts": "2026-01-29T14:33:43.130Z",
+        "delta": 7,
+        "balance": 42,
+        "reason": "tutorial",
+        "reasonType": "",
+        "userId": "U0A7QDPDDB6"
       }
     ],
     "u0a7qdu8q0n": [
@@ -20302,6 +20310,14 @@
         "ts": "2026-01-28T22:24:03.983Z",
         "delta": 3,
         "balance": 46,
+        "reason": "tutorial",
+        "reasonType": "",
+        "userId": "U0A87N7JQUV"
+      },
+      {
+        "ts": "2026-01-29T14:18:49.610Z",
+        "delta": 3,
+        "balance": 49,
         "reason": "tutorial",
         "reasonType": "",
         "userId": "U0A87N7JQUV"
@@ -21779,6 +21795,17 @@
     ]
   },
   "users": {
+    "U0A7QDPDDB6": {
+      "id": "U0A7QDPDDB6",
+      "username": "rajnish.m.a.020102",
+      "avatar": "https://secure.gravatar.com/avatar/8344bc498a8448daf0fb3c151f77a368.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0025-72.png"
+    },
+    "U0A87N7JQUV": {
+      "id": "U0A87N7JQUV",
+      "username": "hatted-bristly.1n",
+      "displayName": "Phenix Hartogh",
+      "avatar": "https://avatars.slack-edge.com/2026-01-13/10267774530039_6e7c38c7d0a4c5c2cf56_72.png"
+    },
     "U0A6U1V879V": {
       "id": "U0A6U1V879V",
       "username": "abtheinnovator",
@@ -21824,11 +21851,6 @@
       "id": "U0A8BD6EU01",
       "username": "shahaarav2806",
       "avatar": "https://secure.gravatar.com/avatar/12cf74dd9b14e3b406f175b09eea7ee7.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0019-72.png"
-    },
-    "U0A7QDPDDB6": {
-      "id": "U0A7QDPDDB6",
-      "username": "rajnish.m.a.020102",
-      "avatar": "https://secure.gravatar.com/avatar/8344bc498a8448daf0fb3c151f77a368.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0025-72.png"
     },
     "U09BEAD3DSA": {
       "id": "U09BEAD3DSA",
@@ -21993,12 +22015,6 @@
       "username": "rchen7530",
       "displayName": "Ryan Chen",
       "avatar": "https://secure.gravatar.com/avatar/08f3344b3ab6dadb30365ac128c07783.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0017-72.png"
-    },
-    "U0A87N7JQUV": {
-      "id": "U0A87N7JQUV",
-      "username": "hatted-bristly.1n",
-      "displayName": "Phenix Hartogh",
-      "avatar": "https://avatars.slack-edge.com/2026-01-13/10267774530039_6e7c38c7d0a4c5c2cf56_72.png"
     },
     "U0A58CRBLKT": {
       "id": "U0A58CRBLKT",
@@ -22646,7 +22662,7 @@
       "id": "U085L7P77EV",
       "username": "aregazatyank",
       "displayName": "Areg Azatyan",
-      "avatar": "https://avatars.slack-edge.com/2026-01-29/10402308633508_05ffd7cf5197be415e82_72.jpg"
+      "avatar": "https://avatars.slack-edge.com/2026-01-29/10403814702372_8816e3e7e8e722c68f8c_72.jpg"
     },
     "U091L5DCGUF": {
       "id": "U091L5DCGUF",
