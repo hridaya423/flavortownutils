@@ -521,6 +521,58 @@ svg {
     background-color: transparent !important;
 }
 
+.projects-show__payout-votes-title {
+    color: var(--sea-white) !important;
+}
+
+.projects-show__payout-votes-title #votes-progress-info {
+    color: var(--sea-mist) !important;
+}
+
+.projects-show__payout-votes-text {
+    color: var(--sea-mist) !important;
+}
+
+.projects-show__payout-votes-text strong {
+    color: var(--sea-white) !important;
+}
+
+.projects-show__payout-votes-progress {
+    width: 100% !important;
+    height: 30px !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    border-radius: 10px !important;
+    overflow: hidden !important;
+    background: var(--sea-mid) !important;
+    border: 2px solid var(--color-border) !important;
+    color: var(--sea-cyan) !important;
+    box-shadow: none !important;
+    background-image: none !important;
+    accent-color: var(--sea-cyan) !important;
+    filter: none !important;
+}
+
+.projects-show__payout-votes-progress::-webkit-progress-bar {
+    background: var(--sea-mid) !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    background-image: none !important;
+}
+
+.projects-show__payout-votes-progress::-webkit-progress-value {
+    background: var(--sea-cyan) !important;
+    box-shadow: none !important;
+    background-image: none !important;
+}
+
+.projects-show__payout-votes-progress::-moz-progress-bar {
+    background: var(--sea-cyan) !important;
+    box-shadow: none !important;
+    background-image: none !important;
+}
+
 .dev-footer {
     background-color: var(--sea-deep) !important;
     color: var(--sea-mid) !important;

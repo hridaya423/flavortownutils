@@ -528,6 +528,58 @@ svg {
     background-color: transparent !important;
 }
 
+.projects-show__payout-votes-title {
+    color: var(--overcooked-white) !important;
+}
+
+.projects-show__payout-votes-title #votes-progress-info {
+    color: var(--overcooked-mist) !important;
+}
+
+.projects-show__payout-votes-text {
+    color: var(--overcooked-mist) !important;
+}
+
+.projects-show__payout-votes-text strong {
+    color: var(--overcooked-white) !important;
+}
+
+.projects-show__payout-votes-progress {
+    width: 100% !important;
+    height: 30px !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    border-radius: 10px !important;
+    overflow: hidden !important;
+    background: var(--overcooked-mid) !important;
+    border: 2px solid var(--color-border) !important;
+    color: var(--overcooked-cyan) !important;
+    box-shadow: none !important;
+    background-image: none !important;
+    accent-color: var(--overcooked-cyan) !important;
+    filter: none !important;
+}
+
+.projects-show__payout-votes-progress::-webkit-progress-bar {
+    background: var(--overcooked-mid) !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    background-image: none !important;
+}
+
+.projects-show__payout-votes-progress::-webkit-progress-value {
+    background: var(--overcooked-cyan) !important;
+    box-shadow: none !important;
+    background-image: none !important;
+}
+
+.projects-show__payout-votes-progress::-moz-progress-bar {
+    background: var(--overcooked-cyan) !important;
+    box-shadow: none !important;
+    background-image: none !important;
+}
+
 .dev-footer {
     background-color: var(--overcooked-deep) !important;
     color: var(--overcooked-mid) !important;

@@ -5578,6 +5578,8 @@ function init() {
     setupInlineDevlogEditing();
     enhanceCommentEmojiInputs();
     watchCommentEmojiInputs();
+    enhanceShipEmojiInput();
+    watchShipEmojiInput();
     cleanupUnownedUnshippedCache();
     enhanceShopGoals();
     runShopOrdersSync();
@@ -7009,6 +7011,8 @@ document.addEventListener('turbo:load', () => {
     setTimeout(enhanceLeaderboardPage, 0);
     enhanceCommentEmojiInputs();
     watchCommentEmojiInputs();
+    enhanceShipEmojiInput();
+    watchShipEmojiInput();
     cleanupUnownedUnshippedCache();
     addDoomscrollMode();
     addAdminViewButton();
@@ -10842,6 +10846,17 @@ function enhanceCommentEmojiInputs() {
     });
 }
 
+function enhanceShipEmojiInput() {
+    const textarea = document.querySelector('#ship_update')
+        || document.querySelector('textarea[name="ship_update"]');
+    if (!textarea) return;
+    initSlackEmojiAutocomplete(textarea, textarea.closest('.input') || textarea.parentElement);
+    const form = textarea.closest('form');
+    if (form) {
+        attachSlackEmojiSubmitHandler(form, textarea);
+    }
+}
+
 let leaderboardFeedCache = null;
 let leaderboardFeedPromise = null;
 let leaderboardHistoryModal = null;
@@ -11334,6 +11349,18 @@ function watchCommentEmojiInputs() {
 
     const observer = new MutationObserver(() => {
         enhanceCommentEmojiInputs();
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+}
+
+var SHIP_EMOJI_OBSERVER_KEY = 'flavortownShipEmojiObserver';
+function watchShipEmojiInput() {
+    if (document.body.dataset[SHIP_EMOJI_OBSERVER_KEY] === 'true') return;
+    document.body.dataset[SHIP_EMOJI_OBSERVER_KEY] = 'true';
+
+    const observer = new MutationObserver(() => {
+        enhanceShipEmojiInput();
     });
 
     observer.observe(document.body, { childList: true, subtree: true });
