@@ -20,14 +20,14 @@
 }
 
 .flavortown-changelog-card {
-    margin: 0 16px 12px 16px;
-    padding: 12px 14px;
+    margin: 0 10px 14px 10px;
+    padding: 20px 22px;
     background: var(--color-surface, #f5efe9);
     border: 1px solid var(--color-border, #d8c9ba);
     border-radius: 14px;
     color: var(--color-text-primary, #5d4e3c);
     display: grid;
-    gap: 10px;
+    gap: 14px;
     box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
     transition: opacity 0.2s ease, transform 0.2s ease;
 }
@@ -46,13 +46,13 @@
 }
 
 .flavortown-changelog__title {
-    font-size: 0.95rem;
+    font-size: 1.02rem;
     font-weight: 700;
     letter-spacing: 0.01em;
 }
 
 .flavortown-changelog__meta {
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     color: var(--color-text-muted, #7a6a57);
     margin-top: 2px;
 }
@@ -90,14 +90,14 @@
 }
 
 .flavortown-changelog__status {
-    font-size: 0.82rem;
+    font-size: 0.88rem;
     color: var(--color-text-secondary, #6b5c4a);
 }
 
 .flavortown-changelog__list {
     list-style: none;
     display: grid;
-    gap: 6px;
+    gap: 8px;
     padding: 0;
     margin: 0;
 }
@@ -106,7 +106,7 @@
     display: flex;
     gap: 8px;
     align-items: flex-start;
-    font-size: 0.85rem;
+    font-size: 0.92rem;
     color: var(--color-text-primary, #5d4e3c);
 }
 
