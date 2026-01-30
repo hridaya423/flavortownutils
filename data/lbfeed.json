@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-01-30T10:41:46.734Z",
+  "lastUpdated": "2026-01-30T11:34:52.869Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -7220,6 +7220,14 @@
         "balance": 184,
         "reason": "payout",
         "reasonType": "payout",
+        "userId": "U091STGKU4D"
+      },
+      {
+        "ts": "2026-01-30T11:08:21.771Z",
+        "delta": -40,
+        "balance": 144,
+        "reason": "shop purchase",
+        "reasonType": "",
         "userId": "U091STGKU4D"
       }
     ],
@@ -22429,6 +22437,14 @@
         "reason": "Very Fried",
         "reasonType": "achievement",
         "userId": "U0ABVJP7KD2"
+      },
+      {
+        "ts": "2026-01-30T11:02:58.555Z",
+        "delta": 10,
+        "balance": 20,
+        "reason": "user grant",
+        "reasonType": "",
+        "userId": "U0ABVJP7KD2"
       }
     ],
     "u0ac2k43ma4": [
@@ -22459,6 +22475,11 @@
     ]
   },
   "users": {
+    "U091STGKU4D": {
+      "id": "U091STGKU4D",
+      "username": "prasoonkandel",
+      "avatar": "https://avatars.slack-edge.com/2026-01-14/10300075251172_eb13f53810b7f4613c0f_72.jpg"
+    },
     "U0ABVJP7KD2": {
       "id": "U0ABVJP7KD2",
       "username": "aditya.cool.jain.123",
@@ -22772,11 +22793,6 @@
       "username": "abtheinnovator",
       "displayName": "abtheinnovator",
       "avatar": "https://secure.gravatar.com/avatar/7b7faa3b1aadcebeb63cd8dcdb82d74e.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0020-72.png"
-    },
-    "U091STGKU4D": {
-      "id": "U091STGKU4D",
-      "username": "prasoonkandel",
-      "avatar": "https://avatars.slack-edge.com/2026-01-14/10300075251172_eb13f53810b7f4613c0f_72.jpg"
     },
     "U092C4M8VFA": {
       "id": "U092C4M8VFA",
@@ -23547,7 +23563,7 @@
       "id": "U085L7P77EV",
       "username": "aregazatyank",
       "displayName": "Areg Azatyan",
-      "avatar": "https://avatars.slack-edge.com/2026-01-30/10419654969889_71d02ebf4be9fde6da67_72.jpg"
+      "avatar": "https://avatars.slack-edge.com/2026-01-30/10403936559573_79110baf3c8be1f85947_72.jpg"
     },
     "U091L5DCGUF": {
       "id": "U091L5DCGUF",
