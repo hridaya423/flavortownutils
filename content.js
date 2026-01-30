@@ -693,13 +693,35 @@ function addVotesDevlogFrequencyStat() {
     });
 }
 
-function addShipStats() {
+async function addShipStats() {
     if (!/\/projects\/\d+$/.test(window.location.pathname)) {
         return;
     }
 
     const shipPosts = document.querySelectorAll('article.post--ship, .post--ship');
     if (!shipPosts.length) return;
+
+    const projectIdMatch = window.location.pathname.match(/\/projects\/(\d+)/);
+    const projectId = projectIdMatch ? projectIdMatch[1] : null;
+    let paidShipMinutes = 0;
+    let paidCookies = 0;
+    let paidRate = null;
+
+    const cachedUnshipped = projectId ? getCachedProjectUnshipped(projectId) : null;
+    if (cachedUnshipped) {
+        paidShipMinutes = cachedUnshipped.paidShipMinutes || 0;
+        paidCookies = cachedUnshipped.paidCookies || 0;
+    }
+    if ((!paidShipMinutes || !paidCookies) && projectId) {
+        const stats = await fetchProjectUnshippedStats(projectId);
+        if (stats) {
+            paidShipMinutes = stats.paidShipMinutes || 0;
+            paidCookies = stats.paidCookies || 0;
+        }
+    }
+    if (paidShipMinutes > 0 && paidCookies > 0) {
+        paidRate = getMultiplierFromCookies(paidCookies, paidShipMinutes / 60);
+    }
 
     const buildPayoutItem = (label, value) => {
         const item = document.createElement('div');
@@ -712,9 +734,8 @@ function addShipStats() {
     };
 
     shipPosts.forEach((shipPost) => {
-        const footer = shipPost.querySelector('.post__payout-footer');
-        if (!footer) return;
-        if (footer.dataset.flavortownExtras === 'true') return;
+        let footer = shipPost.querySelector('.post__payout-footer');
+        if (footer && footer.dataset.flavortownExtras === 'true') return;
 
         let totalMinutes = 0;
         let devlogCount = 0;
@@ -737,40 +758,71 @@ function addShipStats() {
             currentElement = currentElement.nextElementSibling;
         }
 
-        const payoutItems = Array.from(footer.querySelectorAll('.post__payout-item'));
-        const getPayoutValue = (labelMatch) => {
-            const item = payoutItems.find(entry => {
-                const labelText = entry.querySelector('.post__payout-label')?.textContent || '';
-                return labelText.toLowerCase().includes(labelMatch);
-            });
-            return item ? item.querySelector('.post__payout-value')?.textContent?.trim() : '';
-        };
+        let cookiesValue = 0;
+        let hoursValue = 0;
+        let multiplierValue = 0;
 
-        const hoursValue = parseNumberFromText(getPayoutValue('hours'));
-        const cookiesValue = parseNumberFromText(getPayoutValue('cookies'));
-        const multiplierValue = parseNumberFromText(getPayoutValue('multiplier'));
-        const rate = multiplierValue || (hoursValue && cookiesValue ? getMultiplierFromCookies(cookiesValue, hoursValue) : null);
-        const estimate = rate ? buildVoteEstimate(rate) : null;
+        if (footer) {
+            const payoutItems = Array.from(footer.querySelectorAll('.post__payout-item'));
+            const getPayoutValue = (labelMatch) => {
+                const item = payoutItems.find(entry => {
+                    const labelText = entry.querySelector('.post__payout-label')?.textContent || '';
+                    return labelText.toLowerCase().includes(labelMatch);
+                });
+                return item ? item.querySelector('.post__payout-value')?.textContent?.trim() : '';
+            };
 
-        footer.appendChild(buildPayoutItem('Devlogs', devlogCount ? String(devlogCount) : '--'));
-        footer.appendChild(buildPayoutItem('Percentile', rate ? formatCookiePercentileLine(rate) : '--'));
-        footer.appendChild(buildPayoutItem('Avg stars', estimate?.overallScore ? `★ ${formatScoreValue(estimate.overallScore)}` : '--'));
+            hoursValue = parseNumberFromText(getPayoutValue('hours'));
+            cookiesValue = parseNumberFromText(getPayoutValue('cookies'));
+            multiplierValue = parseNumberFromText(getPayoutValue('multiplier'));
+        }
 
-        if (estimate?.categories) {
-            const mediansText = [
-                `Originality ★${formatScoreValue(estimate.categories.originality)}`,
-                `Technical ★${formatScoreValue(estimate.categories.technical)}`,
-                `Usability ★${formatScoreValue(estimate.categories.usability)}`,
-                `Storytelling ★${formatScoreValue(estimate.categories.storytelling)}`
-            ].join(' • ');
-            footer.appendChild(buildPayoutItem('Est. medians', mediansText));
+        const isPaidShip = cookiesValue && cookiesValue > 0;
+        if (isPaidShip && footer) {
+            const rate = multiplierValue || (hoursValue && cookiesValue ? getMultiplierFromCookies(cookiesValue, hoursValue) : null);
+            const estimate = rate ? buildVoteEstimate(rate) : null;
+
+            footer.appendChild(buildPayoutItem('Devlogs', devlogCount ? String(devlogCount) : '--'));
+            footer.appendChild(buildPayoutItem('Percentile', rate ? formatCookiePercentileLine(rate) : '--'));
+            footer.appendChild(buildPayoutItem('Avg stars', estimate?.overallScore ? `★ ${formatScoreValue(estimate.overallScore)}` : '--'));
+
+            if (estimate?.categories) {
+                const mediansText = [
+                    `Originality ★${formatScoreValue(estimate.categories.originality)}`,
+                    `Technical ★${formatScoreValue(estimate.categories.technical)}`,
+                    `Usability ★${formatScoreValue(estimate.categories.usability)}`,
+                    `Storytelling ★${formatScoreValue(estimate.categories.storytelling)}`
+                ].join(' • ');
+                footer.appendChild(buildPayoutItem('Est. medians', mediansText));
+            }
+        } else if (paidRate && totalMinutes > 0) {
+            const estimatedCookies = Math.round(paidRate * (totalMinutes / 60));
+            if (estimatedCookies > 0) {
+                if (!footer) {
+                    footer = document.createElement('div');
+                    footer.className = 'post__payout-footer';
+                    const body = shipPost.querySelector('.post__body');
+                    if (body) {
+                        body.insertAdjacentElement('afterend', footer);
+                    } else {
+                        shipPost.appendChild(footer);
+                    }
+                }
+
+                footer.querySelectorAll('.flavortown-unpaid-ship-est').forEach(el => el.remove());
+                const estimateItem = buildPayoutItem('Est payout', `~${estimatedCookies.toLocaleString()} cookies`);
+                estimateItem.classList.add('flavortown-unpaid-ship-est');
+                footer.appendChild(estimateItem);
+            }
         }
 
         if (totalMinutes > 0) {
             shipPost.dataset.flavortownShipMinutes = String(totalMinutes);
         }
 
-        footer.dataset.flavortownExtras = 'true';
+        if (footer) {
+            footer.dataset.flavortownExtras = 'true';
+        }
     });
 }
 
@@ -779,6 +831,62 @@ function ensureShipStatsReady() {
     const shipPosts = document.querySelectorAll('article.post--ship, .post--ship');
     if (!shipPosts.length) return;
     addShipStats();
+}
+
+async function addUnshippedCookieEstimate() {
+    if (!/\/projects\/\d+$/.test(window.location.pathname)) return;
+
+    const wrapper = document.getElementById('ship-btn-wrapper');
+    if (!wrapper) return;
+
+    const shipButton = wrapper.querySelector('button');
+    if (!shipButton || !shipButton.disabled) return;
+
+    const projectName = getCurrentProjectName();
+    if (!projectName) return;
+
+    const projectIdMatch = window.location.pathname.match(/\/projects\/(\d+)/);
+    const projectId = projectIdMatch ? projectIdMatch[1] : null;
+
+    const existing = shipButton.querySelector('.flavortown-unshipped-cookie-est');
+    if (existing) existing.remove();
+
+    const payouts = await fetchShipPayouts();
+    if (!payouts.length) return;
+
+    const projectPayouts = payouts.filter(payout => projectNameMatches(payout.projectName, projectName));
+    if (!projectPayouts.length) return;
+
+    const totalCookies = projectPayouts.reduce((sum, payout) => sum + payout.amount, 0);
+    if (totalCookies <= 0) return;
+
+    let stats = projectId ? getCachedProjectUnshipped(projectId) : null;
+    if ((!stats || !stats.paidShipMinutes || !stats.paidCookies) && projectId) {
+        stats = await fetchProjectUnshippedStats(projectId);
+    }
+    if (!stats) return;
+
+    const paidMinutes = stats.paidShipMinutes || 0;
+    const unshippedMinutes = getUnshippedMinutesSinceLastShip();
+    if (paidMinutes <= 0 || unshippedMinutes <= 0) return;
+
+    const rate = getMultiplierFromCookies(totalCookies, paidMinutes / 60);
+    if (!rate || !isFinite(rate)) return;
+
+    const estimatedCookies = Math.round(rate * (unshippedMinutes / 60));
+    if (!estimatedCookies || !isFinite(estimatedCookies)) return;
+
+    const estimate = document.createElement('span');
+    estimate.className = 'flavortown-unshipped-cookie-est';
+    estimate.style.cssText = [
+        'margin-left: 8px',
+        'font-weight: 600',
+        'font-size: 0.85em',
+        'opacity: 0.85',
+        'white-space: nowrap'
+    ].join(';');
+    estimate.textContent = `~${estimatedCookies.toLocaleString()} 🍪`;
+    shipButton.appendChild(estimate);
 }
 
 function normalizeProjectName(name) {
@@ -2516,6 +2624,24 @@ function extractShipMinutesFromDocument(doc) {
     shipPosts.forEach(shipPost => {
         totalMinutes += collectShipMinutesFromPost(shipPost);
     });
+
+    return totalMinutes;
+}
+
+function getUnshippedMinutesSinceLastShip() {
+    const posts = Array.from(document.querySelectorAll('article.post, .post'));
+    if (!posts.length) return 0;
+    let totalMinutes = 0;
+
+    for (const post of posts) {
+        if (post.classList.contains('post--ship')) break;
+        if (post.classList.contains('post--devlog')) {
+            const durationEl = post.querySelector('.post__duration');
+            if (durationEl) {
+                totalMinutes += parseDurationToMinutes(durationEl.textContent.trim());
+            }
+        }
+    }
 
     return totalMinutes;
 }
@@ -5591,6 +5717,7 @@ function init() {
     addVotesDevlogFrequencyStat();
     ensureShipStatsReady();
     addShipStats();
+    addUnshippedCookieEstimate();
     addProjectShowCookieStat();
     inlineDevlogForm();
     setupInlineDevlogEditing();
@@ -7014,6 +7141,7 @@ document.addEventListener('turbo:load', () => {
     addVotesDevlogFrequencyStat();
     ensureShipStatsReady();
     addShipStats();
+    addUnshippedCookieEstimate();
     addProjectShowCookieStat();
     inlineDevlogForm();
     setupInlineDevlogEditing();
