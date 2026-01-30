@@ -115,6 +115,7 @@ const CHANGELOG_OVERRIDE_KEY = 'flavortown_changelog_override';
 const CHANGELOG_CACHE_KEY = 'flavortown_changelog_cache';
 const CHANGELOG_CACHE_TTL = 10 * 60 * 1000;
 const CHANGELOG_MAX_COMMITS = 200;
+const CHANGELOG_RECENT_COMMITS = 10;
 const COMMAND_PALETTE_SHORTCUT_KEY = 'flavortownCommandPaletteShortcut';
 const DEFAULT_COMMAND_PALETTE_SHORTCUT = /Mac|iPhone|iPad|iPod/i.test(navigator.platform || navigator.userAgent)
     ? 'Cmd+K'
@@ -3754,6 +3755,22 @@ async function fetchGithubCommitsSince(owner, repo, sinceIso) {
     return { commits };
 }
 
+async function fetchGithubRecentCommits(owner, repo, limit = CHANGELOG_RECENT_COMMITS) {
+    if (!owner || !repo) return { commits: [], error: 'missing' };
+    const safeLimit = Math.max(1, Math.min(limit || CHANGELOG_RECENT_COMMITS, 50));
+    const url = `https://api.github.com/repos/${owner}/${repo}/commits?per_page=${safeLimit}`;
+    const res = await fetch(url, { headers: { 'Accept': 'application/vnd.github+json' } });
+    if (!res.ok) {
+        const remaining = res.headers.get('x-ratelimit-remaining');
+        if (res.status === 403 && remaining === '0') {
+            return { commits: [], error: 'rate-limit' };
+        }
+        return { commits: [], error: `request-${res.status}` };
+    }
+    const data = await res.json();
+    return { commits: Array.isArray(data) ? data : [] };
+}
+
 async function initDevlogChangelog(wrapper) {
     if (!wrapper || wrapper.dataset.flavortownChangelog === 'true') return;
     wrapper.dataset.flavortownChangelog = 'true';
@@ -3936,8 +3953,11 @@ async function initDevlogChangelog(wrapper) {
 
         const sinceIso = sinceDate.toISOString();
         const cacheKey = `${repoSlug.slug}|${sinceIso}`;
+        const recentCacheKey = `${repoSlug.slug}|recent|${CHANGELOG_RECENT_COMMITS}`;
         let cached = options.force ? null : getChangelogCacheEntry(cacheKey);
+        let recentCached = options.force ? null : getChangelogCacheEntry(recentCacheKey);
         let normalizedCommits = cached?.commits || [];
+        let normalizedRecentCommits = recentCached?.commits || [];
 
         if (!cached) {
             const response = await fetchGithubCommitsSince(repoSlug.owner, repoSlug.repo, sinceIso);
@@ -3954,9 +3974,36 @@ async function initDevlogChangelog(wrapper) {
             setChangelogCacheEntry(cacheKey, { commits: normalizedCommits });
         }
 
+        if (!recentCached) {
+            const recentResponse = await fetchGithubRecentCommits(repoSlug.owner, repoSlug.repo, CHANGELOG_RECENT_COMMITS);
+            if (!recentResponse.error) {
+                normalizedRecentCommits = (recentResponse.commits || [])
+                    .map(normalizeCommitForChangelog)
+                    .filter(Boolean);
+                setChangelogCacheEntry(recentCacheKey, { commits: normalizedRecentCommits });
+            }
+        }
+
         const displayCommits = normalizedCommits
             .filter(commit => !commit.isBot)
             .filter(commit => !commit.isMerge);
+        const recentCommits = (normalizedRecentCommits.length ? normalizedRecentCommits : normalizedCommits)
+            .filter(commit => !commit.isBot)
+            .filter(commit => !commit.isMerge);
+        const commitSelectCommits = recentCommits.slice(0, CHANGELOG_RECENT_COMMITS);
+
+        commitSelect.innerHTML = '<option value="">Select a commit</option>';
+        const seenCommits = new Set();
+        commitSelectCommits.forEach(commit => {
+            if (!commit.date) return;
+            const key = commit.sha || commit.date;
+            if (seenCommits.has(key)) return;
+            seenCommits.add(key);
+            const opt = document.createElement('option');
+            opt.value = commit.date;
+            opt.textContent = commit.subject || commit.sha?.slice(0, 7) || 'Commit';
+            commitSelect.appendChild(opt);
+        });
         const sinceLabel = sinceDate.toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
         metaEl.textContent = `${repoSlug.slug} • since ${sinceLabel}`;
         if (!displayCommits.length) {
@@ -3996,15 +4043,6 @@ async function initDevlogChangelog(wrapper) {
             renderList(displayCommits.length);
             moreBtn.style.display = 'none';
         };
-
-        commitSelect.innerHTML = '<option value="">Select a commit</option>';
-        displayCommits.slice(0, 25).forEach(commit => {
-            if (!commit.date) return;
-            const opt = document.createElement('option');
-            opt.value = commit.date;
-            opt.textContent = commit.subject || commit.sha?.slice(0, 7) || 'Commit';
-            commitSelect.appendChild(opt);
-        });
 
         if (insertBtn) {
             insertBtn.onclick = () => {
