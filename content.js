@@ -110,6 +110,15 @@ const LOCAL_STORAGE_SYNC_KEY = 'flavortownLocalStorageSync';
 const LOCAL_STORAGE_IMPORT_KEY = 'flavortownLocalStorageImport';
 const LOCAL_STORAGE_SYNC_UPDATED_AT_KEY = 'flavortownLocalStorageSyncUpdatedAt';
 const LOCAL_STORAGE_SYNC_MAX_BYTES = 90000;
+const CHANGELOG_DISMISS_KEY = 'flavortown_changelog_dismissed';
+const CHANGELOG_OVERRIDE_KEY = 'flavortown_changelog_override';
+const CHANGELOG_CACHE_KEY = 'flavortown_changelog_cache';
+const CHANGELOG_CACHE_TTL = 10 * 60 * 1000;
+const CHANGELOG_MAX_COMMITS = 200;
+const COMMAND_PALETTE_SHORTCUT_KEY = 'flavortownCommandPaletteShortcut';
+const DEFAULT_COMMAND_PALETTE_SHORTCUT = /Mac|iPhone|iPad|iPod/i.test(navigator.platform || navigator.userAgent)
+    ? 'Cmd+K'
+    : 'Ctrl+K';
 const LOCAL_STORAGE_SYNC_KEYS = [
     'flavortown_progress_mode',
     'flavortown_projection_mode',
@@ -124,6 +133,7 @@ let localStorageSyncTimer = null;
 let isApplyingLocalStorageSync = false;
 let localStorageSyncEnabled = false;
 let localStoragePatched = false;
+let commandPaletteShortcut = parseShortcutString(DEFAULT_COMMAND_PALETTE_SHORTCUT);
 const originalLocalStorageSetItem = localStorage.setItem.bind(localStorage);
 const originalLocalStorageRemoveItem = localStorage.removeItem.bind(localStorage);
 
@@ -133,6 +143,69 @@ function loadTheme() {
         const customColors = result.customColors || {};
         const catppuccinAccent = result.catppuccinAccent || 'mauve';
         applyTheme(theme, customColors, catppuccinAccent);
+    });
+}
+
+function parseShortcutString(value) {
+    if (!value || typeof value !== 'string') return null;
+    const parts = value
+        .split('+')
+        .map(part => part.trim())
+        .filter(Boolean);
+    if (parts.length < 2) return null;
+
+    const key = normalizeShortcutKey(parts[parts.length - 1]);
+    if (!key) return null;
+
+    const mods = parts.slice(0, -1).map(part => part.toLowerCase());
+    const shortcut = {
+        key,
+        ctrlKey: mods.includes('ctrl') || mods.includes('control'),
+        metaKey: mods.includes('cmd') || mods.includes('command') || mods.includes('meta'),
+        altKey: mods.includes('alt') || mods.includes('option'),
+        shiftKey: mods.includes('shift')
+    };
+
+    if (!shortcut.ctrlKey && !shortcut.metaKey && !shortcut.altKey && !shortcut.shiftKey) {
+        return null;
+    }
+
+    shortcut.display = value;
+    return shortcut;
+}
+
+function normalizeShortcutKey(key) {
+    if (!key) return '';
+    if (key.length === 1) return key.toLowerCase();
+    if (key.toLowerCase() === 'space') return 'space';
+    return key.toLowerCase();
+}
+
+function setCommandPaletteShortcut(value) {
+    commandPaletteShortcut = parseShortcutString(value) || parseShortcutString(DEFAULT_COMMAND_PALETTE_SHORTCUT);
+}
+
+function matchesCommandPaletteShortcut(event) {
+    if (!commandPaletteShortcut) return false;
+    if (event.ctrlKey !== !!commandPaletteShortcut.ctrlKey) return false;
+    if (event.metaKey !== !!commandPaletteShortcut.metaKey) return false;
+    if (event.altKey !== !!commandPaletteShortcut.altKey) return false;
+    if (event.shiftKey !== !!commandPaletteShortcut.shiftKey) return false;
+
+    const key = normalizeShortcutKey(event.key === ' ' ? 'space' : event.key);
+    return key === commandPaletteShortcut.key;
+}
+
+function initCommandPaletteShortcut() {
+    browserAPI.storage.sync.get([COMMAND_PALETTE_SHORTCUT_KEY], (result) => {
+        setCommandPaletteShortcut(result[COMMAND_PALETTE_SHORTCUT_KEY]);
+    });
+
+    browserAPI.storage.onChanged.addListener((changes, area) => {
+        if (area !== 'sync') return;
+        if (changes[COMMAND_PALETTE_SHORTCUT_KEY]) {
+            setCommandPaletteShortcut(changes[COMMAND_PALETTE_SHORTCUT_KEY].newValue);
+        }
     });
 }
 
@@ -3367,6 +3440,8 @@ function inlineDevlogForm() {
                 }
             }
 
+            initDevlogChangelog(wrapper);
+
             if (window.Stimulus && window.Stimulus.application) {
                 const fileUploadEl = wrapper.querySelector('[data-controller="file-upload"]');
                 if (fileUploadEl) {
@@ -3381,6 +3456,568 @@ function inlineDevlogForm() {
             console.error('Flavortown Utils: Failed to load devlog form', err);
             inlineFormLoading = false;
         });
+}
+
+function readChangelogCache() {
+    try {
+        const raw = localStorage.getItem(CHANGELOG_CACHE_KEY);
+        if (!raw) return {};
+        const parsed = JSON.parse(raw);
+        return parsed && typeof parsed === 'object' ? parsed : {};
+    } catch (e) {
+        return {};
+    }
+}
+
+function writeChangelogCache(data) {
+    try {
+        localStorage.setItem(CHANGELOG_CACHE_KEY, JSON.stringify(data || {}));
+    } catch (e) {
+    }
+}
+
+function getChangelogCacheEntry(cacheKey) {
+    if (!cacheKey) return null;
+    const cache = readChangelogCache();
+    const entry = cache[cacheKey];
+    if (!entry) return null;
+    if (entry.updatedAt && Date.now() - entry.updatedAt > CHANGELOG_CACHE_TTL) return null;
+    return entry;
+}
+
+function setChangelogCacheEntry(cacheKey, entry) {
+    if (!cacheKey || !entry) return;
+    const cache = readChangelogCache();
+    cache[cacheKey] = { ...entry, updatedAt: Date.now() };
+    writeChangelogCache(cache);
+}
+
+function getChangelogDismissed() {
+    try {
+        const raw = localStorage.getItem(CHANGELOG_DISMISS_KEY);
+        return raw ? JSON.parse(raw) : {};
+    } catch (e) {
+        return {};
+    }
+}
+
+function shouldDismissChangelog(projectId) {
+    if (!projectId) return false;
+    const dismissed = getChangelogDismissed();
+    return !!dismissed[projectId];
+}
+
+function setChangelogDismissed(projectId) {
+    if (!projectId) return;
+    const dismissed = getChangelogDismissed();
+    dismissed[projectId] = Date.now();
+    try {
+        localStorage.setItem(CHANGELOG_DISMISS_KEY, JSON.stringify(dismissed));
+    } catch (e) {
+    }
+}
+
+function getChangelogOverride(projectId) {
+    if (!projectId) return null;
+    try {
+        const raw = localStorage.getItem(CHANGELOG_OVERRIDE_KEY);
+        if (!raw) return null;
+        const parsed = JSON.parse(raw);
+        const entry = parsed?.[projectId];
+        if (!entry || !entry.since) return null;
+        return entry;
+    } catch (e) {
+        return null;
+    }
+}
+
+function setChangelogOverride(projectId, override) {
+    if (!projectId) return;
+    try {
+        const raw = localStorage.getItem(CHANGELOG_OVERRIDE_KEY);
+        const parsed = raw ? JSON.parse(raw) : {};
+        if (!override) {
+            delete parsed[projectId];
+        } else {
+            parsed[projectId] = { ...override, updatedAt: Date.now() };
+        }
+        localStorage.setItem(CHANGELOG_OVERRIDE_KEY, JSON.stringify(parsed));
+    } catch (e) {
+    }
+}
+
+function toLocalDatetimeInputValue(date) {
+    if (!date) return '';
+    const pad = (val) => String(val).padStart(2, '0');
+    return [
+        date.getFullYear(),
+        pad(date.getMonth() + 1),
+        pad(date.getDate())
+    ].join('-') + 'T' + [pad(date.getHours()), pad(date.getMinutes())].join(':');
+}
+
+function parseLocalDatetimeInput(value) {
+    if (!value) return null;
+    const [datePart, timePart] = value.split('T');
+    if (!datePart || !timePart) return null;
+    const [year, month, day] = datePart.split('-').map(Number);
+    const [hour, minute] = timePart.split(':').map(Number);
+    if ([year, month, day, hour, minute].some((val) => Number.isNaN(val))) return null;
+    return new Date(year, month - 1, day, hour, minute);
+}
+
+function parseGithubRepoSlug(repoUrl) {
+    if (!repoUrl) return null;
+    try {
+        const parsed = new URL(repoUrl, window.location.origin);
+        if (!parsed.hostname.includes('github.com')) return null;
+        const parts = parsed.pathname.split('/').filter(Boolean);
+        if (parts.length < 2) return null;
+        return { owner: parts[0], repo: parts[1].replace(/\.git$/i, ''), slug: `${parts[0]}/${parts[1].replace(/\.git$/i, '')}` };
+    } catch (e) {
+        return null;
+    }
+}
+
+function extractCommitRefFromDevlog(devlogEl, repoSlug) {
+    if (!devlogEl) return null;
+    const links = Array.from(devlogEl.querySelectorAll('a[href*="/commit/"]'));
+    for (const link of links) {
+        const href = link.getAttribute('href');
+        if (!href) continue;
+        const match = href.match(/github\.com\/([^/]+)\/([^/]+)\/commit\/([a-f0-9]{7,40})/i);
+        if (!match) continue;
+        const slug = `${match[1]}/${match[2]}`;
+        if (repoSlug && slug.toLowerCase() !== repoSlug.toLowerCase()) continue;
+        return { sha: match[3], url: href };
+    }
+
+    const text = devlogEl.textContent || '';
+    if (!/commit|sha|hash/i.test(text)) return null;
+    const shaMatch = text.match(/\b([a-f0-9]{7,40})\b/i);
+    return shaMatch ? { sha: shaMatch[1] } : null;
+}
+
+function getLastDevlogInfo() {
+    const devlogs = Array.from(document.querySelectorAll('article.post--devlog, .post--devlog'));
+    for (const devlog of devlogs) {
+        const timeEl = devlog.querySelector('.post__time');
+        const date = parseDateFromTimeElement(timeEl);
+        if (!date) continue;
+        return { element: devlog, date };
+    }
+    return null;
+}
+
+function isBotCommit(commit) {
+    const login = typeof commit?.author === 'string' ? commit.author : commit?.author?.login || '';
+    const name = commit?.authorName || commit?.commit?.author?.name || '';
+    const committer = commit?.commit?.committer?.name || '';
+    const combined = `${login} ${name} ${committer}`.toLowerCase();
+    if (combined.includes('bot')) return true;
+    if (combined.includes('dependabot') || combined.includes('github-actions')) return true;
+    return false;
+}
+
+function isMergeCommit(commit) {
+    if (commit?.isMerge) return true;
+    const message = commit?.message || commit?.commit?.message || '';
+    if (message.startsWith('Merge ')) return true;
+    if (Array.isArray(commit?.parents) && commit.parents.length > 1) return true;
+    return false;
+}
+
+function normalizeCommitForChangelog(commit) {
+    if (!commit) return null;
+    const message = commit.commit?.message || commit.message || '';
+    const subject = commit.subject || formatCommitSubject(message) || 'Update';
+    const url = commit.url || commit.html_url || '';
+    const date = commit.date || commit.commit?.author?.date || commit.commit?.committer?.date || null;
+    const authorName = commit.authorName || (typeof commit.author === 'string' ? commit.author : commit.author?.login) || commit.commit?.author?.name || '';
+    const normalized = {
+        sha: commit.sha,
+        subject,
+        url,
+        date,
+        authorName,
+        message,
+        isMerge: isMergeCommit(commit),
+        isBot: isBotCommit({ author: authorName, commit: commit.commit })
+    };
+    return normalized;
+}
+
+function formatCommitSubject(message) {
+    if (!message) return '';
+    return message.split('\n')[0].trim();
+}
+
+function escapeMarkdown(text) {
+    if (!text) return '';
+    return text.replace(/([\\\[\]])/g, '\\$1');
+}
+
+function buildChangelogMarkdown(commits) {
+    const lines = ['### Changelog'];
+    commits.forEach(commit => {
+        const subject = escapeMarkdown(commit.subject || 'Update');
+        const url = commit.url || '';
+        if (url) {
+            lines.push(`- [${subject}](${url})`);
+        } else {
+            lines.push(`- ${subject}`);
+        }
+    });
+    return lines.join('\n');
+}
+
+function insertChangelogMarkdown(textarea, markdown) {
+    if (!textarea || !markdown) return;
+    const block = markdown.trim();
+    const value = textarea.value || '';
+    const stripMarkers = (text) => text
+        .replace(/<!--\s*flavortown-changelog:(start|end)\s*-->\s*/g, '')
+        .replace(/\[\/\/\]: # \(flavortown-changelog:(start|end)\)\s*/g, '');
+    const stripExistingChangelog = (text) => {
+        if (!text) return '';
+        const lines = text.split('\n');
+        const output = [];
+        let i = 0;
+        while (i < lines.length) {
+            if (lines[i].trim() === '### Changelog') {
+                i += 1;
+                while (i < lines.length) {
+                    const line = lines[i];
+                    if (!line.trim()) {
+                        i += 1;
+                        break;
+                    }
+                    if (/^\s*[-*]\s+/.test(line)) {
+                        i += 1;
+                        continue;
+                    }
+                    break;
+                }
+                continue;
+            }
+            output.push(lines[i]);
+            i += 1;
+        }
+        return output.join('\n').trim();
+    };
+
+    const cleaned = stripExistingChangelog(stripMarkers(value)).trim();
+    textarea.value = cleaned ? `${cleaned}\n\n${block}\n` : `${block}\n`;
+    textarea.dispatchEvent(new Event('input', { bubbles: true }));
+}
+
+function getNextLinkFromHeader(linkHeader) {
+    if (!linkHeader) return null;
+    const match = linkHeader.match(/<([^>]+)>;\s*rel="next"/i);
+    return match ? match[1] : null;
+}
+
+async function fetchGithubCommitDate(owner, repo, sha) {
+    if (!owner || !repo || !sha) return null;
+    const url = `https://api.github.com/repos/${owner}/${repo}/commits/${sha}`;
+    const res = await fetch(url, { headers: { 'Accept': 'application/vnd.github+json' } });
+    if (!res.ok) return null;
+    const data = await res.json();
+    const dateStr = data?.commit?.author?.date || data?.commit?.committer?.date;
+    if (!dateStr) return null;
+    const date = new Date(dateStr);
+    return isNaN(date.getTime()) ? null : date;
+}
+
+async function fetchGithubCommitsSince(owner, repo, sinceIso) {
+    if (!owner || !repo || !sinceIso) return { commits: [], error: 'missing' };
+    let url = `https://api.github.com/repos/${owner}/${repo}/commits?since=${encodeURIComponent(sinceIso)}&per_page=100`;
+    const commits = [];
+
+    while (url && commits.length < CHANGELOG_MAX_COMMITS) {
+        const res = await fetch(url, { headers: { 'Accept': 'application/vnd.github+json' } });
+        if (!res.ok) {
+            const remaining = res.headers.get('x-ratelimit-remaining');
+            if (res.status === 403 && remaining === '0') {
+                return { commits: [], error: 'rate-limit' };
+            }
+            return { commits: [], error: `request-${res.status}` };
+        }
+        const data = await res.json();
+        if (Array.isArray(data)) {
+            commits.push(...data);
+        }
+        if (commits.length >= CHANGELOG_MAX_COMMITS) break;
+        url = getNextLinkFromHeader(res.headers.get('link'));
+    }
+
+    return { commits };
+}
+
+async function initDevlogChangelog(wrapper) {
+    if (!wrapper || wrapper.dataset.flavortownChangelog === 'true') return;
+    wrapper.dataset.flavortownChangelog = 'true';
+
+    const devlogTextarea = wrapper.querySelector('#post_devlog_body');
+    if (!devlogTextarea) return;
+
+    const projectName = getCurrentProjectName();
+    if (!projectName) return;
+
+    const projectIdMatch = window.location.pathname.match(/\/projects\/(\d+)/);
+    const projectId = projectIdMatch ? projectIdMatch[1] : null;
+    if (projectId && shouldDismissChangelog(projectId)) return;
+
+    const card = document.createElement('div');
+    card.className = 'flavortown-changelog-card';
+    card.innerHTML = `
+        <div class="flavortown-changelog__header">
+            <div>
+                <div class="flavortown-changelog__title">Changelog since last devlog</div>
+                <div class="flavortown-changelog__meta" data-role="meta">Looking up your repo…</div>
+            </div>
+            <div class="flavortown-changelog__header-actions">
+                <button type="button" class="flavortown-changelog__icon-btn" data-action="refresh" aria-label="Refresh">↻</button>
+                <button type="button" class="flavortown-changelog__icon-btn" data-action="dismiss" aria-label="Dismiss">×</button>
+            </div>
+        </div>
+        <div class="flavortown-changelog__body">
+            <div class="flavortown-changelog__status" data-role="status">Loading commits…</div>
+            <ul class="flavortown-changelog__list" data-role="list"></ul>
+            <button type="button" class="flavortown-changelog__more" data-role="more">Show all</button>
+        </div>
+        <div class="flavortown-changelog__actions">
+            <button type="button" class="btn btn--brown" data-action="insert">Insert into devlog</button>
+            <button type="button" class="btn btn--borderless" data-action="adjust">Adjust range</button>
+        </div>
+        <div class="flavortown-changelog__adjust is-hidden" data-role="adjust">
+            <label class="flavortown-changelog__adjust-label">Start date/time</label>
+            <input type="datetime-local" class="flavortown-changelog__input" data-role="since-input" />
+            <label class="flavortown-changelog__adjust-label">Or pick a commit</label>
+            <select class="flavortown-changelog__input" data-role="commit-select">
+                <option value="">Select a commit</option>
+            </select>
+            <div class="flavortown-changelog__adjust-actions">
+                <button type="button" class="btn btn--borderless" data-action="reset">Use last devlog</button>
+                <button type="button" class="btn btn--brown" data-action="apply">Apply</button>
+            </div>
+        </div>
+    `;
+
+    const insertTarget = wrapper.querySelector('.projects-new__card') || wrapper;
+    insertTarget.parentNode.insertBefore(card, insertTarget);
+
+    const metaEl = card.querySelector('[data-role="meta"]');
+    const statusEl = card.querySelector('[data-role="status"]');
+    const listEl = card.querySelector('[data-role="list"]');
+    const moreBtn = card.querySelector('[data-role="more"]');
+    const adjustPanel = card.querySelector('[data-role="adjust"]');
+    const sinceInput = card.querySelector('[data-role="since-input"]');
+    const commitSelect = card.querySelector('[data-role="commit-select"]');
+    const insertBtn = card.querySelector('[data-action="insert"]');
+    const adjustBtn = card.querySelector('[data-action="adjust"]');
+    const refreshBtn = card.querySelector('[data-action="refresh"]');
+    const dismissBtn = card.querySelector('[data-action="dismiss"]');
+    const resetBtn = card.querySelector('[data-action="reset"]');
+    const applyBtn = card.querySelector('[data-action="apply"]');
+
+    const setButtonsDisabled = (disabled) => {
+        [insertBtn, adjustBtn, refreshBtn, resetBtn, applyBtn].forEach(btn => {
+            if (btn) btn.disabled = disabled;
+        });
+    };
+
+    let repoUrl = await getRepoUrlForProjectName(projectName);
+    let repoSlug = repoUrl ? parseGithubRepoSlug(repoUrl) : null;
+
+    adjustBtn?.addEventListener('click', () => {
+        adjustPanel.classList.toggle('is-hidden');
+    });
+
+    refreshBtn?.addEventListener('click', () => {
+        loadChangelog({ force: true });
+    });
+
+    dismissBtn?.addEventListener('click', () => {
+        if (projectId) setChangelogDismissed(projectId);
+        card.remove();
+    });
+
+    resetBtn?.addEventListener('click', async () => {
+        if (projectId) setChangelogOverride(projectId, null);
+        adjustPanel.classList.add('is-hidden');
+        await loadChangelog({ force: true });
+    });
+
+    applyBtn?.addEventListener('click', async () => {
+        const inputDate = parseLocalDatetimeInput(sinceInput.value);
+        if (!inputDate || isNaN(inputDate.getTime())) return;
+        if (projectId) setChangelogOverride(projectId, { since: inputDate.toISOString() });
+        adjustPanel.classList.add('is-hidden');
+        await loadChangelog({ force: true, sinceDate: inputDate });
+    });
+
+    commitSelect.addEventListener('change', () => {
+        if (!commitSelect.value) return;
+        const date = new Date(commitSelect.value);
+        if (!isNaN(date.getTime())) {
+            sinceInput.value = toLocalDatetimeInputValue(date);
+        }
+    });
+
+    if (!repoSlug) {
+        setButtonsDisabled(true);
+        const suggestion = await getRepoSuggestionForProjectName(projectName);
+        if (suggestion?.repoUrl) {
+            metaEl.textContent = `Found a repo suggestion for ${projectName}.`;
+            statusEl.textContent = '';
+            const suggestionRow = document.createElement('div');
+            suggestionRow.className = 'flavortown-changelog__repo-suggestion';
+            suggestionRow.innerHTML = `
+                <span class="flavortown-changelog__repo-url">${suggestion.repoUrl}</span>
+                <button type="button" class="flavortown-changelog__repo-btn">Use repo</button>
+            `;
+            statusEl.appendChild(suggestionRow);
+            suggestionRow.querySelector('button')?.addEventListener('click', async () => {
+                const repoMap = readProjectRepoMap();
+                repoMap[normalizeProjectName(projectName)] = suggestion.repoUrl;
+                writeProjectRepoMap(repoMap);
+                repoUrl = suggestion.repoUrl;
+                repoSlug = parseGithubRepoSlug(repoUrl);
+                setButtonsDisabled(false);
+                await loadChangelog();
+            });
+        } else {
+            metaEl.textContent = 'Link a GitHub repo to show commits here.';
+            statusEl.textContent = 'No repo found for this project.';
+        }
+        listEl.innerHTML = '';
+        moreBtn.style.display = 'none';
+        return;
+    }
+
+    setButtonsDisabled(false);
+
+    async function loadChangelog(options = {}) {
+        statusEl.textContent = 'Loading commits…';
+        listEl.innerHTML = '';
+        moreBtn.style.display = 'none';
+
+        const lastDevlog = getLastDevlogInfo();
+        const lastDevlogDate = lastDevlog?.date || null;
+        let sinceDate = lastDevlogDate || new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+
+        const override = projectId ? getChangelogOverride(projectId) : null;
+        if (override?.since) {
+            const overrideDate = new Date(override.since);
+            if (!isNaN(overrideDate.getTime())) {
+                sinceDate = overrideDate;
+            }
+        }
+
+        if (options.sinceDate) {
+            sinceDate = options.sinceDate;
+        }
+
+        if (!override?.since && !lastDevlogDate && lastDevlog?.element) {
+            const commitRef = extractCommitRefFromDevlog(lastDevlog.element, repoSlug?.slug);
+            if (commitRef?.sha) {
+                const commitDate = await fetchGithubCommitDate(repoSlug.owner, repoSlug.repo, commitRef.sha);
+                if (commitDate) sinceDate = commitDate;
+            }
+        }
+
+        sinceDate = new Date(sinceDate.getTime());
+        sinceDate.setSeconds(0, 0);
+
+        if (sinceInput) {
+            sinceInput.value = toLocalDatetimeInputValue(sinceDate);
+        }
+
+        const sinceIso = sinceDate.toISOString();
+        const cacheKey = `${repoSlug.slug}|${sinceIso}`;
+        let cached = options.force ? null : getChangelogCacheEntry(cacheKey);
+        let normalizedCommits = cached?.commits || [];
+
+        if (!cached) {
+            const response = await fetchGithubCommitsSince(repoSlug.owner, repoSlug.repo, sinceIso);
+            if (response.error) {
+                statusEl.textContent = response.error === 'rate-limit'
+                    ? 'GitHub rate limit hit. Try again later.'
+                    : 'Failed to load commits.';
+                return;
+            }
+
+            normalizedCommits = (response.commits || [])
+                .map(normalizeCommitForChangelog)
+                .filter(Boolean);
+            setChangelogCacheEntry(cacheKey, { commits: normalizedCommits });
+        }
+
+        const displayCommits = normalizedCommits
+            .filter(commit => !commit.isBot)
+            .filter(commit => !commit.isMerge);
+        const sinceLabel = sinceDate.toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
+        metaEl.textContent = `${repoSlug.slug} • since ${sinceLabel}`;
+        if (!displayCommits.length) {
+            statusEl.textContent = 'No commits since your last devlog.';
+            return;
+        }
+        statusEl.textContent = `${displayCommits.length} commits found`;
+
+        const renderList = (limit = 6) => {
+            listEl.innerHTML = '';
+            displayCommits.slice(0, limit).forEach(commit => {
+                const item = document.createElement('li');
+                const subject = commit.subject || 'Update';
+                if (commit.url) {
+                    const link = document.createElement('a');
+                    link.href = commit.url;
+                    link.target = '_blank';
+                    link.rel = 'noopener';
+                    link.textContent = subject;
+                    item.appendChild(link);
+                } else {
+                    item.textContent = subject;
+                }
+                listEl.appendChild(item);
+            });
+            if (displayCommits.length > limit) {
+                moreBtn.style.display = 'inline-flex';
+                moreBtn.textContent = `Show all (${displayCommits.length})`;
+            } else {
+                moreBtn.style.display = 'none';
+            }
+        };
+
+        renderList();
+
+        moreBtn.onclick = () => {
+            renderList(displayCommits.length);
+            moreBtn.style.display = 'none';
+        };
+
+        commitSelect.innerHTML = '<option value="">Select a commit</option>';
+        displayCommits.slice(0, 25).forEach(commit => {
+            if (!commit.date) return;
+            const opt = document.createElement('option');
+            opt.value = commit.date;
+            opt.textContent = commit.subject || commit.sha?.slice(0, 7) || 'Commit';
+            commitSelect.appendChild(opt);
+        });
+
+        if (insertBtn) {
+            insertBtn.onclick = () => {
+                const markdown = buildChangelogMarkdown(displayCommits);
+                insertChangelogMarkdown(devlogTextarea, markdown);
+                statusEl.textContent = 'Inserted into devlog.';
+                card.classList.add('is-dismissed');
+                setTimeout(() => card.remove(), 260);
+            };
+        }
+    }
+
+    await loadChangelog();
 }
 
 function setupInlineDevlogEditing() {
@@ -5712,6 +6349,7 @@ function checkForUpdates() {
 function init() {
     initLocalStorageSync();
     loadTheme();
+    initCommandPaletteShortcut();
     checkForUpdates();
     addDevlogFrequencyStat();
     addVotesDevlogFrequencyStat();
@@ -10551,7 +11189,7 @@ function setupCommandPalette() {
     });
 
     document.addEventListener('keydown', (e) => {
-        if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        if (matchesCommandPaletteShortcut(e)) {
             e.preventDefault();
             if (overlay.classList.contains('open')) {
                 closePalette();

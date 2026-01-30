@@ -87,6 +87,7 @@ const POPUP_THEMES = {
 const LOCAL_STORAGE_SYNC_ENABLED_KEY = 'flavortownLocalStorageSyncEnabled';
 const LOCAL_STORAGE_SYNC_KEY = 'flavortownLocalStorageSync';
 const LOCAL_STORAGE_IMPORT_KEY = 'flavortownLocalStorageImport';
+const COMMAND_PALETTE_SHORTCUT_KEY = 'flavortownCommandPaletteShortcut';
 const EXPORT_VERSION = 1;
 const LOCAL_STORAGE_EXPORT_KEYS = [
     'flavortown_progress_mode',
@@ -103,6 +104,9 @@ let currentTheme = 'default';
 let customColors = { ...DEFAULT_CUSTOM_COLORS };
 let catppuccinAccent = 'mauve';
 let localStorageSyncEnabled = false;
+let commandPaletteShortcut = null;
+const isMac = /Mac|iPhone|iPad|iPod/i.test(navigator.platform || navigator.userAgent);
+const DEFAULT_COMMAND_PALETTE_SHORTCUT = isMac ? 'Cmd+K' : 'Ctrl+K';
 
 document.addEventListener('DOMContentLoaded', async () => {
     await loadSettings();
@@ -115,7 +119,8 @@ async function loadSettings() {
         'theme',
         'customColors',
         'catppuccinAccent',
-        LOCAL_STORAGE_SYNC_ENABLED_KEY
+        LOCAL_STORAGE_SYNC_ENABLED_KEY,
+        COMMAND_PALETTE_SHORTCUT_KEY
     ]);
     currentTheme = result.theme || 'default';
     catppuccinAccent = result.catppuccinAccent || 'mauve';
@@ -123,6 +128,7 @@ async function loadSettings() {
         customColors = { ...DEFAULT_CUSTOM_COLORS, ...result.customColors };
     }
     localStorageSyncEnabled = !!result[LOCAL_STORAGE_SYNC_ENABLED_KEY];
+    commandPaletteShortcut = normalizeShortcutString(result[COMMAND_PALETTE_SHORTCUT_KEY]) || DEFAULT_COMMAND_PALETTE_SHORTCUT;
 }
 
 function setupEventListeners() {
@@ -159,6 +165,13 @@ function setupEventListeners() {
 
     document.getElementById('exportBtn')?.addEventListener('click', exportData);
     document.getElementById('importFile')?.addEventListener('change', handleImportFile);
+
+    const shortcutBtn = document.getElementById('commandPaletteShortcut');
+    const shortcutReset = document.getElementById('commandPaletteShortcutReset');
+    if (shortcutBtn) {
+        shortcutBtn.addEventListener('click', () => beginShortcutCapture(shortcutBtn));
+    }
+    shortcutReset?.addEventListener('click', () => resetShortcut(shortcutBtn));
 }
 
 function setTheme(theme) {
@@ -192,6 +205,7 @@ function updateUI() {
     updateCustomPreview();
     applyPopupTheme();
     updateSyncToggleUI();
+    updateShortcutUI();
 }
 
 function updateSyncToggleUI() {
@@ -319,6 +333,99 @@ function showStatus(text, isError = false) {
     setTimeout(() => {
         status.textContent = '';
     }, 2000);
+}
+
+function normalizeShortcutString(value) {
+    if (!value || typeof value !== 'string') return null;
+    const cleaned = value
+        .split('+')
+        .map(part => part.trim())
+        .filter(Boolean);
+    if (!cleaned.length) return null;
+
+    const key = cleaned[cleaned.length - 1];
+    const mods = cleaned.slice(0, -1).map(part => part.toLowerCase());
+    const normalizedMods = [];
+    if (mods.includes('cmd') || mods.includes('command') || mods.includes('meta')) normalizedMods.push('Cmd');
+    if (mods.includes('ctrl') || mods.includes('control')) normalizedMods.push('Ctrl');
+    if (mods.includes('alt') || mods.includes('option')) normalizedMods.push('Alt');
+    if (mods.includes('shift')) normalizedMods.push('Shift');
+
+    const keyLabel = normalizeKeyLabel(key);
+    if (!keyLabel) return null;
+    if (!normalizedMods.length) return null;
+    return [...normalizedMods, keyLabel].join('+');
+}
+
+function normalizeKeyLabel(key) {
+    if (!key) return '';
+    if (key.length === 1) return key.toUpperCase();
+    if (key.toLowerCase() === 'space') return 'Space';
+    return key.replace(/^./, (char) => char.toUpperCase());
+}
+
+function updateShortcutUI() {
+    const shortcutBtn = document.getElementById('commandPaletteShortcut');
+    if (shortcutBtn) {
+        shortcutBtn.textContent = commandPaletteShortcut || DEFAULT_COMMAND_PALETTE_SHORTCUT;
+    }
+}
+
+function resetShortcut(button) {
+    commandPaletteShortcut = DEFAULT_COMMAND_PALETTE_SHORTCUT;
+    updateShortcutUI();
+    browserAPI.storage.sync.set({
+        [COMMAND_PALETTE_SHORTCUT_KEY]: commandPaletteShortcut
+    });
+    showStatus('Shortcut reset');
+    if (button) button.classList.remove('is-capturing');
+}
+
+function beginShortcutCapture(button) {
+    if (!button) return;
+    button.classList.add('is-capturing');
+    const previous = button.textContent;
+    button.textContent = 'Press keys...';
+
+    const handleKey = async (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        if (event.key === 'Escape') {
+            button.textContent = previous || commandPaletteShortcut || DEFAULT_COMMAND_PALETTE_SHORTCUT;
+            button.classList.remove('is-capturing');
+            document.removeEventListener('keydown', handleKey, true);
+            return;
+        }
+
+        const combo = buildShortcutFromEvent(event);
+        if (!combo) return;
+
+        commandPaletteShortcut = combo;
+        button.textContent = combo;
+        button.classList.remove('is-capturing');
+        document.removeEventListener('keydown', handleKey, true);
+
+        await browserAPI.storage.sync.set({
+            [COMMAND_PALETTE_SHORTCUT_KEY]: combo
+        });
+        showStatus('Shortcut saved');
+    };
+
+    document.addEventListener('keydown', handleKey, true);
+}
+
+function buildShortcutFromEvent(event) {
+    const key = normalizeKeyLabel(event.key === ' ' ? 'Space' : event.key);
+    if (!key || ['Shift', 'Ctrl', 'Control', 'Alt', 'Meta', 'Cmd', 'Command'].includes(key)) return null;
+
+    const mods = [];
+    if (event.metaKey) mods.push('Cmd');
+    if (event.ctrlKey) mods.push('Ctrl');
+    if (event.altKey) mods.push('Alt');
+    if (event.shiftKey) mods.push('Shift');
+    if (!mods.length) return null;
+    return [...mods, key].join('+');
 }
 
 async function exportData() {

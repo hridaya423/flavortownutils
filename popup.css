@@ -270,6 +270,69 @@ body {
     transition: border-color 0.3s;
 }
 
+.popup__shortcut {
+    display: grid;
+    gap: 6px;
+    margin-bottom: 10px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: var(--popup-surface);
+    border: 1px solid var(--popup-border);
+}
+
+.popup__shortcut-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--popup-text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.popup__shortcut-controls {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+    align-items: center;
+}
+
+.popup__shortcut-input,
+.popup__shortcut-reset {
+    border-radius: 8px;
+    border: 1px solid var(--popup-border);
+    background: var(--popup-surface-hover);
+    color: var(--popup-text);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 8px 10px;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s, transform 0.15s;
+}
+
+.popup__shortcut-input {
+    text-align: left;
+}
+
+.popup__shortcut-input.is-capturing {
+    border-color: var(--popup-accent);
+    background: color-mix(in srgb, var(--popup-accent) 12%, var(--popup-surface));
+    transform: translateY(-1px);
+}
+
+.popup__shortcut-reset {
+    background: transparent;
+    color: var(--popup-text-dim);
+}
+
+.popup__shortcut-reset:hover,
+.popup__shortcut-input:hover {
+    border-color: var(--popup-accent);
+}
+
+.popup__shortcut-hint {
+    font-size: 10px;
+    color: var(--popup-text-dim);
+}
+
 .popup__sync-toggle {
     margin-bottom: 8px;
 }
