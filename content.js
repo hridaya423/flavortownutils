@@ -11669,49 +11669,131 @@ function clusterVotesToShips(votes, ships) {
     if (!votes.length || !ships.length) return clustered;
 
     const validShips = ships.filter(ship => ship.date && !isNaN(ship.date.getTime()));
-    const validVotes = votes.filter(vote => vote.timestamp && !isNaN(new Date(vote.timestamp).getTime()));
+    const validVotes = votes
+        .map(vote => {
+            let time = null;
+            if (vote.timestamp) {
+                const parsed = new Date(vote.timestamp);
+                if (!isNaN(parsed.getTime())) time = parsed.getTime();
+            }
+            if (!time && vote.slackTs) {
+                const raw = Number(vote.slackTs);
+                if (isFinite(raw)) {
+                    time = raw < 1000000000000 ? raw * 1000 : raw;
+                }
+            }
+            return { vote, time };
+        })
+        .filter(entry => entry.time && !isNaN(entry.time));
 
     if (!validShips.length || !validVotes.length) return clustered;
 
     const sortedShips = validShips.slice().sort((a, b) => a.date - b.date);
-    const sortedVotes = validVotes.slice().sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+    const sortedVotes = validVotes.slice().sort((a, b) => a.time - b.time);
 
     const shipMin = sortedShips[0].date.getTime();
     const shipMax = sortedShips[sortedShips.length - 1].date.getTime();
-    const voteMin = new Date(sortedVotes[0].timestamp).getTime();
-    const voteMax = new Date(sortedVotes[sortedVotes.length - 1].timestamp).getTime();
+    const voteMin = sortedVotes[0].time;
+    const voteMax = sortedVotes[sortedVotes.length - 1].time;
 
     const shipRange = shipMax - shipMin;
     const voteRange = voteMax - voteMin;
 
-    const mappedShips = sortedShips.map((ship, index) => {
-        let mappedTime = voteMin;
-        if (shipRange > 0) {
-            const t = (ship.date.getTime() - shipMin) / shipRange;
-            mappedTime = voteMin + (voteRange > 0 ? t * voteRange : 0);
-        } else if (sortedShips.length > 1 && voteRange > 0) {
-            const step = voteRange / (sortedShips.length - 1);
-            mappedTime = voteMin + step * index;
+    const gaps = [];
+    for (let i = 1; i < sortedVotes.length; i++) {
+        gaps.push({ index: i, gap: sortedVotes[i].time - sortedVotes[i - 1].time });
+    }
+
+    const gapValues = gaps.map(entry => entry.gap).sort((a, b) => a - b);
+    const medianGap = gapValues.length
+        ? gapValues[Math.floor((gapValues.length - 1) / 2)]
+        : 0;
+    const minGap = Math.max(medianGap * 3, 60 * 60 * 1000);
+    const maxSplits = Math.max(0, Math.min(sortedShips.length - 1, gaps.length));
+    const splitCandidates = gaps
+        .filter(entry => entry.gap >= minGap)
+        .sort((a, b) => b.gap - a.gap)
+        .slice(0, maxSplits);
+    const splitIndices = new Set(splitCandidates.map(entry => entry.index));
+
+    const clusters = [];
+    let currentCluster = {
+        votes: [sortedVotes[0].vote],
+        start: sortedVotes[0].time,
+        end: sortedVotes[0].time
+    };
+
+    for (let i = 1; i < sortedVotes.length; i++) {
+        if (splitIndices.has(i)) {
+            clusters.push(currentCluster);
+            currentCluster = {
+                votes: [sortedVotes[i].vote],
+                start: sortedVotes[i].time,
+                end: sortedVotes[i].time
+            };
+        } else {
+            currentCluster.votes.push(sortedVotes[i].vote);
+            currentCluster.end = sortedVotes[i].time;
         }
-        return { ship, mappedTime };
+    }
+    clusters.push(currentCluster);
+
+    const shipTimes = sortedShips.map(ship => ship.date.getTime());
+    const clusterEntries = clusters.map((cluster, index) => {
+        const clusterTime = cluster.start + (cluster.end - cluster.start) / 2;
+        let mappedTime = clusterTime;
+        if (voteRange > 0 && shipRange > 0) {
+            const t = clampValue((clusterTime - voteMin) / voteRange, 0, 1);
+            mappedTime = shipMin + t * shipRange;
+        } else if (shipRange > 0 && clusters.length > 1) {
+            const t = index / (clusters.length - 1);
+            mappedTime = shipMin + t * shipRange;
+        }
+        return { cluster, mappedTime };
     });
 
-    validVotes.forEach(vote => {
-        const voteTime = new Date(vote.timestamp).getTime();
-        let bestShip = null;
-        let smallestGap = Infinity;
+    const clusterCount = clusterEntries.length;
+    const shipCount = shipTimes.length;
+    const dp = Array.from({ length: clusterCount }, () => Array(shipCount).fill(Infinity));
+    const back = Array.from({ length: clusterCount }, () => Array(shipCount).fill(-1));
 
-        mappedShips.forEach(entry => {
-            const gap = Math.abs(voteTime - entry.mappedTime);
-            if (gap < smallestGap) {
-                smallestGap = gap;
-                bestShip = entry.ship;
+    for (let j = 0; j < shipCount; j++) {
+        dp[0][j] = Math.abs(clusterEntries[0].mappedTime - shipTimes[j]);
+    }
+
+    for (let i = 1; i < clusterCount; i++) {
+        let best = dp[i - 1][0];
+        let bestIndex = 0;
+        for (let j = 0; j < shipCount; j++) {
+            if (dp[i - 1][j] < best) {
+                best = dp[i - 1][j];
+                bestIndex = j;
             }
-        });
-
-        if (bestShip) {
-            clustered.get(bestShip).push(vote);
+            dp[i][j] = Math.abs(clusterEntries[i].mappedTime - shipTimes[j]) + best;
+            back[i][j] = bestIndex;
         }
+    }
+
+    let bestEnd = 0;
+    let bestCost = dp[clusterCount - 1][0];
+    for (let j = 1; j < shipCount; j++) {
+        if (dp[clusterCount - 1][j] < bestCost) {
+            bestCost = dp[clusterCount - 1][j];
+            bestEnd = j;
+        }
+    }
+
+    const assignments = Array(clusterCount).fill(0);
+    let cursor = bestEnd;
+    for (let i = clusterCount - 1; i >= 0; i--) {
+        assignments[i] = cursor;
+        cursor = i > 0 ? back[i][cursor] : cursor;
+    }
+
+    clusterEntries.forEach((entry, index) => {
+        const shipIndex = assignments[index];
+        const targetShip = sortedShips[shipIndex] || sortedShips[0];
+        entry.cluster.votes.forEach(vote => clustered.get(targetShip).push(vote));
     });
 
     return clustered;
