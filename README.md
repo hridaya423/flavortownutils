@@ -61,6 +61,7 @@
 - Sync goals/settings through multiple devices!
 - See people's history of balance in lb
 - Auto find repo and demo links for your project.
+- Screenshot editor
 
 ## Feature showcase:
 
