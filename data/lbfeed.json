@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-01-30T07:47:57.256Z",
+  "lastUpdated": "2026-01-30T08:48:33.266Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -8870,6 +8870,14 @@
         "balance": 88,
         "reason": "payout",
         "reasonType": "payout",
+        "userId": "U093NQ2JJCB"
+      },
+      {
+        "ts": "2026-01-30T08:25:46.141Z",
+        "delta": -35,
+        "balance": 53,
+        "reason": "shop purchase",
+        "reasonType": "",
         "userId": "U093NQ2JJCB"
       }
     ],
@@ -22401,6 +22409,11 @@
     ]
   },
   "users": {
+    "U093NQ2JJCB": {
+      "id": "U093NQ2JJCB",
+      "username": "sangeethaapparala",
+      "avatar": "https://secure.gravatar.com/avatar/3fe206a7ce768a1a8d54ae436cb536ba.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0023-72.png"
+    },
     "U0A7A7TT28L": {
       "id": "U0A7A7TT28L",
       "username": "korbinvanettedev",
@@ -22519,11 +22532,6 @@
       "username": "cspythoncoder",
       "displayName": "cspythoncoder",
       "avatar": "https://secure.gravatar.com/avatar/38da76c089cc704e01866936cb484774.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0009-72.png"
-    },
-    "U093NQ2JJCB": {
-      "id": "U093NQ2JJCB",
-      "username": "sangeethaapparala",
-      "avatar": "https://secure.gravatar.com/avatar/3fe206a7ce768a1a8d54ae436cb536ba.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0023-72.png"
     },
     "U0AA527K2Q1": {
       "id": "U0AA527K2Q1",
@@ -23467,7 +23475,7 @@
       "id": "U085L7P77EV",
       "username": "aregazatyank",
       "displayName": "Areg Azatyan",
-      "avatar": "https://avatars.slack-edge.com/2026-01-30/10399714946387_e11cfb13f1687d7e342a_72.jpg"
+      "avatar": "https://avatars.slack-edge.com/2026-01-30/10410025103220_5113fbd8d346d9b6058e_72.jpg"
     },
     "U091L5DCGUF": {
       "id": "U091L5DCGUF",
