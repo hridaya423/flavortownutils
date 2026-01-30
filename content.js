@@ -2678,13 +2678,15 @@ async function addProjectCardCookieStats() {
         const totalCookies = projectPayouts.reduce((sum, payout) => sum + payout.amount, 0);
         if (totalCookies <= 0) return;
 
-        const cachedMinutes = projectId ? getCachedShipMinutes(projectId) : 0;
-        renderCardStat(card, totalCookies, cachedMinutes);
+        const cachedPaidMinutes = cachedUnshipped && typeof cachedUnshipped.paidShipMinutes === 'number'
+            ? cachedUnshipped.paidShipMinutes
+            : 0;
+        renderCardStat(card, totalCookies, cachedPaidMinutes);
 
-        if (projectId && (!cachedMinutes || !cachedUnshipped)) {
+        if (projectId && (!cachedUnshipped || cachedPaidMinutes === 0)) {
             fetchProjectUnshippedStats(projectId).then(stats => {
-                if (stats && stats.totalShipMinutes > 0) {
-                    renderCardStat(card, totalCookies, stats.totalShipMinutes);
+                if (stats && stats.paidShipMinutes > 0) {
+                    renderCardStat(card, totalCookies, stats.paidShipMinutes);
                 }
             });
         }
@@ -2744,6 +2746,21 @@ async function addProjectShowCookieStat() {
     const shipPosts = document.querySelectorAll('article.post--ship, .post--ship');
     let minutes = 0;
     shipPosts.forEach(shipPost => {
+        const footer = shipPost.querySelector('.post__payout-footer');
+        if (!footer) return;
+
+        const payoutItems = Array.from(footer.querySelectorAll('.post__payout-item'));
+        const getPayoutValue = (labelMatch) => {
+            const item = payoutItems.find(entry => {
+                const labelText = entry.querySelector('.post__payout-label')?.textContent || '';
+                return labelText.toLowerCase().includes(labelMatch);
+            });
+            return item ? item.querySelector('.post__payout-value')?.textContent?.trim() : '';
+        };
+
+        const cookiesValue = parseNumberFromText(getPayoutValue('cookies'));
+        if (!cookiesValue || cookiesValue <= 0) return;
+
         const cachedMinutes = shipPost.dataset.flavortownShipMinutes;
         const parsedMinutes = cachedMinutes ? parseFloat(cachedMinutes) : 0;
         if (parsedMinutes > 0) {
@@ -2753,9 +2770,10 @@ async function addProjectShowCookieStat() {
         }
     });
 
-    if (minutes === 0) {
-        if (projectId) {
-            minutes = getCachedShipMinutes(projectId) || 0;
+    if (minutes === 0 && projectId) {
+        const cachedUnshipped = getCachedProjectUnshipped(projectId);
+        if (cachedUnshipped && typeof cachedUnshipped.paidShipMinutes === 'number') {
+            minutes = cachedUnshipped.paidShipMinutes;
         }
     }
 
