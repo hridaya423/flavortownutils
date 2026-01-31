@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-01-31T13:50:14.353Z",
+  "lastUpdated": "2026-01-31T14:30:50.517Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -6372,6 +6372,14 @@
         "balance": 245,
         "reason": "payout",
         "reasonType": "payout",
+        "userId": "U080V8UG5BR"
+      },
+      {
+        "ts": "2026-01-31T14:16:51.885Z",
+        "delta": -10,
+        "balance": 235,
+        "reason": "shop purchase",
+        "reasonType": "",
         "userId": "U080V8UG5BR"
       }
     ],
@@ -49479,6 +49487,12 @@
     ]
   },
   "users": {
+    "U080V8UG5BR": {
+      "id": "U080V8UG5BR",
+      "username": "leul2027",
+      "displayName": "GB114",
+      "avatar": "https://avatars.slack-edge.com/2025-12-30/10201793686691_867872b57eaea1a369a3_72.png"
+    },
     "U09894HL8AU": {
       "id": "U09894HL8AU",
       "username": "pascal.loesch.coburg",
@@ -50241,12 +50255,6 @@
       "username": "secretaditzu78",
       "avatar": "https://avatars.slack-edge.com/2026-01-05/10213206999143_b4517487a2e3a03c4e5a_72.jpg"
     },
-    "U080V8UG5BR": {
-      "id": "U080V8UG5BR",
-      "username": "leul2027",
-      "displayName": "GB114",
-      "avatar": "https://avatars.slack-edge.com/2025-12-30/10201793686691_867872b57eaea1a369a3_72.png"
-    },
     "U088Z65TDRN": {
       "id": "U088Z65TDRN",
       "username": "gamester.sad",
@@ -50752,7 +50760,7 @@
       "id": "U085L7P77EV",
       "username": "aregazatyank",
       "displayName": "Areg Azatyan",
-      "avatar": "https://avatars.slack-edge.com/2026-01-31/10398662686887_68f55ad8671ad565a786_72.jpg"
+      "avatar": "https://avatars.slack-edge.com/2026-01-31/10398761454407_6e531b02b47c8b82f4c2_72.jpg"
     },
     "U0A1KGW04LE": {
       "id": "U0A1KGW04LE",
