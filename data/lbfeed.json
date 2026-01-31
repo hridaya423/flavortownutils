@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-01-31T10:31:47.395Z",
+  "lastUpdated": "2026-01-31T11:27:38.073Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -2568,6 +2568,14 @@
         "balance": 84,
         "reason": "tutorial",
         "reasonType": "",
+        "userId": "U078VN0UU2K"
+      },
+      {
+        "ts": "2026-01-31T11:14:03.921Z",
+        "delta": 18,
+        "balance": 102,
+        "reason": "payout",
+        "reasonType": "payout",
         "userId": "U078VN0UU2K"
       }
     ],
@@ -6018,6 +6026,14 @@
         "ts": "2026-01-27T18:19:06.525Z",
         "delta": 21,
         "balance": 184,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U07UV4R2G4T"
+      },
+      {
+        "ts": "2026-01-31T10:33:51.984Z",
+        "delta": 113,
+        "balance": 297,
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U07UV4R2G4T"
@@ -49431,6 +49447,16 @@
     ]
   },
   "users": {
+    "U078VN0UU2K": {
+      "id": "U078VN0UU2K",
+      "username": "hippogriff",
+      "avatar": "https://avatars.slack-edge.com/2026-01-14/10294818167174_9836ff19df7225cbbc26_72.jpg"
+    },
+    "U07UV4R2G4T": {
+      "id": "U07UV4R2G4T",
+      "username": "im",
+      "avatar": "https://avatars.slack-edge.com/2026-01-13/10285312019155_9bee40dbe9dad9f28941_72.png"
+    },
     "U0AC0RGRJF8": {
       "id": "U0AC0RGRJF8",
       "username": "amt.entertainment",
@@ -50282,7 +50308,7 @@
       "id": "U0938MZG8Q6",
       "username": "christiandubsky20",
       "displayName": "christian",
-      "avatar": "https://avatars.slack-edge.com/2026-01-31/10396898383959_cbba9b129b76d0434f81_72.png"
+      "avatar": "https://avatars.slack-edge.com/2026-01-31/10398347254183_ab6d96db5640b0516fad_72.png"
     },
     "U0A787QJ80J": {
       "id": "U0A787QJ80J",
@@ -50522,11 +50548,6 @@
       "displayName": "liamburnett40",
       "avatar": "https://secure.gravatar.com/avatar/970549d6f3d195443f232d6703f3c408.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0008-72.png"
     },
-    "U07UV4R2G4T": {
-      "id": "U07UV4R2G4T",
-      "username": "im",
-      "avatar": "https://avatars.slack-edge.com/2026-01-13/10285312019155_9bee40dbe9dad9f28941_72.png"
-    },
     "U08L7671TDG": {
       "id": "U08L7671TDG",
       "username": "venco",
@@ -50625,11 +50646,6 @@
       "id": "U08AT086H8E",
       "username": "itslukasreis",
       "avatar": "https://avatars.slack-edge.com/2025-12-14/10132050312737_cb30475cd6a3f962c644_72.jpg"
-    },
-    "U078VN0UU2K": {
-      "id": "U078VN0UU2K",
-      "username": "hippogriff",
-      "avatar": "https://avatars.slack-edge.com/2026-01-14/10294818167174_9836ff19df7225cbbc26_72.jpg"
     },
     "U0AC2K43MA4": {
       "id": "U0AC2K43MA4",
