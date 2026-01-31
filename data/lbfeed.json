@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-01-31T21:28:36.304Z",
+  "lastUpdated": "2026-01-31T21:49:46.350Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -17702,6 +17702,14 @@
         "balance": 83,
         "reason": "payout",
         "reasonType": "payout",
+        "userId": "U09683EA86L"
+      },
+      {
+        "ts": "2026-01-31T21:41:55.533Z",
+        "delta": 5,
+        "balance": 88,
+        "reason": "Cooking",
+        "reasonType": "achievement",
         "userId": "U09683EA86L"
       }
     ],
@@ -49745,6 +49753,12 @@
     ]
   },
   "users": {
+    "U09683EA86L": {
+      "id": "U09683EA86L",
+      "username": "etilia",
+      "displayName": "Etilia",
+      "avatar": "https://avatars.slack-edge.com/2025-08-28/9424209622534_c62c420d32e3b941e363_72.png"
+    },
     "U0842GMRJKC": {
       "id": "U0842GMRJKC",
       "username": "hridayahoney",
@@ -50127,12 +50141,6 @@
       "username": "bettatested",
       "displayName": "fsh",
       "avatar": "https://avatars.slack-edge.com/2026-01-02/10220852326982_777916f3d926df39feb1_72.png"
-    },
-    "U09683EA86L": {
-      "id": "U09683EA86L",
-      "username": "etilia",
-      "displayName": "Etilia",
-      "avatar": "https://avatars.slack-edge.com/2025-08-28/9424209622534_c62c420d32e3b941e363_72.png"
     },
     "U0A3DLEBG67": {
       "id": "U0A3DLEBG67",
