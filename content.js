@@ -428,6 +428,28 @@ function cacheThemePalette(theme, customColors, catppuccinAccent) {
     });
 }
 
+function hexToHue(hex) {
+    hex = hex.replace('#', '');
+    const r = parseInt(hex.substring(0, 2), 16) / 255;
+    const g = parseInt(hex.substring(2, 4), 16) / 255;
+    const b = parseInt(hex.substring(4, 6), 16) / 255;
+    
+    const max = Math.max(r, g, b);
+    const min = Math.min(r, g, b);
+    const diff = max - min;
+    
+    let hue = 0;
+    if (diff !== 0) {
+        switch (max) {
+            case r: hue = ((g - b) / diff + (g < b ? 6 : 0)) / 6; break;
+            case g: hue = ((b - r) / diff + 2) / 6; break;
+            case b: hue = ((r - g) / diff + 4) / 6; break;
+        }
+    }
+    
+    return Math.round(hue * 360);
+}
+
 function applyTheme(theme, customColors, catppuccinAccent = 'mauve') {
     writeThemeCache({
         theme: theme || 'default',
@@ -477,6 +499,15 @@ function applyTheme(theme, customColors, catppuccinAccent = 'mauve') {
         const text = customColors['text'] || '#cdd6f4';
         const accent = customColors['accent'] || '#cba6f7';
         const border = customColors['border'] || '#585b70';
+        const accentHue = hexToHue(accent);
+
+        css += `
+:root {
+    --ctp-accent: ${accent} !important;
+    --ctp-accent-hue: ${accentHue}deg !important;
+}
+
+`;
 
         css += `
 html, body {
@@ -534,9 +565,28 @@ h1, h2, h3, h4, h5, h6, p, span, div {
             accentStyle.id = 'flavortown-accent-override';
             accentStyle.textContent = `
 :root {
+    --ctp-accent: #b4befe !important;
+    --ctp-accent-hue: 190deg !important;
     --ctp-mauve: #b4befe !important;
+    --ctp-accent-text: #313244 !important;
     --color-brown: #b4befe !important;
     --color-accent: #b4befe !important;
+    --ft-votes-accent: #b4befe !important;
+    --flavortown-preview-accent: #b4befe !important;
+    --flavortown-doomscroll-btn-color: #b4befe !important;
+    --color-text-primary: #313244 !important;
+}
+
+.sidebar__nav-link--active {
+    color: #313244 !important;
+}
+
+.sidebar__nav-link--active:hover {
+    color: #313244 !important;
+}
+
+.votes-new__form {
+    color: #313244 !important;
 }
 `;
             document.head.appendChild(accentStyle);
@@ -5823,11 +5873,6 @@ function addShopCardEfficiency() {
                 </div>
                 <div class="flavortown-efficiency__row">
                     <span class="flavortown-efficiency__cookies">🍪 ${currentCookies}/${price}</span>
-                    <span class="flavortown-efficiency__affordable">✅ You can afford this!</span>
-                </div>
-                <div class="flavortown-efficiency__hours">
-                    <span>⏱ 0h more</span>
-                    <span>⏱ ${totalHours.toFixed(1)}h total</span>
                 </div>
             `;
         } else {
@@ -5837,68 +5882,20 @@ function addShopCardEfficiency() {
                 </div>
                 <div class="flavortown-efficiency__row">
                     <span class="flavortown-efficiency__cookies">🍪 ${currentCookies}/${price}</span>
-                    <span class="flavortown-efficiency__need">Need <strong>${remaining}</strong> more</span>
+                    <span class="flavortown-efficiency__need">Need <strong>${remaining}</strong> more (${moreHours.toFixed(1)}h)</span>
                 </div>
-                <div class="flavortown-efficiency__hours">
-                    <span>⏱ ${moreHours.toFixed(1)}h more</span>
-                    <span>⏱ ${totalHours.toFixed(1)}h total</span>
-                </div>
-                <details class="flavortown-efficiency__accordion">
-                    <summary class="flavortown-efficiency__accordion-toggle">⏱️ Time Calculator</summary>
-                    <div class="flavortown-efficiency__accordion-content">
-                        <div class="flavortown-efficiency__rates">
-                            ${rates.map(rate => {
-                const hours = (remaining / rate).toFixed(1);
-                return `<div class="flavortown-efficiency__rate">
-                                    <span class="flavortown-efficiency__rate-val">${rate}</span>
-                                    <span class="flavortown-efficiency__rate-time">${hours}h</span>
-                                </div>`;
-            }).join('')}
-                        </div>
-                        <div class="flavortown-efficiency__slider-row">
-                            <input type="range" class="flavortown-efficiency__slider" min="1" max="30" value="${defaultRate}">
-                            <span class="flavortown-efficiency__slider-label"><span class="flavortown-efficiency__custom-rate">${defaultRate}</span> 🍪/h = <span class="flavortown-efficiency__custom-time">${(remaining / defaultRate).toFixed(1)}</span>h</span>
-                        </div>
-                    </div>
-                </details>
             `;
         }
 
         const cardContent = card.querySelector('.shop-item-card__content') || card;
         cardContent.appendChild(efficiencyDiv);
 
-        const slider = efficiencyDiv.querySelector('.flavortown-efficiency__slider');
-        const sliderRow = efficiencyDiv.querySelector('.flavortown-efficiency__slider-row');
-        const accordion = efficiencyDiv.querySelector('.flavortown-efficiency__accordion');
-        const accordionToggle = efficiencyDiv.querySelector('.flavortown-efficiency__accordion-toggle');
-
-        if (accordion) {
-            accordion.addEventListener('click', (e) => e.stopPropagation());
-        }
-        if (accordionToggle) {
-            accordionToggle.addEventListener('click', (e) => e.stopPropagation());
+        const originalHours = card.querySelector('.shop-item-card__hours');
+        if (originalHours) {
+            originalHours.innerHTML = `〉 ${totalHours.toFixed(1)}h`;
+            originalHours.style.color = canAfford ? '#48bb78' : '#ed8936';
         }
 
-        if (sliderRow) {
-            ['mousedown', 'mousemove', 'mouseup', 'click', 'touchstart', 'touchmove', 'touchend'].forEach(evt => {
-                sliderRow.addEventListener(evt, (e) => {
-                    e.stopPropagation();
-                    if (evt === 'click') e.preventDefault();
-                });
-            });
-        }
-
-        if (slider) {
-            const itemRemaining = remaining;
-            slider.addEventListener('input', function (e) {
-                e.stopPropagation();
-                const rate = parseInt(e.target.value, 10);
-                const rateEl = efficiencyDiv.querySelector('.flavortown-efficiency__custom-rate');
-                const timeEl = efficiencyDiv.querySelector('.flavortown-efficiency__custom-time');
-                if (rateEl) rateEl.textContent = rate;
-                if (timeEl) timeEl.textContent = (itemRemaining / rate).toFixed(1);
-            });
-        }
     });
 }
 
