@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-01-31T12:59:57.981Z",
+  "lastUpdated": "2026-01-31T13:50:14.353Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -13087,6 +13087,14 @@
         "reason": "Line Cook",
         "reasonType": "achievement",
         "userId": "U091KALMG3Y"
+      },
+      {
+        "ts": "2026-01-31T13:03:19.291Z",
+        "delta": 537,
+        "balance": 587,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U091KALMG3Y"
       }
     ],
     "u091ke59h5h": [
@@ -18360,6 +18368,14 @@
         "ts": "2026-01-22T22:10:32.580Z",
         "delta": 531,
         "balance": 564,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U09894HL8AU"
+      },
+      {
+        "ts": "2026-01-31T13:10:55.256Z",
+        "delta": 360,
+        "balance": 924,
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U09894HL8AU"
@@ -49463,6 +49479,17 @@
     ]
   },
   "users": {
+    "U09894HL8AU": {
+      "id": "U09894HL8AU",
+      "username": "pascal.loesch.coburg",
+      "displayName": "Pascal Lösch",
+      "avatar": "https://avatars.slack-edge.com/2025-07-26/9281170609936_a0e147230c0b04390e4d_72.jpg"
+    },
+    "U091KALMG3Y": {
+      "id": "U091KALMG3Y",
+      "username": "braxtonhood23",
+      "avatar": "https://avatars.slack-edge.com/2026-01-22/10336148649699_bd08305f939082ce41ab_72.jpg"
+    },
     "U089MN4B2E7": {
       "id": "U089MN4B2E7",
       "username": "shasarita23",
@@ -50136,11 +50163,6 @@
       "username": "me1978",
       "avatar": "https://avatars.slack-edge.com/2026-01-13/10292071246820_9386a1b8c19f67927074_72.png"
     },
-    "U091KALMG3Y": {
-      "id": "U091KALMG3Y",
-      "username": "braxtonhood23",
-      "avatar": "https://avatars.slack-edge.com/2026-01-22/10336148649699_bd08305f939082ce41ab_72.jpg"
-    },
     "U062UG485EE": {
       "id": "U062UG485EE",
       "username": "kieran.klukas",
@@ -50324,7 +50346,7 @@
       "id": "U0938MZG8Q6",
       "username": "christiandubsky20",
       "displayName": "christian",
-      "avatar": "https://avatars.slack-edge.com/2026-01-31/10410583947109_9ac9660a4813fbca114e_72.png"
+      "avatar": "https://avatars.slack-edge.com/2026-01-31/10412049655030_260fe80639c7a9fb9307_72.png"
     },
     "U0A787QJ80J": {
       "id": "U0A787QJ80J",
@@ -50730,7 +50752,7 @@
       "id": "U085L7P77EV",
       "username": "aregazatyank",
       "displayName": "Areg Azatyan",
-      "avatar": "https://avatars.slack-edge.com/2026-01-31/10442298574752_9685d95969fc250cdec7_72.jpg"
+      "avatar": "https://avatars.slack-edge.com/2026-01-31/10398662686887_68f55ad8671ad565a786_72.jpg"
     },
     "U0A1KGW04LE": {
       "id": "U0A1KGW04LE",
@@ -51347,12 +51369,6 @@
       "username": "theodarville",
       "displayName": "scorpion7slayer",
       "avatar": "https://secure.gravatar.com/avatar/774b9a0814260f1cf543687bfe6e1d6f.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0026-72.png"
-    },
-    "U09894HL8AU": {
-      "id": "U09894HL8AU",
-      "username": "pascal.loesch.coburg",
-      "displayName": "Pascal Lösch",
-      "avatar": "https://avatars.slack-edge.com/2025-07-26/9281170609936_a0e147230c0b04390e4d_72.jpg"
     },
     "U094FQCCF40": {
       "id": "U094FQCCF40",
