@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-01-31T08:38:20.126Z",
+  "lastUpdated": "2026-01-31T09:35:41.643Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -22042,6 +22042,14 @@
         "balance": 2,
         "reason": "tutorial",
         "reasonType": "",
+        "userId": "U09GZAZ7NC8"
+      },
+      {
+        "ts": "2026-01-31T08:42:26.366Z",
+        "delta": 141,
+        "balance": 143,
+        "reason": "payout",
+        "reasonType": "payout",
         "userId": "U09GZAZ7NC8"
       }
     ],
@@ -49389,6 +49397,11 @@
     ]
   },
   "users": {
+    "U09GZAZ7NC8": {
+      "id": "U09GZAZ7NC8",
+      "username": "atharvnegi26",
+      "avatar": "https://avatars.slack-edge.com/2025-12-10/10074813635303_6df589b6ff5a1d81d18a_72.png"
+    },
     "U09BSMKPT7Y": {
       "id": "U09BSMKPT7Y",
       "username": "sarjak.khanal",
@@ -50645,7 +50658,7 @@
       "id": "U085L7P77EV",
       "username": "aregazatyank",
       "displayName": "Areg Azatyan",
-      "avatar": "https://avatars.slack-edge.com/2026-01-31/10416728002036_0c5aa127f74db2f0658b_72.jpg"
+      "avatar": "https://avatars.slack-edge.com/2026-01-31/10411511793446_8724db1b4fec89616312_72.jpg"
     },
     "U0A1KGW04LE": {
       "id": "U0A1KGW04LE",
@@ -51128,11 +51141,6 @@
       "username": "2170251715",
       "displayName": "2170251715",
       "avatar": "https://secure.gravatar.com/avatar/14bf78ad741852b4d47d57fb67724874.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0012-72.png"
-    },
-    "U09GZAZ7NC8": {
-      "id": "U09GZAZ7NC8",
-      "username": "atharvnegi26",
-      "avatar": "https://avatars.slack-edge.com/2025-12-10/10074813635303_6df589b6ff5a1d81d18a_72.png"
     },
     "U0A7AKUFMKM": {
       "id": "U0A7AKUFMKM",
