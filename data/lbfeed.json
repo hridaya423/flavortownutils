@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-01-31T19:26:28.362Z",
+  "lastUpdated": "2026-01-31T19:45:22.016Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -20992,6 +20992,14 @@
         "ts": "2026-01-29T18:35:16.209Z",
         "delta": 416,
         "balance": 1239,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U09CY2QAZMJ"
+      },
+      {
+        "ts": "2026-01-31T19:40:44.420Z",
+        "delta": 254,
+        "balance": 1493,
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U09CY2QAZMJ"
@@ -49597,6 +49605,16 @@
         "userId": "U0AB4DTU9CY"
       }
     ],
+    "u0abfkgqe56": [
+      {
+        "ts": "2026-01-31T19:41:23.452Z",
+        "delta": 4,
+        "balance": 20,
+        "reason": "tutorial",
+        "reasonType": "",
+        "userId": "U0ABFKGQE56"
+      }
+    ],
     "u0abkj8s97a": [
       {
         "ts": "2026-01-25T16:06:45.169Z",
@@ -49687,6 +49705,17 @@
     ]
   },
   "users": {
+    "U0ABFKGQE56": {
+      "id": "U0ABFKGQE56",
+      "username": "pathakakshata8",
+      "displayName": "pathakakshata8",
+      "avatar": "https://secure.gravatar.com/avatar/b8680ace5a7328a3e6891bda32846af8.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0007-72.png"
+    },
+    "U09CY2QAZMJ": {
+      "id": "U09CY2QAZMJ",
+      "username": "tonyforself",
+      "avatar": "https://avatars.slack-edge.com/2025-12-29/10197320008051_09090f790fd53d59b8a8_72.jpg"
+    },
     "U07LKN2HXT3": {
       "id": "U07LKN2HXT3",
       "username": "obay.developer",
@@ -50301,11 +50330,6 @@
       "displayName": "bennet-wegener",
       "avatar": "https://secure.gravatar.com/avatar/c294123ce3aa38754f5d04154ac55d9b.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0026-72.png"
     },
-    "U09CY2QAZMJ": {
-      "id": "U09CY2QAZMJ",
-      "username": "tonyforself",
-      "avatar": "https://avatars.slack-edge.com/2025-12-29/10197320008051_09090f790fd53d59b8a8_72.jpg"
-    },
     "U087X4AG35K": {
       "id": "U087X4AG35K",
       "username": "garygreg2011",
@@ -50611,7 +50635,7 @@
       "id": "U0938MZG8Q6",
       "username": "christiandubsky20",
       "displayName": "christian",
-      "avatar": "https://avatars.slack-edge.com/2026-01-31/10418560170756_cbea9de9d657c7742b23_72.png"
+      "avatar": "https://avatars.slack-edge.com/2026-01-31/10408581427651_7ec9b9370326bbce1f9b_72.png"
     },
     "U0A787QJ80J": {
       "id": "U0A787QJ80J",
