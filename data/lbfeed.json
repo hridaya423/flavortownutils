@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-01-31T23:29:32.239Z",
+  "lastUpdated": "2026-01-31T23:50:15.372Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -20980,6 +20980,14 @@
         "balance": 181,
         "reason": "user grant",
         "reasonType": "",
+        "userId": "U09BSMKPT7Y"
+      },
+      {
+        "ts": "2026-01-31T23:40:14.580Z",
+        "delta": 141,
+        "balance": 322,
+        "reason": "payout",
+        "reasonType": "payout",
         "userId": "U09BSMKPT7Y"
       }
     ],
@@ -49941,6 +49949,12 @@
     ]
   },
   "users": {
+    "U09BSMKPT7Y": {
+      "id": "U09BSMKPT7Y",
+      "username": "sarjak.khanal",
+      "displayName": "En Passant",
+      "avatar": "https://avatars.slack-edge.com/2026-01-14/10292220680854_bc1cf2328b065d54d10b_72.jpg"
+    },
     "U08S00249M3": {
       "id": "U08S00249M3",
       "username": "kendell.r",
@@ -50024,12 +50038,6 @@
       "id": "U097N0AKR6Z",
       "username": "ghaywat.pratham",
       "avatar": "https://avatars.slack-edge.com/2025-12-04/10052534563189_2eef9520abd927101de8_72.png"
-    },
-    "U09BSMKPT7Y": {
-      "id": "U09BSMKPT7Y",
-      "username": "sarjak.khanal",
-      "displayName": "En Passant",
-      "avatar": "https://avatars.slack-edge.com/2026-01-14/10292220680854_bc1cf2328b065d54d10b_72.jpg"
     },
     "U07LKN2HXT3": {
       "id": "U07LKN2HXT3",
