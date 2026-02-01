@@ -7689,6 +7689,9 @@ function addDoomscrollMode() {
 
     function handleKeydown(e) {
         if (!doomscrollActive) return;
+        const activeElement = document.activeElement;
+        const isTyping = activeElement && (activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA' || activeElement.isContentEditable);
+        if (isTyping) return;
         const phoneFrame = doomscrollContainer?.querySelector('.flavortown-doomscroll__container');
         switch (e.key) {
             case 'Escape': closeDoomscroll(); break;
