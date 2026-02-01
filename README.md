@@ -63,6 +63,8 @@
 - Auto find repo and demo links for your project.
 - Screenshot editor
 - estimated payout
+- Changelog
+- Command modal key linking
 
 ## Feature showcase:
 
