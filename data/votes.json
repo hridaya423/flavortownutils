@@ -1,7 +1,147 @@
 {
-  "lastUpdated": "2026-02-01T15:30:53.315Z",
-  "totalVotes": 2935,
+  "lastUpdated": "2026-02-01T16:36:48.701Z",
+  "totalVotes": 2955,
   "votes": [
+    {
+      "project": "To do list",
+      "feedback": "Finally something that could stop me from brainroting",
+      "votedBy": "U0A5WME44L8",
+      "timestamp": "2026-02-01T16:25:15.216Z",
+      "slackTs": "1769963115.216349"
+    },
+    {
+      "project": "Flask-Calculator-App",
+      "feedback": "It's a cool beginner project, but pretty simple :)",
+      "votedBy": "Unknown",
+      "timestamp": "2026-02-01T16:21:10.363Z",
+      "slackTs": "1769962870.363259"
+    },
+    {
+      "project": "Space Shooter",
+      "feedback": "Its a nice first start.\nHere are some suggestions:\nParallax for the backgrounds to make it feel like youre actually moving through space\nRotation so you can shoot asteroids that are at an angle to your ship\nScore when hitting meteors\nMeteors with effects the further you go. how about a meteor that sends debris flying around after destroyed? What about a meteor that needs more than one hit to be destroyed.\n\nVery well made though so far",
+      "votedBy": "U0A71TWUM7D",
+      "timestamp": "2026-02-01T16:12:56.834Z",
+      "slackTs": "1769962376.834959"
+    },
+    {
+      "project": "Reaction-speed-test",
+      "feedback": "slop",
+      "votedBy": "U0A71TWUM7D",
+      "timestamp": "2026-02-01T16:08:55.657Z",
+      "slackTs": "1769962135.657289"
+    },
+    {
+      "project": "Aesthetically Idle",
+      "feedback": "I get the use case behind this, but it feels very unfinished. no custom themes? and if one were using this on an oled display they would just have the settings icon burned into their screen",
+      "votedBy": "U0A71TWUM7D",
+      "timestamp": "2026-02-01T16:06:43.065Z",
+      "slackTs": "1769962003.065379"
+    },
+    {
+      "project": "complex-plotter",
+      "feedback": "This is crazy work! And in opengl!?!? This is a super impressive project, and it runs quite nicely, even on arm64 windows. No clue what im doing but is it a beauty. The imgui is also very nice, reminds me of nuklear but better",
+      "votedBy": "U0A71TWUM7D",
+      "timestamp": "2026-02-01T16:03:50.166Z",
+      "slackTs": "1769961830.166959"
+    },
+    {
+      "project": "Trading_Sim",
+      "feedback": "Woah, this is super detailed! I like the effort put into this, but i dont get much about stocks. Nevertheless, goof job",
+      "votedBy": "U0A71TWUM7D",
+      "timestamp": "2026-02-01T15:59:14.528Z",
+      "slackTs": "1769961554.528399"
+    },
+    {
+      "project": "Aesthetically Idle",
+      "feedback": "I like the idea you're going for, but i would love it even more if you had more features.",
+      "votedBy": "U0A7ZKP5MA4",
+      "timestamp": "2026-02-01T15:57:52.771Z",
+      "slackTs": "1769961472.771279"
+    },
+    {
+      "project": "To do list",
+      "feedback": "Unqiue todo list, but thats about all i can say about it",
+      "votedBy": "U0A71TWUM7D",
+      "timestamp": "2026-02-01T15:56:54.192Z",
+      "slackTs": "1769961414.192289"
+    },
+    {
+      "project": "FiSH",
+      "feedback": "id love to have a fish pet irl (short for in real life)",
+      "votedBy": "U0A759TPU76",
+      "timestamp": "2026-02-01T15:46:45.821Z",
+      "slackTs": "1769960805.821249"
+    },
+    {
+      "project": "Langton's ant simulator",
+      "feedback": "nice devlog amount, cool simulation.",
+      "votedBy": "U0A759TPU76",
+      "timestamp": "2026-02-01T15:46:11.249Z",
+      "slackTs": "1769960771.249999"
+    },
+    {
+      "project": "Space Shooter",
+      "feedback": "cl (short for cool) gm (short for game) b (short for bro)",
+      "votedBy": "U0A759TPU76",
+      "timestamp": "2026-02-01T15:45:26.479Z",
+      "slackTs": "1769960726.479439"
+    },
+    {
+      "project": "Reaction-speed-test",
+      "feedback": "no meaningful devlogs, but fun to mess around with for a few minutes. the design is horrible however, to be a bit harsh. emojis and neon everywhere, clearly vibecoded.",
+      "votedBy": "U0A759TPU76",
+      "timestamp": "2026-02-01T15:44:11.725Z",
+      "slackTs": "1769960651.725019"
+    },
+    {
+      "project": "Aesthetically Idle",
+      "feedback": "cool little screensaver, ui is pretty good. nice job!",
+      "votedBy": "U0A759TPU76",
+      "timestamp": "2026-02-01T15:39:44.059Z",
+      "slackTs": "1769960384.059959"
+    },
+    {
+      "project": "complex-plotter",
+      "feedback": "holy devlog maxxing. i honestly am too dumb to understand what this does, but i made some cool shapes with my basic algebra knowledge. i love c++ and opengl so you get some brownie points for that. good job!",
+      "votedBy": "U0A759TPU76",
+      "timestamp": "2026-02-01T15:38:28.847Z",
+      "slackTs": "1769960308.847479"
+    },
+    {
+      "project": "Trading_Sim",
+      "feedback": "bare devlogs, pretty short, espeically considering theyre logging a whole 12 hours. the design itself is fairly basic, but the app does what it needs to. good job.",
+      "votedBy": "U0A759TPU76",
+      "timestamp": "2026-02-01T15:35:57.592Z",
+      "slackTs": "1769960157.592889"
+    },
+    {
+      "project": "To do list",
+      "feedback": "no devlogs? i only see ship message. cool that its for arduino, but everyone and their dog has made a todo list app before.",
+      "votedBy": "U0A759TPU76",
+      "timestamp": "2026-02-01T15:33:30.570Z",
+      "slackTs": "1769960010.570109"
+    },
+    {
+      "project": "MultiConvert",
+      "feedback": "short (and most likely generated) devlogs, ai slop ui, does everything that my calc (short for calculator) app can already do. sorry.",
+      "votedBy": "U0A759TPU76",
+      "timestamp": "2026-02-01T15:32:47.264Z",
+      "slackTs": "1769959967.264269"
+    },
+    {
+      "project": "Trading_Sim",
+      "feedback": "I love this idea and how you made it. I would appreciate more devlogs, but overall I really like it!",
+      "votedBy": "U0A7ZKP5MA4",
+      "timestamp": "2026-02-01T15:31:59.159Z",
+      "slackTs": "1769959919.159699"
+    },
+    {
+      "project": "A basic password generator",
+      "feedback": "vibecoded ui (speaks for itself), but otherwise i could see myself using this!",
+      "votedBy": "U0A759TPU76",
+      "timestamp": "2026-02-01T15:31:39.576Z",
+      "slackTs": "1769959899.576029"
+    },
     {
       "project": "Universal Analog Input",
       "feedback": "hoenstly know way too little about this, but it looks hella impressive. good job.",
