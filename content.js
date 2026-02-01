@@ -13080,16 +13080,26 @@ const TUTORIAL_PHASE_2 = [
         description: 'Post devlogs right from your project page, no extra step of clicking a button. Let me show you...',
         afterNavDescription: 'Here you go! Look for the devlog form right here on the project page. Quick and easy.',
         target: null,
-        afterNavTarget: '.flavortown-inline-devlog, .post-form, form[action*="devlogs"]',
+        afterNavTarget: '.projects-new__card, .flavortown-inline-devlog, .post-form, form[action*="devlogs"]',
         position: 'center',
         icon: '📝',
         interactive: 'navigate-project-devlog'
     },
     {
+        id: 'changelog',
+        title: 'Auto-generated changelogs',
+        description: 'We can pull your git commits since your last devlog to help you write updates faster. Just click "Changelog" below the devlog form!',
+        target: '.flavortown-changelog-card',
+        position: 'center',
+        icon: '📋',
+        requiresElement: true,
+        allowInteraction: true
+    },
+    {
         id: 'inline-devlog-emoji',
         title: 'Slack emojis in devlogs and comments',
         description: 'Try typing a Slack emoji like :yay: to see the autocomplete. You can also use them in comments! ',
-        target: '.flavortown-inline-devlog textarea, .post-form textarea, form[action*="devlogs"] textarea',
+        target: '.projects-new__card textarea, .flavortown-inline-devlog textarea, .post-form textarea, form[action*="devlogs"] textarea',
         position: 'center',
         icon: '😺',
         requiresElement: true,
@@ -13118,6 +13128,16 @@ const TUTORIAL_PHASE_2 = [
         position: 'center',
         icon: '📸',
         interactive: 'navigate-shots'
+    },
+    {
+        id: 'annotate-screenshots',
+        title: 'Screenshot annotation',
+        description: 'Draw arrows, add text, highlight areas, and crop your screenshots right in the browser before uploading. Click Edit after uploading an attachment!',
+        target: '.flavortown-annotate-btn',
+        position: 'center',
+        icon: '🛠️',
+        requiresElement: true,
+        allowInteraction: true
     },
     {
         id: 'ship-stats',
@@ -13151,9 +13171,9 @@ const TUTORIAL_PHASE_2 = [
         id: 'shop-time-calc',
         title: 'Personalized pace',
         description: 'See how long it\'ll take to earn an item using your current earning pace.',
-        afterNavDescription: 'These lines show your remaining and total time based on your pace.',
+        afterNavDescription: 'The hours shown on each item are personalized based on your earning rate.',
         target: null,
-        afterNavTarget: '.flavortown-efficiency__hours',
+        afterNavTarget: '.shop-item-card__hours',
         position: 'center',
         icon: '⏱️',
         interactive: 'navigate-shop-time-calc'
@@ -13257,6 +13277,18 @@ const TUTORIAL_PHASE_3 = [
 ];
 
 const VERSION_FEATURES = {
+    '2.5.0': [
+        { title: 'Screenshot annotation tool', description: 'Draw arrows, add text, highlight areas, and crop screenshots before uploading.', icon: '🛠️' },
+        { title: 'Theme revamp', description: 'Complete overhaul of theme system with accent colors and better styling.', icon: '🎨' },
+        { title: 'Git changelog generation', description: 'Auto-generate changelogs from your Git commits since last devlog.', icon: '📋' },
+        { title: 'Estimated payout display', description: 'See estimated payout amounts directly on ship posts.', icon: '💰' },
+        { title: 'Command modal key binding', description: 'Customize the keyboard shortcut for opening the command palette.', icon: '⌨️' },
+        { title: 'Firefox support', description: 'Full compatibility with Firefox browser.', icon: '🦊' },
+        { title: 'Repo linker improvements', description: 'Better link detection and project matching from GitHub repos.', icon: '🔗' },
+        { title: 'Tutorial improvements', description: 'Enhanced onboarding with new feature highlights including changelog and screenshot tools.', icon: '💡' },
+        { title: 'Improved changelog', description: 'Changelog now uses HTML URLs for better reliability and viewing.', icon: '📋' },
+        { title: 'Theme gap fixes', description: 'Better theme coverage for all UI elements across the site.', icon: '🔧' }
+    ],
     '2.2.0': [
         { title: 'Slack emojis in devlogs & comments', description: 'Type :emoji: with autocomplete, and it renders for everyone.', icon: '💬' },
         { title: 'Leaderboard balance history', description: 'Click a user to see their cookie history graph and stats.', icon: '📈' },
@@ -14260,7 +14292,7 @@ class TutorialController {
             this.handledStepId = step.id;
 
             const onShop = window.location.pathname === '/shop';
-            const hoursSelector = '.flavortown-efficiency__hours';
+            const hoursSelector = '.shop-item-card__hours';
 
             if (!onShop) {
                 this.navigationStepId = step.id;
@@ -14275,13 +14307,15 @@ class TutorialController {
             }
 
             this.setInteractiveTimeout(() => {
-                const efficiency = document.querySelector('.flavortown-efficiency');
-                if (!efficiency) return;
-                efficiency.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                const hoursEl = document.querySelector(hoursSelector);
+                if (!hoursEl) return;
+                
+                const card = hoursEl.closest('.shop-item-card');
+                const scrollTarget = card || hoursEl;
+                scrollTarget.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
                 setTimeout(() => {
                     if (this.steps[this.currentStep]?.id !== step.id) return;
-                    const hoursEl = efficiency.querySelector(hoursSelector) || efficiency;
                     this.createSpotlight(hoursEl, step.id);
                     this.createModal(step, this.currentStep);
                 }, 500);
