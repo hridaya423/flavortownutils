@@ -1,7 +1,21 @@
 {
-  "lastUpdated": "2026-02-01T18:42:03.583Z",
-  "totalVotes": 2977,
+  "lastUpdated": "2026-02-01T19:29:06.641Z",
+  "totalVotes": 2979,
   "votes": [
+    {
+      "project": "Flask-Calculator-App",
+      "feedback": "Very simple project, whose technical merits are the fact that it uses templates and flask. It'd be a good exercise to try to implement an expression parser in your calculator (something that would transform \"2+3\" in Calculator.add(2,3);).\n\nThis project uses AI in an over-engineered readme.",
+      "votedBy": "U0A8B5H5DNY",
+      "timestamp": "2026-02-01T19:21:41.300Z",
+      "slackTs": "1769973701.300899"
+    },
+    {
+      "project": "Aaloo",
+      "feedback": "Simple enough tamagotchi clone, the CLI navigation is a nice bonus. It'd be nice if sleeping and waking up did something, and if they had some correlation to each other (right now, you can wake up without sleeping).\n\nAlso, this project uses AI (<https://github.com/bhatrichit10-ux/aaloo/blob/1e374cfb9f4ce6b2708840270582b9bbe515bf5e/src/actions.js#L10>). This should've been disclosed in the project description",
+      "votedBy": "U0A8B5H5DNY",
+      "timestamp": "2026-02-01T19:16:10.543Z",
+      "slackTs": "1769973370.543589"
+    },
     {
       "project": "Maze Generator",
       "feedback": "noice project",
