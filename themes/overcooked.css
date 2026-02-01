@@ -107,7 +107,7 @@ body::before {
 
 .sidebar__nav-link--active {
     background-color: var(--overcooked-mid) !important;
-    color: var(--overcooked-cyan) !important;
+    color: var(--overcooked-white) !important;
 }
 
 .sidebar__nav-icon {
@@ -128,7 +128,7 @@ body::before {
 
 .sidebar__user-avatar-hat,
 .sidebar__user-avatar-hat-bg {
-    filter: hue-rotate(270deg) saturate(0.8) !important;
+    filter: hue-rotate(27deg) saturate(0.9) !important;
 }
 
 .sidebar__user-name {
@@ -3458,4 +3458,191 @@ main:has(.chef-img) .btn {
 
 main:has(.chef-img) .btn:hover {
     background: var(--overcooked-gold) !important;
+}
+
+
+.sidebar__nav-link:hover {
+    color: var(--overcooked-cyan) !important;
+}
+
+.sidebar__nav-link:hover .sidebar__nav-icon {
+    color: var(--overcooked-cyan) !important;
+}
+
+.sidebar__nav-link--active:hover {
+    color: var(--overcooked-white) !important;
+}
+
+.sidebar__nav-link--active:hover .sidebar__nav-icon {
+    color: var(--overcooked-cyan) !important;
+}
+
+.sidebar__nav-link--active::before {
+    background-color: var(--overcooked-cyan) !important;
+}
+
+.project-show-card__stat svg {
+    color: var(--overcooked-cyan) !important;
+}
+
+
+.project-card__banner-placeholder {
+    background-color: var(--overcooked-cyan) !important;
+    opacity: 0.2 !important;
+}
+
+.post__dot {
+    background-color: var(--overcooked-cyan) !important;
+    opacity: 0.4 !important;
+}
+
+.post__dot.is-active {
+    background-color: var(--overcooked-cyan) !important;
+    opacity: 1 !important;
+}
+
+.post--devlog::after,
+.post--theme-devlog::after {
+    border-color: var(--overcooked-cyan) !important;
+    background-color: var(--overcooked-cyan) !important;
+}
+
+.post--certified::after,
+.post--theme-ship::after,
+.post--theme-fire::after {
+    border-color: var(--overcooked-cyan) !important;
+    background-color: var(--overcooked-cyan) !important;
+}
+
+.post__ship-title {
+    color: var(--overcooked-white) !important;
+}
+
+.post__fire-title {
+    color: var(--overcooked-cyan) !important;
+}
+
+
+.shop-item-card__bow {
+    display: none !important;
+}
+
+.shop-item-card__star {
+    background-color: var(--overcooked-mid) !important;
+    border: 1px solid var(--overcooked-surface) !important;
+}
+
+.shop-item-card__star:hover {
+    color: var(--overcooked-cyan) !important;
+    background-color: var(--overcooked-surface) !important;
+}
+
+.shop-item-card__image {
+    background: var(--overcooked-cyan) !important;
+}
+
+.shop-item-card__purchased-badge {
+    background: var(--overcooked-kelp) !important;
+    color: var(--overcooked-abyss) !important;
+}
+
+.shop__recently-added-items {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    gap: 16px !important;
+    padding: 8px 0 !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+    scroll-behavior: smooth !important;
+}
+
+.shop__recently-added-items::-webkit-scrollbar {
+    display: none !important;
+}
+
+.shop__recently-added-items .shop-item-card {
+    flex: 0 0 auto !important;
+    width: 280px !important;
+    min-width: 280px !important;
+}
+
+.state-card__icon-circle {
+    background-color: var(--overcooked-cyan) !important;
+    color: var(--overcooked-abyss) !important;
+}
+
+.achievements__icon {
+    background-color: var(--overcooked-cyan) !important;
+}
+
+.achievements__icon-svg {
+    color: var(--overcooked-surface) !important;
+}
+
+.achievements__icon-svg path {
+    fill: currentColor !important;
+}
+
+.achievements__icon-svg path[d*="M24 0v24H0V0z"] {
+    fill: none !important;
+}
+
+.achievement-icon-placeholder {
+    color: var(--overcooked-white) !important;
+    background-color: var(--overcooked-cyan) !important;
+}
+
+.btn-primary:hover {
+    background-color: var(--overcooked-mist) !important;
+    color: var(--overcooked-abyss) !important;
+}
+
+.report-btn {
+    background-color: var(--overcooked-cyan) !important;
+    color: var(--overcooked-abyss) !important;
+}
+
+
+.votes-new__form-flag {
+    filter: hue-rotate(-33deg) saturate(1.1) brightness(1.1) !important;
+}
+
+.state-machine {
+    display: none !important;
+}
+
+.post__payout-item.flavortown-unpaid-ship-est .post__payout-label,
+.post__payout-item.flavortown-unpaid-ship-est .post__payout-value {
+    color: var(--overcooked-cyan) !important;
+}
+
+
+.input__label {
+    color: var(--overcooked-abyss) !important;
+    background-color: var(--overcooked-cyan) !important;
+}
+
+.projects-new__checkbox-control {
+    background-color: var(--overcooked-mid) !important;
+    border-color: var(--overcooked-surface) !important;
+}
+
+.projects-new__checkbox-control input[type="checkbox"] {
+    accent-color: var(--overcooked-cyan) !important;
+}
+
+.projects-new__checkbox-label {
+    color: var(--overcooked-white) !important;
+}
+
+.comment {
+    background-color: var(--overcooked-mid) !important;
+    border-color: var(--overcooked-surface) !important;
+}
+
+.projects-show__timeline::before {
+    background-image: url("data:image/svg+xml,%3csvg width='8' height='90' viewBox='0 0 4 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3crect x='0' y='0' width='4' height='30' rx='2' fill='%23ed8936' /%3e%3c/svg%3e") !important;
+    opacity: 0.4 !important;
 }

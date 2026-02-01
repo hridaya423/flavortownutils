@@ -100,7 +100,7 @@ body::before {
 
 .sidebar__nav-link--active {
     background-color: var(--sea-mid) !important;
-    color: var(--sea-cyan) !important;
+    color: var(--sea-white) !important;
 }
 
 .sidebar__nav-icon {
@@ -121,7 +121,7 @@ body::before {
 
 .sidebar__user-avatar-hat,
 .sidebar__user-avatar-hat-bg {
-    filter: hue-rotate(270deg) saturate(0.8) !important;
+    filter: hue-rotate(187deg) saturate(0.9) !important;
 }
 
 .sidebar__user-name {
@@ -3451,4 +3451,190 @@ main:has(.chef-img) .btn {
 
 main:has(.chef-img) .btn:hover {
     background: var(--sea-gold) !important;
+}
+
+
+.sidebar__nav-link:hover {
+    color: var(--sea-cyan) !important;
+}
+
+.sidebar__nav-link:hover .sidebar__nav-icon {
+    color: var(--sea-cyan) !important;
+}
+
+.sidebar__nav-link--active:hover {
+    color: var(--sea-white) !important;
+}
+
+.sidebar__nav-link--active .sidebar__nav-icon {
+    color: var(--sea-cyan) !important;
+}
+
+.sidebar__nav-link--active:hover .sidebar__nav-icon {
+    color: var(--sea-cyan) !important;
+}
+
+.sidebar__nav-link--active::before {
+    background-color: var(--sea-cyan) !important;
+}
+
+.project-show-card__stat svg {
+    color: var(--sea-cyan) !important;
+}
+
+.project-card__banner-placeholder {
+    background-color: var(--sea-cyan) !important;
+    opacity: 0.2 !important;
+}
+
+.post__dot {
+    background-color: var(--sea-cyan) !important;
+    opacity: 0.4 !important;
+}
+
+.post__dot.is-active {
+    opacity: 1 !important;
+}
+
+.post--devlog::after,
+.post--theme-devlog::after {
+    border-color: var(--sea-cyan) !important;
+    background-color: var(--sea-cyan) !important;
+}
+
+.post--certified::after,
+.post--theme-ship::after,
+.post--theme-fire::after {
+    border-color: var(--sea-cyan) !important;
+    background-color: var(--sea-cyan) !important;
+}
+
+.post__ship-title {
+    color: var(--sea-white) !important;
+}
+
+.post__fire-title {
+    color: var(--sea-cyan) !important;
+}
+
+.shop-item-card__bow {
+    display: none !important;
+}
+
+.shop-item-card__star {
+    background-color: var(--sea-mid) !important;
+    border: 1px solid var(--sea-surface) !important;
+}
+
+.shop-item-card__star:hover {
+    color: var(--sea-cyan) !important;
+    background-color: var(--sea-surface) !important;
+}
+
+.shop-item-card__image {
+    background: var(--sea-cyan) !important;
+}
+
+.shop-item-card__purchased-badge {
+    background: var(--sea-kelp) !important;
+    color: var(--sea-abyss) !important;
+}
+
+.shop__recently-added-items {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    gap: 16px !important;
+    padding: 8px 0 !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+    scroll-behavior: smooth !important;
+}
+
+.shop__recently-added-items::-webkit-scrollbar {
+    display: none !important;
+}
+
+.shop__recently-added-items .shop-item-card {
+    flex: 0 0 auto !important;
+    width: 280px !important;
+    min-width: 280px !important;
+}
+
+.state-card__icon-circle {
+    background-color: var(--sea-cyan) !important;
+    color: var(--sea-abyss) !important;
+}
+
+.achievements__icon {
+    background-color: var(--sea-cyan) !important;
+}
+
+.achievements__icon-svg {
+    color: var(--sea-surface) !important;
+}
+
+.achievements__icon-svg path {
+    fill: currentColor !important;
+}
+
+.achievements__icon-svg path[d*="M24 0v24H0V0z"] {
+    fill: none !important;
+}
+
+.achievement-icon-placeholder {
+    color: var(--sea-white) !important;
+    background-color: var(--sea-cyan) !important;
+}
+
+.btn-primary:hover {
+    background-color: var(--sea-mist) !important;
+    color: var(--sea-abyss) !important;
+}
+
+.report-btn {
+    background-color: var(--sea-cyan) !important;
+    color: var(--sea-abyss) !important;
+}
+
+.votes-new__form-flag {
+    filter: hue-rotate(180deg) saturate(1.2) !important;
+}
+
+.state-machine {
+    display: none !important;
+}
+
+.post__payout-item.flavortown-unpaid-ship-est .post__payout-label,
+.post__payout-item.flavortown-unpaid-ship-est .post__payout-value {
+    color: var(--sea-cyan) !important;
+}
+
+.input__label {
+    color: var(--sea-abyss) !important;
+    background-color: var(--sea-cyan) !important;
+}
+
+.projects-new__checkbox-control {
+    background-color: var(--sea-mid) !important;
+    border-color: var(--sea-surface) !important;
+}
+
+.projects-new__checkbox-control input[type="checkbox"] {
+    accent-color: var(--sea-cyan) !important;
+}
+
+.projects-new__checkbox-label {
+    color: var(--sea-white) !important;
+}
+
+.comment {
+    background-color: var(--sea-mid) !important;
+    border-color: var(--sea-surface) !important;
+}
+
+.projects-show__timeline::before {
+    background-image: url("data:image/svg+xml,%3csvg width='8' height='90' viewBox='0 0 4 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3crect x='0' y='0' width='4' height='30' rx='2' fill='%2322d3ee' /%3e%3c/svg%3e") !important;
+    opacity: 0.4 !important;
 }

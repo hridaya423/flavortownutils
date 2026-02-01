@@ -154,7 +154,7 @@ body::before {
 
 .sidebar__user-avatar-hat,
 .sidebar__user-avatar-hat-bg {
-    filter: hue-rotate(var(--ctp-accent-hue)) saturate(0.8) !important;
+    filter: hue-rotate(var(--ctp-accent-hue)) saturate(0.5) !important;
 }
 
 .sidebar__user-name {
