@@ -6381,6 +6381,28 @@ function checkForUpdates() {
         .catch(e => console.error('Flavortown update check failed:', e));
 }
 
+function restructurePayoutVotesText() {
+    const elements = document.querySelectorAll('.projects-show__payout-votes-text');
+    elements.forEach(el => {
+        if (el.dataset.flavortownRestructured) return;
+        const strong = el.querySelector('strong');
+        if (!strong) return;
+        const textContent = el.textContent.trim();
+        strong.textContent = textContent;
+        el.innerHTML = '';
+        el.appendChild(strong);
+        el.dataset.flavortownRestructured = 'true';
+    });
+}
+
+function initPayoutVotesTextRestructure() {
+    restructurePayoutVotesText();
+    const observer = new MutationObserver(() => {
+        restructurePayoutVotesText();
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+}
+
 function init() {
     initLocalStorageSync();
     loadTheme();
@@ -6412,6 +6434,7 @@ function init() {
     setTimeout(enhanceLeaderboardPage, 0);
     enhanceAdminPage();
     initProjectRepoSuggestions();
+    initPayoutVotesTextRestructure();
 
     setTimeout(checkAchievements, 2000);
     setTimeout(initVotesFeature, 1000);
