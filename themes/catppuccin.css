@@ -2559,6 +2559,10 @@ a:hover {
     color: var(--ctp-accent) !important;
 }
 
+.flavortown-changelog__title {
+    color: var(--ctp-accent) !important;
+}
+
 .post__payout-item.flavortown-unpaid-ship-est .post__payout-label,
 .post__payout-item.flavortown-unpaid-ship-est .post__payout-value {
     color: var(--ctp-accent) !important;

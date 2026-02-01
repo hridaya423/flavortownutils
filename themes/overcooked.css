@@ -3522,6 +3522,9 @@ main:has(.chef-img) .btn:hover {
     color: var(--overcooked-cyan) !important;
 }
 
+.flavortown-changelog__title {
+    color: var(--overcooked-cyan) !important;
+}
 
 .shop-item-card__bow {
     display: none !important;

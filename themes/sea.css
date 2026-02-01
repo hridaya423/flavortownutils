@@ -3517,6 +3517,10 @@ main:has(.chef-img) .btn:hover {
     color: var(--sea-cyan) !important;
 }
 
+.flavortown-changelog__title {
+    color: var(--sea-cyan) !important;
+}
+
 .shop-item-card__bow {
     display: none !important;
 }
