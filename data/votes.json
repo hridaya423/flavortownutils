@@ -1,7 +1,35 @@
 {
-  "lastUpdated": "2026-02-01T19:29:06.641Z",
-  "totalVotes": 2979,
+  "lastUpdated": "2026-02-01T19:48:16.498Z",
+  "totalVotes": 2983,
   "votes": [
+    {
+      "project": "To do list",
+      "feedback": "Always nice to see a hardware project! Not much to say about its functionality, it's a simple sequence of if-elses to verify if I did my homework and cleaned my room (as a matter of fact, no, I did not.)\n\nI'm rating the project on its hardware, not software. This is because the code is likely AI generated (<https://github.com/katonamozes/to-do-list/blob/main/Code_for_arduino_mega2456>)(lines 65,74,80...) but at the very least the developer had to do the wiring themselves, which is nice enough.",
+      "votedBy": "U0A8B5H5DNY",
+      "timestamp": "2026-02-01T19:46:37.967Z",
+      "slackTs": "1769975197.967789"
+    },
+    {
+      "project": "MultiConvert",
+      "feedback": "Output is always shown with 4 digits of precision, regardless of the real input precision (10 km = 10.0000km). Ideally, round the numbers up. \n\nThis has a lot of undeclared usage of AI: the documentation is AI-generated, and so is the frontend (it was made in its entirety in 17 minutes).",
+      "votedBy": "U0A8B5H5DNY",
+      "timestamp": "2026-02-01T19:40:21.006Z",
+      "slackTs": "1769974821.006649"
+    },
+    {
+      "project": "A basic password generator",
+      "feedback": "Does as advertised. I can see reading the source code that the \"breeakability\" of passwords is calculated by using entropy, but it'd be nice for the user to have a quantitative metric of how difficult their password is to crack (it's quite simple to implement a 'your password would take {time} for a supercomputer to break!' text box).\n\nAlso, needless to say, this project's documentation, devlogs and frontend are AI generated.",
+      "votedBy": "U0A8B5H5DNY",
+      "timestamp": "2026-02-01T19:34:53.528Z",
+      "slackTs": "1769974493.528479"
+    },
+    {
+      "project": "Universal Analog Input",
+      "feedback": "Very interesting project! It is particularly well documented, with a very nice README.md to explain it. It's windows-exclusive and would require you to use a controller (which I don't have), but for any sort of mapping software, that is to be expected.\n\nThe commit history for this project is quite bizarre: almost its entire code is in one huge commit with almost 27k changed lines (<https://github.com/Ritonton/UniversalAnalogInput/commit/2ecf77760f40c3425fe1ea9dd96b7435e50c3cfe>). This is somewhat common for beginner developers, but very weird for an advanced project like so.",
+      "votedBy": "U0A8B5H5DNY",
+      "timestamp": "2026-02-01T19:29:34.321Z",
+      "slackTs": "1769974174.321649"
+    },
     {
       "project": "Flask-Calculator-App",
       "feedback": "Very simple project, whose technical merits are the fact that it uses templates and flask. It'd be a good exercise to try to implement an expression parser in your calculator (something that would transform \"2+3\" in Calculator.add(2,3);).\n\nThis project uses AI in an over-engineered readme.",
