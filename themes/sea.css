@@ -1174,6 +1174,26 @@ a:hover {
     color: var(--sea-white) !important;
 }
 
+.my-orders__status--fulfilled {
+    background-color: var(--sea-kelp) !important;
+    color: var(--sea-abyss) !important;
+}
+
+.my-orders__status--rejected {
+    background-color: var(--sea-coral) !important;
+    color: var(--sea-abyss) !important;
+}
+
+.my-orders__status--awaiting_periodical_fulfillment {
+    background-color: var(--sea-gold) !important;
+    color: var(--sea-abyss) !important;
+}
+
+.my-orders__status--awaiting_verification {
+    background-color: var(--sea-cyan) !important;
+    color: var(--sea-abyss) !important;
+}
+
 .my-orders__label {
     color: var(--sea-foam) !important;
 }

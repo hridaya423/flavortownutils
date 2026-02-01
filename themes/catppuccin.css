@@ -1249,6 +1249,26 @@ a:hover {
     color: var(--ctp-text) !important;
 }
 
+.my-orders__status--fulfilled {
+    background-color: var(--ctp-green) !important;
+    color: var(--ctp-crust) !important;
+}
+
+.my-orders__status--rejected {
+    background-color: var(--ctp-red) !important;
+    color: var(--ctp-crust) !important;
+}
+
+.my-orders__status--awaiting_periodical_fulfillment {
+    background-color: var(--ctp-yellow) !important;
+    color: var(--ctp-crust) !important;
+}
+
+.my-orders__status--awaiting_verification {
+    background-color: var(--ctp-mauve) !important;
+    color: var(--ctp-crust) !important;
+}
+
 .my-orders__label {
     color: var(--ctp-subtext0) !important;
 }

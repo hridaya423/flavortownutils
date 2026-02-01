@@ -1181,6 +1181,26 @@ a:hover {
     color: var(--overcooked-white) !important;
 }
 
+.my-orders__status--fulfilled {
+    background-color: var(--overcooked-kelp) !important;
+    color: var(--overcooked-abyss) !important;
+}
+
+.my-orders__status--rejected {
+    background-color: var(--overcooked-coral) !important;
+    color: var(--overcooked-abyss) !important;
+}
+
+.my-orders__status--awaiting_periodical_fulfillment {
+    background-color: var(--overcooked-gold) !important;
+    color: var(--overcooked-abyss) !important;
+}
+
+.my-orders__status--awaiting_verification {
+    background-color: var(--overcooked-cyan) !important;
+    color: var(--overcooked-abyss) !important;
+}
+
 .my-orders__label {
     color: var(--overcooked-foam) !important;
 }
