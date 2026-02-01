@@ -1903,8 +1903,21 @@ a:hover {
 }
 
 .input__label {
-    color: var(--ctp-text) !important;
+    color: var(--ctp-accent-text) !important;
     background-color: var(--ctp-accent) !important;
+}
+
+.projects-new__checkbox-control {
+    background-color: var(--ctp-surface1) !important;
+    border-color: var(--ctp-surface2) !important;
+}
+
+.projects-new__checkbox-control input[type="checkbox"] {
+    accent-color: var(--ctp-accent) !important;
+}
+
+.projects-new__checkbox-label {
+    color: var(--ctp-text) !important;
 }
 
 .input__subtitle {

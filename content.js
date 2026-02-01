@@ -3682,7 +3682,7 @@ function normalizeCommitForChangelog(commit) {
     if (!commit) return null;
     const message = commit.commit?.message || commit.message || '';
     const subject = commit.subject || formatCommitSubject(message) || 'Update';
-    const url = commit.url || commit.html_url || '';
+    const url = commit.html_url || commit.url || '';
     const date = commit.date || commit.commit?.author?.date || commit.commit?.committer?.date || null;
     const authorName = commit.authorName || (typeof commit.author === 'string' ? commit.author : commit.author?.login) || commit.commit?.author?.name || '';
     const normalized = {
