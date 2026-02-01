@@ -1,7 +1,119 @@
 {
-  "lastUpdated": "2026-02-01T20:33:27.624Z",
-  "totalVotes": 2991,
+  "lastUpdated": "2026-02-01T21:28:46.899Z",
+  "totalVotes": 3007,
   "votes": [
+    {
+      "project": "Space Shooter",
+      "feedback": "like the animation tho its still a little rough",
+      "votedBy": "Unknown",
+      "timestamp": "2026-02-01T21:24:28.766Z",
+      "slackTs": "1769981068.766219"
+    },
+    {
+      "project": "Reaction-speed-test",
+      "feedback": "UI vibe-coded",
+      "votedBy": "Unknown",
+      "timestamp": "2026-02-01T21:23:36.539Z",
+      "slackTs": "1769981016.539499"
+    },
+    {
+      "project": "Reaction-speed-test",
+      "feedback": "Only one devlog,",
+      "votedBy": "U0825SVHFJL",
+      "timestamp": "2026-02-01T21:22:38.566Z",
+      "slackTs": "1769980958.566919"
+    },
+    {
+      "project": "Aesthetically Idle",
+      "feedback": "wow it's really nice",
+      "votedBy": "Unknown",
+      "timestamp": "2026-02-01T21:21:42.993Z",
+      "slackTs": "1769980902.993349"
+    },
+    {
+      "project": "Aesthetically Idle",
+      "feedback": "I think its a nice toy project, though a waste of battery",
+      "votedBy": "U0825SVHFJL",
+      "timestamp": "2026-02-01T21:21:17.257Z",
+      "slackTs": "1769980877.257309"
+    },
+    {
+      "project": "Trading_Sim",
+      "feedback": "The project is nice, however it only has 6 devlogs for a 55 hour project. I can't let that slide",
+      "votedBy": "U0825SVHFJL",
+      "timestamp": "2026-02-01T21:20:35.021Z",
+      "slackTs": "1769980835.021319"
+    },
+    {
+      "project": "To do list",
+      "feedback": "Absolutely no devlogs, 0 for storytelling",
+      "votedBy": "U0825SVHFJL",
+      "timestamp": "2026-02-01T21:19:26.442Z",
+      "slackTs": "1769980766.442049"
+    },
+    {
+      "project": "To do list",
+      "feedback": "code here looks ai generated, on tinkercad it also says this is a copy of another project albeit with different (ai generated) code",
+      "votedBy": "U0A7J4EHADP",
+      "timestamp": "2026-02-01T21:05:44.973Z",
+      "slackTs": "1769979944.973719"
+    },
+    {
+      "project": "MultiConvert",
+      "feedback": "frontend seems ai generated for 17 minutes, the readme also seems ai generated as it is quite detailed for a simple project like this one, i cant rate this highly as this may be vibecoded and is quite simple",
+      "votedBy": "U0A7J4EHADP",
+      "timestamp": "2026-02-01T21:01:51.932Z",
+      "slackTs": "1769979711.932919"
+    },
+    {
+      "project": "StudentData",
+      "feedback": "Simple CRUD and does as advised. This project uses AI, but it is properly described in the ship message. \n\nThe UI is very simple and crude (which is weird for a react/vite app), but at the very least it wasn't entirely AI generated. Breath of fresh air!",
+      "votedBy": "U0A8B5H5DNY",
+      "timestamp": "2026-02-01T20:57:11.412Z",
+      "slackTs": "1769979431.412129"
+    },
+    {
+      "project": "SCorner",
+      "feedback": "Simple portfolio website. The chatbot part has some pretty noticeable UI issues, notably that it uses dark text and fonts in a dark background. This likely went unnoticed in the UI overhaul. Also, a portfolio does not need a chatbot. Most things don't.\n\nThe AI's parameters are a bit all over the place. It doesn't seem to know it's in a personal website. When asked \"Why do you exist?\" it responds with \"I exist as a large language model developed by Scutoid (a research group at the Center for Complexity Science at Indiana University\"\n\nThis project has undeclared usage of AI, notably in <https://github.com/Scutoidzz/Scutoid/blob/main/api/v1/test.php>",
+      "votedBy": "U0A8B5H5DNY",
+      "timestamp": "2026-02-01T20:55:17.797Z",
+      "slackTs": "1769979317.797939"
+    },
+    {
+      "project": "A basic password generator",
+      "feedback": "nice project, it does what its supposed to do but it is obviously basic",
+      "votedBy": "U0A7J4EHADP",
+      "timestamp": "2026-02-01T20:51:20.495Z",
+      "slackTs": "1769979080.495009"
+    },
+    {
+      "project": "macspoofer",
+      "feedback": "dont have linux anymore so cant test, the script looks pretty good though, i'm pretty sure there was gnu macspoofer but it seems this is more intuitive for beginners, also more devlogs would be nice",
+      "votedBy": "U0A7J4EHADP",
+      "timestamp": "2026-02-01T20:47:14.743Z",
+      "slackTs": "1769978834.743139"
+    },
+    {
+      "project": "ZhiXue Lite",
+      "feedback": "I do not speak mandarin, so I have no idea what's going on in the demo and documentation. It is currently possible to add a translated version of readmes in github (just create another file, readme-en.md, and link it in the main README.md), so I'd recommend doing that. English is also not my first language, so I  completely understand not writing documentation in it, but there's always translation tools. I recommend DeepL.\n\nThe code is modularized and split into many commits. Good!",
+      "votedBy": "U0A8B5H5DNY",
+      "timestamp": "2026-02-01T20:42:40.745Z",
+      "slackTs": "1769978560.745279"
+    },
+    {
+      "project": "Universal Analog Input",
+      "feedback": "pretty cool idea, unable to test but it seems like a pretty high effort/advanced project but theres not really a devlog/commit history, demo video and readme are nice though",
+      "votedBy": "U0A7J4EHADP",
+      "timestamp": "2026-02-01T20:39:27.219Z",
+      "slackTs": "1769978367.219119"
+    },
+    {
+      "project": "Decodify",
+      "feedback": "It's a Gemini wrapper. It'd be one thing if it went and explained what it does line by line, actually \"transformed\" the code into english pseudocode, but it's, as of now, no different (if not slightly worse) than going to Gemini and copy pasting the code.\n\nYou could add syntax highlighting and markdown to your app, so gemini's answer is well-formatted, the same being the case for the code you input in. A useful enough feature would be to highlight a piece of code and then have this code block, with the rest of the project's context, be translated to \"plain english\". This would make it a far more useful tool.",
+      "votedBy": "U0A8B5H5DNY",
+      "timestamp": "2026-02-01T20:37:06.363Z",
+      "slackTs": "1769978226.363219"
+    },
     {
       "project": "Flask-Calculator-App",
       "feedback": "its nice that this has a ui and is not just cli but its pretty simple and limited (it is also quite slow). there are barely any devlogs/commits + the readme seems ai generated (it is more detailed than the project itself).",
