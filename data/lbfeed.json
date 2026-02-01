@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-01T08:44:56.061Z",
+  "lastUpdated": "2026-02-01T09:38:51.461Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -7141,6 +7141,14 @@
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U082GTRTR5X"
+      },
+      {
+        "ts": "2026-02-01T09:07:39.574Z",
+        "delta": 65,
+        "balance": 869,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U082GTRTR5X"
       }
     ],
     "u082l0utj66": [
@@ -9786,6 +9794,14 @@
         "ts": "2026-01-30T03:15:49.936Z",
         "delta": 256,
         "balance": 336,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U089QTPBYJ0"
+      },
+      {
+        "ts": "2026-02-01T09:10:28.067Z",
+        "delta": 32,
+        "balance": 368,
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U089QTPBYJ0"
@@ -18445,6 +18461,16 @@
         "userId": "U09736L44JZ"
       }
     ],
+    "u097ahqqnn9": [
+      {
+        "ts": "2026-02-01T09:07:55.915Z",
+        "delta": 18,
+        "balance": 23,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U097AHQQNN9"
+      }
+    ],
     "u097gpydef4": [
       {
         "ts": "2026-01-10T20:00:22.058Z",
@@ -21480,6 +21506,14 @@
         "balance": 1113,
         "reason": "payout",
         "reasonType": "payout",
+        "userId": "U09DYNHJN5B"
+      },
+      {
+        "ts": "2026-02-01T08:46:15.003Z",
+        "delta": 6,
+        "balance": 1119,
+        "reason": "tutorial",
+        "reasonType": "",
         "userId": "U09DYNHJN5B"
       }
     ],
@@ -50145,6 +50179,30 @@
     ]
   },
   "users": {
+    "U089QTPBYJ0": {
+      "id": "U089QTPBYJ0",
+      "username": "ahmet.affan.ebcioglu",
+      "displayName": "temidaradev",
+      "avatar": "https://avatars.slack-edge.com/2025-07-03/9138406944899_8ff0acbf1e9dbedc50d2_72.jpg"
+    },
+    "U097AHQQNN9": {
+      "id": "U097AHQQNN9",
+      "username": "quickhalewebtech",
+      "displayName": "satya//7YA",
+      "avatar": "https://avatars.slack-edge.com/2025-07-25/9248518529315_6f0a74151dad785891dd_72.jpg"
+    },
+    "U082GTRTR5X": {
+      "id": "U082GTRTR5X",
+      "username": "cyteon",
+      "displayName": "Cyteon",
+      "avatar": "https://avatars.slack-edge.com/2025-04-05/8722129902817_bed15dc712f97108332d_72.png"
+    },
+    "U09DYNHJN5B": {
+      "id": "U09DYNHJN5B",
+      "username": "abdulrafay88243",
+      "displayName": "mrsiuuuu_x1",
+      "avatar": "https://avatars.slack-edge.com/2026-01-21/10344219015060_1d9fdb6be9201c147e3e_72.jpg"
+    },
     "U091Q62131A": {
       "id": "U091Q62131A",
       "username": "darius",
@@ -50593,12 +50651,6 @@
       "displayName": "Jadamek1337",
       "avatar": "https://avatars.slack-edge.com/2025-12-14/10146661891728_8300372363305dbb3659_72.jpg"
     },
-    "U09DYNHJN5B": {
-      "id": "U09DYNHJN5B",
-      "username": "abdulrafay88243",
-      "displayName": "mrsiuuuu_x1",
-      "avatar": "https://avatars.slack-edge.com/2026-01-21/10344219015060_1d9fdb6be9201c147e3e_72.jpg"
-    },
     "U0A4H78N1BR": {
       "id": "U0A4H78N1BR",
       "username": "saksham.khatod27",
@@ -50850,12 +50902,6 @@
       "username": "gowthameh03",
       "displayName": "gow",
       "avatar": "https://avatars.slack-edge.com/2026-01-25/10365969068005_5700ca6d5ce0f34212d0_72.png"
-    },
-    "U089QTPBYJ0": {
-      "id": "U089QTPBYJ0",
-      "username": "ahmet.affan.ebcioglu",
-      "displayName": "temidaradev",
-      "avatar": "https://avatars.slack-edge.com/2025-07-03/9138406944899_8ff0acbf1e9dbedc50d2_72.jpg"
     },
     "U0A4TBWJR42": {
       "id": "U0A4TBWJR42",
@@ -51845,12 +51891,6 @@
       "username": "lucasnwilliams2008hac",
       "displayName": "FunnyEmmit7",
       "avatar": "https://secure.gravatar.com/avatar/cff373b2797abced5a4b67a3b0db5e5e.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0008-72.png"
-    },
-    "U082GTRTR5X": {
-      "id": "U082GTRTR5X",
-      "username": "cyteon",
-      "displayName": "Cyteon",
-      "avatar": "https://avatars.slack-edge.com/2025-04-05/8722129902817_bed15dc712f97108332d_72.png"
     },
     "U096NGLTF4K": {
       "id": "U096NGLTF4K",
