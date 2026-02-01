@@ -1,7 +1,63 @@
 {
-  "lastUpdated": "2026-02-01T19:48:16.498Z",
-  "totalVotes": 2983,
+  "lastUpdated": "2026-02-01T20:33:27.624Z",
+  "totalVotes": 2991,
   "votes": [
+    {
+      "project": "Flask-Calculator-App",
+      "feedback": "its nice that this has a ui and is not just cli but its pretty simple and limited (it is also quite slow). there are barely any devlogs/commits + the readme seems ai generated (it is more detailed than the project itself).",
+      "votedBy": "U0A7J4EHADP",
+      "timestamp": "2026-02-01T20:30:36.921Z",
+      "slackTs": "1769977836.921629"
+    },
+    {
+      "project": "Space Shooter",
+      "feedback": "Simple, fun game. I can see you implemented a reload mechanic in the game (waiting for the next shot) in the source code, which is an important enough addition, but I would recommend reducing it a tad bit, and adding a visual indicator that the ship is reloading (you could, for instance, decrease its opacity, if you don't want to create a new sprite). \n\nAlso, as you move forward, try to modularize (that is, split into multiple files) your game logic! Right now, everything runs in a single file, which could be split into many. You are using python, which is a great language for that, so use and abuse that feature.",
+      "votedBy": "U0A8B5H5DNY",
+      "timestamp": "2026-02-01T20:30:04.570Z",
+      "slackTs": "1769977804.570649"
+    },
+    {
+      "project": "Aaloo",
+      "feedback": "decent cli but its pretty simple so cant rate too highly",
+      "votedBy": "U0A7J4EHADP",
+      "timestamp": "2026-02-01T20:24:57.961Z",
+      "slackTs": "1769977497.961029"
+    },
+    {
+      "project": "Reaction-speed-test",
+      "feedback": "Your AI slop bores me.",
+      "votedBy": "U0A8B5H5DNY",
+      "timestamp": "2026-02-01T20:21:03.437Z",
+      "slackTs": "1769977263.437909"
+    },
+    {
+      "project": "Aesthetically Idle",
+      "feedback": "Purely frontend website. Looks good, does as advertised. It'd be good if this was an actual screen idle (triggers whenever you are not using your computer), but then this would be blown out of proportion from a simple react app to something that needs operating system integrations.",
+      "votedBy": "U0A8B5H5DNY",
+      "timestamp": "2026-02-01T20:18:53.587Z",
+      "slackTs": "1769977133.587179"
+    },
+    {
+      "project": "Reaction-speed-test",
+      "feedback": "The site is very laggy and seems very AI-Generated... I can name several things that shout ai such as:\n- Your README has an \"age group.\"\n- Lots of AI-generated comments in theHTMLl\n- Overuse of emojis\n- Lack of devlogs\n\nI would love to see something that's not AI.",
+      "votedBy": "U0A7ZKP5MA4",
+      "timestamp": "2026-02-01T20:16:46.261Z",
+      "slackTs": "1769977006.261239"
+    },
+    {
+      "project": "Trading_Sim",
+      "feedback": "Many merits in this project! Namely that it dockerizes its contents, and the src folders have dedicated READMEs, but mostly in a high-level manner (it explains how to use this project's API). It's also pretty clear that a lot of work was poured into this project (it has 55 logged hours - awesome)\n\nI'd love to see more in the devlogs to explain how the project works, and the way you simulate trading. Simulating stocks is a very much non-trivial task, which some nerds (quant 'people') dedicate their lifes to understand, so everyone's approach is kind of different. Show yours! Additionally, you are making a stock simulator: add a chart so people can visualizer their stocks! (Grapheno is a very easy API you can integrate into your current project)\n\nAlso, minor nitpick: there is an infinite money glitch by selling bonds with an expiry value of 0, and value of any positive integer.",
+      "votedBy": "U0A8B5H5DNY",
+      "timestamp": "2026-02-01T20:15:41.531Z",
+      "slackTs": "1769976941.531609"
+    },
+    {
+      "project": "MultiConvert",
+      "feedback": "I feel like there could be more devlogs and time",
+      "votedBy": "U09A7GEM760",
+      "timestamp": "2026-02-01T19:52:27.126Z",
+      "slackTs": "1769975547.126589"
+    },
     {
       "project": "To do list",
       "feedback": "Always nice to see a hardware project! Not much to say about its functionality, it's a simple sequence of if-elses to verify if I did my homework and cleaned my room (as a matter of fact, no, I did not.)\n\nI'm rating the project on its hardware, not software. This is because the code is likely AI generated (<https://github.com/katonamozes/to-do-list/blob/main/Code_for_arduino_mega2456>)(lines 65,74,80...) but at the very least the developer had to do the wiring themselves, which is nice enough.",
@@ -22020,6 +22076,12 @@
       "username": "stroev.andrew",
       "displayName": "andromeda",
       "avatar": "https://avatars.slack-edge.com/2026-01-25/10364207178389_97662115d2974792edc2_72.jpg"
+    },
+    "U0A7J4EHADP": {
+      "id": "U0A7J4EHADP",
+      "username": "evanssidhu",
+      "displayName": "evanssidhu",
+      "avatar": "https://secure.gravatar.com/avatar/8b0cc538cbf68942600bffcce2633326.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0000-72.png"
     }
   }
 }
