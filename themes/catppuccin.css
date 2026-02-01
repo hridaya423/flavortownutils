@@ -3616,3 +3616,36 @@ main:has(.chef-img) .btn:hover {
 .flavortown-image-selection {
     background: rgba(17, 17, 27, 0.9) !important;
 }
+
+.flavortown-emoji-suggest__item {
+    color: var(--ctp-text) !important;
+}
+
+.flavortown-emoji-suggest__item:hover {
+    background: var(--ctp-surface1) !important;
+    color: var(--ctp-text) !important;
+}
+
+.flavortown-emoji-suggest__item.is-selected {
+    background: var(--ctp-accent) !important;
+    color: var(--ctp-accent-text) !important;
+}
+
+.flavortown-emoji-suggest__item.is-selected .flavortown-emoji-suggest__name {
+    color: var(--ctp-accent-text) !important;
+}
+
+.flavortown-upload-tool-btn {
+    background: var(--ctp-surface0) !important;
+    color: var(--ctp-text) !important;
+    border-color: var(--ctp-surface1) !important;
+}
+
+.flavortown-upload-tool-btn:hover {
+    background: var(--ctp-surface1) !important;
+    border-color: var(--ctp-accent) !important;
+}
+
+.flavortown-annotate-btn {
+    background: var(--ctp-surface0) !important;
+}

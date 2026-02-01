@@ -3669,3 +3669,36 @@ main:has(.chef-img) .btn:hover {
     background-image: url("data:image/svg+xml,%3csvg width='8' height='90' viewBox='0 0 4 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3crect x='0' y='0' width='4' height='30' rx='2' fill='%23ed8936' /%3e%3c/svg%3e") !important;
     opacity: 0.4 !important;
 }
+
+.flavortown-emoji-suggest__item {
+    color: var(--overcooked-white) !important;
+}
+
+.flavortown-emoji-suggest__item:hover {
+    background: var(--overcooked-surface) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.flavortown-emoji-suggest__item.is-selected {
+    background: var(--overcooked-cyan) !important;
+    color: var(--overcooked-abyss) !important;
+}
+
+.flavortown-emoji-suggest__item.is-selected .flavortown-emoji-suggest__name {
+    color: var(--overcooked-abyss) !important;
+}
+
+.flavortown-upload-tool-btn {
+    background: var(--overcooked-mid) !important;
+    color: var(--overcooked-white) !important;
+    border-color: var(--overcooked-surface) !important;
+}
+
+.flavortown-upload-tool-btn:hover {
+    background: var(--overcooked-surface) !important;
+    border-color: var(--overcooked-cyan) !important;
+}
+
+.flavortown-annotate-btn {
+    background: var(--overcooked-mid) !important;
+}

@@ -3662,3 +3662,36 @@ main:has(.chef-img) .btn:hover {
     background-image: url("data:image/svg+xml,%3csvg width='8' height='90' viewBox='0 0 4 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3crect x='0' y='0' width='4' height='30' rx='2' fill='%2322d3ee' /%3e%3c/svg%3e") !important;
     opacity: 0.4 !important;
 }
+
+.flavortown-emoji-suggest__item {
+    color: var(--sea-white) !important;
+}
+
+.flavortown-emoji-suggest__item:hover {
+    background: var(--sea-surface) !important;
+    color: var(--sea-white) !important;
+}
+
+.flavortown-emoji-suggest__item.is-selected {
+    background: var(--sea-cyan) !important;
+    color: var(--sea-abyss) !important;
+}
+
+.flavortown-emoji-suggest__item.is-selected .flavortown-emoji-suggest__name {
+    color: var(--sea-abyss) !important;
+}
+
+.flavortown-upload-tool-btn {
+    background: var(--sea-mid) !important;
+    color: var(--sea-white) !important;
+    border-color: var(--sea-surface) !important;
+}
+
+.flavortown-upload-tool-btn:hover {
+    background: var(--sea-surface) !important;
+    border-color: var(--sea-cyan) !important;
+}
+
+.flavortown-annotate-btn {
+    background: var(--sea-mid) !important;
+}

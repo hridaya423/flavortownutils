@@ -14919,8 +14919,10 @@ function createWhatsNewModal(features) {
         border: 2px solid var(--flavortown-tutorial-border, #8b7355);
         border-radius: 16px;
         padding: 28px;
-        max-width: 450px;
+        max-width: 800px;
         width: 90%;
+        max-height: 85vh;
+        overflow-y: auto;
         color: var(--flavortown-tutorial-text, #5d4e37);
         box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
         opacity: 0;
@@ -14936,22 +14938,22 @@ function createWhatsNewModal(features) {
                 color: inherit;
             ">What's New in v${EXTENSION_VERSION}</h2>
         </div>
-        <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px;">
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 24px;">
             ${features.map(f => `
                 <div style="
                     display: flex;
                     align-items: flex-start;
-                    gap: 12px;
-                    padding: 12px;
+                    gap: 10px;
+                    padding: 10px 12px;
                     background: var(--flavortown-tutorial-surface, #efe6d5);
                     border-radius: 10px;
                 ">
-                    <span style="font-size: 1.4em;">${f.icon}</span>
-                    <div>
-                        <div style="font-weight: 600; color: inherit; margin-bottom: 2px;">
+                    <span style="font-size: 1.3em; flex-shrink: 0;">${f.icon}</span>
+                    <div style="min-width: 0;">
+                        <div style="font-weight: 600; color: inherit; margin-bottom: 2px; font-size: 0.95em;">
                             ${f.title}
                         </div>
-                        <div style="font-size: 0.9em; color: var(--flavortown-tutorial-subtext, #8b7355);">
+                        <div style="font-size: 0.85em; color: var(--flavortown-tutorial-subtext, #8b7355); line-height: 1.3;">
                             ${f.description}
                         </div>
                     </div>
