@@ -3780,9 +3780,12 @@ async function fetchGithubCommitDate(owner, repo, sha) {
     return isNaN(date.getTime()) ? null : date;
 }
 
-async function fetchGithubCommitsSince(owner, repo, sinceIso) {
+async function fetchGithubCommitsSince(owner, repo, sinceIso, branch = null) {
     if (!owner || !repo || !sinceIso) return { commits: [], error: 'missing' };
     let url = `https://api.github.com/repos/${owner}/${repo}/commits?since=${encodeURIComponent(sinceIso)}&per_page=100`;
+    if (branch) {
+        url += `&sha=${encodeURIComponent(branch)}`;
+    }
     const commits = [];
 
     while (url && commits.length < CHANGELOG_MAX_COMMITS) {
@@ -3803,6 +3806,75 @@ async function fetchGithubCommitsSince(owner, repo, sinceIso) {
     }
 
     return { commits };
+}
+
+async function fetchGithubBranches(owner, repo) {
+    if (!owner || !repo) return [];
+    const url = `https://api.github.com/repos/${owner}/${repo}/branches?per_page=100`;
+
+    try {
+        const res = await fetch(url, { headers: { 'Accept': 'application/vnd.github+json' } });
+        if (!res.ok) {
+            return [];
+        }
+        const data = await res.json();
+        return Array.isArray(data) ? data.map(b => b.name) : [];
+    } catch (e) {
+        return [];
+    }
+}
+
+async function fetchAllBranchesCommits(owner, repo, sinceIso) {
+    if (!owner || !repo || !sinceIso) return { commits: [], error: 'missing', branchesScanned: 0 };
+
+    const defaultResult = await fetchGithubCommitsSince(owner, repo, sinceIso);
+    if (defaultResult.error === 'rate-limit') {
+        return { commits: [], error: 'rate-limit', branchesScanned: 0 };
+    }
+
+    const allCommits = new Map();
+    let branchesScanned = 1;
+
+    (defaultResult.commits || []).forEach(commit => {
+        if (commit?.sha) {
+            allCommits.set(commit.sha, commit);
+        }
+    });
+
+    const branches = await fetchGithubBranches(owner, repo);
+    
+    const defaultBranchNames = ['main', 'master'];
+    const branchesToScan = branches.filter(b => !defaultBranchNames.includes(b.toLowerCase()));
+
+    for (const branch of branchesToScan) {
+        try {
+            const result = await fetchGithubCommitsSince(owner, repo, sinceIso, branch);
+            if (result.error === 'rate-limit') {
+                break;
+            }
+            branchesScanned++;
+
+            (result.commits || []).forEach(commit => {
+                if (commit?.sha) {
+                    allCommits.set(commit.sha, commit);
+                }
+            });
+        } catch (e) {
+            console.warn(`Flavortown: Failed to fetch commits from branch ${branch}:`, e);
+        }
+    }
+
+    const commits = Array.from(allCommits.values()).sort((a, b) => {
+        const dateA = new Date(a?.commit?.author?.date || a?.commit?.committer?.date || 0);
+        const dateB = new Date(b?.commit?.author?.date || b?.commit?.committer?.date || 0);
+        return dateB - dateA;
+    });
+
+    return {
+        commits,
+        error: null,
+        branchesScanned
+    };
 }
 
 async function fetchGithubRecentCommits(owner, repo, limit = CHANGELOG_RECENT_COMMITS) {
@@ -4002,15 +4074,17 @@ async function initDevlogChangelog(wrapper) {
         }
 
         const sinceIso = sinceDate.toISOString();
-        const cacheKey = `${repoSlug.slug}|${sinceIso}`;
+        const cacheKey = `${repoSlug.slug}|all-branches|${sinceIso}`;
         const recentCacheKey = `${repoSlug.slug}|recent|${CHANGELOG_RECENT_COMMITS}`;
         let cached = options.force ? null : getChangelogCacheEntry(cacheKey);
         let recentCached = options.force ? null : getChangelogCacheEntry(recentCacheKey);
         let normalizedCommits = cached?.commits || [];
         let normalizedRecentCommits = recentCached?.commits || [];
+        let branchesScanned = cached?.branchesScanned || 1;
 
         if (!cached) {
-            const response = await fetchGithubCommitsSince(repoSlug.owner, repoSlug.repo, sinceIso);
+            // Use fetchAllBranchesCommits to scan all branches, not just the default
+            const response = await fetchAllBranchesCommits(repoSlug.owner, repoSlug.repo, sinceIso);
             if (response.error) {
                 statusEl.textContent = response.error === 'rate-limit'
                     ? 'GitHub rate limit hit. Try again later.'
@@ -4018,10 +4092,11 @@ async function initDevlogChangelog(wrapper) {
                 return;
             }
 
+            branchesScanned = response.branchesScanned || 1;
             normalizedCommits = (response.commits || [])
                 .map(normalizeCommitForChangelog)
                 .filter(Boolean);
-            setChangelogCacheEntry(cacheKey, { commits: normalizedCommits });
+            setChangelogCacheEntry(cacheKey, { commits: normalizedCommits, branchesScanned });
         }
 
         if (!recentCached) {
@@ -4034,9 +4109,11 @@ async function initDevlogChangelog(wrapper) {
             }
         }
 
+        // Filter commits: exclude bots and merges
         const displayCommits = normalizedCommits
             .filter(commit => !commit.isBot)
             .filter(commit => !commit.isMerge);
+
         const recentCommits = (normalizedRecentCommits.length ? normalizedRecentCommits : normalizedCommits)
             .filter(commit => !commit.isBot)
             .filter(commit => !commit.isMerge);
@@ -4055,12 +4132,18 @@ async function initDevlogChangelog(wrapper) {
             commitSelect.appendChild(opt);
         });
         const sinceLabel = sinceDate.toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
-        metaEl.textContent = `${repoSlug.slug} • since ${sinceLabel}`;
+        const branchInfo = branchesScanned > 1 ? ` • ${branchesScanned} branches scanned` : '';
+        metaEl.textContent = `${repoSlug.slug} • since ${sinceLabel}${branchInfo}`;
         if (!displayCommits.length) {
-            statusEl.textContent = 'No commits since your last devlog.';
+            // More informative message based on whether any commits were found before filtering
+            if (normalizedCommits.length > 0) {
+                statusEl.textContent = 'All commits since your last devlog appear to be already documented. Great job keeping your devlogs up to date!';
+            } else {
+                statusEl.textContent = 'No commits since your last devlog.';
+            }
             return;
         }
-        statusEl.textContent = `${displayCommits.length} commits found`;
+        statusEl.textContent = `${displayCommits.length} commit${displayCommits.length === 1 ? '' : 's'} found`;
 
         const renderList = (limit = 6) => {
             listEl.innerHTML = '';
