@@ -49,7 +49,7 @@
   - Better UI for most things in admin
   - some extra statistics
   - deduction calculator
-- Ctrl+K, control panel for all things in flavortown
+- Ctrl+K (changeable), control panel for all things in flavortown
   - Navigation
   - Themes
   - New devlog
@@ -62,9 +62,8 @@
 - See people's history of balance in lb
 - Auto find repo and demo links for your project.
 - Screenshot editor
-- estimated payout
-- Changelog
-- Command modal key linking
+- Estimated payouts
+- Changelog, with branch scanning
 
 ## Feature showcase:
 
