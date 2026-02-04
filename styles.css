@@ -2248,43 +2248,7 @@
 .leaderboard-table .stat-total {
     color: #5d4e37 !important;
 }
-
-.sidebar__user-details {
-    min-width: 0;
-    overflow: hidden;
-}
-.sidebar__user-avatar {
-    flex-shrink: 0;
-}
-.sidebar__user-actions {
-    display: flex !important;
-    align-items: center !important;
-    gap: 0.5rem !important;
-}
-.sidebar__user-actions button {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    padding: 0 !important;
-    margin: 0 !important;
-}
-.sidebar__user-balance {
-    line-height: 1 !important;
-    vertical-align: middle !important;
-    font-size: 14px !important;
-}
-.sidebar__user-settings,
-.sidebar__user-logout {
-    width: 20px !important;
-    height: 20px !important;
-}
-.sidebar__user-settings-icon,
-.sidebar__user-logout-icon {
-    width: 18px !important;
-    height: 18px !important;
-    vertical-align: middle !important;
-}
-
+ 
 .shop-order__details .shop-order__address .dropdown__button .dropdown__selected {
     background-color: var(--color-background, #fff) !important;
 }
