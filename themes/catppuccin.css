@@ -545,6 +545,7 @@ svg {
 }
 
 .modal__title {
+    background-color: var(--ctp-surface1) !important;
     color: var(--ctp-text) !important;
 }
 
@@ -3691,4 +3692,95 @@ main:has(.chef-img) .btn:hover {
 .shop-suggestion-modal__title {
     background-color: var(--ctp-accent) !important;
     color: var(--ctp-accent-text) !important;
+}
+
+.flavortown-project-cookies-details h5[style*="#f59e0b"] {
+    color: var(--ctp-peach) !important;
+}
+
+.explore__nav {
+    background: transparent !important;
+    border: none !important;
+}
+
+.explore__nav--type {
+    background: var(--ctp-surface0) !important;
+    border: 1px solid var(--ctp-surface1) !important;
+    border-radius: 12px !important;
+    padding: 4px !important;
+}
+
+.explore__nav--desktop {
+    display: flex !important;
+    gap: 4px !important;
+}
+
+.explore__nav--desktop .explore__nav-component {
+    background: transparent !important;
+    color: var(--ctp-subtext1) !important;
+    border-radius: 8px !important;
+    transition: all 0.2s ease !important;
+}
+
+.explore__nav--desktop .explore__nav-component:hover {
+    background: var(--ctp-surface1) !important;
+    color: var(--ctp-accent) !important;
+}
+
+.explore__nav--desktop .explore__nav-component.selected {
+    background: var(--ctp-surface1) !important;
+    color: var(--ctp-accent) !important;
+}
+
+.explore__nav--mobile .dropdown__button {
+    background: var(--ctp-surface0) !important;
+    border-color: var(--ctp-surface1) !important;
+    color: var(--ctp-text) !important;
+}
+
+.explore__nav--mobile .dropdown__menu {
+    background: var(--ctp-surface0) !important;
+    border-color: var(--ctp-surface1) !important;
+}
+
+.explore__nav--mobile .dropdown__item {
+    color: var(--ctp-text) !important;
+}
+
+.explore__nav--mobile .dropdown__item:hover {
+    background: var(--ctp-surface1) !important;
+}
+
+.explore__nav--sort .dropdown__button {
+    background: var(--ctp-surface0) !important;
+    border-color: var(--ctp-surface1) !important;
+    color: var(--ctp-text) !important;
+}
+
+.explore__nav--sort .dropdown__menu {
+    background: var(--ctp-surface0) !important;
+    border-color: var(--ctp-surface1) !important;
+}
+
+.explore__nav--sort .dropdown__item {
+    color: var(--ctp-text) !important;
+}
+
+.explore__nav--sort .dropdown__item:hover {
+    background: var(--ctp-surface1) !important;
+}
+
+.flavertown-stat-pill {
+    background: var(--ctp-surface0) !important;
+    border-color: var(--ctp-surface1) !important;
+    color: var(--ctp-subtext0) !important;
+}
+
+.flavertown-stat-value {
+    color: var(--ctp-text) !important;
+}
+
+.votes-new__balance-text {
+    background-color: var(--ctp-surface0) !important;
+    color: var(--ctp-text) !important;
 }

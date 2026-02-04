@@ -501,6 +501,7 @@ svg {
 }
 
 .modal__title {
+    background-color: var(--sea-mid) !important;
     color: var(--sea-white) !important;
 }
 
@@ -3741,4 +3742,95 @@ main:has(.chef-img) .btn:hover {
 .shop-suggestion-modal__title {
     background-color: var(--sea-cyan) !important;
     color: var(--sea-abyss) !important;
+}
+
+.flavortown-project-cookies-details h5[style*="#f59e0b"] {
+    color: var(--sea-gold) !important;
+}
+
+.explore__nav {
+    background: transparent !important;
+    border: none !important;
+}
+
+.explore__nav--type {
+    background: var(--sea-dark) !important;
+    border: 1px solid var(--sea-mid) !important;
+    border-radius: 12px !important;
+    padding: 4px !important;
+}
+
+.explore__nav--desktop {
+    display: flex !important;
+    gap: 4px !important;
+}
+
+.explore__nav--desktop .explore__nav-component {
+    background: transparent !important;
+    color: var(--sea-mist) !important;
+    border-radius: 8px !important;
+    transition: all 0.2s ease !important;
+}
+
+.explore__nav--desktop .explore__nav-component:hover {
+    background: var(--sea-mid) !important;
+    color: var(--sea-cyan) !important;
+}
+
+.explore__nav--desktop .explore__nav-component.selected {
+    background: var(--sea-mid) !important;
+    color: var(--sea-cyan) !important;
+}
+
+.explore__nav--mobile .dropdown__button {
+    background: var(--sea-dark) !important;
+    border-color: var(--sea-mid) !important;
+    color: var(--sea-white) !important;
+}
+
+.explore__nav--mobile .dropdown__menu {
+    background: var(--sea-dark) !important;
+    border-color: var(--sea-mid) !important;
+}
+
+.explore__nav--mobile .dropdown__item {
+    color: var(--sea-white) !important;
+}
+
+.explore__nav--mobile .dropdown__item:hover {
+    background: var(--sea-mid) !important;
+}
+
+.explore__nav--sort .dropdown__button {
+    background: var(--sea-dark) !important;
+    border-color: var(--sea-mid) !important;
+    color: var(--sea-white) !important;
+}
+
+.explore__nav--sort .dropdown__menu {
+    background: var(--sea-dark) !important;
+    border-color: var(--sea-mid) !important;
+}
+
+.explore__nav--sort .dropdown__item {
+    color: var(--sea-white) !important;
+}
+
+.explore__nav--sort .dropdown__item:hover {
+    background: var(--sea-mid) !important;
+}
+
+.flavertown-stat-pill {
+    background: var(--sea-dark) !important;
+    border-color: var(--sea-mid) !important;
+    color: var(--sea-mist) !important;
+}
+
+.flavertown-stat-value {
+    color: var(--sea-white) !important;
+}
+
+.votes-new__balance-text {
+    background-color: var(--sea-dark) !important;
+    color: var(--sea-white) !important;
 }

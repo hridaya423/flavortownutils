@@ -4083,7 +4083,6 @@ async function initDevlogChangelog(wrapper) {
         let branchesScanned = cached?.branchesScanned || 1;
 
         if (!cached) {
-            // Use fetchAllBranchesCommits to scan all branches, not just the default
             const response = await fetchAllBranchesCommits(repoSlug.owner, repoSlug.repo, sinceIso);
             if (response.error) {
                 statusEl.textContent = response.error === 'rate-limit'
@@ -4109,7 +4108,6 @@ async function initDevlogChangelog(wrapper) {
             }
         }
 
-        // Filter commits: exclude bots and merges
         const displayCommits = normalizedCommits
             .filter(commit => !commit.isBot)
             .filter(commit => !commit.isMerge);
@@ -4135,7 +4133,6 @@ async function initDevlogChangelog(wrapper) {
         const branchInfo = branchesScanned > 1 ? ` • ${branchesScanned} branches scanned` : '';
         metaEl.textContent = `${repoSlug.slug} • since ${sinceLabel}${branchInfo}`;
         if (!displayCommits.length) {
-            // More informative message based on whether any commits were found before filtering
             if (normalizedCommits.length > 0) {
                 statusEl.textContent = 'All commits since your last devlog appear to be already documented. Great job keeping your devlogs up to date!';
             } else {
@@ -6345,6 +6342,22 @@ function initProjectBoardStats() {
 
     const totalHours = Math.floor(totalMinutes / 60);
 
+    let totalUnpaidMinutes = 0;
+    let totalProjectedCookies = 0;
+    Object.keys(stats).forEach(projectId => {
+        const cached = getCachedProjectUnshipped(projectId);
+        if (cached && typeof cached.unshippedMinutes === 'number') {
+            totalUnpaidMinutes += cached.unshippedMinutes;
+            const unshippedHours = cached.unshippedMinutes / 60;
+            const rate = getMultiplierFromCookies(cached.paidCookies || 0, (cached.paidShipMinutes || 0) / 60);
+            if (rate && unshippedHours > 0) {
+                totalProjectedCookies += Math.round(rate * unshippedHours);
+            }
+        }
+    });
+    const totalUnpaidHours = Math.floor(totalUnpaidMinutes / 60);
+    const totalUnpaidMins = totalUnpaidMinutes % 60;
+
     let freqText = '';
     if (totalDevlogs > 0) {
         const avgMinsPerLog = Math.round(totalMinutes / totalDevlogs);
@@ -6367,6 +6380,14 @@ function initProjectBoardStats() {
             <div class="flavortown-stat-pill" title="Total Time Spent">
                 ⏱ <span class="flavortown-stat-value">${totalHours}h ${totalMinutes % 60}m</span>
             </div>
+            ${totalUnpaidMinutes > 0 ? `
+            <div class="flavortown-stat-pill flavortown-unpaid-pill" title="Total Unpaid Hours">
+                💰 <span class="flavortown-stat-value">${totalUnpaidHours}h ${totalUnpaidMins}m</span> unpaid
+            </div>
+            ${totalProjectedCookies > 0 ? `
+            <div class="flavortown-stat-pill flavortown-projected-pill" title="Projected Cookies from Unpaid Hours">
+                🍪 <span class="flavortown-stat-value">${totalProjectedCookies.toLocaleString()}</span> projected
+            </div>` : ''}` : ''}
             ${freqText ? `
             <div class="flavortown-stat-pill" title="Average time per devlog">
                 1 📝 per <span class="flavortown-stat-value">${freqText}</span>
@@ -6538,38 +6559,18 @@ function ensureVotesActionsStyles() {
         .flavortown-votes-actions {
             display: flex;
             justify-content: center;
-            align-items: center;
-            gap: 0;
-            padding: 6px 0 12px;
+            align-items: stretch;
+gap: 4px;
+            padding: 6px 0 24px;
             margin-top: 6px;
         }
         .flavortown-votes-actions .btn {
             margin: 0 !important;
-            min-height: 38px;
+            display: flex;
+            align-items: center;
         }
-        .flavortown-votes-actions .flavortown-skip-btn,
         .flavortown-votes-actions .votes-new__prev-btn {
-            background: var(--ft-votes-bg, rgba(173, 119, 87, 0.12)) !important;
-            border: 2px solid var(--ft-votes-accent, rgb(173, 119, 87)) !important;
-            border-radius: 12px !important;
-            box-shadow: none !important;
-            padding: 10px 14px !important;
-            color: var(--ft-votes-text, inherit) !important;
-            font-weight: 700 !important;
-            position: relative;
-            overflow: hidden;
-        }
-        .flavortown-votes-actions .flavortown-skip-btn::before,
-        .flavortown-votes-actions .votes-new__prev-btn::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: none;
-            pointer-events: none;
-        }
-        .flavortown-votes-actions .flavortown-skip-btn:hover,
-        .flavortown-votes-actions .votes-new__prev-btn:hover {
-            background: var(--ft-votes-bg-hover, rgba(173, 119, 87, 0.2)) !important;
+            margin-right: 4px !important;
         }
     `;
     document.head.appendChild(style);
@@ -6957,7 +6958,7 @@ function addSkipButton() {
         if (!skipBtn) {
             skipBtn = document.createElement('button');
             skipBtn.type = 'button';
-            skipBtn.className = 'btn btn--borderless flavortown-skip-btn';
+            skipBtn.className = 'btn btn--brown btn--borderless flavortown-skip-btn';
             skipBtn.textContent = 'Skip';
             skipBtn.addEventListener('click', () => {
                 const currentKey = getCurrentVotesProjectKey();
@@ -7500,14 +7501,9 @@ function addDoomscrollMode() {
     `;
     toggleBtn.title = 'All-you-can-eat devlogs (Immersive Mode)';
 
-    const navList = nav.querySelector('ul, .nav__list');
-    if (navList) {
-        const li = document.createElement('li');
-        li.className = 'nav__item';
-        li.appendChild(toggleBtn);
-        navList.appendChild(li);
-    } else {
-        nav.appendChild(toggleBtn);
+    const desktopNav = nav.querySelector('.explore__nav--type.explore__nav--desktop');
+    if (desktopNav) {
+        desktopNav.appendChild(toggleBtn);
     }
 
     let doomscrollActive = false;
@@ -9749,7 +9745,7 @@ function showImageSelectionUI(imageFiles, onComplete) {
             <div class="image-grid" style="
                 display: grid; 
                 grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); 
-                gap: 12px; 
+gap: 4px;
                 margin-bottom: 28px;
                 max-height: 400px;
                 overflow-y: auto;

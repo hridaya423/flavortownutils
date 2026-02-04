@@ -508,6 +508,7 @@ svg {
 }
 
 .modal__title {
+    background-color: var(--overcooked-mid) !important;
     color: var(--overcooked-white) !important;
 }
 
@@ -3748,4 +3749,95 @@ main:has(.chef-img) .btn:hover {
 .shop-suggestion-modal__title {
     background-color: var(--overcooked-cyan) !important;
     color: var(--overcooked-abyss) !important;
+}
+
+.flavortown-project-cookies-details h5[style*="#f59e0b"] {
+    color: var(--overcooked-gold) !important;
+}
+
+.explore__nav {
+    background: transparent !important;
+    border: none !important;
+}
+
+.explore__nav--type {
+    background: var(--overcooked-dark) !important;
+    border: 1px solid var(--overcooked-mid) !important;
+    border-radius: 12px !important;
+    padding: 4px !important;
+}
+
+.explore__nav--desktop {
+    display: flex !important;
+    gap: 4px !important;
+}
+
+.explore__nav--desktop .explore__nav-component {
+    background: transparent !important;
+    color: var(--overcooked-mist) !important;
+    border-radius: 8px !important;
+    transition: all 0.2s ease !important;
+}
+
+.explore__nav--desktop .explore__nav-component:hover {
+    background: var(--overcooked-mid) !important;
+    color: var(--overcooked-cyan) !important;
+}
+
+.explore__nav--desktop .explore__nav-component.selected {
+    background: var(--overcooked-mid) !important;
+    color: var(--overcooked-cyan) !important;
+}
+
+.explore__nav--mobile .dropdown__button {
+    background: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-mid) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.explore__nav--mobile .dropdown__menu {
+    background: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-mid) !important;
+}
+
+.explore__nav--mobile .dropdown__item {
+    color: var(--overcooked-white) !important;
+}
+
+.explore__nav--mobile .dropdown__item:hover {
+    background: var(--overcooked-mid) !important;
+}
+
+.explore__nav--sort .dropdown__button {
+    background: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-mid) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.explore__nav--sort .dropdown__menu {
+    background: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-mid) !important;
+}
+
+.explore__nav--sort .dropdown__item {
+    color: var(--overcooked-white) !important;
+}
+
+.explore__nav--sort .dropdown__item:hover {
+    background: var(--overcooked-mid) !important;
+}
+
+.flavertown-stat-pill {
+    background: var(--overcooked-dark) !important;
+    border-color: var(--overcooked-mid) !important;
+    color: var(--overcooked-mist) !important;
+}
+
+.flavertown-stat-value {
+    color: var(--overcooked-white) !important;
+}
+
+.votes-new__balance-text {
+    background-color: var(--overcooked-dark) !important;
+    color: var(--overcooked-white) !important;
 }
