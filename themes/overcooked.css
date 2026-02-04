@@ -3702,3 +3702,50 @@ main:has(.chef-img) .btn:hover {
 .flavortown-annotate-btn {
     background: var(--overcooked-mid) !important;
 }
+
+.project-card__content {
+    color: var(--overcooked-mist) !important;
+}
+
+[style*="color: var(--color-blue-600)"] {
+    color: var(--overcooked-cyan) !important;
+}
+
+.shop-suggestion-modal {
+    background: var(--overcooked-dark) !important;
+    color: var(--overcooked-white) !important;
+    border-color: var(--overcooked-mid) !important;
+}
+
+.shop-suggestion-modal__close {
+    color: var(--overcooked-foam) !important;
+}
+
+.shop-suggestion-modal__title {
+    color: var(--overcooked-white) !important;
+}
+
+.shop-suggestion-modal__description {
+    color: var(--overcooked-foam) !important;
+}
+
+.shop-suggestion-modal__form label {
+    color: var(--overcooked-mist) !important;
+}
+
+.shop-suggestion-modal__form textarea,
+.shop-suggestion-modal__form input {
+    background: var(--overcooked-abyss) !important;
+    color: var(--overcooked-white) !important;
+    border-color: var(--overcooked-mid) !important;
+}
+
+.shop-suggestion-modal__form textarea::placeholder,
+.shop-suggestion-modal__form input::placeholder {
+    color: var(--overcooked-surface) !important;
+}
+
+.shop-suggestion-modal__title {
+    background-color: var(--overcooked-cyan) !important;
+    color: var(--overcooked-abyss) !important;
+}

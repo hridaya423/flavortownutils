@@ -3695,3 +3695,50 @@ main:has(.chef-img) .btn:hover {
 .flavortown-annotate-btn {
     background: var(--sea-mid) !important;
 }
+
+.project-card__content {
+    color: var(--sea-mist) !important;
+}
+
+[style*="color: var(--color-blue-600)"] {
+    color: var(--sea-cyan) !important;
+}
+
+.shop-suggestion-modal {
+    background: var(--sea-dark) !important;
+    color: var(--sea-white) !important;
+    border-color: var(--sea-mid) !important;
+}
+
+.shop-suggestion-modal__close {
+    color: var(--sea-foam) !important;
+}
+
+.shop-suggestion-modal__title {
+    color: var(--sea-white) !important;
+}
+
+.shop-suggestion-modal__description {
+    color: var(--sea-foam) !important;
+}
+
+.shop-suggestion-modal__form label {
+    color: var(--sea-mist) !important;
+}
+
+.shop-suggestion-modal__form textarea,
+.shop-suggestion-modal__form input {
+    background: var(--sea-abyss) !important;
+    color: var(--sea-white) !important;
+    border-color: var(--sea-mid) !important;
+}
+
+.shop-suggestion-modal__form textarea::placeholder,
+.shop-suggestion-modal__form input::placeholder {
+    color: var(--sea-surface) !important;
+}
+
+.shop-suggestion-modal__title {
+    background-color: var(--sea-cyan) !important;
+    color: var(--sea-abyss) !important;
+}
