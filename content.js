@@ -3343,6 +3343,7 @@ function addMarkdownToolbar(textarea) {
         { icon: 'code', title: 'Inline Code', action: () => wrapSelection(textarea, '`', '`') },
         { icon: 'codeBlock', title: 'Code Block', action: () => insertBlock(textarea, '```\n', '\n```') },
         { icon: 'link', title: 'Link', action: () => insertLink(textarea) },
+        { icon: 'image', title: 'Image', action: () => insertImage(textarea) },
         { icon: 'minus', title: 'Horizontal Rule', action: () => insertText(textarea, '\n---\n') }
     ];
 
@@ -3424,6 +3425,20 @@ function insertLink(textarea) {
     const newText = text.substring(0, start) + insertStr + text.substring(end);
     textarea.value = newText;
     const urlStart = start + selected.length + 3;
+    textarea.selectionStart = urlStart;
+    textarea.selectionEnd = urlStart + 3;
+    textarea.dispatchEvent(new Event('input', { bubbles: true }));
+}
+
+function insertImage(textarea) {
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const text = textarea.value;
+    const selected = text.substring(start, end) || 'alt text';
+    const insertStr = `![${selected}](url)`;
+    const newText = text.substring(0, start) + insertStr + text.substring(end);
+    textarea.value = newText;
+    const urlStart = start + selected.length + 4;
     textarea.selectionStart = urlStart;
     textarea.selectionEnd = urlStart + 3;
     textarea.dispatchEvent(new Event('input', { bubbles: true }));
