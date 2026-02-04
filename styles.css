@@ -1663,6 +1663,10 @@
     color: var(--color-brown-600, #6b5c4a);
 }
 
+.post__body img {
+    vertical-align: middle !important;
+}
+
 .shop-item-card__add-to-goals {
     width: 100%;
     margin-top: 10px;
