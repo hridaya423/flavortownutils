@@ -3841,3 +3841,8 @@ main:has(.chef-img) .btn:hover {
     background-color: var(--overcooked-dark) !important;
     color: var(--overcooked-white) !important;
 }
+
+pre,
+code {
+    background-color: var(--overcooked-dark) !important;
+}

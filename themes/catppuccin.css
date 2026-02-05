@@ -3784,3 +3784,8 @@ main:has(.chef-img) .btn:hover {
     background-color: var(--ctp-surface0) !important;
     color: var(--ctp-text) !important;
 }
+
+pre,
+code {
+    background-color: var(--ctp-mantle) !important;
+}

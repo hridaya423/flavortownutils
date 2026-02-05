@@ -3123,6 +3123,68 @@ const LUCIDE_ICONS = {
     underline: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4v6a6 6 0 0 0 12 0V4"/><line x1="4" x2="20" y1="20" y2="20"/></svg>'
 };
 
+function processLists(html) {
+    const lines = html.split('\n');
+    const result = [];
+    let currentListType = null;
+    let listBuffer = [];
+    let listStartNum = 1;
+    
+    const flushList = () => {
+        if (listBuffer.length === 0) return;
+        
+        if (currentListType === 'ul') {
+            result.push('<ul class="flavortown-md-ul">');
+            listBuffer.forEach(item => {
+                result.push(item.replace(/^<li class="flavortown-md-li">/, '<li>'));
+            });
+            result.push('</ul>');
+        } else if (currentListType === 'ol') {
+            result.push(`<ol class="flavortown-md-ol" start="${listStartNum}">`);
+            listBuffer.forEach((item, idx) => {
+                result.push(item.replace(/^<li class="flavortown-md-oli">/, '<li>'));
+            });
+            result.push('</ol>');
+        }
+        
+        listBuffer = [];
+        currentListType = null;
+    };
+    
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        
+        // Check for unordered list item
+        const ulMatch = line.match(/^-\s+(.+)$/);
+        // Check for ordered list item
+        const olMatch = line.match(/^(\d+)\.\s+(.+)$/);
+        
+        if (ulMatch) {
+            const content = ulMatch[1];
+            if (currentListType !== 'ul') {
+                flushList();
+                currentListType = 'ul';
+            }
+            listBuffer.push(`<li class="flavortown-md-li">${content}</li>`);
+        } else if (olMatch) {
+            const num = parseInt(olMatch[1], 10);
+            const content = olMatch[2];
+            if (currentListType !== 'ol') {
+                flushList();
+                currentListType = 'ol';
+                listStartNum = num;
+            }
+            listBuffer.push(`<li class="flavortown-md-oli">${content}</li>`);
+        } else {
+            flushList();
+            result.push(line);
+        }
+    }
+    
+    flushList();
+    return result.join('\n');
+}
+
 function parseMarkdown(text) {
     if (!text) return '';
 
@@ -3165,8 +3227,8 @@ function parseMarkdown(text) {
         html = html.replace(/^-\s?\[\s?\]\s?(.+)$/gm, '<div class="flavortown-md-task"><input type="checkbox" disabled> $1</div>');
         html = html.replace(/^-\s?\[[xX]\]\s?(.+)$/gm, '<div class="flavortown-md-task"><input type="checkbox" checked disabled> $1</div>');
 
-        html = html.replace(/^-\s+(.+)$/gm, '<li class="flavortown-md-li">$1</li>');
-        html = html.replace(/^\d+\.\s+(.+)$/gm, '<li class="flavortown-md-oli">$1</li>');
+        // Process lists with proper container wrapping
+        html = processLists(html);
 
         html = replaceEmojiTokensInHtml(html);
 

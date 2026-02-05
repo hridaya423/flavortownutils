@@ -3834,3 +3834,8 @@ main:has(.chef-img) .btn:hover {
     background-color: var(--sea-dark) !important;
     color: var(--sea-white) !important;
 }
+
+pre,
+code {
+    background-color: var(--sea-dark) !important;
+}
