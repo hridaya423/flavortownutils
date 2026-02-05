@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-05T21:01:49.337Z",
+  "lastUpdated": "2026-02-05T21:40:42.433Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -7274,6 +7274,14 @@
         "balance": 475,
         "reason": "payout",
         "reasonType": "payout",
+        "userId": "U0825SVHFJL"
+      },
+      {
+        "ts": "2026-02-05T21:12:26.093Z",
+        "delta": 5,
+        "balance": 480,
+        "reason": "tutorial",
+        "reasonType": "",
         "userId": "U0825SVHFJL"
       }
     ],
@@ -52235,6 +52243,11 @@
     ]
   },
   "users": {
+    "U0825SVHFJL": {
+      "id": "U0825SVHFJL",
+      "username": "techedreal",
+      "avatar": "https://avatars.slack-edge.com/2025-12-07/10099376260944_616f006eb6847aed4221_72.jpg"
+    },
     "U092CHMLB24": {
       "id": "U092CHMLB24",
       "username": "parth.ahuja",
@@ -52631,11 +52644,6 @@
       "username": "hridayahoney",
       "displayName": "Hridya",
       "avatar": "https://secure.gravatar.com/avatar/5b54a7a1c2382dea03b98bd77e571f92.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0014-72.png"
-    },
-    "U0825SVHFJL": {
-      "id": "U0825SVHFJL",
-      "username": "techedreal",
-      "avatar": "https://avatars.slack-edge.com/2025-12-07/10099376260944_616f006eb6847aed4221_72.jpg"
     },
     "U0A9BAEQX6G": {
       "id": "U0A9BAEQX6G",
