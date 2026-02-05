@@ -12925,12 +12925,12 @@ async function addProjectVotesDisplay() {
 
 async function addMultiShipEfficiencyGraph() {
     if (!/\/projects\/\d+$/.test(window.location.pathname)) return;
-    
+
     if (shipGraphObserver) {
         shipGraphObserver.disconnect();
         shipGraphObserver = null;
     }
-    
+
     const adminActions = document.querySelector('.projects-show__admin-actions');
     if (!adminActions) {
         shipGraphObserver = new MutationObserver(() => {
@@ -12943,13 +12943,13 @@ async function addMultiShipEfficiencyGraph() {
         shipGraphObserver.observe(document.body, { childList: true, subtree: true });
         return;
     }
-    
+
     if (document.querySelector('.flavortown-ship-graph-btn')) {
         return;
     }
-    
+
     const shipPosts = document.querySelectorAll('article.post--ship');
-    
+
     if (shipPosts.length < 2) {
         shipGraphObserver = new MutationObserver(() => {
             const newShipPosts = document.querySelectorAll('article.post--ship');
@@ -12962,9 +12962,32 @@ async function addMultiShipEfficiencyGraph() {
         shipGraphObserver.observe(document.body, { childList: true, subtree: true });
         return;
     }
-    
+
+    const allShipsHaveExtras = Array.from(shipPosts).every(post => {
+        const footer = post.querySelector('.post__payout-footer');
+        return footer && footer.dataset.flavortownExtras === 'true';
+    });
+
+    if (!allShipsHaveExtras) {
+        shipGraphObserver = new MutationObserver(() => {
+            const updatedShipPosts = document.querySelectorAll('article.post--ship');
+            const allHaveExtras = Array.from(updatedShipPosts).every(post => {
+                const footer = post.querySelector('.post__payout-footer');
+                return footer && footer.dataset.flavortownExtras === 'true';
+            });
+
+            if (allHaveExtras) {
+                shipGraphObserver.disconnect();
+                shipGraphObserver = null;
+                addMultiShipEfficiencyGraph();
+            }
+        });
+        shipGraphObserver.observe(document.body, { childList: true, subtree: true });
+        return;
+    }
+
     const paidShips = [];
-    
+
     shipPosts.forEach((post, index) => {
         const payoutFooter = post.querySelector('.post__payout-footer');
         if (!payoutFooter) {
@@ -12981,6 +13004,8 @@ async function addMultiShipEfficiencyGraph() {
             return;
         }
         
+        const hasExtras = payoutFooter.dataset.flavortownExtras === 'true';
+        
         const payoutItems = payoutFooter.querySelectorAll('.post__payout-item');
         
         let hoursEl = null, cookiesEl = null, starsEl = null;
@@ -12993,7 +13018,9 @@ async function addMultiShipEfficiencyGraph() {
             const labelText = label.textContent.trim().toLowerCase();
             if (labelText.includes('hours')) hoursEl = value;
             else if (labelText.includes('cookies')) cookiesEl = value;
-            else if (labelText.includes('stars')) starsEl = value;
+            else if (labelText.includes('stars')) {
+                starsEl = value;
+            }
         });
         
         if (!hoursEl || !cookiesEl) {
@@ -13014,7 +13041,7 @@ async function addMultiShipEfficiencyGraph() {
         const hours = parseFloat(hoursMatch[1]);
         const cookies = parseInt(cookiesMatch[1].replace(/,/g, ''), 10);
         const avgStars = starsMatch ? parseFloat(starsMatch[1]) : null;
-        
+  
         if (hours > 0 && cookies > 0) {
             paidShips.push({
                 shipNumber: index + 1,
@@ -13111,7 +13138,7 @@ function createChartJSGraph(ships, predictedPoint, isDarkTheme, textColor, gridC
     efficiencyData.push(predictedPoint.efficiency);
     
     const starsData = ships.map(s => s.avgStars || null);
-    starsData.push(null);
+    starsData.push(predictedPoint.avgStars);
     
     const hexToRgba = (hex, alpha) => {
         const r = parseInt(hex.slice(1, 3), 16);
@@ -13250,14 +13277,12 @@ function createChartJSGraph(ships, predictedPoint, isDarkTheme, textColor, gridC
                     },
                     ticks: {
                         color: starsColor,
-                        min: 1,
-                        max: 6,
                         callback: function(value) {
                             return value.toFixed(1);
                         }
                     },
-                    suggestedMin: Math.min(...starsData.filter(v => v !== null)) - 0.2,
-                    suggestedMax: Math.max(...starsData.filter(v => v !== null)) + 0.2
+                    min: Math.max(1, Math.min(...starsData.filter(v => v !== null)) - 0.5),
+                    max: Math.min(6, Math.max(...starsData.filter(v => v !== null)) + 0.5)
                 }
             }
         }
@@ -13266,6 +13291,7 @@ function createChartJSGraph(ships, predictedPoint, isDarkTheme, textColor, gridC
 
 function calculateLinearRegression(ships) {
     const n = ships.length;
+    
     let sumX = 0, sumY = 0, sumXY = 0, sumXX = 0;
     
     ships.forEach((ship, index) => {
@@ -13283,6 +13309,28 @@ function calculateLinearRegression(ships) {
     const nextIndex = n;
     const predictedEfficiency = slope * nextIndex + intercept;
     
+    let sumXStars = 0, sumYStars = 0, sumXYStars = 0, sumXXStars = 0;
+    let starsCount = 0;
+    
+    ships.forEach((ship, index) => {
+        if (ship.avgStars !== null && ship.avgStars !== undefined) {
+            const x = index;
+            const y = ship.avgStars;
+            sumXStars += x;
+            sumYStars += y;
+            sumXYStars += x * y;
+            sumXXStars += x * x;
+            starsCount++;
+        }
+    });
+    
+    let predictedStars = null;
+    if (starsCount >= 2) {
+        const starsSlope = (starsCount * sumXYStars - sumXStars * sumYStars) / (starsCount * sumXXStars - sumXStars * sumXStars);
+        const starsIntercept = (sumYStars - starsSlope * sumXStars) / starsCount;
+        predictedStars = Math.max(1, Math.min(6, starsSlope * nextIndex + starsIntercept));
+    }
+    
     const lastShip = ships[ships.length - 1];
     const nextDate = new Date(lastShip.date);
     nextDate.setDate(nextDate.getDate() + 7);
@@ -13291,6 +13339,7 @@ function calculateLinearRegression(ships) {
         shipNumber: n + 1,
         date: nextDate,
         efficiency: Math.max(0, predictedEfficiency),
+        avgStars: predictedStars,
         isPredicted: true
     };
 }
