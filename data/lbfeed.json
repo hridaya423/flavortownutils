@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-05T21:40:42.433Z",
+  "lastUpdated": "2026-02-05T22:30:40.348Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -4210,6 +4210,14 @@
         "ts": "2026-02-03T09:18:28.655Z",
         "delta": -35,
         "balance": 471,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U07LKN2HXT3"
+      },
+      {
+        "ts": "2026-02-05T22:25:31.265Z",
+        "delta": -70,
+        "balance": 401,
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U07LKN2HXT3"
@@ -52243,6 +52251,11 @@
     ]
   },
   "users": {
+    "U07LKN2HXT3": {
+      "id": "U07LKN2HXT3",
+      "username": "obay.developer",
+      "avatar": "https://avatars.slack-edge.com/2025-10-10/9678158748850_a132430cfd5e052a7045_72.jpg"
+    },
     "U0825SVHFJL": {
       "id": "U0825SVHFJL",
       "username": "techedreal",
@@ -52712,11 +52725,6 @@
       "username": "hackclub567",
       "displayName": "Kip",
       "avatar": "https://avatars.slack-edge.com/2025-06-22/9086132293188_37946afc73986dd0a30d_72.png"
-    },
-    "U07LKN2HXT3": {
-      "id": "U07LKN2HXT3",
-      "username": "obay.developer",
-      "avatar": "https://avatars.slack-edge.com/2025-10-10/9678158748850_a132430cfd5e052a7045_72.jpg"
     },
     "U08NCJE9SGG": {
       "id": "U08NCJE9SGG",
