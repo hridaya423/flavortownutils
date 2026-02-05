@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-05T22:59:45.500Z",
+  "lastUpdated": "2026-02-05T23:34:00.605Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -24717,6 +24717,16 @@
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U09UJUSPDT5"
+      }
+    ],
+    "u09uq385lsg": [
+      {
+        "ts": "2026-02-05T23:22:52.301Z",
+        "delta": 3,
+        "balance": 18,
+        "reason": "Order Up!",
+        "reasonType": "achievement",
+        "userId": "U09UQ385LSG"
       }
     ],
     "u09usdusduj": [
@@ -52251,6 +52261,12 @@
     ]
   },
   "users": {
+    "U09UQ385LSG": {
+      "id": "U09UQ385LSG",
+      "username": "max",
+      "displayName": "msw",
+      "avatar": "https://avatars.slack-edge.com/2025-12-09/10100287592385_f334a59648f9f5261ef9_72.png"
+    },
     "U07LKN2HXT3": {
       "id": "U07LKN2HXT3",
       "username": "obay.developer",
