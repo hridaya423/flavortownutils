@@ -2768,6 +2768,34 @@
     border-radius: 8px;
 }
 
+.flavortown-ship-graph-tooltip {
+    position: fixed;
+    background: rgba(30, 30, 46, 0.95);
+    color: #cdd6f4;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    pointer-events: none;
+    z-index: 10070;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    max-width: 200px;
+    backdrop-filter: blur(4px);
+}
+
+.flavortown-ship-tooltip {
+    position: fixed;
+    background: rgba(30, 30, 46, 0.98);
+    color: #cdd6f4;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    pointer-events: none;
+    z-index: 10070;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    max-width: 220px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
 @media (max-width: 768px) {
     .flavortown-leaderboard-modal__header {
         flex-direction: column;

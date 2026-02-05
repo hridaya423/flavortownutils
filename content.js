@@ -6533,6 +6533,7 @@ function init() {
     addShipStats();
     addUnshippedCookieEstimate();
     addProjectShowCookieStat();
+    addMultiShipEfficiencyGraph();
     inlineDevlogForm();
     setupInlineDevlogEditing();
     enhanceCommentEmojiInputs();
@@ -6565,6 +6566,7 @@ const VOTES_SKIP_TRIGGER_KEY = 'flavortown-votes-skip-trigger';
 const MAX_VOTES_REFRESH_ATTEMPTS = 2;
 let skipButtonObserver;
 let votesRotationChecked = false;
+let shipGraphObserver = null;
 
 function ensureVotesActionsStyles() {
     if (document.getElementById('flavortown-votes-actions-style')) return;
@@ -12919,6 +12921,378 @@ async function addProjectVotesDisplay() {
         const votesContainer = createVotesContainer(shipVotes, votesData.users);
         insertAfter.parentNode.insertBefore(votesContainer, insertAfter.nextSibling);
     });
+}
+
+async function addMultiShipEfficiencyGraph() {
+    if (!/\/projects\/\d+$/.test(window.location.pathname)) return;
+    
+    if (shipGraphObserver) {
+        shipGraphObserver.disconnect();
+        shipGraphObserver = null;
+    }
+    
+    const adminActions = document.querySelector('.projects-show__admin-actions');
+    if (!adminActions) {
+        shipGraphObserver = new MutationObserver(() => {
+            if (document.querySelector('.projects-show__admin-actions')) {
+                shipGraphObserver.disconnect();
+                shipGraphObserver = null;
+                addMultiShipEfficiencyGraph();
+            }
+        });
+        shipGraphObserver.observe(document.body, { childList: true, subtree: true });
+        return;
+    }
+    
+    if (document.querySelector('.flavortown-ship-graph-btn')) {
+        return;
+    }
+    
+    const shipPosts = document.querySelectorAll('article.post--ship');
+    
+    if (shipPosts.length < 2) {
+        shipGraphObserver = new MutationObserver(() => {
+            const newShipPosts = document.querySelectorAll('article.post--ship');
+            if (newShipPosts.length >= 2) {
+                shipGraphObserver.disconnect();
+                shipGraphObserver = null;
+                addMultiShipEfficiencyGraph();
+            }
+        });
+        shipGraphObserver.observe(document.body, { childList: true, subtree: true });
+        return;
+    }
+    
+    const paidShips = [];
+    
+    shipPosts.forEach((post, index) => {
+        const payoutFooter = post.querySelector('.post__payout-footer');
+        if (!payoutFooter) {
+            return;
+        }
+        
+        const timeEl = post.querySelector('.post__time');
+        if (!timeEl) {
+            return;
+        }
+        
+        const date = parseDateFromTimeElement(timeEl);
+        if (!date) {
+            return;
+        }
+        
+        const payoutItems = payoutFooter.querySelectorAll('.post__payout-item');
+        
+        let hoursEl = null, cookiesEl = null, starsEl = null;
+        
+        payoutItems.forEach(item => {
+            const label = item.querySelector('.post__payout-label');
+            const value = item.querySelector('.post__payout-value');
+            if (!label || !value) return;
+            
+            const labelText = label.textContent.trim().toLowerCase();
+            if (labelText.includes('hours')) hoursEl = value;
+            else if (labelText.includes('cookies')) cookiesEl = value;
+            else if (labelText.includes('stars')) starsEl = value;
+        });
+        
+        if (!hoursEl || !cookiesEl) {
+            return;
+        }
+        
+        const hoursText = hoursEl.textContent.trim();
+        const cookiesText = cookiesEl.textContent.trim();
+
+        const hoursMatch = hoursText.match(/([\d.]+)/);
+        const cookiesMatch = cookiesText.match(/([\d,]+)/);
+        const starsMatch = starsEl ? starsEl.textContent.match(/([\d.]+)/) : null;
+        
+        if (!hoursMatch || !cookiesMatch) {
+            return;
+        }
+        
+        const hours = parseFloat(hoursMatch[1]);
+        const cookies = parseInt(cookiesMatch[1].replace(/,/g, ''), 10);
+        const avgStars = starsMatch ? parseFloat(starsMatch[1]) : null;
+        
+        if (hours > 0 && cookies > 0) {
+            paidShips.push({
+                shipNumber: index + 1,
+                date: date,
+                hours: hours,
+                cookies: cookies,
+                efficiency: cookies / hours,
+                avgStars: avgStars
+            });
+        }
+    });
+    
+    if (paidShips.length < 2) {
+        return;
+    }
+
+    paidShips.sort((a, b) => a.date - b.date);
+    
+    paidShips.forEach((ship, index) => {
+        ship.shipNumber = index + 1;
+    });
+    
+    const graphBtn = document.createElement('button');
+    graphBtn.type = 'button';
+    graphBtn.className = 'btn btn--brown btn--borderless projects-show__icon-btn flavortown-ship-graph-btn';
+    graphBtn.setAttribute('aria-label', 'View ship efficiency graph');
+    graphBtn.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="20" x2="18" y2="10"/>
+            <line x1="12" y1="20" x2="12" y2="4"/>
+            <line x1="6" y1="20" x2="6" y2="14"/>
+        </svg>
+    `;
+    
+    const editBtn = adminActions.querySelector('a[href*="/edit"]');
+    if (editBtn) {
+        editBtn.insertAdjacentElement('afterend', graphBtn);
+    } else {
+        adminActions.insertBefore(graphBtn, adminActions.firstChild);
+    }
+    
+    graphBtn.addEventListener('click', () => {
+        showShipEfficiencyModal(paidShips);
+    });
+}
+
+
+function showShipEfficiencyModal(ships) {
+    const predictedPoint = calculateLinearRegression(ships);
+    
+    const modal = document.createElement('div');
+    modal.className = 'flavortown-leaderboard-modal';
+    modal.style.zIndex = '10060';
+    
+    const styles = getComputedStyle(document.documentElement);
+    const isDarkTheme = document.getElementById('flavortown-theme');
+    
+    const chartBgColor = styles.getPropertyValue('--color-surface')?.trim() || (isDarkTheme ? '#1e1e2e' : '#ffffff');
+    const textColor = styles.getPropertyValue('--color-text-primary')?.trim() || (isDarkTheme ? '#cdd6f4' : '#333333');
+    const gridColor = styles.getPropertyValue('--color-border')?.trim() || (isDarkTheme ? '#45475a' : '#e2d8cc');
+    const efficiencyColor = styles.getPropertyValue('--color-brown')?.trim() || '#b08d57';
+    const starsColor = styles.getPropertyValue('--color-blue')?.trim() || '#4a90a4';
+    
+    modal.innerHTML = `
+        <div class="flavortown-leaderboard-modal__dialog" style="width: min(960px, 98vw); max-width: 960px;">
+            <button type="button" class="flavortown-leaderboard-modal__close" aria-label="Close">×</button>
+            <h3 style="margin-bottom: 20px; font-size: 1.4em;">Ship Efficiency Graph</h3>
+            <div class="flavortown-graph-container" style="padding: 16px; background: ${chartBgColor}; border-radius: 12px; position: relative;">
+                <canvas id="flavortown-ship-efficiency-graph" style="max-height: 400px; width: 100%;"></canvas>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    const closeBtn = modal.querySelector('.flavortown-leaderboard-modal__close');
+    closeBtn.addEventListener('click', () => modal.remove());
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) modal.remove();
+    });
+    
+    requestAnimationFrame(() => {
+        createChartJSGraph(ships, predictedPoint, isDarkTheme, textColor, gridColor, efficiencyColor, starsColor);
+    });
+}
+
+function createChartJSGraph(ships, predictedPoint, isDarkTheme, textColor, gridColor, efficiencyColor, starsColor) {
+    const ctx = document.getElementById('flavortown-ship-efficiency-graph').getContext('2d');
+    
+    const labels = ships.map(s => s.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
+    labels.push(predictedPoint.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + ' (Predicted)');
+    
+    const efficiencyData = ships.map(s => s.efficiency);
+    efficiencyData.push(predictedPoint.efficiency);
+    
+    const starsData = ships.map(s => s.avgStars || null);
+    starsData.push(null);
+    
+    const hexToRgba = (hex, alpha) => {
+        const r = parseInt(hex.slice(1, 3), 16);
+        const g = parseInt(hex.slice(3, 5), 16);
+        const b = parseInt(hex.slice(5, 7), 16);
+        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    };
+    
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Efficiency (cookies/hour)',
+                    data: efficiencyData,
+                    borderColor: efficiencyColor,
+                    backgroundColor: hexToRgba(efficiencyColor, 0.1),
+                    borderWidth: 3,
+                    pointRadius: 6,
+                    pointBackgroundColor: efficiencyColor,
+                    pointBorderColor: isDarkTheme ? '#1e1e2e' : '#ffffff',
+                    pointBorderWidth: 2,
+                    tension: 0.4,
+                    yAxisID: 'y',
+                    segment: {
+                        borderDash: ctx => ctx.p1DataIndex === ships.length ? [6, 6] : undefined
+                    }
+                },
+                {
+                    label: 'Avg Stars',
+                    data: starsData,
+                    borderColor: starsColor,
+                    backgroundColor: hexToRgba(starsColor, 0.1),
+                    borderWidth: 3,
+                    pointRadius: 6,
+                    pointBackgroundColor: starsColor,
+                    pointBorderColor: isDarkTheme ? '#1e1e2e' : '#ffffff',
+                    pointBorderWidth: 2,
+                    tension: 0.4,
+                    yAxisID: 'y1',
+                    spanGaps: false
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: {
+                mode: 'index',
+                intersect: false
+            },
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        color: textColor,
+                        padding: 20,
+                        usePointStyle: true,
+                        pointStyle: 'circle'
+                    }
+                },
+                tooltip: {
+                    backgroundColor: isDarkTheme ? 'rgba(30, 30, 46, 0.95)' : 'rgba(255, 255, 255, 0.95)',
+                    titleColor: isDarkTheme ? '#cdd6f4' : '#333',
+                    bodyColor: isDarkTheme ? '#cdd6f4' : '#333',
+                    borderColor: gridColor,
+                    borderWidth: 1,
+                    padding: 12,
+                    cornerRadius: 8,
+                    callbacks: {
+                        title: function(context) {
+                            const index = context[0].dataIndex;
+                            if (index === ships.length) {
+                                return 'Predicted Next Ship';
+                            }
+                            return 'Ship #' + ships[index].shipNumber;
+                        },
+                        afterTitle: function(context) {
+                            const index = context[0].dataIndex;
+                            if (index < ships.length) {
+                                const ship = ships[index];
+                                return `Hours: ${ship.hours.toFixed(2)} | Cookies: 🍪${ship.cookies}`;
+                            }
+                            return '';
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: {
+                        color: gridColor,
+                        drawBorder: false
+                    },
+                    ticks: {
+                        color: textColor,
+                        font: { size: 11 }
+                    }
+                },
+                y: {
+                    type: 'linear',
+                    display: true,
+                    position: 'left',
+                    title: {
+                        display: true,
+                        text: 'Efficiency (cookies/hour)',
+                        color: efficiencyColor,
+                        font: { weight: 'bold' }
+                    },
+                    grid: {
+                        color: gridColor,
+                        drawBorder: false
+                    },
+                    ticks: {
+                        color: efficiencyColor,
+                        callback: function(value) {
+                            return value.toFixed(1);
+                        }
+                    },
+                    suggestedMin: Math.min(...efficiencyData) - 0.5,
+                    suggestedMax: Math.max(...efficiencyData) + 0.5
+                },
+                y1: {
+                    type: 'linear',
+                    display: true,
+                    position: 'right',
+                    title: {
+                        display: true,
+                        text: 'Average Stars',
+                        color: starsColor,
+                        font: { weight: 'bold' }
+                    },
+                    grid: {
+                        drawOnChartArea: false
+                    },
+                    ticks: {
+                        color: starsColor,
+                        min: 1,
+                        max: 6,
+                        callback: function(value) {
+                            return value.toFixed(1);
+                        }
+                    },
+                    suggestedMin: Math.min(...starsData.filter(v => v !== null)) - 0.2,
+                    suggestedMax: Math.max(...starsData.filter(v => v !== null)) + 0.2
+                }
+            }
+        }
+    });
+}
+
+function calculateLinearRegression(ships) {
+    const n = ships.length;
+    let sumX = 0, sumY = 0, sumXY = 0, sumXX = 0;
+    
+    ships.forEach((ship, index) => {
+        const x = index;
+        const y = ship.efficiency;
+        sumX += x;
+        sumY += y;
+        sumXY += x * y;
+        sumXX += x * x;
+    });
+    
+    const slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
+    const intercept = (sumY - slope * sumX) / n;
+    
+    const nextIndex = n;
+    const predictedEfficiency = slope * nextIndex + intercept;
+    
+    const lastShip = ships[ships.length - 1];
+    const nextDate = new Date(lastShip.date);
+    nextDate.setDate(nextDate.getDate() + 7);
+    
+    return {
+        shipNumber: n + 1,
+        date: nextDate,
+        efficiency: Math.max(0, predictedEfficiency),
+        isPredicted: true
+    };
 }
 
 function addSpeedReaderStyles() {
