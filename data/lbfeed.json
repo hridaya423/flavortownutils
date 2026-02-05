@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-05T20:24:21.192Z",
+  "lastUpdated": "2026-02-05T21:01:49.337Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -16990,6 +16990,22 @@
         "balance": 798,
         "reason": "payout",
         "reasonType": "payout",
+        "userId": "U092CHMLB24"
+      },
+      {
+        "ts": "2026-02-05T20:29:28.158Z",
+        "delta": -350,
+        "balance": 448,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U092CHMLB24"
+      },
+      {
+        "ts": "2026-02-05T20:32:36.485Z",
+        "delta": -350,
+        "balance": 98,
+        "reason": "shop purchase",
+        "reasonType": "",
         "userId": "U092CHMLB24"
       }
     ],
@@ -52219,6 +52235,12 @@
     ]
   },
   "users": {
+    "U092CHMLB24": {
+      "id": "U092CHMLB24",
+      "username": "parth.ahuja",
+      "displayName": "parth",
+      "avatar": "https://avatars.slack-edge.com/2025-12-25/10215822701920_fb83939fa8731e0dc037_72.png"
+    },
     "U0A3D9YPLQ4": {
       "id": "U0A3D9YPLQ4",
       "username": "sanadeghat",
@@ -53627,12 +53649,6 @@
       "id": "U093RE2RUK0",
       "username": "hb.hugo.brisebois",
       "avatar": "https://avatars.slack-edge.com/2025-10-06/9629194930839_27844c6db28857bb79d8_72.png"
-    },
-    "U092CHMLB24": {
-      "id": "U092CHMLB24",
-      "username": "parth.ahuja",
-      "displayName": "parth",
-      "avatar": "https://avatars.slack-edge.com/2025-12-25/10215822701920_fb83939fa8731e0dc037_72.png"
     },
     "U09MQ8PKNMU": {
       "id": "U09MQ8PKNMU",
