@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-06T05:39:09.813Z",
+  "lastUpdated": "2026-02-06T06:58:34.304Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -15756,6 +15756,14 @@
         "ts": "2026-02-04T12:10:02.677Z",
         "delta": 10,
         "balance": 151,
+        "reason": "user grant",
+        "reasonType": "",
+        "userId": "U091M21518T"
+      },
+      {
+        "ts": "2026-02-06T05:46:58.456Z",
+        "delta": 28,
+        "balance": 179,
         "reason": "user grant",
         "reasonType": "",
         "userId": "U091M21518T"
@@ -41163,6 +41171,16 @@
         "userId": "U0A7A9JMZ0V"
       }
     ],
+    "u0a7aelfk6g": [
+      {
+        "ts": "2026-02-06T06:10:15.130Z",
+        "delta": 3,
+        "balance": 16,
+        "reason": "Michelin Star",
+        "reasonType": "achievement",
+        "userId": "U0A7AELFK6G"
+      }
+    ],
     "u0a7akufmkm": [
       {
         "ts": "2026-01-08T10:45:51.055Z",
@@ -52293,6 +52311,18 @@
     ]
   },
   "users": {
+    "U0A7AELFK6G": {
+      "id": "U0A7AELFK6G",
+      "username": "hmahibala",
+      "displayName": "hmahibala",
+      "avatar": "https://secure.gravatar.com/avatar/4b9100cc3db1acf8f292da5619b6a6e6.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0020-72.png"
+    },
+    "U091M21518T": {
+      "id": "U091M21518T",
+      "username": "amusoni240",
+      "displayName": "Amu",
+      "avatar": "https://avatars.slack-edge.com/2026-01-21/10344452941906_71cb5f3b39b98fdc5b37_72.png"
+    },
     "U07V12XBSF6": {
       "id": "U07V12XBSF6",
       "username": "praneetnrana",
@@ -52630,12 +52660,6 @@
       "username": "ytbraced",
       "displayName": "divpreet",
       "avatar": "https://avatars.slack-edge.com/2025-01-16/8323967091792_1852e815019e2f2cd3b9_72.png"
-    },
-    "U091M21518T": {
-      "id": "U091M21518T",
-      "username": "amusoni240",
-      "displayName": "Amu",
-      "avatar": "https://avatars.slack-edge.com/2026-01-21/10344452941906_71cb5f3b39b98fdc5b37_72.png"
     },
     "U098P9DLUGJ": {
       "id": "U098P9DLUGJ",
