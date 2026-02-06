@@ -4778,3 +4778,325 @@
     opacity: 1;
     transform: translateY(0);
 }
+
+.flavortown-heatmap-section {
+    margin-top: 24px;
+}
+
+.flavortown-heatmap-section {
+    width: 100%;
+    max-width: 100%;
+    padding: 20px 0;
+}
+
+.flavortown-heatmap-card {
+    background: var(--color-surface, #f5efe9);
+    border: 1px solid var(--color-border, #d8c9ba);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.flavortown-heatmap-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.flavortown-heatmap-card-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: var(--color-text-primary, #5d4e37);
+    font-weight: 600;
+}
+
+.flavortown-heatmap-card-content {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+}
+
+.flavortown-heatmap-side-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-width: 180px;
+    max-width: 200px;
+    flex: 1;
+}
+
+.flavortown-heatmap-side-stats.left {
+    margin-right: 24px;
+}
+
+.flavortown-heatmap-side-stats.right {
+    margin-left: 24px;
+}
+
+.flavortown-heatmap-stat-box {
+    background: var(--color-cream, #fdf6e3);
+    border: 1px solid var(--color-border, #d8c9ba);
+    border-radius: 12px;
+    padding: 24px 16px;
+    text-align: center;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 100px;
+}
+
+.flavortown-heatmap-stat-label {
+    font-size: 0.75rem;
+    color: var(--color-text-secondary, #6b5c4a);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.flavortown-heatmap-stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-text-primary, #5d4e37);
+    line-height: 1.2;
+}
+
+.flavortown-heatmap-stat-sub {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary, #6b5c4a);
+    margin-top: 6px;
+}
+
+.flavortown-heatmap-main {
+    flex: 1;
+    min-width: 0;
+}
+
+.flavortown-heatmap-loading-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px;
+    font-size: 0.85rem;
+    color: var(--color-text-secondary, #6b5c4a);
+    background: var(--color-surface, #f5efe9);
+    border-radius: 8px;
+    margin-top: 12px;
+}
+
+.flavortown-heatmap-loading-spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--color-border, #d8c9ba);
+    border-top-color: var(--color-accent, #ec8b33);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.flavortown-heatmap-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.flavortown-heatmap-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: var(--color-text-primary, #5d4e37);
+    font-weight: 400;
+}
+
+.flavortown-heatmap-controls {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.flavortown-heatmap-view-toggle {
+    display: flex;
+    gap: 4px;
+    background: var(--color-cream, #fdf6e3);
+    padding: 4px;
+    border-radius: 8px;
+    border: 1px solid var(--color-border, #d8c9ba);
+}
+
+.flavortown-heatmap-btn {
+    padding: 6px 12px;
+    border: none;
+    background: transparent;
+    color: var(--color-text-secondary, #6b5c4a);
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.15s ease;
+}
+
+.flavortown-heatmap-btn:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.flavortown-heatmap-btn.active {
+    background: var(--color-accent, #ec8b33);
+    color: #fff;
+}
+
+.flavortown-heatmap-canvas-container {
+    width: 100%;
+    padding: 10px 0;
+    margin: 0;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+.favortown-heatmap-canvas-container canvas {
+    display: block;
+}
+
+.flavortown-heatmap-canvas-container canvas {
+    display: block;
+    margin: 0 auto;
+}
+
+.flavortown-heatmap-footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 16px;
+    padding-right: 24px;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.flavortown-heatmap-legend {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8rem;
+    color: var(--color-text-secondary, #6b5c4a);
+}
+
+.flavortown-heatmap-legend-note {
+    font-size: 0.7rem;
+    opacity: 0.7;
+    margin-left: 8px;
+}
+
+.flavortown-heatmap-legend-cells {
+    display: flex;
+    gap: 3px;
+    flex-wrap: nowrap;
+}
+
+.flavortown-heatmap-legend-cell {
+    width: 11px;
+    height: 11px;
+    border-radius: 2px;
+}
+
+.flavortown-heatmap-legend-cell.level-0 {
+    background: var(--color-cream-dark, #efe6d5);
+}
+
+.flavortown-heatmap-legend-cell.level-1 {
+    background: color-mix(in srgb, var(--color-accent, #ec8b33) 25%, var(--color-cream-dark, #efe6d5));
+}
+
+.flavortown-heatmap-legend-cell.level-2 {
+    background: color-mix(in srgb, var(--color-accent, #ec8b33) 45%, var(--color-cream-dark, #efe6d5));
+}
+
+.flavortown-heatmap-legend-cell.level-3 {
+    background: color-mix(in srgb, var(--color-accent, #ec8b33) 70%, var(--color-cream-dark, #efe6d5));
+}
+
+.flavortown-heatmap-legend-cell.level-4 {
+    background: var(--color-accent, #ec8b33);
+}
+
+.flavortown-heatmap-stats {
+    font-size: 0.9rem;
+    color: var(--color-text-primary, #5d4e37);
+}
+
+.flavortown-heatmap-stats strong {
+    font-weight: 600;
+}
+
+.flavortown-heatmap-tooltip {
+    background: var(--color-surface, #f5efe9);
+    color: var(--color-text-primary, #5d4e37);
+    border: 1px solid var(--color-border, #d8c9ba);
+}
+
+.flavortown-heatmap-legend-combined {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+}
+
+.flavortown-heatmap-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.flavortown-heatmap-legend-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-text-secondary, #6b5c4a);
+}
+
+.flavortown-heatmap-legend-cell.level-0-secondary {
+    background: var(--color-cream-dark, #efe6d5);
+}
+
+.flavortown-heatmap-legend-cell.level-1-secondary {
+    background: color-mix(in srgb, var(--color-brown-light, #c9a86c) 25%, var(--color-cream-dark, #efe6d5));
+}
+
+.flavortown-heatmap-legend-cell.level-2-secondary {
+    background: color-mix(in srgb, var(--color-brown-light, #c9a86c) 45%, var(--color-cream-dark, #efe6d5));
+}
+
+.flavortown-heatmap-legend-cell.level-3-secondary {
+    background: color-mix(in srgb, var(--color-brown-light, #c9a86c) 70%, var(--color-cream-dark, #efe6d5));
+}
+
+.flavortown-heatmap-legend-cell.level-4-secondary {
+    background: var(--color-brown-light, #c9a86c);
+}
+
+.flavortown-heatmap-legend-cell.level-0-blended {
+    background: var(--color-cream-dark, #efe6d5) !important;
+}
+
+.flavortown-heatmap-legend-cell.level-1-blended {
+    background: #d4c4a8 !important;
+}
+
+.flavortown-heatmap-legend-cell.level-2-blended {
+    background: #c9b896 !important;
+}
+
+.flavortown-heatmap-legend-cell.level-3-blended {
+    background: #d4a574 !important;
+}
+
+.flavortown-heatmap-legend-cell.level-4-blended {
+    background: #c9945c !important;
+}

@@ -3846,3 +3846,131 @@ pre,
 code {
     background-color: var(--overcooked-dark) !important;
 }
+
+.flavortown-heatmap-legend-cell.level-0 {
+    background: var(--overcooked-mid) !important;
+}
+
+.flavortown-heatmap-legend-cell.level-1 {
+    background: color-mix(in srgb, var(--overcooked-accent) 25%, var(--overcooked-mid)) !important;
+}
+
+.flavortown-heatmap-legend-cell.level-2 {
+    background: color-mix(in srgb, var(--overcooked-accent) 45%, var(--overcooked-mid)) !important;
+}
+
+.flavortown-heatmap-legend-cell.level-3 {
+    background: color-mix(in srgb, var(--overcooked-accent) 70%, var(--overcooked-mid)) !important;
+}
+
+.flavortown-heatmap-legend-cell.level-4 {
+    background: var(--overcooked-accent) !important;
+}
+
+.flavortown-heatmap-tooltip {
+    background: var(--overcooked-dark) !important;
+    color: var(--overcooked-white) !important;
+    border: 1px solid var(--overcooked-mid) !important;
+}
+
+.flavortown-heatmap-legend-cell.level-0-secondary {
+    background: var(--overcooked-mid) !important;
+}
+
+.flavortown-heatmap-legend-cell.level-1-secondary {
+    background: color-mix(in srgb, var(--overcooked-gold) 25%, var(--overcooked-mid)) !important;
+}
+
+.flavortown-heatmap-legend-cell.level-2-secondary {
+    background: color-mix(in srgb, var(--overcooked-gold) 45%, var(--overcooked-mid)) !important;
+}
+
+.flavortown-heatmap-legend-cell.level-3-secondary {
+    background: color-mix(in srgb, var(--overcooked-gold) 70%, var(--overcooked-mid)) !important;
+}
+
+.flavortown-heatmap-legend-cell.level-4-secondary {
+    background: var(--overcooked-gold) !important;
+}
+
+.flavortown-heatmap-legend-cell.level-0-blended {
+    background: var(--overcooked-mid) !important;
+}
+
+.flavortown-heatmap-legend-cell.level-1-blended {
+    background: #8f4a3a !important;
+}
+
+.flavortown-heatmap-legend-cell.level-2-blended {
+    background: #a65e42 !important;
+}
+
+.flavortown-heatmap-legend-cell.level-3-blended {
+    background: #b87333 !important;
+}
+
+.flavortown-heatmap-legend-cell.level-4-blended {
+    background: #c9882a !important;
+}
+
+.flavortown-heatmap-legend-cell.level-1 {
+    background: color-mix(in srgb, var(--overcooked-accent) 25%, var(--overcooked-mid)) !important;
+}
+
+.flavortown-heatmap-legend-cell.level-2 {
+    background: color-mix(in srgb, var(--overcooked-accent) 45%, var(--overcooked-mid)) !important;
+}
+
+.flavortown-heatmap-legend-cell.level-3 {
+    background: color-mix(in srgb, var(--overcooked-accent) 70%, var(--overcooked-mid)) !important;
+}
+
+.flavortown-heatmap-legend-cell.level-4 {
+    background: var(--overcooked-accent) !important;
+}
+
+.flavortown-heatmap-tooltip {
+    background: var(--overcooked-dark) !important;
+    color: var(--overcooked-white) !important;
+    border: 1px solid var(--overcooked-mid) !important;
+}
+
+.flavortown-heatmap-legend-cell.level-0-secondary {
+    background: var(--overcooked-mid) !important;
+}
+
+.flavortown-heatmap-legend-cell.level-1-secondary {
+    background: color-mix(in srgb, var(--overcooked-gold) 25%, var(--overcooked-mid)) !important;
+}
+
+.flavortown-heatmap-legend-cell.level-2-secondary {
+    background: color-mix(in srgb, var(--overcooked-gold) 45%, var(--overcooked-mid)) !important;
+}
+
+.flavortown-heatmap-legend-cell.level-3-secondary {
+    background: color-mix(in srgb, var(--overcooked-gold) 70%, var(--overcooked-mid)) !important;
+}
+
+.flavortown-heatmap-legend-cell.level-4-secondary {
+    background: var(--overcooked-gold) !important;
+}
+
+.flavortown-heatmap-legend-cell.level-0-blended {
+    background: var(--overcooked-mid) !important;
+}
+
+.flavortown-heatmap-legend-cell.level-1-blended {
+    background: #8f4a3a !important;
+}
+
+.flavortown-heatmap-legend-cell.level-2-blended {
+    background: #a65e42 !important;
+}
+
+.flavortown-heatmap-legend-cell.level-3-blended {
+    background: #b87333 !important;
+}
+
+.flavortown-heatmap-legend-cell.level-4-blended {
+    background: #c9882a !important;
+}

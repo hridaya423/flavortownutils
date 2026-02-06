@@ -128,7 +128,8 @@ const LOCAL_STORAGE_SYNC_KEYS = [
     'shop_wishlist_order',
     'flavortown_project_stats',
     'flavortown_tutorial_state',
-    'flavortown_cmd_recent'
+    'flavortown_cmd_recent',
+    'flavortown_heatmap_data'
 ];
 let localStorageSyncTimer = null;
 let isApplyingLocalStorageSync = false;
@@ -2791,6 +2792,917 @@ async function fetchProjectShipMinutes(projectId) {
     }
 }
 
+const HEATMAP_DATA_KEY = 'flavortown_heatmap_data';
+const HEATMAP_PREFS_KEY = 'flavortown_heatmap_prefs';
+
+function getHeatmapData() {
+    try {
+        const raw = localStorage.getItem(HEATMAP_DATA_KEY);
+        if (!raw) return { version: 3, lastUpdated: null, projects: {}, dailyAggregates: {} };
+        const data = JSON.parse(raw);
+        if (data.version !== 3) {
+            return { version: 3, lastUpdated: null, projects: {}, dailyAggregates: {} };
+        }
+        return data;
+    } catch (e) {
+        return { version: 3, lastUpdated: null, projects: {}, dailyAggregates: {} };
+    }
+}
+
+function setHeatmapData(data) {
+    try {
+        data.lastUpdated = new Date().toISOString();
+        localStorage.setItem(HEATMAP_DATA_KEY, JSON.stringify(data));
+    } catch (e) {
+        console.error('Failed to save heatmap data:', e);
+    }
+}
+
+function getHeatmapPrefs() {
+    try {
+        const raw = localStorage.getItem(HEATMAP_PREFS_KEY);
+        if (!raw) return { lastViewMode: 'combined' };
+        return JSON.parse(raw);
+    } catch (e) {
+        return { lastViewMode: 'combined' };
+    }
+}
+
+function setHeatmapPrefs(prefs) {
+    try {
+        localStorage.setItem(HEATMAP_PREFS_KEY, JSON.stringify(prefs));
+    } catch (e) {
+        console.error('Failed to save heatmap prefs:', e);
+    }
+}
+
+function parseDevlogData(devlogElement) {
+    const timeEl = devlogElement.querySelector('.post__time');
+    const date = parseDateFromTimeElement(timeEl);
+    if (!date) return null;
+    
+    const durationEl = devlogElement.querySelector('.post__duration');
+    const hours = durationEl ? parseDurationToMinutes(durationEl.textContent.trim()) / 60 : 0;
+    
+    const dateStr = date.toISOString().split('T')[0];
+    
+    return {
+        date: dateStr,
+        hours: hours,
+        id: devlogElement.id || devlogElement.dataset.id || null
+    };
+}
+
+function scrapeCurrentProjectDevlogs() {
+    const devlogs = document.querySelectorAll('article.post--devlog, .post--devlog');
+    const projectData = {};
+    
+    devlogs.forEach(devlog => {
+        const data = parseDevlogData(devlog);
+        if (data) {
+            if (!projectData[data.date]) {
+                projectData[data.date] = { hours: 0, count: 0, ids: [] };
+            }
+            projectData[data.date].hours += data.hours;
+            projectData[data.date].count += 1;
+            if (data.id) projectData[data.date].ids.push(data.id);
+        }
+    });
+    
+    return projectData;
+}
+
+function updateHeatmapDataForProject(projectSlug, projectName, devlogData) {
+    const data = getHeatmapData();
+    
+    if (!data.projects[projectSlug]) {
+        data.projects[projectSlug] = {
+            name: projectName,
+            lastScraped: new Date().toISOString(),
+            devlogs: {}
+        };
+    }
+    
+    Object.entries(devlogData).forEach(([date, dayData]) => {
+        data.projects[projectSlug].devlogs[date] = dayData;
+    });
+    
+    data.projects[projectSlug].lastScraped = new Date().toISOString();
+    
+    data.dailyAggregates = {};
+    Object.entries(data.projects).forEach(([slug, project]) => {
+        Object.entries(project.devlogs).forEach(([date, dayData]) => {
+            if (!data.dailyAggregates[date]) {
+                data.dailyAggregates[date] = { totalHours: 0, totalDevlogs: 0, projects: [] };
+            }
+            data.dailyAggregates[date].totalHours += dayData.hours;
+            data.dailyAggregates[date].totalDevlogs += dayData.count;
+            if (!data.dailyAggregates[date].projects.includes(slug)) {
+                data.dailyAggregates[date].projects.push(slug);
+            }
+        });
+    });
+    
+    setHeatmapData(data);
+    return data;
+}
+
+async function fetchUserProjects() {
+    try {
+        const response = await fetch('/projects', { credentials: 'same-origin' });
+        if (!response.ok) return [];
+        
+        const html = await response.text();
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        const projectCards = doc.querySelectorAll('.project-card, .projects-board__grid-item a[href^="/projects/"]');
+        
+        const projects = [];
+        projectCards.forEach(card => {
+            const link = card.tagName === 'A' ? card : card.querySelector('a[href^="/projects/"]');
+            if (link) {
+                const href = link.getAttribute('href');
+                const match = href.match(/\/projects\/([^\/]+)/);
+                if (match) {
+                    const nameEl = card.querySelector('.project-card__title, h3, h4');
+                    projects.push({
+                        slug: match[1],
+                        name: nameEl ? nameEl.textContent.trim() : match[1]
+                    });
+                }
+            }
+        });
+        
+        return projects;
+    } catch (e) {
+        console.error('Failed to fetch user projects:', e);
+        return [];
+    }
+}
+
+function scrapeAndStoreHeatmapData() {
+    const projectMatch = window.location.pathname.match(/\/projects\/([^\/]+)$/);
+    if (!projectMatch) return;
+    
+    const projectSlug = projectMatch[1];
+    
+    const projectNameEl = document.querySelector('h1, .project-show-card__title');
+    const projectName = projectNameEl ? projectNameEl.textContent.trim() : projectSlug;
+    
+    const devlogData = scrapeCurrentProjectDevlogs();
+    
+    if (Object.keys(devlogData).length > 0) {
+        updateHeatmapDataForProject(projectSlug, projectName, devlogData);
+    }
+}
+
+const API_BASE_URL = 'https://flavortown.hackclub.com/api/v1';
+
+function getApiKey() {
+    return localStorage.getItem('flavortown_api_key');
+}
+
+async function apiFetch(endpoint) {
+    const apiKey = getApiKey();
+    if (!apiKey) {
+        throw new Error('No API key found. Please visit your account settings to generate one.');
+    }
+    
+    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+        headers: {
+            'Authorization': `Bearer ${apiKey}`,
+            'Accept': 'application/json'
+        },
+        credentials: 'same-origin'
+    });
+    
+    if (!response.ok) {
+        if (response.status === 401) {
+            throw new Error('Invalid API key. Please regenerate your API key in account settings.');
+        }
+        throw new Error(`API error: ${response.status}`);
+    }
+    
+    return response.json();
+}
+
+const DEVLOG_API_DELAY = 2000;
+
+async function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function fetchProjectIdsFromPage() {
+    try {
+        const response = await fetch('/projects', { credentials: 'same-origin' });
+        if (!response.ok) return [];
+
+        const html = await response.text();
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+
+        const projectCards = doc.querySelectorAll('.project-card[id^="project_"]');
+        const projects = [];
+
+        projectCards.forEach(card => {
+            const cardId = card.getAttribute('id');
+            const idMatch = cardId.match(/project_(\d+)/);
+            if (!idMatch) return;
+
+            const id = idMatch[1];
+            const titleLink = card.querySelector('.project-card__title-link');
+            const title = titleLink ? titleLink.textContent.trim() : `Project #${id}`;
+
+            const statsContainer = card.querySelector('.project-card__stats');
+            let hasActivity = true;
+
+            if (statsContainer) {
+                const statText = statsContainer.textContent || '';
+                const devlogMatch = statText.match(/(\d+)\s*devlog/i);
+                const timeMatch = statText.match(/(\d+)h\s*(\d+)m/i);
+
+                const devlogCount = devlogMatch ? parseInt(devlogMatch[1]) : 0;
+                const hours = timeMatch ? parseInt(timeMatch[1]) : 0;
+                const minutes = timeMatch ? parseInt(timeMatch[2]) : 0;
+
+                if (devlogCount === 0 && hours === 0 && minutes === 0) {
+                    hasActivity = false;
+                }
+            }
+
+            if (hasActivity) {
+                projects.push({ id: parseInt(id), title });
+            }
+        });
+
+        return projects;
+    } catch (e) {
+        return [];
+    }
+}
+
+async function fetchAllDevlogsForProjectAPI(projectId) {
+    const allDevlogs = [];
+    let page = 1;
+    let hasMore = true;
+    
+    while (hasMore) {
+        const data = await apiFetch(`/projects/${projectId}/devlogs?page=${page}`);
+        allDevlogs.push(...data.devlogs);
+        
+        hasMore = data.pagination.next_page !== null;
+        page = data.pagination.next_page;
+        
+        if (hasMore) {
+            await sleep(DEVLOG_API_DELAY);
+        }
+    }
+    
+    return allDevlogs;
+}
+
+async function fetchAndUpdateHeatmapDataViaAPI(onProgress = null) {
+    try {
+        const projects = await fetchProjectIdsFromPage();
+
+        if (onProgress) onProgress({ type: 'start', total: projects.length });
+
+        for (let i = 0; i < projects.length; i++) {
+            const project = projects[i];
+            try {
+                if (onProgress) onProgress({ type: 'project', current: i + 1, total: projects.length, name: project.title });
+
+                const devlogs = await fetchAllDevlogsForProjectAPI(project.id);
+
+                if (i < projects.length - 1) {
+                    await sleep(DEVLOG_API_DELAY);
+                }
+                
+                const projectData = {};
+                
+                devlogs.forEach(devlog => {
+                    const createdAt = devlog.created_at;
+                    if (!createdAt) {
+                        return;
+                    }
+                    
+                    const date = new Date(createdAt);
+                    if (isNaN(date.getTime())) {
+                        return;
+                    }
+                    
+                    const dateStr = date.toISOString().split('T')[0];
+                    const hours = (devlog.duration_seconds || 0) / 3600;
+                    
+                    if (!projectData[dateStr]) {
+                        projectData[dateStr] = { hours: 0, count: 0, ids: [] };
+                    }
+                    projectData[dateStr].hours += hours;
+                    projectData[dateStr].count += 1;
+                    projectData[dateStr].ids.push(devlog.id);
+                });
+                
+                if (Object.keys(projectData).length > 0) {
+                    updateHeatmapDataForProject(project.id.toString(), project.title, projectData);
+                }
+            } catch (e) {
+            }
+        }
+        
+        if (onProgress) onProgress({ type: 'complete' });
+        return getHeatmapData();
+    } catch (e) {
+        if (onProgress) onProgress({ type: 'error', error: e.message });
+        return getHeatmapData();
+    }
+}
+
+
+function getHeatmapColor(intensity, theme) {
+    const root = document.documentElement;
+    const computedStyle = getComputedStyle(root);
+    
+    const getVar = (name, fallback) => {
+        const value = computedStyle.getPropertyValue(name)?.trim();
+        return value || fallback;
+    };
+    
+    const adjustColor = (hex, opacity) => {
+        const r = parseInt(hex.slice(1, 3), 16);
+        const g = parseInt(hex.slice(3, 5), 16);
+        const b = parseInt(hex.slice(5, 7), 16);
+        return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+    };
+    
+    let accentColor;
+    let surfaceColor;
+    let emptyColor;
+    
+    switch(theme) {
+        case 'catppuccin':
+            accentColor = getVar('--ctp-accent', '#cba6f7');
+            surfaceColor = getVar('--ctp-surface0', '#313244');
+            emptyColor = getVar('--ctp-surface1', '#45475a');
+            break;
+        case 'sea':
+            accentColor = getVar('--sea-cyan', '#22d3ee');
+            surfaceColor = getVar('--sea-dark', '#102a4c');
+            emptyColor = getVar('--sea-mid', '#1a3a5c');
+            break;
+        case 'overcooked':
+            accentColor = getVar('--overcooked-accent', '#ef4444');
+            surfaceColor = getVar('--overcooked-dark', '#2d1f1f');
+            emptyColor = getVar('--overcooked-mid', '#3d2828');
+            break;
+        default:
+            accentColor = getVar('--color-accent', '#ec8b33');
+            surfaceColor = getVar('--color-surface', '#f5efe9');
+            emptyColor = getVar('--color-cream-dark', '#efe6d5');
+    }
+    
+    const colors = {
+        level0: emptyColor,
+        level1: adjustColor(accentColor, 0.25),
+        level2: adjustColor(accentColor, 0.45),
+        level3: adjustColor(accentColor, 0.7),
+        level4: accentColor
+    };
+    
+    return colors[`level${intensity}`] || colors.level0;
+}
+
+function getSecondaryHeatmapColor(intensity, theme) {
+    const root = document.documentElement;
+    const computedStyle = getComputedStyle(root);
+    
+    const getVar = (name, fallback) => {
+        const value = computedStyle.getPropertyValue(name)?.trim();
+        return value || fallback;
+    };
+    
+    const adjustColor = (hex, opacity) => {
+        const r = parseInt(hex.slice(1, 3), 16);
+        const g = parseInt(hex.slice(3, 5), 16);
+        const b = parseInt(hex.slice(5, 7), 16);
+        return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+    };
+    
+    let secondaryColor;
+    let surfaceColor;
+    
+    switch(theme) {
+        case 'catppuccin':
+            secondaryColor = getVar('--ctp-teal', '#94e2d5');
+            surfaceColor = getVar('--ctp-surface1', '#45475a');
+            break;
+        case 'sea':
+            secondaryColor = getVar('--sea-spray', '#7ec8e3');
+            surfaceColor = getVar('--sea-mid', '#1a3a5c');
+            break;
+        case 'overcooked':
+            secondaryColor = getVar('--overcooked-gold', '#ffd700');
+            surfaceColor = getVar('--overcooked-mid', '#3d2828');
+            break;
+        default:
+            secondaryColor = getVar('--color-brown-light', '#c9a86c');
+            surfaceColor = getVar('--color-cream-dark', '#efe6d5');
+    }
+    
+    const colors = {
+        level0: surfaceColor,
+        level1: adjustColor(secondaryColor, 0.25),
+        level2: adjustColor(secondaryColor, 0.45),
+        level3: adjustColor(secondaryColor, 0.7),
+        level4: secondaryColor
+    };
+    
+    return colors[`level${intensity}`] || colors.level0;
+}
+
+function blendColorsForCombined(devlogIntensity, hoursIntensity, theme) {
+    const color1 = getHeatmapColor(devlogIntensity, theme);
+    const color2 = getSecondaryHeatmapColor(hoursIntensity, theme);
+    
+    if (devlogIntensity === 0 && hoursIntensity === 0) {
+        return color1;
+    }
+    
+    const hexToRgb = (hex) => {
+        if (hex.startsWith('rgba')) {
+            const match = hex.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+            return match ? [parseInt(match[1]), parseInt(match[2]), parseInt(match[3])] : [0, 0, 0];
+        }
+        if (hex.startsWith('#')) {
+            return [
+                parseInt(hex.slice(1, 3), 16),
+                parseInt(hex.slice(3, 5), 16),
+                parseInt(hex.slice(5, 7), 16)
+            ];
+        }
+        return [0, 0, 0];
+    };
+    
+    const rgb1 = hexToRgb(color1);
+    const rgb2 = hexToRgb(color2);
+    
+    const totalIntensity = devlogIntensity + hoursIntensity;
+    if (totalIntensity === 0) {
+        return color1;
+    }
+    
+    const weight1 = devlogIntensity / totalIntensity;
+    const weight2 = hoursIntensity / totalIntensity;
+    
+    const r = Math.round(rgb1[0] * weight1 + rgb2[0] * weight2);
+    const g = Math.round(rgb1[1] * weight1 + rgb2[1] * weight2);
+    const b = Math.round(rgb1[2] * weight1 + rgb2[2] * weight2);
+    
+    return `rgb(${r}, ${g}, ${b})`;
+}
+
+function prepareHeatmapData(dailyAggregates) {
+    const dates = Object.keys(dailyAggregates).sort();
+    if (dates.length === 0) return { weeks: [], maxDevlogs: 0, maxHours: 0, months: [] };
+
+    const firstDate = new Date(dates[0]);
+    const lastDate = new Date();
+    lastDate.setMonth(lastDate.getMonth() + 1);
+
+    let maxDevlogs = 0;
+    let maxHours = 0;
+    Object.values(dailyAggregates).forEach(day => {
+        maxDevlogs = Math.max(maxDevlogs, day.totalDevlogs);
+        maxHours = Math.max(maxHours, day.totalHours);
+    });
+
+    const startDate = new Date(firstDate);
+    const dayOfWeek = startDate.getDay();
+    const daysToSubtract = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+    startDate.setDate(startDate.getDate() - daysToSubtract);
+
+    const allDays = [];
+    const months = [];
+    let currentMonth = -1;
+
+    for (let d = new Date(startDate); d <= lastDate; d.setDate(d.getDate() + 1)) {
+        const dateStr = d.toISOString().split('T')[0];
+        const month = d.getMonth();
+
+        if (month !== currentMonth) {
+            months.push({
+                name: d.toLocaleDateString('en-US', { month: 'short' }),
+                weekIndex: Math.floor(allDays.length / 7)
+            });
+            currentMonth = month;
+        }
+
+        allDays.push({
+            date: dateStr,
+            ...(dailyAggregates[dateStr] || { totalDevlogs: 0, totalHours: 0, projects: [] })
+        });
+    }
+
+    const weeks = [];
+    for (let i = 0; i < allDays.length; i += 7) {
+        weeks.push(allDays.slice(i, i + 7));
+    }
+
+    return { weeks, maxDevlogs, maxHours, months };
+}
+
+function renderHeatmap(canvas, data, viewMode) {
+    const ctx = canvas.getContext('2d');
+    const dpr = window.devicePixelRatio || 1;
+
+    const { weeks, maxDevlogs, maxHours, months } = prepareHeatmapData(data.dailyAggregates);
+
+    if (weeks.length === 0) {
+        canvas.width = 600 * dpr;
+        canvas.height = 120 * dpr;
+        canvas.style.width = '600px';
+        canvas.style.height = '120px';
+        ctx.scale(dpr, dpr);
+        ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--color-text-secondary') || '#666';
+        ctx.font = '14px system-ui';
+        ctx.textAlign = 'center';
+        ctx.fillText('No activity data yet. Visit your projects to collect data.', 300, 60);
+        return;
+    }
+
+    const cols = weeks.length;
+    const rows = 7;
+
+    const cellSize = 28;
+    const gap = 4;
+    const padding = { top: 40, right: 20, bottom: 48, left: 56 };
+
+    const width = padding.left + cols * (cellSize + gap) + padding.right;
+    const height = padding.top + rows * (cellSize + gap) + padding.bottom;
+
+    canvas.width = width * dpr;
+    canvas.height = height * dpr;
+    canvas.style.width = width + 'px';
+    canvas.style.height = height + 'px';
+    ctx.scale(dpr, dpr);
+
+    const computedStyle = getComputedStyle(document.documentElement);
+    let theme = 'default';
+    
+    if (computedStyle.getPropertyValue('--ctp-accent').trim()) {
+        theme = 'catppuccin';
+    } else if (computedStyle.getPropertyValue('--sea-cyan').trim()) {
+        theme = 'sea';
+    } else if (computedStyle.getPropertyValue('--overcooked-accent').trim()) {
+        theme = 'overcooked';
+    }
+
+    ctx.clearRect(0, 0, width, height);
+
+    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--color-text-secondary') || '#666';
+    ctx.font = '10px system-ui';
+    ctx.textAlign = 'left';
+
+    let lastMonth = '';
+    months.forEach(month => {
+        if (month.name !== lastMonth) {
+            const x = padding.left + month.weekIndex * (cellSize + gap);
+            ctx.fillText(month.name, x, padding.top - 8);
+            lastMonth = month.name;
+        }
+    });
+
+    const dayLabels = ['Mon', 'Wed', 'Fri'];
+    const dayIndices = [0, 2, 4];
+    ctx.textAlign = 'right';
+    ctx.font = '12px system-ui';
+    dayLabels.forEach((label, i) => {
+        const dayIndex = dayIndices[i];
+        ctx.fillText(label, padding.left - 8, padding.top + dayIndex * (cellSize + gap) + cellSize / 2 + 4);
+    });
+
+    weeks.forEach((week, weekIndex) => {
+        week.forEach((day, dayIndex) => {
+            const x = padding.left + weekIndex * (cellSize + gap);
+            const y = padding.top + dayIndex * (cellSize + gap);
+
+            if (viewMode === 'devlogs') {
+                const intensity = day.totalDevlogs === 0 ? 0 : Math.min(4, Math.ceil((day.totalDevlogs / Math.max(1, maxDevlogs)) * 4));
+                const color = getHeatmapColor(intensity, theme);
+                ctx.fillStyle = color;
+                ctx.beginPath();
+                ctx.roundRect(x, y, cellSize, cellSize, 2);
+                ctx.fill();
+            } else if (viewMode === 'hours') {
+                const intensity = day.totalHours === 0 ? 0 : Math.min(4, Math.ceil((day.totalHours / Math.max(1, maxHours)) * 4));
+                const color = getHeatmapColor(intensity, theme);
+                ctx.fillStyle = color;
+                ctx.beginPath();
+                ctx.roundRect(x, y, cellSize, cellSize, 2);
+                ctx.fill();
+            } else {
+                const devlogIntensity = day.totalDevlogs === 0 ? 0 : Math.min(4, Math.ceil((day.totalDevlogs / Math.max(1, maxDevlogs)) * 4));
+                const hoursIntensity = day.totalHours === 0 ? 0 : Math.min(4, Math.ceil((day.totalHours / Math.max(1, maxHours)) * 4));
+
+                const blendedColor = blendColorsForCombined(devlogIntensity, hoursIntensity, theme);
+
+                ctx.fillStyle = blendedColor;
+                ctx.beginPath();
+                ctx.roundRect(x, y, cellSize, cellSize, 2);
+                ctx.fill();
+            }
+        });
+    });
+
+    canvas._heatmapCells = [];
+    weeks.forEach((week, weekIndex) => {
+        week.forEach((day, dayIndex) => {
+            canvas._heatmapCells.push({
+                x: padding.left + weekIndex * (cellSize + gap),
+                y: padding.top + dayIndex * (cellSize + gap),
+                width: cellSize,
+                height: cellSize,
+                data: day
+            });
+        });
+    });
+}
+
+function createHeatmapTooltip() {
+    const tooltip = document.createElement('div');
+    tooltip.className = 'flavortown-heatmap-tooltip';
+    tooltip.style.cssText = `
+        position: absolute;
+        padding: 8px 12px;
+        border-radius: 6px;
+        font-size: 12px;
+        pointer-events: none;
+        z-index: 10000;
+        display: none;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(4px);
+    `;
+    document.body.appendChild(tooltip);
+    return tooltip;
+}
+
+function calculateLongestStreak(data) {
+    const aggregates = Object.entries(data.dailyAggregates || {});
+    if (aggregates.length === 0) return 0;
+    
+    const activeDates = aggregates
+        .filter(([_, dayData]) => dayData.totalDevlogs > 0 || dayData.totalHours > 0)
+        .map(([date]) => date)
+        .sort();
+    
+    if (activeDates.length === 0) return 0;
+    
+    let longestStreak = 1;
+    let currentStreak = 1;
+    
+    for (let i = 1; i < activeDates.length; i++) {
+        const prevDate = new Date(activeDates[i - 1]);
+        const currDate = new Date(activeDates[i]);
+        
+        const diffTime = currDate.getTime() - prevDate.getTime();
+        const diffDays = diffTime / (1000 * 60 * 60 * 24);
+        
+        if (diffDays === 1) {
+            currentStreak++;
+            longestStreak = Math.max(longestStreak, currentStreak);
+        } else {
+            currentStreak = 1;
+        }
+    }
+    
+    return longestStreak;
+}
+
+function calculateHeatmapStats(data) {
+    const aggregates = Object.entries(data.dailyAggregates || {});
+    if (aggregates.length === 0) return null;
+
+    let maxDevlogs = 0;
+    let maxHours = 0;
+    let bestDay = null;
+    let bestDayHours = null;
+
+    aggregates.forEach(([date, day]) => {
+        if (day.totalDevlogs > maxDevlogs) {
+            maxDevlogs = day.totalDevlogs;
+            bestDay = date;
+        }
+        if (day.totalHours > maxHours) {
+            maxHours = day.totalHours;
+            bestDayHours = date;
+        }
+    });
+
+    const sortedDates = aggregates.map(([date]) => date).sort();
+    let currentStreak = 0;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    const activeDateSet = new Set(
+        aggregates
+            .filter(([_, day]) => day.totalDevlogs > 0 || day.totalHours > 0)
+            .map(([date]) => date)
+    );
+    
+    for (let i = 0; i <= 365; i++) {
+        const checkDate = new Date(today);
+        checkDate.setDate(today.getDate() - i);
+        const dateStr = checkDate.toISOString().split('T')[0];
+        
+        if (activeDateSet.has(dateStr)) {
+            currentStreak++;
+        } else if (i > 0) {
+            break;
+        }
+    }
+
+    return {
+        bestDay,
+        maxDevlogs,
+        maxHours,
+        currentStreak,
+        totalDays: aggregates.filter(([_, day]) => day.totalDevlogs > 0 || day.totalHours > 0).length
+    };
+}
+
+function createHeatmapComponent(data) {
+    const container = document.createElement('div');
+    container.className = 'flavortown-heatmap-card';
+
+    const prefs = getHeatmapPrefs();
+    let currentViewMode = prefs.lastViewMode || 'combined';
+    
+    const stats = calculateHeatmapStats(data);
+    const longestStreak = calculateLongestStreak(data);
+    
+    const aggregates = Object.entries(data.dailyAggregates || {});
+    const totalDevlogs = aggregates.reduce((sum, [_, day]) => sum + (day.totalDevlogs || 0), 0);
+    
+    container.innerHTML = `
+        <div class="flavortown-heatmap-card-header">
+            <h3>🔥 Activity Heatmap</h3>
+            <div class="flavortown-heatmap-view-toggle">
+                <button class="flavortown-heatmap-btn ${currentViewMode === 'devlogs' ? 'active' : ''}" data-mode="devlogs">Devlogs</button>
+                <button class="flavortown-heatmap-btn ${currentViewMode === 'hours' ? 'active' : ''}" data-mode="hours">Hours</button>
+                <button class="flavortown-heatmap-btn ${currentViewMode === 'combined' ? 'active' : ''}" data-mode="combined">Combined</button>
+            </div>
+        </div>
+        <div class="flavortown-heatmap-card-content">
+            <div class="flavortown-heatmap-side-stats left">
+                ${stats ? `
+                    <div class="flavortown-heatmap-stat-box">
+                        <div class="flavortown-heatmap-stat-label">Best Day</div>
+                        <div class="flavortown-heatmap-stat-value">${stats.bestDay ? new Date(stats.bestDay).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '-'}</div>
+                        <div class="flavortown-heatmap-stat-sub">${stats.maxDevlogs} devlogs</div>
+                    </div>
+                    <div class="flavortown-heatmap-stat-box">
+                        <div class="flavortown-heatmap-stat-label">Current Streak</div>
+                        <div class="flavortown-heatmap-stat-value">${stats.currentStreak}</div>
+                        <div class="flavortown-heatmap-stat-sub">days</div>
+                    </div>
+                ` : ''}
+            </div>
+            <div class="flavortown-heatmap-main">
+                <div class="flavortown-heatmap-canvas-container">
+                    <canvas id="flavortown-heatmap-canvas"></canvas>
+                </div>
+            </div>
+            <div class="flavortown-heatmap-side-stats right">
+                ${stats ? `
+                    <div class="flavortown-heatmap-stat-box">
+                        <div class="flavortown-heatmap-stat-label">Total Devlogs</div>
+                        <div class="flavortown-heatmap-stat-value">${totalDevlogs}</div>
+                        <div class="flavortown-heatmap-stat-sub">all time</div>
+                    </div>
+                    <div class="flavortown-heatmap-stat-box">
+                        <div class="flavortown-heatmap-stat-label">Longest Streak</div>
+                        <div class="flavortown-heatmap-stat-value">${longestStreak}</div>
+                        <div class="flavortown-heatmap-stat-sub">days</div>
+                    </div>
+                ` : ''}
+            </div>
+        </div>
+        <div class="flavortown-heatmap-footer">
+            ${currentViewMode === 'combined' ? `
+                <div class="flavortown-heatmap-legend">
+                    <span>Less</span>
+                    <div class="flavortown-heatmap-legend-cells">
+                        <div class="flavortown-heatmap-legend-cell level-0-blended"></div>
+                        <div class="flavortown-heatmap-legend-cell level-1-blended"></div>
+                        <div class="flavortown-heatmap-legend-cell level-2-blended"></div>
+                        <div class="flavortown-heatmap-legend-cell level-3-blended"></div>
+                        <div class="flavortown-heatmap-legend-cell level-4-blended"></div>
+                    </div>
+                    <span>More</span>
+                    <span class="flavortown-heatmap-legend-note">(Devlogs + Hours)</span>
+                </div>
+            ` : `
+                <div class="flavortown-heatmap-legend">
+                    <span>Less</span>
+                    <div class="flavortown-heatmap-legend-cells">
+                        <div class="flavortown-heatmap-legend-cell level-0"></div>
+                        <div class="flavortown-heatmap-legend-cell level-1"></div>
+                        <div class="flavortown-heatmap-legend-cell level-2"></div>
+                        <div class="flavortown-heatmap-legend-cell level-3"></div>
+                        <div class="flavortown-heatmap-legend-cell level-4"></div>
+                    </div>
+                    <span>More</span>
+                </div>
+            `}
+        </div>
+    `;
+
+    const canvas = container.querySelector('#flavortown-heatmap-canvas');
+    const tooltip = createHeatmapTooltip();
+
+    renderHeatmap(canvas, data, currentViewMode);
+
+    container.querySelectorAll('.flavortown-heatmap-view-toggle .flavortown-heatmap-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            container.querySelectorAll('.flavortown-heatmap-view-toggle .flavortown-heatmap-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentViewMode = btn.dataset.mode;
+            setHeatmapPrefs({ ...getHeatmapPrefs(), lastViewMode: currentViewMode });
+            renderHeatmap(canvas, getHeatmapData(), currentViewMode);
+            updateHeatmapLegend(container, currentViewMode);
+        });
+    });
+
+    canvas.addEventListener('mousemove', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        const x = (e.clientX - rect.left) * (canvas.width / rect.width / (window.devicePixelRatio || 1));
+        const y = (e.clientY - rect.top) * (canvas.height / rect.height / (window.devicePixelRatio || 1));
+        
+        const cell = canvas._heatmapCells?.find(c => 
+            x >= c.x && x <= c.x + c.width &&
+            y >= c.y && y <= c.y + c.height
+        );
+        
+        if (cell) {
+            const date = new Date(cell.data.date);
+            const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            tooltip.innerHTML = `
+                <div style="font-weight: 600; margin-bottom: 4px;">${dateStr}</div>
+                <div>${cell.data.totalDevlogs} devlog${cell.data.totalDevlogs !== 1 ? 's' : ''}</div>
+                <div>${cell.data.totalHours.toFixed(1)} hours</div>
+            `;
+            tooltip.style.display = 'block';
+            tooltip.style.left = `${e.pageX + 10}px`;
+            tooltip.style.top = `${e.pageY - 10}px`;
+        } else {
+            tooltip.style.display = 'none';
+        }
+    });
+    
+    canvas.addEventListener('mouseleave', () => {
+        tooltip.style.display = 'none';
+    });
+    
+    document.addEventListener('flavortown-theme-changed', () => {
+        renderHeatmap(canvas, getHeatmapData(), currentViewMode);
+    });
+    
+    return container;
+}
+
+function updateHeatmapLegend(container, viewMode) {
+    const footer = container.querySelector('.flavortown-heatmap-footer');
+    if (!footer) return;
+    
+    if (viewMode === 'combined') {
+        footer.innerHTML = `
+            <div class="flavortown-heatmap-legend">
+                <span>Less</span>
+                <div class="flavortown-heatmap-legend-cells">
+                    <div class="flavortown-heatmap-legend-cell level-0-blended"></div>
+                    <div class="flavortown-heatmap-legend-cell level-1-blended"></div>
+                    <div class="flavortown-heatmap-legend-cell level-2-blended"></div>
+                    <div class="flavortown-heatmap-legend-cell level-3-blended"></div>
+                    <div class="flavortown-heatmap-legend-cell level-4-blended"></div>
+                </div>
+                <span>More</span>
+                <span class="flavortown-heatmap-legend-note">(Devlogs + Hours)</span>
+            </div>
+        `;
+    } else {
+        footer.innerHTML = `
+            <div class="flavortown-heatmap-legend">
+                <span>Less</span>
+                <div class="flavortown-heatmap-legend-cells">
+                    <div class="flavortown-heatmap-legend-cell level-0"></div>
+                    <div class="flavortown-heatmap-legend-cell level-1"></div>
+                    <div class="flavortown-heatmap-legend-cell level-2"></div>
+                    <div class="flavortown-heatmap-legend-cell level-3"></div>
+                    <div class="flavortown-heatmap-legend-cell level-4"></div>
+                </div>
+                <span>More</span>
+            </div>
+        `;
+    }
+}
+
 async function addProjectCardCookieStats() {
     if (!window.location.pathname.endsWith('/projects')) return;
 
@@ -3154,9 +4066,7 @@ function processLists(html) {
     for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
         
-        // Check for unordered list item
         const ulMatch = line.match(/^-\s+(.+)$/);
-        // Check for ordered list item
         const olMatch = line.match(/^(\d+)\.\s+(.+)$/);
         
         if (ulMatch) {
@@ -3227,7 +4137,6 @@ function parseMarkdown(text) {
         html = html.replace(/^-\s?\[\s?\]\s?(.+)$/gm, '<div class="flavortown-md-task"><input type="checkbox" disabled> $1</div>');
         html = html.replace(/^-\s?\[[xX]\]\s?(.+)$/gm, '<div class="flavortown-md-task"><input type="checkbox" checked disabled> $1</div>');
 
-        // Process lists with proper container wrapping
         html = processLists(html);
 
         html = replaceEmojiTokensInHtml(html);
@@ -6617,6 +7526,7 @@ function init() {
     enhanceAdminPage();
     initProjectRepoSuggestions();
     initPayoutVotesTextRestructure();
+    scrapeAndStoreHeatmapData();
 
     setTimeout(checkAchievements, 2000);
     setTimeout(initVotesFeature, 1000);
@@ -7106,6 +8016,14 @@ async function enhanceKitchenDashboard() {
     const kitchenComic = document.querySelector('.kitchen-comic');
     if (kitchenComic) kitchenComic.remove();
 
+    document.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach(heading => {
+        if (heading.textContent.includes('Activity Heatmap') && !heading.closest('.flavortown-heatmap-card')) {
+            heading.remove();
+        }
+    });
+
+    const heatmapDataPromise = fetchAndUpdateHeatmapDataViaAPI();
+
     try {
         const balanceUrl = new URL('/my/balance', window.location.origin).toString();
         const response = await fetch(balanceUrl, {
@@ -7334,6 +8252,69 @@ async function enhanceKitchenDashboard() {
             </div>
         `;
 
+        const heatmapSection = document.createElement('div');
+        heatmapSection.className = 'flavortown-heatmap-section';
+
+        const cachedHeatmapData = getHeatmapData();
+        const hasCachedData = cachedHeatmapData && Object.keys(cachedHeatmapData.dailyAggregates || {}).length > 0;
+
+        if (hasCachedData) {
+            const heatmapComponent = createHeatmapComponent(cachedHeatmapData);
+            heatmapSection.appendChild(heatmapComponent);
+
+            const loadingIndicator = document.createElement('div');
+            loadingIndicator.className = 'flavortown-heatmap-loading-indicator';
+            loadingIndicator.innerHTML = `
+                <span class="flavortown-heatmap-loading-spinner"></span>
+                <span class="flavortown-heatmap-loading-text">Updating...</span>
+            `;
+            heatmapSection.appendChild(loadingIndicator);
+
+            fetchAndUpdateHeatmapDataViaAPI((progress) => {
+                if (progress.type === 'complete') {
+                    loadingIndicator.remove();
+                    const freshData = getHeatmapData();
+                    const newComponent = createHeatmapComponent(freshData);
+                    heatmapSection.innerHTML = '';
+                    heatmapSection.appendChild(newComponent);
+                } else if (progress.type === 'error') {
+                    loadingIndicator.innerHTML = `<span class="flavortown-heatmap-loading-text">Update failed</span>`;
+                    setTimeout(() => loadingIndicator.remove(), 3000);
+                }
+            });
+        } else {
+            heatmapSection.innerHTML = `
+                <div class="flavortown-heatmap-loading" style="padding: 40px; text-align: center; color: var(--color-text-secondary, #6b5c4a);">
+                    <div style="font-size: 1.2em; margin-bottom: 8px;">⏳</div>
+                    <div>Loading activity data...</div>
+                    <div class="flavortown-heatmap-loading-progress" style="font-size: 0.85em; margin-top: 8px; opacity: 0.7;"></div>
+                </div>
+            `;
+
+            fetchAndUpdateHeatmapDataViaAPI((progress) => {
+                const progressEl = heatmapSection.querySelector('.flavortown-heatmap-loading-progress');
+                if (progress.type === 'project' && progressEl) {
+                    progressEl.textContent = `Fetching ${progress.current}/${progress.total}: ${progress.name}`;
+                } else if (progress.type === 'complete') {
+                    const loadingEl = heatmapSection.querySelector('.flavortown-heatmap-loading');
+                    if (loadingEl) loadingEl.remove();
+
+                    const heatmapData = getHeatmapData();
+                    const heatmapComponent = createHeatmapComponent(heatmapData);
+                    heatmapSection.appendChild(heatmapComponent);
+                } else if (progress.type === 'error') {
+                    const loadingEl = heatmapSection.querySelector('.flavortown-heatmap-loading');
+                    if (loadingEl) {
+                        loadingEl.innerHTML = `
+                            <div style="color: #e53e3e;">Failed to load activity data</div>
+                            <div style="font-size: 0.9em; margin-top: 8px;">Try refreshing the page</div>
+                        `;
+                    }
+                }
+            });
+        }
+
+        dashboard.appendChild(heatmapSection);
 
         const parentContainer = kitchenSetup.parentNode;
         kitchenSetup.replaceWith(dashboard);
@@ -11106,6 +12087,7 @@ function setupCommandPalette() {
         { id: 'search-projects', label: 'Search Projects', category: 'Actions', action: 'searchProjects' },
         { id: 'new-project', label: 'New Project', category: 'Actions', url: '/projects/new' },
         { id: 'buffet', label: 'Toggle Buffet Mode', category: 'Actions', action: 'buffet' },
+        { id: 'activity-heatmap', label: 'View Activity Heatmap', category: 'Actions', action: 'activityHeatmap' },
         { id: 'settings', label: 'Open Settings', category: 'Actions', action: 'openSettings' },
         { id: 'api-docs', label: 'API Documentation', category: 'Actions', url: '/api/v1/docs', external: true },
         { id: 'setting-votes', label: 'Toggle: Send Votes to Slack', category: 'Settings', action: 'toggleSetting', settingId: 'send_votes_to_slack' },
@@ -11279,6 +12261,15 @@ function setupCommandPalette() {
             } else {
                 const buffetBtn = document.querySelector('.flavortown-doomscroll-toggle');
                 if (buffetBtn) buffetBtn.click();
+            }
+        } else if (cmd.action === 'activityHeatmap') {
+            if (window.location.pathname !== '/kitchen') {
+                window.location.href = '/kitchen';
+            } else {
+                const heatmapSection = document.querySelector('.flavortown-heatmap-section');
+                if (heatmapSection) {
+                    heatmapSection.scrollIntoView({ behavior: 'smooth' });
+                }
             }
         } else if (cmd.action === 'openSettings') {
             const settingsModal = document.getElementById('settings-modal');
