@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-06T19:57:52.145Z",
+  "lastUpdated": "2026-02-06T20:39:27.613Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -7908,6 +7908,14 @@
         "balance": 970,
         "reason": "payout",
         "reasonType": "payout",
+        "userId": "U0842GMRJKC"
+      },
+      {
+        "ts": "2026-02-06T20:26:21.008Z",
+        "delta": -70,
+        "balance": 900,
+        "reason": "shop purchase",
+        "reasonType": "",
         "userId": "U0842GMRJKC"
       }
     ],
@@ -52513,6 +52521,12 @@
     ]
   },
   "users": {
+    "U0842GMRJKC": {
+      "id": "U0842GMRJKC",
+      "username": "hridayahoney",
+      "displayName": "Hridya",
+      "avatar": "https://secure.gravatar.com/avatar/5b54a7a1c2382dea03b98bd77e571f92.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0014-72.png"
+    },
     "U0A7J4EHADP": {
       "id": "U0A7J4EHADP",
       "username": "evanssidhu",
@@ -52984,12 +52998,6 @@
       "username": "trey.manutes",
       "displayName": "Trey",
       "avatar": "https://secure.gravatar.com/avatar/b9040021914f3127b29b1acc93efeeca.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0003-72.png"
-    },
-    "U0842GMRJKC": {
-      "id": "U0842GMRJKC",
-      "username": "hridayahoney",
-      "displayName": "Hridya",
-      "avatar": "https://secure.gravatar.com/avatar/5b54a7a1c2382dea03b98bd77e571f92.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0014-72.png"
     },
     "U0A6CUVDKAB": {
       "id": "U0A6CUVDKAB",
