@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-06T02:09:15.671Z",
+  "lastUpdated": "2026-02-06T04:27:55.230Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -25896,6 +25896,14 @@
         "balance": 62,
         "reason": "Line Cook",
         "reasonType": "achievement",
+        "userId": "U0A21R8V5FX"
+      },
+      {
+        "ts": "2026-02-06T03:10:34.994Z",
+        "delta": 27,
+        "balance": 89,
+        "reason": "payout",
+        "reasonType": "payout",
         "userId": "U0A21R8V5FX"
       }
     ],
@@ -52261,6 +52269,12 @@
     ]
   },
   "users": {
+    "U0A21R8V5FX": {
+      "id": "U0A21R8V5FX",
+      "username": "paul.seyrling",
+      "displayName": "Paul",
+      "avatar": "https://secure.gravatar.com/avatar/072b4b3b13206178452ff3f078d41b4c.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0020-72.png"
+    },
     "U09UQ385LSG": {
       "id": "U09UQ385LSG",
       "username": "max",
@@ -53201,12 +53215,6 @@
       "username": "zhirkoalexander",
       "avatar": "https://secure.gravatar.com/avatar/9bd8b8fe6e36cca76c9bb396a9e17f8b.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0002-72.png"
     },
-    "U0A21R8V5FX": {
-      "id": "U0A21R8V5FX",
-      "username": "paul.seyrling",
-      "displayName": "Paul",
-      "avatar": "https://secure.gravatar.com/avatar/072b4b3b13206178452ff3f078d41b4c.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0020-72.png"
-    },
     "U0A73HK8RS9": {
       "id": "U0A73HK8RS9",
       "username": "rattyramraj",
@@ -53985,7 +53993,7 @@
       "id": "U085L7P77EV",
       "username": "aregazatyank",
       "displayName": "Areg Azatyan",
-      "avatar": "https://avatars.slack-edge.com/2026-02-06/10455981127092_b66ad0d77414401a178a_72.jpg"
+      "avatar": "https://avatars.slack-edge.com/2026-02-06/10448392064787_c7b057a80b499f2869ab_72.jpg"
     },
     "U08085HEAV8": {
       "id": "U08085HEAV8",
