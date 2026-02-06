@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-06T11:35:46.833Z",
+  "lastUpdated": "2026-02-06T13:03:43.905Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -5992,6 +5992,14 @@
         "balance": 173,
         "reason": "shop purchase",
         "reasonType": "",
+        "userId": "U07QC35DFV0"
+      },
+      {
+        "ts": "2026-02-06T12:37:38.745Z",
+        "delta": 24,
+        "balance": 197,
+        "reason": "payout",
+        "reasonType": "payout",
         "userId": "U07QC35DFV0"
       }
     ],
@@ -52375,6 +52383,12 @@
     ]
   },
   "users": {
+    "U07QC35DFV0": {
+      "id": "U07QC35DFV0",
+      "username": "priyanshuverma",
+      "displayName": "Pz",
+      "avatar": "https://avatars.slack-edge.com/2025-12-31/10240195089968_6e6e5a2a1b92e77489e6_72.jpg"
+    },
     "U0A5X6H719U": {
       "id": "U0A5X6H719U",
       "username": "ofx.proton",
@@ -52707,12 +52721,6 @@
       "username": "tue.le",
       "displayName": "SpeedySchweppers",
       "avatar": "https://secure.gravatar.com/avatar/a9f41cf458aa71c4720f87bc3b4494b3.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0023-72.png"
-    },
-    "U07QC35DFV0": {
-      "id": "U07QC35DFV0",
-      "username": "priyanshuverma",
-      "displayName": "Pz",
-      "avatar": "https://avatars.slack-edge.com/2025-12-31/10240195089968_6e6e5a2a1b92e77489e6_72.jpg"
     },
     "U0A6P5RRLS3": {
       "id": "U0A6P5RRLS3",
@@ -53440,7 +53448,7 @@
     },
     "U089903JZDH": {
       "id": "U089903JZDH",
-      "username": "coder.tomsk",
+      "username": "milkcool",
       "displayName": "lily the milk cool",
       "avatar": "https://avatars.slack-edge.com/2026-01-17/10345616619760_80993ae87bf0480da98e_72.jpg"
     },
@@ -54111,7 +54119,7 @@
       "id": "U085L7P77EV",
       "username": "aregazatyank",
       "displayName": "Areg Azatyan",
-      "avatar": "https://avatars.slack-edge.com/2026-02-06/10450536711859_b31941e5f726c9e2fd9c_72.jpg"
+      "avatar": "https://avatars.slack-edge.com/2026-02-06/10470136828769_b997c39b49e802b896c2_72.jpg"
     },
     "U08085HEAV8": {
       "id": "U08085HEAV8",
