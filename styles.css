@@ -4837,8 +4837,8 @@
 }
 
 .flavortown-heatmap-stat-box {
-    background: var(--color-cream, #fdf6e3);
-    border: 1px solid var(--color-border, #d8c9ba);
+    background: var(--color-surface, #fff);
+    border: 2px solid var(--color-border, #e2d8cc);
     border-radius: 12px;
     padding: 24px 16px;
     text-align: center;
