@@ -64,6 +64,8 @@
 - Screenshot editor
 - Estimated payouts
 - Changelog, with branch scanning
+- Ship efficiency graph
+- Activity heatmap
 
 ## Feature showcase:
 
