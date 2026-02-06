@@ -2970,7 +2970,8 @@ async function apiFetch(endpoint) {
     const response = await fetch(`${API_BASE_URL}${endpoint}`, {
         headers: {
             'Authorization': `Bearer ${apiKey}`,
-            'Accept': 'application/json'
+            'Accept': 'application/json',
+            'X-Flavortown-Ext-135': 'true'
         },
         credentials: 'same-origin'
     });
