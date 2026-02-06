@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-06T06:58:34.304Z",
+  "lastUpdated": "2026-02-06T07:51:06.879Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -11116,6 +11116,14 @@
         "balance": 22,
         "reason": "Hello, Kitchen!",
         "reasonType": "achievement",
+        "userId": "U08J9R1TUT1"
+      },
+      {
+        "ts": "2026-02-06T07:08:51.071Z",
+        "delta": -22,
+        "balance": 0,
+        "reason": "shop purchase",
+        "reasonType": "",
         "userId": "U08J9R1TUT1"
       }
     ],
@@ -52311,6 +52319,12 @@
     ]
   },
   "users": {
+    "U08J9R1TUT1": {
+      "id": "U08J9R1TUT1",
+      "username": "elias.lindholm2010",
+      "displayName": "el4s",
+      "avatar": "https://avatars.slack-edge.com/2025-12-21/10152448709831_1decac186a333b2794fe_72.png"
+    },
     "U0A7AELFK6G": {
       "id": "U0A7AELFK6G",
       "username": "hmahibala",
@@ -54041,7 +54055,7 @@
       "id": "U085L7P77EV",
       "username": "aregazatyank",
       "displayName": "Areg Azatyan",
-      "avatar": "https://avatars.slack-edge.com/2026-02-06/10451422331493_644f20fa7a8832827027_72.jpg"
+      "avatar": "https://avatars.slack-edge.com/2026-02-06/10455562113346_813f06c31694b131cc37_72.jpg"
     },
     "U08085HEAV8": {
       "id": "U08085HEAV8",
@@ -55621,12 +55635,6 @@
       "username": "kevinfvseiler2020",
       "displayName": "kevinfvseiler2020",
       "avatar": "https://secure.gravatar.com/avatar/3e1867c834e5c4cb74ba59c02100ef92.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0002-72.png"
-    },
-    "U08J9R1TUT1": {
-      "id": "U08J9R1TUT1",
-      "username": "elias.lindholm2010",
-      "displayName": "el4s",
-      "avatar": "https://avatars.slack-edge.com/2025-12-21/10152448709831_1decac186a333b2794fe_72.png"
     },
     "U091KTCVBA8": {
       "id": "U091KTCVBA8",
