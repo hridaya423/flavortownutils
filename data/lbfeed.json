@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-06T14:13:28.457Z",
+  "lastUpdated": "2026-02-06T15:09:50.810Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -18296,6 +18296,14 @@
         "ts": "2026-01-22T22:42:57.379Z",
         "delta": 113,
         "balance": 540,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U093U1MM8H4"
+      },
+      {
+        "ts": "2026-02-06T14:32:31.166Z",
+        "delta": 594,
+        "balance": 1134,
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U093U1MM8H4"
@@ -52441,6 +52449,12 @@
     ]
   },
   "users": {
+    "U093U1MM8H4": {
+      "id": "U093U1MM8H4",
+      "username": "hungchi970104",
+      "displayName": "Hung-Chi Wang",
+      "avatar": "https://avatars.slack-edge.com/2025-07-01/9157068578752_0459174f9e6efff0b989_72.png"
+    },
     "U07P3KHHNJE": {
       "id": "U07P3KHHNJE",
       "username": "bhattprayas40",
@@ -54646,12 +54660,6 @@
       "username": "21shampate",
       "displayName": "Shameel P",
       "avatar": "https://avatars.slack-edge.com/2025-07-07/9177203578800_48b469689dc57cde5c1e_72.png"
-    },
-    "U093U1MM8H4": {
-      "id": "U093U1MM8H4",
-      "username": "hungchi970104",
-      "displayName": "Hung-Chi Wang",
-      "avatar": "https://avatars.slack-edge.com/2025-07-01/9157068578752_0459174f9e6efff0b989_72.png"
     },
     "U092HJQPGLT": {
       "id": "U092HJQPGLT",
