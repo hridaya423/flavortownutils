@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-07T14:55:51.718Z",
+  "lastUpdated": "2026-02-07T15:27:55.979Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -32261,6 +32261,22 @@
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U0A5PH25V70"
+      },
+      {
+        "ts": "2026-02-07T15:14:03.562Z",
+        "delta": 3,
+        "balance": 896,
+        "reason": "Order Up!",
+        "reasonType": "achievement",
+        "userId": "U0A5PH25V70"
+      },
+      {
+        "ts": "2026-02-07T15:14:03.904Z",
+        "delta": 3,
+        "balance": 899,
+        "reason": "Michelin Star",
+        "reasonType": "achievement",
+        "userId": "U0A5PH25V70"
       }
     ],
     "u0a5tl58utw": [
@@ -52737,6 +52753,12 @@
     ]
   },
   "users": {
+    "U0A5PH25V70": {
+      "id": "U0A5PH25V70",
+      "username": "allintw0",
+      "displayName": "Raivo",
+      "avatar": "https://avatars.slack-edge.com/2026-01-14/10297073987810_7388f8095afd92efcdf6_72.png"
+    },
     "U07V12XBSF6": {
       "id": "U07V12XBSF6",
       "username": "praneetnrana",
@@ -53552,12 +53574,6 @@
       "id": "U09UU7TETBR",
       "username": "simonhroff",
       "avatar": "https://avatars.slack-edge.com/2025-11-25/10024094435280_d4db6c77b2d72752558c_72.png"
-    },
-    "U0A5PH25V70": {
-      "id": "U0A5PH25V70",
-      "username": "allintw0",
-      "displayName": "Raivo",
-      "avatar": "https://avatars.slack-edge.com/2026-01-14/10297073987810_7388f8095afd92efcdf6_72.png"
     },
     "U0825TMAF4K": {
       "id": "U0825TMAF4K",
