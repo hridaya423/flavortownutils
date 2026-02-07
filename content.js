@@ -2836,42 +2836,6 @@ function setHeatmapPrefs(prefs) {
     }
 }
 
-function parseDevlogData(devlogElement) {
-    const timeEl = devlogElement.querySelector('.post__time');
-    const date = parseDateFromTimeElement(timeEl);
-    if (!date) return null;
-    
-    const durationEl = devlogElement.querySelector('.post__duration');
-    const hours = durationEl ? parseDurationToMinutes(durationEl.textContent.trim()) / 60 : 0;
-    
-    const dateStr = date.toISOString().split('T')[0];
-    
-    return {
-        date: dateStr,
-        hours: hours,
-        id: devlogElement.id || devlogElement.dataset.id || null
-    };
-}
-
-function scrapeCurrentProjectDevlogs() {
-    const devlogs = document.querySelectorAll('article.post--devlog, .post--devlog');
-    const projectData = {};
-    
-    devlogs.forEach(devlog => {
-        const data = parseDevlogData(devlog);
-        if (data) {
-            if (!projectData[data.date]) {
-                projectData[data.date] = { hours: 0, count: 0, ids: [] };
-            }
-            projectData[data.date].hours += data.hours;
-            projectData[data.date].count += 1;
-            if (data.id) projectData[data.date].ids.push(data.id);
-        }
-    });
-    
-    return projectData;
-}
-
 function updateHeatmapDataForProject(projectSlug, projectName, devlogData) {
     const data = getHeatmapData();
     
@@ -2905,54 +2869,6 @@ function updateHeatmapDataForProject(projectSlug, projectName, devlogData) {
     
     setHeatmapData(data);
     return data;
-}
-
-async function fetchUserProjects() {
-    try {
-        const response = await fetch('/projects', { credentials: 'same-origin' });
-        if (!response.ok) return [];
-        
-        const html = await response.text();
-        const doc = new DOMParser().parseFromString(html, 'text/html');
-        const projectCards = doc.querySelectorAll('.project-card, .projects-board__grid-item a[href^="/projects/"]');
-        
-        const projects = [];
-        projectCards.forEach(card => {
-            const link = card.tagName === 'A' ? card : card.querySelector('a[href^="/projects/"]');
-            if (link) {
-                const href = link.getAttribute('href');
-                const match = href.match(/\/projects\/([^\/]+)/);
-                if (match) {
-                    const nameEl = card.querySelector('.project-card__title, h3, h4');
-                    projects.push({
-                        slug: match[1],
-                        name: nameEl ? nameEl.textContent.trim() : match[1]
-                    });
-                }
-            }
-        });
-        
-        return projects;
-    } catch (e) {
-        console.error('Failed to fetch user projects:', e);
-        return [];
-    }
-}
-
-function scrapeAndStoreHeatmapData() {
-    const projectMatch = window.location.pathname.match(/\/projects\/([^\/]+)$/);
-    if (!projectMatch) return;
-    
-    const projectSlug = projectMatch[1];
-    
-    const projectNameEl = document.querySelector('h1, .project-show-card__title');
-    const projectName = projectNameEl ? projectNameEl.textContent.trim() : projectSlug;
-    
-    const devlogData = scrapeCurrentProjectDevlogs();
-    
-    if (Object.keys(devlogData).length > 0) {
-        updateHeatmapDataForProject(projectSlug, projectName, devlogData);
-    }
 }
 
 const API_BASE_URL = 'https://flavortown.hackclub.com/api/v1';
@@ -7527,7 +7443,6 @@ function init() {
     enhanceAdminPage();
     initProjectRepoSuggestions();
     initPayoutVotesTextRestructure();
-    scrapeAndStoreHeatmapData();
 
     setTimeout(checkAchievements, 2000);
     setTimeout(initVotesFeature, 1000);
