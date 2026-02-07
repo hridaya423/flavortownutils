@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-07T20:56:03.515Z",
+  "lastUpdated": "2026-02-07T21:28:41.788Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -18982,6 +18982,14 @@
         "ts": "2026-02-01T20:42:41.166Z",
         "delta": 53,
         "balance": 158,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U096J8GJ87J"
+      },
+      {
+        "ts": "2026-02-07T20:58:41.423Z",
+        "delta": 19,
+        "balance": 177,
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U096J8GJ87J"
@@ -52821,6 +52829,12 @@
     ]
   },
   "users": {
+    "U096J8GJ87J": {
+      "id": "U096J8GJ87J",
+      "username": "amakerlife",
+      "displayName": "Makerlife",
+      "avatar": "https://secure.gravatar.com/avatar/cb69cb96489acae56e1ec773882cace9.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0012-72.png"
+    },
     "U08HYM19NJE": {
       "id": "U08HYM19NJE",
       "username": "natdrone101",
@@ -53603,12 +53617,6 @@
       "username": "pathakakshata8",
       "displayName": "pathakakshata8",
       "avatar": "https://secure.gravatar.com/avatar/b8680ace5a7328a3e6891bda32846af8.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0007-72.png"
-    },
-    "U096J8GJ87J": {
-      "id": "U096J8GJ87J",
-      "username": "amakerlife",
-      "displayName": "Makerlife",
-      "avatar": "https://secure.gravatar.com/avatar/cb69cb96489acae56e1ec773882cace9.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0012-72.png"
     },
     "U0A7QDU8Q0N": {
       "id": "U0A7QDU8Q0N",
