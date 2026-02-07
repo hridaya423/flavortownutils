@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-07T21:28:41.788Z",
+  "lastUpdated": "2026-02-07T21:52:42.861Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -16507,6 +16507,14 @@
         "reason": "Order Up!",
         "reasonType": "achievement",
         "userId": "U091VLWN0CS"
+      },
+      {
+        "ts": "2026-02-07T21:34:16.468Z",
+        "delta": 175,
+        "balance": 188,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U091VLWN0CS"
       }
     ],
     "u091xkgs8sf": [
@@ -19508,6 +19516,14 @@
         "ts": "2026-02-05T14:37:16.315Z",
         "delta": 163,
         "balance": 476,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U09736L44JZ"
+      },
+      {
+        "ts": "2026-02-07T21:43:31.004Z",
+        "delta": 60,
+        "balance": 536,
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U09736L44JZ"
@@ -52829,6 +52845,17 @@
     ]
   },
   "users": {
+    "U09736L44JZ": {
+      "id": "U09736L44JZ",
+      "username": "satyamrajgaya434",
+      "avatar": "https://avatars.slack-edge.com/2025-09-19/9577172238240_ca93b692b12938796d47_72.jpg"
+    },
+    "U091VLWN0CS": {
+      "id": "U091VLWN0CS",
+      "username": "gianlucarainis",
+      "displayName": "__grdev",
+      "avatar": "https://secure.gravatar.com/avatar/4d109519859f7f85e7459cb5fe4aac90.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0021-72.png"
+    },
     "U096J8GJ87J": {
       "id": "U096J8GJ87J",
       "username": "amakerlife",
@@ -53135,11 +53162,6 @@
       "username": "m8000",
       "displayName": "M8000",
       "avatar": "https://avatars.slack-edge.com/2026-01-05/10228747110243_ed8b4cadce55f06c17e2_72.png"
-    },
-    "U09736L44JZ": {
-      "id": "U09736L44JZ",
-      "username": "satyamrajgaya434",
-      "avatar": "https://avatars.slack-edge.com/2025-09-19/9577172238240_ca93b692b12938796d47_72.jpg"
     },
     "U09GJ7HH48Z": {
       "id": "U09GJ7HH48Z",
@@ -53836,12 +53858,6 @@
       "username": "abtheinnovator",
       "displayName": "abtheinnovator",
       "avatar": "https://secure.gravatar.com/avatar/7b7faa3b1aadcebeb63cd8dcdb82d74e.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0020-72.png"
-    },
-    "U091VLWN0CS": {
-      "id": "U091VLWN0CS",
-      "username": "gianlucarainis",
-      "displayName": "__grdev",
-      "avatar": "https://secure.gravatar.com/avatar/4d109519859f7f85e7459cb5fe4aac90.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0021-72.png"
     },
     "U07A10XBMGQ": {
       "id": "U07A10XBMGQ",
