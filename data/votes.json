@@ -1,7 +1,49 @@
 {
-  "lastUpdated": "2026-02-07T08:33:32.828Z",
-  "totalVotes": 3492,
+  "lastUpdated": "2026-02-07T09:31:58.928Z",
+  "totalVotes": 3498,
   "votes": [
+    {
+      "project": "Aesthetically Idle",
+      "feedback": "This is a very minimal and asthetically pleasing ship. I like the customizibility. Another thing that could be added is the ability to set the site as your desktop backround. Alaso it seems all of your work was done in two commits. Try to comit regually.",
+      "votedBy": "U078VN0UU2K",
+      "timestamp": "2026-02-07T09:25:21.416Z",
+      "slackTs": "1770456321.416989"
+    },
+    {
+      "project": "To do list",
+      "feedback": "Very cool project! I like how it can be made. One thing I'd like is a demo video or a 3D printed case or way to upload new tasks from a computer?",
+      "votedBy": "U078VN0UU2K",
+      "timestamp": "2026-02-07T09:22:32.023Z",
+      "slackTs": "1770456152.023859"
+    },
+    {
+      "project": "Elements",
+      "feedback": "Try logging more time at once! 15-30min of devlogs is too short\nOverall the project is really good!",
+      "votedBy": "U0A5DVA4Q4R",
+      "timestamp": "2026-02-07T08:52:48.186Z",
+      "slackTs": "1770454368.186319"
+    },
+    {
+      "project": "Way Home",
+      "feedback": "Really nice! I just wonder if there’s an other way to switch level in the code, instead of manually setting the visibility of all the nodes…",
+      "votedBy": "U0A5DVA4Q4R",
+      "timestamp": "2026-02-07T08:46:56.636Z",
+      "slackTs": "1770454016.636649"
+    },
+    {
+      "project": "Aurora Theme for Spicetown",
+      "feedback": "I mean… it’s just a fork of SPICETOWN with a new theme… you did not even rename the repo lol",
+      "votedBy": "U0A5DVA4Q4R",
+      "timestamp": "2026-02-07T08:42:08.966Z",
+      "slackTs": "1770453728.966209"
+    },
+    {
+      "project": "WORKOUT AI",
+      "feedback": "You do not provide test login informations!\n\nAlso found this in src/pages/Onboarding.tsx\n\n// Mifflin-St Jeor equation\n    const bmr = 10 * w + 6.25 * h - 5 * 30 + 5; // Assuming age 30, male for simplicity\n\nNot sure anyone is 30… it’s a teen platform here lol, consider asking the user!",
+      "votedBy": "U0A5DVA4Q4R",
+      "timestamp": "2026-02-07T08:36:00.190Z",
+      "slackTs": "1770453360.190589"
+    },
     {
       "project": "Tree's Website Index",
       "feedback": "Looks really small on mobile… maybe add images to each project?",

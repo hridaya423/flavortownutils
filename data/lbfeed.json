@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-07T08:35:48.137Z",
+  "lastUpdated": "2026-02-07T09:33:15.542Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -32159,6 +32159,14 @@
         "reason": "Hello, Kitchen!",
         "reasonType": "achievement",
         "userId": "U0A5L7XL4DR"
+      },
+      {
+        "ts": "2026-02-07T08:46:56.951Z",
+        "delta": 170,
+        "balance": 1109,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U0A5L7XL4DR"
       }
     ],
     "u0a5nkh93bj": [
@@ -52583,6 +52591,14 @@
         "reason": "Order Up!",
         "reasonType": "achievement",
         "userId": "U0ADGKESXJM"
+      },
+      {
+        "ts": "2026-02-07T09:30:52.963Z",
+        "delta": 3,
+        "balance": 26,
+        "reason": "Michelin Star",
+        "reasonType": "achievement",
+        "userId": "U0ADGKESXJM"
       }
     ],
     "u0adncem4ta": [
@@ -52613,6 +52629,17 @@
     ]
   },
   "users": {
+    "U0ADGKESXJM": {
+      "id": "U0ADGKESXJM",
+      "username": "kewlcactus13",
+      "displayName": "kewlcactus13",
+      "avatar": "https://avatars.slack-edge.com/2026-02-06/10450221655059_b84cf0ce75af51e9dd9c_72.png"
+    },
+    "U0A5L7XL4DR": {
+      "id": "U0A5L7XL4DR",
+      "username": "fishygaming.life",
+      "avatar": "https://secure.gravatar.com/avatar/7d55dc097985d807fd403ce4b3e9f629.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0017-72.png"
+    },
     "U092SRUUSTS": {
       "id": "U092SRUUSTS",
       "username": "birajbh65",
@@ -52628,12 +52655,6 @@
       "id": "U0A73LN55TP",
       "username": "aaronzach11",
       "avatar": "https://secure.gravatar.com/avatar/f8f7d9b4abed97dede4055f7b25ec85a.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0009-72.png"
-    },
-    "U0ADGKESXJM": {
-      "id": "U0ADGKESXJM",
-      "username": "kewlcactus13",
-      "displayName": "kewlcactus13",
-      "avatar": "https://avatars.slack-edge.com/2026-02-06/10450221655059_b84cf0ce75af51e9dd9c_72.png"
     },
     "U08SS7Z7LJD": {
       "id": "U08SS7Z7LJD",
@@ -53260,11 +53281,6 @@
       "username": "amber-washer-lunar",
       "displayName": "Huybin1234b",
       "avatar": "https://secure.gravatar.com/avatar/160b445f4abb0b9d41bd53a1b508e8d5.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0008-72.png"
-    },
-    "U0A5L7XL4DR": {
-      "id": "U0A5L7XL4DR",
-      "username": "fishygaming.life",
-      "avatar": "https://secure.gravatar.com/avatar/7d55dc097985d807fd403ce4b3e9f629.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0017-72.png"
     },
     "U0918MSQ7E3": {
       "id": "U0918MSQ7E3",
@@ -54396,7 +54412,7 @@
       "id": "U085L7P77EV",
       "username": "aregazatyank",
       "displayName": "Areg Azatyan",
-      "avatar": "https://avatars.slack-edge.com/2026-02-07/10460953202710_4c75f6010bae13927c71_72.jpg"
+      "avatar": "https://avatars.slack-edge.com/2026-02-07/10491335418848_2e272eba57ec7b062225_72.jpg"
     },
     "U08085HEAV8": {
       "id": "U08085HEAV8",
@@ -56210,7 +56226,7 @@
       "id": "U080F22CTJN",
       "username": "code.org.establish106",
       "displayName": "Henry W",
-      "avatar": "https://avatars.slack-edge.com/2026-01-26/10355172482103_1ff6bbc08af7eb9d2aca_72.jpg"
+      "avatar": "https://avatars.slack-edge.com/2026-02-07/10456672540275_ac2d9ac747824860b779_72.png"
     },
     "U0925CUPLHZ": {
       "id": "U0925CUPLHZ",
