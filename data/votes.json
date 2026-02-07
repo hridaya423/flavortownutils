@@ -1,7 +1,21 @@
 {
-  "lastUpdated": "2026-02-07T17:52:28.618Z",
-  "totalVotes": 3530,
+  "lastUpdated": "2026-02-07T19:24:46.097Z",
+  "totalVotes": 3532,
   "votes": [
+    {
+      "project": "Nephthys",
+      "feedback": "idk 3 devlogs for 15 hours of work seems small",
+      "votedBy": "U08D3AY7BG8",
+      "timestamp": "2026-02-07T19:09:31.434Z",
+      "slackTs": "1770491371.434249"
+    },
+    {
+      "project": "Aaloo",
+      "feedback": "Probably does need a webui, just for scalability. Maybe have chatgpt help you?",
+      "votedBy": "U0AEG637Z88",
+      "timestamp": "2026-02-07T18:43:07.064Z",
+      "slackTs": "1770489787.064219"
+    },
     {
       "project": "Personal Site",
       "feedback": "originality: it's a personal site\nusability: \"According to your computer, this site is roughly 89,179.758 minutes old.\" - can't be copypasted since it keeps changing, and \"minutes since creation\" is not a useful metric by itself, and consider maybe putting a creation date instead/as well\nstorytelling: one devlog per ship\ntechnical: i like your use of git submodules",
@@ -25921,6 +25935,12 @@
       "username": "yangmabeltt",
       "displayName": "yangmabeltt",
       "avatar": "https://secure.gravatar.com/avatar/66a063fbab84a5cda26af09e2dadea6e.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0016-72.png"
+    },
+    "U0AEG637Z88": {
+      "id": "U0AEG637Z88",
+      "username": "dapperlsreal",
+      "displayName": "GhostYT7582",
+      "avatar": "https://secure.gravatar.com/avatar/e0d2ad505e73ebbc33acd6f427bfdec6.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0011-72.png"
     }
   }
 }
