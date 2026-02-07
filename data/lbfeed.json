@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-07T16:33:16.239Z",
+  "lastUpdated": "2026-02-07T17:29:08.783Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -32335,6 +32335,14 @@
         "reason": "Michelin Star",
         "reasonType": "achievement",
         "userId": "U0A5TL58UTW"
+      },
+      {
+        "ts": "2026-02-07T17:13:01.922Z",
+        "delta": 32,
+        "balance": 60,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U0A5TL58UTW"
       }
     ],
     "u0a5u53hd0f": [
@@ -52753,6 +52761,12 @@
     ]
   },
   "users": {
+    "U0A5TL58UTW": {
+      "id": "U0A5TL58UTW",
+      "username": "reii.meteoritics",
+      "displayName": "Luci",
+      "avatar": "https://avatars.slack-edge.com/2026-01-01/10213685935029_bb9a4797b03a7a91ccdd_72.png"
+    },
     "U0A5PH25V70": {
       "id": "U0A5PH25V70",
       "username": "allintw0",
@@ -53052,12 +53066,6 @@
       "username": "jonas.gaden",
       "displayName": "jonas.gaden",
       "avatar": "https://secure.gravatar.com/avatar/dfbd5d947c049f82e69f6e7f6d634e9b.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0001-72.png"
-    },
-    "U0A5TL58UTW": {
-      "id": "U0A5TL58UTW",
-      "username": "reii.meteoritics",
-      "displayName": "Luci",
-      "avatar": "https://avatars.slack-edge.com/2026-01-01/10213685935029_bb9a4797b03a7a91ccdd_72.png"
     },
     "U090LAT6QKB": {
       "id": "U090LAT6QKB",
@@ -53678,7 +53686,7 @@
       "id": "U0938MZG8Q6",
       "username": "christiandubsky20",
       "displayName": "christian",
-      "avatar": "https://avatars.slack-edge.com/2026-02-07/10448624864135_bb3b88aa6ee61f51779d_72.png"
+      "avatar": "https://avatars.slack-edge.com/2026-02-07/10462147638374_36829cdf5d331a0f02c9_72.png"
     },
     "U078VN0UU2K": {
       "id": "U078VN0UU2K",
@@ -55388,7 +55396,7 @@
     },
     "U095Z62L9SM": {
       "id": "U095Z62L9SM",
-      "username": "anneliesizasiddre",
+      "username": "annelies",
       "displayName": "Annelies",
       "avatar": "https://avatars.slack-edge.com/2025-12-15/10127133294500_ac1b45b49cbe19e0fbbc_72.png"
     },
