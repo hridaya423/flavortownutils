@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-07T10:28:37.705Z",
+  "lastUpdated": "2026-02-07T10:56:57.653Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -4328,6 +4328,14 @@
         "balance": 163,
         "reason": "payout",
         "reasonType": "payout",
+        "userId": "U07P12KAYRY"
+      },
+      {
+        "ts": "2026-02-07T10:29:57.439Z",
+        "delta": -80,
+        "balance": 83,
+        "reason": "shop purchase",
+        "reasonType": "",
         "userId": "U07P12KAYRY"
       }
     ],
@@ -16838,6 +16846,14 @@
         "ts": "2026-02-01T12:21:55.259Z",
         "delta": 137,
         "balance": 678,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U0924GFMY1X"
+      },
+      {
+        "ts": "2026-02-07T10:49:22.972Z",
+        "delta": 397,
+        "balance": 1075,
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U0924GFMY1X"
@@ -51959,6 +51975,14 @@
         "reason": "Michelin Star",
         "reasonType": "achievement",
         "userId": "U0A9V6R0AJD"
+      },
+      {
+        "ts": "2026-02-07T10:39:03.387Z",
+        "delta": 61,
+        "balance": 79,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U0A9V6R0AJD"
       }
     ],
     "u0aa3rzmgpk": [
@@ -52637,6 +52661,24 @@
     ]
   },
   "users": {
+    "U0924GFMY1X": {
+      "id": "U0924GFMY1X",
+      "username": "adon.omeri",
+      "displayName": "Adon Omeri",
+      "avatar": "https://secure.gravatar.com/avatar/bebcb67885920b62df9b3355743e80ed.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0001-72.png"
+    },
+    "U0A9V6R0AJD": {
+      "id": "U0A9V6R0AJD",
+      "username": "str-f",
+      "displayName": "Str-F",
+      "avatar": "https://secure.gravatar.com/avatar/10d106688e271c54be23247d9c37f8bb.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0014-72.png"
+    },
+    "U07P12KAYRY": {
+      "id": "U07P12KAYRY",
+      "username": "salar.m.uzair",
+      "displayName": "Smbleh",
+      "avatar": "https://avatars.slack-edge.com/2025-08-25/9403087781270_3dc1bc5f657e623e8a88_72.jpg"
+    },
     "U0A4AFT9Q73": {
       "id": "U0A4AFT9Q73",
       "username": "shahzaibibrahimm",
@@ -53423,12 +53465,6 @@
       "displayName": "Raivo",
       "avatar": "https://avatars.slack-edge.com/2026-01-14/10297073987810_7388f8095afd92efcdf6_72.png"
     },
-    "U0924GFMY1X": {
-      "id": "U0924GFMY1X",
-      "username": "adon.omeri",
-      "displayName": "Adon Omeri",
-      "avatar": "https://secure.gravatar.com/avatar/bebcb67885920b62df9b3355743e80ed.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0001-72.png"
-    },
     "U0825TMAF4K": {
       "id": "U0825TMAF4K",
       "username": "kakkarakshansh72",
@@ -53965,12 +54001,6 @@
       "username": "not_a_normal_robot",
       "avatar": "https://avatars.slack-edge.com/2025-06-17/9070519575761_258342fcfbe54ed1f4c7_72.png"
     },
-    "U0A9V6R0AJD": {
-      "id": "U0A9V6R0AJD",
-      "username": "str-f",
-      "displayName": "Str-F",
-      "avatar": "https://secure.gravatar.com/avatar/10d106688e271c54be23247d9c37f8bb.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0014-72.png"
-    },
     "U096QEL0W5U": {
       "id": "U096QEL0W5U",
       "username": "aayan.aqdas",
@@ -54420,19 +54450,13 @@
       "id": "U085L7P77EV",
       "username": "aregazatyank",
       "displayName": "Areg Azatyan",
-      "avatar": "https://avatars.slack-edge.com/2026-02-07/10491335418848_2e272eba57ec7b062225_72.jpg"
+      "avatar": "https://avatars.slack-edge.com/2026-02-07/10463293122674_bc33c3a9ac9c8a7b2ca6_72.jpg"
     },
     "U08085HEAV8": {
       "id": "U08085HEAV8",
       "username": "matejr62",
       "displayName": "Matěj",
       "avatar": "https://secure.gravatar.com/avatar/d8f4a1e71fcc0740049ba677f345588f.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0022-72.png"
-    },
-    "U07P12KAYRY": {
-      "id": "U07P12KAYRY",
-      "username": "salar.m.uzair",
-      "displayName": "Smbleh",
-      "avatar": "https://avatars.slack-edge.com/2025-08-25/9403087781270_3dc1bc5f657e623e8a88_72.jpg"
     },
     "U0A4SQJ7CJY": {
       "id": "U0A4SQJ7CJY",
