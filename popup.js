@@ -1,39 +1,52 @@
 const browserAPI = typeof browser !== 'undefined' ? browser : chrome;
 
 const DEFAULT_CUSTOM_COLORS = {
-    'background': '#1e1e2e',
-    'surface': '#313244',
-    'surface-alt': '#45475a',
+    'bg-base': '#1e1e2e',
+    'bg-mantle': '#181825',
+    'bg-surface': '#313244',
+    'surface-hover': '#45475a',
+    'surface-active': '#585b70',
+    'text-primary': '#cdd6f4',
+    'text-secondary': '#bac2de',
+    'text-muted': '#a6adc8',
+    'text-on-accent': '#11111b',
     'accent': '#cba6f7',
+    'accent-hover': '#b4befe',
     'accent-alt': '#89b4fa',
-    'text': '#cdd6f4',
-    'text-secondary': '#a6adc8',
-    'text-muted': '#6c7086',
-    'border': '#585b70',
+    'btn-primary-bg': '#cba6f7',
+    'btn-primary-text': '#11111b',
     'success': '#a6e3a1',
-    'warning': '#f9e2af',
     'error': '#f38ba8',
-    'purple': '#cba6f7',
-    'teal': '#94e2d5',
-    'pink': '#f5c2e7'
+    'border': '#45475a'
 };
 
 const COLOR_LABELS = {
-    'background': 'Background',
-    'surface': 'Surface',
-    'surface-alt': 'Surface Alt',
-    'accent': 'Accent',
-    'accent-alt': 'Links',
-    'text': 'Text',
-    'text-secondary': 'Text Dim',
+    'bg-base': 'Background',
+    'bg-mantle': 'Background Alt',
+    'bg-surface': 'Surface',
+    'surface-hover': 'Hover',
+    'surface-active': 'Active',
+    'text-primary': 'Text',
+    'text-secondary': 'Text Secondary',
     'text-muted': 'Text Muted',
-    'border': 'Border',
-    'success': 'Green',
-    'warning': 'Yellow',
-    'error': 'Red',
-    'purple': 'Purple',
-    'teal': 'Teal',
-    'pink': 'Pink'
+    'text-on-accent': 'Text on Accent',
+    'accent': 'Accent',
+    'accent-hover': 'Accent Hover',
+    'accent-alt': 'Links',
+    'btn-primary-bg': 'Button BG',
+    'btn-primary-text': 'Button Text',
+    'success': 'Success',
+    'error': 'Error',
+    'border': 'Border'
+};
+
+const COLOR_SECTIONS = {
+    'Backgrounds': ['bg-base', 'bg-mantle', 'bg-surface'],
+    'Surfaces': ['surface-hover', 'surface-active'],
+    'Text': ['text-primary', 'text-secondary', 'text-muted', 'text-on-accent'],
+    'Accent': ['accent', 'accent-hover', 'accent-alt'],
+    'Buttons': ['btn-primary-bg', 'btn-primary-text'],
+    'Status': ['success', 'error', 'border']
 };
 
 const POPUP_THEMES = {
@@ -125,10 +138,32 @@ async function loadSettings() {
     currentTheme = result.theme || 'default';
     catppuccinAccent = result.catppuccinAccent || 'mauve';
     if (result.customColors) {
-        customColors = { ...DEFAULT_CUSTOM_COLORS, ...result.customColors };
+        customColors = migrateCustomColors(result.customColors);
     }
     localStorageSyncEnabled = !!result[LOCAL_STORAGE_SYNC_ENABLED_KEY];
     commandPaletteShortcut = normalizeShortcutString(result[COMMAND_PALETTE_SHORTCUT_KEY]) || DEFAULT_COMMAND_PALETTE_SHORTCUT;
+}
+
+function migrateCustomColors(oldColors) {
+    const migrated = { ...DEFAULT_CUSTOM_COLORS };
+    
+    if (oldColors['background']) migrated['bg-base'] = oldColors['background'];
+    if (oldColors['surface']) migrated['bg-surface'] = oldColors['surface'];
+    if (oldColors['surface-alt']) migrated['surface-hover'] = oldColors['surface-alt'];
+    if (oldColors['text']) migrated['text-primary'] = oldColors['text'];
+    if (oldColors['text-secondary']) migrated['text-secondary'] = oldColors['text-secondary'];
+    if (oldColors['text-muted']) migrated['text-muted'] = oldColors['text-muted'];
+    if (oldColors['accent']) migrated['accent'] = oldColors['accent'];
+    if (oldColors['accent-alt']) migrated['accent-alt'] = oldColors['accent-alt'];
+    if (oldColors['border']) migrated['border'] = oldColors['border'];
+    if (oldColors['success']) migrated['success'] = oldColors['success'];
+    if (oldColors['error']) migrated['error'] = oldColors['error'];
+    
+    Object.keys(DEFAULT_CUSTOM_COLORS).forEach(key => {
+        if (oldColors[key]) migrated[key] = oldColors[key];
+    });
+    
+    return migrated;
 }
 
 function setupEventListeners() {
@@ -227,15 +262,15 @@ function applyPopupTheme() {
 
     if (currentTheme === 'custom') {
         themeVars = {
-            '--popup-bg': customColors['background'],
-            '--popup-surface': customColors['surface'],
-            '--popup-surface-hover': customColors['surface-alt'],
-            '--popup-border': customColors['border'],
-            '--popup-text': customColors['text'],
-            '--popup-text-dim': customColors['text-secondary'],
-            '--popup-accent': customColors['accent'],
-            '--popup-accent-dim': customColors['accent-alt'],
-            '--popup-success': customColors['success']
+            '--popup-bg': customColors['bg-base'] || DEFAULT_CUSTOM_COLORS['bg-base'],
+            '--popup-surface': customColors['bg-surface'] || DEFAULT_CUSTOM_COLORS['bg-surface'],
+            '--popup-surface-hover': customColors['surface-hover'] || DEFAULT_CUSTOM_COLORS['surface-hover'],
+            '--popup-border': customColors['border'] || DEFAULT_CUSTOM_COLORS['border'],
+            '--popup-text': customColors['text-primary'] || DEFAULT_CUSTOM_COLORS['text-primary'],
+            '--popup-text-dim': customColors['text-secondary'] || DEFAULT_CUSTOM_COLORS['text-secondary'],
+            '--popup-accent': customColors['accent'] || DEFAULT_CUSTOM_COLORS['accent'],
+            '--popup-accent-dim': customColors['accent-alt'] || DEFAULT_CUSTOM_COLORS['accent-alt'],
+            '--popup-success': customColors['success'] || DEFAULT_CUSTOM_COLORS['success']
         };
     } else if (currentTheme === 'catppuccin') {
         themeVars = { ...POPUP_THEMES['catppuccin'] };
@@ -258,14 +293,30 @@ function renderCustomVars() {
 
     container.innerHTML = '';
 
-    Object.keys(DEFAULT_CUSTOM_COLORS).forEach(key => {
-        const div = document.createElement('div');
-        div.className = 'color-item';
-        div.innerHTML = `
-            <input type="color" class="color-item__input" data-key="${key}" value="${customColors[key]}">
-            <span class="color-item__label">${COLOR_LABELS[key] || key}</span>
-        `;
-        container.appendChild(div);
+    Object.entries(COLOR_SECTIONS).forEach(([sectionName, keys]) => {
+        const sectionDiv = document.createElement('div');
+        sectionDiv.className = 'custom-section';
+        
+        const title = document.createElement('div');
+        title.className = 'custom-section__title';
+        title.textContent = sectionName;
+        sectionDiv.appendChild(title);
+        
+        const grid = document.createElement('div');
+        grid.className = 'custom-section__grid';
+        
+        keys.forEach(key => {
+            const div = document.createElement('div');
+            div.className = 'color-item';
+            div.innerHTML = `
+                <input type="color" class="color-item__input" data-key="${key}" value="${customColors[key] || DEFAULT_CUSTOM_COLORS[key]}">
+                <span class="color-item__label">${COLOR_LABELS[key] || key}</span>
+            `;
+            grid.appendChild(div);
+        });
+        
+        sectionDiv.appendChild(grid);
+        container.appendChild(sectionDiv);
     });
 
     container.querySelectorAll('.color-item__input').forEach(input => {
@@ -282,14 +333,30 @@ function renderCustomVars() {
 }
 
 function updateCustomPreview() {
-    const previewColors = document.getElementById('customPreviewColors');
-    if (previewColors) {
-        const spans = previewColors.querySelectorAll('span');
-        if (spans.length >= 3) {
-            spans[0].style.background = customColors['background'];
-            spans[1].style.background = customColors['accent'];
-            spans[2].style.background = customColors['text'];
-        }
+    const previewCard = document.getElementById('customPreview');
+    if (!previewCard) return;
+    
+    const previewBg = previewCard.querySelector('.preview-bg');
+    if (previewBg) {
+        previewBg.style.background = customColors['bg-base'] || DEFAULT_CUSTOM_COLORS['bg-base'];
+        previewBg.style.color = customColors['text-primary'] || DEFAULT_CUSTOM_COLORS['text-primary'];
+    }
+    
+    const previewBtn = previewCard.querySelector('.preview-btn');
+    if (previewBtn) {
+        previewBtn.style.background = customColors['btn-primary-bg'] || customColors['accent'] || DEFAULT_CUSTOM_COLORS['accent'];
+        previewBtn.style.color = customColors['btn-primary-text'] || DEFAULT_CUSTOM_COLORS['btn-primary-text'];
+    }
+    
+    const previewSurface = previewCard.querySelector('.preview-surface');
+    if (previewSurface) {
+        previewSurface.style.background = customColors['bg-surface'] || DEFAULT_CUSTOM_COLORS['bg-surface'];
+        previewSurface.style.borderColor = customColors['border'] || DEFAULT_CUSTOM_COLORS['border'];
+    }
+    
+    const previewLink = previewCard.querySelector('.preview-link');
+    if (previewLink) {
+        previewLink.style.color = customColors['accent-alt'] || DEFAULT_CUSTOM_COLORS['accent-alt'];
     }
 }
 

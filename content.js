@@ -451,7 +451,31 @@ function hexToHue(hex) {
     return Math.round(hue * 360);
 }
 
+function migrateCustomColorsToNewFormat(colors) {
+    if (!colors) return {};
+    
+    if (colors['bg-base'] || colors['text-primary']) {
+        return colors;
+    }
+    
+    const migrated = {};
+    if (colors['background']) migrated['bg-base'] = colors['background'];
+    if (colors['surface']) migrated['bg-surface'] = colors['surface'];
+    if (colors['surface-alt']) migrated['surface-hover'] = colors['surface-alt'];
+    if (colors['text']) migrated['text-primary'] = colors['text'];
+    if (colors['text-secondary']) migrated['text-secondary'] = colors['text-secondary'];
+    if (colors['text-muted']) migrated['text-muted'] = colors['text-muted'];
+    if (colors['accent']) migrated['accent'] = colors['accent'];
+    if (colors['accent-alt']) migrated['accent-alt'] = colors['accent-alt'];
+    if (colors['border']) migrated['border'] = colors['border'];
+    if (colors['success']) migrated['success'] = colors['success'];
+    if (colors['error']) migrated['error'] = colors['error'];
+    
+    return migrated;
+}
+
 function applyTheme(theme, customColors, catppuccinAccent = 'mauve') {
+    customColors = migrateCustomColorsToNewFormat(customColors);
     writeThemeCache({
         theme: theme || 'default',
         customColors: customColors || {},
@@ -479,70 +503,86 @@ function applyTheme(theme, customColors, catppuccinAccent = 'mauve') {
     }
 
     if (theme === 'custom') {
+        const link = document.createElement('link');
+        link.id = 'flavortown-theme';
+        link.rel = 'stylesheet';
+        link.href = browserAPI.runtime.getURL('themes/custom.css');
+        document.head.appendChild(link);
+        
         const style = document.createElement('style');
         style.id = 'flavortown-custom-vars';
-
-        let css = ':root, :host {\n';
-
-        for (const [colorKey, value] of Object.entries(customColors)) {
-            const mappedVars = CSS_VAR_OVERRIDES[colorKey];
-            if (mappedVars && value) {
-                mappedVars.forEach(varName => {
-                    css += `    ${varName}: ${value} !important;\n`;
-                });
+        
+        const colorMapping = {
+            'bg-base': '--custom-bg-base',
+            'bg-mantle': '--custom-bg-mantle',
+            'bg-surface': '--custom-bg-surface',
+            'surface-hover': '--custom-surface-hover',
+            'surface-active': '--custom-surface-active',
+            'text-primary': '--custom-text-primary',
+            'text-secondary': '--custom-text-secondary',
+            'text-muted': '--custom-text-muted',
+            'text-on-accent': '--custom-text-on-accent',
+            'accent': '--custom-accent',
+            'accent-hover': '--custom-accent-hover',
+            'accent-alt': '--custom-accent-alt',
+            'btn-primary-bg': '--custom-btn-primary-bg',
+            'btn-primary-text': '--custom-btn-primary-text',
+            'success': '--custom-success',
+            'error': '--custom-error',
+            'border': '--custom-border'
+        };
+        
+        let css = ':root {\n';
+        
+        for (const [key, cssVar] of Object.entries(colorMapping)) {
+            const value = customColors[key];
+            if (value) {
+                css += `    ${cssVar}: ${value} !important;\n`;
             }
         }
-
-        css += '}\n\n';
-
-        const bg = customColors['background'] || '#1e1e2e';
-        const surface = customColors['surface'] || '#313244';
-        const text = customColors['text'] || '#cdd6f4';
+        
         const accent = customColors['accent'] || '#cba6f7';
-        const border = customColors['border'] || '#585b70';
         const accentHue = hexToHue(accent);
-
-        css += `
-:root {
-    --ctp-accent: ${accent} !important;
-    --ctp-accent-hue: ${accentHue}deg !important;
-}
-
-`;
-
-        css += `
-html, body {
-    background: ${bg} !important;
-    background-color: ${bg} !important;
-    color: ${text} !important;
-}
-
-body::before {
-    background: ${bg} !important;
-    background-color: ${bg} !important;
-}
-
-.sidebar, .sidebar__content, .sidebar__menu {
-    background: ${surface} !important;
-}
-
-.btn, button {
-    border-color: ${border} !important;
-}
-
-a {
-    color: ${accent} !important;
-}
-
-h1, h2, h3, h4, h5, h6, p, span, div {
-    color: inherit;
-}
-
-.prose, .prose * {
-    color: ${text} !important;
-}
-`;
-
+        css += `    --custom-accent-hue: ${accentHue}deg !important;\n`;
+        
+        // Legacy variable mappings for compatibility
+        if (customColors['bg-base']) {
+            css += `    --color-cream: ${customColors['bg-base']} !important;\n`;
+            css += `    --color-background-color: ${customColors['bg-base']} !important;\n`;
+        }
+        if (customColors['bg-mantle']) {
+            css += `    --color-cream-dark: ${customColors['bg-mantle']} !important;\n`;
+        }
+        if (customColors['bg-surface']) {
+            css += `    --color-surface: ${customColors['bg-surface']} !important;\n`;
+        }
+        if (customColors['accent']) {
+            css += `    --color-brown: ${customColors['accent']} !important;\n`;
+            css += `    --color-accent: ${customColors['accent']} !important;\n`;
+        }
+        if (customColors['text-primary']) {
+            css += `    --color-text-primary: ${customColors['text-primary']} !important;\n`;
+        }
+        if (customColors['text-secondary']) {
+            css += `    --color-text-secondary: ${customColors['text-secondary']} !important;\n`;
+            css += `    --color-brown-light: ${customColors['text-secondary']} !important;\n`;
+            css += `    --color-brown-dark: ${customColors['text-secondary']} !important;\n`;
+        }
+        if (customColors['text-muted']) {
+            css += `    --color-text-muted: ${customColors['text-muted']} !important;\n`;
+        }
+        if (customColors['border']) {
+            css += `    --color-border: ${customColors['border']} !important;\n`;
+        }
+        if (customColors['success']) {
+            css += `    --color-green: ${customColors['success']} !important;\n`;
+        }
+        if (customColors['error']) {
+            css += `    --color-red: ${customColors['error']} !important;\n`;
+        }
+        
+        css += '}\n';
+        
         style.textContent = css;
         document.head.appendChild(style);
         setTimeout(() => cacheThemePalette(theme, customColors, catppuccinAccent), 0);
@@ -14789,6 +14829,13 @@ const TUTORIAL_PHASE_3 = [
 ];
 
 const VERSION_FEATURES = {
+    '2.6.0': [
+        { title: 'Activity Heatmap', description: 'GitHub-style visualization showing your devlog activity over time with streaks, best day, and project breakdowns.', icon: '🔥' },
+        { title: 'Multi-ship efficiency graphs', description: 'Compare efficiency across multiple ships with visual graphs on project pages.', icon: '📊' },
+        { title: 'Git branch scanning', description: 'Changelog now scans all branches to find commits, not just the default branch.', icon: '🌿' },
+        { title: 'Markdown image support', description: 'Image tool inside the markdown toolbar', icon: '🖼️' },
+        { title: 'Theme coverage', description: 'Better theme coverage for all UI elements across the site.', icon: '🎨' }
+    ],
     '2.5.0': [
         { title: 'Screenshot annotation tool', description: 'Draw arrows, add text, highlight areas, and crop screenshots before uploading.', icon: '🛠️' },
         { title: 'Theme revamp', description: 'Complete overhaul of theme system with accent colors and better styling.', icon: '🎨' },
