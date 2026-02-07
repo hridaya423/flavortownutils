@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-07T21:52:42.861Z",
+  "lastUpdated": "2026-02-07T22:29:12.475Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -24406,6 +24406,14 @@
         "ts": "2026-01-28T18:05:32.188Z",
         "delta": 201,
         "balance": 227,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U09MQ8PKNMU"
+      },
+      {
+        "ts": "2026-02-07T21:52:24.146Z",
+        "delta": 76,
+        "balance": 303,
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U09MQ8PKNMU"
@@ -52845,6 +52853,11 @@
     ]
   },
   "users": {
+    "U09MQ8PKNMU": {
+      "id": "U09MQ8PKNMU",
+      "username": "omkanabar",
+      "avatar": "https://secure.gravatar.com/avatar/52c3822c27475d91d998715d05044774.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0006-72.png"
+    },
     "U09736L44JZ": {
       "id": "U09736L44JZ",
       "username": "satyamrajgaya434",
@@ -54372,11 +54385,6 @@
       "id": "U093RE2RUK0",
       "username": "hb.hugo.brisebois",
       "avatar": "https://avatars.slack-edge.com/2025-10-06/9629194930839_27844c6db28857bb79d8_72.png"
-    },
-    "U09MQ8PKNMU": {
-      "id": "U09MQ8PKNMU",
-      "username": "omkanabar",
-      "avatar": "https://secure.gravatar.com/avatar/52c3822c27475d91d998715d05044774.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0006-72.png"
     },
     "U0A6U6QBJG7": {
       "id": "U0A6U6QBJG7",
