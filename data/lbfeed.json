@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-07T14:29:29.856Z",
+  "lastUpdated": "2026-02-07T14:55:51.718Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -6528,6 +6528,14 @@
         "balance": 94,
         "reason": "tutorial",
         "reasonType": "",
+        "userId": "U07V12XBSF6"
+      },
+      {
+        "ts": "2026-02-07T14:54:10.663Z",
+        "delta": 10,
+        "balance": 104,
+        "reason": "Line Cook",
+        "reasonType": "achievement",
         "userId": "U07V12XBSF6"
       }
     ],
@@ -24617,6 +24625,14 @@
         "delta": 3,
         "balance": 13,
         "reason": "Order Up!",
+        "reasonType": "achievement",
+        "userId": "U09Q2TN62TV"
+      },
+      {
+        "ts": "2026-02-07T14:28:53.018Z",
+        "delta": 2,
+        "balance": 15,
+        "reason": "Hello, Kitchen!",
         "reasonType": "achievement",
         "userId": "U09Q2TN62TV"
       }
@@ -52721,6 +52737,11 @@
     ]
   },
   "users": {
+    "U07V12XBSF6": {
+      "id": "U07V12XBSF6",
+      "username": "praneetnrana",
+      "avatar": "https://avatars.slack-edge.com/2024-11-06/7981633353766_2c1d416704c08bf78e03_72.png"
+    },
     "U09Q2TN62TV": {
       "id": "U09Q2TN62TV",
       "username": "anvar",
@@ -52916,11 +52937,6 @@
       "username": "amusoni240",
       "displayName": "Amu",
       "avatar": "https://avatars.slack-edge.com/2026-01-21/10344452941906_71cb5f3b39b98fdc5b37_72.png"
-    },
-    "U07V12XBSF6": {
-      "id": "U07V12XBSF6",
-      "username": "praneetnrana",
-      "avatar": "https://avatars.slack-edge.com/2024-11-06/7981633353766_2c1d416704c08bf78e03_72.png"
     },
     "U09AJASACUX": {
       "id": "U09AJASACUX",
