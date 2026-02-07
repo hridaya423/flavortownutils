@@ -1,7 +1,21 @@
 {
-  "lastUpdated": "2026-02-07T10:27:08.677Z",
-  "totalVotes": 3509,
+  "lastUpdated": "2026-02-07T12:51:28.313Z",
+  "totalVotes": 3511,
   "votes": [
+    {
+      "project": "To do list",
+      "feedback": "Cool Project! Simulation works good. I don't really see the point of the servo though? Other then that its a good starter project for arduinos.",
+      "votedBy": "U0A73LN55TP",
+      "timestamp": "2026-02-07T11:55:51.876Z",
+      "slackTs": "1770465351.876799"
+    },
+    {
+      "project": "MultiConvert",
+      "feedback": "Great work! This is a really polished app given the time you spent on it was not that much. I like having all the conversion logic in the hook. very professional.",
+      "votedBy": "U0A73LN55TP",
+      "timestamp": "2026-02-07T11:45:55.933Z",
+      "slackTs": "1770464755.933229"
+    },
     {
       "project": "azimuth",
       "feedback": "You know... You can't just use \"***\" for the API key in the website to hide it and pretend it doesn't exist lol\n\nVery cool project though, maybe show the map with a line from where I guessed to where it is and allow scrolling the map when the guess was done to see where it was",
