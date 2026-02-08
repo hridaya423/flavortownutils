@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-08T11:49:40.376Z",
+  "lastUpdated": "2026-02-08T12:54:09.452Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -16002,6 +16002,14 @@
         "ts": "2026-02-08T06:11:56.619Z",
         "delta": -10,
         "balance": 191,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U091M21518T"
+      },
+      {
+        "ts": "2026-02-08T12:44:23.308Z",
+        "delta": -70,
+        "balance": 121,
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U091M21518T"
@@ -52645,6 +52653,14 @@
         "reason": "Free Sample!",
         "reasonType": "achievement",
         "userId": "U0AAVSGH3HC"
+      },
+      {
+        "ts": "2026-02-08T11:59:39.995Z",
+        "delta": -20,
+        "balance": 0,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0AAVSGH3HC"
       }
     ],
     "u0ab4awmbk3": [
@@ -53075,6 +53091,18 @@
     ]
   },
   "users": {
+    "U091M21518T": {
+      "id": "U091M21518T",
+      "username": "amusoni240",
+      "displayName": "Amu",
+      "avatar": "https://avatars.slack-edge.com/2026-01-21/10344452941906_71cb5f3b39b98fdc5b37_72.png"
+    },
+    "U0AAVSGH3HC": {
+      "id": "U0AAVSGH3HC",
+      "username": "hackclub8",
+      "displayName": "46009361",
+      "avatar": "https://avatars.slack-edge.com/2026-01-29/10433002833120_f403f3da778a713c59df_72.png"
+    },
     "U0A6PJQQ5GU": {
       "id": "U0A6PJQQ5GU",
       "username": "laurentmaxhuni1234",
@@ -53123,12 +53151,6 @@
       "username": "linus639",
       "displayName": "Linus",
       "avatar": "https://avatars.slack-edge.com/2026-01-11/10272103228150_2ea00cc0f8c41dc47166_72.png"
-    },
-    "U091M21518T": {
-      "id": "U091M21518T",
-      "username": "amusoni240",
-      "displayName": "Amu",
-      "avatar": "https://avatars.slack-edge.com/2026-01-21/10344452941906_71cb5f3b39b98fdc5b37_72.png"
     },
     "U09CY2QAZMJ": {
       "id": "U09CY2QAZMJ",
@@ -53208,12 +53230,6 @@
       "username": "the_cubidian",
       "displayName": "The Cubidian",
       "avatar": "https://avatars.slack-edge.com/2025-06-09/9020487880196_42d2f06d2aecea35d9ad_72.png"
-    },
-    "U0AAVSGH3HC": {
-      "id": "U0AAVSGH3HC",
-      "username": "hackclub8",
-      "displayName": "46009361",
-      "avatar": "https://avatars.slack-edge.com/2026-01-29/10433002833120_f403f3da778a713c59df_72.png"
     },
     "U09A7GEM760": {
       "id": "U09A7GEM760",
