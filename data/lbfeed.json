@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-08T02:38:12.469Z",
+  "lastUpdated": "2026-02-08T05:05:31.238Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -4285,6 +4285,22 @@
         "delta": -70,
         "balance": 261,
         "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U07LKN2HXT3"
+      },
+      {
+        "ts": "2026-02-08T03:24:04.777Z",
+        "delta": 20,
+        "balance": 281,
+        "reason": "user grant",
+        "reasonType": "",
+        "userId": "U07LKN2HXT3"
+      },
+      {
+        "ts": "2026-02-08T03:24:52.598Z",
+        "delta": 145,
+        "balance": 426,
+        "reason": "user grant",
         "reasonType": "",
         "userId": "U07LKN2HXT3"
       }
@@ -22363,6 +22379,14 @@
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U09BU0KN8UW"
+      },
+      {
+        "ts": "2026-02-08T03:38:08.567Z",
+        "delta": -104,
+        "balance": 14,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U09BU0KN8UW"
       }
     ],
     "u09cm5p8e80": [
@@ -22542,6 +22566,14 @@
         "ts": "2026-02-04T15:32:41.919Z",
         "delta": 149,
         "balance": 1642,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U09CY2QAZMJ"
+      },
+      {
+        "ts": "2026-02-08T04:22:33.172Z",
+        "delta": 236,
+        "balance": 1878,
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U09CY2QAZMJ"
@@ -52741,6 +52773,16 @@
         "userId": "U0AC18DAC9Z"
       }
     ],
+    "u0ac2jmvcfq": [
+      {
+        "ts": "2026-02-08T03:54:19.806Z",
+        "delta": 5,
+        "balance": 12,
+        "reason": "Very Fried",
+        "reasonType": "achievement",
+        "userId": "U0AC2JMVCFQ"
+      }
+    ],
     "u0ac2k43ma4": [
       {
         "ts": "2026-01-27T15:14:30.194Z",
@@ -52935,6 +52977,27 @@
     ]
   },
   "users": {
+    "U09CY2QAZMJ": {
+      "id": "U09CY2QAZMJ",
+      "username": "tonyforself",
+      "avatar": "https://avatars.slack-edge.com/2025-12-29/10197320008051_09090f790fd53d59b8a8_72.jpg"
+    },
+    "U0AC2JMVCFQ": {
+      "id": "U0AC2JMVCFQ",
+      "username": "nikonightmare.chan9",
+      "displayName": "Cherish",
+      "avatar": "https://secure.gravatar.com/avatar/ae45ee7f3ed034811ef574bc37c36c64.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0020-72.png"
+    },
+    "U09BU0KN8UW": {
+      "id": "U09BU0KN8UW",
+      "username": "muinmomin2",
+      "avatar": "https://avatars.slack-edge.com/2026-01-01/10219664007748_9009adc0955225d3b5fb_72.gif"
+    },
+    "U07LKN2HXT3": {
+      "id": "U07LKN2HXT3",
+      "username": "obay.developer",
+      "avatar": "https://avatars.slack-edge.com/2025-10-10/9678158748850_a132430cfd5e052a7045_72.jpg"
+    },
     "U093U1MM8H4": {
       "id": "U093U1MM8H4",
       "username": "hungchi970104",
@@ -53172,11 +53235,6 @@
       "id": "U0A2TMHUXM1",
       "username": "princecomputerlab0",
       "avatar": "https://avatars.slack-edge.com/2025-12-25/10190803111108_cc514fb0dbbd13785824_72.jpg"
-    },
-    "U07LKN2HXT3": {
-      "id": "U07LKN2HXT3",
-      "username": "obay.developer",
-      "avatar": "https://avatars.slack-edge.com/2025-10-10/9678158748850_a132430cfd5e052a7045_72.jpg"
     },
     "U0ACQAZSEC9": {
       "id": "U0ACQAZSEC9",
@@ -53456,11 +53514,6 @@
       "username": "silasburtonunger",
       "displayName": "Silas",
       "avatar": "https://avatars.slack-edge.com/2026-01-08/10259498873382_fad8c285def055d5b0ab_72.png"
-    },
-    "U09CY2QAZMJ": {
-      "id": "U09CY2QAZMJ",
-      "username": "tonyforself",
-      "avatar": "https://avatars.slack-edge.com/2025-12-29/10197320008051_09090f790fd53d59b8a8_72.jpg"
     },
     "U0AC75E4EKH": {
       "id": "U0AC75E4EKH",
@@ -54520,11 +54573,6 @@
       "username": "coeuzsnotionz",
       "displayName": "coeuzsnotionz",
       "avatar": "https://secure.gravatar.com/avatar/1a44049000bdcd7d25d99fd26385f748.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0007-72.png"
-    },
-    "U09BU0KN8UW": {
-      "id": "U09BU0KN8UW",
-      "username": "muinmomin2",
-      "avatar": "https://avatars.slack-edge.com/2026-01-01/10219664007748_9009adc0955225d3b5fb_72.gif"
     },
     "U09JBJ0FW0P": {
       "id": "U09JBJ0FW0P",
