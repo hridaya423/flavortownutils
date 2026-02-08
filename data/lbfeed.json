@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-08T19:27:07.900Z",
+  "lastUpdated": "2026-02-08T19:48:30.405Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -8312,6 +8312,14 @@
         "balance": 718,
         "reason": "payout",
         "reasonType": "payout",
+        "userId": "U085HNYPWLT"
+      },
+      {
+        "ts": "2026-02-08T19:40:01.893Z",
+        "delta": -40,
+        "balance": 678,
+        "reason": "shop purchase",
+        "reasonType": "",
         "userId": "U085HNYPWLT"
       }
     ],
@@ -27109,6 +27117,14 @@
         "delta": 25,
         "balance": 171,
         "reason": "user grant",
+        "reasonType": "",
+        "userId": "U0A3D9YPLQ4"
+      },
+      {
+        "ts": "2026-02-08T19:31:32.622Z",
+        "delta": -124,
+        "balance": 47,
+        "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0A3D9YPLQ4"
       }
@@ -53269,6 +53285,12 @@
     ]
   },
   "users": {
+    "U085HNYPWLT": {
+      "id": "U085HNYPWLT",
+      "username": "admilkyway",
+      "displayName": "Mr Milky Way",
+      "avatar": "https://avatars.slack-edge.com/2025-08-15/9349731560455_d2d0d48707b7d867d90d_72.png"
+    },
     "U0A3D9YPLQ4": {
       "id": "U0A3D9YPLQ4",
       "username": "sanadeghat",
@@ -55454,12 +55476,6 @@
       "username": "ben.elliott.2021",
       "displayName": "SuperNinjaCat5",
       "avatar": "https://avatars.slack-edge.com/2025-11-01/9820524426166_e46c65ea4aba7ff0e9ca_72.png"
-    },
-    "U085HNYPWLT": {
-      "id": "U085HNYPWLT",
-      "username": "admilkyway",
-      "displayName": "Mr Milky Way",
-      "avatar": "https://avatars.slack-edge.com/2025-08-15/9349731560455_d2d0d48707b7d867d90d_72.png"
     },
     "U0AB4AWMBK3": {
       "id": "U0AB4AWMBK3",
