@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-08T07:13:53.776Z",
+  "lastUpdated": "2026-02-08T07:57:28.573Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -4301,6 +4301,14 @@
         "delta": 145,
         "balance": 426,
         "reason": "user grant",
+        "reasonType": "",
+        "userId": "U07LKN2HXT3"
+      },
+      {
+        "ts": "2026-02-08T07:43:01.856Z",
+        "delta": -350,
+        "balance": 76,
+        "reason": "shop purchase",
         "reasonType": "",
         "userId": "U07LKN2HXT3"
       }
@@ -53017,6 +53025,11 @@
     ]
   },
   "users": {
+    "U07LKN2HXT3": {
+      "id": "U07LKN2HXT3",
+      "username": "obay.developer",
+      "avatar": "https://avatars.slack-edge.com/2025-10-10/9678158748850_a132430cfd5e052a7045_72.jpg"
+    },
     "U09736L44JZ": {
       "id": "U09736L44JZ",
       "username": "satyamrajgaya434",
@@ -53049,11 +53062,6 @@
       "username": "nikonightmare.chan9",
       "displayName": "Cherish",
       "avatar": "https://secure.gravatar.com/avatar/ae45ee7f3ed034811ef574bc37c36c64.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0020-72.png"
-    },
-    "U07LKN2HXT3": {
-      "id": "U07LKN2HXT3",
-      "username": "obay.developer",
-      "avatar": "https://avatars.slack-edge.com/2025-10-10/9678158748850_a132430cfd5e052a7045_72.jpg"
     },
     "U093U1MM8H4": {
       "id": "U093U1MM8H4",
