@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-08T07:57:28.573Z",
+  "lastUpdated": "2026-02-08T08:38:42.608Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -16596,6 +16596,14 @@
         "balance": 188,
         "reason": "payout",
         "reasonType": "payout",
+        "userId": "U091VLWN0CS"
+      },
+      {
+        "ts": "2026-02-08T08:22:02.208Z",
+        "delta": -60,
+        "balance": 128,
+        "reason": "shop purchase",
+        "reasonType": "",
         "userId": "U091VLWN0CS"
       }
     ],
@@ -53025,6 +53033,12 @@
     ]
   },
   "users": {
+    "U091VLWN0CS": {
+      "id": "U091VLWN0CS",
+      "username": "gianlucarainis",
+      "displayName": "__grdev",
+      "avatar": "https://secure.gravatar.com/avatar/4d109519859f7f85e7459cb5fe4aac90.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0021-72.png"
+    },
     "U07LKN2HXT3": {
       "id": "U07LKN2HXT3",
       "username": "obay.developer",
@@ -53106,12 +53120,6 @@
       "id": "U09MQ8PKNMU",
       "username": "omkanabar",
       "avatar": "https://secure.gravatar.com/avatar/52c3822c27475d91d998715d05044774.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0006-72.png"
-    },
-    "U091VLWN0CS": {
-      "id": "U091VLWN0CS",
-      "username": "gianlucarainis",
-      "displayName": "__grdev",
-      "avatar": "https://secure.gravatar.com/avatar/4d109519859f7f85e7459cb5fe4aac90.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0021-72.png"
     },
     "U096J8GJ87J": {
       "id": "U096J8GJ87J",
