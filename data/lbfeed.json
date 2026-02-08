@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-08T05:05:31.238Z",
+  "lastUpdated": "2026-02-08T06:14:09.949Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -15979,6 +15979,22 @@
         "delta": 20,
         "balance": 199,
         "reason": "user grant",
+        "reasonType": "",
+        "userId": "U091M21518T"
+      },
+      {
+        "ts": "2026-02-08T06:11:51.593Z",
+        "delta": 2,
+        "balance": 201,
+        "reason": "Recipe Notes",
+        "reasonType": "achievement",
+        "userId": "U091M21518T"
+      },
+      {
+        "ts": "2026-02-08T06:11:56.619Z",
+        "delta": -10,
+        "balance": 191,
+        "reason": "shop purchase",
         "reasonType": "",
         "userId": "U091M21518T"
       }
@@ -52977,6 +52993,12 @@
     ]
   },
   "users": {
+    "U091M21518T": {
+      "id": "U091M21518T",
+      "username": "amusoni240",
+      "displayName": "Amu",
+      "avatar": "https://avatars.slack-edge.com/2026-01-21/10344452941906_71cb5f3b39b98fdc5b37_72.png"
+    },
     "U09CY2QAZMJ": {
       "id": "U09CY2QAZMJ",
       "username": "tonyforself",
@@ -53003,12 +53025,6 @@
       "username": "hungchi970104",
       "displayName": "Hung-Chi Wang",
       "avatar": "https://avatars.slack-edge.com/2025-07-01/9157068578752_0459174f9e6efff0b989_72.png"
-    },
-    "U091M21518T": {
-      "id": "U091M21518T",
-      "username": "amusoni240",
-      "displayName": "Amu",
-      "avatar": "https://avatars.slack-edge.com/2026-01-21/10344452941906_71cb5f3b39b98fdc5b37_72.png"
     },
     "U090LAT6QKB": {
       "id": "U090LAT6QKB",
@@ -53932,7 +53948,7 @@
       "id": "U09BSMKPT7Y",
       "username": "sarjak.khanal",
       "displayName": "En Passant",
-      "avatar": "https://avatars.slack-edge.com/2026-01-14/10292220680854_bc1cf2328b065d54d10b_72.jpg"
+      "avatar": "https://avatars.slack-edge.com/2026-02-08/10450088407143_8725932424f4a50cd942_72.jpg"
     },
     "U08S00249M3": {
       "id": "U08S00249M3",
