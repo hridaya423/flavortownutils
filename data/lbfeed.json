@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-08T19:48:30.405Z",
+  "lastUpdated": "2026-02-08T20:31:07.583Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -6587,6 +6587,14 @@
         "reason": "Line Cook",
         "reasonType": "achievement",
         "userId": "U07V12XBSF6"
+      },
+      {
+        "ts": "2026-02-08T19:52:03.297Z",
+        "delta": 2,
+        "balance": 106,
+        "reason": "Hello, Kitchen!",
+        "reasonType": "achievement",
+        "userId": "U07V12XBSF6"
       }
     ],
     "u07v73eef42": [
@@ -8321,6 +8329,14 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U085HNYPWLT"
+      },
+      {
+        "ts": "2026-02-08T19:56:04.679Z",
+        "delta": 40,
+        "balance": 718,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U085HNYPWLT"
       }
     ],
     "u085l7p77ev": [
@@ -8776,6 +8792,14 @@
         "balance": 1579,
         "reason": "Cooking",
         "reasonType": "achievement",
+        "userId": "U088Z65TDRN"
+      },
+      {
+        "ts": "2026-02-08T20:29:15.191Z",
+        "delta": -20,
+        "balance": 1559,
+        "reason": "shop purchase",
+        "reasonType": "",
         "userId": "U088Z65TDRN"
       }
     ],
@@ -53285,11 +53309,22 @@
     ]
   },
   "users": {
+    "U088Z65TDRN": {
+      "id": "U088Z65TDRN",
+      "username": "gamester.sad",
+      "displayName": "sabio (USE SPICETOWN)",
+      "avatar": "https://avatars.slack-edge.com/2025-11-29/10014212807269_8caef272005d35c91c28_72.png"
+    },
     "U085HNYPWLT": {
       "id": "U085HNYPWLT",
       "username": "admilkyway",
       "displayName": "Mr Milky Way",
       "avatar": "https://avatars.slack-edge.com/2025-08-15/9349731560455_d2d0d48707b7d867d90d_72.png"
+    },
+    "U07V12XBSF6": {
+      "id": "U07V12XBSF6",
+      "username": "praneetnrana",
+      "avatar": "https://avatars.slack-edge.com/2024-11-06/7981633353766_2c1d416704c08bf78e03_72.png"
     },
     "U0A3D9YPLQ4": {
       "id": "U0A3D9YPLQ4",
@@ -53558,11 +53593,6 @@
       "username": "allintw0",
       "displayName": "Raivo",
       "avatar": "https://avatars.slack-edge.com/2026-01-14/10297073987810_7388f8095afd92efcdf6_72.png"
-    },
-    "U07V12XBSF6": {
-      "id": "U07V12XBSF6",
-      "username": "praneetnrana",
-      "avatar": "https://avatars.slack-edge.com/2024-11-06/7981633353766_2c1d416704c08bf78e03_72.png"
     },
     "U0A5L7XL4DR": {
       "id": "U0A5L7XL4DR",
@@ -54817,12 +54847,6 @@
       "username": "ariel.acosta",
       "displayName": "ariel.acosta",
       "avatar": "https://secure.gravatar.com/avatar/3e207d54a3fa7b154c297aed61a4b1ba.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0019-72.png"
-    },
-    "U088Z65TDRN": {
-      "id": "U088Z65TDRN",
-      "username": "gamester.sad",
-      "displayName": "sabio (USE SPICETOWN)",
-      "avatar": "https://avatars.slack-edge.com/2025-11-29/10014212807269_8caef272005d35c91c28_72.png"
     },
     "U091RHATJBW": {
       "id": "U091RHATJBW",
