@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-09T19:47:06.323Z",
+  "lastUpdated": "2026-02-09T20:42:16.341Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -25705,6 +25705,14 @@
         "delta": 3,
         "balance": 13,
         "reason": "Order Up!",
+        "reasonType": "achievement",
+        "userId": "U0A07TX1MEF"
+      },
+      {
+        "ts": "2026-02-09T19:59:59.326Z",
+        "delta": 2,
+        "balance": 15,
+        "reason": "Hello, Kitchen!",
         "reasonType": "achievement",
         "userId": "U0A07TX1MEF"
       }
@@ -51781,6 +51789,14 @@
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U0A8EFD3CUQ"
+      },
+      {
+        "ts": "2026-02-09T19:46:11.066Z",
+        "delta": 100,
+        "balance": 180,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U0A8EFD3CUQ"
       }
     ],
     "u0a8f724f1a": [
@@ -53679,6 +53695,17 @@
     ]
   },
   "users": {
+    "U0A07TX1MEF": {
+      "id": "U0A07TX1MEF",
+      "username": "vedantbhatnagar949",
+      "displayName": "vedantbhatnagar949",
+      "avatar": "https://avatars.slack-edge.com/2025-12-01/10023575894805_198eb4847aeaa19b18a0_72.jpg"
+    },
+    "U0A8EFD3CUQ": {
+      "id": "U0A8EFD3CUQ",
+      "username": "benjamin.mueller",
+      "avatar": "https://avatars.slack-edge.com/2026-01-08/10252088691635_872ec0e53a500b09c186_72.png"
+    },
     "U07DG5AQ0RK": {
       "id": "U07DG5AQ0RK",
       "username": "jan.richter2007",
@@ -53819,12 +53846,6 @@
       "username": "parth.ahuja",
       "displayName": "parth",
       "avatar": "https://avatars.slack-edge.com/2025-12-25/10215822701920_fb83939fa8731e0dc037_72.png"
-    },
-    "U0A07TX1MEF": {
-      "id": "U0A07TX1MEF",
-      "username": "vedantbhatnagar949",
-      "displayName": "vedantbhatnagar949",
-      "avatar": "https://avatars.slack-edge.com/2025-12-01/10023575894805_198eb4847aeaa19b18a0_72.jpg"
     },
     "U0924GFMY1X": {
       "id": "U0924GFMY1X",
@@ -55019,11 +55040,6 @@
       "username": "coolguysupercool7",
       "displayName": "coolguy",
       "avatar": "https://secure.gravatar.com/avatar/837b1fddaf02490565546e3ed3c10964.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0017-72.png"
-    },
-    "U0A8EFD3CUQ": {
-      "id": "U0A8EFD3CUQ",
-      "username": "benjamin.mueller",
-      "avatar": "https://avatars.slack-edge.com/2026-01-08/10252088691635_872ec0e53a500b09c186_72.png"
     },
     "U09DY9N8RAS": {
       "id": "U09DY9N8RAS",
