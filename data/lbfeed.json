@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-09T14:54:56.470Z",
+  "lastUpdated": "2026-02-09T15:59:44.432Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -7493,6 +7493,14 @@
         "delta": 5,
         "balance": 480,
         "reason": "tutorial",
+        "reasonType": "",
+        "userId": "U0825SVHFJL"
+      },
+      {
+        "ts": "2026-02-09T15:44:01.010Z",
+        "delta": -35,
+        "balance": 445,
+        "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0825SVHFJL"
       }
@@ -18746,6 +18754,14 @@
         "balance": 1165,
         "reason": "payout",
         "reasonType": "payout",
+        "userId": "U093U1MM8H4"
+      },
+      {
+        "ts": "2026-02-09T15:10:13.025Z",
+        "delta": 35,
+        "balance": 1200,
+        "reason": "user grant",
+        "reasonType": "",
         "userId": "U093U1MM8H4"
       }
     ],
@@ -51775,6 +51791,22 @@
         "reason": "Recipe Notes",
         "reasonType": "achievement",
         "userId": "U0A8GDTG4LQ"
+      },
+      {
+        "ts": "2026-02-09T15:30:31.091Z",
+        "delta": 15,
+        "balance": 25,
+        "reason": "Cookbook Author",
+        "reasonType": "achievement",
+        "userId": "U0A8GDTG4LQ"
+      },
+      {
+        "ts": "2026-02-09T15:44:48.418Z",
+        "delta": 2,
+        "balance": 27,
+        "reason": "Hello, Kitchen!",
+        "reasonType": "achievement",
+        "userId": "U0A8GDTG4LQ"
       }
     ],
     "u0a8ggf9pdz": [
@@ -53555,6 +53587,23 @@
     ]
   },
   "users": {
+    "U0A8GDTG4LQ": {
+      "id": "U0A8GDTG4LQ",
+      "username": "iwanttobetheemail67",
+      "displayName": "Tyler",
+      "avatar": "https://avatars.slack-edge.com/2026-01-08/10273128251409_96718d0720cd0c685fae_72.png"
+    },
+    "U0825SVHFJL": {
+      "id": "U0825SVHFJL",
+      "username": "techedreal",
+      "avatar": "https://avatars.slack-edge.com/2025-12-07/10099376260944_616f006eb6847aed4221_72.jpg"
+    },
+    "U093U1MM8H4": {
+      "id": "U093U1MM8H4",
+      "username": "hungchi970104",
+      "displayName": "Hung-Chi Wang",
+      "avatar": "https://avatars.slack-edge.com/2025-07-01/9157068578752_0459174f9e6efff0b989_72.png"
+    },
     "U0A8RA1MMFY": {
       "id": "U0A8RA1MMFY",
       "username": "lucasnwilliams2008hac",
@@ -53571,12 +53620,6 @@
       "id": "U09JFS1BU2V",
       "username": "wenfeng110402",
       "avatar": "https://avatars.slack-edge.com/2025-12-11/10095113772678_b009e6916bfea723fa01_72.png"
-    },
-    "U093U1MM8H4": {
-      "id": "U093U1MM8H4",
-      "username": "hungchi970104",
-      "displayName": "Hung-Chi Wang",
-      "avatar": "https://avatars.slack-edge.com/2025-07-01/9157068578752_0459174f9e6efff0b989_72.png"
     },
     "U0AA4KJU08P": {
       "id": "U0AA4KJU08P",
@@ -54078,11 +54121,6 @@
       "username": "max",
       "displayName": "msw",
       "avatar": "https://avatars.slack-edge.com/2025-12-09/10100287592385_f334a59648f9f5261ef9_72.png"
-    },
-    "U0825SVHFJL": {
-      "id": "U0825SVHFJL",
-      "username": "techedreal",
-      "avatar": "https://avatars.slack-edge.com/2025-12-07/10099376260944_616f006eb6847aed4221_72.jpg"
     },
     "U09GJ7HH48Z": {
       "id": "U09GJ7HH48Z",
@@ -54647,7 +54685,7 @@
       "id": "U0938MZG8Q6",
       "username": "christiandubsky20",
       "displayName": "christian",
-      "avatar": "https://avatars.slack-edge.com/2026-02-09/10471604442884_08c454869ff34348c3e8_72.png"
+      "avatar": "https://avatars.slack-edge.com/2026-02-09/10469483262901_d1fe72129370e5a15a7a_72.png"
     },
     "U078VN0UU2K": {
       "id": "U078VN0UU2K",
@@ -56006,12 +56044,6 @@
       "username": "leszcz110",
       "displayName": "Jimi",
       "avatar": "https://avatars.slack-edge.com/2026-01-21/10352834849793_010f6593c7109d64722e_72.jpg"
-    },
-    "U0A8GDTG4LQ": {
-      "id": "U0A8GDTG4LQ",
-      "username": "iwanttobetheemail67",
-      "displayName": "Tyler",
-      "avatar": "https://avatars.slack-edge.com/2026-01-08/10273128251409_96718d0720cd0c685fae_72.png"
     },
     "U0A68NZ9CMA": {
       "id": "U0A68NZ9CMA",
