@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-09T12:05:53.888Z",
+  "lastUpdated": "2026-02-09T13:54:57.735Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -10617,6 +10617,14 @@
         "delta": 10,
         "balance": 10,
         "reason": "user grant",
+        "reasonType": "",
+        "userId": "U08A7NEAV3P"
+      },
+      {
+        "ts": "2026-02-09T12:22:43.787Z",
+        "delta": -10,
+        "balance": 0,
+        "reason": "shop purchase",
         "reasonType": "",
         "userId": "U08A7NEAV3P"
       }
@@ -52739,6 +52747,40 @@
         "userId": "U0AA3RZMGPK"
       }
     ],
+    "u0aa4kju08p": [
+      {
+        "ts": "2026-02-09T13:35:47.796Z",
+        "delta": 5,
+        "balance": 5,
+        "reason": "Very Fried",
+        "reasonType": "achievement",
+        "userId": "U0AA4KJU08P"
+      },
+      {
+        "ts": "2026-02-09T13:35:47.966Z",
+        "delta": 3,
+        "balance": 8,
+        "reason": "Home Cookin'",
+        "reasonType": "achievement",
+        "userId": "U0AA4KJU08P"
+      },
+      {
+        "ts": "2026-02-09T13:35:48.093Z",
+        "delta": 2,
+        "balance": 10,
+        "reason": "Recipe Notes",
+        "reasonType": "achievement",
+        "userId": "U0AA4KJU08P"
+      },
+      {
+        "ts": "2026-02-09T13:35:49.474Z",
+        "delta": 3,
+        "balance": 13,
+        "reason": "Order Up!",
+        "reasonType": "achievement",
+        "userId": "U0AA4KJU08P"
+      }
+    ],
     "u0aa527k2q1": [
       {
         "ts": "2026-01-29T17:57:23.460Z",
@@ -53473,6 +53515,18 @@
     ]
   },
   "users": {
+    "U0AA4KJU08P": {
+      "id": "U0AA4KJU08P",
+      "username": "theskriptkid",
+      "displayName": "theskriptkid",
+      "avatar": "https://secure.gravatar.com/avatar/3a52d2263ce2a782cd93ff23c6fd8dac.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0005-72.png"
+    },
+    "U08A7NEAV3P": {
+      "id": "U08A7NEAV3P",
+      "username": "joelalexmat",
+      "displayName": "Joel Mathews",
+      "avatar": "https://avatars.slack-edge.com/2025-09-30/9595093091639_f29a45ba99a251c961d6_72.jpg"
+    },
     "U0A8SENLBK2": {
       "id": "U0A8SENLBK2",
       "username": "timfranck6",
@@ -53537,12 +53591,6 @@
       "id": "U09JFS1BU2V",
       "username": "wenfeng110402",
       "avatar": "https://avatars.slack-edge.com/2025-12-11/10095113772678_b009e6916bfea723fa01_72.png"
-    },
-    "U08A7NEAV3P": {
-      "id": "U08A7NEAV3P",
-      "username": "joelalexmat",
-      "displayName": "Joel Mathews",
-      "avatar": "https://avatars.slack-edge.com/2025-09-30/9595093091639_f29a45ba99a251c961d6_72.jpg"
     },
     "U0924GFMY1X": {
       "id": "U0924GFMY1X",
