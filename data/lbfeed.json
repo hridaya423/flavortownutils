@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-09T22:39:19.743Z",
+  "lastUpdated": "2026-02-09T23:39:22.039Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -52235,6 +52235,14 @@
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U0A8RA1MMFY"
+      },
+      {
+        "ts": "2026-02-09T23:20:54.428Z",
+        "delta": -22,
+        "balance": 254,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A8RA1MMFY"
       }
     ],
     "u0a8senlbk2": [
@@ -53703,6 +53711,12 @@
     ]
   },
   "users": {
+    "U0A8RA1MMFY": {
+      "id": "U0A8RA1MMFY",
+      "username": "lucasnwilliams2008hac",
+      "displayName": "FunnyEmmit7",
+      "avatar": "https://secure.gravatar.com/avatar/cff373b2797abced5a4b67a3b0db5e5e.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0008-72.png"
+    },
     "U08D3AY7BG8": {
       "id": "U08D3AY7BG8",
       "username": "me1978",
@@ -53782,12 +53796,6 @@
       "username": "hungchi970104",
       "displayName": "Hung-Chi Wang",
       "avatar": "https://avatars.slack-edge.com/2025-07-01/9157068578752_0459174f9e6efff0b989_72.png"
-    },
-    "U0A8RA1MMFY": {
-      "id": "U0A8RA1MMFY",
-      "username": "lucasnwilliams2008hac",
-      "displayName": "FunnyEmmit7",
-      "avatar": "https://secure.gravatar.com/avatar/cff373b2797abced5a4b67a3b0db5e5e.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0008-72.png"
     },
     "U054VC2KM9P": {
       "id": "U054VC2KM9P",
