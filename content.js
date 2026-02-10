@@ -545,7 +545,6 @@ function applyTheme(theme, customColors, catppuccinAccent = 'mauve') {
         const accentHue = hexToHue(accent);
         css += `    --custom-accent-hue: ${accentHue}deg !important;\n`;
         
-        // Legacy variable mappings for compatibility
         if (customColors['bg-base']) {
             css += `    --color-cream: ${customColors['bg-base']} !important;\n`;
             css += `    --color-background-color: ${customColors['bg-base']} !important;\n`;
@@ -998,14 +997,36 @@ function ensureShipStatsReady() {
     addShipStats();
 }
 
-async function addUnshippedCookieEstimate() {
+function formatMinutesCompact(totalMinutes) {
+    const minutes = Math.max(0, Math.round(totalMinutes || 0));
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    if (hours > 0 && mins > 0) return `${hours}h ${mins}m`;
+    if (hours > 0) return `${hours}h`;  
+    return `${mins}m`;
+}
+
+async function addUnshippedCookieEstimate(attempt = 0) {
     if (!/\/projects\/\d+$/.test(window.location.pathname)) return;
 
-    const wrapper = document.getElementById('ship-btn-wrapper');
-    if (!wrapper) return;
+    const wrapper = document.getElementById('ship-btn-wrapper')
+        || document.getElementById('ship-btn-wrapper-banner')
+        || document.querySelector('.project-show-card__ship-wrapper');
+    if (!wrapper) {
+        if (attempt < 5) setTimeout(() => addUnshippedCookieEstimate(attempt + 1), 250);
+        return;
+    }
 
-    const shipButton = wrapper.querySelector('button');
-    if (!shipButton || !shipButton.disabled) return;
+    const shipButton = wrapper.querySelector('.project-show-card__ship-btn');
+    if (!shipButton) {
+        if (attempt < 5) setTimeout(() => addUnshippedCookieEstimate(attempt + 1), 250);
+        return;
+    }
+
+    shipButton.querySelectorAll('.flavortown-unshipped-cookie-est').forEach(el => el.remove());
+
+    const unshippedMinutes = getUnshippedMinutesSinceLastShip();
+    if (unshippedMinutes <= 0) return;
 
     const projectName = getCurrentProjectName();
     if (!projectName) return;
@@ -1013,44 +1034,30 @@ async function addUnshippedCookieEstimate() {
     const projectIdMatch = window.location.pathname.match(/\/projects\/(\d+)/);
     const projectId = projectIdMatch ? projectIdMatch[1] : null;
 
-    const existing = shipButton.querySelector('.flavortown-unshipped-cookie-est');
-    if (existing) existing.remove();
-
-    const payouts = await fetchShipPayouts();
-    if (!payouts.length) return;
-
-    const projectPayouts = payouts.filter(payout => projectNameMatches(payout.projectName, projectName));
-    if (!projectPayouts.length) return;
-
-    const totalCookies = projectPayouts.reduce((sum, payout) => sum + payout.amount, 0);
-    if (totalCookies <= 0) return;
-
     let stats = projectId ? getCachedProjectUnshipped(projectId) : null;
     if ((!stats || !stats.paidShipMinutes || !stats.paidCookies) && projectId) {
         stats = await fetchProjectUnshippedStats(projectId);
     }
-    if (!stats) return;
 
-    const paidMinutes = stats.paidShipMinutes || 0;
-    const unshippedMinutes = getUnshippedMinutesSinceLastShip();
-    if (paidMinutes <= 0 || unshippedMinutes <= 0) return;
+    const paidMinutes = stats?.paidShipMinutes || 0;
+    if (paidMinutes <= 0) return;
 
-    const rate = getMultiplierFromCookies(totalCookies, paidMinutes / 60);
+    const payouts = await fetchShipPayouts();
+    const projectPayouts = payouts.filter(payout => projectNameMatches(payout.projectName, projectName));
+    const payoutCookies = projectPayouts.reduce((sum, payout) => sum + (payout.amount || 0), 0);
+    const baselineCookies = payoutCookies > 0 ? payoutCookies : (stats?.paidCookies || 0);
+    if (baselineCookies <= 0) return;
+
+    const rate = getMultiplierFromCookies(baselineCookies, paidMinutes / 60);
     if (!rate || !isFinite(rate)) return;
 
-    const estimatedCookies = Math.round(rate * (unshippedMinutes / 60));
-    if (!estimatedCookies || !isFinite(estimatedCookies)) return;
+    const projectedCookies = Math.round(rate * (unshippedMinutes / 60));
+
+    if (!projectedCookies || !isFinite(projectedCookies) || projectedCookies <= 0) return;
 
     const estimate = document.createElement('span');
     estimate.className = 'flavortown-unshipped-cookie-est';
-    estimate.style.cssText = [
-        'margin-left: 8px',
-        'font-weight: 600',
-        'font-size: 0.85em',
-        'opacity: 0.85',
-        'white-space: nowrap'
-    ].join(';');
-    estimate.textContent = `~${estimatedCookies.toLocaleString()} 🍪`;
+    estimate.textContent = `🍪 ~${projectedCookies.toLocaleString()}`;
     shipButton.appendChild(estimate);
 }
 
@@ -3922,6 +3929,7 @@ async function addProjectShowCookieStat() {
 
     if (minutes > 0) {
         const estimate = rate ? buildVoteEstimate(rate) : null;
+        const sinceLastShipMinutes = getUnshippedMinutesSinceLastShip();
 
         const detailsRow = document.createElement('div');
         detailsRow.className = 'project-show-card__stats flavortown-project-cookies-details';
@@ -3946,6 +3954,9 @@ async function addProjectShowCookieStat() {
 
         detailsRow.appendChild(createProjectShowStat(rateLine, clockIcon));
         detailsRow.appendChild(createProjectShowStat(percentileLine, trophyIcon));
+        if (sinceLastShipMinutes > 0) {
+            detailsRow.appendChild(createProjectShowStat(`${formatMinutesCompact(sinceLastShipMinutes)} since latest ship`, clockIcon));
+        }
         if (estimate?.overallScore) {
             const scoreText = `~ avg ⭐ ${formatScoreValue(estimate.overallScore)}`;
             detailsRow.appendChild(createProjectShowStat(scoreText));
@@ -11272,47 +11283,89 @@ function enhanceAchievementsPage() {
     }
 }
 
+function ensureSidebarNavFitsViewport(navList) {
+    if (!navList) return;
+    const sidebar = navList.closest('.sidebar');
+    if (!sidebar) return;
+
+    navList.style.removeProperty('max-height');
+    navList.style.removeProperty('overflow-y');
+    navList.style.removeProperty('overscroll-behavior');
+
+    requestAnimationFrame(() => {
+        const overflow = sidebar.scrollHeight - sidebar.clientHeight;
+        if (overflow <= 0) return;
+
+        const currentHeight = navList.getBoundingClientRect().height;
+        const maxHeight = Math.max(140, Math.floor(currentHeight - overflow - 12));
+        navList.style.maxHeight = `${maxHeight}px`;
+        navList.style.overflowY = 'auto';
+        navList.style.overscrollBehavior = 'contain';
+    });
+}
+
 function addSidebarItems() {
     const navList = document.querySelector('.sidebar__nav-list');
     if (!navList) return;
 
-    if (document.querySelector('.flavortown-sidebar-achievements')) return;
-
     const currentPath = window.location.pathname;
+    const templateItem = navList.querySelector('.sidebar__nav-item');
+    if (!templateItem) return;
 
-    const createItem = (href, label, svgPath, className) => {
+    const createItemFromTemplate = (href, label, svgPath, className) => {
         const isActive = currentPath === href || currentPath.startsWith(href + '/');
-        const li = document.createElement('li');
+        const li = templateItem.cloneNode(true);
         li.className = `sidebar__nav-item ${className}`;
-        li.innerHTML = `
-            <a class="sidebar__nav-link${isActive ? ' sidebar__nav-link--active' : ''}" ${isActive ? 'aria-current="page"' : ''} href="${href}">
-                <span class="sidebar__nav-icon-wrapper" aria-hidden="true">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="sidebar__nav-icon" fill="currentColor">
-                        ${svgPath}
-                    </svg>
-                </span>
-                <span class="sidebar__nav-label">${label}</span>
-            </a>
-        `;
+
+        const link = li.querySelector('a.sidebar__nav-link');
+        const labelEl = li.querySelector('.sidebar__nav-label');
+        const icon = li.querySelector('.sidebar__nav-icon');
+
+        if (!link || !labelEl || !icon) return null;
+
+        link.href = href;
+        if (isActive) {
+            link.classList.add('sidebar__nav-link--active');
+            link.setAttribute('aria-current', 'page');
+        } else {
+            link.classList.remove('sidebar__nav-link--active');
+            link.removeAttribute('aria-current');
+        }
+
+        labelEl.textContent = label;
+        icon.setAttribute('viewBox', '0 0 24 24');
+        icon.setAttribute('fill', 'currentColor');
+        icon.innerHTML = svgPath;
+
         return li;
     };
 
-    const achievementsItem = createItem(
-        '/my/achievements',
-        'Achievements',
-        '<path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94.63 1.5 1.98 2.63 3.61 2.96V19H7v2h10v-2h-4v-3.1c1.63-.33 2.98-1.46 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82c-1.16-.41-2-1.51-2-2.82zm14 0c0 1.31-.84 2.41-2 2.82V7h2v1z"></path>',
-        'flavortown-sidebar-achievements'
-    );
+    if (!navList.querySelector('a.sidebar__nav-link[href="/my/achievements"]')) {
+        const achievementsItem = createItemFromTemplate(
+            '/my/achievements',
+            'Achievements',
+            '<path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94.63 1.5 1.98 2.63 3.61 2.96V19H7v2h10v-2h-4v-3.1c1.63-.33 2.98-1.46 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82c-1.16-.41-2-1.51-2-2.82zm14 0c0 1.31-.84 2.41-2 2.82V7h2v1z"></path>',
+            'flavortown-sidebar-achievements'
+        );
+        if (achievementsItem) navList.appendChild(achievementsItem);
+    }
 
-    const leaderboardItem = createItem(
-        '/leaderboard',
-        'Leaderboard',
-        '<path d="M7.5 21H2V9h5.5v12zm7.25-18h-5.5v18h5.5V3zM22 11h-5.5v10H22V11z"></path>',
-        'flavortown-sidebar-leaderboard'
-    );
+    if (!navList.querySelector('a.sidebar__nav-link[href="/leaderboard"]')) {
+        const leaderboardItem = createItemFromTemplate(
+            '/leaderboard',
+            'Leaderboard',
+            '<path d="M7.5 21H2V9h5.5v12zm7.25-18h-5.5v18h5.5V3zM22 11h-5.5v10H22V11z"></path>',
+            'flavortown-sidebar-leaderboard'
+        );
+        if (leaderboardItem) navList.appendChild(leaderboardItem);
+    }
 
-    navList.appendChild(achievementsItem);
-    navList.appendChild(leaderboardItem);
+    ensureSidebarNavFitsViewport(navList);
+
+    if (!navList.dataset.flavortownSidebarResizeBound) {
+        navList.dataset.flavortownSidebarResizeBound = 'true';
+        window.addEventListener('resize', () => ensureSidebarNavFitsViewport(navList));
+    }
 }
 
 function addAdminViewButton() {
