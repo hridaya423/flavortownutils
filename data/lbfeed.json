@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-10T16:08:20.961Z",
+  "lastUpdated": "2026-02-10T17:36:08.400Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -6616,6 +6616,14 @@
         "balance": 376,
         "reason": "payout",
         "reasonType": "payout",
+        "userId": "U07UV4R2G4T"
+      },
+      {
+        "ts": "2026-02-10T16:55:07.888Z",
+        "delta": -272,
+        "balance": 104,
+        "reason": "shop purchase",
+        "reasonType": "",
         "userId": "U07UV4R2G4T"
       }
     ],
@@ -25633,6 +25641,14 @@
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U09UU7TETBR"
+      },
+      {
+        "ts": "2026-02-10T17:32:08.946Z",
+        "delta": 425,
+        "balance": 944,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U09UU7TETBR"
       }
     ],
     "u09v726a6ak": [
@@ -38023,6 +38039,14 @@
         "delta": 2,
         "balance": 12,
         "reason": "Hello, Kitchen!",
+        "reasonType": "achievement",
+        "userId": "U0A6ZC8LTSP"
+      },
+      {
+        "ts": "2026-02-10T16:25:25.721Z",
+        "delta": 3,
+        "balance": 15,
+        "reason": "Order Up!",
         "reasonType": "achievement",
         "userId": "U0A6ZC8LTSP"
       }
@@ -53597,6 +53621,16 @@
         "userId": "U0AB4DTU9CY"
       }
     ],
+    "u0abed0llcx": [
+      {
+        "ts": "2026-02-10T16:23:26.193Z",
+        "delta": 151,
+        "balance": 167,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U0ABED0LLCX"
+      }
+    ],
     "u0abfkgqe56": [
       {
         "ts": "2026-01-31T19:41:23.452Z",
@@ -53941,6 +53975,28 @@
     ]
   },
   "users": {
+    "U09UU7TETBR": {
+      "id": "U09UU7TETBR",
+      "username": "simonhroff",
+      "avatar": "https://avatars.slack-edge.com/2025-11-25/10024094435280_d4db6c77b2d72752558c_72.png"
+    },
+    "U07UV4R2G4T": {
+      "id": "U07UV4R2G4T",
+      "username": "im",
+      "avatar": "https://avatars.slack-edge.com/2026-01-13/10285312019155_9bee40dbe9dad9f28941_72.png"
+    },
+    "U0A6ZC8LTSP": {
+      "id": "U0A6ZC8LTSP",
+      "username": "dante.edmiston",
+      "displayName": "JustAnotherCoder",
+      "avatar": "https://avatars.slack-edge.com/2026-01-27/10382540955170_f7d39e7350e7b6a9713d_72.jpg"
+    },
+    "U0ABED0LLCX": {
+      "id": "U0ABED0LLCX",
+      "username": "nintendo.ash.r",
+      "displayName": "nintendo.ash.r",
+      "avatar": "https://secure.gravatar.com/avatar/c27af56d36272f17aa509856f5e430ff.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0005-72.png"
+    },
     "U09736L44JZ": {
       "id": "U09736L44JZ",
       "username": "satyamrajgaya434",
@@ -55022,11 +55078,6 @@
       "username": "srsxnsh",
       "avatar": "https://avatars.slack-edge.com/2026-01-07/10244036056227_4cd4a970a335adee3786_72.jpg"
     },
-    "U09UU7TETBR": {
-      "id": "U09UU7TETBR",
-      "username": "simonhroff",
-      "avatar": "https://avatars.slack-edge.com/2025-11-25/10024094435280_d4db6c77b2d72752558c_72.png"
-    },
     "U0825TMAF4K": {
       "id": "U0825TMAF4K",
       "username": "kakkarakshansh72",
@@ -55119,7 +55170,7 @@
       "id": "U0938MZG8Q6",
       "username": "christiandubsky20",
       "displayName": "christian",
-      "avatar": "https://avatars.slack-edge.com/2026-02-10/10464561455543_2dae26066c2a96fd7227_72.png"
+      "avatar": "https://avatars.slack-edge.com/2026-02-10/10482432700946_ab724f1d46a2a1329a75_72.png"
     },
     "U078VN0UU2K": {
       "id": "U078VN0UU2K",
@@ -55182,11 +55233,6 @@
       "username": "zeusyboy",
       "displayName": "ZeusyBoy",
       "avatar": "https://avatars.slack-edge.com/2025-04-05/8732670723008_067ebc1e20b415a8786f_72.png"
-    },
-    "U07UV4R2G4T": {
-      "id": "U07UV4R2G4T",
-      "username": "im",
-      "avatar": "https://avatars.slack-edge.com/2026-01-13/10285312019155_9bee40dbe9dad9f28941_72.png"
     },
     "U080V8UG5BR": {
       "id": "U080V8UG5BR",
@@ -57186,12 +57232,6 @@
       "username": "krijajannis",
       "displayName": "Cipher Shadow",
       "avatar": "https://avatars.slack-edge.com/2025-07-01/9144630366705_f9be361f657e7f6dfeff_72.jpg"
-    },
-    "U0A6ZC8LTSP": {
-      "id": "U0A6ZC8LTSP",
-      "username": "dante.edmiston",
-      "displayName": "JustAnotherCoder",
-      "avatar": "https://avatars.slack-edge.com/2026-01-27/10382540955170_f7d39e7350e7b6a9713d_72.jpg"
     },
     "U0A6Q43CKT9": {
       "id": "U0A6Q43CKT9",
