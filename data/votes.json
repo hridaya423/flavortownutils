@@ -1,7 +1,63 @@
 {
-  "lastUpdated": "2026-02-10T11:30:42.524Z",
-  "totalVotes": 3797,
+  "lastUpdated": "2026-02-10T13:16:02.342Z",
+  "totalVotes": 3805,
   "votes": [
+    {
+      "project": "New Redditor Machine",
+      "feedback": "Ayo this thing is cool! You can actually predict the usernames of freshly created users! I'd say it's actually good!! Keep it up!",
+      "votedBy": "Unknown",
+      "timestamp": "2026-02-10T12:16:01.556Z",
+      "slackTs": "1770725761.556869"
+    },
+    {
+      "project": "Simple calculator",
+      "feedback": "Ayo this is actually a good project ngl\nThe UI is actually not bad, and the currency translator is good!! \nKeep it up!!",
+      "votedBy": "Unknown",
+      "timestamp": "2026-02-10T12:11:31.765Z",
+      "slackTs": "1770725491.765059"
+    },
+    {
+      "project": "Cake Day Neighbours",
+      "feedback": "This project is good. But, I can't really use it. Got an error 403 (checked in Console output). You might wanna fix that bug. And, you might wanna add some theming. But that's just optional if you want this to be a small website",
+      "votedBy": "Unknown",
+      "timestamp": "2026-02-10T12:10:26.433Z",
+      "slackTs": "1770725426.433609"
+    },
+    {
+      "project": "Time Table Notifier",
+      "feedback": "This app, not bad! But I'd recommend some API integration from Google TODO or maybe Google Calendar, so users can sync their tasks! \nNot bad! Keep it up!",
+      "votedBy": "Unknown",
+      "timestamp": "2026-02-10T12:06:53.815Z",
+      "slackTs": "1770725213.815389"
+    },
+    {
+      "project": "FLAMES",
+      "feedback": "Cool project lol\nBut I recommend you to maybe increase the resolution of the background image, and also, maybe some more research on real ones instead of just checking the length of the names\n\nWhat I appreciate: \nIt doesn't randomize the relationship",
+      "votedBy": "Unknown",
+      "timestamp": "2026-02-10T12:05:32.660Z",
+      "slackTs": "1770725132.660569"
+    },
+    {
+      "project": "Chess",
+      "feedback": "Nice project!! Now people can play chess with bots anytime (I don't need to play in <http://Chess.com|Chess.com> lol)\nI've got a few suggestions here:\nAdd a 2 player mode\nAdd chess animations\nBot difficulty configuration",
+      "votedBy": "Unknown",
+      "timestamp": "2026-02-10T12:04:05.810Z",
+      "slackTs": "1770725045.810569"
+    },
+    {
+      "project": "Chess",
+      "feedback": "Designing a board game like chess is so difficult because you need to understand the rules and how to implement them. I have a lot of respect for this app.",
+      "votedBy": "U0A7DPZK144",
+      "timestamp": "2026-02-10T11:52:32.377Z",
+      "slackTs": "1770724352.377089"
+    },
+    {
+      "project": "Kisaan Saathi",
+      "feedback": "The creation of an app for agriculture is very well suited to real-world use. I like the idea of creating something that can be used in the real world.",
+      "votedBy": "U0A7DPZK144",
+      "timestamp": "2026-02-10T11:51:15.766Z",
+      "slackTs": "1770724275.766909"
+    },
     {
       "project": "AI 3D model filter",
       "feedback": "Good project!! This helps people get 3D models when they don't like AI generated ones! But I suggest you to pack all those release files into a zip file for convenience. Keep it up!!",
@@ -27826,6 +27882,12 @@
       "username": "praneshkarthims",
       "displayName": "MSPK",
       "avatar": "https://avatars.slack-edge.com/2026-01-23/10384043659056_9d1875dc733b1b0882e3_72.png"
+    },
+    "U0A7DPZK144": {
+      "id": "U0A7DPZK144",
+      "username": "nakasyou1103",
+      "displayName": "nakasyou1103",
+      "avatar": "https://secure.gravatar.com/avatar/00f54a086fab457a5177b231e2cd77ff.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0004-72.png"
     }
   }
 }
