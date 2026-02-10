@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-10T09:08:02.142Z",
+  "lastUpdated": "2026-02-10T10:32:03.620Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -10816,6 +10816,14 @@
         "balance": 1203,
         "reason": "user grant",
         "reasonType": "",
+        "userId": "U08AT086H8E"
+      },
+      {
+        "ts": "2026-02-10T10:15:44.141Z",
+        "delta": 202,
+        "balance": 1405,
+        "reason": "payout",
+        "reasonType": "payout",
         "userId": "U08AT086H8E"
       }
     ],
@@ -24461,6 +24469,16 @@
         "reason": "Recipe Notes",
         "reasonType": "achievement",
         "userId": "U09H9QZBBCG"
+      }
+    ],
+    "u09hf9b02ty": [
+      {
+        "ts": "2026-02-10T10:28:12.290Z",
+        "delta": -10,
+        "balance": 10,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U09HF9B02TY"
       }
     ],
     "u09hqh0pnen": [
@@ -53867,6 +53885,17 @@
     ]
   },
   "users": {
+    "U09HF9B02TY": {
+      "id": "U09HF9B02TY",
+      "username": "rudraaleuva210",
+      "displayName": "Rahi",
+      "avatar": "https://secure.gravatar.com/avatar/0448b8db525194deb91a34595cdf32ba.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0007-72.png"
+    },
+    "U08AT086H8E": {
+      "id": "U08AT086H8E",
+      "username": "itslukasreis",
+      "avatar": "https://avatars.slack-edge.com/2025-12-14/10132050312737_cb30475cd6a3f962c644_72.jpg"
+    },
     "U0A5X6H719U": {
       "id": "U0A5X6H719U",
       "username": "ofx.proton",
@@ -54150,11 +54179,6 @@
       "username": "reii.meteoritics",
       "displayName": "Luci",
       "avatar": "https://avatars.slack-edge.com/2026-01-01/10213685935029_bb9a4797b03a7a91ccdd_72.png"
-    },
-    "U08AT086H8E": {
-      "id": "U08AT086H8E",
-      "username": "itslukasreis",
-      "avatar": "https://avatars.slack-edge.com/2025-12-14/10132050312737_cb30475cd6a3f962c644_72.jpg"
     },
     "U09BSMKPT7Y": {
       "id": "U09BSMKPT7Y",
