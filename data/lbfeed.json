@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-10T10:32:03.620Z",
+  "lastUpdated": "2026-02-10T11:32:55.251Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -2866,6 +2866,14 @@
         "ts": "2026-02-04T13:37:25.925Z",
         "delta": 50,
         "balance": 280,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U0790DKM6KB"
+      },
+      {
+        "ts": "2026-02-10T11:03:35.804Z",
+        "delta": 26,
+        "balance": 306,
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U0790DKM6KB"
@@ -53885,6 +53893,12 @@
     ]
   },
   "users": {
+    "U0790DKM6KB": {
+      "id": "U0790DKM6KB",
+      "username": "krizdaniel151",
+      "displayName": "Daniel",
+      "avatar": "https://avatars.slack-edge.com/2025-02-25/8511103000866_3de39e4337f5e4883d31_72.jpg"
+    },
     "U09HF9B02TY": {
       "id": "U09HF9B02TY",
       "username": "rudraaleuva210",
@@ -54671,12 +54685,6 @@
       "username": "tritranduc11",
       "displayName": "nbth",
       "avatar": "https://secure.gravatar.com/avatar/7f7fb3266a58b2a319c5fb5da86c8884.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0005-72.png"
-    },
-    "U0790DKM6KB": {
-      "id": "U0790DKM6KB",
-      "username": "krizdaniel151",
-      "displayName": "Daniel",
-      "avatar": "https://avatars.slack-edge.com/2025-02-25/8511103000866_3de39e4337f5e4883d31_72.jpg"
     },
     "U0AAKDGP0AX": {
       "id": "U0AAKDGP0AX",
