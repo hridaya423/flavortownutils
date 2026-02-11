@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-11T21:05:42.881Z",
+  "lastUpdated": "2026-02-11T22:01:04.974Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -19526,6 +19526,14 @@
         "balance": 113,
         "reason": "user grant",
         "reasonType": "",
+        "userId": "U09683EA86L"
+      },
+      {
+        "ts": "2026-02-11T21:52:54.075Z",
+        "delta": 2,
+        "balance": 115,
+        "reason": "Hello, Kitchen!",
+        "reasonType": "achievement",
         "userId": "U09683EA86L"
       }
     ],
@@ -53663,6 +53671,16 @@
         "userId": "U0AA527K2Q1"
       }
     ],
+    "u0aa6cj4u64": [
+      {
+        "ts": "2026-02-11T21:10:43.287Z",
+        "delta": 15,
+        "balance": 30,
+        "reason": "Cookbook Author",
+        "reasonType": "achievement",
+        "userId": "U0AA6CJ4U64"
+      }
+    ],
     "u0aa95ycsau": [
       {
         "ts": "2026-01-18T13:50:27.836Z",
@@ -54481,6 +54499,18 @@
     ]
   },
   "users": {
+    "U09683EA86L": {
+      "id": "U09683EA86L",
+      "username": "etilia",
+      "displayName": "Etilia",
+      "avatar": "https://avatars.slack-edge.com/2025-08-28/9424209622534_c62c420d32e3b941e363_72.png"
+    },
+    "U0AA6CJ4U64": {
+      "id": "U0AA6CJ4U64",
+      "username": "1i56qh121a5xl9",
+      "displayName": "Foxreef",
+      "avatar": "https://avatars.slack-edge.com/2026-01-21/10340817560598_d552685c6d62d4f93e5f_72.jpg"
+    },
     "U08NCJDJEE4": {
       "id": "U08NCJDJEE4",
       "username": "ethan637",
@@ -55799,12 +55829,6 @@
       "username": "christiandubsky20",
       "displayName": "christian",
       "avatar": "https://avatars.slack-edge.com/2026-02-11/10495204138244_1fa4ee085ec684585428_72.png"
-    },
-    "U09683EA86L": {
-      "id": "U09683EA86L",
-      "username": "etilia",
-      "displayName": "Etilia",
-      "avatar": "https://avatars.slack-edge.com/2025-08-28/9424209622534_c62c420d32e3b941e363_72.png"
     },
     "U097N0AKR6Z": {
       "id": "U097N0AKR6Z",
