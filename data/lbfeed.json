@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-11T22:41:41.459Z",
+  "lastUpdated": "2026-02-11T23:34:22.358Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -7529,6 +7529,80 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0824382CPP"
+      }
+    ],
+    "u0824g9ptfe": [
+      {
+        "ts": "2026-02-11T22:40:47.315Z",
+        "delta": 2000,
+        "balance": 2015,
+        "reason": "user grant",
+        "reasonType": "",
+        "userId": "U0824G9PTFE"
+      },
+      {
+        "ts": "2026-02-11T22:43:52.730Z",
+        "delta": -563,
+        "balance": 1452,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0824G9PTFE"
+      },
+      {
+        "ts": "2026-02-11T23:30:01.402Z",
+        "delta": -150,
+        "balance": 1302,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0824G9PTFE"
+      },
+      {
+        "ts": "2026-02-11T23:30:05.311Z",
+        "delta": -150,
+        "balance": 1152,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0824G9PTFE"
+      },
+      {
+        "ts": "2026-02-11T23:30:09.330Z",
+        "delta": -150,
+        "balance": 1002,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0824G9PTFE"
+      },
+      {
+        "ts": "2026-02-11T23:30:13.213Z",
+        "delta": -150,
+        "balance": 852,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0824G9PTFE"
+      },
+      {
+        "ts": "2026-02-11T23:30:17.639Z",
+        "delta": -150,
+        "balance": 702,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0824G9PTFE"
+      },
+      {
+        "ts": "2026-02-11T23:30:24.103Z",
+        "delta": -150,
+        "balance": 552,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0824G9PTFE"
+      },
+      {
+        "ts": "2026-02-11T23:31:43.213Z",
+        "delta": -105,
+        "balance": 447,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0824G9PTFE"
       }
     ],
     "u0825svhfjl": [
@@ -54499,6 +54573,12 @@
     ]
   },
   "users": {
+    "U0824G9PTFE": {
+      "id": "U0824G9PTFE",
+      "username": "dhyans",
+      "displayName": "dhyan",
+      "avatar": "https://avatars.slack-edge.com/2025-12-29/10219185425041_b3571df1286c801f96b0_72.jpg"
+    },
     "U09683EA86L": {
       "id": "U09683EA86L",
       "username": "etilia",
