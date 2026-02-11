@@ -1,7 +1,63 @@
 {
-  "lastUpdated": "2026-02-11T19:04:44.932Z",
-  "totalVotes": 3915,
+  "lastUpdated": "2026-02-11T20:02:45.913Z",
+  "totalVotes": 3923,
   "votes": [
+    {
+      "project": "My first website.",
+      "feedback": "It's pretty simple and not very original, but I like the overall design! Your devlogs are good, and I feel this could become a very cool project with some more work :3",
+      "votedBy": "U08RJ1PEM7X",
+      "timestamp": "2026-02-11T19:57:14.244Z",
+      "slackTs": "1770839834.244419"
+    },
+    {
+      "project": "Image to ascii art",
+      "feedback": "Fairly original and quite cool! It worked well with my test images, and was overall fun to use. The devlogs and README are good, and it is fairly technical.",
+      "votedBy": "U08RJ1PEM7X",
+      "timestamp": "2026-02-11T19:55:16.927Z",
+      "slackTs": "1770839716.927419"
+    },
+    {
+      "project": "Traw Store",
+      "feedback": "I like the theme, however it feels like it used too much AI. The devlogs are lacking, and the README is AI-generated.",
+      "votedBy": "U08RJ1PEM7X",
+      "timestamp": "2026-02-11T19:52:18.683Z",
+      "slackTs": "1770839538.683819"
+    },
+    {
+      "project": "Fractured Causality",
+      "feedback": "The Causal Stone things don't move at all when I walk up to them and press E, from any side and in any universe. The game itself is playable, but feels like it used a bit too much AI (including the README being AI). It is quite original, though!",
+      "votedBy": "U08RJ1PEM7X",
+      "timestamp": "2026-02-11T19:45:13.512Z",
+      "slackTs": "1770839113.512659"
+    },
+    {
+      "project": "To-do List",
+      "feedback": "The devlogs and README are okay, but could be more descriptive. The project itself isn't very technical, and to-do lists are a very overdone idea (so not very original).",
+      "votedBy": "U08RJ1PEM7X",
+      "timestamp": "2026-02-11T19:23:10.562Z",
+      "slackTs": "1770837790.562949"
+    },
+    {
+      "project": "Cake Day Neighbours",
+      "feedback": "Cool idea, and it works well! The README could have a bit more in it, though.",
+      "votedBy": "U08RJ1PEM7X",
+      "timestamp": "2026-02-11T19:13:39.794Z",
+      "slackTs": "1770837219.794279"
+    },
+    {
+      "project": "WingdingsBot",
+      "feedback": "Cool project! It worked in my testing and was fun to use :3\nThe /from-wingdings command (mentioned in the commands folder in the code) didn't appear for me, but I was able to use the message shortcut still, and that feature wasn't advertised so I didn't dock anything for that. The README and devlogs are both good, and it's an original idea.",
+      "votedBy": "U08RJ1PEM7X",
+      "timestamp": "2026-02-11T19:09:10.866Z",
+      "slackTs": "1770836950.866429"
+    },
+    {
+      "project": "Muhammad Rizwan",
+      "feedback": "Nice idea and good work overall, however the site is a fairly simple project with little CSS. The font also doesn't work on my system (falls back to Times New Roman instead of Verdana) because you didn't add the CSS @font-face item. I think this is a great project that could go further if you did some more styling.",
+      "votedBy": "U08RJ1PEM7X",
+      "timestamp": "2026-02-11T19:05:25.389Z",
+      "slackTs": "1770836725.389249"
+    },
     {
       "project": "AI 3D model filter",
       "feedback": "Original and good idea, and well-implemented. However, there are two READMEs with conflicting information (one in the repo's root, the other in the 3d-model-filter folder), and the project seems to have used AI for more than just debugging (based on code structure).",
