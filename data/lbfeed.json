@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-11T00:03:57.117Z",
+  "lastUpdated": "2026-02-11T03:37:23.725Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -2765,6 +2765,14 @@
         "delta": 25,
         "balance": 127,
         "reason": "user grant",
+        "reasonType": "",
+        "userId": "U078VN0UU2K"
+      },
+      {
+        "ts": "2026-02-11T01:54:22.627Z",
+        "delta": 5,
+        "balance": 132,
+        "reason": "tutorial",
         "reasonType": "",
         "userId": "U078VN0UU2K"
       }
@@ -26789,6 +26797,14 @@
         "reason": "tutorial",
         "reasonType": "",
         "userId": "U0A1VLDJLA0"
+      },
+      {
+        "ts": "2026-02-11T02:37:29.971Z",
+        "delta": 41,
+        "balance": 78,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U0A1VLDJLA0"
       }
     ],
     "u0a1xmkqu6s": [
@@ -32830,6 +32846,14 @@
         "balance": 135,
         "reason": "Line Cook",
         "reasonType": "achievement",
+        "userId": "U0A5EMEKU3Z"
+      },
+      {
+        "ts": "2026-02-11T02:55:46.746Z",
+        "delta": 238,
+        "balance": 373,
+        "reason": "payout",
+        "reasonType": "payout",
         "userId": "U0A5EMEKU3Z"
       }
     ],
@@ -54059,6 +54083,22 @@
     ]
   },
   "users": {
+    "U0A5EMEKU3Z": {
+      "id": "U0A5EMEKU3Z",
+      "username": "vishalya18",
+      "avatar": "https://secure.gravatar.com/avatar/0a45c7b164a8e5aca04def11393219dd.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0026-72.png"
+    },
+    "U0A1VLDJLA0": {
+      "id": "U0A1VLDJLA0",
+      "username": "martiksimonian27",
+      "displayName": "martiksimonian27",
+      "avatar": "https://secure.gravatar.com/avatar/7c6e2d7184a2d5d00a0e3d01cda12493.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0000-72.png"
+    },
+    "U078VN0UU2K": {
+      "id": "U078VN0UU2K",
+      "username": "hippogriff",
+      "avatar": "https://avatars.slack-edge.com/2026-01-14/10294818167174_9836ff19df7225cbbc26_72.jpg"
+    },
     "U09DYNHJN5B": {
       "id": "U09DYNHJN5B",
       "username": "abdulrafay88243",
@@ -54808,11 +54848,6 @@
       "username": "jibarram5",
       "avatar": "https://secure.gravatar.com/avatar/513f2f6e167b8b4bddd23cdfb4aeb143.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0025-72.png"
     },
-    "U0A5EMEKU3Z": {
-      "id": "U0A5EMEKU3Z",
-      "username": "vishalya18",
-      "avatar": "https://secure.gravatar.com/avatar/0a45c7b164a8e5aca04def11393219dd.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0026-72.png"
-    },
     "U0A7A7TT28L": {
       "id": "U0A7A7TT28L",
       "username": "korbinvanettedev",
@@ -55185,7 +55220,7 @@
       "id": "U07950S3GMC",
       "username": "shuflduf",
       "displayName": "Shuflentity",
-      "avatar": "https://avatars.slack-edge.com/2026-02-09/10505240771104_b9abc0cb3d8e1bbde9e6_72.png"
+      "avatar": "https://avatars.slack-edge.com/2026-02-10/10498415177345_16a6504fc94cd7ee5ef7_72.png"
     },
     "U09HW4WA0C9": {
       "id": "U09HW4WA0C9",
@@ -55242,12 +55277,6 @@
       "displayName": "Phenix Hartogh",
       "avatar": "https://avatars.slack-edge.com/2026-02-07/10463174316690_3b94ee98678bfef36815_72.png"
     },
-    "U0A1VLDJLA0": {
-      "id": "U0A1VLDJLA0",
-      "username": "martiksimonian27",
-      "displayName": "martiksimonian27",
-      "avatar": "https://secure.gravatar.com/avatar/7c6e2d7184a2d5d00a0e3d01cda12493.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0000-72.png"
-    },
     "U0A5DVA4Q4R": {
       "id": "U0A5DVA4Q4R",
       "username": "erik1",
@@ -55285,11 +55314,6 @@
       "username": "christiandubsky20",
       "displayName": "christian",
       "avatar": "https://avatars.slack-edge.com/2026-02-10/10487780208196_41c7e1b29142e672eb53_72.png"
-    },
-    "U078VN0UU2K": {
-      "id": "U078VN0UU2K",
-      "username": "hippogriff",
-      "avatar": "https://avatars.slack-edge.com/2026-01-14/10294818167174_9836ff19df7225cbbc26_72.jpg"
     },
     "U09683EA86L": {
       "id": "U09683EA86L",
