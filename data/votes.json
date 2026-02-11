@@ -1,7 +1,21 @@
 {
-  "lastUpdated": "2026-02-11T16:03:12.844Z",
-  "totalVotes": 3913,
+  "lastUpdated": "2026-02-11T19:04:44.932Z",
+  "totalVotes": 3915,
   "votes": [
+    {
+      "project": "AI 3D model filter",
+      "feedback": "Original and good idea, and well-implemented. However, there are two READMEs with conflicting information (one in the repo's root, the other in the 3d-model-filter folder), and the project seems to have used AI for more than just debugging (based on code structure).",
+      "votedBy": "U08RJ1PEM7X",
+      "timestamp": "2026-02-11T18:55:44.769Z",
+      "slackTs": "1770836144.769469"
+    },
+    {
+      "project": "Kisaan Saathi",
+      "feedback": "Cool project, and good idea on the localization. It seems to use AI fairly heavily though, based on the code. It also doesn't have much highly technical code, like loading languages from .yml or .json files (instead of having them hardcoded like they currently are). It is usable, but the UI is fairly simple. It's also quite an original idea!",
+      "votedBy": "U08RJ1PEM7X",
+      "timestamp": "2026-02-11T18:04:53.426Z",
+      "slackTs": "1770833093.426849"
+    },
     {
       "project": "WingdingsBot",
       "feedback": "pretty cool",
