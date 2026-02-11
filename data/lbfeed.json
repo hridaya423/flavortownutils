@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-11T10:53:29.598Z",
+  "lastUpdated": "2026-02-11T11:47:38.550Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -20286,6 +20286,14 @@
         "balance": 84,
         "reason": "payout",
         "reasonType": "payout",
+        "userId": "U097SUCKJ90"
+      },
+      {
+        "ts": "2026-02-11T11:25:39.503Z",
+        "delta": 3,
+        "balance": 87,
+        "reason": "Michelin Star",
+        "reasonType": "achievement",
         "userId": "U097SUCKJ90"
       }
     ],
@@ -54197,6 +54205,12 @@
     ]
   },
   "users": {
+    "U097SUCKJ90": {
+      "id": "U097SUCKJ90",
+      "username": "ferboinkles",
+      "displayName": "Vihaan",
+      "avatar": "https://avatars.slack-edge.com/2026-01-19/10322770970819_daedd0edcd7018256f16_72.png"
+    },
     "U0AAVSGH3HC": {
       "id": "U0AAVSGH3HC",
       "username": "hackclub8",
@@ -54415,12 +54429,6 @@
       "username": "floppy1703",
       "displayName": "Floppy",
       "avatar": "https://avatars.slack-edge.com/2025-09-05/9462910104643_f0e10508c7313006fa21_72.jpg"
-    },
-    "U097SUCKJ90": {
-      "id": "U097SUCKJ90",
-      "username": "ferboinkles",
-      "displayName": "Vihaan",
-      "avatar": "https://avatars.slack-edge.com/2026-01-19/10322770970819_daedd0edcd7018256f16_72.png"
     },
     "U0A3H8TD9GR": {
       "id": "U0A3H8TD9GR",
