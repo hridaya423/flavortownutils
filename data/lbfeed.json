@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-11T16:05:20.546Z",
+  "lastUpdated": "2026-02-11T17:35:16.890Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -23409,6 +23409,14 @@
         "delta": -1495,
         "balance": 194,
         "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U09DYNHJN5B"
+      },
+      {
+        "ts": "2026-02-11T16:57:01.930Z",
+        "delta": -30,
+        "balance": 164,
+        "reason": "user grant",
         "reasonType": "",
         "userId": "U09DYNHJN5B"
       }
@@ -54307,6 +54315,12 @@
     ]
   },
   "users": {
+    "U09DYNHJN5B": {
+      "id": "U09DYNHJN5B",
+      "username": "abdulrafay88243",
+      "displayName": "mrsiuuuu_x1",
+      "avatar": "https://avatars.slack-edge.com/2026-01-21/10344219015060_1d9fdb6be9201c147e3e_72.jpg"
+    },
     "U0A9FMXLULT": {
       "id": "U0A9FMXLULT",
       "username": "2010.mohamedbenhamoud",
@@ -54376,12 +54390,6 @@
       "username": "hackclub8",
       "displayName": "46009361",
       "avatar": "https://avatars.slack-edge.com/2026-01-29/10433002833120_f403f3da778a713c59df_72.png"
-    },
-    "U09DYNHJN5B": {
-      "id": "U09DYNHJN5B",
-      "username": "abdulrafay88243",
-      "displayName": "mrsiuuuu_x1",
-      "avatar": "https://avatars.slack-edge.com/2026-01-21/10344219015060_1d9fdb6be9201c147e3e_72.jpg"
     },
     "U08A7NEAV3P": {
       "id": "U08A7NEAV3P",
@@ -54782,7 +54790,7 @@
     },
     "U0A5TL58UTW": {
       "id": "U0A5TL58UTW",
-      "username": "reii.meteoritics",
+      "username": "luci",
       "displayName": "Luci",
       "avatar": "https://avatars.slack-edge.com/2026-01-01/10213685935029_bb9a4797b03a7a91ccdd_72.png"
     },
@@ -58267,7 +58275,7 @@
       "id": "U086TNY7PE0",
       "username": "abulhasnat5737",
       "displayName": "Hasnat",
-      "avatar": "https://avatars.slack-edge.com/2026-02-11/10470681263367_e2df16ab7fa943086204_72.jpg"
+      "avatar": "https://avatars.slack-edge.com/2026-02-11/10503528776737_a6a83d584720e0544123_72.jpg"
     },
     "U0A5HTUE2F3": {
       "id": "U0A5HTUE2F3",
