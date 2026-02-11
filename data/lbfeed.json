@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-11T20:04:47.839Z",
+  "lastUpdated": "2026-02-11T21:05:42.881Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -11785,6 +11785,16 @@
         "reason": "Order Up!",
         "reasonType": "achievement",
         "userId": "U08NCJ3RWLQ"
+      }
+    ],
+    "u08ncjdjee4": [
+      {
+        "ts": "2026-02-11T20:22:10.409Z",
+        "delta": 325,
+        "balance": 325,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U08NCJDJEE4"
       }
     ],
     "u08ncje9sgg": [
@@ -54471,6 +54481,12 @@
     ]
   },
   "users": {
+    "U08NCJDJEE4": {
+      "id": "U08NCJDJEE4",
+      "username": "ethan637",
+      "displayName": "Ethan Hawksley",
+      "avatar": "https://avatars.slack-edge.com/2025-05-03/8845549387106_89927692da002f358eb8_72.png"
+    },
     "U07URV8HZEJ": {
       "id": "U07URV8HZEJ",
       "username": "andrashorvath400",
