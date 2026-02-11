@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-11T06:42:33.295Z",
+  "lastUpdated": "2026-02-11T07:57:28.671Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -74,6 +74,14 @@
         "balance": 705,
         "reason": "payout",
         "reasonType": "payout",
+        "userId": "U04DNS0LAM9"
+      },
+      {
+        "ts": "2026-02-11T07:15:44.904Z",
+        "delta": 10,
+        "balance": 715,
+        "reason": "Line Cook",
+        "reasonType": "achievement",
         "userId": "U04DNS0LAM9"
       }
     ],
@@ -10775,6 +10783,30 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U08A7NEAV3P"
+      },
+      {
+        "ts": "2026-02-11T07:40:27.901Z",
+        "delta": 5,
+        "balance": 5,
+        "reason": "Very Fried",
+        "reasonType": "achievement",
+        "userId": "U08A7NEAV3P"
+      },
+      {
+        "ts": "2026-02-11T07:40:28.024Z",
+        "delta": 3,
+        "balance": 8,
+        "reason": "Home Cookin'",
+        "reasonType": "achievement",
+        "userId": "U08A7NEAV3P"
+      },
+      {
+        "ts": "2026-02-11T07:40:28.049Z",
+        "delta": 2,
+        "balance": 10,
+        "reason": "Recipe Notes",
+        "reasonType": "achievement",
+        "userId": "U08A7NEAV3P"
       }
     ],
     "u08aa6ha82f": [
@@ -16224,6 +16256,14 @@
         "balance": 10,
         "reason": "unknown",
         "reasonType": "",
+        "userId": "U091LN2KLF2"
+      },
+      {
+        "ts": "2026-02-11T07:27:10.848Z",
+        "delta": 15,
+        "balance": 25,
+        "reason": "Cookbook Author",
+        "reasonType": "achievement",
         "userId": "U091LN2KLF2"
       }
     ],
@@ -54141,6 +54181,24 @@
     ]
   },
   "users": {
+    "U08A7NEAV3P": {
+      "id": "U08A7NEAV3P",
+      "username": "joelalexmat",
+      "displayName": "Joel Mathews",
+      "avatar": "https://avatars.slack-edge.com/2025-09-30/9595093091639_f29a45ba99a251c961d6_72.jpg"
+    },
+    "U091LN2KLF2": {
+      "id": "U091LN2KLF2",
+      "username": "amronos",
+      "displayName": "amronos",
+      "avatar": "https://secure.gravatar.com/avatar/b3f22b118bb410f35402068ae2d47dc2.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0017-72.png"
+    },
+    "U04DNS0LAM9": {
+      "id": "U04DNS0LAM9",
+      "username": "olusegunkd2017",
+      "displayName": "segun",
+      "avatar": "https://avatars.slack-edge.com/2025-10-11/9672415976883_de8f0dfb9dbc36729a6b_72.png"
+    },
     "U0AAVSGH3HC": {
       "id": "U0AAVSGH3HC",
       "username": "hackclub8",
@@ -54468,12 +54526,6 @@
       "username": "theskriptkid",
       "displayName": "theskriptkid",
       "avatar": "https://secure.gravatar.com/avatar/3a52d2263ce2a782cd93ff23c6fd8dac.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0005-72.png"
-    },
-    "U08A7NEAV3P": {
-      "id": "U08A7NEAV3P",
-      "username": "joelalexmat",
-      "displayName": "Joel Mathews",
-      "avatar": "https://avatars.slack-edge.com/2025-09-30/9595093091639_f29a45ba99a251c961d6_72.jpg"
     },
     "U0A8SENLBK2": {
       "id": "U0A8SENLBK2",
@@ -55877,12 +55929,6 @@
       "id": "U0A6U6QBJG7",
       "username": "ambredab81",
       "avatar": "https://secure.gravatar.com/avatar/27cd90bb7fdd7465732abf37e1c9c15b.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0025-72.png"
-    },
-    "U04DNS0LAM9": {
-      "id": "U04DNS0LAM9",
-      "username": "olusegunkd2017",
-      "displayName": "segun",
-      "avatar": "https://avatars.slack-edge.com/2025-10-11/9672415976883_de8f0dfb9dbc36729a6b_72.png"
     },
     "U0A7HGGFLPK": {
       "id": "U0A7HGGFLPK",
@@ -57970,12 +58016,6 @@
       "username": "jiayangc1",
       "displayName": "Jiayang",
       "avatar": "https://avatars.slack-edge.com/2024-11-21/8081123181169_dd7576f1c7dae19bc8eb_72.png"
-    },
-    "U091LN2KLF2": {
-      "id": "U091LN2KLF2",
-      "username": "amronos",
-      "displayName": "amronos",
-      "avatar": "https://secure.gravatar.com/avatar/b3f22b118bb410f35402068ae2d47dc2.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0017-72.png"
     },
     "U07F66JC92P": {
       "id": "U07F66JC92P",
