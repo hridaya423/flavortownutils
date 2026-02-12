@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-12T22:35:29.191Z",
+  "lastUpdated": "2026-02-12T23:32:15.294Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -29185,6 +29185,22 @@
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U0A4TBWJR42"
+      },
+      {
+        "ts": "2026-02-12T22:49:46.504Z",
+        "delta": -471,
+        "balance": 99,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A4TBWJR42"
+      },
+      {
+        "ts": "2026-02-12T22:50:17.088Z",
+        "delta": 471,
+        "balance": 570,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A4TBWJR42"
       }
     ],
     "u0a4utulsle": [
@@ -55125,6 +55141,12 @@
     ]
   },
   "users": {
+    "U0A4TBWJR42": {
+      "id": "U0A4TBWJR42",
+      "username": "milo1004",
+      "displayName": "milo1004",
+      "avatar": "https://avatars.slack-edge.com/2025-12-22/10168640612229_e72fcb4aecb4d239fc90_72.png"
+    },
     "U0A5WSLGHUY": {
       "id": "U0A5WSLGHUY",
       "username": "loekoerlemans",
@@ -55192,12 +55214,6 @@
       "username": "mittal.rohan2010",
       "displayName": "onionwit",
       "avatar": "https://avatars.slack-edge.com/2025-06-16/9051247785731_f547b1fd0f5bf554c4e0_72.png"
-    },
-    "U0A4TBWJR42": {
-      "id": "U0A4TBWJR42",
-      "username": "milo1004",
-      "displayName": "milo1004",
-      "avatar": "https://avatars.slack-edge.com/2025-12-22/10168640612229_e72fcb4aecb4d239fc90_72.png"
     },
     "U0ACQAZSEC9": {
       "id": "U0ACQAZSEC9",
