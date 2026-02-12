@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-12T07:36:27.391Z",
+  "lastUpdated": "2026-02-12T08:51:31.139Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -53907,6 +53907,22 @@
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U0AA95YCSAU"
+      },
+      {
+        "ts": "2026-02-12T08:32:09.767Z",
+        "delta": 10,
+        "balance": 69,
+        "reason": "Line Cook",
+        "reasonType": "achievement",
+        "userId": "U0AA95YCSAU"
+      },
+      {
+        "ts": "2026-02-12T08:36:05.044Z",
+        "delta": -40,
+        "balance": 29,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0AA95YCSAU"
       }
     ],
     "u0aakdgp0ax": [
@@ -54645,6 +54661,12 @@
     ]
   },
   "users": {
+    "U0AA95YCSAU": {
+      "id": "U0AA95YCSAU",
+      "username": "idreesmuhammadqazi",
+      "displayName": "idreesmuhammadqazi",
+      "avatar": "https://secure.gravatar.com/avatar/03efafc9e7166743c545039051f50bff.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0019-72.png"
+    },
     "U0A7WTFMPSM": {
       "id": "U0A7WTFMPSM",
       "username": "aishwaryarana2807",
@@ -54754,12 +54776,6 @@
       "username": "y2marcos1010",
       "displayName": "marcos",
       "avatar": "https://avatars.slack-edge.com/2026-01-07/10245440465526_fe906df01566f8d86aa0_72.png"
-    },
-    "U0AA95YCSAU": {
-      "id": "U0AA95YCSAU",
-      "username": "idreesmuhammadqazi",
-      "displayName": "idreesmuhammadqazi",
-      "avatar": "https://secure.gravatar.com/avatar/03efafc9e7166743c545039051f50bff.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0019-72.png"
     },
     "U06QST7V0J2": {
       "id": "U06QST7V0J2",
