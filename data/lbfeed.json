@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-12T21:36:13.649Z",
+  "lastUpdated": "2026-02-12T22:35:29.191Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -26103,6 +26103,14 @@
         "reason": "Hello, Kitchen!",
         "reasonType": "achievement",
         "userId": "U09T6KV30KX"
+      },
+      {
+        "ts": "2026-02-12T22:16:23.584Z",
+        "delta": 10,
+        "balance": 28,
+        "reason": "Line Cook",
+        "reasonType": "achievement",
+        "userId": "U09T6KV30KX"
       }
     ],
     "u09tkl54j0p": [
@@ -37302,6 +37310,14 @@
         "ts": "2026-02-12T01:29:27.241Z",
         "delta": 36,
         "balance": 209,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U0A5WSLGHUY"
+      },
+      {
+        "ts": "2026-02-12T22:29:40.573Z",
+        "delta": 90,
+        "balance": 299,
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U0A5WSLGHUY"
@@ -55109,6 +55125,18 @@
     ]
   },
   "users": {
+    "U0A5WSLGHUY": {
+      "id": "U0A5WSLGHUY",
+      "username": "loekoerlemans",
+      "displayName": "loekman",
+      "avatar": "https://avatars.slack-edge.com/2025-12-27/10200228423684_ab1a91a55d1f00669af3_72.png"
+    },
+    "U09T6KV30KX": {
+      "id": "U09T6KV30KX",
+      "username": "aymane.berhoua",
+      "displayName": "Cotti",
+      "avatar": "https://avatars.slack-edge.com/2026-01-26/10382493833649_233155ce3f26335e1655_72.jpg"
+    },
     "U0A5DVA4Q4R": {
       "id": "U0A5DVA4Q4R",
       "username": "erik1",
@@ -55263,12 +55291,6 @@
       "username": "praneetnrana",
       "avatar": "https://avatars.slack-edge.com/2024-11-06/7981633353766_2c1d416704c08bf78e03_72.png"
     },
-    "U0A5WSLGHUY": {
-      "id": "U0A5WSLGHUY",
-      "username": "loekoerlemans",
-      "displayName": "loekman",
-      "avatar": "https://avatars.slack-edge.com/2025-12-27/10200228423684_ab1a91a55d1f00669af3_72.png"
-    },
     "U09683EA86L": {
       "id": "U09683EA86L",
       "username": "etilia",
@@ -55416,12 +55438,6 @@
       "username": "olusegunkd2017",
       "displayName": "segun",
       "avatar": "https://avatars.slack-edge.com/2025-10-11/9672415976883_de8f0dfb9dbc36729a6b_72.png"
-    },
-    "U09T6KV30KX": {
-      "id": "U09T6KV30KX",
-      "username": "aymane.berhoua",
-      "displayName": "Cotti",
-      "avatar": "https://avatars.slack-edge.com/2026-01-26/10382493833649_233155ce3f26335e1655_72.jpg"
     },
     "U0A7A7TT28L": {
       "id": "U0A7A7TT28L",
@@ -56473,7 +56489,7 @@
       "id": "U0938MZG8Q6",
       "username": "christiandubsky20",
       "displayName": "christian",
-      "avatar": "https://avatars.slack-edge.com/2026-02-12/10497654661778_fc8533db552365e27f42_72.png"
+      "avatar": "https://avatars.slack-edge.com/2026-02-12/10485933759415_e220d7787817655dfac2_72.png"
     },
     "U097N0AKR6Z": {
       "id": "U097N0AKR6Z",
