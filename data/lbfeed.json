@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-12T08:51:31.139Z",
+  "lastUpdated": "2026-02-12T09:54:22.637Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -54657,10 +54657,32 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0AETSFQ17B"
+      },
+      {
+        "ts": "2026-02-12T09:37:20.327Z",
+        "delta": 3,
+        "balance": 3,
+        "reason": "Home Cookin'",
+        "reasonType": "achievement",
+        "userId": "U0AETSFQ17B"
+      },
+      {
+        "ts": "2026-02-12T09:37:20.479Z",
+        "delta": 2,
+        "balance": 5,
+        "reason": "Recipe Notes",
+        "reasonType": "achievement",
+        "userId": "U0AETSFQ17B"
       }
     ]
   },
   "users": {
+    "U0AETSFQ17B": {
+      "id": "U0AETSFQ17B",
+      "username": "thejudgefromhell",
+      "displayName": "thejudgefromhell",
+      "avatar": "https://secure.gravatar.com/avatar/6a03e0d7fd70b67bdeb161b4574ed3dc.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0013-72.png"
+    },
     "U0AA95YCSAU": {
       "id": "U0AA95YCSAU",
       "username": "idreesmuhammadqazi",
@@ -54741,12 +54763,6 @@
       "username": "kakkarakshansh72",
       "displayName": "Akshansh",
       "avatar": "https://secure.gravatar.com/avatar/f794df4ee86402be39541c617bf223dc.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0024-72.png"
-    },
-    "U0AETSFQ17B": {
-      "id": "U0AETSFQ17B",
-      "username": "thejudgefromhell",
-      "displayName": "thejudgefromhell",
-      "avatar": "https://secure.gravatar.com/avatar/6a03e0d7fd70b67bdeb161b4574ed3dc.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0013-72.png"
     },
     "U0AEF463T2L": {
       "id": "U0AEF463T2L",
