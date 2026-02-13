@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-13T18:06:00.303Z",
+  "lastUpdated": "2026-02-13T19:25:14.116Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -7870,6 +7870,22 @@
         "balance": 162,
         "reason": "payout",
         "reasonType": "payout",
+        "userId": "U0825TMAF4K"
+      },
+      {
+        "ts": "2026-02-13T18:19:16.130Z",
+        "delta": 113,
+        "balance": 275,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U0825TMAF4K"
+      },
+      {
+        "ts": "2026-02-13T18:26:40.584Z",
+        "delta": -272,
+        "balance": 3,
+        "reason": "shop purchase",
+        "reasonType": "",
         "userId": "U0825TMAF4K"
       }
     ],
@@ -38383,6 +38399,14 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0A6P5RRLS3"
+      },
+      {
+        "ts": "2026-02-13T18:43:05.531Z",
+        "delta": -140,
+        "balance": 13,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A6P5RRLS3"
       }
     ],
     "u0a6pjqq5gu": [
@@ -54753,6 +54777,14 @@
         "reason": "tutorial",
         "reasonType": "",
         "userId": "U0AAVSGH3HC"
+      },
+      {
+        "ts": "2026-02-13T18:49:13.592Z",
+        "delta": -40,
+        "balance": 1,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0AAVSGH3HC"
       }
     ],
     "u0ab4awmbk3": [
@@ -55349,6 +55381,24 @@
     ]
   },
   "users": {
+    "U0AAVSGH3HC": {
+      "id": "U0AAVSGH3HC",
+      "username": "hackclub8",
+      "displayName": "46009361",
+      "avatar": "https://avatars.slack-edge.com/2026-01-29/10433002833120_f403f3da778a713c59df_72.png"
+    },
+    "U0A6P5RRLS3": {
+      "id": "U0A6P5RRLS3",
+      "username": "michal.jen",
+      "displayName": "Q1000Q",
+      "avatar": "https://secure.gravatar.com/avatar/26ae29bce574e6e8ce6e346635668cb8.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0002-72.png"
+    },
+    "U0825TMAF4K": {
+      "id": "U0825TMAF4K",
+      "username": "kakkarakshansh72",
+      "displayName": "Akshansh",
+      "avatar": "https://secure.gravatar.com/avatar/f794df4ee86402be39541c617bf223dc.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0024-72.png"
+    },
     "U0A60NZQCTA": {
       "id": "U0A60NZQCTA",
       "username": "jonas.gaden",
@@ -55390,12 +55440,6 @@
       "username": "priyanshuverma",
       "displayName": "Pz",
       "avatar": "https://avatars.slack-edge.com/2025-12-31/10240195089968_6e6e5a2a1b92e77489e6_72.jpg"
-    },
-    "U0AAVSGH3HC": {
-      "id": "U0AAVSGH3HC",
-      "username": "hackclub8",
-      "displayName": "46009361",
-      "avatar": "https://avatars.slack-edge.com/2026-01-29/10433002833120_f403f3da778a713c59df_72.png"
     },
     "U0A5PH25V70": {
       "id": "U0A5PH25V70",
@@ -55637,12 +55681,6 @@
       "username": "andrashorvath400",
       "displayName": "andrew",
       "avatar": "https://avatars.slack-edge.com/2025-11-22/9959835156151_d6ca48e3c934f63bf975_72.png"
-    },
-    "U0825TMAF4K": {
-      "id": "U0825TMAF4K",
-      "username": "kakkarakshansh72",
-      "displayName": "Akshansh",
-      "avatar": "https://secure.gravatar.com/avatar/f794df4ee86402be39541c617bf223dc.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0024-72.png"
     },
     "U0AEF463T2L": {
       "id": "U0AEF463T2L",
@@ -56095,12 +56133,6 @@
       "username": "gianlucarainis",
       "displayName": "__grdev",
       "avatar": "https://secure.gravatar.com/avatar/4d109519859f7f85e7459cb5fe4aac90.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0021-72.png"
-    },
-    "U0A6P5RRLS3": {
-      "id": "U0A6P5RRLS3",
-      "username": "michal.jen",
-      "displayName": "Q1000Q",
-      "avatar": "https://secure.gravatar.com/avatar/26ae29bce574e6e8ce6e346635668cb8.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0002-72.png"
     },
     "U0A9BAEQX6G": {
       "id": "U0A9BAEQX6G",
@@ -56760,7 +56792,7 @@
       "id": "U0938MZG8Q6",
       "username": "christiandubsky20",
       "displayName": "christian",
-      "avatar": "https://avatars.slack-edge.com/2026-02-13/10492567746663_3b1575351ffcb1f40cc6_72.png"
+      "avatar": "https://avatars.slack-edge.com/2026-02-13/10536769193168_3d30bba26dc538d80dcd_72.png"
     },
     "U097N0AKR6Z": {
       "id": "U097N0AKR6Z",
@@ -58640,7 +58672,7 @@
       "id": "U092LCQUSTT",
       "username": "chase",
       "displayName": "I don't like long names sometimes I have that one fear of like words I'm tux   .",
-      "avatar": "https://avatars.slack-edge.com/2025-08-31/9436122335717_01588a3a8f764d7bbb8f_72.png"
+      "avatar": "https://avatars.slack-edge.com/2026-02-13/10508528903186_97f4865666f89b981067_72.png"
     },
     "U06PUN13XHT": {
       "id": "U06PUN13XHT",
