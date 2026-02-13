@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-13T13:04:02.050Z",
+  "lastUpdated": "2026-02-13T14:15:28.960Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -26175,6 +26175,14 @@
         "delta": 3,
         "balance": 22,
         "reason": "Michelin Star",
+        "reasonType": "achievement",
+        "userId": "U09S4K4C2BA"
+      },
+      {
+        "ts": "2026-02-13T13:23:34.623Z",
+        "delta": 10,
+        "balance": 32,
+        "reason": "Line Cook",
         "reasonType": "achievement",
         "userId": "U09S4K4C2BA"
       }
@@ -55325,6 +55333,12 @@
     ]
   },
   "users": {
+    "U09S4K4C2BA": {
+      "id": "U09S4K4C2BA",
+      "username": "wowstar",
+      "displayName": "Wowstar",
+      "avatar": "https://secure.gravatar.com/avatar/814670d57d746711abbe74d16ee210cc.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0011-72.png"
+    },
     "U0930DMR4BA": {
       "id": "U0930DMR4BA",
       "username": "vejas.sereicikas",
@@ -56311,12 +56325,6 @@
       "displayName": "Shryas",
       "avatar": "https://avatars.slack-edge.com/2025-11-28/10023563434081_9dbad2eb7807f08ebf41_72.jpg"
     },
-    "U09S4K4C2BA": {
-      "id": "U09S4K4C2BA",
-      "username": "wowstar",
-      "displayName": "Wowstar",
-      "avatar": "https://secure.gravatar.com/avatar/814670d57d746711abbe74d16ee210cc.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0011-72.png"
-    },
     "U09ALN5LPU5": {
       "id": "U09ALN5LPU5",
       "username": "crecka.539",
@@ -56736,7 +56744,7 @@
       "id": "U0938MZG8Q6",
       "username": "christiandubsky20",
       "displayName": "christian",
-      "avatar": "https://avatars.slack-edge.com/2026-02-12/10485933759415_e220d7787817655dfac2_72.png"
+      "avatar": "https://avatars.slack-edge.com/2026-02-13/10509828942884_6f892cfc60a4b2eedc09_72.png"
     },
     "U097N0AKR6Z": {
       "id": "U097N0AKR6Z",
