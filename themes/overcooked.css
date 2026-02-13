@@ -1054,6 +1054,33 @@ a:hover {
     border-color: var(--overcooked-coral) !important;
 }
 
+.sidequests-index {
+    background-color: var(--overcooked-black) !important;
+    outline-color: var(--overcooked-mid) !important;
+}
+
+.sidequests-index__content {
+    background-color: transparent !important;
+}
+
+.sidequests-index__section {
+    background-color: var(--overcooked-dark) !important;
+    border: 1px solid var(--overcooked-mid) !important;
+    border-radius: 16px !important;
+}
+
+.sidequests-index__section-title {
+    color: var(--overcooked-white) !important;
+}
+
+.sidequests-index__subtitle {
+    color: var(--overcooked-foam) !important;
+}
+
+.sidequests-index__grid {
+    background-color: transparent !important;
+}
+
 .nibbles__sidequests {
     background-color: var(--overcooked-dark) !important;
     border: 1px solid var(--overcooked-mid) !important;

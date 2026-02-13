@@ -1047,6 +1047,33 @@ a:hover {
     border-color: var(--sea-coral) !important;
 }
 
+.sidequests-index {
+    background-color: var(--sea-navy) !important;
+    outline-color: var(--sea-mid) !important;
+}
+
+.sidequests-index__content {
+    background-color: transparent !important;
+}
+
+.sidequests-index__section {
+    background-color: var(--sea-dark) !important;
+    border: 1px solid var(--sea-mid) !important;
+    border-radius: 16px !important;
+}
+
+.sidequests-index__section-title {
+    color: var(--sea-white) !important;
+}
+
+.sidequests-index__subtitle {
+    color: var(--sea-foam) !important;
+}
+
+.sidequests-index__grid {
+    background-color: transparent !important;
+}
+
 .nibbles__sidequests {
     background-color: var(--sea-dark) !important;
     border: 1px solid var(--sea-mid) !important;

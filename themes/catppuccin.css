@@ -1103,6 +1103,33 @@ a:hover {
     border-color: var(--ctp-red) !important;
 }
 
+.sidequests-index {
+    background-color: var(--ctp-base) !important;
+    outline-color: var(--ctp-surface1) !important;
+}
+
+.sidequests-index__content {
+    background-color: transparent !important;
+}
+
+.sidequests-index__section {
+    background-color: var(--ctp-surface0) !important;
+    border: 1px solid var(--ctp-surface1) !important;
+    border-radius: 16px !important;
+}
+
+.sidequests-index__section-title {
+    color: var(--ctp-text) !important;
+}
+
+.sidequests-index__subtitle {
+    color: var(--ctp-subtext0) !important;
+}
+
+.sidequests-index__grid {
+    background-color: transparent !important;
+}
+
 .nibbles__sidequests {
     background-color: var(--ctp-surface0) !important;
     border: 1px solid var(--ctp-surface1) !important;

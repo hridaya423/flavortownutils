@@ -1101,6 +1101,33 @@ a:hover {
     border-color: var(--custom-error) !important;
 }
 
+.sidequests-index {
+    background-color: var(--custom-bg-base) !important;
+    outline-color: var(--custom-surface-hover) !important;
+}
+
+.sidequests-index__content {
+    background-color: transparent !important;
+}
+
+.sidequests-index__section {
+    background-color: var(--custom-bg-surface) !important;
+    border: 1px solid var(--custom-surface-hover) !important;
+    border-radius: 16px !important;
+}
+
+.sidequests-index__section-title {
+    color: var(--custom-text-primary) !important;
+}
+
+.sidequests-index__subtitle {
+    color: var(--custom-text-muted) !important;
+}
+
+.sidequests-index__grid {
+    background-color: transparent !important;
+}
+
 .nibbles__sidequests {
     background-color: var(--custom-bg-surface) !important;
     border: 1px solid var(--custom-surface-hover) !important;
