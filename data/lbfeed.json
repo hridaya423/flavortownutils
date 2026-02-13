@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-13T19:25:14.116Z",
+  "lastUpdated": "2026-02-13T19:59:58.486Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -21232,6 +21232,22 @@
         "balance": 2391,
         "reason": "payout",
         "reasonType": "payout",
+        "userId": "U099D74CAUR"
+      },
+      {
+        "ts": "2026-02-13T19:56:56.109Z",
+        "delta": -83,
+        "balance": 2308,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U099D74CAUR"
+      },
+      {
+        "ts": "2026-02-13T19:57:41.874Z",
+        "delta": 83,
+        "balance": 2391,
+        "reason": "shop purchase",
+        "reasonType": "",
         "userId": "U099D74CAUR"
       }
     ],
@@ -55381,6 +55397,11 @@
     ]
   },
   "users": {
+    "U099D74CAUR": {
+      "id": "U099D74CAUR",
+      "username": "mittal.rishabh2010",
+      "avatar": "https://secure.gravatar.com/avatar/bf9d674ef449e90503cb78983935a26a.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0018-72.png"
+    },
     "U0AAVSGH3HC": {
       "id": "U0AAVSGH3HC",
       "username": "hackclub8",
@@ -55475,11 +55496,6 @@
       "id": "U090LAT6QKB",
       "username": "dinosaur890123",
       "avatar": "https://avatars.slack-edge.com/2025-12-09/10077925689238_2149e0ba18d7110e7a3f_72.png"
-    },
-    "U099D74CAUR": {
-      "id": "U099D74CAUR",
-      "username": "mittal.rishabh2010",
-      "avatar": "https://secure.gravatar.com/avatar/bf9d674ef449e90503cb78983935a26a.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0018-72.png"
     },
     "U09JBJ0FW0P": {
       "id": "U09JBJ0FW0P",
