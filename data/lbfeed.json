@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-13T09:48:02.641Z",
+  "lastUpdated": "2026-02-13T10:41:57.556Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -16663,6 +16663,24 @@
         "userId": "U091LN2KLF2"
       }
     ],
+    "u091lsr2qh4": [
+      {
+        "ts": "2026-02-13T10:10:45.315Z",
+        "delta": 3,
+        "balance": 13,
+        "reason": "Order Up!",
+        "reasonType": "achievement",
+        "userId": "U091LSR2QH4"
+      },
+      {
+        "ts": "2026-02-13T10:10:45.898Z",
+        "delta": 3,
+        "balance": 16,
+        "reason": "Michelin Star",
+        "reasonType": "achievement",
+        "userId": "U091LSR2QH4"
+      }
+    ],
     "u091m21518t": [
       {
         "ts": "2026-02-01T22:41:30.108Z",
@@ -29266,6 +29284,14 @@
         "ts": "2026-02-12T22:50:17.088Z",
         "delta": 471,
         "balance": 570,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A4TBWJR42"
+      },
+      {
+        "ts": "2026-02-13T10:18:04.603Z",
+        "delta": -471,
+        "balance": 99,
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0A4TBWJR42"
@@ -55241,6 +55267,18 @@
     ]
   },
   "users": {
+    "U0A4TBWJR42": {
+      "id": "U0A4TBWJR42",
+      "username": "milo1004",
+      "displayName": "milo1004",
+      "avatar": "https://avatars.slack-edge.com/2025-12-22/10168640612229_e72fcb4aecb4d239fc90_72.png"
+    },
+    "U091LSR2QH4": {
+      "id": "U091LSR2QH4",
+      "username": "isuliau12",
+      "displayName": "isuliau",
+      "avatar": "https://secure.gravatar.com/avatar/8490457bba1365374e7515f7c6b27ab3.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0026-72.png"
+    },
     "U09295JD9GB": {
       "id": "U09295JD9GB",
       "username": "ghutchison08",
@@ -55279,12 +55317,6 @@
       "username": "imshymike",
       "displayName": "miggy",
       "avatar": "https://avatars.slack-edge.com/2025-12-29/10233544972384_2320ba7f6b68cc1843cc_72.png"
-    },
-    "U0A4TBWJR42": {
-      "id": "U0A4TBWJR42",
-      "username": "milo1004",
-      "displayName": "milo1004",
-      "avatar": "https://avatars.slack-edge.com/2025-12-22/10168640612229_e72fcb4aecb4d239fc90_72.png"
     },
     "U0A5WSLGHUY": {
       "id": "U0A5WSLGHUY",
