@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-13T22:36:29.454Z",
+  "lastUpdated": "2026-02-13T23:34:02.039Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -7657,6 +7657,22 @@
         "delta": 20,
         "balance": 467,
         "reason": "user grant",
+        "reasonType": "",
+        "userId": "U0824G9PTFE"
+      },
+      {
+        "ts": "2026-02-13T22:57:28.863Z",
+        "delta": 105,
+        "balance": 572,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0824G9PTFE"
+      },
+      {
+        "ts": "2026-02-13T22:58:06.821Z",
+        "delta": -60,
+        "balance": 512,
+        "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0824G9PTFE"
       }
@@ -55429,6 +55445,12 @@
     ]
   },
   "users": {
+    "U0824G9PTFE": {
+      "id": "U0824G9PTFE",
+      "username": "dhyans",
+      "displayName": "dhyan",
+      "avatar": "https://avatars.slack-edge.com/2025-12-29/10219185425041_b3571df1286c801f96b0_72.jpg"
+    },
     "U090LAT6QKB": {
       "id": "U090LAT6QKB",
       "username": "dinosaur890123",
@@ -55687,12 +55709,6 @@
       "id": "U0A7WTFMPSM",
       "username": "aishwaryarana2807",
       "avatar": "https://avatars.slack-edge.com/2026-01-11/10302116407072_86acaa2b2adc1a88cdb5_72.webp"
-    },
-    "U0824G9PTFE": {
-      "id": "U0824G9PTFE",
-      "username": "dhyans",
-      "displayName": "dhyan",
-      "avatar": "https://avatars.slack-edge.com/2025-12-29/10219185425041_b3571df1286c801f96b0_72.jpg"
     },
     "U0AA3RZMGPK": {
       "id": "U0AA3RZMGPK",
