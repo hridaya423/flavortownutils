@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-13T04:34:21.788Z",
+  "lastUpdated": "2026-02-13T06:01:47.660Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -21136,6 +21136,14 @@
         "ts": "2026-02-04T07:44:41.312Z",
         "delta": 1076,
         "balance": 1144,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U099D74CAUR"
+      },
+      {
+        "ts": "2026-02-13T05:42:13.493Z",
+        "delta": 1247,
+        "balance": 2391,
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U099D74CAUR"
@@ -55215,6 +55223,11 @@
     ]
   },
   "users": {
+    "U099D74CAUR": {
+      "id": "U099D74CAUR",
+      "username": "mittal.rishabh2010",
+      "avatar": "https://secure.gravatar.com/avatar/bf9d674ef449e90503cb78983935a26a.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0018-72.png"
+    },
     "U09JBJ0FW0P": {
       "id": "U09JBJ0FW0P",
       "username": "1401054",
@@ -56308,11 +56321,6 @@
       "username": "akumarjanaki",
       "displayName": "akumarjanaki",
       "avatar": "https://secure.gravatar.com/avatar/d5f407062b5b7e88e3bfe71f797cc024.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0018-72.png"
-    },
-    "U099D74CAUR": {
-      "id": "U099D74CAUR",
-      "username": "mittal.rishabh2010",
-      "avatar": "https://secure.gravatar.com/avatar/bf9d674ef449e90503cb78983935a26a.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0018-72.png"
     },
     "U0864RMD6BE": {
       "id": "U0864RMD6BE",
