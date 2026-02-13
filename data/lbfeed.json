@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-13T15:10:10.800Z",
+  "lastUpdated": "2026-02-13T16:10:34.133Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -21693,6 +21693,14 @@
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U09AJASACUX"
+      },
+      {
+        "ts": "2026-02-13T15:17:08.340Z",
+        "delta": 556,
+        "balance": 885,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U09AJASACUX"
       }
     ],
     "u09aln5lpu5": [
@@ -37824,6 +37832,14 @@
         "ts": "2026-02-09T07:57:43.940Z",
         "delta": 18,
         "balance": 87,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U0A60NZQCTA"
+      },
+      {
+        "ts": "2026-02-13T15:31:27.273Z",
+        "delta": 20,
+        "balance": 107,
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U0A60NZQCTA"
@@ -55333,6 +55349,18 @@
     ]
   },
   "users": {
+    "U0A60NZQCTA": {
+      "id": "U0A60NZQCTA",
+      "username": "jonas.gaden",
+      "displayName": "jonas.gaden",
+      "avatar": "https://secure.gravatar.com/avatar/dfbd5d947c049f82e69f6e7f6d634e9b.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0001-72.png"
+    },
+    "U09AJASACUX": {
+      "id": "U09AJASACUX",
+      "username": "r09aditya",
+      "displayName": "Aditya Sharma",
+      "avatar": "https://avatars.slack-edge.com/2025-08-18/9368683651013_9a2802b3d3b7fb4f015c_72.png"
+    },
     "U09S4K4C2BA": {
       "id": "U09S4K4C2BA",
       "username": "wowstar",
@@ -55907,12 +55935,6 @@
       "displayName": "Guy",
       "avatar": "https://avatars.slack-edge.com/2023-10-28/6113518343412_1d907d6597a278566bad_72.png"
     },
-    "U09AJASACUX": {
-      "id": "U09AJASACUX",
-      "username": "r09aditya",
-      "displayName": "Aditya Sharma",
-      "avatar": "https://avatars.slack-edge.com/2025-08-18/9368683651013_9a2802b3d3b7fb4f015c_72.png"
-    },
     "U0A8RA1MMFY": {
       "id": "U0A8RA1MMFY",
       "username": "lucasnwilliams2008hac",
@@ -56015,12 +56037,6 @@
       "username": "mmk21",
       "displayName": "Mish",
       "avatar": "https://avatars.slack-edge.com/2025-06-02/8985528237266_d5f9ec0da853a1155f84_72.png"
-    },
-    "U0A60NZQCTA": {
-      "id": "U0A60NZQCTA",
-      "username": "jonas.gaden",
-      "displayName": "jonas.gaden",
-      "avatar": "https://secure.gravatar.com/avatar/dfbd5d947c049f82e69f6e7f6d634e9b.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0001-72.png"
     },
     "U092CHMLB24": {
       "id": "U092CHMLB24",
