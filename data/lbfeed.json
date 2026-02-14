@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-14T10:31:03.628Z",
+  "lastUpdated": "2026-02-14T10:57:09.012Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -34241,6 +34241,14 @@
         "reason": "user grant",
         "reasonType": "",
         "userId": "U0A5TL58UTW"
+      },
+      {
+        "ts": "2026-02-14T10:46:48.243Z",
+        "delta": 10,
+        "balance": 95,
+        "reason": "Free Sample!",
+        "reasonType": "achievement",
+        "userId": "U0A5TL58UTW"
       }
     ],
     "u0a5u53hd0f": [
@@ -55493,6 +55501,12 @@
     ]
   },
   "users": {
+    "U0A5TL58UTW": {
+      "id": "U0A5TL58UTW",
+      "username": "luci",
+      "displayName": "Luci",
+      "avatar": "https://avatars.slack-edge.com/2026-01-01/10213685935029_bb9a4797b03a7a91ccdd_72.png"
+    },
     "U096J8GJ87J": {
       "id": "U096J8GJ87J",
       "username": "amakerlife",
@@ -56243,12 +56257,6 @@
       "username": "hridayahoney",
       "displayName": "Hridya",
       "avatar": "https://secure.gravatar.com/avatar/5b54a7a1c2382dea03b98bd77e571f92.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0014-72.png"
-    },
-    "U0A5TL58UTW": {
-      "id": "U0A5TL58UTW",
-      "username": "luci",
-      "displayName": "Luci",
-      "avatar": "https://avatars.slack-edge.com/2026-01-01/10213685935029_bb9a4797b03a7a91ccdd_72.png"
     },
     "U09BSMKPT7Y": {
       "id": "U09BSMKPT7Y",
