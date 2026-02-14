@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-14T12:52:49.196Z",
+  "lastUpdated": "2026-02-14T13:46:21.776Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -53391,6 +53391,14 @@
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U0A8EFD3CUQ"
+      },
+      {
+        "ts": "2026-02-14T13:10:20.002Z",
+        "delta": -206,
+        "balance": 36,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A8EFD3CUQ"
       }
     ],
     "u0a8f724f1a": [
@@ -55645,6 +55653,11 @@
     ]
   },
   "users": {
+    "U0A8EFD3CUQ": {
+      "id": "U0A8EFD3CUQ",
+      "username": "benjamin.mueller",
+      "avatar": "https://avatars.slack-edge.com/2026-01-08/10252088691635_872ec0e53a500b09c186_72.png"
+    },
     "U0A6P5RRLS3": {
       "id": "U0A6P5RRLS3",
       "username": "michal.jen",
@@ -55776,11 +55789,6 @@
       "username": "aymane.berhoua",
       "displayName": "Cotti",
       "avatar": "https://avatars.slack-edge.com/2026-01-26/10382493833649_233155ce3f26335e1655_72.jpg"
-    },
-    "U0A8EFD3CUQ": {
-      "id": "U0A8EFD3CUQ",
-      "username": "benjamin.mueller",
-      "avatar": "https://avatars.slack-edge.com/2026-01-08/10252088691635_872ec0e53a500b09c186_72.png"
     },
     "U0824G9PTFE": {
       "id": "U0824G9PTFE",
