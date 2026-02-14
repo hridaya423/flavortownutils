@@ -1091,10 +1091,7 @@ function readProjectRepoMap() {
         const raw = localStorage.getItem(PROJECT_REPO_MAP_KEY);
         if (!raw) return {};
         const parsed = JSON.parse(raw);
-        if (!parsed || typeof parsed !== 'object') return {};
-        const now = Date.now();
-        if (parsed.updatedAt && now - parsed.updatedAt > PROJECT_REPO_MAP_TTL) return {};
-        return parsed.data || {};
+        return parsed || {};
     } catch (e) {
         return {};
     }
@@ -1102,10 +1099,7 @@ function readProjectRepoMap() {
 
 function writeProjectRepoMap(data) {
     try {
-        localStorage.setItem(PROJECT_REPO_MAP_KEY, JSON.stringify({
-            updatedAt: Date.now(),
-            data: data || {}
-        }));
+        localStorage.setItem(PROJECT_REPO_MAP_KEY, JSON.stringify(data || {}));
     } catch (e) {
     }
 }
@@ -1204,11 +1198,14 @@ function extractRepoUrlFromProjectDoc(doc) {
     return normalizeGithubRepoUrl(repoUrl);
 }
 
-async function getRepoUrlForProjectName(projectName) {
+async function getRepoUrlForProjectName(projectName, forceRefresh = false) {
     if (!projectName) return null;
     const normalizedName = normalizeProjectName(projectName);
     const repoMap = readProjectRepoMap();
-    if (repoMap[normalizedName]) return repoMap[normalizedName];
+    
+    if (!forceRefresh && repoMap[normalizedName]) {
+        return repoMap[normalizedName];
+    }
 
     const projects = await fetchProjectsIndexData();
     const match = projects.find(project => normalizeProjectName(project.name) === normalizedName);
@@ -4922,12 +4919,29 @@ async function initDevlogChangelog(wrapper) {
 
     let repoUrl = await getRepoUrlForProjectName(projectName);
     let repoSlug = repoUrl ? parseGithubRepoSlug(repoUrl) : null;
+    
+    if (!repoSlug) {
+        metaEl.textContent = 'Looking up your repo…';
+        repoUrl = await getRepoUrlForProjectName(projectName, true);
+        repoSlug = repoUrl ? parseGithubRepoSlug(repoUrl) : null;
+    }
 
     adjustBtn?.addEventListener('click', () => {
         adjustPanel.classList.toggle('is-hidden');
     });
 
-    refreshBtn?.addEventListener('click', () => {
+    refreshBtn?.addEventListener('click', async () => {
+        if (!repoSlug) {
+            metaEl.textContent = 'Looking up your repo…';
+            repoUrl = await getRepoUrlForProjectName(projectName, true);
+            repoSlug = repoUrl ? parseGithubRepoSlug(repoUrl) : null;
+            
+            if (repoSlug) {
+                setButtonsDisabled(false);
+                await loadChangelog({ force: true });
+                return;
+            }
+        }
         loadChangelog({ force: true });
     });
 
