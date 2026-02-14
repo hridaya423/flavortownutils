@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-14T15:53:39.853Z",
+  "lastUpdated": "2026-02-14T16:32:43.172Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -20842,6 +20842,14 @@
         "balance": 246,
         "reason": "payout",
         "reasonType": "payout",
+        "userId": "U09736L44JZ"
+      },
+      {
+        "ts": "2026-02-14T16:03:34.136Z",
+        "delta": -245,
+        "balance": 1,
+        "reason": "shop purchase",
+        "reasonType": "",
         "userId": "U09736L44JZ"
       }
     ],
@@ -55737,16 +55745,16 @@
     ]
   },
   "users": {
+    "U09736L44JZ": {
+      "id": "U09736L44JZ",
+      "username": "satyamrajgaya434",
+      "avatar": "https://avatars.slack-edge.com/2025-09-19/9577172238240_ca93b692b12938796d47_72.jpg"
+    },
     "U08U32QC3ME": {
       "id": "U08U32QC3ME",
       "username": "yousefmohamedyousef11",
       "displayName": "yousef",
       "avatar": "https://secure.gravatar.com/avatar/b94dc44c519aa34a8bd43aff9341b4dc.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0005-72.png"
-    },
-    "U09736L44JZ": {
-      "id": "U09736L44JZ",
-      "username": "satyamrajgaya434",
-      "avatar": "https://avatars.slack-edge.com/2025-09-19/9577172238240_ca93b692b12938796d47_72.jpg"
     },
     "U07L45W79E1": {
       "id": "U07L45W79E1",
@@ -57206,7 +57214,7 @@
       "id": "U0938MZG8Q6",
       "username": "christiandubsky20",
       "displayName": "christian",
-      "avatar": "https://avatars.slack-edge.com/2026-02-13/10536769193168_3d30bba26dc538d80dcd_72.png"
+      "avatar": "https://avatars.slack-edge.com/2026-02-14/10505754956659_66185e6a7fd41aef657c_72.png"
     },
     "U097N0AKR6Z": {
       "id": "U097N0AKR6Z",
