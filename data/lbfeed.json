@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-14T04:22:35.236Z",
+  "lastUpdated": "2026-02-14T05:31:06.112Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -26300,6 +26300,14 @@
         "balance": 28,
         "reason": "Line Cook",
         "reasonType": "achievement",
+        "userId": "U09T6KV30KX"
+      },
+      {
+        "ts": "2026-02-14T04:28:50.977Z",
+        "delta": 85,
+        "balance": 113,
+        "reason": "payout",
+        "reasonType": "payout",
         "userId": "U09T6KV30KX"
       }
     ],
@@ -55453,6 +55461,12 @@
     ]
   },
   "users": {
+    "U09T6KV30KX": {
+      "id": "U09T6KV30KX",
+      "username": "aymane.berhoua",
+      "displayName": "Cotti",
+      "avatar": "https://avatars.slack-edge.com/2026-01-26/10382493833649_233155ce3f26335e1655_72.jpg"
+    },
     "U0A8EFD3CUQ": {
       "id": "U0A8EFD3CUQ",
       "username": "benjamin.mueller",
@@ -55597,12 +55611,6 @@
       "username": "loekoerlemans",
       "displayName": "loekman",
       "avatar": "https://avatars.slack-edge.com/2025-12-27/10200228423684_ab1a91a55d1f00669af3_72.png"
-    },
-    "U09T6KV30KX": {
-      "id": "U09T6KV30KX",
-      "username": "aymane.berhoua",
-      "displayName": "Cotti",
-      "avatar": "https://avatars.slack-edge.com/2026-01-26/10382493833649_233155ce3f26335e1655_72.jpg"
     },
     "U0A5DVA4Q4R": {
       "id": "U0A5DVA4Q4R",
