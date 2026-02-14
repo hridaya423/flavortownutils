@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-14T15:28:27.728Z",
+  "lastUpdated": "2026-02-14T15:53:39.853Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -14561,6 +14561,14 @@
         "delta": 10,
         "balance": 10,
         "reason": "user grant",
+        "reasonType": "",
+        "userId": "U08U32QC3ME"
+      },
+      {
+        "ts": "2026-02-14T15:46:54.528Z",
+        "delta": -10,
+        "balance": 0,
+        "reason": "shop purchase",
         "reasonType": "",
         "userId": "U08U32QC3ME"
       }
