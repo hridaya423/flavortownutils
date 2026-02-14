@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-14T09:34:45.174Z",
+  "lastUpdated": "2026-02-14T10:31:03.628Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -20106,6 +20106,14 @@
         "balance": 177,
         "reason": "payout",
         "reasonType": "payout",
+        "userId": "U096J8GJ87J"
+      },
+      {
+        "ts": "2026-02-14T09:45:17.098Z",
+        "delta": 15,
+        "balance": 192,
+        "reason": "Cookbook Author",
+        "reasonType": "achievement",
         "userId": "U096J8GJ87J"
       }
     ],
@@ -55485,6 +55493,12 @@
     ]
   },
   "users": {
+    "U096J8GJ87J": {
+      "id": "U096J8GJ87J",
+      "username": "amakerlife",
+      "displayName": "Makerlife",
+      "avatar": "https://secure.gravatar.com/avatar/cb69cb96489acae56e1ec773882cace9.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0012-72.png"
+    },
     "U086DTRRNSV": {
       "id": "U086DTRRNSV",
       "username": "snehasishcodes",
@@ -56331,12 +56345,6 @@
       "id": "U09MQ8PKNMU",
       "username": "omkanabar",
       "avatar": "https://secure.gravatar.com/avatar/52c3822c27475d91d998715d05044774.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0006-72.png"
-    },
-    "U096J8GJ87J": {
-      "id": "U096J8GJ87J",
-      "username": "amakerlife",
-      "displayName": "Makerlife",
-      "avatar": "https://secure.gravatar.com/avatar/cb69cb96489acae56e1ec773882cace9.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0012-72.png"
     },
     "U0A4V01TS23": {
       "id": "U0A4V01TS23",
