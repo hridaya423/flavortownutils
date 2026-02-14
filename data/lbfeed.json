@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-14T06:10:12.066Z",
+  "lastUpdated": "2026-02-14T07:12:00.606Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -15026,6 +15026,14 @@
         "balance": 89,
         "reason": "payout",
         "reasonType": "payout",
+        "userId": "U091KE59H5H"
+      },
+      {
+        "ts": "2026-02-14T06:39:08.556Z",
+        "delta": 15,
+        "balance": 104,
+        "reason": "Cookbook Author",
+        "reasonType": "achievement",
         "userId": "U091KE59H5H"
       }
     ],
@@ -55469,6 +55477,11 @@
     ]
   },
   "users": {
+    "U091KE59H5H": {
+      "id": "U091KE59H5H",
+      "username": "joooooshp",
+      "avatar": "https://avatars.slack-edge.com/2025-12-26/10191934212674_e3a860ccf84ec572a0a4_72.png"
+    },
     "U0A83LHGY7K": {
       "id": "U0A83LHGY7K",
       "username": "shaikhsamir8442",
@@ -56837,11 +56850,6 @@
       "id": "U091Q62131A",
       "username": "darius",
       "avatar": "https://secure.gravatar.com/avatar/dc56de15e0c14e7ee2ec8c8a88287f51.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0000-72.png"
-    },
-    "U091KE59H5H": {
-      "id": "U091KE59H5H",
-      "username": "joooooshp",
-      "avatar": "https://avatars.slack-edge.com/2025-12-26/10191934212674_e3a860ccf84ec572a0a4_72.png"
     },
     "U0A9HLKSBAQ": {
       "id": "U0A9HLKSBAQ",
