@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-14T22:52:33.552Z",
+  "lastUpdated": "2026-02-14T23:28:32.273Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -2589,6 +2589,22 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U078G7DML8P"
+      },
+      {
+        "ts": "2026-02-14T23:18:43.583Z",
+        "delta": 3,
+        "balance": 15,
+        "reason": "Order Up!",
+        "reasonType": "achievement",
+        "userId": "U078G7DML8P"
+      },
+      {
+        "ts": "2026-02-14T23:18:43.816Z",
+        "delta": 15,
+        "balance": 30,
+        "reason": "Cookbook Author",
+        "reasonType": "achievement",
+        "userId": "U078G7DML8P"
       }
     ],
     "u078j6r0vcn": [
@@ -4536,6 +4552,14 @@
         "ts": "2026-02-14T11:08:39.584Z",
         "delta": 12,
         "balance": 88,
+        "reason": "user grant",
+        "reasonType": "",
+        "userId": "U07LKN2HXT3"
+      },
+      {
+        "ts": "2026-02-14T23:09:55.585Z",
+        "delta": -9,
+        "balance": 79,
         "reason": "user grant",
         "reasonType": "",
         "userId": "U07LKN2HXT3"
@@ -20392,6 +20416,14 @@
         "balance": 137,
         "reason": "Recipe Notes",
         "reasonType": "achievement",
+        "userId": "U096KJYT1PU"
+      },
+      {
+        "ts": "2026-02-14T23:08:25.694Z",
+        "delta": 2,
+        "balance": 139,
+        "reason": "user grant",
+        "reasonType": "",
         "userId": "U096KJYT1PU"
       }
     ],
@@ -55711,6 +55743,14 @@
         "reason": "Hello, Kitchen!",
         "reasonType": "achievement",
         "userId": "U0ADCR7FSP4"
+      },
+      {
+        "ts": "2026-02-14T22:52:36.730Z",
+        "delta": 10,
+        "balance": 22,
+        "reason": "Line Cook",
+        "reasonType": "achievement",
+        "userId": "U0ADCR7FSP4"
       }
     ],
     "u0adgkesxjm": [
@@ -55893,6 +55933,23 @@
     ]
   },
   "users": {
+    "U078G7DML8P": {
+      "id": "U078G7DML8P",
+      "username": "trey.manutes",
+      "displayName": "Trey",
+      "avatar": "https://secure.gravatar.com/avatar/b9040021914f3127b29b1acc93efeeca.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0003-72.png"
+    },
+    "U07LKN2HXT3": {
+      "id": "U07LKN2HXT3",
+      "username": "obay.developer",
+      "avatar": "https://avatars.slack-edge.com/2025-10-10/9678158748850_a132430cfd5e052a7045_72.jpg"
+    },
+    "U096KJYT1PU": {
+      "id": "U096KJYT1PU",
+      "username": "elliottlieberman123",
+      "displayName": "Elliott-entity",
+      "avatar": "https://avatars.slack-edge.com/2026-01-11/10275099203762_5926aa1482060072f28b_72.png"
+    },
     "U0ADCR7FSP4": {
       "id": "U0ADCR7FSP4",
       "username": "goelaashvik",
@@ -56072,11 +56129,6 @@
       "username": "cyteon",
       "displayName": "Cyteon",
       "avatar": "https://avatars.slack-edge.com/2025-04-05/8722129902817_bed15dc712f97108332d_72.png"
-    },
-    "U07LKN2HXT3": {
-      "id": "U07LKN2HXT3",
-      "username": "obay.developer",
-      "avatar": "https://avatars.slack-edge.com/2025-10-10/9678158748850_a132430cfd5e052a7045_72.jpg"
     },
     "U0825TMAF4K": {
       "id": "U0825TMAF4K",
@@ -57148,12 +57200,6 @@
       "id": "U0A2K2WS709",
       "username": "daviipkp",
       "avatar": "https://avatars.slack-edge.com/2025-12-21/10166525632101_67b369dacb6ba131739f_72.jpg"
-    },
-    "U078G7DML8P": {
-      "id": "U078G7DML8P",
-      "username": "trey.manutes",
-      "displayName": "Trey",
-      "avatar": "https://secure.gravatar.com/avatar/b9040021914f3127b29b1acc93efeeca.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0003-72.png"
     },
     "U0A6CUVDKAB": {
       "id": "U0A6CUVDKAB",
@@ -58995,12 +59041,6 @@
       "username": "wavyware1",
       "displayName": "wavyware1",
       "avatar": "https://avatars.slack-edge.com/2026-01-11/10272039604614_9e9e5d1340d38a512b86_72.jpg"
-    },
-    "U096KJYT1PU": {
-      "id": "U096KJYT1PU",
-      "username": "elliottlieberman123",
-      "displayName": "Elliott-entity",
-      "avatar": "https://avatars.slack-edge.com/2026-01-11/10275099203762_5926aa1482060072f28b_72.png"
     },
     "U0A54C206BX": {
       "id": "U0A54C206BX",
