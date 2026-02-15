@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-15T20:56:02.034Z",
+  "lastUpdated": "2026-02-15T21:27:21.255Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -11361,6 +11361,14 @@
         "reason": "Cooking",
         "reasonType": "achievement",
         "userId": "U089QTPBYJ0"
+      },
+      {
+        "ts": "2026-02-15T21:09:00.786Z",
+        "delta": 358,
+        "balance": 1296,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U089QTPBYJ0"
       }
     ],
     "u08a100hzt3": [
@@ -21778,6 +21786,14 @@
         "balance": 2308,
         "reason": "shop purchase",
         "reasonType": "",
+        "userId": "U099D74CAUR"
+      },
+      {
+        "ts": "2026-02-15T21:21:42.880Z",
+        "delta": 13,
+        "balance": 2321,
+        "reason": "payout",
+        "reasonType": "payout",
         "userId": "U099D74CAUR"
       }
     ],
@@ -56263,6 +56279,17 @@
     ]
   },
   "users": {
+    "U099D74CAUR": {
+      "id": "U099D74CAUR",
+      "username": "mittal.rishabh2010",
+      "avatar": "https://secure.gravatar.com/avatar/bf9d674ef449e90503cb78983935a26a.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0018-72.png"
+    },
+    "U089QTPBYJ0": {
+      "id": "U089QTPBYJ0",
+      "username": "ahmet.affan.ebcioglu",
+      "displayName": "temidaradev",
+      "avatar": "https://avatars.slack-edge.com/2025-07-03/9138406944899_8ff0acbf1e9dbedc50d2_72.jpg"
+    },
     "U09HW4WA0C9": {
       "id": "U09HW4WA0C9",
       "username": "aaravvishal11",
@@ -56670,11 +56697,6 @@
       "displayName": "dhyan",
       "avatar": "https://avatars.slack-edge.com/2025-12-29/10219185425041_b3571df1286c801f96b0_72.jpg"
     },
-    "U099D74CAUR": {
-      "id": "U099D74CAUR",
-      "username": "mittal.rishabh2010",
-      "avatar": "https://secure.gravatar.com/avatar/bf9d674ef449e90503cb78983935a26a.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0018-72.png"
-    },
     "U0A60NZQCTA": {
       "id": "U0A60NZQCTA",
       "username": "jonas.gaden",
@@ -57009,12 +57031,6 @@
       "username": "rojenchakradhar72",
       "displayName": "Rojen Chakradhar",
       "avatar": "https://avatars.slack-edge.com/2025-08-19/9368585555539_0c7e38edb2910b198132_72.png"
-    },
-    "U089QTPBYJ0": {
-      "id": "U089QTPBYJ0",
-      "username": "ahmet.affan.ebcioglu",
-      "displayName": "temidaradev",
-      "avatar": "https://avatars.slack-edge.com/2025-07-03/9138406944899_8ff0acbf1e9dbedc50d2_72.jpg"
     },
     "U09UU7TETBR": {
       "id": "U09UU7TETBR",
