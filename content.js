@@ -4004,21 +4004,6 @@ async function addProjectShowCookieStat(forceRefresh = false) {
             detailsRow.appendChild(createProjectShowStat(scoreText));
         }
 
-        const cachedUnshipped = projectId ? getCachedProjectUnshipped(projectId) : null;
-        const unshippedMinutes = cachedUnshipped?.unshippedMinutes || sinceLastShipMinutes;
-        if (unshippedMinutes > 0 && minutes > 0) {
-            const unshippedHours = (unshippedMinutes / 60).toFixed(1);
-            detailsRow.appendChild(createProjectShowStat(`⏱️ ${unshippedHours}h unpaid`));
-
-            const projectedRate = rate || getMultiplierFromCookies(totalCookies, minutes / 60);
-            if (projectedRate && isFinite(projectedRate)) {
-                const projectedCookies = Math.round(projectedRate * (unshippedMinutes / 60));
-                if (projectedCookies > 0) {
-                    detailsRow.appendChild(createProjectShowStat(`🍪 ~${projectedCookies.toLocaleString()}`));
-                }
-            }
-        }
-
         const detailsParent = statsWrapper.parentNode || statsWrapper;
         detailsParent.insertBefore(detailsRow, statsWrapper.nextSibling);
 
