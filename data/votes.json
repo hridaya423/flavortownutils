@@ -1,7 +1,14 @@
 {
-  "lastUpdated": "2026-02-15T22:25:39.583Z",
-  "totalVotes": 4369,
+  "lastUpdated": "2026-02-15T23:27:52.563Z",
+  "totalVotes": 4370,
   "votes": [
+    {
+      "project": "Chess in C",
+      "feedback": "usability:\n1. there's a demo in the first ship message, but the actual demo link is just a github release\n2. it's in portuguese, which means i only understand like 10% of the words\n3. if i understand correctly it's saying to use algebraic notation, but then only accepts moves in UCI (a different thing entirely)\n4. probably more problems",
+      "votedBy": "U092HLFD2DQ",
+      "timestamp": "2026-02-15T23:04:23.811Z",
+      "slackTs": "1771196663.811679"
+    },
     {
       "project": "stranger",
       "feedback": "Nice game!",
