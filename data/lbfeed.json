@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-15T10:30:05.491Z",
+  "lastUpdated": "2026-02-15T10:56:43.753Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -26446,6 +26446,14 @@
         "balance": 189,
         "reason": "payout",
         "reasonType": "payout",
+        "userId": "U09Q2TN62TV"
+      },
+      {
+        "ts": "2026-02-15T10:47:44.381Z",
+        "delta": 3,
+        "balance": 192,
+        "reason": "Michelin Star",
+        "reasonType": "achievement",
         "userId": "U09Q2TN62TV"
       }
     ],
@@ -56055,6 +56063,12 @@
     ]
   },
   "users": {
+    "U09Q2TN62TV": {
+      "id": "U09Q2TN62TV",
+      "username": "anvar",
+      "displayName": "Anvar",
+      "avatar": "https://avatars.slack-edge.com/2025-12-23/10184377642836_0b98ea11022737a3596b_72.png"
+    },
     "U0A8BB0GR8D": {
       "id": "U0A8BB0GR8D",
       "username": "ragingthund3r3r",
@@ -56072,12 +56086,6 @@
       "username": "jydev",
       "displayName": "Jaydev",
       "avatar": "https://avatars.slack-edge.com/2026-02-03/10433007012820_01604ce61d61f54fbf53_72.png"
-    },
-    "U09Q2TN62TV": {
-      "id": "U09Q2TN62TV",
-      "username": "anvar",
-      "displayName": "Anvar",
-      "avatar": "https://avatars.slack-edge.com/2025-12-23/10184377642836_0b98ea11022737a3596b_72.png"
     },
     "U0A72TGKF7V": {
       "id": "U0A72TGKF7V",
