@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-15T15:52:21.361Z",
+  "lastUpdated": "2026-02-15T16:34:52.287Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -4568,6 +4568,14 @@
         "ts": "2026-02-14T23:09:55.585Z",
         "delta": -9,
         "balance": 79,
+        "reason": "user grant",
+        "reasonType": "",
+        "userId": "U07LKN2HXT3"
+      },
+      {
+        "ts": "2026-02-15T16:06:55.559Z",
+        "delta": 200,
+        "balance": 279,
         "reason": "user grant",
         "reasonType": "",
         "userId": "U07LKN2HXT3"
@@ -15135,6 +15143,14 @@
         "reason": "user grant",
         "reasonType": "",
         "userId": "U091HG1TP6K"
+      },
+      {
+        "ts": "2026-02-15T16:09:35.327Z",
+        "delta": 11,
+        "balance": 81,
+        "reason": "user grant",
+        "reasonType": "",
+        "userId": "U091HG1TP6K"
       }
     ],
     "u091hjg84vd": [
@@ -15312,6 +15328,14 @@
         "balance": 104,
         "reason": "Cookbook Author",
         "reasonType": "achievement",
+        "userId": "U091KE59H5H"
+      },
+      {
+        "ts": "2026-02-15T16:07:17.258Z",
+        "delta": 11,
+        "balance": 115,
+        "reason": "user grant",
+        "reasonType": "",
         "userId": "U091KE59H5H"
       }
     ],
@@ -56107,6 +56131,21 @@
     ]
   },
   "users": {
+    "U091HG1TP6K": {
+      "id": "U091HG1TP6K",
+      "username": "kyle.bendall",
+      "avatar": "https://avatars.slack-edge.com/2025-12-27/10222476722736_6cdf723bd5ac23558306_72.png"
+    },
+    "U091KE59H5H": {
+      "id": "U091KE59H5H",
+      "username": "joooooshp",
+      "avatar": "https://avatars.slack-edge.com/2025-12-26/10191934212674_e3a860ccf84ec572a0a4_72.png"
+    },
+    "U07LKN2HXT3": {
+      "id": "U07LKN2HXT3",
+      "username": "obay.developer",
+      "avatar": "https://avatars.slack-edge.com/2025-10-10/9678158748850_a132430cfd5e052a7045_72.jpg"
+    },
     "U09HW4WA0C9": {
       "id": "U09HW4WA0C9",
       "username": "aaravvishal11",
@@ -56214,11 +56253,6 @@
       "username": "trey.manutes",
       "displayName": "Trey",
       "avatar": "https://secure.gravatar.com/avatar/b9040021914f3127b29b1acc93efeeca.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0003-72.png"
-    },
-    "U07LKN2HXT3": {
-      "id": "U07LKN2HXT3",
-      "username": "obay.developer",
-      "avatar": "https://avatars.slack-edge.com/2025-10-10/9678158748850_a132430cfd5e052a7045_72.jpg"
     },
     "U096KJYT1PU": {
       "id": "U096KJYT1PU",
@@ -56406,11 +56440,6 @@
       "displayName": "Makerlife",
       "avatar": "https://secure.gravatar.com/avatar/cb69cb96489acae56e1ec773882cace9.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0012-72.png"
     },
-    "U091KE59H5H": {
-      "id": "U091KE59H5H",
-      "username": "joooooshp",
-      "avatar": "https://avatars.slack-edge.com/2025-12-26/10191934212674_e3a860ccf84ec572a0a4_72.png"
-    },
     "U0A83LHGY7K": {
       "id": "U0A83LHGY7K",
       "username": "shaikhsamir8442",
@@ -56428,11 +56457,6 @@
       "username": "dhyans",
       "displayName": "dhyan",
       "avatar": "https://avatars.slack-edge.com/2025-12-29/10219185425041_b3571df1286c801f96b0_72.jpg"
-    },
-    "U091HG1TP6K": {
-      "id": "U091HG1TP6K",
-      "username": "kyle.bendall",
-      "avatar": "https://avatars.slack-edge.com/2025-12-27/10222476722736_6cdf723bd5ac23558306_72.png"
     },
     "U099D74CAUR": {
       "id": "U099D74CAUR",
