@@ -617,12 +617,10 @@ async function clearAllCaches() {
         'flavortown_ship_minutes',
         'flavortown-project-repo-map',
         'flavortown_changelog_cache',
-        'flavortown_heatmap_data',
-        'flavortown_funding_charts_data'
+        'flavortown_heatmap_data'
     ];
 
     const GITHUB_REPO_CACHE_PREFIX = 'flavortown-github-repos-';
-    const WISHLIST_KEY = 'shop_wishlist';
 
     const btn = document.getElementById('clearCacheBtn');
     const originalHTML = btn.innerHTML;

@@ -783,7 +783,7 @@ browserAPI.runtime.onMessage.addListener((message, sender, sendResponse) => {
         
         const allKeys = Object.keys(localStorage);
         allKeys.forEach(key => {
-            if (key.startsWith('flavortown-github-repos-') || key.startsWith('shop_wishlist')) {
+            if (key.startsWith('flavortown-github-repos-')) {
                 localStorage.removeItem(key);
             }
         });
@@ -2585,6 +2585,17 @@ function writeProjectUnshippedCache(data) {
     }
 }
 
+let projectBoardStatsRefreshTimer = null;
+function scheduleProjectBoardStatsRefresh() {
+    if (!window.location.pathname.endsWith('/projects')) return;
+    if (projectBoardStatsRefreshTimer) {
+        clearTimeout(projectBoardStatsRefreshTimer);
+    }
+    projectBoardStatsRefreshTimer = setTimeout(() => {
+        initProjectBoardStats();
+    }, 250);
+}
+
 function getCachedProjectUnshipped(projectId) {
     if (!projectId) return null;
     const cache = readProjectUnshippedCache();
@@ -2667,9 +2678,13 @@ async function cleanupUnownedUnshippedCache() {
     }
 }
 
-function setCachedProjectUnshipped(projectId, entry) {
+function setCachedProjectUnshipped(projectId, entry, ownerName = null) {
     if (!projectId || !entry) return;
-    if (!isProjectOwnedByCurrentUser()) return;
+    const currentUser = getCurrentUserName();
+    const ownerMatch = ownerName && currentUser
+        ? normalizeOwnerName(currentUser) === normalizeOwnerName(ownerName)
+        : false;
+    if (!ownerMatch && !isProjectOwnedByCurrentUser()) return;
     const cache = readProjectUnshippedCache();
     cache[projectId] = {
         totalMinutes: Math.max(0, entry.totalMinutes || 0),
@@ -2679,6 +2694,7 @@ function setCachedProjectUnshipped(projectId, entry) {
         updatedAt: Date.now()
     };
     writeProjectUnshippedCache(cache);
+    scheduleProjectBoardStatsRefresh();
 }
 
 function getProjectStatsMinutes(projectId) {
@@ -2733,6 +2749,7 @@ async function fetchProjectUnshippedStats(projectId) {
         const html = await response.text();
         const doc = new DOMParser().parseFromString(html, 'text/html');
         const totalMinutes = getTotalDevlogMinutesFromDocument(doc);
+        const ownerName = getProjectOwnerNameFromDocument(doc);
         const shipPosts = doc.querySelectorAll('article.post--ship, .post--ship');
         let totalShipMinutes = 0;
         let paidShipMinutes = 0;
@@ -2776,7 +2793,7 @@ async function fetchProjectUnshippedStats(projectId) {
         }
 
         if (stats.totalMinutes > 0 || stats.paidCookies > 0) {
-            setCachedProjectUnshipped(projectId, stats);
+            setCachedProjectUnshipped(projectId, stats, ownerName);
         }
 
         return stats;
@@ -3838,12 +3855,39 @@ async function addProjectCardCookieStats() {
     });
 
     await backloadProjectStatsFromIndex(cards);
+    initProjectBoardStats();
 }
 
 async function backloadProjectStatsFromIndex(cards) {
+    let stats = {};
+    try {
+        stats = JSON.parse(localStorage.getItem('flavortown_project_stats') || '{}');
+    } catch (e) {
+        stats = {};
+    }
+
     const projectIds = Array.from(cards)
-        .map(card => (card.id ? card.id.replace('project_', '') : null))
-        .filter(Boolean);
+        .map(card => ({
+            projectId: card.id ? card.id.replace('project_', '') : null,
+            card
+        }))
+        .filter(({ projectId, card }) => {
+            if (!projectId) return false;
+            const entry = stats[projectId];
+            let minutes = entry && typeof entry.minutes === 'number' ? entry.minutes : null;
+            if (minutes === null) {
+                const statLines = card.querySelectorAll('.project-card__stats h5');
+                const timeText = statLines[1]?.textContent?.trim() || '';
+                const hoursMatch = timeText.match(/(\d+)h/);
+                const minsMatch = timeText.match(/(\d+)m/);
+                let parsedMinutes = 0;
+                if (hoursMatch) parsedMinutes += parseInt(hoursMatch[1]) * 60;
+                if (minsMatch) parsedMinutes += parseInt(minsMatch[1]);
+                minutes = parsedMinutes;
+            }
+            return minutes > 0;
+        })
+        .map(({ projectId }) => projectId);
 
     if (!projectIds.length) return;
 
@@ -7357,17 +7401,27 @@ function initProjectBoardStats() {
 
     let totalUnpaidMinutes = 0;
     let totalProjectedCookies = 0;
+    let totalPaidMinutes = 0;
+    let totalPaidCookies = 0;
     Object.keys(stats).forEach(projectId => {
         const cached = getCachedProjectUnshipped(projectId);
-        if (cached && typeof cached.unshippedMinutes === 'number') {
+        if (!cached) return;
+        if (typeof cached.unshippedMinutes === 'number') {
             totalUnpaidMinutes += cached.unshippedMinutes;
-            const unshippedHours = cached.unshippedMinutes / 60;
-            const rate = getMultiplierFromCookies(cached.paidCookies || 0, (cached.paidShipMinutes || 0) / 60);
-            if (rate && unshippedHours > 0) {
-                totalProjectedCookies += Math.round(rate * unshippedHours);
-            }
+        }
+        if (typeof cached.paidShipMinutes === 'number') {
+            totalPaidMinutes += cached.paidShipMinutes;
+        }
+        if (typeof cached.paidCookies === 'number') {
+            totalPaidCookies += cached.paidCookies;
         }
     });
+    if (totalPaidMinutes > 0 && totalUnpaidMinutes > 0) {
+        const efficiency = totalPaidCookies / (totalPaidMinutes / 60);
+        if (isFinite(efficiency) && efficiency > 0) {
+            totalProjectedCookies = Math.round(efficiency * (totalUnpaidMinutes / 60));
+        }
+    }
     const totalUnpaidHours = Math.floor(totalUnpaidMinutes / 60);
     const totalUnpaidMins = totalUnpaidMinutes % 60;
 
@@ -7380,10 +7434,8 @@ function initProjectBoardStats() {
     }
 
     const heading = document.querySelector('.projects-board__heading');
-    if (heading && !document.querySelector('.flavortown-project-stats')) {
-        const statsEl = document.createElement('div');
-        statsEl.className = 'flavortown-project-stats';
-        statsEl.innerHTML = `
+    if (heading) {
+        const statsMarkup = `
             <div class="flavortown-stat-pill" title="Total Projects">
                 📦 <span class="flavortown-stat-value">${totalProjects}</span> Projects
             </div>
@@ -7406,7 +7458,15 @@ function initProjectBoardStats() {
                 1 📝 per <span class="flavortown-stat-value">${freqText}</span>
             </div>` : ''}
         `;
-        heading.appendChild(statsEl);
+        const existingStats = document.querySelector('.flavortown-project-stats');
+        if (existingStats) {
+            existingStats.innerHTML = statsMarkup;
+        } else {
+            const statsEl = document.createElement('div');
+            statsEl.className = 'flavortown-project-stats';
+            statsEl.innerHTML = statsMarkup;
+            heading.appendChild(statsEl);
+        }
     }
 }
 
