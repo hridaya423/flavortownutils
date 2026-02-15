@@ -476,6 +476,7 @@ function migrateCustomColorsToNewFormat(colors) {
 
 function applyTheme(theme, customColors, catppuccinAccent = 'mauve') {
     customColors = migrateCustomColorsToNewFormat(customColors);
+    document.documentElement.dataset.flavortownTheme = theme || 'default';
     writeThemeCache({
         theme: theme || 'default',
         customColors: customColors || {},
@@ -3835,6 +3836,18 @@ async function addProjectCardCookieStats() {
             });
         }
     });
+
+    await backloadProjectStatsFromIndex(cards);
+}
+
+async function backloadProjectStatsFromIndex(cards) {
+    const projectIds = Array.from(cards)
+        .map(card => (card.id ? card.id.replace('project_', '') : null))
+        .filter(Boolean);
+
+    if (!projectIds.length) return;
+
+    await Promise.all(projectIds.map(projectId => fetchProjectUnshippedStats(projectId)));
 }
 
 async function addProjectShowCookieStat(forceRefresh = false) {
@@ -3989,6 +4002,21 @@ async function addProjectShowCookieStat(forceRefresh = false) {
         if (estimate?.overallScore) {
             const scoreText = `~ avg ⭐ ${formatScoreValue(estimate.overallScore)}`;
             detailsRow.appendChild(createProjectShowStat(scoreText));
+        }
+
+        const cachedUnshipped = projectId ? getCachedProjectUnshipped(projectId) : null;
+        const unshippedMinutes = cachedUnshipped?.unshippedMinutes || sinceLastShipMinutes;
+        if (unshippedMinutes > 0 && minutes > 0) {
+            const unshippedHours = (unshippedMinutes / 60).toFixed(1);
+            detailsRow.appendChild(createProjectShowStat(`⏱️ ${unshippedHours}h unpaid`));
+
+            const projectedRate = rate || getMultiplierFromCookies(totalCookies, minutes / 60);
+            if (projectedRate && isFinite(projectedRate)) {
+                const projectedCookies = Math.round(projectedRate * (unshippedMinutes / 60));
+                if (projectedCookies > 0) {
+                    detailsRow.appendChild(createProjectShowStat(`🍪 ~${projectedCookies.toLocaleString()}`));
+                }
+            }
         }
 
         const detailsParent = statsWrapper.parentNode || statsWrapper;

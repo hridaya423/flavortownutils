@@ -1400,6 +1400,37 @@
     margin-top: 8px;
 }
 
+[data-flavortown-theme="default"] .post--ship .flavortown-project-votes {
+    background: rgba(0, 0, 0, 0.18) !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    border-left: 3px solid rgba(255, 255, 255, 0.38) !important;
+    color: #fdf6e3 !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-flavortown-theme="default"] .post--ship .flavortown-project-votes svg {
+    fill: #f6e1a1 !important;
+    color: #f6e1a1 !important;
+    opacity: 0.95 !important;
+}
+
+[data-flavortown-theme="default"] .post--ship .flavortown-project-votes > div > div {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: #fdf6e3 !important;
+}
+
+[data-flavortown-theme="default"] .post--ship .flavortown-project-votes .vote-feedback-text,
+[data-flavortown-theme="default"] .post--ship .flavortown-project-votes button,
+[data-flavortown-theme="default"] .post--ship .flavortown-project-votes span {
+    color: #fdf6e3 !important;
+}
+
+[data-flavortown-theme="default"] .post--ship .flavortown-project-votes span[style*="font-size: 0.85em"],
+[data-flavortown-theme="default"] .post--ship .flavortown-project-votes span[style*="font-size: 0.8em"] {
+    color: rgba(253, 246, 227, 0.75) !important;
+}
+
 .flavortown-stat-pill {
     display: inline-flex;
     align-items: center;
