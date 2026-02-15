@@ -59,7 +59,8 @@ const POPUP_THEMES = {
         '--popup-text-dim': '#8b7355',
         '--popup-accent': '#d97706',
         '--popup-accent-dim': '#b45309',
-        '--popup-success': '#38a169'
+        '--popup-success': '#38a169',
+        '--popup-error': '#e53e3e'
     },
     'catppuccin': {
         '--popup-bg': '#1e1e2e',
@@ -70,7 +71,8 @@ const POPUP_THEMES = {
         '--popup-text-dim': '#a6adc8',
         '--popup-accent': '#cba6f7',
         '--popup-accent-dim': '#b4befe',
-        '--popup-success': '#a6e3a1'
+        '--popup-success': '#a6e3a1',
+        '--popup-error': '#f38ba8'
     },
     'sea': {
         '--popup-bg': '#0a192f',
@@ -81,7 +83,8 @@ const POPUP_THEMES = {
         '--popup-text-dim': '#8892b0',
         '--popup-accent': '#66d9ef',
         '--popup-accent-dim': '#7fdbca',
-        '--popup-success': '#7fdbca'
+        '--popup-success': '#7fdbca',
+        '--popup-error': '#ff6b6b'
     },
     'overcooked': {
         '--popup-bg': '#1a0f0f',
@@ -92,7 +95,8 @@ const POPUP_THEMES = {
         '--popup-text-dim': '#feb2b2',
         '--popup-accent': '#ed8936',
         '--popup-accent-dim': '#fbd38d',
-        '--popup-success': '#68d391'
+        '--popup-success': '#68d391',
+        '--popup-error': '#f56565'
     },
     'custom': null
 };
@@ -207,6 +211,8 @@ function setupEventListeners() {
         shortcutBtn.addEventListener('click', () => beginShortcutCapture(shortcutBtn));
     }
     shortcutReset?.addEventListener('click', () => resetShortcut(shortcutBtn));
+
+    document.getElementById('clearCacheBtn')?.addEventListener('click', clearAllCaches);
 }
 
 function setTheme(theme) {
@@ -601,4 +607,85 @@ function downloadJson(data, filename) {
     link.download = filename;
     link.click();
     URL.revokeObjectURL(url);
+}
+
+async function clearAllCaches() {
+    const CACHE_KEYS_TO_CLEAR = [
+        'flavortown_project_stats',
+        'flavortown_project_unshipped',
+        'flavortown_ship_payouts',
+        'flavortown_ship_minutes',
+        'flavortown-project-repo-map',
+        'flavortown_changelog_cache',
+        'flavortown_heatmap_data',
+        'flavortown_funding_charts_data'
+    ];
+
+    const GITHUB_REPO_CACHE_PREFIX = 'flavortown-github-repos-';
+    const WISHLIST_KEY = 'shop_wishlist';
+
+    const btn = document.getElementById('clearCacheBtn');
+    const originalHTML = btn.innerHTML;
+    btn.disabled = true;
+    btn.classList.add('popup__cache-btn--clearing');
+    btn.innerHTML = '<span class="popup__cache-icon">🧹</span>Clearing...';
+
+    try {
+        const allSyncKeys = await browserAPI.storage.sync.get(null);
+        const syncKeysToRemove = Object.keys(allSyncKeys).filter(key =>
+            CACHE_KEYS_TO_CLEAR.includes(key) ||
+            key.startsWith(GITHUB_REPO_CACHE_PREFIX)
+        );
+
+        if (syncKeysToRemove.length > 0) {
+            await browserAPI.storage.sync.remove(syncKeysToRemove);
+        }
+
+        const tabs = await browserAPI.tabs.query({ url: 'https://flavortown.hackclub.com/*' });
+        if (tabs.length > 0) {
+            await Promise.all(tabs.map(async (tab) => {
+                try {
+                    await browserAPI.tabs.sendMessage(tab.id, {
+                        type: 'CLEAR_CACHES',
+                        keys: CACHE_KEYS_TO_CLEAR
+                    });
+                } catch (error) {
+                    console.warn('Clear cache message failed:', tab.id, error.message);
+                }
+            }));
+
+            await Promise.all(tabs.map(async (tab) => {
+                try {
+                    await browserAPI.tabs.reload(tab.id);
+                } catch (error) {
+                    console.warn('Tab reload failed:', tab.id, error.message);
+                }
+            }));
+        }
+
+        btn.classList.remove('popup__cache-btn--clearing');
+        btn.innerHTML = '<span class="popup__cache-icon">✓</span>Cleared!';
+        btn.classList.add('popup__cache-btn--success');
+
+        setTimeout(() => {
+            btn.innerHTML = originalHTML;
+            btn.classList.remove('popup__cache-btn--success');
+            btn.disabled = false;
+        }, 2000);
+
+        showStatus('Cache cleared! Page reloading...');
+    } catch (error) {
+        console.error('Clear cache failed:', error);
+        btn.classList.remove('popup__cache-btn--clearing');
+        btn.innerHTML = '<span class="popup__cache-icon">✗</span>Failed';
+        btn.classList.add('popup__cache-btn--error');
+
+        setTimeout(() => {
+            btn.innerHTML = originalHTML;
+            btn.classList.remove('popup__cache-btn--error');
+            btn.disabled = false;
+        }, 2000);
+
+        showStatus('Failed to clear cache', true);
+    }
 }

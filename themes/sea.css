@@ -3932,3 +3932,85 @@ code {
 .flavortown-heatmap-legend-cell.level-4-blended {
     background: #6bc5d8 !important;
 }
+
+.xp-window-wrapper .window {
+    background: var(--sea-dark) !important;
+    border-color: var(--sea-mid) !important;
+    box-shadow: 0 8px 32px rgba(10, 22, 40, 0.5), 0 0 0 1px var(--sea-mid) !important;
+}
+
+.xp-window-wrapper .title-bar {
+    background: linear-gradient(180deg, var(--sea-cyan) 0%, var(--sea-wave) 100%) !important;
+    border-bottom-color: var(--sea-surface) !important;
+}
+
+.xp-window-wrapper .title-bar-text {
+    color: var(--sea-abyss) !important;
+    font-weight: 600 !important;
+    text-shadow: none !important;
+}
+
+.xp-window-wrapper .title-bar-controls button {
+    background: var(--sea-mid) !important;
+    border-color: var(--sea-surface) !important;
+    color: var(--sea-white) !important;
+}
+
+.xp-window-wrapper .title-bar-controls button:hover {
+    background: var(--sea-surface) !important;
+    filter: brightness(1.1) !important;
+}
+
+.xp-window-wrapper .title-bar-controls button[aria-label="Close"] {
+    background: var(--sea-coral) !important;
+    border-color: var(--sea-wave) !important;
+}
+
+.xp-window-wrapper .title-bar-controls button[aria-label="Close"]:hover {
+    background: var(--sea-gold) !important;
+}
+
+.xp-window-wrapper .window-body {
+    background: var(--sea-dark) !important;
+    color: var(--sea-white) !important;
+}
+
+.xp-window-wrapper .window-body p {
+    color: var(--sea-mist) !important;
+}
+
+.xp-window-wrapper .window-body button {
+    background: var(--sea-mid) !important;
+    border-color: var(--sea-surface) !important;
+    color: var(--sea-white) !important;
+}
+
+.xp-window-wrapper .window-body button:hover {
+    background: var(--sea-surface) !important;
+    border-color: var(--sea-cyan) !important;
+}
+
+.xp-window-wrapper .window-body button:first-of-type {
+    background: var(--sea-cyan) !important;
+    border-color: var(--sea-cyan) !important;
+    color: var(--sea-abyss) !important;
+}
+
+.xp-window-wrapper .window-body button:first-of-type:hover {
+    background: var(--sea-mist) !important;
+    border-color: var(--sea-mist) !important;
+}
+
+.xp-window-wrapper__resize-handle {
+    background: var(--sea-mid) !important;
+}
+
+.xp-window-wrapper__external-link button[aria-label="Maximize"] {
+    background: var(--sea-mid) !important;
+    border-color: var(--sea-surface) !important;
+}
+
+.xp-window-wrapper__external-link button[aria-label="Maximize"]:hover {
+    background: var(--sea-surface) !important;
+    filter: brightness(1.1) !important;
+}

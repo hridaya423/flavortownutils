@@ -3882,3 +3882,85 @@ code {
 .flavortown-heatmap-legend-cell.level-4-blended {
     background: #b8d4e6 !important;
 }
+
+.xp-window-wrapper .window {
+    background: var(--ctp-surface0) !important;
+    border-color: var(--ctp-surface1) !important;
+    box-shadow: 0 8px 32px rgba(17, 17, 27, 0.5), 0 0 0 1px var(--ctp-surface1) !important;
+}
+
+.xp-window-wrapper .title-bar {
+    background: linear-gradient(180deg, var(--ctp-accent) 0%, color-mix(in srgb, var(--ctp-accent) 80%, var(--ctp-crust)) 100%) !important;
+    border-bottom-color: color-mix(in srgb, var(--ctp-accent) 70%, var(--ctp-crust)) !important;
+}
+
+.xp-window-wrapper .title-bar-text {
+    color: var(--ctp-crust) !important;
+    font-weight: 600 !important;
+    text-shadow: none !important;
+}
+
+.xp-window-wrapper .title-bar-controls button {
+    background: var(--ctp-surface0) !important;
+    border-color: var(--ctp-surface1) !important;
+    color: var(--ctp-text) !important;
+}
+
+.xp-window-wrapper .title-bar-controls button:hover {
+    background: var(--ctp-surface1) !important;
+    filter: brightness(1.1) !important;
+}
+
+.xp-window-wrapper .title-bar-controls button[aria-label="Close"] {
+    background: var(--ctp-red) !important;
+    border-color: color-mix(in srgb, var(--ctp-red) 80%, var(--ctp-crust)) !important;
+}
+
+.xp-window-wrapper .title-bar-controls button[aria-label="Close"]:hover {
+    background: color-mix(in srgb, var(--ctp-red) 80%, white) !important;
+}
+
+.xp-window-wrapper .window-body {
+    background: var(--ctp-surface0) !important;
+    color: var(--ctp-text) !important;
+}
+
+.xp-window-wrapper .window-body p {
+    color: var(--ctp-subtext1) !important;
+}
+
+.xp-window-wrapper .window-body button {
+    background: var(--ctp-surface1) !important;
+    border-color: var(--ctp-surface2) !important;
+    color: var(--ctp-text) !important;
+}
+
+.xp-window-wrapper .window-body button:hover {
+    background: var(--ctp-surface2) !important;
+    border-color: var(--ctp-accent) !important;
+}
+
+.xp-window-wrapper .window-body button:first-of-type {
+    background: var(--ctp-accent) !important;
+    border-color: var(--ctp-accent) !important;
+    color: var(--ctp-crust) !important;
+}
+
+.xp-window-wrapper .window-body button:first-of-type:hover {
+    background: var(--ctp-lavender) !important;
+    border-color: var(--ctp-lavender) !important;
+}
+
+.xp-window-wrapper__resize-handle {
+    background: var(--ctp-surface1) !important;
+}
+
+.xp-window-wrapper__external-link button[aria-label="Maximize"] {
+    background: var(--ctp-surface0) !important;
+    border-color: var(--ctp-surface1) !important;
+}
+
+.xp-window-wrapper__external-link button[aria-label="Maximize"]:hover {
+    background: var(--ctp-surface1) !important;
+    filter: brightness(1.1) !important;
+}

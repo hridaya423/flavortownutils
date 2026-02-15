@@ -773,6 +773,27 @@ browserAPI.runtime.onMessage.addListener((message, sender, sendResponse) => {
         scheduleLocalStorageSyncWrite();
         sendResponse({ success: true });
     }
+    if (message.type === 'CLEAR_CACHES') {
+        const keys = message.keys || [];
+        
+        keys.forEach(key => {
+            localStorage.removeItem(key);
+        });
+        
+        const allKeys = Object.keys(localStorage);
+        allKeys.forEach(key => {
+            if (key.startsWith('flavortown-github-repos-') || key.startsWith('shop_wishlist')) {
+                localStorage.removeItem(key);
+            }
+        });
+        
+        window.__shipPayoutsCache = null;
+        window.__changelogDataCache = null;
+        window.__heatmapDataCache = null;
+        window.__fundingChartsDataCache = null;
+        
+        sendResponse({ success: true, cleared: keys.length });
+    }
     return true;
 });
 
@@ -3816,9 +3837,20 @@ async function addProjectCardCookieStats() {
     });
 }
 
-async function addProjectShowCookieStat() {
+async function addProjectShowCookieStat(forceRefresh = false) {
     if (!/\/projects\/\d+$/.test(window.location.pathname)) return;
-    if (document.querySelector('.flavortown-project-cookies-stat')) return;
+    
+    const existingStat = document.querySelector('.flavortown-project-cookies-stat');
+    const existingDetails = document.querySelector('.flavortown-project-cookies-details');
+    const existingCategories = document.querySelector('.flavortown-project-category-stats');
+    
+    if (!forceRefresh && existingStat) {
+        return;
+    }
+    
+    existingStat?.remove();
+    existingDetails?.remove();
+    existingCategories?.remove();
 
     const projectName = getCurrentProjectName();
     if (!projectName) return;
@@ -3920,8 +3952,8 @@ async function addProjectShowCookieStat() {
     }
 
     const detailsParent = statsWrapper.parentNode || statsWrapper;
-    const existingDetails = detailsParent.querySelector('.flavortown-project-cookies-details');
-    if (existingDetails) existingDetails.remove();
+    const detailsToRemove = detailsParent.querySelector('.flavortown-project-cookies-details');
+    if (detailsToRemove) detailsToRemove.remove();
     detailsParent.querySelectorAll('.flavortown-vote-estimate, .flavortown-vote-estimate-pill, .flavortown-vote-estimate-accordion, .flavortown-project-category-stats').forEach(el => el.remove());
 
     if (minutes > 0) {
@@ -14537,7 +14569,7 @@ document.addEventListener('turbo:load', () => {
     }
 });
 
-const EXTENSION_VERSION = chrome.runtime.getManifest().version;
+const EXTENSION_VERSION = browserAPI.runtime.getManifest().version;
 
 const THEME_OPTIONS = [
     { id: 'default', name: 'Default', color: '#ec8b33' },

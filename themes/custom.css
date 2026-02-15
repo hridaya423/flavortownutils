@@ -3880,3 +3880,85 @@ code {
 .flavortown-heatmap-legend-cell.level-4-blended {
     background: #b8d4e6 !important;
 }
+
+.xp-window-wrapper .window {
+    background: var(--custom-bg-surface) !important;
+    border-color: var(--custom-surface-hover) !important;
+    box-shadow: 0 8px 32px rgba(17, 17, 27, 0.5), 0 0 0 1px var(--custom-surface-hover) !important;
+}
+
+.xp-window-wrapper .title-bar {
+    background: linear-gradient(180deg, var(--custom-accent) 0%, color-mix(in srgb, var(--custom-accent) 80%, var(--custom-bg-crust)) 100%) !important;
+    border-bottom-color: color-mix(in srgb, var(--custom-accent) 70%, var(--custom-bg-crust)) !important;
+}
+
+.xp-window-wrapper .title-bar-text {
+    color: var(--custom-accent-text) !important;
+    font-weight: 600 !important;
+    text-shadow: none !important;
+}
+
+.xp-window-wrapper .title-bar-controls button {
+    background: var(--custom-surface-hover) !important;
+    border-color: var(--custom-surface-active) !important;
+    color: var(--custom-text-primary) !important;
+}
+
+.xp-window-wrapper .title-bar-controls button:hover {
+    background: var(--custom-surface-active) !important;
+    filter: brightness(1.1) !important;
+}
+
+.xp-window-wrapper .title-bar-controls button[aria-label="Close"] {
+    background: var(--custom-error) !important;
+    border-color: color-mix(in srgb, var(--custom-error) 80%, var(--custom-bg-crust)) !important;
+}
+
+.xp-window-wrapper .title-bar-controls button[aria-label="Close"]:hover {
+    background: color-mix(in srgb, var(--custom-error) 80%, white) !important;
+}
+
+.xp-window-wrapper .window-body {
+    background: var(--custom-bg-surface) !important;
+    color: var(--custom-text-primary) !important;
+}
+
+.xp-window-wrapper .window-body p {
+    color: var(--custom-text-secondary) !important;
+}
+
+.xp-window-wrapper .window-body button {
+    background: var(--custom-surface-hover) !important;
+    border-color: var(--custom-surface-active) !important;
+    color: var(--custom-text-primary) !important;
+}
+
+.xp-window-wrapper .window-body button:hover {
+    background: var(--custom-surface-active) !important;
+    border-color: var(--custom-accent) !important;
+}
+
+.xp-window-wrapper .window-body button:first-of-type {
+    background: var(--custom-accent) !important;
+    border-color: var(--custom-accent) !important;
+    color: var(--custom-accent-text) !important;
+}
+
+.xp-window-wrapper .window-body button:first-of-type:hover {
+    background: var(--custom-accent-hover) !important;
+    border-color: var(--custom-accent-hover) !important;
+}
+
+.xp-window-wrapper__resize-handle {
+    background: var(--custom-surface-hover) !important;
+}
+
+.xp-window-wrapper__external-link button[aria-label="Maximize"] {
+    background: var(--custom-surface-hover) !important;
+    border-color: var(--custom-surface-active) !important;
+}
+
+.xp-window-wrapper__external-link button[aria-label="Maximize"]:hover {
+    background: var(--custom-surface-active) !important;
+    filter: brightness(1.1) !important;
+}
