@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-15T21:52:11.091Z",
+  "lastUpdated": "2026-02-15T22:27:12.042Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -43215,6 +43215,14 @@
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U0A73LN55TP"
+      },
+      {
+        "ts": "2026-02-15T22:13:01.555Z",
+        "delta": 3,
+        "balance": 1337,
+        "reason": "Michelin Star",
+        "reasonType": "achievement",
+        "userId": "U0A73LN55TP"
       }
     ],
     "u0a73n516ah": [
@@ -56279,6 +56287,11 @@
     ]
   },
   "users": {
+    "U0A73LN55TP": {
+      "id": "U0A73LN55TP",
+      "username": "aaronzach11",
+      "avatar": "https://secure.gravatar.com/avatar/f8f7d9b4abed97dede4055f7b25ec85a.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0009-72.png"
+    },
     "U099D74CAUR": {
       "id": "U099D74CAUR",
       "username": "mittal.rishabh2010",
@@ -56408,11 +56421,6 @@
       "username": "remo.kaljuste",
       "displayName": "BnaJns",
       "avatar": "https://avatars.slack-edge.com/2025-12-08/10080343547076_87459fece6fa6a936cc2_72.jpg"
-    },
-    "U0A73LN55TP": {
-      "id": "U0A73LN55TP",
-      "username": "aaronzach11",
-      "avatar": "https://secure.gravatar.com/avatar/f8f7d9b4abed97dede4055f7b25ec85a.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0009-72.png"
     },
     "U093R7D3XGC": {
       "id": "U093R7D3XGC",
