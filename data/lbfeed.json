@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-15T04:35:23.267Z",
+  "lastUpdated": "2026-02-15T05:58:21.988Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -6903,6 +6903,14 @@
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U07V12XBSF6"
+      },
+      {
+        "ts": "2026-02-15T05:50:08.296Z",
+        "delta": 43,
+        "balance": 310,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U07V12XBSF6"
       }
     ],
     "u07v73eef42": [
@@ -11220,6 +11228,14 @@
         "balance": 6,
         "reason": "tutorial",
         "reasonType": "",
+        "userId": "U089MN4B2E7"
+      },
+      {
+        "ts": "2026-02-15T05:51:46.375Z",
+        "delta": 57,
+        "balance": 63,
+        "reason": "payout",
+        "reasonType": "payout",
         "userId": "U089MN4B2E7"
       }
     ],
@@ -55973,6 +55989,17 @@
     ]
   },
   "users": {
+    "U089MN4B2E7": {
+      "id": "U089MN4B2E7",
+      "username": "shasarita23",
+      "displayName": "89RIDDHI",
+      "avatar": "https://secure.gravatar.com/avatar/dc7c350d8c78d103e876de90fa5df8bb.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0022-72.png"
+    },
+    "U07V12XBSF6": {
+      "id": "U07V12XBSF6",
+      "username": "praneetnrana",
+      "avatar": "https://avatars.slack-edge.com/2024-11-06/7981633353766_2c1d416704c08bf78e03_72.png"
+    },
     "U0A79MT63MG": {
       "id": "U0A79MT63MG",
       "username": "poorneshk9",
@@ -56098,12 +56125,6 @@
       "username": "saif",
       "displayName": "Saif (A8K)",
       "avatar": "https://avatars.slack-edge.com/2025-04-04/8718809197329_286f155c27b6ce1c9cb2_72.jpg"
-    },
-    "U089MN4B2E7": {
-      "id": "U089MN4B2E7",
-      "username": "shasarita23",
-      "displayName": "89RIDDHI",
-      "avatar": "https://secure.gravatar.com/avatar/dc7c350d8c78d103e876de90fa5df8bb.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0022-72.png"
     },
     "U0A8EFD3CUQ": {
       "id": "U0A8EFD3CUQ",
@@ -56444,11 +56465,6 @@
       "username": "jharkhandguy",
       "displayName": "jharkhandguy",
       "avatar": "https://secure.gravatar.com/avatar/228db22e67ac076959e7f7535eb39737.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0000-72.png"
-    },
-    "U07V12XBSF6": {
-      "id": "U07V12XBSF6",
-      "username": "praneetnrana",
-      "avatar": "https://avatars.slack-edge.com/2024-11-06/7981633353766_2c1d416704c08bf78e03_72.png"
     },
     "U09683EA86L": {
       "id": "U09683EA86L",
