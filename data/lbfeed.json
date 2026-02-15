@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-15T16:34:52.287Z",
+  "lastUpdated": "2026-02-15T17:27:35.297Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -14543,6 +14543,14 @@
         "reason": "Home Cookin'",
         "reasonType": "achievement",
         "userId": "U08T0C846F6"
+      },
+      {
+        "ts": "2026-02-15T16:48:30.262Z",
+        "delta": 2,
+        "balance": 20,
+        "reason": "Recipe Notes",
+        "reasonType": "achievement",
+        "userId": "U08T0C846F6"
       }
     ],
     "u08t4jqjrja": [
@@ -19870,6 +19878,14 @@
         "balance": 1200,
         "reason": "user grant",
         "reasonType": "",
+        "userId": "U093U1MM8H4"
+      },
+      {
+        "ts": "2026-02-15T17:15:13.784Z",
+        "delta": 29,
+        "balance": 1229,
+        "reason": "payout",
+        "reasonType": "payout",
         "userId": "U093U1MM8H4"
       }
     ],
@@ -56131,6 +56147,18 @@
     ]
   },
   "users": {
+    "U093U1MM8H4": {
+      "id": "U093U1MM8H4",
+      "username": "hungchi970104",
+      "displayName": "Hung-Chi Wang",
+      "avatar": "https://avatars.slack-edge.com/2025-07-01/9157068578752_0459174f9e6efff0b989_72.png"
+    },
+    "U08T0C846F6": {
+      "id": "U08T0C846F6",
+      "username": "21shampate",
+      "displayName": "Shameel P",
+      "avatar": "https://avatars.slack-edge.com/2025-07-07/9177203578800_48b469689dc57cde5c1e_72.png"
+    },
     "U091HG1TP6K": {
       "id": "U091HG1TP6K",
       "username": "kyle.bendall",
@@ -57009,12 +57037,6 @@
       "id": "U0825SVHFJL",
       "username": "techedreal",
       "avatar": "https://avatars.slack-edge.com/2025-12-07/10099376260944_616f006eb6847aed4221_72.jpg"
-    },
-    "U093U1MM8H4": {
-      "id": "U093U1MM8H4",
-      "username": "hungchi970104",
-      "displayName": "Hung-Chi Wang",
-      "avatar": "https://avatars.slack-edge.com/2025-07-01/9157068578752_0459174f9e6efff0b989_72.png"
     },
     "U09JFS1BU2V": {
       "id": "U09JFS1BU2V",
@@ -58727,12 +58749,6 @@
       "username": "dylantseng1201",
       "displayName": "Deelan",
       "avatar": "https://secure.gravatar.com/avatar/7883072435df0302a79d8cfa71cf11c0.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0022-72.png"
-    },
-    "U08T0C846F6": {
-      "id": "U08T0C846F6",
-      "username": "21shampate",
-      "displayName": "Shameel P",
-      "avatar": "https://avatars.slack-edge.com/2025-07-07/9177203578800_48b469689dc57cde5c1e_72.png"
     },
     "U092HJQPGLT": {
       "id": "U092HJQPGLT",
