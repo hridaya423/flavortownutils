@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-16T15:10:24.118Z",
+  "lastUpdated": "2026-02-16T16:07:31.501Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -22296,6 +22296,14 @@
         "balance": 72,
         "reason": "shop purchase",
         "reasonType": "",
+        "userId": "U09A7GEM760"
+      },
+      {
+        "ts": "2026-02-16T15:23:10.085Z",
+        "delta": 17,
+        "balance": 89,
+        "reason": "payout",
+        "reasonType": "payout",
         "userId": "U09A7GEM760"
       }
     ],
@@ -56185,6 +56193,16 @@
         "userId": "U0ACQAZSEC9"
       }
     ],
+    "u0ad3mlc07l": [
+      {
+        "ts": "2026-02-16T15:47:39.803Z",
+        "delta": 14,
+        "balance": 30,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U0AD3MLC07L"
+      }
+    ],
     "u0ad5l22c8g": [
       {
         "ts": "2026-02-03T04:40:27.981Z",
@@ -56459,6 +56477,17 @@
     ]
   },
   "users": {
+    "U0AD3MLC07L": {
+      "id": "U0AD3MLC07L",
+      "username": "bebowagdy666",
+      "displayName": "bebowagdy666",
+      "avatar": "https://secure.gravatar.com/avatar/f8ce3780c107f29a5bdec6573c434a22.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0018-72.png"
+    },
+    "U09A7GEM760": {
+      "id": "U09A7GEM760",
+      "username": "sadiyameem123",
+      "avatar": "https://avatars.slack-edge.com/2025-12-13/10144998433360_d12c0c70edd22615e94d_72.png"
+    },
     "U0A81UKS2JU": {
       "id": "U0A81UKS2JU",
       "username": "punithkumar.cse",
@@ -57562,11 +57591,6 @@
       "username": "the_cubidian",
       "displayName": "The Cubidian",
       "avatar": "https://avatars.slack-edge.com/2025-06-09/9020487880196_42d2f06d2aecea35d9ad_72.png"
-    },
-    "U09A7GEM760": {
-      "id": "U09A7GEM760",
-      "username": "sadiyameem123",
-      "avatar": "https://avatars.slack-edge.com/2025-12-13/10144998433360_d12c0c70edd22615e94d_72.png"
     },
     "U0A9XQ69GAJ": {
       "id": "U0A9XQ69GAJ",
