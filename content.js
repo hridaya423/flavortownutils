@@ -1186,7 +1186,9 @@ function normalizeRepoName(name) {
 
 async function fetchProjectsIndexData() {
     try {
-        const res = await fetch('/projects', { credentials: 'same-origin' });
+        const projectsUrl = toAbsoluteUrl('/projects');
+        if (!projectsUrl) return [];
+        const res = await fetch(projectsUrl, { credentials: 'include' });
         if (!res.ok) return [];
         const html = await res.text();
         const doc = new DOMParser().parseFromString(html, 'text/html');
@@ -1234,12 +1236,15 @@ async function getRepoUrlForProjectName(projectName, forceRefresh = false) {
     if (!match || !match.href) return null;
 
     try {
-        const res = await fetch(match.href, { credentials: 'same-origin' });
+        const projectUrl = toAbsoluteUrl(match.href);
+        if (!projectUrl) return null;
+        const res = await fetch(projectUrl, { credentials: 'include' });
         if (!res.ok) return null;
         const html = await res.text();
         const doc = new DOMParser().parseFromString(html, 'text/html');
         const owner = getProjectOwnerNameFromDocument(doc);
-        if (owner && normalizeOwnerName(owner) !== normalizeOwnerName(getCurrentUserName())) return null;
+        const currentUser = getCurrentUserName();
+        if (owner && currentUser && normalizeOwnerName(owner) !== normalizeOwnerName(currentUser)) return null;
         const repoUrl = extractRepoUrlFromProjectDoc(doc);
         if (repoUrl) {
             repoMap[normalizedName] = repoUrl;
@@ -1286,7 +1291,9 @@ async function fetchGithubUsernameFromProfile() {
     if (!href) return null;
 
     try {
-        const res = await fetch(href, { credentials: 'same-origin' });
+        const profileUrl = toAbsoluteUrl(href);
+        if (!profileUrl) return null;
+        const res = await fetch(profileUrl, { credentials: 'include' });
         if (!res.ok) return null;
         const html = await res.text();
         const doc = new DOMParser().parseFromString(html, 'text/html');
@@ -1310,18 +1317,19 @@ async function findGithubUsernameFromProjectsIndex() {
     });
 
     const currentUser = getCurrentUserName();
-    if (!currentUser) return null;
 
     const repoMap = readProjectRepoMap();
 
     for (const project of sorted) {
         try {
-            const res = await fetch(project.href, { credentials: 'same-origin' });
+            const projectUrl = toAbsoluteUrl(project.href);
+            if (!projectUrl) continue;
+            const res = await fetch(projectUrl, { credentials: 'include' });
             if (!res.ok) continue;
             const html = await res.text();
             const doc = new DOMParser().parseFromString(html, 'text/html');
             const owner = getProjectOwnerNameFromDocument(doc);
-            if (!owner || normalizeOwnerName(owner) !== normalizeOwnerName(currentUser)) continue;
+            if (currentUser && (!owner || normalizeOwnerName(owner) !== normalizeOwnerName(currentUser))) continue;
 
             const repoUrl = extractRepoUrlFromProjectDoc(doc);
             if (!repoUrl) continue;
@@ -2684,7 +2692,8 @@ function setCachedProjectUnshipped(projectId, entry, ownerName = null) {
     const ownerMatch = ownerName && currentUser
         ? normalizeOwnerName(currentUser) === normalizeOwnerName(ownerName)
         : false;
-    if (!ownerMatch && !isProjectOwnedByCurrentUser()) return;
+    const allowWhenOwnerUnknown = ownerName && !currentUser;
+    if (!ownerMatch && !allowWhenOwnerUnknown && !isProjectOwnedByCurrentUser()) return;
     const cache = readProjectUnshippedCache();
     cache[projectId] = {
         totalMinutes: Math.max(0, entry.totalMinutes || 0),
@@ -2743,8 +2752,14 @@ async function fetchProjectUnshippedStats(projectId) {
     if (!projectId) return null;
 
     try {
-        const response = await fetch(`/projects/${projectId}`, { credentials: 'same-origin' });
-        if (!response.ok) return null;
+        const projectUrl = toAbsoluteUrl(`/projects/${projectId}`);
+        if (!projectUrl) {
+            return null;
+        }
+        const response = await fetch(projectUrl, { credentials: 'include' });
+        if (!response.ok) {
+            return null;
+        }
 
         const html = await response.text();
         const doc = new DOMParser().parseFromString(html, 'text/html');
@@ -2955,13 +2970,53 @@ function updateHeatmapDataForProject(projectSlug, projectName, devlogData) {
 }
 
 const API_BASE_URL = 'https://flavortown.hackclub.com/api/v1';
+function toAbsoluteUrl(pathOrUrl) {
+    if (!pathOrUrl) return null;
+    try {
+        return new URL(pathOrUrl, window.location.origin).toString();
+    } catch (e) {
+        return null;
+    }
+}
 
-function getApiKey() {
-    return localStorage.getItem('flavortown_api_key');
+async function fetchApiKeyFromSettings() {
+    try {
+        const res = await fetch('/my/settings', { credentials: 'include' });
+        if (!res.ok) return null;
+        const html = await res.text();
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        const apiKeyDisplay = doc.querySelector('.api-key-display');
+        if (!apiKeyDisplay) return null;
+        const keyText = apiKeyDisplay.textContent.trim();
+        if (!keyText || keyText === 'No API Key, press generate' || keyText.length <= 10) return null;
+        return keyText;
+    } catch (e) {
+        return null;
+    }
+}
+
+async function getApiKey() {
+    const cached = localStorage.getItem('flavortown_api_key');
+    if (cached) return cached;
+    try {
+        const syncResult = await browserAPI.storage.sync.get(['flavortown_api_key']);
+        const syncKey = syncResult?.flavortown_api_key;
+        if (syncKey) {
+            localStorage.setItem('flavortown_api_key', syncKey);
+            return syncKey;
+        }
+    } catch (e) {
+    }
+    const fromSettings = await fetchApiKeyFromSettings();
+    if (fromSettings) {
+        localStorage.setItem('flavortown_api_key', fromSettings);
+        return fromSettings;
+    }
+    return null;
 }
 
 async function apiFetch(endpoint) {
-    const apiKey = getApiKey();
+    let apiKey = await getApiKey();
     if (!apiKey) {
         throw new Error('No API key found. Please visit your account settings to generate one.');
     }
@@ -2972,11 +3027,17 @@ async function apiFetch(endpoint) {
             'Accept': 'application/json',
             'X-Flavortown-Ext-135': 'true'
         },
-        credentials: 'same-origin'
+        credentials: 'include'
     });
     
     if (!response.ok) {
         if (response.status === 401) {
+            localStorage.removeItem('flavortown_api_key');
+            apiKey = await fetchApiKeyFromSettings();
+            if (apiKey) {
+                localStorage.setItem('flavortown_api_key', apiKey);
+                return apiFetch(endpoint);
+            }
             throw new Error('Invalid API key. Please regenerate your API key in account settings.');
         }
         throw new Error(`API error: ${response.status}`);
@@ -2993,7 +3054,9 @@ async function sleep(ms) {
 
 async function fetchProjectIdsFromPage() {
     try {
-        const response = await fetch('/projects', { credentials: 'same-origin' });
+        const projectsUrl = toAbsoluteUrl('/projects');
+        if (!projectsUrl) return [];
+        const response = await fetch(projectsUrl, { credentials: 'include' });
         if (!response.ok) return [];
 
         const html = await response.text();
@@ -7163,6 +7226,10 @@ function captureApiKey() {
 
     if (keyText && keyText !== 'No API Key, press generate' && keyText.length > 10) {
         localStorage.setItem('flavortown_api_key', keyText);
+        try {
+            browserAPI.storage.sync.set({ flavortown_api_key: keyText });
+        } catch (e) {
+        }
         return;
     }
 
