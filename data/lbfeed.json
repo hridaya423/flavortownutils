@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-16T08:53:38.484Z",
+  "lastUpdated": "2026-02-16T09:58:24.714Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -15326,6 +15326,14 @@
         "ts": "2026-01-31T13:03:19.291Z",
         "delta": 537,
         "balance": 587,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U091KALMG3Y"
+      },
+      {
+        "ts": "2026-02-16T09:50:51.057Z",
+        "delta": 1264,
+        "balance": 1851,
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U091KALMG3Y"
@@ -34446,6 +34454,14 @@
         "ts": "2026-02-11T02:55:46.746Z",
         "delta": 238,
         "balance": 373,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U0A5EMEKU3Z"
+      },
+      {
+        "ts": "2026-02-16T09:55:19.041Z",
+        "delta": 216,
+        "balance": 589,
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U0A5EMEKU3Z"
@@ -56411,6 +56427,16 @@
     ]
   },
   "users": {
+    "U0A5EMEKU3Z": {
+      "id": "U0A5EMEKU3Z",
+      "username": "vishalya18",
+      "avatar": "https://secure.gravatar.com/avatar/0a45c7b164a8e5aca04def11393219dd.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0026-72.png"
+    },
+    "U091KALMG3Y": {
+      "id": "U091KALMG3Y",
+      "username": "braxtonhood23",
+      "avatar": "https://avatars.slack-edge.com/2026-01-22/10336148649699_bd08305f939082ce41ab_72.jpg"
+    },
     "U0AEY1LHE8M": {
       "id": "U0AEY1LHE8M",
       "username": "sparescaffolding",
@@ -57181,11 +57207,6 @@
       "username": "thelateparrot42",
       "displayName": "late-parrot",
       "avatar": "https://avatars.slack-edge.com/2026-02-10/10484186493926_6d19c1559660687496cd_72.png"
-    },
-    "U0A5EMEKU3Z": {
-      "id": "U0A5EMEKU3Z",
-      "username": "vishalya18",
-      "avatar": "https://secure.gravatar.com/avatar/0a45c7b164a8e5aca04def11393219dd.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0026-72.png"
     },
     "U078VN0UU2K": {
       "id": "U078VN0UU2K",
@@ -58050,11 +58071,6 @@
       "username": "leul2027",
       "displayName": "GB114",
       "avatar": "https://avatars.slack-edge.com/2025-12-30/10201793686691_867872b57eaea1a369a3_72.png"
-    },
-    "U091KALMG3Y": {
-      "id": "U091KALMG3Y",
-      "username": "braxtonhood23",
-      "avatar": "https://avatars.slack-edge.com/2026-01-22/10336148649699_bd08305f939082ce41ab_72.jpg"
     },
     "U0AC0RGRJF8": {
       "id": "U0AC0RGRJF8",
