@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-16T19:11:35.333Z",
+  "lastUpdated": "2026-02-16T19:54:36.397Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -38459,6 +38459,14 @@
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U0A5WSLGHUY"
+      },
+      {
+        "ts": "2026-02-16T19:13:47.929Z",
+        "delta": 16,
+        "balance": 315,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U0A5WSLGHUY"
       }
     ],
     "u0a5x6h719u": [
@@ -56687,6 +56695,12 @@
     ]
   },
   "users": {
+    "U0A5WSLGHUY": {
+      "id": "U0A5WSLGHUY",
+      "username": "loekoerlemans",
+      "displayName": "loekman",
+      "avatar": "https://avatars.slack-edge.com/2025-12-27/10200228423684_ab1a91a55d1f00669af3_72.png"
+    },
     "U0A60NZQCTA": {
       "id": "U0A60NZQCTA",
       "username": "jonas.gaden",
@@ -57335,12 +57349,6 @@
       "username": "imshymike",
       "displayName": "miggy",
       "avatar": "https://avatars.slack-edge.com/2025-12-29/10233544972384_2320ba7f6b68cc1843cc_72.png"
-    },
-    "U0A5WSLGHUY": {
-      "id": "U0A5WSLGHUY",
-      "username": "loekoerlemans",
-      "displayName": "loekman",
-      "avatar": "https://avatars.slack-edge.com/2025-12-27/10200228423684_ab1a91a55d1f00669af3_72.png"
     },
     "U0A9FMXLULT": {
       "id": "U0A9FMXLULT",
