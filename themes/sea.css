@@ -4014,3 +4014,8 @@ code {
     background: var(--sea-surface) !important;
     filter: brightness(1.1) !important;
 }
+
+.projects-board__notice {
+    background: #1c3553 !important;
+    outline: 0.4em solid var(--sea-cyan) !important;
+}

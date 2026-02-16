@@ -3964,3 +3964,8 @@ code {
     background: var(--ctp-surface1) !important;
     filter: brightness(1.1) !important;
 }
+
+.projects-board__notice {
+    background: #3c3b4d;
+    outline: 0.4em solid var(--ctp-accent) !important;
+}

@@ -3940,6 +3940,11 @@ code {
     background: #c9882a !important;
 }
 
+.projects-board__notice {
+    background: #4a2222 !important;
+    outline: 0.4em solid var(--overcooked-cyan) !important;
+}
+
 .xp-window-wrapper .window {
     background: var(--overcooked-dark) !important;
     border-color: var(--overcooked-mid) !important;

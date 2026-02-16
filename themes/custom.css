@@ -3962,3 +3962,8 @@ code {
     background: var(--custom-surface-active) !important;
     filter: brightness(1.1) !important;
 }
+
+.projects-board__notice {
+    background: #3c3b4d !important;
+    outline: 0.4em solid var(--custom-accent) !important;
+}
