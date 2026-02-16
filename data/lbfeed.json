@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-16T04:38:39.995Z",
+  "lastUpdated": "2026-02-16T06:07:47.202Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -53431,6 +53431,14 @@
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U0A84EEN34K"
+      },
+      {
+        "ts": "2026-02-16T05:06:42.132Z",
+        "delta": 128,
+        "balance": 529,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U0A84EEN34K"
       }
     ],
     "u0a84p8q7jm": [
@@ -56393,6 +56401,12 @@
     ]
   },
   "users": {
+    "U0A84EEN34K": {
+      "id": "U0A84EEN34K",
+      "username": "sarthakparajuly",
+      "displayName": "sarthakparajuly",
+      "avatar": "https://avatars.slack-edge.com/2026-01-25/10396924960096_542744cf971aebf27cc7_72.jpg"
+    },
     "U093W83M9F0": {
       "id": "U093W83M9F0",
       "username": "sujnanddevadiga",
@@ -57296,12 +57310,6 @@
       "username": "jan.richter2007",
       "displayName": "Hat Dealer",
       "avatar": "https://avatars.slack-edge.com/2025-05-30/8980670397188_afd3aeefffdf1868256a_72.png"
-    },
-    "U0A84EEN34K": {
-      "id": "U0A84EEN34K",
-      "username": "sarthakparajuly",
-      "displayName": "sarthakparajuly",
-      "avatar": "https://avatars.slack-edge.com/2026-01-25/10396924960096_542744cf971aebf27cc7_72.jpg"
     },
     "U0A3VK4GFRN": {
       "id": "U0A3VK4GFRN",
