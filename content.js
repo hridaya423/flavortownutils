@@ -113,6 +113,13 @@ const LOCAL_STORAGE_SYNC_MAX_BYTES = 90000;
 const CHANGELOG_DISMISS_KEY = 'flavortown_changelog_dismissed';
 const CHANGELOG_OVERRIDE_KEY = 'flavortown_changelog_override';
 const CHANGELOG_CACHE_KEY = 'flavortown_changelog_cache';
+const CHANGELOG_FORMAT_KEY = 'flavortown_changelog_format';
+const CHANGELOG_FORMATS = [
+    { id: 'subject', label: 'Commit message' },
+    { id: 'subject-hash', label: 'Commit message (hash)' },
+    { id: 'hash-subject', label: '(hash) Commit message' },
+    { id: 'hash', label: '(hash) only' }
+];
 const CHANGELOG_CACHE_TTL = 10 * 60 * 1000;
 const CHANGELOG_MAX_COMMITS = 200;
 const CHANGELOG_RECENT_COMMITS = 10;
@@ -4801,6 +4808,38 @@ function normalizeCommitForChangelog(commit) {
     return normalized;
 }
 
+function getChangelogFormat() {
+    return localStorage.getItem(CHANGELOG_FORMAT_KEY) || 'subject';
+}
+
+function setChangelogFormat(value) {
+    if (!value) return;
+    localStorage.setItem(CHANGELOG_FORMAT_KEY, value);
+}
+
+function formatChangelogCommitLabel(commit, format) {
+    const subject = commit.subject || 'Update';
+    const hash = commit.sha ? commit.sha.slice(0, 7) : '';
+    switch (format) {
+        case 'hash':
+            return hash || subject;
+        case 'hash-subject':
+            return hash ? `(${hash}) ${subject}` : subject;
+        case 'subject-hash':
+            return hash ? `${subject} (${hash})` : subject;
+        case 'subject':
+        default:
+            return subject;
+    }
+}
+
+function getChangelogCommitParts(commit) {
+    return {
+        subject: commit.subject || 'Update',
+        hash: commit.sha ? commit.sha.slice(0, 7) : ''
+    };
+}
+
 function formatCommitSubject(message) {
     if (!message) return '';
     return message.split('\n')[0].trim();
@@ -4811,16 +4850,34 @@ function escapeMarkdown(text) {
     return text.replace(/([\\\[\]])/g, '\\$1');
 }
 
-function buildChangelogMarkdown(commits) {
+function buildChangelogMarkdown(commits, format = null) {
     const lines = ['### Changelog'];
+    const selectedFormat = format || getChangelogFormat();
     commits.forEach(commit => {
-        const subject = escapeMarkdown(commit.subject || 'Update');
+        const { subject, hash } = getChangelogCommitParts(commit);
+        const escapedSubject = escapeMarkdown(subject);
+        const escapedHash = escapeMarkdown(hash);
         const url = commit.url || '';
         if (url) {
-            lines.push(`- [${subject}](${url})`);
-        } else {
-            lines.push(`- ${subject}`);
+            if (selectedFormat === 'hash') {
+                lines.push(`- [${escapedHash || escapedSubject}](${url})`);
+                return;
+            }
+            if (selectedFormat === 'hash-subject') {
+                const hashLink = escapedHash ? `[${escapedHash}](${url})` : `[${escapedSubject}](${url})`;
+                lines.push(`- ${hashLink} ${escapedSubject}`);
+                return;
+            }
+            if (selectedFormat === 'subject-hash') {
+                const hashLink = escapedHash ? `[${escapedHash}](${url})` : `[${escapedSubject}](${url})`;
+                lines.push(`- ${escapedSubject} (${hashLink})`);
+                return;
+            }
+            lines.push(`- [${escapedSubject}](${url})`);
+            return;
         }
+        const label = escapeMarkdown(formatChangelogCommitLabel(commit, selectedFormat));
+        lines.push(`- ${label}`);
     });
     return lines.join('\n');
 }
@@ -5030,7 +5087,7 @@ async function initDevlogChangelog(wrapper) {
         </div>
         <div class="flavortown-changelog__actions">
             <button type="button" class="btn btn--brown" data-action="insert">Insert into devlog</button>
-            <button type="button" class="btn btn--borderless" data-action="adjust">Adjust range</button>
+            <button type="button" class="btn btn--borderless" data-action="adjust">Options</button>
         </div>
         <div class="flavortown-changelog__adjust is-hidden" data-role="adjust">
             <label class="flavortown-changelog__adjust-label">Start date/time</label>
@@ -5039,6 +5096,8 @@ async function initDevlogChangelog(wrapper) {
             <select class="flavortown-changelog__input" data-role="commit-select">
                 <option value="">Select a commit</option>
             </select>
+            <label class="flavortown-changelog__adjust-label">Commit display</label>
+            <select class="flavortown-changelog__input" data-role="format-select"></select>
             <div class="flavortown-changelog__adjust-actions">
                 <button type="button" class="btn btn--borderless" data-action="reset">Use last devlog</button>
                 <button type="button" class="btn btn--brown" data-action="apply">Apply</button>
@@ -5056,6 +5115,7 @@ async function initDevlogChangelog(wrapper) {
     const adjustPanel = card.querySelector('[data-role="adjust"]');
     const sinceInput = card.querySelector('[data-role="since-input"]');
     const commitSelect = card.querySelector('[data-role="commit-select"]');
+    const formatSelect = card.querySelector('[data-role="format-select"]');
     const insertBtn = card.querySelector('[data-action="insert"]');
     const adjustBtn = card.querySelector('[data-action="adjust"]');
     const refreshBtn = card.querySelector('[data-action="refresh"]');
@@ -5123,6 +5183,14 @@ async function initDevlogChangelog(wrapper) {
             sinceInput.value = toLocalDatetimeInputValue(date);
         }
     });
+
+    if (formatSelect) {
+        const selectedFormat = getChangelogFormat();
+        formatSelect.innerHTML = CHANGELOG_FORMATS
+            .map(option => `<option value="${option.id}">${option.label}</option>`)
+            .join('');
+        formatSelect.value = selectedFormat;
+    }
 
     if (!repoSlug) {
         setButtonsDisabled(true);
@@ -5262,20 +5330,23 @@ async function initDevlogChangelog(wrapper) {
         }
         statusEl.textContent = `${displayCommits.length} commit${displayCommits.length === 1 ? '' : 's'} found`;
 
-        const renderList = (limit = 6) => {
+        let currentLimit = 6;
+        const renderList = (limit = currentLimit) => {
+            currentLimit = limit;
             listEl.innerHTML = '';
             displayCommits.slice(0, limit).forEach(commit => {
                 const item = document.createElement('li');
-                const subject = commit.subject || 'Update';
+                const format = formatSelect?.value || getChangelogFormat();
+                const label = formatChangelogCommitLabel(commit, format);
                 if (commit.url) {
                     const link = document.createElement('a');
                     link.href = commit.url;
                     link.target = '_blank';
                     link.rel = 'noopener';
-                    link.textContent = subject;
+                    link.textContent = label;
                     item.appendChild(link);
                 } else {
-                    item.textContent = subject;
+                    item.textContent = label;
                 }
                 listEl.appendChild(item);
             });
@@ -5294,9 +5365,15 @@ async function initDevlogChangelog(wrapper) {
             moreBtn.style.display = 'none';
         };
 
+        formatSelect?.addEventListener('change', () => {
+            setChangelogFormat(formatSelect.value);
+            renderList();
+        });
+
         if (insertBtn) {
             insertBtn.onclick = () => {
-                const markdown = buildChangelogMarkdown(displayCommits);
+                const format = formatSelect?.value || getChangelogFormat();
+                const markdown = buildChangelogMarkdown(displayCommits, format);
                 insertChangelogMarkdown(devlogTextarea, markdown);
                 statusEl.textContent = 'Inserted into devlog.';
                 card.classList.add('is-dismissed');
