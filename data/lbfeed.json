@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-16T11:42:30.093Z",
+  "lastUpdated": "2026-02-16T13:08:43.853Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -19519,6 +19519,14 @@
         "reason": "Michelin Star",
         "reasonType": "achievement",
         "userId": "U0930DMR4BA"
+      },
+      {
+        "ts": "2026-02-16T12:34:19.772Z",
+        "delta": 93,
+        "balance": 111,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U0930DMR4BA"
       }
     ],
     "u0938mzg8q6": [
@@ -20102,6 +20110,14 @@
         "balance": 666,
         "reason": "payout",
         "reasonType": "payout",
+        "userId": "U093W83M9F0"
+      },
+      {
+        "ts": "2026-02-16T12:58:50.553Z",
+        "delta": -40,
+        "balance": 626,
+        "reason": "shop purchase",
+        "reasonType": "",
         "userId": "U093W83M9F0"
       }
     ],
@@ -56435,6 +56451,18 @@
     ]
   },
   "users": {
+    "U093W83M9F0": {
+      "id": "U093W83M9F0",
+      "username": "sujnanddevadiga",
+      "displayName": "Shryas",
+      "avatar": "https://avatars.slack-edge.com/2025-11-28/10023563434081_9dbad2eb7807f08ebf41_72.jpg"
+    },
+    "U0930DMR4BA": {
+      "id": "U0930DMR4BA",
+      "username": "vejas.sereicikas",
+      "displayName": "vejas",
+      "avatar": "https://avatars.slack-edge.com/2025-12-23/10174892452133_aecadf9fa708a9287600_72.jpg"
+    },
     "U09CNHJA5D5": {
       "id": "U09CNHJA5D5",
       "username": "divyansh.hack.h205",
@@ -56462,12 +56490,6 @@
       "username": "sarthakparajuly",
       "displayName": "sarthakparajuly",
       "avatar": "https://avatars.slack-edge.com/2026-01-25/10396924960096_542744cf971aebf27cc7_72.jpg"
-    },
-    "U093W83M9F0": {
-      "id": "U093W83M9F0",
-      "username": "sujnanddevadiga",
-      "displayName": "Shryas",
-      "avatar": "https://avatars.slack-edge.com/2025-11-28/10023563434081_9dbad2eb7807f08ebf41_72.jpg"
     },
     "U0ACQ0FPVUJ": {
       "id": "U0ACQ0FPVUJ",
@@ -56758,12 +56780,6 @@
       "username": "4corea.dylan",
       "displayName": "Dili",
       "avatar": "https://avatars.slack-edge.com/2025-07-29/9272738165700_bee538c170cd6f2b9968_72.png"
-    },
-    "U0930DMR4BA": {
-      "id": "U0930DMR4BA",
-      "username": "vejas.sereicikas",
-      "displayName": "vejas",
-      "avatar": "https://avatars.slack-edge.com/2025-12-23/10174892452133_aecadf9fa708a9287600_72.jpg"
     },
     "U08U32QC3ME": {
       "id": "U08U32QC3ME",
