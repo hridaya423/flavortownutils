@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-17T10:14:52.748Z",
+  "lastUpdated": "2026-02-17T11:14:02.949Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -44107,6 +44107,14 @@
         "reason": "user grant",
         "reasonType": "",
         "userId": "U0A7776A2MT"
+      },
+      {
+        "ts": "2026-02-17T10:30:16.381Z",
+        "delta": -40,
+        "balance": 29,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A7776A2MT"
       }
     ],
     "u0a778jgv18": [
@@ -56839,6 +56847,11 @@
     ]
   },
   "users": {
+    "U0A7776A2MT": {
+      "id": "U0A7776A2MT",
+      "username": "kavyanshkhaitan11",
+      "avatar": "https://secure.gravatar.com/avatar/2dd3b461e79afda6fbbc61878d93304e.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0003-72.png"
+    },
     "U09T6KV30KX": {
       "id": "U09T6KV30KX",
       "username": "aymane.berhoua",
@@ -58461,11 +58474,6 @@
       "id": "U0A6RDDRWKH",
       "username": "miraclecutelemon",
       "avatar": "https://secure.gravatar.com/avatar/2078817cd538e05d41b1ec6684cfe24e.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0004-72.png"
-    },
-    "U0A7776A2MT": {
-      "id": "U0A7776A2MT",
-      "username": "kavyanshkhaitan11",
-      "avatar": "https://secure.gravatar.com/avatar/2dd3b461e79afda6fbbc61878d93304e.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0003-72.png"
     },
     "U0938MZG8Q6": {
       "id": "U0938MZG8Q6",
