@@ -1,6 +1,32 @@
 {
-  "lastUpdated": "2026-02-17T20:40:48.757Z",
+  "lastUpdated": "2026-02-17T21:39:43.597Z",
   "entries": {
+    "u01mphkfz7s": [
+      {
+        "ts": "2026-02-17T21:04:12.227Z",
+        "delta": 5,
+        "balance": 5,
+        "reason": "Very Fried",
+        "reasonType": "achievement",
+        "userId": "U01MPHKFZ7S"
+      },
+      {
+        "ts": "2026-02-17T21:04:12.551Z",
+        "delta": 3,
+        "balance": 8,
+        "reason": "Home Cookin'",
+        "reasonType": "achievement",
+        "userId": "U01MPHKFZ7S"
+      },
+      {
+        "ts": "2026-02-17T21:04:12.807Z",
+        "delta": 2,
+        "balance": 10,
+        "reason": "Recipe Notes",
+        "reasonType": "achievement",
+        "userId": "U01MPHKFZ7S"
+      }
+    ],
     "u04aqnzrjq5": [
       {
         "ts": "2026-01-24T05:09:23.054Z",
@@ -8447,6 +8473,14 @@
         "delta": 2,
         "balance": 10,
         "reason": "Recipe Notes",
+        "reasonType": "achievement",
+        "userId": "U082U8N45B5"
+      },
+      {
+        "ts": "2026-02-17T20:58:46.992Z",
+        "delta": 15,
+        "balance": 25,
+        "reason": "Cookbook Author",
         "reasonType": "achievement",
         "userId": "U082U8N45B5"
       }
@@ -56309,6 +56343,14 @@
         "reason": "tutorial",
         "reasonType": "",
         "userId": "U0AAVSGH3HC"
+      },
+      {
+        "ts": "2026-02-17T21:04:14.711Z",
+        "delta": 16,
+        "balance": 30,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U0AAVSGH3HC"
       }
     ],
     "u0ab4awmbk3": [
@@ -57061,6 +57103,24 @@
     ]
   },
   "users": {
+    "U0AAVSGH3HC": {
+      "id": "U0AAVSGH3HC",
+      "username": "hackclub8",
+      "displayName": "46009361",
+      "avatar": "https://avatars.slack-edge.com/2026-01-29/10433002833120_f403f3da778a713c59df_72.png"
+    },
+    "U01MPHKFZ7S": {
+      "id": "U01MPHKFZ7S",
+      "username": "treegs",
+      "displayName": "radioblahaj",
+      "avatar": "https://avatars.slack-edge.com/2026-02-07/10490993924912_8c0dbaef623df6ccd6b5_72.png"
+    },
+    "U082U8N45B5": {
+      "id": "U082U8N45B5",
+      "username": "orangebox759",
+      "displayName": "filyentity",
+      "avatar": "https://avatars.slack-edge.com/2026-01-26/10376218950566_00703e269e05e3e94766_72.png"
+    },
     "U0AAS4E80N6": {
       "id": "U0AAS4E80N6",
       "username": "louiskhooxunfu",
@@ -57228,12 +57288,6 @@
       "username": "remo.kaljuste",
       "displayName": "BnaJns",
       "avatar": "https://avatars.slack-edge.com/2025-12-08/10080343547076_87459fece6fa6a936cc2_72.jpg"
-    },
-    "U0AAVSGH3HC": {
-      "id": "U0AAVSGH3HC",
-      "username": "hackclub8",
-      "displayName": "46009361",
-      "avatar": "https://avatars.slack-edge.com/2026-01-29/10433002833120_f403f3da778a713c59df_72.png"
     },
     "U0A5WSLGHUY": {
       "id": "U0A5WSLGHUY",
@@ -61016,12 +61070,6 @@
       "username": "bradurbiz",
       "displayName": "bradurbiz",
       "avatar": "https://secure.gravatar.com/avatar/cdd82b60dcc2e8f8c0806fc6a1d94c58.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0003-72.png"
-    },
-    "U082U8N45B5": {
-      "id": "U082U8N45B5",
-      "username": "orangebox759",
-      "displayName": "filyentity",
-      "avatar": "https://avatars.slack-edge.com/2026-01-26/10376218950566_00703e269e05e3e94766_72.png"
     },
     "U05D9BJD4UC": {
       "id": "U05D9BJD4UC",
