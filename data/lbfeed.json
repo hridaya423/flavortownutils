@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-17T12:03:06.575Z",
+  "lastUpdated": "2026-02-17T13:26:26.453Z",
   "entries": {
     "u04aqnzrjq5": [
       {
@@ -26409,6 +26409,16 @@
         "userId": "U09JFS1BU2V"
       }
     ],
+    "u09jmhj0b8e": [
+      {
+        "ts": "2026-02-17T13:12:10.470Z",
+        "delta": 747,
+        "balance": 757,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U09JMHJ0B8E"
+      }
+    ],
     "u09kfqh0ctu": [
       {
         "ts": "2026-01-13T21:11:10.383Z",
@@ -34838,6 +34848,14 @@
         "balance": 32,
         "reason": "Cookbook Author",
         "reasonType": "achievement",
+        "userId": "U0A5GJ8JP5F"
+      },
+      {
+        "ts": "2026-02-17T12:28:34.120Z",
+        "delta": -22,
+        "balance": 10,
+        "reason": "shop purchase",
+        "reasonType": "",
         "userId": "U0A5GJ8JP5F"
       }
     ],
@@ -56863,6 +56881,18 @@
     ]
   },
   "users": {
+    "U09JMHJ0B8E": {
+      "id": "U09JMHJ0B8E",
+      "username": "tally.gay",
+      "displayName": "Tally",
+      "avatar": "https://secure.gravatar.com/avatar/50c5c71fe6295cfd73ce8fdfcc8fc732.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0000-72.png"
+    },
+    "U0A5GJ8JP5F": {
+      "id": "U0A5GJ8JP5F",
+      "username": "playerone99",
+      "displayName": "Joko26",
+      "avatar": "https://avatars.slack-edge.com/2026-02-07/10458110978563_7dcdcad97b993680f9d7_72.jpg"
+    },
     "U08H2BFAB1Q": {
       "id": "U08H2BFAB1Q",
       "username": "raqeeb",
@@ -57954,12 +57984,6 @@
       "username": "animesh_varma",
       "displayName": "animesh_varma",
       "avatar": "https://secure.gravatar.com/avatar/017e40a0997b4825655afc1db99b663d.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0014-72.png"
-    },
-    "U0A5GJ8JP5F": {
-      "id": "U0A5GJ8JP5F",
-      "username": "playerone99",
-      "displayName": "Joko26",
-      "avatar": "https://avatars.slack-edge.com/2026-02-07/10458110978563_7dcdcad97b993680f9d7_72.jpg"
     },
     "U0A54EZSCPK": {
       "id": "U0A54EZSCPK",
