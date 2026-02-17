@@ -4840,6 +4840,23 @@ function getChangelogCommitParts(commit) {
     };
 }
 
+function shortenCommitUrl(url, hash) {
+    if (!url || !hash) return url;
+    try {
+        const parsed = new URL(url);
+        const parts = parsed.pathname.split('/');
+        const commitIndex = parts.findIndex(part => part === 'commit');
+        if (commitIndex >= 0 && parts[commitIndex + 1]) {
+            parts[commitIndex + 1] = hash;
+            parsed.pathname = parts.join('/');
+            return parsed.toString();
+        }
+        return url;
+    } catch (e) {
+        return url;
+    }
+}
+
 function formatCommitSubject(message) {
     if (!message) return '';
     return message.split('\n')[0].trim();
@@ -4858,22 +4875,23 @@ function buildChangelogMarkdown(commits, format = null) {
         const escapedSubject = escapeMarkdown(subject);
         const escapedHash = escapeMarkdown(hash);
         const url = commit.url || '';
+        const shortUrl = shortenCommitUrl(url, hash);
         if (url) {
             if (selectedFormat === 'hash') {
-                lines.push(`- [${escapedHash || escapedSubject}](${url})`);
+                lines.push(`- [${escapedHash || escapedSubject}](${shortUrl})`);
                 return;
             }
             if (selectedFormat === 'hash-subject') {
-                const hashLink = escapedHash ? `[${escapedHash}](${url})` : `[${escapedSubject}](${url})`;
+                const hashLink = escapedHash ? `[${escapedHash}](${shortUrl})` : `[${escapedSubject}](${shortUrl})`;
                 lines.push(`- ${hashLink} ${escapedSubject}`);
                 return;
             }
             if (selectedFormat === 'subject-hash') {
-                const hashLink = escapedHash ? `[${escapedHash}](${url})` : `[${escapedSubject}](${url})`;
+                const hashLink = escapedHash ? `[${escapedHash}](${shortUrl})` : `[${escapedSubject}](${shortUrl})`;
                 lines.push(`- ${escapedSubject} (${hashLink})`);
                 return;
             }
-            lines.push(`- [${escapedSubject}](${url})`);
+            lines.push(`- [${escapedSubject}](${shortUrl})`);
             return;
         }
         const label = escapeMarkdown(formatChangelogCommitLabel(commit, selectedFormat));
