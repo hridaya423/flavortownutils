@@ -12785,6 +12785,77 @@ async function fetchVotesData() {
 var slackEmojiMap = null;
 var slackEmojiIndex = [];
 var slackEmojiPromise = null;
+const EMOJI_USAGE_KEY = 'flavortown_emoji_usage';
+const EMOJI_USAGE_LIMIT = 300;
+const EMOJI_FREQUENT_LIMIT = 8;
+
+function readEmojiUsage() {
+    try {
+        const raw = localStorage.getItem(EMOJI_USAGE_KEY);
+        if (!raw) return {};
+        const parsed = JSON.parse(raw);
+        return parsed && typeof parsed === 'object' ? parsed : {};
+    } catch (e) {
+        return {};
+    }
+}
+
+function writeEmojiUsage(data) {
+    try {
+        localStorage.setItem(EMOJI_USAGE_KEY, JSON.stringify(data || {}));
+    } catch (e) {
+    }
+}
+
+function getEmojiUsageScore(entry, now) {
+    if (!entry) return 0;
+    const count = Math.max(0, entry.count || 0);
+    const lastUsed = entry.lastUsed || 0;
+    const daysAgo = Math.max(0, (now - lastUsed) / (24 * 60 * 60 * 1000));
+    const recencyBoost = Math.max(0, 30 - daysAgo);
+    return count * 10 + recencyBoost;
+}
+
+function getFrequentEmojiNames(limit = EMOJI_FREQUENT_LIMIT, usage = null, now = null, query = '') {
+    if (!slackEmojiIndex.length) return [];
+    const usageMap = usage || readEmojiUsage();
+    const nowTime = now || Date.now();
+    const names = Object.keys(usageMap).filter(name => slackEmojiMap && slackEmojiMap[name]);
+    const filtered = query
+        ? names.filter(name => name.includes(query))
+        : names;
+    return filtered
+        .sort((a, b) => {
+            const diff = getEmojiUsageScore(usageMap[b], nowTime) - getEmojiUsageScore(usageMap[a], nowTime);
+            return diff || a.localeCompare(b);
+        })
+        .slice(0, limit);
+}
+
+function recordEmojiUsage(name, increment = 1) {
+    if (!name) return;
+    const usage = readEmojiUsage();
+    const entry = usage[name] || { count: 0, lastUsed: 0 };
+    entry.count = Math.max(0, entry.count || 0) + Math.max(1, increment || 1);
+    entry.lastUsed = Date.now();
+    usage[name] = entry;
+
+    const keys = Object.keys(usage);
+    if (keys.length > EMOJI_USAGE_LIMIT) {
+        const now = Date.now();
+        const trimmed = keys
+            .sort((a, b) => getEmojiUsageScore(usage[b], now) - getEmojiUsageScore(usage[a], now))
+            .slice(0, EMOJI_USAGE_LIMIT)
+            .reduce((acc, key) => {
+                acc[key] = usage[key];
+                return acc;
+            }, {});
+        writeEmojiUsage(trimmed);
+        return;
+    }
+
+    writeEmojiUsage(usage);
+}
 
 async function fetchSlackEmojiMap() {
     if (slackEmojiMap) return slackEmojiMap;
@@ -12901,24 +12972,38 @@ function buildEmojiMapFromCachet(list) {
 function getEmojiQuery(text, cursor) {
     if (!text || cursor === null || cursor === undefined) return null;
     const before = text.slice(0, cursor);
-    const match = before.match(/:([a-z0-9_+\-]{1,40})$/i);
-    if (!match) return null;
-
-    const token = `:${match[1]}`;
-    const start = before.lastIndexOf(token);
-    if (start < 0) return null;
+    const colonIndex = before.lastIndexOf(':');
+    if (colonIndex < 0) return null;
+    const query = before.slice(colonIndex + 1);
+    if (!/^[a-z0-9_+\-]{0,40}$/i.test(query)) return null;
+    if (!query.length) {
+        const prevChar = colonIndex > 0 ? before[colonIndex - 1] : '';
+        if (prevChar && /[a-z0-9]/i.test(prevChar)) return null;
+    }
     return {
-        start,
+        start: colonIndex,
         end: cursor,
-        query: match[1].toLowerCase(),
+        query: query.toLowerCase(),
     };
 }
 
 function getEmojiMatches(query) {
-    if (!query) return [];
+    if (!slackEmojiIndex.length) return [];
+    const maxResults = 10;
+    const usage = readEmojiUsage();
+    const now = Date.now();
+    const scoreForName = (name) => getEmojiUsageScore(usage[name], now);
+    const compareNames = (a, b) => {
+        const diff = scoreForName(b) - scoreForName(a);
+        return diff || a.localeCompare(b);
+    };
+
+    if (query === '') {
+        return getFrequentEmojiNames(maxResults, usage, now, '')
+            .slice(0, maxResults);
+    }
     const startsWith = [];
     const includes = [];
-    const maxResults = 10;
 
     for (const name of slackEmojiIndex) {
         if (startsWith.length >= maxResults) break;
@@ -12932,6 +13017,9 @@ function getEmojiMatches(query) {
             if (name.includes(query)) includes.push(name);
         }
     }
+
+    startsWith.sort(compareNames);
+    includes.sort(compareNames);
 
     return startsWith.concat(includes).slice(0, maxResults);
 }
@@ -12971,6 +13059,34 @@ function initSlackEmojiAutocomplete(textarea, container) {
     let activeQuery = null;
     let matches = [];
     let selectedIndex = 0;
+    let suppressUsageTracking = false;
+    let emojiUsageSnapshot = {};
+
+    const buildEmojiTokenCounts = (text) => {
+        if (!text) return {};
+        const counts = {};
+        const tokens = text.match(/:([a-z0-9_+\-]{1,40}):/gi) || [];
+        tokens.forEach(token => {
+            const name = token.slice(1, -1).toLowerCase();
+            if (slackEmojiMap && slackEmojiMap[name]) {
+                counts[name] = (counts[name] || 0) + 1;
+            }
+        });
+        return counts;
+    };
+
+    const trackEmojiUsageFromText = () => {
+        if (!slackEmojiMap || !Object.keys(slackEmojiMap).length) return;
+        const currentCounts = buildEmojiTokenCounts(textarea.value || '');
+        Object.keys(currentCounts).forEach(name => {
+            const prev = emojiUsageSnapshot[name] || 0;
+            const diff = currentCounts[name] - prev;
+            if (diff > 0) {
+                recordEmojiUsage(name, diff);
+            }
+        });
+        emojiUsageSnapshot = currentCounts;
+    };
 
     const closeDropdown = () => {
         dropdown.style.display = 'none';
@@ -13009,6 +13125,13 @@ function initSlackEmojiAutocomplete(textarea, container) {
             return;
         }
 
+        if (activeQuery && activeQuery.query === '') {
+            const header = document.createElement('div');
+            header.className = 'flavortown-emoji-suggest__section';
+            header.textContent = 'Frequently used';
+            list.appendChild(header);
+        }
+
         matches.forEach((name, index) => {
             const entry = slackEmojiMap[name];
             if (!entry) return;
@@ -13043,6 +13166,8 @@ function initSlackEmojiAutocomplete(textarea, container) {
         const cursor = before.length + insertText.length;
         textarea.selectionStart = cursor;
         textarea.selectionEnd = cursor;
+        recordEmojiUsage(name, 1);
+        suppressUsageTracking = true;
         textarea.dispatchEvent(new Event('input', { bubbles: true }));
         closeDropdown();
         textarea.focus();
@@ -13054,7 +13179,7 @@ function initSlackEmojiAutocomplete(textarea, container) {
             return;
         }
         const queryInfo = getEmojiQuery(textarea.value, textarea.selectionStart);
-        if (!queryInfo || !queryInfo.query) {
+        if (!queryInfo) {
             closeDropdown();
             return;
         }
@@ -13071,7 +13196,15 @@ function initSlackEmojiAutocomplete(textarea, container) {
         renderDropdown();
     };
 
-    textarea.addEventListener('input', updateSuggestions);
+    textarea.addEventListener('input', () => {
+        if (suppressUsageTracking) {
+            suppressUsageTracking = false;
+            emojiUsageSnapshot = buildEmojiTokenCounts(textarea.value || '');
+        } else {
+            trackEmojiUsageFromText();
+        }
+        updateSuggestions();
+    });
     textarea.addEventListener('click', updateSuggestions);
 
     textarea.addEventListener('keydown', (event) => {
@@ -13103,6 +13236,7 @@ function initSlackEmojiAutocomplete(textarea, container) {
     window.addEventListener('scroll', positionDropdown, true);
 
     fetchSlackEmojiMap().then(() => {
+        trackEmojiUsageFromText();
         updateSuggestions();
     });
 }
