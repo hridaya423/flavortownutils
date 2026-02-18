@@ -5,7 +5,12 @@
   "main": "fetch-votes.js",
   "scripts": {
     "fetch": "node fetch-votes.js",
-    "fetch-emojis": "node fetch-emojis.js"
+    "fetch-emojis": "node fetch-emojis.js",
+    "todo-bot": "node todo-bot.js"
+  },
+  "dependencies": {
+    "@slack/bolt": "^3.17.1",
+    "dotenv": "^16.4.5"
   },
   "engines": {
     "node": ">=18.0.0"

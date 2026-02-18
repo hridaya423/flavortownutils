@@ -2206,6 +2206,256 @@ async function initProjectLinkSuggestionOnProjectShow() {
     byline.insertAdjacentElement('afterend', card);
 }
 
+async function initProjectTodos() {
+    if (!/\/projects\/\d+$/.test(window.location.pathname)) return;
+    if (document.querySelector('.flavortown-todo-card')) return;
+
+    if (!isProjectOwnedByCurrentUser()) return;
+
+    const projectIdMatch = window.location.pathname.match(/\/projects\/(\d+)/);
+    const projectId = projectIdMatch ? projectIdMatch[1] : null;
+    const projectName = getCurrentProjectName();
+    if (!projectId || !projectName) return;
+
+    const isDisabled = localStorage.getItem(PROJECT_TODO_DISABLED_KEY) === 'true';
+    if (isDisabled) return;
+
+    let hiddenMap = {};
+    try {
+        hiddenMap = JSON.parse(localStorage.getItem(PROJECT_TODO_HIDDEN_KEY) || '{}');
+    } catch (e) {
+        hiddenMap = {};
+    }
+    if (hiddenMap && hiddenMap[projectId]) return;
+
+    const showCard = document.querySelector('.project-show-card');
+    const insertTarget = showCard || document.querySelector('.projects-show__container') || document.body;
+
+    const card = document.createElement('details');
+    card.className = 'flavortown-todo-card';
+    card.innerHTML = `
+        <summary class="flavortown-todo-summary">
+            <div class="flavortown-todo-summary-title">Tasks</div>
+            <div class="flavortown-todo-summary-counts"><span class="flavortown-todo-summary-pill"><span class="flavortown-todo-count" data-status="all">0</span></span></div>
+            <span class="flavortown-todo-summary-toggle">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </span>
+        </summary>
+        <div class="flavortown-todo-body">
+            <div class="flavortown-todo-input-row">
+                <input type="text" class="flavortown-todo-input-field" placeholder="Add a task..." />
+                <button type="button" class="flavortown-todo-btn flavortown-todo-btn--icon flavortown-todo-btn--primary" data-action="add" title="Add task">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                </button>
+            </div>
+            <div class="flavortown-todo-tabs" data-role="tabs">
+                <button type="button" class="flavortown-todo-tab is-active" data-status="all">All<span class="flavortown-todo-count" data-status="all">0</span></button>
+                <button type="button" class="flavortown-todo-tab" data-status="todo">Todo<span class="flavortown-todo-count" data-status="todo">0</span></button>
+                <button type="button" class="flavortown-todo-tab" data-status="in_progress">In Progress<span class="flavortown-todo-count" data-status="in_progress">0</span></button>
+                <button type="button" class="flavortown-todo-tab" data-status="done">Done<span class="flavortown-todo-count" data-status="done">0</span></button>
+            </div>
+            <div class="flavortown-todo-list" data-role="list"></div>
+            <div class="flavortown-todo-footer">
+                <div class="flavortown-todo-meta" data-role="meta">Synced just now</div>
+                <div class="flavortown-todo-actions">
+                    <button type="button" class="flavortown-todo-btn flavortown-todo-btn--icon" data-action="refresh" title="Refresh">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+                    </button>
+                    <button type="button" class="flavortown-todo-btn flavortown-todo-btn--icon" data-action="hide" title="Hide for this project">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+                    </button>
+                    <button type="button" class="flavortown-todo-btn flavortown-todo-btn--icon flavortown-todo-btn--danger" data-action="disable" title="Disable tasks">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+
+    if (showCard && showCard.parentNode) {
+        showCard.insertAdjacentElement('afterend', card);
+    } else if (insertTarget?.appendChild) {
+        insertTarget.appendChild(card);
+    }
+
+    const input = card.querySelector('.flavortown-todo-input-field');
+    const addBtn = card.querySelector('[data-action="add"]');
+    const refreshBtn = card.querySelector('[data-action="refresh"]');
+    const disableBtn = card.querySelector('[data-action="disable"]');
+    const hideBtn = card.querySelector('[data-action="hide"]');
+    const listEl = card.querySelector('[data-role="list"]');
+    const tabs = Array.from(card.querySelectorAll('.flavortown-todo-tab'));
+    const counts = Array.from(card.querySelectorAll('.flavortown-todo-count'));
+    const metaEl = card.querySelector('[data-role="meta"]');
+
+    let currentFilter = 'all';
+    let items = [];
+
+    const renderCounts = () => {
+        const totals = { all: 0, todo: 0, in_progress: 0, done: 0 };
+        items.forEach(item => {
+            const key = item.status || 'todo';
+            if (totals[key] !== undefined) totals[key] += 1;
+        });
+        totals.all = items.length;
+        counts.forEach(countEl => {
+            const key = countEl.dataset.status;
+            countEl.textContent = totals[key] || 0;
+        });
+    };
+
+    const renderList = () => {
+        listEl.innerHTML = '';
+        const visible = currentFilter === 'all'
+            ? sortTodos(items)
+            : sortTodos(items).filter(item => item.status === currentFilter);
+        if (!visible.length) {
+            const empty = document.createElement('div');
+            empty.className = 'flavortown-todo-empty';
+            empty.textContent = currentFilter === 'done' ? 'No completed tasks yet.' : 'No tasks yet.';
+            listEl.appendChild(empty);
+            return;
+        }
+
+        visible.forEach(item => {
+            const row = document.createElement('div');
+            row.className = `flavortown-todo-item${item.status === 'done' ? ' is-done' : ''}`;
+
+            const textWrap = document.createElement('div');
+            textWrap.className = 'flavortown-todo-text-wrap';
+
+            const title = document.createElement('span');
+            title.className = 'flavortown-todo-text';
+            title.textContent = item.title;
+            textWrap.appendChild(title);
+
+            if (item.source === 'slack') {
+                const badge = document.createElement('span');
+                badge.className = 'flavortown-todo-badge';
+                const displayName = item.slackDisplayName || item.slackUsername || 'Slack';
+                badge.textContent = displayName;
+                badge.title = `Added by ${displayName} via Slack`;
+                textWrap.appendChild(badge);
+            }
+
+            const controls = document.createElement('div');
+            controls.className = 'flavortown-todo-controls';
+
+            const statusSelect = createTodoStatusSelect(item.status, false);
+            statusSelect.addEventListener('change', () => {
+                const next = statusSelect.value;
+                items = items.map(entry => entry.id === item.id ? { ...entry, status: next, updatedAt: new Date().toISOString() } : entry);
+                writeProjectTodos(projectId, items);
+                renderCounts();
+                renderList();
+            });
+            controls.appendChild(statusSelect);
+
+            if (item.source !== 'slack') {
+                const deleteBtn = document.createElement('button');
+                deleteBtn.type = 'button';
+                deleteBtn.className = 'flavortown-todo-delete';
+                deleteBtn.textContent = '×';
+                deleteBtn.addEventListener('click', () => {
+                    items = items.filter(entry => entry.id !== item.id);
+                    writeProjectTodos(projectId, items);
+                    renderCounts();
+                    renderList();
+                });
+                controls.appendChild(deleteBtn);
+            }
+
+            row.appendChild(textWrap);
+            row.appendChild(controls);
+            listEl.appendChild(row);
+        });
+    };
+
+    const renderTabs = () => {
+        tabs.forEach(tab => {
+            tab.classList.toggle('is-active', tab.dataset.status === currentFilter);
+        });
+        renderCounts();
+        renderList();
+    };
+
+    const addTask = () => {
+        const value = (input.value || '').trim();
+        if (!value) return;
+        const newItem = {
+            id: generateLocalTodoId(),
+            title: value,
+            status: 'todo',
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            source: 'local'
+        };
+        items = [newItem, ...items];
+        writeProjectTodos(projectId, items);
+        input.value = '';
+        currentFilter = 'all';
+        renderTabs();
+    };
+
+    const syncSlackTasks = async (force = false) => {
+        const local = readProjectTodos(projectId);
+        const slackData = await fetchTodoData(force);
+        const tasks = extractTodoTasks(slackData);
+        const filtered = filterSlackTodosForProject(tasks, projectId, projectName, getCurrentUserName());
+        const slackItems = filtered.map(normalizeSlackTodo).filter(Boolean);
+        items = mergeSlackTodos(local.items, slackItems);
+        writeProjectTodos(projectId, items, Date.now());
+        if (metaEl) {
+            const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            metaEl.textContent = `Local tasks + Slack tasks • synced ${time}`;
+        }
+        renderTabs();
+    };
+
+    addBtn?.addEventListener('click', addTask);
+    input?.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            addTask();
+        }
+    });
+
+    refreshBtn?.addEventListener('click', () => syncSlackTasks(true));
+
+    disableBtn?.addEventListener('click', () => {
+        localStorage.setItem(PROJECT_TODO_DISABLED_KEY, 'true');
+        card.remove();
+    });
+
+    hideBtn?.addEventListener('click', () => {
+        let nextHidden = {};
+        try {
+            nextHidden = JSON.parse(localStorage.getItem(PROJECT_TODO_HIDDEN_KEY) || '{}');
+        } catch (e) {
+            nextHidden = {};
+        }
+        nextHidden[projectId] = true;
+        localStorage.setItem(PROJECT_TODO_HIDDEN_KEY, JSON.stringify(nextHidden));
+        card.remove();
+    });
+
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            currentFilter = tab.dataset.status || 'all';
+            renderTabs();
+        });
+    });
+
+    const local = readProjectTodos(projectId);
+    items = Array.isArray(local.items) ? local.items : [];
+    const openItems = items.filter(item => item.status !== 'done');
+    if (openItems.length) {
+        card.open = true;
+    }
+    renderTabs();
+    await syncSlackTasks(false);
+}
+
 function initProjectRepoSuggestions() {
     initProjectLinkSuggestionOnNewProject();
     initProjectLinkSuggestionOnProjectShow();
@@ -4898,6 +5148,218 @@ function buildChangelogMarkdown(commits, format = null) {
         lines.push(`- ${label}`);
     });
     return lines.join('\n');
+}
+
+function readTodoCache() {
+    try {
+        const raw = localStorage.getItem(TODO_CACHE_KEY);
+        if (!raw) return null;
+        const parsed = JSON.parse(raw);
+        if (!parsed || typeof parsed !== 'object') return null;
+        return parsed;
+    } catch (e) {
+        return null;
+    }
+}
+
+function writeTodoCache(data) {
+    try {
+        localStorage.setItem(TODO_CACHE_KEY, JSON.stringify(data || {}));
+    } catch (e) {
+    }
+}
+
+async function fetchTodoData(force = false) {
+    const cached = readTodoCache();
+    if (!force && cached?.updatedAt && Date.now() - cached.updatedAt < TODO_CACHE_TTL) {
+        return cached.data || null;
+    }
+
+    try {
+        const response = await fetch(TODO_JSON_URL);
+        if (!response.ok) {
+            return cached?.data || null;
+        }
+        const data = await response.json();
+        writeTodoCache({ updatedAt: Date.now(), data });
+        return data;
+    } catch (e) {
+        return cached?.data || null;
+    }
+}
+
+function getProjectTodoKey(projectId) {
+    return `${PROJECT_TODO_KEY_PREFIX}${projectId}`;
+}
+
+function readProjectTodos(projectId) {
+    if (!projectId) return { items: [], slackSyncedAt: 0 };
+    try {
+        const raw = localStorage.getItem(getProjectTodoKey(projectId));
+        if (!raw) return { items: [], slackSyncedAt: 0 };
+        const parsed = JSON.parse(raw);
+        if (!parsed || typeof parsed !== 'object') return { items: [], slackSyncedAt: 0 };
+        return {
+            items: Array.isArray(parsed.items) ? parsed.items : [],
+            slackSyncedAt: parsed.slackSyncedAt || 0
+        };
+    } catch (e) {
+        return { items: [], slackSyncedAt: 0 };
+    }
+}
+
+function writeProjectTodos(projectId, items, slackSyncedAt = 0) {
+    if (!projectId) return;
+    try {
+        localStorage.setItem(getProjectTodoKey(projectId), JSON.stringify({
+            items: items || [],
+            slackSyncedAt: slackSyncedAt || Date.now(),
+            updatedAt: Date.now()
+        }));
+    } catch (e) {
+    }
+}
+
+function normalizeTodoStatus(value) {
+    const raw = (value || '').toString().toLowerCase().trim();
+    if (raw === 'in-progress' || raw === 'in progress' || raw === 'doing') return 'in_progress';
+    if (raw === 'done' || raw === 'complete' || raw === 'completed') return 'done';
+    return 'todo';
+}
+
+function generateLocalTodoId() {
+    if (window.crypto?.randomUUID) {
+        return `local_${window.crypto.randomUUID()}`;
+    }
+    return `local_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+}
+
+function normalizeSlackTodo(task) {
+    if (!task) return null;
+    const status = normalizeTodoStatus(task.status);
+    return {
+        id: `slack:${task.id}`,
+        externalId: task.id,
+        title: task.title || task.text || 'Untitled task',
+        description: task.description || '',
+        status,
+        priority: task.priority || 'medium',
+        tags: Array.isArray(task.tags) ? task.tags : [],
+        createdAt: task.createdAt || task.created_at || null,
+        updatedAt: task.updatedAt || task.updated_at || null,
+        source: 'slack',
+        sourceMeta: {
+            slackId: task.createdBy?.slackId || task.createdBy?.slack_id || null,
+            slackName: task.createdBy?.slackName || task.createdBy?.slack_name || null
+        }
+    };
+}
+
+function extractTodoTasks(data) {
+    if (!data) return [];
+    
+    if (data.users && typeof data.users === 'object') {
+        const tasks = [];
+        Object.entries(data.users).forEach(([userKey, userData]) => {
+            if (!userData || !userData.projects) return;
+
+            Object.entries(userData.projects).forEach(([projectKey, project]) => {
+                if (!project) return;
+                const items = project.tasks || [];
+                if (!Array.isArray(items)) return;
+
+                items.forEach(item => {
+                    tasks.push({
+                        ...item,
+                        project: { name: project.name || projectKey },
+                        slackDisplayName: userKey
+                    });
+                });
+            });
+        });
+        return tasks;
+    }
+    return [];
+}
+
+function filterSlackTodosForProject(tasks, projectId, projectName, currentUser) {
+    if (!tasks.length) return [];
+    const normalizedProjectName = normalizeProjectName(projectName || '');
+    const normalizedUser = currentUser ? normalizeOwnerName(currentUser) : null;
+
+    return tasks.filter(task => {
+        if (!task || task.deleted) return false;
+        const project = task.project || {};
+        const matchesId = project.id && String(project.id) === String(projectId);
+        const matchesName = project.name && normalizeProjectName(project.name) === normalizedProjectName;
+        if (!matchesId && !matchesName) return false;
+
+        const target = task.targetUser || task.user || null;
+        const targetName = target?.flavortownName || target?.flavortown_name || null;
+        if (targetName && normalizedUser) {
+            return normalizeOwnerName(targetName) === normalizedUser;
+        }
+        if (targetName && !normalizedUser) return false;
+        return true;
+    });
+}
+
+function mergeSlackTodos(localItems, slackItems) {
+    const local = Array.isArray(localItems) ? localItems : [];
+    const slackMap = new Map();
+    local.forEach(item => {
+        if (item?.source === 'slack' && item.externalId) {
+            slackMap.set(item.externalId, item);
+        }
+    });
+
+    const mergedSlack = [];
+    const slackIds = new Set();
+
+    slackItems.forEach(task => {
+        if (!task) return;
+        slackIds.add(task.externalId);
+        const existing = slackMap.get(task.externalId);
+        if (existing) {
+            mergedSlack.push({
+                ...existing,
+                ...task,
+                id: existing.id || task.id,
+                source: 'slack',
+                externalId: task.externalId
+            });
+        } else {
+            mergedSlack.push(task);
+        }
+    });
+
+    const localOnly = local.filter(item => item?.source !== 'slack');
+    return [...localOnly, ...mergedSlack];
+}
+
+function sortTodos(items) {
+    return (items || []).slice().sort((a, b) => {
+        const statusA = TODO_STATUS_ORDER.indexOf(a.status || 'todo');
+        const statusB = TODO_STATUS_ORDER.indexOf(b.status || 'todo');
+        if (statusA !== statusB) return statusA - statusB;
+        const updatedA = new Date(a.updatedAt || a.createdAt || 0).getTime();
+        const updatedB = new Date(b.updatedAt || b.createdAt || 0).getTime();
+        return updatedB - updatedA;
+    });
+}
+
+function createTodoStatusSelect(status, disabled) {
+    const select = document.createElement('select');
+    select.className = 'flavortown-todo-status';
+    select.disabled = !!disabled;
+    Object.entries(TODO_STATUS_LABELS).forEach(([value, label]) => {
+        const option = document.createElement('option');
+        option.value = value;
+        option.textContent = label;
+        select.appendChild(option);
+    });
+    select.value = status || 'todo';
+    return select;
 }
 
 function insertChangelogMarkdown(textarea, markdown) {
@@ -7774,6 +8236,7 @@ function init() {
     setTimeout(enhanceLeaderboardPage, 0);
     enhanceAdminPage();
     initProjectRepoSuggestions();
+    initProjectTodos();
     initPayoutVotesTextRestructure();
 
     setTimeout(checkAchievements, 2000);
@@ -9254,6 +9717,7 @@ document.addEventListener('turbo:load', () => {
     enhanceAdminPage();
     initVotesFeature();
     initProjectRepoSuggestions();
+    initProjectTodos();
 });
 
 function ensureUploadToolsContainer(fileUploadArea) {
@@ -12769,6 +13233,18 @@ setupCommandPalette();
 
 const VOTES_JSON_URL = 'https://raw.githubusercontent.com/hridaya423/flavortownutils/refs/heads/main/data/votes.json';
 const LEADERBOARD_FEED_URL = 'https://raw.githubusercontent.com/hridaya423/flavortownutils/refs/heads/main/data/lbfeed.json';
+const TODO_JSON_URL = 'https://raw.githubusercontent.com/hridaya423/flavortownutils/refs/heads/main/data/todos.json';
+const TODO_CACHE_KEY = 'flavortown_todos_cache';
+const TODO_CACHE_TTL = 60 * 1000;
+const PROJECT_TODO_KEY_PREFIX = 'flavortown_project_todos_v1:';
+const PROJECT_TODO_DISABLED_KEY = 'flavortown_project_todos_disabled';
+const PROJECT_TODO_HIDDEN_KEY = 'flavortown_project_todos_hidden';
+const TODO_STATUS_ORDER = ['todo', 'in_progress', 'done'];
+const TODO_STATUS_LABELS = {
+    todo: 'Todo',
+    in_progress: 'In progress',
+    done: 'Done'
+};
 const SLACK_EMOJI_MARKDOWN_SIZE = 30;
 
 async function fetchVotesData() {
