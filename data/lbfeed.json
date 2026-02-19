@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-19T08:07:12.415Z",
+  "lastUpdated": "2026-02-19T09:12:32.236Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -424,6 +424,14 @@
         "balance": 379,
         "reason": "payout",
         "reasonType": "payout",
+        "userId": "U0616280E6P"
+      },
+      {
+        "ts": "2026-02-19T08:12:53.994Z",
+        "delta": 25,
+        "balance": 404,
+        "reason": "user grant",
+        "reasonType": "",
         "userId": "U0616280E6P"
       }
     ],
@@ -15545,6 +15553,14 @@
         "reason": "user grant",
         "reasonType": "",
         "userId": "U090LAT6QKB"
+      },
+      {
+        "ts": "2026-02-19T08:57:57.981Z",
+        "delta": -40,
+        "balance": 1,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U090LAT6QKB"
       }
     ],
     "u090xjf4nsd": [
@@ -28254,6 +28270,14 @@
         "balance": 87,
         "reason": "payout",
         "reasonType": "payout",
+        "userId": "U09TNMQ9MCZ"
+      },
+      {
+        "ts": "2026-02-19T08:22:24.174Z",
+        "delta": 10,
+        "balance": 97,
+        "reason": "Line Cook",
+        "reasonType": "achievement",
         "userId": "U09TNMQ9MCZ"
       }
     ],
@@ -58261,11 +58285,21 @@
     ]
   },
   "users": {
+    "U090LAT6QKB": {
+      "id": "U090LAT6QKB",
+      "username": "dinosaur890123",
+      "avatar": "https://avatars.slack-edge.com/2025-12-09/10077925689238_2149e0ba18d7110e7a3f_72.png"
+    },
     "U09TNMQ9MCZ": {
       "id": "U09TNMQ9MCZ",
       "username": "code1fan2",
       "displayName": "Cris[Code2Craft]",
       "avatar": "https://avatars.slack-edge.com/2026-02-03/10418543137911_40b80baf7061ec33256b_72.png"
+    },
+    "U0616280E6P": {
+      "id": "U0616280E6P",
+      "username": "aram",
+      "avatar": "https://avatars.slack-edge.com/2026-01-20/10335517998837_4aceb7340b2e2dc9c883_72.png"
     },
     "U0ABED0LLCX": {
       "id": "U0ABED0LLCX",
@@ -58494,11 +58528,6 @@
       "displayName": "Pratik",
       "avatar": "https://avatars.slack-edge.com/2026-01-05/10218091023719_c45d9087ea3ee217af67_72.jpg"
     },
-    "U0616280E6P": {
-      "id": "U0616280E6P",
-      "username": "aram",
-      "avatar": "https://avatars.slack-edge.com/2026-01-20/10335517998837_4aceb7340b2e2dc9c883_72.png"
-    },
     "U09H03AC7AL": {
       "id": "U09H03AC7AL",
       "username": "mihaidraghici023",
@@ -58716,11 +58745,6 @@
       "username": "amusoni240",
       "displayName": "Amu",
       "avatar": "https://avatars.slack-edge.com/2026-01-21/10344452941906_71cb5f3b39b98fdc5b37_72.png"
-    },
-    "U090LAT6QKB": {
-      "id": "U090LAT6QKB",
-      "username": "dinosaur890123",
-      "avatar": "https://avatars.slack-edge.com/2025-12-09/10077925689238_2149e0ba18d7110e7a3f_72.png"
     },
     "U07JEDAMFV3": {
       "id": "U07JEDAMFV3",
