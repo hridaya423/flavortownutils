@@ -13233,7 +13233,7 @@ setupCommandPalette();
 
 const VOTES_JSON_URL = 'https://raw.githubusercontent.com/hridaya423/flavortownutils/refs/heads/main/data/votes.json';
 const LEADERBOARD_FEED_URL = 'https://raw.githubusercontent.com/hridaya423/flavortownutils/refs/heads/main/data/lbfeed.json';
-const TODO_JSON_URL = 'https://raw.githubusercontent.com/hridaya423/flavortownutils/refs/heads/main/data/todos.json';
+const TODO_JSON_URL = 'https://flavortown-todo-bot.hridayahoney.workers.dev/todos.json';
 const TODO_CACHE_KEY = 'flavortown_todos_cache';
 const TODO_CACHE_TTL = 60 * 1000;
 const PROJECT_TODO_KEY_PREFIX = 'flavortown_project_todos_v1:';

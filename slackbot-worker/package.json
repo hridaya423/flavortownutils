@@ -1,0 +1,12 @@
+{
+  "name": "flavortown-todo-bot-worker",
+  "version": "1.0.0",
+  "description": "Flavortown Todo Bot for Cloudflare Workers",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^3.0.0"
+  }
+}
