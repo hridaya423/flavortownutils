@@ -1,7 +1,119 @@
 {
-  "lastUpdated": "2026-02-19T12:00:38.810Z",
-  "totalVotes": 4937,
+  "lastUpdated": "2026-02-19T13:47:53.870Z",
+  "totalVotes": 4953,
   "votes": [
+    {
+      "project": "Zen AI",
+      "feedback": "",
+      "votedBy": "U099NBQJ3LP",
+      "timestamp": "2026-02-19T13:44:42.724Z",
+      "slackTs": "1771508682.724639"
+    },
+    {
+      "project": "MusicVisualizer",
+      "feedback": "",
+      "votedBy": "U091U38C2CA",
+      "timestamp": "2026-02-19T13:41:06.555Z",
+      "slackTs": "1771508466.555419"
+    },
+    {
+      "project": "To-read",
+      "feedback": "",
+      "votedBy": "U091U38C2CA",
+      "timestamp": "2026-02-19T13:40:48.753Z",
+      "slackTs": "1771508448.753189"
+    },
+    {
+      "project": "How much do you look like a celebrity?",
+      "feedback": "",
+      "votedBy": "U091U38C2CA",
+      "timestamp": "2026-02-19T13:39:18.438Z",
+      "slackTs": "1771508358.438799"
+    },
+    {
+      "project": "Pygame Metroidvania Game",
+      "feedback": "",
+      "votedBy": "U091U38C2CA",
+      "timestamp": "2026-02-19T13:38:39.643Z",
+      "slackTs": "1771508319.643059"
+    },
+    {
+      "project": "OpenRadar",
+      "feedback": "I think we can add various other keys as well rather than specifically AI APIs",
+      "votedBy": "U0A848RGULQ",
+      "timestamp": "2026-02-19T13:14:31.584Z",
+      "slackTs": "1771506871.584439"
+    },
+    {
+      "project": "4loyak!",
+      "feedback": "",
+      "votedBy": "U0A848RGULQ",
+      "timestamp": "2026-02-19T13:12:44.379Z",
+      "slackTs": "1771506764.379239"
+    },
+    {
+      "project": "How much do you look like a celebrity?",
+      "feedback": "I think we can better handle the cases where the face isn't visible since if I didn't show my face, it would still say not found rather than no face detected",
+      "votedBy": "U0A848RGULQ",
+      "timestamp": "2026-02-19T13:12:28.635Z",
+      "slackTs": "1771506748.635709"
+    },
+    {
+      "project": "THE FORTUNE TELLER V2",
+      "feedback": "It could have been made better if you used human-written content",
+      "votedBy": "U0A848RGULQ",
+      "timestamp": "2026-02-19T13:10:21.261Z",
+      "slackTs": "1771506621.261869"
+    },
+    {
+      "project": "GoldIN",
+      "feedback": "I think i am fit for working as artist. Nice one there",
+      "votedBy": "U0A778JGV18",
+      "timestamp": "2026-02-19T12:51:10.807Z",
+      "slackTs": "1771505470.807549"
+    },
+    {
+      "project": "OpenRadar",
+      "feedback": "Time to steal some api.:shushing_face:",
+      "votedBy": "U0A778JGV18",
+      "timestamp": "2026-02-19T12:48:45.918Z",
+      "slackTs": "1771505325.918459"
+    },
+    {
+      "project": "4loyak!",
+      "feedback": "Love the look of the page.",
+      "votedBy": "U0A778JGV18",
+      "timestamp": "2026-02-19T12:46:14.195Z",
+      "slackTs": "1771505174.195329"
+    },
+    {
+      "project": "How much do you look like a celebrity?",
+      "feedback": "Haha got matched with the weekend. Nice one i mean the project.",
+      "votedBy": "U0A778JGV18",
+      "timestamp": "2026-02-19T12:44:09.687Z",
+      "slackTs": "1771505049.687339"
+    },
+    {
+      "project": "How much do you look like a celebrity?",
+      "feedback": "Really awesome project, though my celebrity lookalike was wrong since me and jbalvin literally don't even look a bit similar. But otherwise great implementation of facial recognition patterns.",
+      "votedBy": "Unknown",
+      "timestamp": "2026-02-19T12:37:52.629Z",
+      "slackTs": "1771504672.629469"
+    },
+    {
+      "project": "Zen AI",
+      "feedback": "Wow this is an awesome project. So my favourite thing is that it's like multiplatform where you've got windows and web. But an problem I encountered was that i wasn't able to download the windows app because i didn't have the necessary permission. so to fix that you will need to give the guests permission to the document you have stored on your bucket via the roles thingy in appwrite. also why is the login splited on to a diffrent site when you're already using appwrite. It has a built in Authentication system. but other then that the concpet itself is very cool",
+      "votedBy": "Unknown",
+      "timestamp": "2026-02-19T12:33:21.936Z",
+      "slackTs": "1771504401.936099"
+    },
+    {
+      "project": "hackCLIMap",
+      "feedback": "Nice idea...I might even daily drive this thing. My recommendation would be:\n1. Pimp up the landing page (it's fine for a cli tool though, just fix the bottom scrollbar thingy)\n2. The devlogs could be more descriptive since it's a 5 hour project or you add more devlogs.\n\nBut other then that cool project!",
+      "votedBy": "Unknown",
+      "timestamp": "2026-02-19T12:28:19.489Z",
+      "slackTs": "1771504099.489629"
+    },
     {
       "project": "Tomdeax2's First Project",
       "feedback": "",
@@ -35926,6 +36038,12 @@
       "username": "paulndeh86",
       "displayName": "PappyZuh",
       "avatar": "https://avatars.slack-edge.com/2026-01-21/10349472862340_d020afa4f706e2cc9778_72.jpg"
+    },
+    "U091U38C2CA": {
+      "id": "U091U38C2CA",
+      "username": "riccardotedeschi247",
+      "displayName": "Ricardo",
+      "avatar": "https://avatars.slack-edge.com/2025-06-17/9058731769734_cc5d771dbbfe7d21ab5b_72.jpg"
     }
   }
 }
