@@ -5294,6 +5294,10 @@ function filterSlackTodosForProject(tasks, projectId, projectName, currentUser) 
         const matchesName = project.name && normalizeProjectName(project.name) === normalizedProjectName;
         if (!matchesId && !matchesName) return false;
 
+        if (task.source === 'slack' && task.slackDisplayName && normalizedUser) {
+            return normalizeOwnerName(task.slackDisplayName) === normalizedUser;
+        }
+
         const target = task.targetUser || task.user || null;
         const targetName = target?.flavortownName || target?.flavortown_name || null;
         if (targetName && normalizedUser) {
