@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-19T13:49:31.406Z",
+  "lastUpdated": "2026-02-19T14:50:39.261Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -20026,6 +20026,14 @@
         "ts": "2026-02-18T17:49:53.510Z",
         "delta": 226,
         "balance": 359,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U092H6G33T2"
+      },
+      {
+        "ts": "2026-02-19T14:42:15.639Z",
+        "delta": 437,
+        "balance": 796,
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U092H6G33T2"
@@ -58431,6 +58439,12 @@
     ]
   },
   "users": {
+    "U092H6G33T2": {
+      "id": "U092H6G33T2",
+      "username": "bennet-wegener",
+      "displayName": "bennet-wegener",
+      "avatar": "https://secure.gravatar.com/avatar/c294123ce3aa38754f5d04154ac55d9b.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0026-72.png"
+    },
     "U0A4TBWJR42": {
       "id": "U0A4TBWJR42",
       "username": "milo1004",
@@ -58678,12 +58692,6 @@
       "username": "wowstar",
       "displayName": "Wowstar",
       "avatar": "https://secure.gravatar.com/avatar/814670d57d746711abbe74d16ee210cc.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0011-72.png"
-    },
-    "U092H6G33T2": {
-      "id": "U092H6G33T2",
-      "username": "bennet-wegener",
-      "displayName": "bennet-wegener",
-      "avatar": "https://secure.gravatar.com/avatar/c294123ce3aa38754f5d04154ac55d9b.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0026-72.png"
     },
     "U0A17N2KAGN": {
       "id": "U0A17N2KAGN",
