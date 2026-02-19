@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-19T22:34:54.686Z",
+  "lastUpdated": "2026-02-19T23:32:10.817Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -23517,6 +23517,14 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U09A7GEM760"
+      },
+      {
+        "ts": "2026-02-19T22:34:36.169Z",
+        "delta": 60,
+        "balance": 130,
+        "reason": "user grant",
+        "reasonType": "",
+        "userId": "U09A7GEM760"
       }
     ],
     "u09a9m4taf5": [
@@ -30751,6 +30759,14 @@
         "delta": 5,
         "balance": 555,
         "reason": "tutorial",
+        "reasonType": "",
+        "userId": "U0A3DKS46R3"
+      },
+      {
+        "ts": "2026-02-19T22:36:59.777Z",
+        "delta": -5,
+        "balance": 550,
+        "reason": "sidequest rejection fee",
         "reasonType": "",
         "userId": "U0A3DKS46R3"
       }
@@ -58797,6 +58813,12 @@
     ]
   },
   "users": {
+    "U0A3DKS46R3": {
+      "id": "U0A3DKS46R3",
+      "username": "coder.hoang",
+      "displayName": "hoang.nguyen",
+      "avatar": "https://secure.gravatar.com/avatar/4e45435aca088e4226fcf09d5a230967.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0023-72.png"
+    },
     "U09A7GEM760": {
       "id": "U09A7GEM760",
       "username": "sadiyameem123",
@@ -58847,12 +58869,6 @@
       "username": "dod85202",
       "displayName": "Mohamed Hesham",
       "avatar": "https://secure.gravatar.com/avatar/b7d677b451b154e76d4b0d226c0965eb.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0000-72.png"
-    },
-    "U0A3DKS46R3": {
-      "id": "U0A3DKS46R3",
-      "username": "coder.hoang",
-      "displayName": "hoang.nguyen",
-      "avatar": "https://secure.gravatar.com/avatar/4e45435aca088e4226fcf09d5a230967.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0023-72.png"
     },
     "U0942ELBDDX": {
       "id": "U0942ELBDDX",
@@ -63078,7 +63094,7 @@
       "id": "U08SF8MVC82",
       "username": "thisisniko",
       "displayName": "niko",
-      "avatar": "https://avatars.slack-edge.com/2025-11-01/9850692239104_6e245427b039ccc36a0f_72.png"
+      "avatar": "https://avatars.slack-edge.com/2026-02-19/10530554234343_2f21dbede029cc8b1ef6_72.png"
     },
     "U08V98JF7FY": {
       "id": "U08V98JF7FY",
