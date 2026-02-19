@@ -15791,6 +15791,14 @@ const TUTORIAL_PHASE_3 = [
 ];
 
 const VERSION_FEATURES = {
+    '2.9.0': [
+        { title: 'Project Todos', description: 'Add and manage todos directly on project pages. Use the Slack bot to create tasks from Slack!', icon: '✅' },
+        { title: 'Frequently used emojis', description: 'Slack emojis you use most often appear first in autocomplete suggestions.', icon: '😀' },
+        { title: 'Changelog customization', description: 'Customize how commits are displayed in the changelog generator with multiple format options.', icon: '📋' },
+        { title: 'Firefox fixes', description: 'Various compatibility improvements and bug fixes for Firefox users.', icon: '🦊' },
+        { title: 'Theming improvements', description: 'Better theme consistency across all UI elements and improved custom theme options.', icon: '🎨' },
+        { title: 'Overall improvements', description: 'Bug fixes, and general polish throughout the extension.', icon: '✨' }
+    ],
     '2.6.0': [
         { title: 'Activity Heatmap', description: 'GitHub-style visualization showing your devlog activity over time with streaks, best day, and project breakdowns.', icon: '🔥' },
         { title: 'Multi-ship efficiency graphs', description: 'Compare efficiency across multiple ships with visual graphs on project pages.', icon: '📊' },

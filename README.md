@@ -63,9 +63,12 @@
 - Auto find repo and demo links for your project.
 - Screenshot editor
 - Estimated payouts
-- Changelog, with branch scanning
+- Changelog
+  - Branches
+  - Format customization
 - Ship efficiency graph
 - Activity heatmap
+- TODOs & Sync with slack feature.
 
 ## Feature showcase:
 
