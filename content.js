@@ -127,6 +127,8 @@ const COMMAND_PALETTE_SHORTCUT_KEY = 'flavortownCommandPaletteShortcut';
 const DEFAULT_COMMAND_PALETTE_SHORTCUT = /Mac|iPhone|iPad|iPod/i.test(navigator.platform || navigator.userAgent)
     ? 'Cmd+K'
     : 'Ctrl+K';
+const PROJECT_TODO_DISABLED_KEY = 'flavortown_project_todos_disabled';
+const PROJECT_TODO_HIDDEN_KEY = 'flavortown_project_todos_hidden';
 const LOCAL_STORAGE_SYNC_KEYS = [
     'flavortown_progress_mode',
     'flavortown_projection_mode',
@@ -2898,6 +2900,15 @@ function normalizeOwnerName(name) {
     return (name || '').toLowerCase().replace(/\s+/g, ' ').trim();
 }
 
+function normalizeUsernameForComparison(name) {
+    if (!name) return '';
+    return name
+        .toLowerCase()
+        .replace(/[._\-\s]+/g, '')
+        .replace(/[^a-z0-9]/g, '')
+        .trim();
+}
+
 function isProjectOwnedByCurrentUser() {
     if (!/\/projects\/\d+$/.test(window.location.pathname)) return false;
     const currentUser = getCurrentUserName();
@@ -5171,6 +5182,7 @@ function writeTodoCache(data) {
 
 async function fetchTodoData(force = false) {
     const cached = readTodoCache();
+    
     if (!force && cached?.updatedAt && Date.now() - cached.updatedAt < TODO_CACHE_TTL) {
         return cached.data || null;
     }
@@ -5285,7 +5297,7 @@ function extractTodoTasks(data) {
 function filterSlackTodosForProject(tasks, projectId, projectName, currentUser) {
     if (!tasks.length) return [];
     const normalizedProjectName = normalizeProjectName(projectName || '');
-    const normalizedUser = currentUser ? normalizeOwnerName(currentUser) : null;
+    const normalizedUser = currentUser ? normalizeUsernameForComparison(currentUser) : null;
 
     return tasks.filter(task => {
         if (!task || task.deleted) return false;
@@ -5294,14 +5306,18 @@ function filterSlackTodosForProject(tasks, projectId, projectName, currentUser) 
         const matchesName = project.name && normalizeProjectName(project.name) === normalizedProjectName;
         if (!matchesId && !matchesName) return false;
 
-        if (task.source === 'slack' && task.slackDisplayName && normalizedUser) {
-            return normalizeOwnerName(task.slackDisplayName) === normalizedUser;
+        const slackDisplayName = task.slackDisplayName;
+        if (slackDisplayName && normalizedUser) {
+            const normalizedSlackName = normalizeUsernameForComparison(slackDisplayName);
+            if (normalizedSlackName !== normalizedUser) {
+                return false;
+            }
         }
 
         const target = task.targetUser || task.user || null;
         const targetName = target?.flavortownName || target?.flavortown_name || null;
         if (targetName && normalizedUser) {
-            return normalizeOwnerName(targetName) === normalizedUser;
+            return normalizeUsernameForComparison(targetName) === normalizedUser;
         }
         if (targetName && !normalizedUser) return false;
         return true;
@@ -13241,8 +13257,6 @@ const TODO_JSON_URL = 'https://flavortown-todo-bot.hridayahoney.workers.dev/todo
 const TODO_CACHE_KEY = 'flavortown_todos_cache';
 const TODO_CACHE_TTL = 60 * 1000;
 const PROJECT_TODO_KEY_PREFIX = 'flavortown_project_todos_v1:';
-const PROJECT_TODO_DISABLED_KEY = 'flavortown_project_todos_disabled';
-const PROJECT_TODO_HIDDEN_KEY = 'flavortown_project_todos_hidden';
 const TODO_STATUS_ORDER = ['todo', 'in_progress', 'done'];
 const TODO_STATUS_LABELS = {
     todo: 'Todo',

@@ -46,11 +46,57 @@ function normalizeKey(name) {
   return (name || '').toLowerCase().replace(/\s+/g, '').replace(/[^a-z0-9]/g, '');
 }
 
+const TASK_TTL_MS = 7 * 24 * 60 * 60 * 1000;
+
+function cleanExpiredTasks(todos) {
+  const now = Date.now();
+  let modified = false;
+
+  if (!todos.users) return { modified, todos };
+
+  for (const userKey of Object.keys(todos.users)) {
+    const user = todos.users[userKey];
+    if (!user.projects) continue;
+
+    for (const projectKey of Object.keys(user.projects)) {
+      const project = user.projects[projectKey];
+      if (!project.tasks) continue;
+
+      const originalLength = project.tasks.length;
+      project.tasks = project.tasks.filter(task => {
+        const expiresAt = task.expiresAt || (task.createdAt ? new Date(task.createdAt).getTime() + TASK_TTL_MS : 0);
+        return now < expiresAt;
+      });
+
+      if (project.tasks.length !== originalLength) {
+        modified = true;
+      }
+
+      if (project.tasks.length === 0) {
+        delete user.projects[projectKey];
+        modified = true;
+      }
+    }
+
+    if (Object.keys(user.projects).length === 0) {
+      delete todos.users[userKey];
+      modified = true;
+    }
+  }
+
+  return { modified, todos };
+}
+
 async function getTodos(env) {
   try {
     const data = await env.TODOS_KV.get('todos');
     if (data) {
-      return JSON.parse(data);
+      let todos = JSON.parse(data);
+      const { modified, todos: cleanedTodos } = cleanExpiredTasks(todos);
+      if (modified) {
+        await saveTodos(env, cleanedTodos);
+      }
+      return cleanedTodos;
     }
   } catch (e) {
     console.error('Error loading todos:', e);
@@ -61,6 +107,27 @@ async function getTodos(env) {
 async function saveTodos(env, todos) {
   todos.lastUpdated = new Date().toISOString();
   await env.TODOS_KV.put('todos', JSON.stringify(todos));
+}
+
+async function checkRateLimit(env, userId, action = 'task', limit = 5, windowMs = 60000) {
+  const key = `ratelimit:${action}:${userId}`;
+  const now = Date.now();
+  const windowStart = Math.floor(now / windowMs) * windowMs;
+
+  let data = await env.TODOS_KV.get(key);
+  data = data ? JSON.parse(data) : { count: 0, window: windowStart };
+
+  if (data.window !== windowStart) {
+    data = { count: 0, window: windowStart };
+  }
+
+  if (data.count >= limit) {
+    return { allowed: false, retryAfter: Math.ceil((data.window + windowMs - now) / 1000) };
+  }
+
+  data.count++;
+  await env.TODOS_KV.put(key, JSON.stringify(data), { expirationTtl: 120 });
+  return { allowed: true };
 }
 
 async function addTask(env, taskText, status, projectName, slackMeta) {
@@ -108,7 +175,8 @@ async function addTask(env, taskText, status, projectName, slackMeta) {
     status: status,
     slackUserId: slackMeta.userId,
     slackPermalink: slackMeta.permalink,
-    createdAt: new Date().toISOString()
+    createdAt: new Date().toISOString(),
+    expiresAt: Date.now() + TASK_TTL_MS
   };
 
   project.tasks.push(task);
@@ -134,6 +202,17 @@ async function handleSlackEvent(event, env, ctx) {
 
 async function processAppMention(slackEvent, env) {
   try {
+    const rateLimit = await checkRateLimit(env, slackEvent.user, 'task', 5, 60000);
+    if (!rateLimit.allowed) {
+      await postSlackMessage(
+        slackEvent.channel,
+        `Whoa there! You're adding tasks too fast. Please wait ${rateLimit.retryAfter} seconds before trying again.`,
+        slackEvent.thread_ts || slackEvent.ts,
+        env.SLACK_BOT_TOKEN
+      );
+      return;
+    }
+
     let threadRootText = null;
     if (slackEvent.thread_ts && slackEvent.thread_ts !== slackEvent.ts) {
       try {
