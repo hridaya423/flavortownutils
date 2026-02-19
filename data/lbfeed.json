@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-19T14:50:39.261Z",
+  "lastUpdated": "2026-02-19T15:52:19.847Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -18995,6 +18995,22 @@
         "delta": 3,
         "balance": 30,
         "reason": "Order Up!",
+        "reasonType": "achievement",
+        "userId": "U0923KXMGUR"
+      },
+      {
+        "ts": "2026-02-19T15:45:00.172Z",
+        "delta": 10,
+        "balance": 40,
+        "reason": "Line Cook",
+        "reasonType": "achievement",
+        "userId": "U0923KXMGUR"
+      },
+      {
+        "ts": "2026-02-19T15:45:00.415Z",
+        "delta": 3,
+        "balance": 43,
+        "reason": "Michelin Star",
         "reasonType": "achievement",
         "userId": "U0923KXMGUR"
       }
@@ -58439,6 +58455,12 @@
     ]
   },
   "users": {
+    "U0923KXMGUR": {
+      "id": "U0923KXMGUR",
+      "username": "mathdudex09",
+      "displayName": "xFN10x",
+      "avatar": "https://avatars.slack-edge.com/2025-08-03/9295106914389_7daba3e74ddbaf58bb1c_72.png"
+    },
     "U092H6G33T2": {
       "id": "U092H6G33T2",
       "username": "bennet-wegener",
@@ -60327,12 +60349,6 @@
       "username": "divyanshudhruv",
       "displayName": "div-pro",
       "avatar": "https://secure.gravatar.com/avatar/2ede0c6df260a038114710e9f55e303b.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0020-72.png"
-    },
-    "U0923KXMGUR": {
-      "id": "U0923KXMGUR",
-      "username": "mathdudex09",
-      "displayName": "xFN10x",
-      "avatar": "https://avatars.slack-edge.com/2025-08-03/9295106914389_7daba3e74ddbaf58bb1c_72.png"
     },
     "U07950S3GMC": {
       "id": "U07950S3GMC",
