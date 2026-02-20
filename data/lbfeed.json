@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-20T19:38:36.817Z",
+  "lastUpdated": "2026-02-20T20:35:39.852Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -5000,6 +5000,14 @@
         "ts": "2026-02-19T18:16:52.118Z",
         "delta": -40,
         "balance": 192,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U07MJ75J4PK"
+      },
+      {
+        "ts": "2026-02-20T20:14:25.778Z",
+        "delta": -40,
+        "balance": 152,
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U07MJ75J4PK"
@@ -59413,6 +59421,11 @@
     ]
   },
   "users": {
+    "U07MJ75J4PK": {
+      "id": "U07MJ75J4PK",
+      "username": "kasen.engel",
+      "avatar": "https://avatars.slack-edge.com/2026-01-08/10258630961302_bad04ea72ec7ac6c2463_72.png"
+    },
     "U0ADCR7FSP4": {
       "id": "U0ADCR7FSP4",
       "username": "goelaashvik",
@@ -59724,11 +59737,6 @@
       "username": "nmsoukmandjiev007",
       "displayName": "nmsoukmandjiev007",
       "avatar": "https://secure.gravatar.com/avatar/895a326f79f3eb9b12e6a3f34bd23621.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0009-72.png"
-    },
-    "U07MJ75J4PK": {
-      "id": "U07MJ75J4PK",
-      "username": "kasen.engel",
-      "avatar": "https://avatars.slack-edge.com/2026-01-08/10258630961302_bad04ea72ec7ac6c2463_72.png"
     },
     "U084D1T5ZV0": {
       "id": "U084D1T5ZV0",
@@ -61473,7 +61481,7 @@
       "id": "U0938MZG8Q6",
       "username": "christiandubsky20",
       "displayName": "christian",
-      "avatar": "https://avatars.slack-edge.com/2026-02-20/10552780609154_8c0dcd8db44395f0f222_72.png"
+      "avatar": "https://avatars.slack-edge.com/2026-02-20/10537393487143_03ee212a62ffc2a92c93_72.png"
     },
     "U0A8U9Z77C2": {
       "id": "U0A8U9Z77C2",
