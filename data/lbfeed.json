@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-20T15:10:25.711Z",
+  "lastUpdated": "2026-02-20T16:03:15.334Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -37015,6 +37015,14 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0A5TL58UTW"
+      },
+      {
+        "ts": "2026-02-20T15:57:02.095Z",
+        "delta": 15,
+        "balance": 100,
+        "reason": "Cookbook Author",
+        "reasonType": "achievement",
+        "userId": "U0A5TL58UTW"
       }
     ],
     "u0a5u53hd0f": [
@@ -59301,6 +59309,12 @@
     ]
   },
   "users": {
+    "U0A5TL58UTW": {
+      "id": "U0A5TL58UTW",
+      "username": "luci",
+      "displayName": "Luci",
+      "avatar": "https://avatars.slack-edge.com/2026-01-01/10213685935029_bb9a4797b03a7a91ccdd_72.png"
+    },
     "U0A8HTTPNFQ": {
       "id": "U0A8HTTPNFQ",
       "username": "keshavprathamyadav",
@@ -60478,12 +60492,6 @@
       "displayName": "yousef",
       "avatar": "https://secure.gravatar.com/avatar/b94dc44c519aa34a8bd43aff9341b4dc.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0005-72.png"
     },
-    "U0A5TL58UTW": {
-      "id": "U0A5TL58UTW",
-      "username": "luci",
-      "displayName": "Luci",
-      "avatar": "https://avatars.slack-edge.com/2026-01-01/10213685935029_bb9a4797b03a7a91ccdd_72.png"
-    },
     "U08RJ1PEM7X": {
       "id": "U08RJ1PEM7X",
       "username": "novatea",
@@ -61482,7 +61490,7 @@
       "id": "U07UH9DQA4B",
       "username": "izan",
       "displayName": "eth0",
-      "avatar": "https://avatars.slack-edge.com/2026-01-05/10232691446229_acca1a8e20e3aa99a808_72.jpg"
+      "avatar": "https://avatars.slack-edge.com/2026-02-20/10535766619703_0ea03bf74f6a02d6ba5c_72.jpg"
     },
     "U089903JZDH": {
       "id": "U089903JZDH",
