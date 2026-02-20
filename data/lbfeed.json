@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-20T21:28:59.133Z",
+  "lastUpdated": "2026-02-20T21:52:13.679Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -21957,6 +21957,32 @@
         "reason": "user grant",
         "reasonType": "",
         "userId": "U096KJYT1PU"
+      }
+    ],
+    "u096l7clucs": [
+      {
+        "ts": "2026-02-20T21:45:38.738Z",
+        "delta": 3,
+        "balance": 13,
+        "reason": "Order Up!",
+        "reasonType": "achievement",
+        "userId": "U096L7CLUCS"
+      },
+      {
+        "ts": "2026-02-20T21:45:38.982Z",
+        "delta": 3,
+        "balance": 16,
+        "reason": "Michelin Star",
+        "reasonType": "achievement",
+        "userId": "U096L7CLUCS"
+      },
+      {
+        "ts": "2026-02-20T21:50:15.240Z",
+        "delta": 2,
+        "balance": 18,
+        "reason": "Hello, Kitchen!",
+        "reasonType": "achievement",
+        "userId": "U096L7CLUCS"
       }
     ],
     "u096n1c0jmq": [
@@ -59453,6 +59479,12 @@
     ]
   },
   "users": {
+    "U096L7CLUCS": {
+      "id": "U096L7CLUCS",
+      "username": "daudshahbaz4life",
+      "displayName": "Dead",
+      "avatar": "https://avatars.slack-edge.com/2026-02-11/10492940165924_d7622bd8a53e0d769c2d_72.jpg"
+    },
     "U09UU7TETBR": {
       "id": "U09UU7TETBR",
       "username": "simonhroff",
@@ -61519,7 +61551,7 @@
       "id": "U0938MZG8Q6",
       "username": "christiandubsky20",
       "displayName": "christian",
-      "avatar": "https://avatars.slack-edge.com/2026-02-20/10537393487143_03ee212a62ffc2a92c93_72.png"
+      "avatar": "https://avatars.slack-edge.com/2026-02-20/10538158584183_aa9896e2056b6d703afc_72.png"
     },
     "U0A8U9Z77C2": {
       "id": "U0A8U9Z77C2",
