@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-20T04:27:51.731Z",
+  "lastUpdated": "2026-02-20T05:38:58.452Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -12446,6 +12446,14 @@
         "balance": 186,
         "reason": "user grant",
         "reasonType": "",
+        "userId": "U08D22QNUVD"
+      },
+      {
+        "ts": "2026-02-20T04:32:59.128Z",
+        "delta": 40,
+        "balance": 226,
+        "reason": "payout",
+        "reasonType": "payout",
         "userId": "U08D22QNUVD"
       }
     ],
@@ -58845,6 +58853,12 @@
     ]
   },
   "users": {
+    "U08D22QNUVD": {
+      "id": "U08D22QNUVD",
+      "username": "spacexplorer11",
+      "displayName": "Akaalroop",
+      "avatar": "https://avatars.slack-edge.com/2025-09-03/9455259986946_0132317829bad75a5ad5_72.jpg"
+    },
     "U0A7QDU8Q0N": {
       "id": "U0A7QDU8Q0N",
       "username": "roeemamet",
@@ -60858,12 +60872,6 @@
       "username": "christiandubsky20",
       "displayName": "christian",
       "avatar": "https://avatars.slack-edge.com/2026-02-19/10537994798949_d0ca25fe562f2433b9a1_72.png"
-    },
-    "U08D22QNUVD": {
-      "id": "U08D22QNUVD",
-      "username": "spacexplorer11",
-      "displayName": "Akaalroop",
-      "avatar": "https://avatars.slack-edge.com/2025-09-03/9455259986946_0132317829bad75a5ad5_72.jpg"
     },
     "U0A8U9Z77C2": {
       "id": "U0A8U9Z77C2",
