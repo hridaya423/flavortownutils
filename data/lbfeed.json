@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-20T16:56:15.708Z",
+  "lastUpdated": "2026-02-20T17:39:58.159Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -16253,6 +16253,14 @@
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U091KALMG3Y"
+      },
+      {
+        "ts": "2026-02-20T17:33:47.319Z",
+        "delta": 102,
+        "balance": 2346,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U091KALMG3Y"
       }
     ],
     "u091ke59h5h": [
@@ -20498,6 +20506,14 @@
         "balance": 18,
         "reason": "shop purchase",
         "reasonType": "",
+        "userId": "U092SRUUSTS"
+      },
+      {
+        "ts": "2026-02-20T17:36:26.696Z",
+        "delta": 10,
+        "balance": 28,
+        "reason": "Free Sample!",
+        "reasonType": "achievement",
         "userId": "U092SRUUSTS"
       }
     ],
@@ -59341,6 +59357,16 @@
     ]
   },
   "users": {
+    "U092SRUUSTS": {
+      "id": "U092SRUUSTS",
+      "username": "birajbh65",
+      "avatar": "https://secure.gravatar.com/avatar/64e5f6b68ed00deb626aa085dcb1c207.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0005-72.png"
+    },
+    "U091KALMG3Y": {
+      "id": "U091KALMG3Y",
+      "username": "braxtonhood23",
+      "avatar": "https://avatars.slack-edge.com/2026-01-22/10336148649699_bd08305f939082ce41ab_72.jpg"
+    },
     "U0A84BWLWDS": {
       "id": "U0A84BWLWDS",
       "username": "alonsomartinezcarrata",
@@ -59642,11 +59668,6 @@
       "username": "kasen.engel",
       "avatar": "https://avatars.slack-edge.com/2026-01-08/10258630961302_bad04ea72ec7ac6c2463_72.png"
     },
-    "U091KALMG3Y": {
-      "id": "U091KALMG3Y",
-      "username": "braxtonhood23",
-      "avatar": "https://avatars.slack-edge.com/2026-01-22/10336148649699_bd08305f939082ce41ab_72.jpg"
-    },
     "U084D1T5ZV0": {
       "id": "U084D1T5ZV0",
       "username": "kashsuks",
@@ -59657,11 +59678,6 @@
       "username": "4corea.dylan",
       "displayName": "Dili",
       "avatar": "https://avatars.slack-edge.com/2025-07-29/9272738165700_bee538c170cd6f2b9968_72.png"
-    },
-    "U092SRUUSTS": {
-      "id": "U092SRUUSTS",
-      "username": "birajbh65",
-      "avatar": "https://secure.gravatar.com/avatar/64e5f6b68ed00deb626aa085dcb1c207.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0005-72.png"
     },
     "U078KKF3R1Q": {
       "id": "U078KKF3R1Q",
