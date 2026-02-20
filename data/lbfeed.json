@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-20T09:45:09.089Z",
+  "lastUpdated": "2026-02-20T10:41:28.380Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -29871,6 +29871,14 @@
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U0A1NME3EJD"
+      },
+      {
+        "ts": "2026-02-20T10:27:43.307Z",
+        "delta": 79,
+        "balance": 625,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U0A1NME3EJD"
       }
     ],
     "u0a1nr7hksn": [
@@ -59109,16 +59117,16 @@
     ]
   },
   "users": {
+    "U0A1NME3EJD": {
+      "id": "U0A1NME3EJD",
+      "username": "nok",
+      "avatar": "https://avatars.slack-edge.com/2026-01-13/10282812823125_9fcc7248e736e16e62f6_72.png"
+    },
     "U078LR508E7": {
       "id": "U078LR508E7",
       "username": "artciob09",
       "displayName": "artur33",
       "avatar": "https://avatars.slack-edge.com/2024-11-01/7965965994053_f49d6bf5750bb5f1a141_72.png"
-    },
-    "U0A1NME3EJD": {
-      "id": "U0A1NME3EJD",
-      "username": "nok",
-      "avatar": "https://avatars.slack-edge.com/2026-01-13/10282812823125_9fcc7248e736e16e62f6_72.png"
     },
     "U0A72TGKF7V": {
       "id": "U0A72TGKF7V",
