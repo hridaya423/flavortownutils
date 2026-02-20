@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-20T16:03:15.334Z",
+  "lastUpdated": "2026-02-20T16:56:15.708Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -55941,6 +55941,38 @@
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U0A84BWLWDS"
+      },
+      {
+        "ts": "2026-02-20T16:05:16.381Z",
+        "delta": -1131,
+        "balance": 1705,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A84BWLWDS"
+      },
+      {
+        "ts": "2026-02-20T16:05:16.687Z",
+        "delta": -720,
+        "balance": 985,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A84BWLWDS"
+      },
+      {
+        "ts": "2026-02-20T16:05:16.962Z",
+        "delta": 1131,
+        "balance": 2116,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A84BWLWDS"
+      },
+      {
+        "ts": "2026-02-20T16:32:13.239Z",
+        "delta": 720,
+        "balance": 2836,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A84BWLWDS"
       }
     ],
     "u0a84een34k": [
@@ -59309,6 +59341,12 @@
     ]
   },
   "users": {
+    "U0A84BWLWDS": {
+      "id": "U0A84BWLWDS",
+      "username": "alonsomartinezcarrata",
+      "displayName": "aloyak",
+      "avatar": "https://avatars.slack-edge.com/2026-01-11/10266469042067_79d016b502587f2b7d52_72.png"
+    },
     "U0A5TL58UTW": {
       "id": "U0A5TL58UTW",
       "username": "luci",
@@ -59337,12 +59375,6 @@
       "username": "ihsancarkci1",
       "displayName": "Noten",
       "avatar": "https://secure.gravatar.com/avatar/e35a728bf2a6bbe67e5f3ea08c2ba7c0.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0011-72.png"
-    },
-    "U0A84BWLWDS": {
-      "id": "U0A84BWLWDS",
-      "username": "alonsomartinezcarrata",
-      "displayName": "aloyak",
-      "avatar": "https://avatars.slack-edge.com/2026-01-11/10266469042067_79d016b502587f2b7d52_72.png"
     },
     "U0A9HLY6ETE": {
       "id": "U0A9HLY6ETE",
