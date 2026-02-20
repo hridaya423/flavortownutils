@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-20T18:53:35.980Z",
+  "lastUpdated": "2026-02-20T19:38:36.817Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -59121,6 +59121,22 @@
         "reason": "tutorial",
         "reasonType": "",
         "userId": "U0ADCR7FSP4"
+      },
+      {
+        "ts": "2026-02-20T19:16:48.456Z",
+        "delta": 3,
+        "balance": 31,
+        "reason": "Order Up!",
+        "reasonType": "achievement",
+        "userId": "U0ADCR7FSP4"
+      },
+      {
+        "ts": "2026-02-20T19:16:48.721Z",
+        "delta": 3,
+        "balance": 34,
+        "reason": "Michelin Star",
+        "reasonType": "achievement",
+        "userId": "U0ADCR7FSP4"
       }
     ],
     "u0adgkesxjm": [
@@ -59397,6 +59413,12 @@
     ]
   },
   "users": {
+    "U0ADCR7FSP4": {
+      "id": "U0ADCR7FSP4",
+      "username": "goelaashvik",
+      "displayName": "goelaashvik",
+      "avatar": "https://secure.gravatar.com/avatar/02236b544b6d90408fb57157a76d6ca1.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0026-72.png"
+    },
     "U09CBF0DS4F": {
       "id": "U09CBF0DS4F",
       "username": "lolodotzip",
@@ -59592,12 +59614,6 @@
       "username": "thiago.teixeira51",
       "displayName": "ChefThi",
       "avatar": "https://secure.gravatar.com/avatar/3428c225c969b9f9cf45378b7b76939d.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0012-72.png"
-    },
-    "U0ADCR7FSP4": {
-      "id": "U0ADCR7FSP4",
-      "username": "goelaashvik",
-      "displayName": "goelaashvik",
-      "avatar": "https://secure.gravatar.com/avatar/02236b544b6d90408fb57157a76d6ca1.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0026-72.png"
     },
     "U09CNHJA5D5": {
       "id": "U09CNHJA5D5",
@@ -61457,7 +61473,7 @@
       "id": "U0938MZG8Q6",
       "username": "christiandubsky20",
       "displayName": "christian",
-      "avatar": "https://avatars.slack-edge.com/2026-02-19/10537994798949_d0ca25fe562f2433b9a1_72.png"
+      "avatar": "https://avatars.slack-edge.com/2026-02-20/10552780609154_8c0dcd8db44395f0f222_72.png"
     },
     "U0A8U9Z77C2": {
       "id": "U0A8U9Z77C2",
