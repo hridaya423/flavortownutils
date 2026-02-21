@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-21T14:55:20.827Z",
+  "lastUpdated": "2026-02-21T15:27:43.877Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -21785,6 +21785,14 @@
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U095QK9HADD"
+      },
+      {
+        "ts": "2026-02-21T15:00:04.841Z",
+        "delta": 211,
+        "balance": 382,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U095QK9HADD"
       }
     ],
     "u095qpch2jj": [
@@ -26262,6 +26270,14 @@
         "balance": 105,
         "reason": "Line Cook",
         "reasonType": "achievement",
+        "userId": "U09D4S5E4CF"
+      },
+      {
+        "ts": "2026-02-21T14:53:53.738Z",
+        "delta": -78,
+        "balance": 27,
+        "reason": "shop purchase",
+        "reasonType": "",
         "userId": "U09D4S5E4CF"
       }
     ],
@@ -56189,6 +56205,14 @@
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U0A848RGULQ"
+      },
+      {
+        "ts": "2026-02-21T15:00:05.385Z",
+        "delta": 58,
+        "balance": 154,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U0A848RGULQ"
       }
     ],
     "u0a84bwlwds": [
@@ -59747,6 +59771,24 @@
     ]
   },
   "users": {
+    "U0A848RGULQ": {
+      "id": "U0A848RGULQ",
+      "username": "vaibhavsharma42011",
+      "displayName": "redac1ed",
+      "avatar": "https://avatars.slack-edge.com/2026-01-16/10325307738321_7f54300f57278049b1e9_72.png"
+    },
+    "U095QK9HADD": {
+      "id": "U095QK9HADD",
+      "username": "makolramansh",
+      "displayName": "Ramansh",
+      "avatar": "https://avatars.slack-edge.com/2025-07-17/9213328644468_1ae37334449904a6c609_72.jpg"
+    },
+    "U09D4S5E4CF": {
+      "id": "U09D4S5E4CF",
+      "username": "prajnanupam",
+      "displayName": "Prajna",
+      "avatar": "https://secure.gravatar.com/avatar/ec7de2f88a3a9b12aea22074c6e30dad.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0012-72.png"
+    },
     "U0AD3T7EH35": {
       "id": "U0AD3T7EH35",
       "username": "debmatt247",
@@ -59983,12 +60025,6 @@
       "username": "garygreg2011",
       "avatar": "https://avatars.slack-edge.com/2026-01-20/10359714188368_8664ad8fbb930725e4c6_72.jpg"
     },
-    "U095QK9HADD": {
-      "id": "U095QK9HADD",
-      "username": "makolramansh",
-      "displayName": "Ramansh",
-      "avatar": "https://avatars.slack-edge.com/2025-07-17/9213328644468_1ae37334449904a6c609_72.jpg"
-    },
     "U0A1V1F1JRJ": {
       "id": "U0A1V1F1JRJ",
       "username": "silasburtonunger",
@@ -60185,12 +60221,6 @@
       "username": "bhoomivash10",
       "displayName": "bhoomivash10",
       "avatar": "https://secure.gravatar.com/avatar/5d02e187421b3d736b4bae36b72f41d0.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0011-72.png"
-    },
-    "U0A848RGULQ": {
-      "id": "U0A848RGULQ",
-      "username": "vaibhavsharma42011",
-      "displayName": "redac1ed",
-      "avatar": "https://avatars.slack-edge.com/2026-01-16/10325307738321_7f54300f57278049b1e9_72.png"
     },
     "U0A0S5TJ258": {
       "id": "U0A0S5TJ258",
@@ -61054,7 +61084,7 @@
       "id": "U085L7P77EV",
       "username": "aregazatyank",
       "displayName": "Areg Azatyan",
-      "avatar": "https://avatars.slack-edge.com/2026-02-07/10467079440436_6a496470ddb5979ff594_72.png"
+      "avatar": "https://avatars.slack-edge.com/2026-02-21/10552681775765_dd74cec6acaf5bbb04b5_72.png"
     },
     "U07QC35DFV0": {
       "id": "U07QC35DFV0",
@@ -61792,12 +61822,6 @@
       "id": "U0A787QJ80J",
       "username": "srsxnsh",
       "avatar": "https://avatars.slack-edge.com/2026-01-07/10244036056227_4cd4a970a335adee3786_72.jpg"
-    },
-    "U09D4S5E4CF": {
-      "id": "U09D4S5E4CF",
-      "username": "prajnanupam",
-      "displayName": "Prajna",
-      "avatar": "https://secure.gravatar.com/avatar/ec7de2f88a3a9b12aea22074c6e30dad.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0012-72.png"
     },
     "U09R9SAUPTK": {
       "id": "U09R9SAUPTK",
