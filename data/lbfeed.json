@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-21T11:48:18.449Z",
+  "lastUpdated": "2026-02-21T12:53:17.991Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -11953,6 +11953,14 @@
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U089MN4B2E7"
+      },
+      {
+        "ts": "2026-02-21T12:15:52.062Z",
+        "delta": 41,
+        "balance": 126,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U089MN4B2E7"
       }
     ],
     "u089qtpbyj0": [
@@ -19055,6 +19063,14 @@
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U091ZF0JNBG"
+      },
+      {
+        "ts": "2026-02-21T11:56:06.561Z",
+        "delta": 10,
+        "balance": 979,
+        "reason": "Line Cook",
+        "reasonType": "achievement",
+        "userId": "U091ZF0JNBG"
       }
     ],
     "u09228zre9x": [
@@ -22063,6 +22079,14 @@
         "reason": "Line Cook",
         "reasonType": "achievement",
         "userId": "U096L7CLUCS"
+      },
+      {
+        "ts": "2026-02-21T11:55:14.972Z",
+        "delta": 31,
+        "balance": 59,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U096L7CLUCS"
       }
     ],
     "u096n1c0jmq": [
@@ -22716,6 +22740,14 @@
         "balance": 183,
         "reason": "Michelin Star",
         "reasonType": "achievement",
+        "userId": "U097AHQQNN9"
+      },
+      {
+        "ts": "2026-02-21T11:53:06.406Z",
+        "delta": 17,
+        "balance": 200,
+        "reason": "payout",
+        "reasonType": "payout",
         "userId": "U097AHQQNN9"
       }
     ],
@@ -59659,6 +59691,24 @@
     ]
   },
   "users": {
+    "U089MN4B2E7": {
+      "id": "U089MN4B2E7",
+      "username": "shasarita23",
+      "displayName": "89RIDDHI",
+      "avatar": "https://secure.gravatar.com/avatar/dc7c350d8c78d103e876de90fa5df8bb.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0022-72.png"
+    },
+    "U091ZF0JNBG": {
+      "id": "U091ZF0JNBG",
+      "username": "efecaliskan08",
+      "displayName": "Efe",
+      "avatar": "https://avatars.slack-edge.com/2025-06-19/9067525922198_1cba921e3478bd859369_72.png"
+    },
+    "U096L7CLUCS": {
+      "id": "U096L7CLUCS",
+      "username": "daudshahbaz4life",
+      "displayName": "Dead",
+      "avatar": "https://avatars.slack-edge.com/2026-02-11/10492940165924_d7622bd8a53e0d769c2d_72.jpg"
+    },
     "U097AHQQNN9": {
       "id": "U097AHQQNN9",
       "username": "quickhalewebtech",
@@ -59716,12 +59766,6 @@
       "username": "isuliau12",
       "displayName": "isuliau",
       "avatar": "https://secure.gravatar.com/avatar/8490457bba1365374e7515f7c6b27ab3.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0026-72.png"
-    },
-    "U096L7CLUCS": {
-      "id": "U096L7CLUCS",
-      "username": "daudshahbaz4life",
-      "displayName": "Dead",
-      "avatar": "https://avatars.slack-edge.com/2026-02-11/10492940165924_d7622bd8a53e0d769c2d_72.jpg"
     },
     "U09UU7TETBR": {
       "id": "U09UU7TETBR",
@@ -60214,12 +60258,6 @@
       "username": "obay.developer",
       "avatar": "https://avatars.slack-edge.com/2025-10-10/9678158748850_a132430cfd5e052a7045_72.jpg"
     },
-    "U091ZF0JNBG": {
-      "id": "U091ZF0JNBG",
-      "username": "efecaliskan08",
-      "displayName": "Efe",
-      "avatar": "https://avatars.slack-edge.com/2025-06-19/9067525922198_1cba921e3478bd859369_72.png"
-    },
     "U09S4K4C2BA": {
       "id": "U09S4K4C2BA",
       "username": "wowstar",
@@ -60613,12 +60651,6 @@
       "username": "raqeeb",
       "displayName": "Raqeeb",
       "avatar": "https://avatars.slack-edge.com/2025-12-31/10239975055360_eff77c2080500c00c5ca_72.jpg"
-    },
-    "U089MN4B2E7": {
-      "id": "U089MN4B2E7",
-      "username": "shasarita23",
-      "displayName": "89RIDDHI",
-      "avatar": "https://secure.gravatar.com/avatar/dc7c350d8c78d103e876de90fa5df8bb.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0022-72.png"
     },
     "U04PEAECRA5": {
       "id": "U04PEAECRA5",
