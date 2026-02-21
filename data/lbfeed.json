@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-21T21:48:55.324Z",
+  "lastUpdated": "2026-02-21T22:27:05.380Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -20424,6 +20424,14 @@
         "balance": 134,
         "reason": "shop purchase",
         "reasonType": "",
+        "userId": "U092H6G33T2"
+      },
+      {
+        "ts": "2026-02-21T21:55:38.419Z",
+        "delta": 52,
+        "balance": 186,
+        "reason": "payout",
+        "reasonType": "payout",
         "userId": "U092H6G33T2"
       }
     ],
@@ -59869,6 +59877,16 @@
         "userId": "U0AEY1LHE8M"
       }
     ],
+    "u0aeyduclkf": [
+      {
+        "ts": "2026-02-21T22:11:19.262Z",
+        "delta": 2,
+        "balance": 22,
+        "reason": "Hello, Kitchen!",
+        "reasonType": "achievement",
+        "userId": "U0AEYDUCLKF"
+      }
+    ],
     "u0af45ldubc": [
       {
         "ts": "2026-02-16T19:07:15.583Z",
@@ -59941,6 +59959,18 @@
     ]
   },
   "users": {
+    "U0AEYDUCLKF": {
+      "id": "U0AEYDUCLKF",
+      "username": "jacob.navaratne",
+      "displayName": "Jacob",
+      "avatar": "https://avatars.slack-edge.com/2026-02-15/10507758480291_a56356891a1addcfd2bc_72.png"
+    },
+    "U092H6G33T2": {
+      "id": "U092H6G33T2",
+      "username": "bennet-wegener",
+      "displayName": "bennet-wegener",
+      "avatar": "https://secure.gravatar.com/avatar/c294123ce3aa38754f5d04154ac55d9b.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0026-72.png"
+    },
     "U0A74N2LAQY": {
       "id": "U0A74N2LAQY",
       "username": "ultraviolet.asdf",
@@ -60061,12 +60091,6 @@
       "username": "debmatt247",
       "displayName": "Michelle",
       "avatar": "https://avatars.slack-edge.com/2026-02-17/10530550360084_5eeec00b5b874476f94b_72.png"
-    },
-    "U092H6G33T2": {
-      "id": "U092H6G33T2",
-      "username": "bennet-wegener",
-      "displayName": "bennet-wegener",
-      "avatar": "https://secure.gravatar.com/avatar/c294123ce3aa38754f5d04154ac55d9b.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0026-72.png"
     },
     "U0825TMAF4K": {
       "id": "U0825TMAF4K",
