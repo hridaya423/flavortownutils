@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-21T11:26:28.604Z",
+  "lastUpdated": "2026-02-21T11:48:18.449Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -22684,6 +22684,38 @@
         "balance": 172,
         "reason": "payout",
         "reasonType": "payout",
+        "userId": "U097AHQQNN9"
+      },
+      {
+        "ts": "2026-02-21T11:35:37.087Z",
+        "delta": 3,
+        "balance": 175,
+        "reason": "Home Cookin'",
+        "reasonType": "achievement",
+        "userId": "U097AHQQNN9"
+      },
+      {
+        "ts": "2026-02-21T11:35:37.339Z",
+        "delta": 2,
+        "balance": 177,
+        "reason": "Recipe Notes",
+        "reasonType": "achievement",
+        "userId": "U097AHQQNN9"
+      },
+      {
+        "ts": "2026-02-21T11:35:37.587Z",
+        "delta": 3,
+        "balance": 180,
+        "reason": "Order Up!",
+        "reasonType": "achievement",
+        "userId": "U097AHQQNN9"
+      },
+      {
+        "ts": "2026-02-21T11:35:37.854Z",
+        "delta": 3,
+        "balance": 183,
+        "reason": "Michelin Star",
+        "reasonType": "achievement",
         "userId": "U097AHQQNN9"
       }
     ],
@@ -59627,6 +59659,12 @@
     ]
   },
   "users": {
+    "U097AHQQNN9": {
+      "id": "U097AHQQNN9",
+      "username": "quickhalewebtech",
+      "displayName": "satya//7YA",
+      "avatar": "https://avatars.slack-edge.com/2025-07-25/9248518529315_6f0a74151dad785891dd_72.jpg"
+    },
     "U09BSMKPT7Y": {
       "id": "U09BSMKPT7Y",
       "username": "sarjak.khanal",
@@ -60106,12 +60144,6 @@
       "username": "pluscompanyhqdept",
       "displayName": "pluscompanyhqdept",
       "avatar": "https://secure.gravatar.com/avatar/af7a795b05f689fa15e9ab4c8bc7bd02.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0019-72.png"
-    },
-    "U097AHQQNN9": {
-      "id": "U097AHQQNN9",
-      "username": "quickhalewebtech",
-      "displayName": "satya//7YA",
-      "avatar": "https://avatars.slack-edge.com/2025-07-25/9248518529315_6f0a74151dad785891dd_72.jpg"
     },
     "U0842GMRJKC": {
       "id": "U0842GMRJKC",
