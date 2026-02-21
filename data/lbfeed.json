@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-21T08:33:57.525Z",
+  "lastUpdated": "2026-02-21T09:32:01.383Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -15869,6 +15869,14 @@
         "delta": 2,
         "balance": 10,
         "reason": "Recipe Notes",
+        "reasonType": "achievement",
+        "userId": "U090XJF4NSD"
+      },
+      {
+        "ts": "2026-02-21T09:05:34.370Z",
+        "delta": 3,
+        "balance": 13,
+        "reason": "Order Up!",
         "reasonType": "achievement",
         "userId": "U090XJF4NSD"
       }
@@ -59593,6 +59601,12 @@
     ]
   },
   "users": {
+    "U090XJF4NSD": {
+      "id": "U090XJF4NSD",
+      "username": "the_cubidian",
+      "displayName": "The Cubidian",
+      "avatar": "https://avatars.slack-edge.com/2025-06-09/9020487880196_42d2f06d2aecea35d9ad_72.png"
+    },
     "U0A1NME3EJD": {
       "id": "U0A1NME3EJD",
       "username": "nok",
@@ -60546,12 +60560,6 @@
       "id": "U04PEAECRA5",
       "username": "amitdgames",
       "avatar": "https://avatars.slack-edge.com/2023-02-10/4796560647681_b72c6a6e8fe908f961db_72.png"
-    },
-    "U090XJF4NSD": {
-      "id": "U090XJF4NSD",
-      "username": "the_cubidian",
-      "displayName": "The Cubidian",
-      "avatar": "https://avatars.slack-edge.com/2025-06-09/9020487880196_42d2f06d2aecea35d9ad_72.png"
     },
     "U08R49H9VRV": {
       "id": "U08R49H9VRV",

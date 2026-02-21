@@ -1,7 +1,28 @@
 {
-  "lastUpdated": "2026-02-21T08:32:29.370Z",
-  "totalVotes": 5096,
+  "lastUpdated": "2026-02-21T09:30:32.156Z",
+  "totalVotes": 5099,
   "votes": [
+    {
+      "project": "Bedwars Multiplayer",
+      "feedback": "Nice work But can mention clearly how to play",
+      "votedBy": "U0AA55SRPUP",
+      "timestamp": "2026-02-21T08:52:18.817Z",
+      "slackTs": "1771663938.817219"
+    },
+    {
+      "project": "Bedwars Multiplayer",
+      "feedback": "You might wanna separate the code in multiple files for best practice, especially the index.html is huge with 6000 lines. Nevertheless, nice project",
+      "votedBy": "U0A60NZQCTA",
+      "timestamp": "2026-02-21T08:51:59.939Z",
+      "slackTs": "1771663919.939099"
+    },
+    {
+      "project": "Bedwars Multiplayer",
+      "feedback": "Great project! A little hard to test since it's multiplayer, and maybe add a bit more info to devlogs, but otherwise a great project!",
+      "votedBy": "U0A04H3G3AP",
+      "timestamp": "2026-02-21T08:51:39.266Z",
+      "slackTs": "1771663899.266089"
+    },
     {
       "project": "Bedwars Multiplayer",
       "feedback": "super fun! i got to play with the developer! the performance was surprisingly good, and everything worked as expected! (i don't play bedwars so i kinda sucked, but it was fun) good job!",
@@ -37075,6 +37096,12 @@
       "username": "keshavprathamyadav",
       "displayName": "keshavprathamyadav",
       "avatar": "https://secure.gravatar.com/avatar/3892c9806f3da807fc902474ef9983a7.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0015-72.png"
+    },
+    "U0A60NZQCTA": {
+      "id": "U0A60NZQCTA",
+      "username": "jonas.gaden",
+      "displayName": "jonas.gaden",
+      "avatar": "https://secure.gravatar.com/avatar/dfbd5d947c049f82e69f6e7f6d634e9b.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0001-72.png"
     }
   }
 }
