@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-21T10:55:54.908Z",
+  "lastUpdated": "2026-02-21T11:26:28.604Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -16301,6 +16301,14 @@
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U091KALMG3Y"
+      },
+      {
+        "ts": "2026-02-21T11:11:00.353Z",
+        "delta": 75,
+        "balance": 2421,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U091KALMG3Y"
       }
     ],
     "u091ke59h5h": [
@@ -25718,6 +25726,14 @@
         "balance": 613,
         "reason": "payout",
         "reasonType": "payout",
+        "userId": "U09BSMKPT7Y"
+      },
+      {
+        "ts": "2026-02-21T11:23:24.046Z",
+        "delta": 7,
+        "balance": 620,
+        "reason": "tutorial",
+        "reasonType": "",
         "userId": "U09BSMKPT7Y"
       }
     ],
@@ -59611,6 +59627,17 @@
     ]
   },
   "users": {
+    "U09BSMKPT7Y": {
+      "id": "U09BSMKPT7Y",
+      "username": "sarjak.khanal",
+      "displayName": "En Passant",
+      "avatar": "https://avatars.slack-edge.com/2026-02-08/10450088407143_8725932424f4a50cd942_72.jpg"
+    },
+    "U091KALMG3Y": {
+      "id": "U091KALMG3Y",
+      "username": "braxtonhood23",
+      "avatar": "https://avatars.slack-edge.com/2026-01-22/10336148649699_bd08305f939082ce41ab_72.jpg"
+    },
     "U0AAHSKAH6K": {
       "id": "U0AAHSKAH6K",
       "username": "manskill586",
@@ -59708,11 +59735,6 @@
       "id": "U092SRUUSTS",
       "username": "birajbh65",
       "avatar": "https://secure.gravatar.com/avatar/64e5f6b68ed00deb626aa085dcb1c207.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0005-72.png"
-    },
-    "U091KALMG3Y": {
-      "id": "U091KALMG3Y",
-      "username": "braxtonhood23",
-      "avatar": "https://avatars.slack-edge.com/2026-01-22/10336148649699_bd08305f939082ce41ab_72.jpg"
     },
     "U0A84BWLWDS": {
       "id": "U0A84BWLWDS",
@@ -60205,12 +60227,6 @@
       "username": "mohittiwariis97",
       "displayName": "Mohit Tiwari",
       "avatar": "https://avatars.slack-edge.com/2025-12-09/10083208082006_1dd0de8509c8166bbef7_72.png"
-    },
-    "U09BSMKPT7Y": {
-      "id": "U09BSMKPT7Y",
-      "username": "sarjak.khanal",
-      "displayName": "En Passant",
-      "avatar": "https://avatars.slack-edge.com/2026-02-08/10450088407143_8725932424f4a50cd942_72.jpg"
     },
     "U0A4AFT9Q73": {
       "id": "U0A4AFT9Q73",
