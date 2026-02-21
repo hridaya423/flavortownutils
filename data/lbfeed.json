@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-21T15:52:05.037Z",
+  "lastUpdated": "2026-02-21T16:33:31.860Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -46049,6 +46049,14 @@
         "reason": "Order Up!",
         "reasonType": "achievement",
         "userId": "U0A74N2LAQY"
+      },
+      {
+        "ts": "2026-02-21T16:17:08.100Z",
+        "delta": 1070,
+        "balance": 1098,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U0A74N2LAQY"
       }
     ],
     "u0a74ns0jv8": [
@@ -59768,9 +59776,39 @@
         "reasonType": "achievement",
         "userId": "U0AF9MD9LFR"
       }
+    ],
+    "u0ag8bal0ah": [
+      {
+        "ts": "2026-02-21T16:11:42.608Z",
+        "delta": 3,
+        "balance": 3,
+        "reason": "Home Cookin'",
+        "reasonType": "achievement",
+        "userId": "U0AG8BAL0AH"
+      },
+      {
+        "ts": "2026-02-21T16:11:42.861Z",
+        "delta": 2,
+        "balance": 5,
+        "reason": "Recipe Notes",
+        "reasonType": "achievement",
+        "userId": "U0AG8BAL0AH"
+      }
     ]
   },
   "users": {
+    "U0A74N2LAQY": {
+      "id": "U0A74N2LAQY",
+      "username": "ultraviolet.asdf",
+      "displayName": "ultraviolet.asdf",
+      "avatar": "https://avatars.slack-edge.com/2026-01-01/10213474322310_832c6c62bf9720bdf942_72.png"
+    },
+    "U0AG8BAL0AH": {
+      "id": "U0AG8BAL0AH",
+      "username": "elkhalfaouilouai",
+      "displayName": "L O U A I",
+      "avatar": "https://avatars.slack-edge.com/2026-02-21/10568899504881_c4c821bc583d32a7ffa8_72.png"
+    },
     "U0A848RGULQ": {
       "id": "U0A848RGULQ",
       "username": "vaibhavsharma42011",
@@ -61326,12 +61364,6 @@
       "username": "pranjal.prakarsh",
       "displayName": "1nf1n0t1v3r",
       "avatar": "https://avatars.slack-edge.com/2026-02-09/10482252433553_ba3d239c427063ee8c7e_72.png"
-    },
-    "U0A74N2LAQY": {
-      "id": "U0A74N2LAQY",
-      "username": "ultraviolet.asdf",
-      "displayName": "ultraviolet.asdf",
-      "avatar": "https://avatars.slack-edge.com/2026-01-01/10213474322310_832c6c62bf9720bdf942_72.png"
     },
     "U07UV4R2G4T": {
       "id": "U07UV4R2G4T",
