@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-21T22:27:05.380Z",
+  "lastUpdated": "2026-02-21T22:52:15.216Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -12615,6 +12615,14 @@
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U08D22QNUVD"
+      },
+      {
+        "ts": "2026-02-21T22:36:17.960Z",
+        "delta": 7,
+        "balance": 233,
+        "reason": "tutorial",
+        "reasonType": "",
+        "userId": "U08D22QNUVD"
       }
     ],
     "u08d3ay7bg8": [
@@ -24036,6 +24044,14 @@
         "balance": 130,
         "reason": "user grant",
         "reasonType": "",
+        "userId": "U09A7GEM760"
+      },
+      {
+        "ts": "2026-02-21T22:36:18.509Z",
+        "delta": 21,
+        "balance": 151,
+        "reason": "payout",
+        "reasonType": "payout",
         "userId": "U09A7GEM760"
       }
     ],
@@ -59959,6 +59975,17 @@
     ]
   },
   "users": {
+    "U09A7GEM760": {
+      "id": "U09A7GEM760",
+      "username": "sadiyameem123",
+      "avatar": "https://avatars.slack-edge.com/2025-12-13/10144998433360_d12c0c70edd22615e94d_72.png"
+    },
+    "U08D22QNUVD": {
+      "id": "U08D22QNUVD",
+      "username": "spacexplorer11",
+      "displayName": "Akaalroop",
+      "avatar": "https://avatars.slack-edge.com/2025-09-03/9455259986946_0132317829bad75a5ad5_72.jpg"
+    },
     "U0AEYDUCLKF": {
       "id": "U0AEYDUCLKF",
       "username": "jacob.navaratne",
@@ -60277,12 +60304,6 @@
       "displayName": "Silas",
       "avatar": "https://avatars.slack-edge.com/2026-01-08/10259498873382_fad8c285def055d5b0ab_72.png"
     },
-    "U08D22QNUVD": {
-      "id": "U08D22QNUVD",
-      "username": "spacexplorer11",
-      "displayName": "Akaalroop",
-      "avatar": "https://avatars.slack-edge.com/2025-09-03/9455259986946_0132317829bad75a5ad5_72.jpg"
-    },
     "U0A7QDU8Q0N": {
       "id": "U0A7QDU8Q0N",
       "username": "roeemamet",
@@ -60305,11 +60326,6 @@
       "username": "coder.hoang",
       "displayName": "hoang.nguyen",
       "avatar": "https://secure.gravatar.com/avatar/4e45435aca088e4226fcf09d5a230967.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0023-72.png"
-    },
-    "U09A7GEM760": {
-      "id": "U09A7GEM760",
-      "username": "sadiyameem123",
-      "avatar": "https://avatars.slack-edge.com/2025-12-13/10144998433360_d12c0c70edd22615e94d_72.png"
     },
     "U0923KXMGUR": {
       "id": "U0923KXMGUR",
