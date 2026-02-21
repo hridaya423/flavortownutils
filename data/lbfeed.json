@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-21T13:45:27.640Z",
+  "lastUpdated": "2026-02-21T14:29:42.997Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -59313,6 +59313,22 @@
         "reason": "Line Cook",
         "reasonType": "achievement",
         "userId": "U0AD3T7EH35"
+      },
+      {
+        "ts": "2026-02-21T14:00:49.243Z",
+        "delta": -10,
+        "balance": 13,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0AD3T7EH35"
+      },
+      {
+        "ts": "2026-02-21T14:00:58.041Z",
+        "delta": 2,
+        "balance": 15,
+        "reason": "Recipe Notes",
+        "reasonType": "achievement",
+        "userId": "U0AD3T7EH35"
       }
     ],
     "u0ad5l22c8g": [
@@ -59731,6 +59747,12 @@
     ]
   },
   "users": {
+    "U0AD3T7EH35": {
+      "id": "U0AD3T7EH35",
+      "username": "debmatt247",
+      "displayName": "Michelle",
+      "avatar": "https://avatars.slack-edge.com/2026-02-17/10530550360084_5eeec00b5b874476f94b_72.png"
+    },
     "U0A54C206BX": {
       "id": "U0A54C206BX",
       "username": "sophie.du1200",
@@ -60636,12 +60658,6 @@
       "username": "s6czg0v7w",
       "displayName": "PuppyTransGirl",
       "avatar": "https://avatars.slack-edge.com/2025-12-31/10223867650513_b1d0b7301c3012d5ee8f_72.jpg"
-    },
-    "U0AD3T7EH35": {
-      "id": "U0AD3T7EH35",
-      "username": "debmatt247",
-      "displayName": "Michelle",
-      "avatar": "https://avatars.slack-edge.com/2026-02-17/10530550360084_5eeec00b5b874476f94b_72.png"
     },
     "U0A759TPU76": {
       "id": "U0A759TPU76",
