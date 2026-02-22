@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-22T16:33:04.135Z",
+  "lastUpdated": "2026-02-22T17:27:27.973Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -13824,6 +13824,14 @@
         "balance": 7,
         "reason": "shop purchase",
         "reasonType": "",
+        "userId": "U08S00249M3"
+      },
+      {
+        "ts": "2026-02-22T16:57:34.826Z",
+        "delta": 42,
+        "balance": 49,
+        "reason": "payout",
+        "reasonType": "payout",
         "userId": "U08S00249M3"
       }
     ],
@@ -60621,6 +60629,12 @@
     ]
   },
   "users": {
+    "U08S00249M3": {
+      "id": "U08S00249M3",
+      "username": "kendell.r",
+      "displayName": "Kendell",
+      "avatar": "https://avatars.slack-edge.com/2026-02-11/10490175786725_5e57344e2bc0b04cb5bf_72.png"
+    },
     "U078VEJRBR7": {
       "id": "U078VEJRBR7",
       "username": "om.potter09",
@@ -62918,12 +62932,6 @@
       "username": "hatted-bristly.1n",
       "displayName": "Phenix Hartogh",
       "avatar": "https://avatars.slack-edge.com/2026-02-07/10463174316690_3b94ee98678bfef36815_72.png"
-    },
-    "U08S00249M3": {
-      "id": "U08S00249M3",
-      "username": "kendell.r",
-      "displayName": "Kendell",
-      "avatar": "https://avatars.slack-edge.com/2026-02-11/10490175786725_5e57344e2bc0b04cb5bf_72.png"
     },
     "U09GMGHJLHW": {
       "id": "U09GMGHJLHW",
