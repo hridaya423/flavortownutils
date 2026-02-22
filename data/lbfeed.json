@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-22T22:54:18.184Z",
+  "lastUpdated": "2026-02-22T23:28:51.903Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -8812,6 +8812,14 @@
         "ts": "2026-02-18T04:09:14.857Z",
         "delta": 25,
         "balance": 37,
+        "reason": "user grant",
+        "reasonType": "",
+        "userId": "U0826R42R98"
+      },
+      {
+        "ts": "2026-02-22T22:58:08.990Z",
+        "delta": 15,
+        "balance": 52,
         "reason": "user grant",
         "reasonType": "",
         "userId": "U0826R42R98"
@@ -60797,6 +60805,12 @@
     ]
   },
   "users": {
+    "U0826R42R98": {
+      "id": "U0826R42R98",
+      "username": "jovannmc",
+      "displayName": "Maya",
+      "avatar": "https://avatars.slack-edge.com/2026-01-20/10328402678195_cfc667ef01cc1ba7dc74_72.png"
+    },
     "U0A83LHGY7K": {
       "id": "U0A83LHGY7K",
       "username": "shaikhsamir8442",
@@ -62085,12 +62099,6 @@
       "username": "noorsalman9",
       "displayName": "secret x",
       "avatar": "https://avatars.slack-edge.com/2025-09-26/9602785467857_09a033502a316ca6bd3d_72.png"
-    },
-    "U0826R42R98": {
-      "id": "U0826R42R98",
-      "username": "jovannmc",
-      "displayName": "Maya",
-      "avatar": "https://avatars.slack-edge.com/2026-01-20/10328402678195_cfc667ef01cc1ba7dc74_72.png"
     },
     "U06PUN13XHT": {
       "id": "U06PUN13XHT",
