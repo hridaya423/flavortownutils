@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-22T19:49:39.823Z",
+  "lastUpdated": "2026-02-22T20:30:08.913Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -7490,6 +7490,14 @@
         "balance": 43,
         "reason": "Michelin Star",
         "reasonType": "achievement",
+        "userId": "U07V73EEF42"
+      },
+      {
+        "ts": "2026-02-22T20:17:03.874Z",
+        "delta": 255,
+        "balance": 298,
+        "reason": "payout",
+        "reasonType": "payout",
         "userId": "U07V73EEF42"
       }
     ],
@@ -16612,6 +16620,14 @@
         "ts": "2026-02-21T11:11:00.353Z",
         "delta": 75,
         "balance": 2421,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U091KALMG3Y"
+      },
+      {
+        "ts": "2026-02-22T19:53:22.872Z",
+        "delta": 136,
+        "balance": 2557,
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U091KALMG3Y"
@@ -60723,6 +60739,11 @@
       "displayName": "Jiayang",
       "avatar": "https://avatars.slack-edge.com/2024-11-21/8081123181169_dd7576f1c7dae19bc8eb_72.png"
     },
+    "U091KALMG3Y": {
+      "id": "U091KALMG3Y",
+      "username": "braxtonhood23",
+      "avatar": "https://avatars.slack-edge.com/2026-01-22/10336148649699_bd08305f939082ce41ab_72.jpg"
+    },
     "U0A17N2KAGN": {
       "id": "U0A17N2KAGN",
       "username": "shouryamishra011",
@@ -61312,11 +61333,6 @@
       "username": "sarjak.khanal",
       "displayName": "En Passant",
       "avatar": "https://avatars.slack-edge.com/2026-02-08/10450088407143_8725932424f4a50cd942_72.jpg"
-    },
-    "U091KALMG3Y": {
-      "id": "U091KALMG3Y",
-      "username": "braxtonhood23",
-      "avatar": "https://avatars.slack-edge.com/2026-01-22/10336148649699_bd08305f939082ce41ab_72.jpg"
     },
     "U0AAHSKAH6K": {
       "id": "U0AAHSKAH6K",
