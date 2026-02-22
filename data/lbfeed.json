@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-22T04:31:05.121Z",
+  "lastUpdated": "2026-02-22T05:39:07.603Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -21807,6 +21807,14 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U094HHPS5B8"
+      },
+      {
+        "ts": "2026-02-22T05:36:55.651Z",
+        "delta": 78,
+        "balance": 87,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U094HHPS5B8"
       }
     ],
     "u094tmg6zgq": [
@@ -32632,6 +32640,14 @@
         "balance": 112,
         "reason": "Cookbook Author",
         "reasonType": "achievement",
+        "userId": "U0A4PKZKLF9"
+      },
+      {
+        "ts": "2026-02-22T05:36:23.592Z",
+        "delta": 30,
+        "balance": 142,
+        "reason": "payout",
+        "reasonType": "payout",
         "userId": "U0A4PKZKLF9"
       }
     ],
@@ -60447,6 +60463,12 @@
       "displayName": "seb",
       "avatar": "https://avatars.slack-edge.com/2026-01-26/10369398016306_0d82903ad2b9c74db1d7_72.png"
     },
+    "U0A4PKZKLF9": {
+      "id": "U0A4PKZKLF9",
+      "username": "wfreeform",
+      "displayName": "FreeformWave",
+      "avatar": "https://avatars.slack-edge.com/2025-12-23/10172472339363_0bc805ddbf2db712766e_72.png"
+    },
     "U0A83LHGY7K": {
       "id": "U0A83LHGY7K",
       "username": "shaikhsamir8442",
@@ -61884,12 +61906,6 @@
       "username": "21shampate",
       "displayName": "Shameel P",
       "avatar": "https://avatars.slack-edge.com/2025-07-07/9177203578800_48b469689dc57cde5c1e_72.png"
-    },
-    "U0A4PKZKLF9": {
-      "id": "U0A4PKZKLF9",
-      "username": "wfreeform",
-      "displayName": "FreeformWave",
-      "avatar": "https://avatars.slack-edge.com/2025-12-23/10172472339363_0bc805ddbf2db712766e_72.png"
     },
     "U0A8BB0GR8D": {
       "id": "U0A8BB0GR8D",
