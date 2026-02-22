@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-22T14:55:18.248Z",
+  "lastUpdated": "2026-02-22T15:28:27.039Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -6878,6 +6878,14 @@
         "balance": 247,
         "reason": "Line Cook",
         "reasonType": "achievement",
+        "userId": "U07QC35DFV0"
+      },
+      {
+        "ts": "2026-02-22T15:17:25.654Z",
+        "delta": 37,
+        "balance": 284,
+        "reason": "payout",
+        "reasonType": "payout",
         "userId": "U07QC35DFV0"
       }
     ],
@@ -60605,6 +60613,12 @@
     ]
   },
   "users": {
+    "U07QC35DFV0": {
+      "id": "U07QC35DFV0",
+      "username": "priyanshuverma",
+      "displayName": "Pz",
+      "avatar": "https://avatars.slack-edge.com/2025-12-31/10240195089968_6e6e5a2a1b92e77489e6_72.jpg"
+    },
     "U090LAT6QKB": {
       "id": "U090LAT6QKB",
       "username": "dinosaur890123",
@@ -60643,12 +60657,6 @@
       "id": "U0A5DVA4Q4R",
       "username": "erik1",
       "avatar": "https://secure.gravatar.com/avatar/c572f43e3e0cef8ff09bad6075ad78b3.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0024-72.png"
-    },
-    "U07QC35DFV0": {
-      "id": "U07QC35DFV0",
-      "username": "priyanshuverma",
-      "displayName": "Pz",
-      "avatar": "https://avatars.slack-edge.com/2025-12-31/10240195089968_6e6e5a2a1b92e77489e6_72.jpg"
     },
     "U089MN4B2E7": {
       "id": "U089MN4B2E7",
