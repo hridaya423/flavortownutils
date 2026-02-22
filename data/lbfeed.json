@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-22T10:54:16.361Z",
+  "lastUpdated": "2026-02-22T11:24:13.171Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -37233,6 +37233,14 @@
         "reason": "user grant",
         "reasonType": "",
         "userId": "U0A5DVA4Q4R"
+      },
+      {
+        "ts": "2026-02-22T11:19:41.482Z",
+        "delta": 325,
+        "balance": 887,
+        "reason": "payout",
+        "reasonType": "payout",
+        "userId": "U0A5DVA4Q4R"
       }
     ],
     "u0a5eeq1rfy": [
@@ -60521,6 +60529,11 @@
     ]
   },
   "users": {
+    "U0A5DVA4Q4R": {
+      "id": "U0A5DVA4Q4R",
+      "username": "erik1",
+      "avatar": "https://secure.gravatar.com/avatar/c572f43e3e0cef8ff09bad6075ad78b3.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0024-72.png"
+    },
     "U07QC35DFV0": {
       "id": "U07QC35DFV0",
       "username": "priyanshuverma",
@@ -61930,11 +61943,6 @@
       "id": "U08D3AY7BG8",
       "username": "me1978",
       "avatar": "https://avatars.slack-edge.com/2026-01-13/10292071246820_9386a1b8c19f67927074_72.png"
-    },
-    "U0A5DVA4Q4R": {
-      "id": "U0A5DVA4Q4R",
-      "username": "erik1",
-      "avatar": "https://secure.gravatar.com/avatar/c572f43e3e0cef8ff09bad6075ad78b3.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0024-72.png"
     },
     "U0A2LV8U44X": {
       "id": "U0A2LV8U44X",
