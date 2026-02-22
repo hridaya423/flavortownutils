@@ -1,7 +1,154 @@
 {
-  "lastUpdated": "2026-02-22T12:52:08.979Z",
-  "totalVotes": 5304,
+  "lastUpdated": "2026-02-22T13:43:53.078Z",
+  "totalVotes": 5325,
   "votes": [
+    {
+      "project": "INTERCEPTOR",
+      "feedback": "",
+      "votedBy": "U0AGVGXR5S4",
+      "timestamp": "2026-02-22T13:24:22.360Z",
+      "slackTs": "1771766662.360709"
+    },
+    {
+      "project": "OpenRadar",
+      "feedback": "",
+      "votedBy": "U0AGVGXR5S4",
+      "timestamp": "2026-02-22T13:24:13.171Z",
+      "slackTs": "1771766653.171109"
+    },
+    {
+      "project": "Visitor Pass Management System",
+      "feedback": "",
+      "votedBy": "U0AGVGXR5S4",
+      "timestamp": "2026-02-22T13:24:02.787Z",
+      "slackTs": "1771766642.787409"
+    },
+    {
+      "project": "Pomodoro timer",
+      "feedback": "",
+      "votedBy": "U0AGVGXR5S4",
+      "timestamp": "2026-02-22T13:23:48.809Z",
+      "slackTs": "1771766628.809709"
+    },
+    {
+      "project": "Art Portfolio",
+      "feedback": "",
+      "votedBy": "U0AGVGXR5S4",
+      "timestamp": "2026-02-22T13:23:43.567Z",
+      "slackTs": "1771766623.567319"
+    },
+    {
+      "project": "Orbital Swing",
+      "feedback": "",
+      "votedBy": "U0AGVGXR5S4",
+      "timestamp": "2026-02-22T13:18:51.325Z",
+      "slackTs": "1771766331.325839"
+    },
+    {
+      "project": "Circurity",
+      "feedback": "",
+      "votedBy": "U0AGVGXR5S4",
+      "timestamp": "2026-02-22T13:18:40.592Z",
+      "slackTs": "1771766320.592349"
+    },
+    {
+      "project": "WebOS",
+      "feedback": "",
+      "votedBy": "U0AGVGXR5S4",
+      "timestamp": "2026-02-22T13:18:31.137Z",
+      "slackTs": "1771766311.137529"
+    },
+    {
+      "project": "Player List Creator",
+      "feedback": "",
+      "votedBy": "U0AGVGXR5S4",
+      "timestamp": "2026-02-22T13:18:18.426Z",
+      "slackTs": "1771766298.426229"
+    },
+    {
+      "project": "construct-watcher",
+      "feedback": "",
+      "votedBy": "U0AGVGXR5S4",
+      "timestamp": "2026-02-22T13:18:08.780Z",
+      "slackTs": "1771766288.780919"
+    },
+    {
+      "project": "4-bit CPU from COMPLETE SCRATCH",
+      "feedback": "readme.md file isn't enough",
+      "votedBy": "U0AGVGXR5S4",
+      "timestamp": "2026-02-22T13:17:59.850Z",
+      "slackTs": "1771766279.850399"
+    },
+    {
+      "project": "Expense CLI project",
+      "feedback": "cli is not useful for that project, you can move it into ui",
+      "votedBy": "U0AGVGXR5S4",
+      "timestamp": "2026-02-22T13:17:43.507Z",
+      "slackTs": "1771766263.507769"
+    },
+    {
+      "project": "Daily Bugs",
+      "feedback": "Maybe you can add a local Ai system not an Api for that, i think it won't consume too many Pc sources",
+      "votedBy": "U0AGVGXR5S4",
+      "timestamp": "2026-02-22T13:17:21.435Z",
+      "slackTs": "1771766241.435789"
+    },
+    {
+      "project": "Compass",
+      "feedback": "",
+      "votedBy": "U0AGVGXR5S4",
+      "timestamp": "2026-02-22T13:05:47.033Z",
+      "slackTs": "1771765547.033119"
+    },
+    {
+      "project": "Attention Economy",
+      "feedback": "",
+      "votedBy": "U0AGVGXR5S4",
+      "timestamp": "2026-02-22T13:03:43.971Z",
+      "slackTs": "1771765423.971909"
+    },
+    {
+      "project": "Locam",
+      "feedback": "",
+      "votedBy": "U0AGVGXR5S4",
+      "timestamp": "2026-02-22T13:03:31.698Z",
+      "slackTs": "1771765411.698529"
+    },
+    {
+      "project": "The EMP compiler.",
+      "feedback": "Huge congrats on the ship! Building a compiled language with an LLVM backend in just two weeks is an insane feat. I was browsing the repo and that 23k+ line commit is absolutely massive—your velocity is incredible! :rocket:\n\nAs someone working with Rust and Python, I’m curious about the design philosophy: How does Ember handle memory safety? Does it lean towards C-style manual management, or are you planning a more modern approach like ownership or ARC? Also, I'd love to hear more about how you managed to architect such a large codebase in that timeframe—did you use any code-gen tools or LLM assistance for the boilerplate?\n\nLooking forward to seeing where this goes",
+      "votedBy": "U0AGVGXR5S4",
+      "timestamp": "2026-02-22T13:03:09.375Z",
+      "slackTs": "1771765389.375149"
+    },
+    {
+      "project": "Locam",
+      "feedback": "",
+      "votedBy": "U0A7CTEKASG",
+      "timestamp": "2026-02-22T13:00:35.186Z",
+      "slackTs": "1771765235.186739"
+    },
+    {
+      "project": "The EMP compiler.",
+      "feedback": "",
+      "votedBy": "U0A7CTEKASG",
+      "timestamp": "2026-02-22T13:00:29.441Z",
+      "slackTs": "1771765229.441229"
+    },
+    {
+      "project": "build-me-a-container",
+      "feedback": "",
+      "votedBy": "U0A7CTEKASG",
+      "timestamp": "2026-02-22T13:00:23.587Z",
+      "slackTs": "1771765223.587799"
+    },
+    {
+      "project": "build-me-a-container",
+      "feedback": "Perhaps you could integrate this into the user interface so users can undo incorrect selections made on the command line, and for beginners, the UI could include tips, information about selected settings, etc.",
+      "votedBy": "U0AGVGXR5S4",
+      "timestamp": "2026-02-22T13:00:14.127Z",
+      "slackTs": "1771765214.127749"
+    },
     {
       "project": "OpenRadar",
       "feedback": "Nice app for finding leaked api keys, would be nice to have other APIs too",
@@ -38567,6 +38714,12 @@
       "username": "ethicalhacker001100",
       "displayName": "Khushi",
       "avatar": "https://secure.gravatar.com/avatar/0613481dea439f35c05b3fa1cb7ca46e.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0013-72.png"
+    },
+    "U0AGVGXR5S4": {
+      "id": "U0AGVGXR5S4",
+      "username": "urazerkoc3",
+      "displayName": "urazerkoc3",
+      "avatar": "https://secure.gravatar.com/avatar/b898025c3872d941a73decf6dd6ca7ba.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0015-72.png"
     }
   }
 }
