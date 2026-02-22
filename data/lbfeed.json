@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-22T20:55:57.631Z",
+  "lastUpdated": "2026-02-22T21:28:42.049Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -58035,6 +58035,14 @@
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U0A8HT3SY0L"
+      },
+      {
+        "ts": "2026-02-22T20:58:45.686Z",
+        "delta": 2,
+        "balance": 35,
+        "reason": "tutorial",
+        "reasonType": "",
+        "userId": "U0A8HT3SY0L"
       }
     ],
     "u0a8httpnfq": [
@@ -60733,6 +60741,12 @@
     ]
   },
   "users": {
+    "U0A8HT3SY0L": {
+      "id": "U0A8HT3SY0L",
+      "username": "akumarjanaki",
+      "displayName": "akumarjanaki",
+      "avatar": "https://secure.gravatar.com/avatar/d5f407062b5b7e88e3bfe71f797cc024.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0018-72.png"
+    },
     "U07V73EEF42": {
       "id": "U07V73EEF42",
       "username": "jiayangc1",
@@ -62894,12 +62908,6 @@
       "username": "derek.verduijn",
       "displayName": "Definitely Not A Dolphin",
       "avatar": "https://avatars.slack-edge.com/2025-04-07/8740825217248_6caecd79bff7fbbf7b09_72.png"
-    },
-    "U0A8HT3SY0L": {
-      "id": "U0A8HT3SY0L",
-      "username": "akumarjanaki",
-      "displayName": "akumarjanaki",
-      "avatar": "https://secure.gravatar.com/avatar/d5f407062b5b7e88e3bfe71f797cc024.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0018-72.png"
     },
     "U0A2K2WS709": {
       "id": "U0A2K2WS709",
