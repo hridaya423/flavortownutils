@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-22T06:52:11.951Z",
+  "lastUpdated": "2026-02-22T07:39:18.695Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -16072,6 +16072,14 @@
         "balance": 81,
         "reason": "payout",
         "reasonType": "payout",
+        "userId": "U090XJF4NSD"
+      },
+      {
+        "ts": "2026-02-22T07:21:35.600Z",
+        "delta": 3,
+        "balance": 84,
+        "reason": "Michelin Star",
+        "reasonType": "achievement",
         "userId": "U090XJF4NSD"
       }
     ],
@@ -60457,6 +60465,12 @@
     ]
   },
   "users": {
+    "U090XJF4NSD": {
+      "id": "U090XJF4NSD",
+      "username": "the_cubidian",
+      "displayName": "The Cubidian",
+      "avatar": "https://avatars.slack-edge.com/2025-06-09/9020487880196_42d2f06d2aecea35d9ad_72.png"
+    },
     "U094HHPS5B8": {
       "id": "U094HHPS5B8",
       "username": "sebastiansuciu607",
@@ -60845,12 +60859,6 @@
       "username": "froggington",
       "displayName": "Frog",
       "avatar": "https://avatars.slack-edge.com/2026-01-19/10325947619670_a388b45b5e0808b2f201_72.png"
-    },
-    "U090XJF4NSD": {
-      "id": "U090XJF4NSD",
-      "username": "the_cubidian",
-      "displayName": "The Cubidian",
-      "avatar": "https://avatars.slack-edge.com/2025-06-09/9020487880196_42d2f06d2aecea35d9ad_72.png"
     },
     "U0A5TL58UTW": {
       "id": "U0A5TL58UTW",
