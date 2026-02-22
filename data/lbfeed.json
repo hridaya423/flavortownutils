@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-22T02:15:24.256Z",
+  "lastUpdated": "2026-02-22T04:31:05.121Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -21798,6 +21798,14 @@
         "balance": 87,
         "reason": "payout",
         "reasonType": "payout",
+        "userId": "U094HHPS5B8"
+      },
+      {
+        "ts": "2026-02-22T03:17:39.153Z",
+        "delta": -78,
+        "balance": 9,
+        "reason": "shop purchase",
+        "reasonType": "",
         "userId": "U094HHPS5B8"
       }
     ],
@@ -60433,6 +60441,12 @@
     ]
   },
   "users": {
+    "U094HHPS5B8": {
+      "id": "U094HHPS5B8",
+      "username": "sebastiansuciu607",
+      "displayName": "seb",
+      "avatar": "https://avatars.slack-edge.com/2026-01-26/10369398016306_0d82903ad2b9c74db1d7_72.png"
+    },
     "U0A83LHGY7K": {
       "id": "U0A83LHGY7K",
       "username": "shaikhsamir8442",
@@ -61454,7 +61468,7 @@
       "id": "U096KJYT1PU",
       "username": "elliottlieberman123",
       "displayName": "Elliott-entity",
-      "avatar": "https://avatars.slack-edge.com/2026-01-11/10275099203762_5926aa1482060072f28b_72.png"
+      "avatar": "https://avatars.slack-edge.com/2026-02-21/10551092291539_47f18faebf133bb1f8f6_72.png"
     },
     "U093T9H2431": {
       "id": "U093T9H2431",
@@ -61852,12 +61866,6 @@
       "username": "lynn89-sudo",
       "displayName": "Ghost of L87 (Lynn)",
       "avatar": "https://avatars.slack-edge.com/2026-02-06/10443700915159_fe7d2e0e17049c4fe474_72.png"
-    },
-    "U094HHPS5B8": {
-      "id": "U094HHPS5B8",
-      "username": "sebastiansuciu607",
-      "displayName": "seb",
-      "avatar": "https://avatars.slack-edge.com/2026-01-26/10369398016306_0d82903ad2b9c74db1d7_72.png"
     },
     "U0A7L8VNZRP": {
       "id": "U0A7L8VNZRP",
