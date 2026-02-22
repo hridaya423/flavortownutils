@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-22T22:28:48.616Z",
+  "lastUpdated": "2026-02-22T22:54:18.184Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -56979,6 +56979,30 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0A83LHGY7K"
+      },
+      {
+        "ts": "2026-02-22T22:39:12.730Z",
+        "delta": 15,
+        "balance": 16,
+        "reason": "Cookbook Author",
+        "reasonType": "achievement",
+        "userId": "U0A83LHGY7K"
+      },
+      {
+        "ts": "2026-02-22T22:40:15.285Z",
+        "delta": 2,
+        "balance": 18,
+        "reason": "Hello, Kitchen!",
+        "reasonType": "achievement",
+        "userId": "U0A83LHGY7K"
+      },
+      {
+        "ts": "2026-02-22T22:40:50.591Z",
+        "delta": 10,
+        "balance": 28,
+        "reason": "Line Cook",
+        "reasonType": "achievement",
+        "userId": "U0A83LHGY7K"
       }
     ],
     "u0a83mt0tu0": [
@@ -57494,6 +57518,14 @@
         "balance": 65,
         "reason": "tutorial",
         "reasonType": "",
+        "userId": "U0A8A7Q180P"
+      },
+      {
+        "ts": "2026-02-22T22:38:47.310Z",
+        "delta": 75,
+        "balance": 140,
+        "reason": "payout",
+        "reasonType": "payout",
         "userId": "U0A8A7Q180P"
       }
     ],
@@ -59305,6 +59337,14 @@
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U0AA4KJU08P"
+      },
+      {
+        "ts": "2026-02-22T22:36:31.804Z",
+        "delta": 3,
+        "balance": 27,
+        "reason": "Michelin Star",
+        "reasonType": "achievement",
+        "userId": "U0AA4KJU08P"
       }
     ],
     "u0aa527k2q1": [
@@ -60757,6 +60797,23 @@
     ]
   },
   "users": {
+    "U0A83LHGY7K": {
+      "id": "U0A83LHGY7K",
+      "username": "shaikhsamir8442",
+      "displayName": "shaikhsamir8442",
+      "avatar": "https://secure.gravatar.com/avatar/48c99bb64ffb536bca0dadf2b763c552.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0023-72.png"
+    },
+    "U0A8A7Q180P": {
+      "id": "U0A8A7Q180P",
+      "username": "harrisonnefzger28",
+      "avatar": "https://secure.gravatar.com/avatar/6a271438e47adea9e8fbd25883cb1512.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0011-72.png"
+    },
+    "U0AA4KJU08P": {
+      "id": "U0AA4KJU08P",
+      "username": "theskriptkid",
+      "displayName": "theskriptkid",
+      "avatar": "https://secure.gravatar.com/avatar/3a52d2263ce2a782cd93ff23c6fd8dac.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0005-72.png"
+    },
     "U0A3DKS46R3": {
       "id": "U0A3DKS46R3",
       "username": "coder.hoang",
@@ -60826,12 +60883,6 @@
       "displayName": "Aarav Sharma",
       "avatar": "https://avatars.slack-edge.com/2025-09-27/9593425728950_f0fef76a510aff8c68d5_72.png"
     },
-    "U0AA4KJU08P": {
-      "id": "U0AA4KJU08P",
-      "username": "theskriptkid",
-      "displayName": "theskriptkid",
-      "avatar": "https://secure.gravatar.com/avatar/3a52d2263ce2a782cd93ff23c6fd8dac.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0005-72.png"
-    },
     "U08S00249M3": {
       "id": "U08S00249M3",
       "username": "kendell.r",
@@ -60860,12 +60911,6 @@
       "username": "duyduy15456",
       "displayName": "vair.​nooi",
       "avatar": "https://avatars.slack-edge.com/2026-01-19/10339124565665_d1b880cce06974971c2b_72.jpg"
-    },
-    "U0A83LHGY7K": {
-      "id": "U0A83LHGY7K",
-      "username": "shaikhsamir8442",
-      "displayName": "shaikhsamir8442",
-      "avatar": "https://secure.gravatar.com/avatar/48c99bb64ffb536bca0dadf2b763c552.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0023-72.png"
     },
     "U0ACQTB5ZDK": {
       "id": "U0ACQTB5ZDK",
@@ -63277,11 +63322,6 @@
       "username": "me1011",
       "displayName": "inw",
       "avatar": "https://avatars.slack-edge.com/2026-02-22/10557096291954_02efaa431cd9823bdb16_72.png"
-    },
-    "U0A8A7Q180P": {
-      "id": "U0A8A7Q180P",
-      "username": "harrisonnefzger28",
-      "avatar": "https://secure.gravatar.com/avatar/6a271438e47adea9e8fbd25883cb1512.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0011-72.png"
     },
     "U09940XAJ3B": {
       "id": "U09940XAJ3B",
