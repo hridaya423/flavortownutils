@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-22T23:28:51.903Z",
+  "lastUpdated": "2026-02-22T23:52:36.706Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -2991,6 +2991,14 @@
         "delta": 3,
         "balance": 2021,
         "reason": "Home Cookin'",
+        "reasonType": "achievement",
+        "userId": "U078VEJRBR7"
+      },
+      {
+        "ts": "2026-02-22T23:40:19.817Z",
+        "delta": 2,
+        "balance": 2023,
+        "reason": "Recipe Notes",
         "reasonType": "achievement",
         "userId": "U078VEJRBR7"
       }
@@ -7166,6 +7174,14 @@
         "balance": 427,
         "reason": "Cookbook Author",
         "reasonType": "achievement",
+        "userId": "U07UH9DQA4B"
+      },
+      {
+        "ts": "2026-02-22T23:39:23.234Z",
+        "delta": -35,
+        "balance": 392,
+        "reason": "shop purchase",
+        "reasonType": "",
         "userId": "U07UH9DQA4B"
       }
     ],
@@ -60805,6 +60821,18 @@
     ]
   },
   "users": {
+    "U078VEJRBR7": {
+      "id": "U078VEJRBR7",
+      "username": "om.potter09",
+      "displayName": "Oliver",
+      "avatar": "https://avatars.slack-edge.com/2026-01-03/10222815317046_899cf2fffe0818e84cd1_72.png"
+    },
+    "U07UH9DQA4B": {
+      "id": "U07UH9DQA4B",
+      "username": "izan",
+      "displayName": "eth0",
+      "avatar": "https://avatars.slack-edge.com/2026-02-20/10535766619703_0ea03bf74f6a02d6ba5c_72.jpg"
+    },
     "U0826R42R98": {
       "id": "U0826R42R98",
       "username": "jovannmc",
@@ -60902,12 +60930,6 @@
       "username": "kendell.r",
       "displayName": "Kendell",
       "avatar": "https://avatars.slack-edge.com/2026-02-11/10490175786725_5e57344e2bc0b04cb5bf_72.png"
-    },
-    "U078VEJRBR7": {
-      "id": "U078VEJRBR7",
-      "username": "om.potter09",
-      "displayName": "Oliver",
-      "avatar": "https://avatars.slack-edge.com/2026-01-03/10222815317046_899cf2fffe0818e84cd1_72.png"
     },
     "U07QC35DFV0": {
       "id": "U07QC35DFV0",
@@ -63251,12 +63273,6 @@
       "username": "shaswatkumar9868",
       "displayName": "Shaswat",
       "avatar": "https://secure.gravatar.com/avatar/58897fd0c1f7f1e734834443d103ee41.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0005-72.png"
-    },
-    "U07UH9DQA4B": {
-      "id": "U07UH9DQA4B",
-      "username": "izan",
-      "displayName": "eth0",
-      "avatar": "https://avatars.slack-edge.com/2026-02-20/10535766619703_0ea03bf74f6a02d6ba5c_72.jpg"
     },
     "U089903JZDH": {
       "id": "U089903JZDH",
