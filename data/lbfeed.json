@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-23T09:58:14.903Z",
+  "lastUpdated": "2026-02-23T10:57:07.306Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -10048,6 +10048,14 @@
         "ts": "2026-02-21T18:03:47.171Z",
         "delta": 10,
         "balance": 117,
+        "reason": "tutorial",
+        "reasonType": "",
+        "userId": "U087X4AG35K"
+      },
+      {
+        "ts": "2026-02-23T10:28:22.407Z",
+        "delta": 3,
+        "balance": 120,
         "reason": "tutorial",
         "reasonType": "",
         "userId": "U087X4AG35K"
@@ -61181,6 +61189,11 @@
     ]
   },
   "users": {
+    "U087X4AG35K": {
+      "id": "U087X4AG35K",
+      "username": "garygreg2011",
+      "avatar": "https://avatars.slack-edge.com/2026-01-20/10359714188368_8664ad8fbb930725e4c6_72.jpg"
+    },
     "U0A52AVLXM5": {
       "id": "U0A52AVLXM5",
       "username": "speedhawks83647",
@@ -61835,11 +61848,6 @@
       "username": "alonsomartinezcarrata",
       "displayName": "aloyak",
       "avatar": "https://avatars.slack-edge.com/2026-01-11/10266469042067_79d016b502587f2b7d52_72.png"
-    },
-    "U087X4AG35K": {
-      "id": "U087X4AG35K",
-      "username": "garygreg2011",
-      "avatar": "https://avatars.slack-edge.com/2026-01-20/10359714188368_8664ad8fbb930725e4c6_72.jpg"
     },
     "U08SS7Z7LJD": {
       "id": "U08SS7Z7LJD",
