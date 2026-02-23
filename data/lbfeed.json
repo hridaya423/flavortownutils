@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-23T21:12:40.060Z",
+  "lastUpdated": "2026-02-23T22:11:07.090Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -200,6 +200,14 @@
         "balance": 65,
         "reason": "user grant",
         "reasonType": "",
+        "userId": "U04PEAECRA5"
+      },
+      {
+        "ts": "2026-02-23T22:00:07.726Z",
+        "delta": 3,
+        "balance": 68,
+        "reason": "Michelin Star",
+        "reasonType": "achievement",
         "userId": "U04PEAECRA5"
       }
     ],
@@ -3539,6 +3547,24 @@
         "reason": "Hello, Kitchen!",
         "reasonType": "achievement",
         "userId": "U079WSK282Y"
+      }
+    ],
+    "u079y8m0q4b": [
+      {
+        "ts": "2026-02-23T21:10:06.648Z",
+        "delta": 3,
+        "balance": 16,
+        "reason": "Michelin Star",
+        "reasonType": "achievement",
+        "userId": "U079Y8M0Q4B"
+      },
+      {
+        "ts": "2026-02-23T21:10:06.650Z",
+        "delta": 3,
+        "balance": 13,
+        "reason": "Order Up!",
+        "reasonType": "achievement",
+        "userId": "U079Y8M0Q4B"
       }
     ],
     "u07a0d5k3t2": [
@@ -61533,6 +61559,17 @@
     ]
   },
   "users": {
+    "U04PEAECRA5": {
+      "id": "U04PEAECRA5",
+      "username": "amitdgames",
+      "avatar": "https://avatars.slack-edge.com/2023-02-10/4796560647681_b72c6a6e8fe908f961db_72.png"
+    },
+    "U079Y8M0Q4B": {
+      "id": "U079Y8M0Q4B",
+      "username": "endoftimee",
+      "displayName": "End",
+      "avatar": "https://avatars.slack-edge.com/2025-11-08/9903246661056_5c1e865544e3272a500a_72.png"
+    },
     "U07LKN2HXT3": {
       "id": "U07LKN2HXT3",
       "username": "obay.developer",
@@ -61759,11 +61796,6 @@
       "id": "U08RJ1PEM7X",
       "username": "novatea",
       "avatar": "https://avatars.slack-edge.com/2026-01-01/10209592955571_4e744ac04b8819751907_72.png"
-    },
-    "U04PEAECRA5": {
-      "id": "U04PEAECRA5",
-      "username": "amitdgames",
-      "avatar": "https://avatars.slack-edge.com/2023-02-10/4796560647681_b72c6a6e8fe908f961db_72.png"
     },
     "U09JBJ0FW0P": {
       "id": "U09JBJ0FW0P",
