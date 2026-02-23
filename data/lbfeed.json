@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-23T02:16:12.679Z",
+  "lastUpdated": "2026-02-23T04:37:19.288Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -57591,6 +57591,22 @@
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U0A8A7Q180P"
+      },
+      {
+        "ts": "2026-02-23T03:44:31.241Z",
+        "delta": -80,
+        "balance": 60,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A8A7Q180P"
+      },
+      {
+        "ts": "2026-02-23T03:46:56.502Z",
+        "delta": -40,
+        "balance": 20,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A8A7Q180P"
       }
     ],
     "u0a8akzj01w": [
@@ -60861,6 +60877,11 @@
     ]
   },
   "users": {
+    "U0A8A7Q180P": {
+      "id": "U0A8A7Q180P",
+      "username": "harrisonnefzger28",
+      "avatar": "https://secure.gravatar.com/avatar/6a271438e47adea9e8fbd25883cb1512.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0011-72.png"
+    },
     "U0923KXMGUR": {
       "id": "U0923KXMGUR",
       "username": "mathdudex09",
@@ -60901,11 +60922,6 @@
       "username": "shaikhsamir8442",
       "displayName": "shaikhsamir8442",
       "avatar": "https://secure.gravatar.com/avatar/48c99bb64ffb536bca0dadf2b763c552.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0023-72.png"
-    },
-    "U0A8A7Q180P": {
-      "id": "U0A8A7Q180P",
-      "username": "harrisonnefzger28",
-      "avatar": "https://secure.gravatar.com/avatar/6a271438e47adea9e8fbd25883cb1512.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0011-72.png"
     },
     "U0AA4KJU08P": {
       "id": "U0AA4KJU08P",
