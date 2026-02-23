@@ -1,7 +1,315 @@
 {
-  "lastUpdated": "2026-02-23T13:06:57.114Z",
-  "totalVotes": 5543,
+  "lastUpdated": "2026-02-23T19:04:26.963Z",
+  "totalVotes": 5587,
   "votes": [
+    {
+      "project": "OpenRadar",
+      "feedback": "Cool project, you really got the inspiration right. What about adding some asterisks to the API Keys?",
+      "votedBy": "U092BN4QB5W",
+      "timestamp": "2026-02-23T19:01:54.248Z",
+      "slackTs": "1771873314.248039"
+    },
+    {
+      "project": "temidaradev-rust",
+      "feedback": "A website in rust!? awesome idea and very few people utilize the power of wasm!",
+      "votedBy": "Unknown",
+      "timestamp": "2026-02-23T18:51:35.387Z",
+      "slackTs": "1771872695.387649"
+    },
+    {
+      "project": "The SK Programming Language",
+      "feedback": "Very nice project aloyak. This one of the better/bester projects on ft. love seeing someone implement a language. why rust though? i would think c/cpp would be better right?",
+      "votedBy": "Unknown",
+      "timestamp": "2026-02-23T18:48:48.889Z",
+      "slackTs": "1771872528.889939"
+    },
+    {
+      "project": "Memory Match",
+      "feedback": "Nice devlogs but it's AI generated, so it shouldn't have tooken that much time. The UI isn't great either so....",
+      "votedBy": "Unknown",
+      "timestamp": "2026-02-23T18:47:17.580Z",
+      "slackTs": "1771872437.580629"
+    },
+    {
+      "project": "Nephthys",
+      "feedback": "Nice project. i see it gets used well in the slack channel. Devlogs could be a tad bit more descriptive",
+      "votedBy": "Unknown",
+      "timestamp": "2026-02-23T18:46:09.015Z",
+      "slackTs": "1771872369.015999"
+    },
+    {
+      "project": "OpenRadar",
+      "feedback": "Very awesome project! I personally use it (don't ask why!) and I think it teaches a great deal about not sharing your env's to the general public. I also like the fact you used go and not rust",
+      "votedBy": "Unknown",
+      "timestamp": "2026-02-23T18:44:40.307Z",
+      "slackTs": "1771872280.307669"
+    },
+    {
+      "project": "Stem Sims",
+      "feedback": "Cool to see a \"maths\" project. I like the algo's you implemented and that you managed to put them together in a CLI tool, despite it using multiple languages",
+      "votedBy": "Unknown",
+      "timestamp": "2026-02-23T18:43:20.102Z",
+      "slackTs": "1771872200.102669"
+    },
+    {
+      "project": "Nephthys",
+      "feedback": "",
+      "votedBy": "U0A74N2LAQY",
+      "timestamp": "2026-02-23T18:17:59.289Z",
+      "slackTs": "1771870679.289199"
+    },
+    {
+      "project": "Stem Sims",
+      "feedback": "Like it's good, but it's not that hard to do. There's just random num generators and then use that.",
+      "votedBy": "U09TKL54J0P",
+      "timestamp": "2026-02-23T18:13:35.986Z",
+      "slackTs": "1771870415.986479"
+    },
+    {
+      "project": "Nephthys",
+      "feedback": "",
+      "votedBy": "U09GESRAC8J",
+      "timestamp": "2026-02-23T18:10:09.938Z",
+      "slackTs": "1771870209.938609"
+    },
+    {
+      "project": "Rode",
+      "feedback": "",
+      "votedBy": "U09GESRAC8J",
+      "timestamp": "2026-02-23T18:09:10.508Z",
+      "slackTs": "1771870150.508949"
+    },
+    {
+      "project": "Happy Birthday, Mum! (Digital B-Day Card)",
+      "feedback": "",
+      "votedBy": "U0A74N2LAQY",
+      "timestamp": "2026-02-23T18:03:09.853Z",
+      "slackTs": "1771869789.853759"
+    },
+    {
+      "project": "temidaradev-rust",
+      "feedback": "",
+      "votedBy": "U0A74N2LAQY",
+      "timestamp": "2026-02-23T18:03:09.009Z",
+      "slackTs": "1771869789.009959"
+    },
+    {
+      "project": "Memory Match",
+      "feedback": "nice project, doesn't look good on phone though",
+      "votedBy": "U09GESRAC8J",
+      "timestamp": "2026-02-23T18:03:08.893Z",
+      "slackTs": "1771869788.893479"
+    },
+    {
+      "project": "Happy Birthday, Mum! (Digital B-Day Card)",
+      "feedback": "",
+      "votedBy": "U09GESRAC8J",
+      "timestamp": "2026-02-23T18:03:08.817Z",
+      "slackTs": "1771869788.817069"
+    },
+    {
+      "project": "Rode",
+      "feedback": "None of the toolbar things work apart from theme.\nCommand palette works but nothing can be selected",
+      "votedBy": "U0A74N2LAQY",
+      "timestamp": "2026-02-23T18:03:08.814Z",
+      "slackTs": "1771869788.814039"
+    },
+    {
+      "project": "temidaradev-rust",
+      "feedback": "",
+      "votedBy": "U09GESRAC8J",
+      "timestamp": "2026-02-23T18:03:08.790Z",
+      "slackTs": "1771869788.790239"
+    },
+    {
+      "project": "The SK Programming Language",
+      "feedback": "I HAVE NO IDEA HOW PEOPLE LIKE YOU MAKE BIG PROJECTS LIKE THIS - this is very good and I am very impressed! WELL DONR",
+      "votedBy": "U0AEYDUCLKF",
+      "timestamp": "2026-02-23T18:03:08.760Z",
+      "slackTs": "1771869788.760879"
+    },
+    {
+      "project": "temidaradev-rust",
+      "feedback": "",
+      "votedBy": "U0AEYDUCLKF",
+      "timestamp": "2026-02-23T18:03:08.756Z",
+      "slackTs": "1771869788.756909"
+    },
+    {
+      "project": "Memory Match",
+      "feedback": "Very nice - works well! Only thing is that is it isn’t very original but keep up the good work!",
+      "votedBy": "U0AEYDUCLKF",
+      "timestamp": "2026-02-23T18:03:08.729Z",
+      "slackTs": "1771869788.729199"
+    },
+    {
+      "project": "OpenRadar",
+      "feedback": "I can see how useful this is and it appears to work well! Keep it up!",
+      "votedBy": "U0AEYDUCLKF",
+      "timestamp": "2026-02-23T18:03:08.698Z",
+      "slackTs": "1771869788.698799"
+    },
+    {
+      "project": "Stem Sims",
+      "feedback": "Not sure I am going to use it - but VERY COOL",
+      "votedBy": "U0AEYDUCLKF",
+      "timestamp": "2026-02-23T18:03:08.627Z",
+      "slackTs": "1771869788.627889"
+    },
+    {
+      "project": "Bits - The URL Shortner",
+      "feedback": "Very useful and is not behind a paywall like some other tools! Very nice!!",
+      "votedBy": "U0AEYDUCLKF",
+      "timestamp": "2026-02-23T18:03:08.622Z",
+      "slackTs": "1771869788.622599"
+    },
+    {
+      "project": "Memory Match",
+      "feedback": "",
+      "votedBy": "U0A74N2LAQY",
+      "timestamp": "2026-02-23T18:03:08.594Z",
+      "slackTs": "1771869788.594329"
+    },
+    {
+      "project": "The SK Programming Language",
+      "feedback": "",
+      "votedBy": "U0A74N2LAQY",
+      "timestamp": "2026-02-23T18:03:08.409Z",
+      "slackTs": "1771869788.409389"
+    },
+    {
+      "project": "OpenRadar",
+      "feedback": "Yo, security concern?",
+      "votedBy": "U09TKL54J0P",
+      "timestamp": "2026-02-23T18:03:08.398Z",
+      "slackTs": "1771869788.398779"
+    },
+    {
+      "project": "Bits - The URL Shortner",
+      "feedback": "I would add a favicon and title",
+      "votedBy": "U0A74N2LAQY",
+      "timestamp": "2026-02-23T18:03:08.391Z",
+      "slackTs": "1771869788.391039"
+    },
+    {
+      "project": "OpenRadar",
+      "feedback": "Nice UI! Would be cool to be able to submit repos for scanning",
+      "votedBy": "U0A74N2LAQY",
+      "timestamp": "2026-02-23T18:03:08.384Z",
+      "slackTs": "1771869788.384429"
+    },
+    {
+      "project": "Bits - The URL Shortner",
+      "feedback": "Bro i'm sorry, but the generate url button was disabled for me. I tried on safari too, but same thing. Also, don't say i build a \"perfect\" anything",
+      "votedBy": "U09TKL54J0P",
+      "timestamp": "2026-02-23T18:03:08.330Z",
+      "slackTs": "1771869788.330239"
+    },
+    {
+      "project": "Stem Sims",
+      "feedback": "",
+      "votedBy": "U0A74N2LAQY",
+      "timestamp": "2026-02-23T18:03:08.315Z",
+      "slackTs": "1771869788.315199"
+    },
+    {
+      "project": "Bits - The URL Shortner",
+      "feedback": "nice project! even though there has been other link shorteners made on ft already, yours stands out by having the feature to see how many clicks it gets. good work!",
+      "votedBy": "U08SS7Z7LJD",
+      "timestamp": "2026-02-23T18:03:08.212Z",
+      "slackTs": "1771869788.212519"
+    },
+    {
+      "project": "Stem Sims",
+      "feedback": "this is super cool! i like the card shuffling one. good job!",
+      "votedBy": "U08SS7Z7LJD",
+      "timestamp": "2026-02-23T18:03:08.136Z",
+      "slackTs": "1771869788.136329"
+    },
+    {
+      "project": "temidaradev-rust",
+      "feedback": "loved how it looks",
+      "votedBy": "U073M5L9U13",
+      "timestamp": "2026-02-23T18:03:06.185Z",
+      "slackTs": "1771869786.185589"
+    },
+    {
+      "project": "Rode",
+      "feedback": "seems awesome! pretty promising although def needs some polish. would love some screenshots in the README and some instructions to run it on Linux, although I found the cargo install rode-editor command on <http://crates.io|crates.io>",
+      "votedBy": "U073M5L9U13",
+      "timestamp": "2026-02-23T18:03:06.121Z",
+      "slackTs": "1771869786.121619"
+    },
+    {
+      "project": "The SK Programming Language",
+      "feedback": "",
+      "votedBy": "U09GESRAC8J",
+      "timestamp": "2026-02-23T18:03:05.781Z",
+      "slackTs": "1771869785.781529"
+    },
+    {
+      "project": "TomOS",
+      "feedback": "",
+      "votedBy": "U09GESRAC8J",
+      "timestamp": "2026-02-23T18:03:05.769Z",
+      "slackTs": "1771869785.769119"
+    },
+    {
+      "project": "The SK Programming Language",
+      "feedback": "I liked the web editor!",
+      "votedBy": "U073M5L9U13",
+      "timestamp": "2026-02-23T18:03:05.758Z",
+      "slackTs": "1771869785.758879"
+    },
+    {
+      "project": "TomOS",
+      "feedback": "worked! but I think Snake is running all the time because I kept getting a game over alert",
+      "votedBy": "U073M5L9U13",
+      "timestamp": "2026-02-23T18:03:05.757Z",
+      "slackTs": "1771869785.757549"
+    },
+    {
+      "project": "Bits - The URL Shortner",
+      "feedback": "it doesn't work! I get stuck on \"Checking availability...\" and can't shorten a URL. Also the UI really feels it came straight from an LLM",
+      "votedBy": "U073M5L9U13",
+      "timestamp": "2026-02-23T18:03:05.701Z",
+      "slackTs": "1771869785.701319"
+    },
+    {
+      "project": "OpenRadar",
+      "feedback": "Love the README! And in general it is a fun project",
+      "votedBy": "U073M5L9U13",
+      "timestamp": "2026-02-23T18:03:05.664Z",
+      "slackTs": "1771869785.664219"
+    },
+    {
+      "project": "Stem Sims",
+      "feedback": "it's okay, but a few common algorithms implemented in a few langs can only be so impressive",
+      "votedBy": "U073M5L9U13",
+      "timestamp": "2026-02-23T18:03:05.536Z",
+      "slackTs": "1771869785.536119"
+    },
+    {
+      "project": "Bits - The URL Shortner",
+      "feedback": "",
+      "votedBy": "U09GESRAC8J",
+      "timestamp": "2026-02-23T18:03:04.482Z",
+      "slackTs": "1771869784.482069"
+    },
+    {
+      "project": "Bits - The URL Shortner",
+      "feedback": "Its now working",
+      "votedBy": "U092SRUUSTS",
+      "timestamp": "2026-02-23T18:03:04.226Z",
+      "slackTs": "1771869784.226899"
+    },
+    {
+      "project": "OpenRadar",
+      "feedback": "",
+      "votedBy": "U09GESRAC8J",
+      "timestamp": "2026-02-23T18:03:02.463Z",
+      "slackTs": "1771869782.463869"
+    },
     {
       "project": "Command Interpreter",
       "feedback": "Good",
