@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-23T07:40:00.215Z",
+  "lastUpdated": "2026-02-23T08:55:33.850Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -13300,6 +13300,54 @@
         "balance": 25,
         "reason": "shop purchase",
         "reasonType": "",
+        "userId": "U08HR9MJ29M"
+      },
+      {
+        "ts": "2026-02-23T08:03:03.922Z",
+        "delta": 5,
+        "balance": 30,
+        "reason": "Very Fried",
+        "reasonType": "achievement",
+        "userId": "U08HR9MJ29M"
+      },
+      {
+        "ts": "2026-02-23T08:03:04.187Z",
+        "delta": 3,
+        "balance": 33,
+        "reason": "Home Cookin'",
+        "reasonType": "achievement",
+        "userId": "U08HR9MJ29M"
+      },
+      {
+        "ts": "2026-02-23T08:03:04.508Z",
+        "delta": 2,
+        "balance": 35,
+        "reason": "Recipe Notes",
+        "reasonType": "achievement",
+        "userId": "U08HR9MJ29M"
+      },
+      {
+        "ts": "2026-02-23T08:03:04.749Z",
+        "delta": 3,
+        "balance": 38,
+        "reason": "Order Up!",
+        "reasonType": "achievement",
+        "userId": "U08HR9MJ29M"
+      },
+      {
+        "ts": "2026-02-23T08:03:05.285Z",
+        "delta": 3,
+        "balance": 41,
+        "reason": "Michelin Star",
+        "reasonType": "achievement",
+        "userId": "U08HR9MJ29M"
+      },
+      {
+        "ts": "2026-02-23T08:03:05.638Z",
+        "delta": 15,
+        "balance": 56,
+        "reason": "Cookbook Author",
+        "reasonType": "achievement",
         "userId": "U08HR9MJ29M"
       }
     ],
@@ -61105,6 +61153,12 @@
     ]
   },
   "users": {
+    "U08HR9MJ29M": {
+      "id": "U08HR9MJ29M",
+      "username": "may.jackson",
+      "displayName": "may",
+      "avatar": "https://avatars.slack-edge.com/2025-05-17/8924718851537_dcb465792c6538094a54_72.png"
+    },
     "U0A04H3G3AP": {
       "id": "U0A04H3G3AP",
       "username": "lyricksantana",
@@ -61197,12 +61251,6 @@
       "username": "scooter.y",
       "displayName": "Scooter Y",
       "avatar": "https://avatars.slack-edge.com/2024-09-05/7699775824753_b19823deb141ed9d7deb_72.png"
-    },
-    "U08HR9MJ29M": {
-      "id": "U08HR9MJ29M",
-      "username": "may.jackson",
-      "displayName": "may",
-      "avatar": "https://avatars.slack-edge.com/2025-05-17/8924718851537_dcb465792c6538094a54_72.png"
     },
     "U0A8A7Q180P": {
       "id": "U0A8A7Q180P",
@@ -63464,7 +63512,7 @@
       "id": "U0938MZG8Q6",
       "username": "christiandubsky20",
       "displayName": "christian",
-      "avatar": "https://avatars.slack-edge.com/2026-02-21/10560120854996_dc69d2405c6d3dcd5a9e_72.png"
+      "avatar": "https://avatars.slack-edge.com/2026-02-23/10558132777509_6592a8b41259970b2e0e_72.png"
     },
     "U0A8U9Z77C2": {
       "id": "U0A8U9Z77C2",
