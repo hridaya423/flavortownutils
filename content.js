@@ -3314,12 +3314,6 @@ async function apiFetch(endpoint) {
     return response.json();
 }
 
-const DEVLOG_API_DELAY = 2000;
-
-async function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 async function fetchProjectIdsFromPage() {
     try {
         const projectsUrl = toAbsoluteUrl('/projects');
@@ -3382,9 +3376,7 @@ async function fetchAllDevlogsForProjectAPI(projectId) {
         hasMore = data.pagination.next_page !== null;
         page = data.pagination.next_page;
         
-        if (hasMore) {
-            await sleep(DEVLOG_API_DELAY);
-        }
+        
     }
     
     return allDevlogs;
@@ -3403,10 +3395,7 @@ async function fetchAndUpdateHeatmapDataViaAPI(onProgress = null) {
 
                 const devlogs = await fetchAllDevlogsForProjectAPI(project.id);
 
-                if (i < projects.length - 1) {
-                    await sleep(DEVLOG_API_DELAY);
-                }
-                
+
                 const projectData = {};
                 
                 devlogs.forEach(devlog => {
@@ -8735,6 +8724,76 @@ function addSkipButton() {
     }, 5000);
 }
 
+let kitchenHeatmapRefreshPromise = null;
+
+function ensureKitchenDashboardStyles() {
+    if (document.getElementById('flavortown-kitchen-dashboard-style')) return;
+    const style = document.createElement('style');
+    style.id = 'flavortown-kitchen-dashboard-style';
+    style.textContent = `
+        @keyframes flavortown-kitchen-shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        .flavortown-kitchen-skeleton {
+            background: linear-gradient(90deg, rgba(255,255,255,0.2) 25%, rgba(255,255,255,0.48) 50%, rgba(255,255,255,0.2) 75%);
+            background-size: 200% 100%;
+            animation: flavortown-kitchen-shimmer 1.2s ease-in-out infinite;
+            border-radius: 10px;
+        }
+        .flavortown-kitchen-skeleton-card {
+            height: 88px;
+            border: 1px solid var(--color-border, #d9cab4);
+            background-color: color-mix(in oklab, var(--color-surface, #fff) 72%, var(--color-cream, #fff6ea) 28%);
+            border-radius: 12px;
+            padding: 14px;
+        }
+        .flavortown-kitchen-skeleton-graph {
+            height: 300px;
+            border: 1px solid var(--color-border, #d9cab4);
+            border-radius: 14px;
+            background-color: color-mix(in oklab, var(--color-surface, #fff) 78%, var(--color-cream, #fff6ea) 22%);
+            position: relative;
+            overflow: hidden;
+        }
+        .flavortown-kitchen-skeleton-graph::after {
+            content: '';
+            position: absolute;
+            left: 20px;
+            right: 20px;
+            bottom: 20px;
+            height: 2px;
+            border-radius: 999px;
+            background: color-mix(in oklab, var(--color-border, #d9cab4) 70%, transparent 30%);
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+function kitchenFetchWithTimeout(url, options = {}, timeoutMs = 6000) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+    return fetch(url, { ...options, signal: controller.signal })
+        .finally(() => clearTimeout(timer));
+}
+
+function startKitchenHeatmapRefresh(onProgress) {
+    if (!kitchenHeatmapRefreshPromise) {
+        kitchenHeatmapRefreshPromise = fetchAndUpdateHeatmapDataViaAPI(onProgress)
+            .finally(() => {
+                kitchenHeatmapRefreshPromise = null;
+            });
+        return kitchenHeatmapRefreshPromise;
+    }
+
+    if (typeof onProgress === 'function') {
+        kitchenHeatmapRefreshPromise
+            .then(() => onProgress({ type: 'complete' }))
+            .catch((e) => onProgress({ type: 'error', error: e?.message || 'unknown error' }));
+    }
+    return kitchenHeatmapRefreshPromise;
+}
+
 async function enhanceKitchenDashboard() {
     if (window.location.pathname !== '/kitchen') return;
     if (document.querySelector('.flavortown-kitchen-dashboard')) return;
@@ -8742,39 +8801,115 @@ async function enhanceKitchenDashboard() {
     const kitchenSetup = document.querySelector('.kitchen-setup');
     if (!kitchenSetup) return;
 
+    ensureKitchenDashboardStyles();
+
+    const t0 = performance.now();
+    const nativeKitchenStats = document.querySelector('.kitchen-stats');
+    let achievementCount = '';
+    let achievementTotal = '';
+    let achievementPercent = '';
+    let leaderboardRank = '';
+    let leaderboardCookies = '';
+    if (nativeKitchenStats) {
+        const countEl = nativeKitchenStats.querySelector('.kitchen-stats-card__count');
+        const totalEl = nativeKitchenStats.querySelector('.kitchen-stats-card__total');
+        const percentEl = nativeKitchenStats.querySelector('.state-card__description');
+        const rankEl = nativeKitchenStats.querySelector('.kitchen-stats-card__rank');
+        const cookiesEl = nativeKitchenStats.querySelectorAll('.state-card__description')[1];
+        if (countEl) achievementCount = countEl.textContent.trim();
+        if (totalEl) achievementTotal = totalEl.textContent.trim().replace('/', '').trim();
+        if (percentEl) achievementPercent = percentEl.textContent.trim();
+        if (rankEl) leaderboardRank = rankEl.textContent.trim();
+        if (cookiesEl) leaderboardCookies = cookiesEl.textContent.trim();
+        nativeKitchenStats.style.display = 'none';
+    }
+
     const helpSection = document.querySelector('.kitchen-help');
     if (helpSection) helpSection.remove();
-
     const kitchenComic = document.querySelector('.kitchen-comic');
     if (kitchenComic) kitchenComic.remove();
-
     document.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach(heading => {
         if (heading.textContent.includes('Activity Heatmap') && !heading.closest('.flavortown-heatmap-card')) {
             heading.remove();
         }
     });
 
-    const heatmapDataPromise = fetchAndUpdateHeatmapDataViaAPI();
+    const dashboard = document.createElement('div');
+    dashboard.className = 'flavortown-kitchen-dashboard';
+    dashboard.innerHTML = `
+        <div class="flavortown-dashboard-header">
+            <h2>🍪 Your Cookie Stats</h2>
+        </div>
+        <div class="flavortown-graph-container">
+            <h3>Cookies Over Time</h3>
+            <div class="flavortown-kitchen-skeleton-graph flavortown-kitchen-skeleton"></div>
+        </div>
+        <div class="flavortown-dashboard-header" style="margin-top: 24px;">
+            <h2>📊 Your Progress</h2>
+        </div>
+        <div class="flavortown-stat-cards" id="flavortownKitchenStatCards">
+            <div class="flavortown-kitchen-skeleton-card"><div class="flavortown-kitchen-skeleton" style="height:14px;width:45%;margin-bottom:14px;"></div><div class="flavortown-kitchen-skeleton" style="height:26px;width:60%;"></div></div>
+            <div class="flavortown-kitchen-skeleton-card"><div class="flavortown-kitchen-skeleton" style="height:14px;width:45%;margin-bottom:14px;"></div><div class="flavortown-kitchen-skeleton" style="height:26px;width:60%;"></div></div>
+            <div class="flavortown-kitchen-skeleton-card"><div class="flavortown-kitchen-skeleton" style="height:14px;width:45%;margin-bottom:14px;"></div><div class="flavortown-kitchen-skeleton" style="height:26px;width:60%;"></div></div>
+            <div class="flavortown-kitchen-skeleton-card"><div class="flavortown-kitchen-skeleton" style="height:14px;width:45%;margin-bottom:14px;"></div><div class="flavortown-kitchen-skeleton" style="height:26px;width:60%;"></div></div>
+        </div>
+        <div class="flavortown-heatmap-section">
+            <div class="flavortown-heatmap-loading" style="padding: 24px; text-align: center; color: var(--color-text-secondary, #6b5c4a);">
+                <div style="font-size: 1.2em; margin-bottom: 8px;">⏳</div>
+                <div>Loading activity data...</div>
+                <div class="flavortown-heatmap-loading-progress" style="font-size: 0.85em; margin-top: 8px; opacity: 0.7;"></div>
+            </div>
+        </div>
+    `;
+
+    const parentContainer = kitchenSetup.parentNode;
+    kitchenSetup.replaceWith(dashboard);
+    const kitchenAnnouncement = document.querySelector('.kitchen-announcement');
+    if (kitchenAnnouncement && parentContainer) {
+        parentContainer.insertBefore(kitchenAnnouncement, dashboard);
+    }
+
+    const heatmapSection = dashboard.querySelector('.flavortown-heatmap-section');
+    const cachedHeatmapData = getHeatmapData();
+    const hasCachedData = cachedHeatmapData && Object.keys(cachedHeatmapData.dailyAggregates || {}).length > 0;
+    if (hasCachedData) {
+        heatmapSection.innerHTML = '';
+        heatmapSection.appendChild(createHeatmapComponent(cachedHeatmapData));
+        const loadingIndicator = document.createElement('div');
+        loadingIndicator.className = 'flavortown-heatmap-loading-indicator';
+        loadingIndicator.innerHTML = '<span class="flavortown-heatmap-loading-spinner"></span><span class="flavortown-heatmap-loading-text">Updating...</span>';
+        heatmapSection.appendChild(loadingIndicator);
+        startKitchenHeatmapRefresh((progress) => {
+            if (progress.type === 'complete') {
+                loadingIndicator.remove();
+                const fresh = getHeatmapData();
+                heatmapSection.innerHTML = '';
+                heatmapSection.appendChild(createHeatmapComponent(fresh));
+            } else if (progress.type === 'error') {
+                loadingIndicator.innerHTML = '<span class="flavortown-heatmap-loading-text">Update failed</span>';
+                setTimeout(() => loadingIndicator.remove(), 2500);
+            }
+        });
+    } else {
+        startKitchenHeatmapRefresh((progress) => {
+            const progressEl = heatmapSection.querySelector('.flavortown-heatmap-loading-progress');
+            if (progress.type === 'project' && progressEl) {
+                progressEl.textContent = `Fetching ${progress.current}/${progress.total}: ${progress.name}`;
+            } else if (progress.type === 'complete') {
+                heatmapSection.innerHTML = '';
+                heatmapSection.appendChild(createHeatmapComponent(getHeatmapData()));
+            } else if (progress.type === 'error') {
+                heatmapSection.innerHTML = '<div class="flavortown-heatmap-loading" style="padding:24px;text-align:center;color:#e53e3e;">Failed to load activity data</div>';
+            }
+        });
+    }
 
     try {
         const balanceUrl = new URL('/my/balance', window.location.origin).toString();
-        const response = await fetch(balanceUrl, {
-            credentials: 'include',
-            headers: {
-                'Accept': 'text/html, application/xhtml+xml',
-                'Turbo-Frame': 'balance_history',
-                'X-Flavortown-Ext-135': 'true'
-            }
-        });
-        const html = await response.text();
         const parser = new DOMParser();
-        let doc = parser.parseFromString(html, 'text/html');
-
         const extractBalanceRows = (sourceDoc) => {
             let rows = sourceDoc.querySelectorAll('.balance-history__table tbody tr');
-            if (rows.length === 0) {
-                rows = sourceDoc.querySelectorAll('table tbody tr');
-            }
+            if (rows.length === 0) rows = sourceDoc.querySelectorAll('table tbody tr');
             if (rows.length === 0) {
                 const streamTemplates = sourceDoc.querySelectorAll('turbo-stream template');
                 if (streamTemplates.length) {
@@ -8790,30 +8925,34 @@ async function enhanceKitchenDashboard() {
             return rows;
         };
 
+        const response = await kitchenFetchWithTimeout(balanceUrl, {
+            credentials: 'include',
+            headers: {
+                'Accept': 'text/html, application/xhtml+xml',
+                'Turbo-Frame': 'balance_history',
+                'X-Flavortown-Ext-135': 'true'
+            }
+        }, 7000);
+        const html = await response.text();
+        let doc = parser.parseFromString(html, 'text/html');
         let rows = extractBalanceRows(doc);
         if (rows.length === 0) {
-            const fallbackResponse = await fetch(balanceUrl, {
+            const fallbackResponse = await kitchenFetchWithTimeout(balanceUrl, {
                 credentials: 'include',
                 headers: {
                     'Accept': 'text/html, application/xhtml+xml',
                     'X-Flavortown-Ext-135': 'true'
                 }
-            });
-
+            }, 7000);
             if (fallbackResponse.ok) {
-                const fallbackHtml = await fallbackResponse.text();
-                doc = parser.parseFromString(fallbackHtml, 'text/html');
+                doc = parser.parseFromString(await fallbackResponse.text(), 'text/html');
                 rows = extractBalanceRows(doc);
             }
         }
 
         const transactions = [];
         let currentBalance = 0;
-
-        let balanceHeader = doc.querySelector('.balance-history__header h1');
-        if (!balanceHeader) {
-            balanceHeader = doc.querySelector('h1');
-        }
+        const balanceHeader = doc.querySelector('.balance-history__header h1') || doc.querySelector('h1');
         if (balanceHeader) {
             const match = balanceHeader.textContent.match(/(\d+)/);
             if (match) currentBalance = parseInt(match[1], 10);
@@ -8822,27 +8961,20 @@ async function enhanceKitchenDashboard() {
         rows.forEach(row => {
             const cells = row.querySelectorAll('td');
             if (cells.length < 3) return;
-
             const reason = cells[0].textContent.trim();
             const amountText = cells[1].textContent.trim();
             const dateText = cells[2].textContent.trim();
-
-            const isPositive = amountText.includes('+');
             const isNegative = amountText.includes('-');
             const numMatch = amountText.match(/(\d+)/);
             let amount = numMatch ? parseInt(numMatch[1], 10) : 0;
             if (isNegative) amount = -amount;
-
             const date = new Date(dateText);
-            if (!isNaN(date.getTime())) {
-                transactions.push({ reason, amount, date });
-            }
+            if (!isNaN(date.getTime())) transactions.push({ reason, amount, date });
         });
 
         let totalMinutes = 0;
         let totalDevlogs = 0;
         let devlogFrequency = '';
-
         try {
             const cachedStats = localStorage.getItem('flavortown_project_stats');
             if (cachedStats) {
@@ -8851,16 +8983,11 @@ async function enhanceKitchenDashboard() {
                     totalMinutes += project.minutes || 0;
                     totalDevlogs += project.devlogs || 0;
                 });
-
                 if (totalDevlogs > 0 && totalMinutes > 0) {
                     const avgMinutesPerDevlog = totalMinutes / totalDevlogs;
                     const hours = Math.floor(avgMinutesPerDevlog / 60);
                     const mins = Math.round(avgMinutesPerDevlog % 60);
-                    if (hours > 0) {
-                        devlogFrequency = `${hours}h ${mins}m/devlog`;
-                    } else {
-                        devlogFrequency = `${mins}m/devlog`;
-                    }
+                    devlogFrequency = hours > 0 ? `${hours}h ${mins}m/devlog` : `${mins}m/devlog`;
                 }
             }
         } catch (e) {
@@ -8869,9 +8996,7 @@ async function enhanceKitchenDashboard() {
 
         transactions.reverse();
         let runningTotal = currentBalance;
-        for (let i = transactions.length - 1; i >= 0; i--) {
-            runningTotal -= transactions[i].amount;
-        }
+        for (let i = transactions.length - 1; i >= 0; i--) runningTotal -= transactions[i].amount;
         const dataPoints = [];
         let balance = runningTotal;
         transactions.forEach(t => {
@@ -8882,393 +9007,304 @@ async function enhanceKitchenDashboard() {
         const totalEarned = transactions.filter(t => t.amount > 0).reduce((sum, t) => sum + t.amount, 0);
         const totalSpent = Math.abs(transactions.filter(t => t.amount < 0).reduce((sum, t) => sum + t.amount, 0));
 
-        let achievementCount = '';
-        let achievementTotal = '';
-        let achievementPercent = '';
-        let leaderboardRank = '';
-        let leaderboardCookies = '';
-        let leaderboardPercentile = '';
+        const statCards = dashboard.querySelector('#flavortownKitchenStatCards');
+        if (statCards) {
+            statCards.innerHTML = `
+                <div class="flavortown-stat-card flavortown-stat-card--earned"><span class="flavortown-stat-card__label">Total Earned</span><span class="flavortown-stat-card__value">+${totalEarned}</span></div>
+                <div class="flavortown-stat-card flavortown-stat-card--spent"><span class="flavortown-stat-card__label">Total Spent</span><span class="flavortown-stat-card__value">-${totalSpent}</span></div>
+                <div class="flavortown-stat-card"><span class="flavortown-stat-card__label">Total Time</span><span class="flavortown-stat-card__value">⏱ ${Math.floor(totalMinutes / 60)}h ${totalMinutes % 60}m</span></div>
+                ${devlogFrequency ? `<div class="flavortown-stat-card"><span class="flavortown-stat-card__label">Avg per Devlog</span><span class="flavortown-stat-card__value">⚡ ${devlogFrequency}</span></div>` : ''}
+                ${achievementCount ? `<div class="flavortown-stat-card"><span class="flavortown-stat-card__label">Achievements</span><span class="flavortown-stat-card__value">🏆 ${achievementCount}/${achievementTotal}</span><span class="flavortown-stat-card__sublabel" style="font-size: 0.8em; opacity: 0.7;">${achievementPercent}</span></div>` : ''}
+                ${leaderboardRank ? `<div class="flavortown-stat-card" id="flavortownKitchenLeaderboard"><span class="flavortown-stat-card__label">Leaderboard</span><span class="flavortown-stat-card__value">🏅 ${leaderboardRank}</span><span class="flavortown-stat-card__sublabel" style="font-size: 0.8em; opacity: 0.7;">${leaderboardCookies}</span></div>` : ''}
+            `;
+        }
 
-        const kitchenStats = document.querySelector('.kitchen-stats');
-        if (kitchenStats) {
-            const countEl = kitchenStats.querySelector('.kitchen-stats-card__count');
-            const totalEl = kitchenStats.querySelector('.kitchen-stats-card__total');
-            const percentEl = kitchenStats.querySelector('.state-card__description');
+        const graphContainer = dashboard.querySelector('.flavortown-graph-container');
+        if (graphContainer) {
+            graphContainer.innerHTML = '<h3>Cookies Over Time</h3><canvas id="flavortown-cookies-graph" width="800" height="300"></canvas>';
+        }
 
-            if (countEl) achievementCount = countEl.textContent.trim();
-            if (totalEl) achievementTotal = totalEl.textContent.trim().replace('/', '').trim();
-            if (percentEl) achievementPercent = percentEl.textContent.trim();
+        const canvas = dashboard.querySelector('#flavortown-cookies-graph');
+        if (canvas && dataPoints.length > 1) {
+            let revealProgress = 1;
+            let rafId = null;
 
-            const rankEl = kitchenStats.querySelector('.kitchen-stats-card__rank');
-            const cookiesEl = kitchenStats.querySelectorAll('.state-card__description')[1];
+            const drawGraph = (lineReveal = 1) => {
+                const ctx = canvas.getContext('2d');
+                const dpr = window.devicePixelRatio || 1;
+                const rect = canvas.getBoundingClientRect();
+                canvas.width = rect.width * dpr;
+                canvas.height = rect.height * dpr;
+                canvas.style.width = rect.width + 'px';
+                canvas.style.height = rect.height + 'px';
+                ctx.scale(dpr, dpr);
 
-            if (rankEl) leaderboardRank = rankEl.textContent.trim();
-            if (cookiesEl) leaderboardCookies = cookiesEl.textContent.trim();
+                const padding = 50;
+                const width = rect.width - padding * 2;
+                const height = rect.height - padding * 2;
+                const styles = getComputedStyle(document.documentElement);
+                const themeStyles = document.getElementById('flavortown-theme');
+                const isDarkTheme = !!themeStyles;
+                const textColor = isDarkTheme ? '#cdd6f4' : (styles.getPropertyValue('--color-text-primary')?.trim() || '#333');
+                const gridColor = isDarkTheme ? '#45475a' : (styles.getPropertyValue('--color-border')?.trim() || '#e2d8cc');
 
-            kitchenStats.style.display = 'none';
+                const minBalance = Math.min(...dataPoints.map(d => d.balance));
+                const maxBalance = Math.max(...dataPoints.map(d => d.balance));
+                const balanceRange = maxBalance - minBalance || 1;
+
+                ctx.strokeStyle = gridColor;
+                ctx.lineWidth = 1;
+                for (let i = 0; i <= 5; i++) {
+                    const y = padding + (height / 5) * i;
+                    ctx.beginPath();
+                    ctx.moveTo(padding, y);
+                    ctx.lineTo(rect.width - padding, y);
+                    ctx.stroke();
+                    const value = Math.round(maxBalance - (balanceRange / 5) * i);
+                    ctx.fillStyle = textColor;
+                    ctx.font = '12px system-ui';
+                    ctx.textAlign = 'right';
+                    ctx.fillText(value.toString(), padding - 10, y + 4);
+                }
+
+                const points = dataPoints.map((point, i) => ({
+                    x: padding + (width / (dataPoints.length - 1)) * i,
+                    y: padding + height - ((point.balance - minBalance) / balanceRange) * height,
+                    data: point
+                }));
+
+                const maxSegmentFloat = Math.max(0, Math.min(points.length - 1, lineReveal * (points.length - 1)));
+                const fullSegments = Math.floor(maxSegmentFloat);
+                const segmentFraction = maxSegmentFloat - fullSegments;
+
+                const cubicPoint = (p0, p1, p2, p3, t) => {
+                    const inv = 1 - t;
+                    const x =
+                        inv * inv * inv * p0.x +
+                        3 * inv * inv * t * p1.x +
+                        3 * inv * t * t * p2.x +
+                        t * t * t * p3.x;
+                    const y =
+                        inv * inv * inv * p0.y +
+                        3 * inv * inv * t * p1.y +
+                        3 * inv * t * t * p2.y +
+                        t * t * t * p3.y;
+                    return { x, y };
+                };
+
+                ctx.lineWidth = 3;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+
+                for (let i = 1; i <= fullSegments; i++) {
+                    const prev = points[i - 1];
+                    const curr = points[i];
+                    ctx.beginPath();
+                    ctx.moveTo(prev.x, prev.y);
+                    const cpX = (prev.x + curr.x) / 2;
+                    ctx.bezierCurveTo(cpX, prev.y, cpX, curr.y, curr.x, curr.y);
+                    ctx.strokeStyle = curr.data.amount >= 0 ? '#38a169' : '#e53e3e';
+                    ctx.stroke();
+                }
+
+                let revealHead = null;
+                if (segmentFraction > 0 && fullSegments + 1 < points.length) {
+                    const prev = points[fullSegments];
+                    const curr = points[fullSegments + 1];
+                    const cpX = (prev.x + curr.x) / 2;
+                    const cp1 = { x: cpX, y: prev.y };
+                    const cp2 = { x: cpX, y: curr.y };
+                    const steps = Math.max(2, Math.ceil(24 * segmentFraction));
+
+                    ctx.beginPath();
+                    ctx.moveTo(prev.x, prev.y);
+                    for (let s = 1; s <= steps; s++) {
+                        const t = (segmentFraction * s) / steps;
+                        const point = cubicPoint(prev, cp1, cp2, curr, t);
+                        ctx.lineTo(point.x, point.y);
+                        revealHead = point;
+                    }
+                    ctx.strokeStyle = curr.data.amount >= 0 ? '#38a169' : '#e53e3e';
+                    ctx.stroke();
+                }
+
+                points.forEach((point, idx) => {
+                    if (idx > fullSegments) return;
+                    ctx.beginPath();
+                    ctx.arc(point.x, point.y, 6, 0, Math.PI * 2);
+                    ctx.fillStyle = point.data.amount >= 0 ? '#38a169' : '#e53e3e';
+                    ctx.fill();
+                    ctx.strokeStyle = '#fff';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                });
+
+                if (revealHead) {
+                    const nextPoint = points[Math.min(points.length - 1, fullSegments + 1)];
+                    const headColor = nextPoint?.data?.amount >= 0 ? '#38a169' : '#e53e3e';
+                    ctx.beginPath();
+                    ctx.arc(revealHead.x, revealHead.y, 5.5, 0, Math.PI * 2);
+                    ctx.fillStyle = headColor;
+                    ctx.fill();
+                    ctx.strokeStyle = '#fff';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                }
+
+                ctx.fillStyle = textColor;
+                ctx.font = '11px system-ui';
+                ctx.textAlign = 'center';
+                const maxLabels = Math.min(dataPoints.length, 5);
+                const step = Math.max(1, Math.floor((dataPoints.length - 1) / Math.max(1, maxLabels - 1)));
+                for (let i = 0; i < dataPoints.length; i += step) {
+                    const x = padding + (width / (dataPoints.length - 1)) * i;
+                    const dateStr = dataPoints[i].date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                    ctx.fillText(dateStr, x, rect.height - 10);
+                }
+                canvas._pointPositions = points;
+            };
+
+            const animateLineReveal = () => {
+                if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                    revealProgress = 1;
+                    drawGraph(revealProgress);
+                    return;
+                }
+                if (rafId) cancelAnimationFrame(rafId);
+                revealProgress = 0;
+                const segmentCount = Math.max(1, dataPoints.length - 1);
+
+                const absMoves = dataPoints.slice(1).map(point => Math.abs(point.amount || 0)).filter(v => v > 0);
+                const sortedMoves = absMoves.slice().sort((a, b) => a - b);
+                const medianMove = sortedMoves.length
+                    ? sortedMoves[Math.floor(sortedMoves.length / 2)]
+                    : 0;
+
+                const baseSegmentDuration = 90;
+                const basePointPause = 14;
+                const segmentDurations = [];
+                const pointPauses = [];
+
+                for (let i = 0; i < segmentCount; i++) {
+                    const move = Math.abs(dataPoints[i + 1]?.amount || 0);
+                    const drama = medianMove > 0 ? Math.max(0, move / medianMove - 1) : 0;
+                    const dramaticBoost = Math.min(1.8, drama);
+                    segmentDurations.push(baseSegmentDuration + dramaticBoost * 40);
+                    pointPauses.push(basePointPause + dramaticBoost * 110);
+                }
+
+                const duration = segmentDurations.reduce((sum, value) => sum + value, 0)
+                    + pointPauses.slice(0, -1).reduce((sum, value) => sum + value, 0);
+                const start = performance.now();
+                const tick = (now) => {
+                    const elapsed = Math.max(0, now - start);
+                    let remaining = elapsed;
+                    let segmentsDone = 0;
+                    let frac = 0;
+
+                    for (let i = 0; i < segmentCount; i++) {
+                        const segmentDuration = segmentDurations[i];
+                        if (remaining >= segmentDuration) {
+                            segmentsDone += 1;
+                            remaining -= segmentDuration;
+                            if (i < segmentCount - 1) {
+                                const pointPause = pointPauses[i];
+                                if (remaining >= pointPause) {
+                                    remaining -= pointPause;
+                                } else {
+                                    frac = 0;
+                                    break;
+                                }
+                            }
+                        } else {
+                            const linear = Math.max(0, Math.min(1, remaining / segmentDuration));
+                            frac = 1 - Math.pow(1 - linear, 2);
+                            break;
+                        }
+                    }
+
+                    if (elapsed >= duration) {
+                        revealProgress = 1;
+                    } else {
+                        revealProgress = (segmentsDone + frac) / segmentCount;
+                    }
+                    drawGraph(revealProgress);
+                    if (elapsed < duration) rafId = requestAnimationFrame(tick);
+                };
+                rafId = requestAnimationFrame(tick);
+            };
+
+            if (!canvas._flavortownGraphTooltipAttached) {
+                const tooltip = document.createElement('div');
+                tooltip.className = 'flavortown-graph-tooltip';
+                tooltip.style.cssText = 'position:absolute;display:none;background:var(--color-surface,#fff);border:2px solid var(--color-border,#e2d8cc);border-radius:8px;padding:10px 14px;font-size:0.9em;pointer-events:none;z-index:1000;box-shadow:0 4px 12px rgba(0,0,0,0.15);max-width:220px;white-space:nowrap;';
+                canvas.parentNode.style.position = 'relative';
+                canvas.parentNode.appendChild(tooltip);
+
+                canvas.addEventListener('mouseenter', animateLineReveal);
+                canvas.addEventListener('mousemove', (e) => {
+                    const points = canvas._pointPositions;
+                    if (!points) return;
+                    const rect = canvas.getBoundingClientRect();
+                    const mouseX = e.clientX - rect.left;
+                    const mouseY = e.clientY - rect.top;
+                    let closest = null;
+                    let closestDist = Infinity;
+                    points.forEach(p => {
+                        const dist = Math.hypot(p.x - mouseX, p.y - mouseY);
+                        if (dist < closestDist && dist < 50) {
+                            closestDist = dist;
+                            closest = p;
+                        }
+                    });
+                    if (!closest) {
+                        tooltip.style.display = 'none';
+                        return;
+                    }
+                    const amountStr = closest.data.amount >= 0 ? `+${closest.data.amount}` : `${closest.data.amount}`;
+                    tooltip.innerHTML = `<div style="font-weight:700;margin-bottom:4px;">🍪 ${closest.data.balance}</div><div style="color:${closest.data.amount >= 0 ? '#38a169' : '#e53e3e'};font-weight:600;">${amountStr}</div><div style="font-size:0.85em;color:var(--color-text-muted,#888);margin-top:4px;">${closest.data.reason}</div>`;
+                    tooltip.style.display = 'block';
+                    tooltip.style.left = `${Math.min(rect.width - 225, closest.x + 15)}px`;
+                    tooltip.style.top = `${closest.y - 20}px`;
+                });
+                canvas.addEventListener('mouseleave', () => {
+                    tooltip.style.display = 'none';
+                    if (rafId) cancelAnimationFrame(rafId);
+                    drawGraph(1);
+                });
+                canvas._flavortownGraphTooltipAttached = true;
+            }
+
+            drawGraph(1);
+            document.addEventListener('flavortown-theme-changed', () => setTimeout(() => drawGraph(1), 150));
         }
 
         const rankNumber = leaderboardRank ? parseInt(leaderboardRank.replace(/[^\d]/g, ''), 10) : 0;
         if (rankNumber) {
-            try {
-                const leaderboardResponse = await fetch('https://flavortown.hackclub.com/leaderboard', {
-                    headers: {
-                        'Accept': 'text/html, application/xhtml+xml',
-                        'X-Flavortown-Ext-135': 'true'
-                    },
-                    credentials: 'include'
-                });
-                const leaderboardHtml = await leaderboardResponse.text();
-                const leaderboardDoc = parser.parseFromString(leaderboardHtml, 'text/html');
-                const subtitle = leaderboardDoc.querySelector('.leaderboard-hero .subtitle, p.subtitle');
-                const subtitleText = subtitle ? subtitle.textContent : '';
-                const totalMatch = subtitleText.match(/(\d[\d,]*)\s+users/i) || subtitleText.match(/(\d[\d,]*)/);
-                if (totalMatch) {
+            kitchenFetchWithTimeout('https://flavortown.hackclub.com/leaderboard', {
+                headers: { 'Accept': 'text/html, application/xhtml+xml', 'X-Flavortown-Ext-135': 'true' },
+                credentials: 'include'
+            }, 5000)
+                .then(res => res.text())
+                .then(leaderboardHtml => {
+                    const parser = new DOMParser();
+                    const leaderboardDoc = parser.parseFromString(leaderboardHtml, 'text/html');
+                    const subtitle = leaderboardDoc.querySelector('.leaderboard-hero .subtitle, p.subtitle');
+                    const subtitleText = subtitle ? subtitle.textContent : '';
+                    const totalMatch = subtitleText.match(/(\d[\d,]*)\s+users/i) || subtitleText.match(/(\d[\d,]*)/);
+                    if (!totalMatch) return;
                     const totalUsers = parseInt(totalMatch[1].replace(/,/g, ''), 10);
-                    if (totalUsers) {
-                        const percentile = Math.max(1, Math.ceil((rankNumber / totalUsers) * 100));
-                        leaderboardPercentile = `Top ${percentile}%`;
-                    }
-                }
-            } catch (e) {
-                console.log('Could not load leaderboard totals:', e);
-            }
+                    if (!totalUsers) return;
+                    const percentile = Math.max(1, Math.ceil((rankNumber / totalUsers) * 100));
+                    const sub = dashboard.querySelector('#flavortownKitchenLeaderboard .flavortown-stat-card__sublabel');
+                    if (sub) sub.textContent = `Top ${percentile}%`;
+                })
+                .catch(() => {});
         }
 
-        const dashboard = document.createElement('div');
-        dashboard.className = 'flavortown-kitchen-dashboard';
-        dashboard.innerHTML = `
-            <div class="flavortown-dashboard-header">
-                <h2>🍪 Your Cookie Stats</h2>
-            </div>
-            <div class="flavortown-graph-container">
-                <h3>Cookies Over Time</h3>
-                <canvas id="flavortown-cookies-graph" width="800" height="300"></canvas>
-            </div>
-            <div class="flavortown-dashboard-header" style="margin-top: 24px;">
-                <h2>📊 Your Progress</h2>
-            </div>
-            <div class="flavortown-stat-cards">
-                <div class="flavortown-stat-card flavortown-stat-card--earned">
-                    <span class="flavortown-stat-card__label">Total Earned</span>
-                    <span class="flavortown-stat-card__value">+${totalEarned}</span>
-                </div>
-                <div class="flavortown-stat-card flavortown-stat-card--spent">
-                    <span class="flavortown-stat-card__label">Total Spent</span>
-                    <span class="flavortown-stat-card__value">-${totalSpent}</span>
-                </div>
-                <div class="flavortown-stat-card">
-                    <span class="flavortown-stat-card__label">Total Time</span>
-                    <span class="flavortown-stat-card__value">⏱ ${Math.floor(totalMinutes / 60)}h ${totalMinutes % 60}m</span>
-                </div>
-                ${devlogFrequency ? `
-                <div class="flavortown-stat-card">
-                    <span class="flavortown-stat-card__label">Avg per Devlog</span>
-                    <span class="flavortown-stat-card__value">⚡ ${devlogFrequency}</span>
-                </div>
-                ` : ''}
-                ${achievementCount ? `
-                <div class="flavortown-stat-card">
-                    <span class="flavortown-stat-card__label">Achievements</span>
-                    <span class="flavortown-stat-card__value">🏆 ${achievementCount}/${achievementTotal}</span>
-                    <span class="flavortown-stat-card__sublabel" style="font-size: 0.8em; opacity: 0.7;">${achievementPercent}</span>
-                </div>
-                ` : ''}
-                ${leaderboardRank ? `
-                <div class="flavortown-stat-card">
-                    <span class="flavortown-stat-card__label">Leaderboard</span>
-                    <span class="flavortown-stat-card__value">🏅 ${leaderboardRank}</span>
-                    <span class="flavortown-stat-card__sublabel" style="font-size: 0.8em; opacity: 0.7;">${leaderboardPercentile || leaderboardCookies}</span>
-                </div>
-                ` : ''}
-            </div>
-        `;
-
-        const heatmapSection = document.createElement('div');
-        heatmapSection.className = 'flavortown-heatmap-section';
-
-        const cachedHeatmapData = getHeatmapData();
-        const hasCachedData = cachedHeatmapData && Object.keys(cachedHeatmapData.dailyAggregates || {}).length > 0;
-
-        if (hasCachedData) {
-            const heatmapComponent = createHeatmapComponent(cachedHeatmapData);
-            heatmapSection.appendChild(heatmapComponent);
-
-            const loadingIndicator = document.createElement('div');
-            loadingIndicator.className = 'flavortown-heatmap-loading-indicator';
-            loadingIndicator.innerHTML = `
-                <span class="flavortown-heatmap-loading-spinner"></span>
-                <span class="flavortown-heatmap-loading-text">Updating...</span>
-            `;
-            heatmapSection.appendChild(loadingIndicator);
-
-            fetchAndUpdateHeatmapDataViaAPI((progress) => {
-                if (progress.type === 'complete') {
-                    loadingIndicator.remove();
-                    const freshData = getHeatmapData();
-                    const newComponent = createHeatmapComponent(freshData);
-                    heatmapSection.innerHTML = '';
-                    heatmapSection.appendChild(newComponent);
-                } else if (progress.type === 'error') {
-                    loadingIndicator.innerHTML = `<span class="flavortown-heatmap-loading-text">Update failed</span>`;
-                    setTimeout(() => loadingIndicator.remove(), 3000);
-                }
-            });
-        } else {
-            heatmapSection.innerHTML = `
-                <div class="flavortown-heatmap-loading" style="padding: 40px; text-align: center; color: var(--color-text-secondary, #6b5c4a);">
-                    <div style="font-size: 1.2em; margin-bottom: 8px;">⏳</div>
-                    <div>Loading activity data...</div>
-                    <div class="flavortown-heatmap-loading-progress" style="font-size: 0.85em; margin-top: 8px; opacity: 0.7;"></div>
-                </div>
-            `;
-
-            fetchAndUpdateHeatmapDataViaAPI((progress) => {
-                const progressEl = heatmapSection.querySelector('.flavortown-heatmap-loading-progress');
-                if (progress.type === 'project' && progressEl) {
-                    progressEl.textContent = `Fetching ${progress.current}/${progress.total}: ${progress.name}`;
-                } else if (progress.type === 'complete') {
-                    const loadingEl = heatmapSection.querySelector('.flavortown-heatmap-loading');
-                    if (loadingEl) loadingEl.remove();
-
-                    const heatmapData = getHeatmapData();
-                    const heatmapComponent = createHeatmapComponent(heatmapData);
-                    heatmapSection.appendChild(heatmapComponent);
-                } else if (progress.type === 'error') {
-                    const loadingEl = heatmapSection.querySelector('.flavortown-heatmap-loading');
-                    if (loadingEl) {
-                        loadingEl.innerHTML = `
-                            <div style="color: #e53e3e;">Failed to load activity data</div>
-                            <div style="font-size: 0.9em; margin-top: 8px;">Try refreshing the page</div>
-                        `;
-                    }
-                }
-            });
-        }
-
-        dashboard.appendChild(heatmapSection);
-
-        const parentContainer = kitchenSetup.parentNode;
-        kitchenSetup.replaceWith(dashboard);
-
-        const kitchenAnnouncement = document.querySelector('.kitchen-announcement');
-        if (kitchenAnnouncement && parentContainer) {
-            parentContainer.insertBefore(kitchenAnnouncement, dashboard);
-        }
-
-        const canvas = document.getElementById('flavortown-cookies-graph');
-        if (canvas && dataPoints.length > 1) {
-        
-            const drawGraph = () => {
-            const ctx = canvas.getContext('2d');
-
-            const dpr = window.devicePixelRatio || 1;
-            const rect = canvas.getBoundingClientRect();
-            canvas.width = rect.width * dpr;
-            canvas.height = rect.height * dpr;
-            canvas.style.width = rect.width + 'px';
-            canvas.style.height = rect.height + 'px';
-            ctx.scale(dpr, dpr);
-
-            const padding = 50;
-            const width = rect.width - padding * 2;
-            const height = rect.height - padding * 2;
-
-            const styles = getComputedStyle(document.documentElement);
-            const lineColor = styles.getPropertyValue('--color-accent')?.trim() || '#8b7355';
-            const themeStyles = document.getElementById('flavortown-theme');
-            const isDarkTheme = !!themeStyles;
-            let textColor, gridColor;
-            if (isDarkTheme) {
-                textColor = '#cdd6f4';
-                gridColor = '#45475a';
-            } else {
-                textColor = styles.getPropertyValue('--color-text-primary')?.trim() || '#333';
-                gridColor = styles.getPropertyValue('--color-border')?.trim() || '#e2d8cc';
-            }
-
-            const minBalance = Math.min(...dataPoints.map(d => d.balance));
-            const maxBalance = Math.max(...dataPoints.map(d => d.balance));
-            const balanceRange = maxBalance - minBalance || 1;
-
-            ctx.strokeStyle = gridColor;
-            ctx.lineWidth = 1;
-            for (let i = 0; i <= 5; i++) {
-                const y = padding + (height / 5) * i;
-                ctx.beginPath();
-                ctx.moveTo(padding, y);
-                ctx.lineTo(canvas.width - padding, y);
-                ctx.stroke();
-
-                const value = Math.round(maxBalance - (balanceRange / 5) * i);
-                ctx.fillStyle = textColor;
-                ctx.font = '12px system-ui';
-                ctx.textAlign = 'right';
-                ctx.fillText(value.toString(), padding - 10, y + 4);
-            }
-
-            const pointPositions = dataPoints.map((point, i) => ({
-                x: padding + (width / (dataPoints.length - 1)) * i,
-                y: padding + height - ((point.balance - minBalance) / balanceRange) * height,
-                data: point
-            }));
-
-            for (let i = 1; i < pointPositions.length; i++) {
-                const prev = pointPositions[i - 1];
-                const curr = pointPositions[i];
-                const isGain = curr.data.amount >= 0;
-
-                const segmentGradient = ctx.createLinearGradient(0, padding, 0, padding + height);
-                if (isGain) {
-                    segmentGradient.addColorStop(0, 'rgba(56, 161, 105, 0.4)');
-                    segmentGradient.addColorStop(1, 'rgba(56, 161, 105, 0.05)');
-                } else {
-                    segmentGradient.addColorStop(0, 'rgba(229, 62, 62, 0.4)');
-                    segmentGradient.addColorStop(1, 'rgba(229, 62, 62, 0.05)');
-                }
-
-                ctx.beginPath();
-                ctx.moveTo(prev.x, prev.y);
-
-                const cpX = (prev.x + curr.x) / 2;
-                ctx.bezierCurveTo(cpX, prev.y, cpX, curr.y, curr.x, curr.y);
-
-                ctx.lineTo(curr.x, padding + height);
-                ctx.lineTo(prev.x, padding + height);
-                ctx.closePath();
-                ctx.fillStyle = segmentGradient;
-                ctx.fill();
-            }
-            ctx.lineWidth = 3;
-            ctx.lineCap = 'round';
-            ctx.lineJoin = 'round';
-
-            for (let i = 1; i < pointPositions.length; i++) {
-                const prev = pointPositions[i - 1];
-                const curr = pointPositions[i];
-                const isGain = curr.data.amount >= 0;
-
-                ctx.beginPath();
-                ctx.moveTo(prev.x, prev.y);
-                const cpX = (prev.x + curr.x) / 2;
-                ctx.bezierCurveTo(cpX, prev.y, cpX, curr.y, curr.x, curr.y);
-                ctx.strokeStyle = isGain ? '#38a169' : '#e53e3e';
-                ctx.stroke();
-            }
-
-            pointPositions.forEach((point, i) => {
-                const isGain = point.data.amount >= 0;
-                const pointColor = isGain ? '#38a169' : '#e53e3e';
-
-                ctx.beginPath();
-                ctx.arc(point.x, point.y, 6, 0, Math.PI * 2);
-                ctx.fillStyle = pointColor;
-                ctx.fill();
-                ctx.strokeStyle = '#fff';
-                ctx.lineWidth = 2;
-                ctx.stroke();
-            });
-
-            ctx.fillStyle = textColor;
-            ctx.font = '11px system-ui';
-            ctx.textAlign = 'center';
-            if (dataPoints.length > 0) {
-                const maxLabels = Math.min(dataPoints.length, 5);
-                const step = Math.max(1, Math.floor((dataPoints.length - 1) / (maxLabels - 1)));
-
-                for (let i = 0; i < dataPoints.length; i += step) {
-                    if (i === 0 || i >= dataPoints.length - 1 || (i > 0 && i < dataPoints.length - 1)) {
-                        const x = padding + (width / (dataPoints.length - 1)) * i;
-                        const dateStr = dataPoints[i].date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-                        ctx.fillText(dateStr, x, rect.height - 10);
-                    }
-                }
-                if (step > 1) {
-                    const lastX = padding + width;
-                    const lastDateStr = dataPoints[dataPoints.length - 1].date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-                    ctx.fillText(lastDateStr, lastX, rect.height - 10);
-                }
-            }
-            
-            canvas._pointPositions = pointPositions;
-            canvas._dpr = dpr;
-            }; 
-            
-            if (!document.querySelector('.flavortown-graph-tooltip')) {
-                const tooltip = document.createElement('div');
-                tooltip.className = 'flavortown-graph-tooltip';
-                tooltip.style.cssText = `
-                    position: absolute;
-                    display: none;
-                    background: var(--color-surface, #fff);
-                    border: 2px solid var(--color-border, #e2d8cc);
-                    border-radius: 8px;
-                    padding: 10px 14px;
-                    font-size: 0.9em;
-                    pointer-events: none;
-                    z-index: 1000;
-                    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-                    max-width: 220px;
-                    white-space: nowrap;
-                `;
-                canvas.parentNode.style.position = 'relative';
-                canvas.parentNode.appendChild(tooltip);
-
-                canvas.addEventListener('mousemove', (e) => {
-                    const tooltip = document.querySelector('.flavortown-graph-tooltip');
-                    const pointPositions = canvas._pointPositions;
-                    if (!pointPositions || !tooltip) return;
-                    
-                    const rect = canvas.getBoundingClientRect();
-                   
-                    const mouseX = e.clientX - rect.left;
-                    const mouseY = e.clientY - rect.top;
-
-                    let closestPoint = null;
-                    let closestDist = Infinity;
-                    pointPositions.forEach(p => {
-                        const dist = Math.sqrt((p.x - mouseX) ** 2 + (p.y - mouseY) ** 2);
-                        if (dist < closestDist && dist < 50) {
-                            closestDist = dist;
-                            closestPoint = p;
-                        }
-                    });
-
-                    if (closestPoint) {
-                        const amountStr = closestPoint.data.amount >= 0 ? `+${closestPoint.data.amount}` : `${closestPoint.data.amount}`;
-                        const dateStr = closestPoint.data.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-                        tooltip.innerHTML = `
-                            <div style="font-weight: 700; margin-bottom: 4px;">🍪 ${closestPoint.data.balance}</div>
-                            <div style="color: ${closestPoint.data.amount >= 0 ? '#38a169' : '#e53e3e'}; font-weight: 600;">${amountStr}</div>
-                            <div style="font-size: 0.85em; color: var(--color-text-muted, #888); margin-top: 4px;">${closestPoint.data.reason}</div>
-                            <div style="font-size: 0.8em; color: var(--color-text-muted, #888);">${dateStr}</div>
-                        `;
-                        tooltip.style.display = 'block';
-
-                        let tooltipX = closestPoint.x + 15;
-                        const tooltipWidth = 220;
-                        if (tooltipX + tooltipWidth > rect.width) {
-                            tooltipX = closestPoint.x - tooltipWidth - 15;
-                        }
-                        tooltip.style.left = `${tooltipX}px`;
-                        tooltip.style.top = `${closestPoint.y - 20}px`;
-                    } else {
-                        tooltip.style.display = 'none';
-                    }
-                });
-
-                canvas.addEventListener('mouseleave', () => {
-                    const tooltip = document.querySelector('.flavortown-graph-tooltip');
-                    if (tooltip) tooltip.style.display = 'none';
-                });
-            }
-            
-            drawGraph();
-            
-            document.addEventListener('flavortown-theme-changed', () => {
-                setTimeout(drawGraph, 150);
-            });
-        }
+        console.debug('Flavortown kitchen timings', {
+            totalMs: Math.round(performance.now() - t0)
+        });
     } catch (e) {
         console.error('Failed to enhance kitchen dashboard:', e);
     }
