@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-23T14:31:53.228Z",
+  "lastUpdated": "2026-02-23T15:29:20.816Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -4210,6 +4210,14 @@
         "balance": 185,
         "reason": "payout",
         "reasonType": "payout",
+        "userId": "U07DY3SJXK3"
+      },
+      {
+        "ts": "2026-02-23T14:50:21.293Z",
+        "delta": 15,
+        "balance": 200,
+        "reason": "Cookbook Author",
+        "reasonType": "achievement",
         "userId": "U07DY3SJXK3"
       }
     ],
@@ -61365,6 +61373,12 @@
     ]
   },
   "users": {
+    "U07DY3SJXK3": {
+      "id": "U07DY3SJXK3",
+      "username": "ng.qi.an",
+      "displayName": "Qi An",
+      "avatar": "https://avatars.slack-edge.com/2026-01-04/10212025593511_838f14d5ad921d27e6dd_72.jpg"
+    },
     "U07LKN2HXT3": {
       "id": "U07LKN2HXT3",
       "username": "obay.developer",
@@ -64329,12 +64343,6 @@
       "username": "jitwongjit",
       "displayName": "Jazzzzzzzzzon",
       "avatar": "https://avatars.slack-edge.com/2025-12-31/10217866082420_136fd8b6e687427e8749_72.png"
-    },
-    "U07DY3SJXK3": {
-      "id": "U07DY3SJXK3",
-      "username": "ng.qi.an",
-      "displayName": "Qi An",
-      "avatar": "https://avatars.slack-edge.com/2026-01-04/10212025593511_838f14d5ad921d27e6dd_72.jpg"
     },
     "U0A4D1JPX2B": {
       "id": "U0A4D1JPX2B",
