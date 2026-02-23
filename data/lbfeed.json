@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-23T15:29:20.816Z",
+  "lastUpdated": "2026-02-23T16:31:06.225Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -12489,6 +12489,22 @@
       {
         "ts": "2026-02-23T06:28:01.672Z",
         "delta": -263,
+        "balance": 184,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U089QTPBYJ0"
+      },
+      {
+        "ts": "2026-02-23T15:32:37.674Z",
+        "delta": -176,
+        "balance": 8,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U089QTPBYJ0"
+      },
+      {
+        "ts": "2026-02-23T15:32:45.657Z",
+        "delta": 176,
         "balance": 184,
         "reason": "shop purchase",
         "reasonType": "",
@@ -61373,6 +61389,12 @@
     ]
   },
   "users": {
+    "U089QTPBYJ0": {
+      "id": "U089QTPBYJ0",
+      "username": "ahmet.affan.ebcioglu",
+      "displayName": "temidaradev",
+      "avatar": "https://avatars.slack-edge.com/2025-07-03/9138406944899_8ff0acbf1e9dbedc50d2_72.jpg"
+    },
     "U07DY3SJXK3": {
       "id": "U07DY3SJXK3",
       "username": "ng.qi.an",
@@ -61498,12 +61520,6 @@
       "username": "sarjak.khanal",
       "displayName": "En Passant",
       "avatar": "https://avatars.slack-edge.com/2026-02-08/10450088407143_8725932424f4a50cd942_72.jpg"
-    },
-    "U089QTPBYJ0": {
-      "id": "U089QTPBYJ0",
-      "username": "ahmet.affan.ebcioglu",
-      "displayName": "temidaradev",
-      "avatar": "https://avatars.slack-edge.com/2025-07-03/9138406944899_8ff0acbf1e9dbedc50d2_72.jpg"
     },
     "U0A4UTULSLE": {
       "id": "U0A4UTULSLE",
