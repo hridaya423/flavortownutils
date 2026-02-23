@@ -8257,6 +8257,7 @@ function init() {
     enhanceAdminPage();
     initProjectRepoSuggestions();
     initProjectTodos();
+    initShipFastFlow();
     initPayoutVotesTextRestructure();
 
     setTimeout(checkAchievements, 2000);
@@ -9738,6 +9739,7 @@ document.addEventListener('turbo:load', () => {
     initVotesFeature();
     initProjectRepoSuggestions();
     initProjectTodos();
+    initShipFastFlow();
 });
 
 function ensureUploadToolsContainer(fileUploadArea) {
@@ -13766,6 +13768,703 @@ function enhanceShipEmojiInput() {
     const form = textarea.closest('form');
     if (form) {
         attachSlackEmojiSubmitHandler(form, textarea);
+    }
+}
+
+function ensureShipFastStyles() {
+    if (document.getElementById('flavortown-ship-fast-style')) return;
+    const style = document.createElement('style');
+    style.id = 'flavortown-ship-fast-style';
+    style.textContent = `
+        .flavortown-ship-fast {
+            margin-top: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .flavortown-ship-fast__toolbar {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .flavortown-ship-fast__loading {
+            opacity: 0.8;
+            font-size: 0.95rem;
+        }
+        .flavortown-ship-fast__status-chip {
+            align-self: flex-start;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            border: 1px solid color-mix(in oklab, var(--color-green-500, #22c55e) 35%, transparent 65%);
+            background: color-mix(in oklab, var(--color-green-500, #22c55e) 10%, transparent 90%);
+            color: var(--color-green-700, #166534);
+        }
+        .flavortown-ship-fast__section {
+            border: 1px solid var(--color-border, #d9cab4);
+            border-radius: 12px;
+            background: linear-gradient(180deg, var(--color-cream-dark, #fff8ee) 0%, var(--color-surface, #fff) 100%);
+            overflow: hidden;
+            box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
+        }
+        .flavortown-ship-fast__section > .projects-ship__step {
+            margin: 0;
+            border: 0;
+            border-radius: 0;
+            box-shadow: none;
+            background: transparent;
+        }
+        .flavortown-ship-fast__toolbar .btn {
+            border-radius: 999px;
+            padding-left: 12px;
+            padding-right: 12px;
+        }
+        .flavortown-ship-fast__accordion > summary {
+            cursor: pointer;
+            list-style: none;
+            padding: 12px 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            user-select: none;
+            border-bottom: 1px solid transparent;
+            color: var(--color-brown-dark, #5a342f);
+            background:
+                linear-gradient(180deg,
+                    color-mix(in oklab, var(--color-cream, #fff6ea) 74%, var(--color-orange-300, #fdba74) 26%) 0%,
+                    color-mix(in oklab, var(--color-cream-dark, #fff8ee) 80%, var(--color-brown-light, #8a6d47) 20%) 100%);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+            transition: background 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
+        }
+        .flavortown-ship-fast__accordion > summary:hover {
+            background:
+                linear-gradient(180deg,
+                    color-mix(in oklab, var(--color-cream, #fff6ea) 65%, var(--color-orange-300, #fdba74) 35%) 0%,
+                    color-mix(in oklab, var(--color-cream-dark, #fff8ee) 72%, var(--color-brown-light, #8a6d47) 28%) 100%);
+            border-bottom-color: color-mix(in oklab, var(--color-border, #d9cab4) 75%, var(--color-orange-400, #fb923c) 25%);
+        }
+        .flavortown-ship-fast__accordion[open] > summary {
+            border-bottom-color: color-mix(in oklab, var(--color-border, #d9cab4) 65%, var(--color-orange-400, #fb923c) 35%);
+            box-shadow: inset 0 -1px 0 rgba(168, 85, 44, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+        .flavortown-ship-fast__accordion > summary::-webkit-details-marker {
+            display: none;
+        }
+        .flavortown-ship-fast__accordion-chevron {
+            display: inline-block;
+            transform: rotate(0deg);
+            transition: transform 0.16s ease;
+        }
+        .flavortown-ship-fast__accordion[open] .flavortown-ship-fast__accordion-chevron {
+            transform: rotate(90deg);
+        }
+        .flavortown-ship-fast__accordion-body {
+            padding: 12px;
+        }
+        .flavortown-ship-fast__ship-action {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 12px;
+        }
+        .flavortown-ship-fast__checklist {
+            display: grid;
+            gap: 8px;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .flavortown-ship-fast__checklist-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 9px 10px;
+            border-radius: 10px;
+            background: color-mix(in oklab, var(--color-surface, #fff) 86%, var(--color-cream, #fff6ea) 14%);
+            border: 1px solid color-mix(in oklab, var(--color-border, #d9cab4) 82%, transparent 18%);
+            line-height: 1.25;
+            font-size: 0.95rem;
+        }
+        .flavortown-ship-fast__checklist-item--failed {
+            border-color: color-mix(in oklab, var(--color-red-500, #ef4444) 45%, transparent 55%);
+            background: color-mix(in oklab, var(--color-red-500, #ef4444) 9%, var(--color-surface, #fff) 91%);
+        }
+        .flavortown-ship-fast__checklist-icon {
+            flex: 0 0 auto;
+            width: 18px;
+            height: 18px;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+        .flavortown-ship-fast__checklist-item--passed .flavortown-ship-fast__checklist-icon {
+            background: color-mix(in oklab, var(--color-green-500, #22c55e) 22%, transparent 78%);
+            color: var(--color-green-700, #166534);
+        }
+        .flavortown-ship-fast__checklist-item--failed .flavortown-ship-fast__checklist-icon {
+            background: color-mix(in oklab, var(--color-red-500, #ef4444) 22%, transparent 78%);
+            color: var(--color-red-700, #991b1b);
+        }
+        .flavortown-ship-fast__devlogs {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .flavortown-ship-fast__devlogs-summary {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .flavortown-ship-fast__devlogs-pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 5px 10px;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            border: 1px solid var(--color-border, #d9cab4);
+            background: color-mix(in oklab, var(--color-cream, #fff6ea) 78%, var(--color-surface, #fff) 22%);
+        }
+        .flavortown-ship-fast__devlog-list {
+            display: grid;
+            gap: 8px;
+        }
+        .flavortown-ship-fast__devlog-card {
+            border: 1px solid var(--color-border, #d9cab4);
+            border-radius: 10px;
+            padding: 10px;
+            background: color-mix(in oklab, var(--color-surface, #fff) 88%, var(--color-cream, #fff6ea) 12%);
+        }
+        .flavortown-ship-fast__devlog-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+        .flavortown-ship-fast__devlog-time {
+            font-size: 0.82rem;
+            opacity: 0.8;
+        }
+        .flavortown-ship-fast__devlog-duration {
+            font-size: 0.8rem;
+            border-radius: 999px;
+            padding: 3px 8px;
+            border: 1px solid var(--color-border, #d9cab4);
+            background: color-mix(in oklab, var(--color-blue-400, #60a5fa) 10%, transparent 90%);
+        }
+        .flavortown-ship-fast__devlog-title {
+            font-weight: 600;
+            line-height: 1.25;
+            margin-bottom: 4px;
+        }
+        .flavortown-ship-fast__devlog-excerpt {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            line-height: 1.3;
+        }
+        .flavortown-ship-fast__devlog-attachments {
+            margin-top: 10px;
+            display: grid;
+            gap: 8px;
+        }
+        .flavortown-ship-fast__devlog-attachment-hero {
+            width: 100%;
+            height: 180px;
+            border-radius: 10px;
+            border: 1px solid var(--color-border, #d9cab4);
+            background: color-mix(in oklab, var(--color-cream, #fff6ea) 65%, var(--color-surface, #fff) 35%);
+            overflow: hidden;
+            position: relative;
+            display: block;
+            text-decoration: none;
+            color: inherit;
+        }
+        .flavortown-ship-fast__devlog-attachment-hero img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .flavortown-ship-fast__devlog-attachment-row {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .flavortown-ship-fast__devlog-attachment-pill {
+            position: absolute;
+            right: 8px;
+            bottom: 8px;
+            font-size: 0.68rem;
+            line-height: 1;
+            padding: 4px 7px;
+            border-radius: 999px;
+            color: #fff;
+            background: rgba(0, 0, 0, 0.66);
+            letter-spacing: 0.02em;
+        }
+        .flavortown-ship-fast__devlog-attachment {
+            width: 56px;
+            height: 56px;
+            border-radius: 8px;
+            border: 1px solid var(--color-border, #d9cab4);
+            background: color-mix(in oklab, var(--color-cream, #fff6ea) 68%, var(--color-surface, #fff) 32%);
+            overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            text-decoration: none;
+            color: inherit;
+            font-size: 0.72rem;
+            font-weight: 600;
+        }
+        .flavortown-ship-fast__devlog-attachment img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .flavortown-ship-fast__devlog-attachment--video::after {
+            content: 'VIDEO';
+            position: absolute;
+            right: 4px;
+            bottom: 4px;
+            font-size: 0.6rem;
+            line-height: 1;
+            padding: 2px 4px;
+            border-radius: 999px;
+            color: #fff;
+            background: rgba(0, 0, 0, 0.66);
+        }
+        .flavortown-ship-fast__devlog-attachment--more {
+            font-size: 0.78rem;
+            background: color-mix(in oklab, var(--color-blue-400, #60a5fa) 14%, var(--color-surface, #fff) 86%);
+        }
+        .flavortown-ship-fast__blocked-note {
+            margin-top: 8px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px dashed color-mix(in oklab, var(--color-red-500, #ef4444) 35%, transparent 65%);
+            background: color-mix(in oklab, var(--color-red-500, #ef4444) 8%, transparent 92%);
+            font-size: 0.92rem;
+        }
+        @media (max-width: 900px) {
+            .flavortown-ship-fast__checklist {
+                grid-template-columns: 1fr;
+            }
+            .flavortown-ship-fast__devlog-attachment-hero {
+                height: 150px;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+function buildShipAccordion(title, bodyNode, open = false) {
+    const section = document.createElement('details');
+    section.className = 'flavortown-ship-fast__section flavortown-ship-fast__accordion';
+    section.open = !!open;
+
+    const summary = document.createElement('summary');
+    summary.innerHTML = `<span class="flavortown-ship-fast__accordion-chevron">▶</span><span>${title}</span>`;
+
+    const body = document.createElement('div');
+    body.className = 'flavortown-ship-fast__accordion-body';
+    body.appendChild(bodyNode);
+
+    section.appendChild(summary);
+    section.appendChild(body);
+    return section;
+}
+
+async function fetchShipStepDoc(projectId, step) {
+    const url = `/projects/${projectId}/ships/new?step=${step}`;
+    const response = await fetch(url, { credentials: 'include' });
+    if (!response.ok) {
+        throw new Error(`Failed ship step ${step}: ${response.status}`);
+    }
+    const html = await response.text();
+    return new DOMParser().parseFromString(html, 'text/html');
+}
+
+function extractShipStepNode(doc) {
+    const step = doc.querySelector('.projects-ship__content .projects-ship__step');
+    return step ? step.cloneNode(true) : null;
+}
+
+function extractShipStepNav(doc) {
+    const nav = doc.querySelector('.projects-ship__content .projects-ship__navigation');
+    return nav ? nav.cloneNode(true) : null;
+}
+
+function buildCompactChecklist(stepNode) {
+    if (!stepNode) return null;
+
+    const desc = stepNode.querySelector('.projects-ship__section-desc')?.textContent?.trim() || '';
+    const validations = Array.from(stepNode.querySelectorAll('.projects-ship__validation'));
+
+    if (!validations.length) return null;
+
+    const wrap = document.createElement('div');
+    wrap.className = 'projects-ship__step';
+
+    if (desc) {
+        const paragraph = document.createElement('p');
+        paragraph.className = 'projects-ship__section-desc';
+        paragraph.textContent = desc;
+        wrap.appendChild(paragraph);
+    }
+
+    const grid = document.createElement('div');
+    grid.className = 'flavortown-ship-fast__checklist';
+
+    let totalCount = 0;
+    let failedCount = 0;
+
+    validations.forEach(validation => {
+        const passed = validation.classList.contains('projects-ship__validation--passed');
+        const label = validation.querySelector('.projects-ship__validation-label')?.textContent?.trim();
+        if (!label) return;
+
+        totalCount += 1;
+        if (passed) return;
+        failedCount += 1;
+
+        const item = document.createElement('div');
+        item.className = 'flavortown-ship-fast__checklist-item flavortown-ship-fast__checklist-item--failed';
+        item.innerHTML = `
+            <span class="flavortown-ship-fast__checklist-icon">!</span>
+            <span>${label}</span>
+        `;
+        grid.appendChild(item);
+    });
+
+    if (!failedCount) {
+        return { node: null, failedCount: 0, totalCount };
+    }
+
+    wrap.appendChild(grid);
+    return { node: wrap, failedCount, totalCount };
+}
+
+function textFromFirst(root, selectors) {
+    if (!root) return '';
+    for (const selector of selectors) {
+        const el = root.querySelector(selector);
+        const text = el?.textContent?.trim();
+        if (text) return text;
+    }
+    return '';
+}
+
+function collapseWhitespace(text) {
+    return (text || '').replace(/\s+/g, ' ').trim();
+}
+
+function buildCompactDevlogs(stepNode) {
+    if (!stepNode) return null;
+
+    const desc = stepNode.querySelector('.projects-ship__section-desc')?.textContent?.trim() || '';
+    const reviewRoot = stepNode.querySelector('.projects-ship__section-content, .projects-ship__section-body, .projects-ship__body') || stepNode;
+    const candidates = Array.from(reviewRoot.querySelectorAll('article.post--devlog, article.post, .post--devlog, .projects-ship__devlog, .projects-ship__review-item, li'));
+
+    const seen = new Set();
+    const entries = [];
+
+    for (const node of candidates) {
+        const title = textFromFirst(node, ['.post__title', 'h3', 'h4', '.projects-ship__devlog-title', 'strong']);
+        const linkEl = node.querySelector('a[href*="/devlogs/"], a[href*="/posts/"]');
+        const link = linkEl?.getAttribute('href') || '';
+        const time = textFromFirst(node, ['.post__time', 'time', '.projects-ship__devlog-time']);
+        const duration = textFromFirst(node, ['.post__duration', '.duration', '.projects-ship__devlog-duration']);
+        const bodyText = textFromFirst(node, ['.post__body', '.projects-ship__devlog-body', 'p']);
+        const excerpt = collapseWhitespace(bodyText).slice(0, 240);
+        const attachments = [];
+        node.querySelectorAll('.post__slide').forEach(slide => {
+            const img = slide.querySelector('img');
+            const video = slide.querySelector('video');
+            if (img?.src) {
+                attachments.push({ type: 'image', src: img.src, alt: img.alt || 'Devlog attachment' });
+            } else if (video?.src) {
+                attachments.push({ type: 'video', src: video.src, poster: video.poster || '' });
+            }
+        });
+
+        if (!title && !excerpt) continue;
+
+        const key = `${link}::${title}::${time}`;
+        if (seen.has(key)) continue;
+        seen.add(key);
+
+        entries.push({ title, link, time, duration, excerpt, attachments });
+        if (entries.length >= 8) break;
+    }
+
+    if (!entries.length) return null;
+
+    let totalMinutes = 0;
+    entries.forEach(item => {
+        totalMinutes += parseDurationToMinutes(item.duration);
+    });
+
+    const wrap = document.createElement('div');
+    wrap.className = 'projects-ship__step flavortown-ship-fast__devlogs';
+
+    const heading = document.createElement('h2');
+    heading.className = 'projects-ship__section-title';
+    heading.textContent = 'Devlogs since last ship';
+    wrap.appendChild(heading);
+
+    if (desc) {
+        const paragraph = document.createElement('p');
+        paragraph.className = 'projects-ship__section-desc';
+        paragraph.textContent = desc;
+        wrap.appendChild(paragraph);
+    }
+
+    const summary = document.createElement('div');
+    summary.className = 'flavortown-ship-fast__devlogs-summary';
+    summary.innerHTML = `
+        <span class="flavortown-ship-fast__devlogs-pill">${entries.length} devlog${entries.length === 1 ? '' : 's'}</span>
+        ${totalMinutes > 0 ? `<span class="flavortown-ship-fast__devlogs-pill">${formatMinutesCompact(totalMinutes)} logged</span>` : ''}
+    `;
+    wrap.appendChild(summary);
+
+    const list = document.createElement('div');
+    list.className = 'flavortown-ship-fast__devlog-list';
+
+    entries.forEach(entry => {
+        const card = document.createElement('article');
+        card.className = 'flavortown-ship-fast__devlog-card';
+
+        const titleHtml = entry.link
+            ? `<a href="${escapeHtml(entry.link)}">${escapeHtml(entry.title || 'Open devlog')}</a>`
+            : escapeHtml(entry.title || 'Devlog');
+
+        card.innerHTML = `
+            <div class="flavortown-ship-fast__devlog-top">
+                <span class="flavortown-ship-fast__devlog-time">${escapeHtml(entry.time || 'Recent')}</span>
+                ${entry.duration ? `<span class="flavortown-ship-fast__devlog-duration">${escapeHtml(entry.duration)}</span>` : ''}
+            </div>
+            <div class="flavortown-ship-fast__devlog-title">${titleHtml}</div>
+            ${entry.excerpt ? `<div class="flavortown-ship-fast__devlog-excerpt">${escapeHtml(entry.excerpt)}</div>` : ''}
+        `;
+
+        if (entry.attachments?.length) {
+            const attachmentsWrap = document.createElement('div');
+            attachmentsWrap.className = 'flavortown-ship-fast__devlog-attachments';
+
+            const primary = entry.attachments[0];
+            const hero = document.createElement('a');
+            hero.className = `flavortown-ship-fast__devlog-attachment-hero ${primary.type === 'video' ? 'flavortown-ship-fast__devlog-attachment--video' : ''}`;
+            hero.href = primary.src;
+            hero.target = '_blank';
+            hero.rel = 'noopener noreferrer';
+
+            if (primary.type === 'image') {
+                hero.innerHTML = `<img src="${escapeHtml(primary.src)}" alt="${escapeHtml(primary.alt || 'Attachment')}" loading="lazy">`;
+            } else if (primary.poster) {
+                hero.innerHTML = `<img src="${escapeHtml(primary.poster)}" alt="Video attachment" loading="lazy">`;
+            } else {
+                hero.textContent = 'Video attachment';
+            }
+            if (primary.type === 'video') {
+                const tag = document.createElement('span');
+                tag.className = 'flavortown-ship-fast__devlog-attachment-pill';
+                tag.textContent = 'VIDEO';
+                hero.appendChild(tag);
+            }
+            attachmentsWrap.appendChild(hero);
+
+            const row = document.createElement('div');
+            row.className = 'flavortown-ship-fast__devlog-attachment-row';
+
+            const secondary = entry.attachments.slice(1, 4);
+            secondary.forEach(attachment => {
+                const item = document.createElement('a');
+                item.className = `flavortown-ship-fast__devlog-attachment ${attachment.type === 'video' ? 'flavortown-ship-fast__devlog-attachment--video' : ''}`;
+                item.href = attachment.src;
+                item.target = '_blank';
+                item.rel = 'noopener noreferrer';
+
+                if (attachment.type === 'image') {
+                    item.innerHTML = `<img src="${escapeHtml(attachment.src)}" alt="${escapeHtml(attachment.alt || 'Attachment')}" loading="lazy">`;
+                } else if (attachment.poster) {
+                    item.innerHTML = `<img src="${escapeHtml(attachment.poster)}" alt="Video attachment" loading="lazy">`;
+                } else {
+                    item.textContent = 'Video';
+                }
+
+                row.appendChild(item);
+            });
+
+            if (entry.attachments.length > 4) {
+                const more = document.createElement('span');
+                more.className = 'flavortown-ship-fast__devlog-attachment flavortown-ship-fast__devlog-attachment--more';
+                more.textContent = `+${entry.attachments.length - 4}`;
+                row.appendChild(more);
+            }
+
+            if (secondary.length || entry.attachments.length > 4) {
+                attachmentsWrap.appendChild(row);
+            }
+
+            card.appendChild(attachmentsWrap);
+        }
+
+        list.appendChild(card);
+    });
+
+    wrap.appendChild(list);
+    return wrap;
+}
+
+async function initShipFastFlow() {
+    const match = window.location.pathname.match(/^\/projects\/(\d+)\/ships\/new$/);
+    if (!match) return;
+
+    const content = document.querySelector('.projects-ship__content');
+    if (!content) return;
+    if (content.dataset.flavortownShipFastLoading === 'true') return;
+
+    const existingFast = content.querySelector('.flavortown-ship-fast');
+    if (existingFast) {
+        if (content.dataset.flavortownShipFast === 'true') return;
+        existingFast.remove();
+    }
+
+    content.dataset.flavortownShipFastLoading = 'true';
+
+    const projectId = match[1];
+    ensureShipFastStyles();
+
+    const heading = content.querySelector('.projects-ship__title');
+    if (!heading) return;
+
+    const fast = document.createElement('div');
+    fast.className = 'flavortown-ship-fast';
+    heading.insertAdjacentElement('afterend', fast);
+
+    try {
+        let step1Node = content.querySelector('.projects-ship__step')?.cloneNode(true) || null;
+        if (!step1Node) {
+            const step1Doc = await fetchShipStepDoc(projectId, 1);
+            step1Node = extractShipStepNode(step1Doc);
+        }
+        if (!step1Node) {
+            fast.remove();
+            return;
+        }
+
+        const checklist = buildCompactChecklist(step1Node);
+        const hasChecklistIssues = !!checklist?.failedCount;
+
+        const nodes = [];
+
+        if (checklist?.totalCount) {
+            const statusChip = document.createElement('div');
+            statusChip.className = 'flavortown-ship-fast__status-chip';
+            statusChip.textContent = hasChecklistIssues
+                ? `${checklist.failedCount} checklist item${checklist.failedCount === 1 ? '' : 's'} left`
+                : 'Checklist clear. Ready to ship.';
+            nodes.push(statusChip);
+        }
+
+        if (hasChecklistIssues && checklist?.node) {
+            const checklistSection = document.createElement('section');
+            checklistSection.className = 'flavortown-ship-fast__section';
+            checklistSection.id = 'flavortownShipChecklist';
+            checklistSection.appendChild(checklist.node);
+
+            const blockedNote = document.createElement('div');
+            blockedNote.className = 'flavortown-ship-fast__blocked-note';
+            blockedNote.textContent = 'Finish the checklist first. Ship message, details, and devlog review unlock after all checks pass.';
+            checklistSection.appendChild(blockedNote);
+
+            nodes.push(checklistSection);
+        }
+
+        if (hasChecklistIssues) {
+            content.querySelectorAll('.projects-ship__step, .projects-ship__navigation').forEach(el => {
+                if (el.closest('.flavortown-ship-fast')) return;
+                el.remove();
+            });
+
+            fast.replaceChildren(...nodes);
+            content.dataset.flavortownShipFast = 'true';
+            return;
+        }
+
+        const docs = await Promise.all([
+            fetchShipStepDoc(projectId, 2),
+            fetchShipStepDoc(projectId, 3),
+            fetchShipStepDoc(projectId, 4),
+        ]);
+
+        const step2Node = extractShipStepNode(docs[0]);
+        const step3Node = extractShipStepNode(docs[1]);
+        const step4Node = extractShipStepNode(docs[2]);
+        const step4Nav = extractShipStepNav(docs[2]);
+
+        if (!step4Node) {
+            fast.remove();
+            return;
+        }
+
+        if (step2Node) {
+            const detailsForm = step2Node.querySelector('#ship-details-form');
+            if (detailsForm) {
+                const detailsAction = document.createElement('div');
+                detailsAction.className = 'flavortown-ship-fast__ship-action';
+                detailsAction.innerHTML = '<button type="submit" form="ship-details-form" class="btn btn--blue btn--borderless">Save details</button>';
+                step2Node.appendChild(detailsAction);
+            }
+            nodes.push(buildShipAccordion('Project details (optional)', step2Node, false));
+        }
+        if (step3Node) {
+            const compactDevlogs = buildCompactDevlogs(step3Node);
+            nodes.push(buildShipAccordion('Devlogs since last ship', compactDevlogs || step3Node, false));
+        }
+
+        const shipMessageSection = document.createElement('section');
+        shipMessageSection.className = 'flavortown-ship-fast__section';
+        shipMessageSection.id = 'flavortownShipMessage';
+        shipMessageSection.appendChild(step4Node);
+
+        if (step4Nav) {
+            const shipBtn = step4Nav.querySelector('button[form="ship-form"]');
+            if (shipBtn) {
+                const shipAction = document.createElement('div');
+                shipAction.className = 'flavortown-ship-fast__ship-action';
+                shipAction.appendChild(shipBtn.cloneNode(true));
+                shipMessageSection.appendChild(shipAction);
+            }
+        }
+
+        nodes.push(shipMessageSection);
+
+        content.querySelectorAll('.projects-ship__step, .projects-ship__navigation').forEach(el => {
+            if (el.closest('.flavortown-ship-fast')) return;
+            el.remove();
+        });
+
+        fast.replaceChildren(...nodes);
+        content.dataset.flavortownShipFast = 'true';
+
+        enhanceShipEmojiInput();
+    } catch (e) {
+        console.error('Failed to init ship fast flow:', e);
+        fast.innerHTML = `
+            <div class="flavortown-ship-fast__loading">
+                Could not build single-page ship flow. You can still use the normal steps.
+            </div>
+        `;
+    } finally {
+        delete content.dataset.flavortownShipFastLoading;
     }
 }
 
