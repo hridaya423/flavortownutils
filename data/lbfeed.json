@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-23T19:06:01.114Z",
+  "lastUpdated": "2026-02-23T20:09:23.919Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -7236,6 +7236,14 @@
         "balance": 34,
         "reason": "payout",
         "reasonType": "payout",
+        "userId": "U07UGRYER5G"
+      },
+      {
+        "ts": "2026-02-23T19:37:09.707Z",
+        "delta": 25,
+        "balance": 59,
+        "reason": "user grant",
+        "reasonType": "",
         "userId": "U07UGRYER5G"
       }
     ],
@@ -16976,6 +16984,14 @@
         "balance": 2582,
         "reason": "user grant",
         "reasonType": "",
+        "userId": "U091KALMG3Y"
+      },
+      {
+        "ts": "2026-02-23T19:11:53.268Z",
+        "delta": 129,
+        "balance": 2711,
+        "reason": "payout",
+        "reasonType": "payout",
         "userId": "U091KALMG3Y"
       }
     ],
@@ -33993,6 +34009,22 @@
         "delta": 10,
         "balance": 57,
         "reason": "Line Cook",
+        "reasonType": "achievement",
+        "userId": "U0A52AVLXM5"
+      },
+      {
+        "ts": "2026-02-23T19:05:18.167Z",
+        "delta": 3,
+        "balance": 60,
+        "reason": "Order Up!",
+        "reasonType": "achievement",
+        "userId": "U0A52AVLXM5"
+      },
+      {
+        "ts": "2026-02-23T20:03:17.794Z",
+        "delta": 3,
+        "balance": 63,
+        "reason": "Michelin Star",
         "reasonType": "achievement",
         "userId": "U0A52AVLXM5"
       }
@@ -61469,6 +61501,23 @@
     ]
   },
   "users": {
+    "U0A52AVLXM5": {
+      "id": "U0A52AVLXM5",
+      "username": "speedhawks83647",
+      "displayName": "speedhawks",
+      "avatar": "https://secure.gravatar.com/avatar/7555d9e63469aa893dbff15febd365fc.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0026-72.png"
+    },
+    "U07UGRYER5G": {
+      "id": "U07UGRYER5G",
+      "username": "shahbazu628",
+      "displayName": "MUS",
+      "avatar": "https://avatars.slack-edge.com/2024-11-04/7981940388932_3a8ba0412e0892abc066_72.png"
+    },
+    "U091KALMG3Y": {
+      "id": "U091KALMG3Y",
+      "username": "braxtonhood23",
+      "avatar": "https://avatars.slack-edge.com/2026-01-22/10336148649699_bd08305f939082ce41ab_72.jpg"
+    },
     "U0ADK0PR91N": {
       "id": "U0ADK0PR91N",
       "username": "radman.siddiki",
@@ -61595,12 +61644,6 @@
       "username": "garygreg2011",
       "avatar": "https://avatars.slack-edge.com/2026-01-20/10359714188368_8664ad8fbb930725e4c6_72.jpg"
     },
-    "U0A52AVLXM5": {
-      "id": "U0A52AVLXM5",
-      "username": "speedhawks83647",
-      "displayName": "speedhawks",
-      "avatar": "https://secure.gravatar.com/avatar/7555d9e63469aa893dbff15febd365fc.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0026-72.png"
-    },
     "U0A2H749TL3": {
       "id": "U0A2H749TL3",
       "username": "jaw.inbox10",
@@ -61688,11 +61731,6 @@
       "id": "U0A7QFF7X17",
       "username": "tanzilchowdhury2014",
       "avatar": "https://secure.gravatar.com/avatar/e857f78e2690298785ee9d3ca67d12da.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0013-72.png"
-    },
-    "U091KALMG3Y": {
-      "id": "U091KALMG3Y",
-      "username": "braxtonhood23",
-      "avatar": "https://avatars.slack-edge.com/2026-01-22/10336148649699_bd08305f939082ce41ab_72.jpg"
     },
     "U046VA0KR8R": {
       "id": "U046VA0KR8R",
@@ -63858,7 +63896,7 @@
       "id": "U0938MZG8Q6",
       "username": "christiandubsky20",
       "displayName": "christian",
-      "avatar": "https://avatars.slack-edge.com/2026-02-23/10550431841847_d50164bcf40a2eefa3b9_72.png"
+      "avatar": "https://avatars.slack-edge.com/2026-02-23/10550712971831_32911a2da606a8eaacc2_72.png"
     },
     "U0A8U9Z77C2": {
       "id": "U0A8U9Z77C2",
@@ -64367,12 +64405,6 @@
       "username": "paulndeh86",
       "displayName": "PappyZuh",
       "avatar": "https://avatars.slack-edge.com/2026-01-21/10349472862340_d020afa4f706e2cc9778_72.jpg"
-    },
-    "U07UGRYER5G": {
-      "id": "U07UGRYER5G",
-      "username": "shahbazu628",
-      "displayName": "MUS",
-      "avatar": "https://avatars.slack-edge.com/2024-11-04/7981940388932_3a8ba0412e0892abc066_72.png"
     },
     "U07ANFM6BDW": {
       "id": "U07ANFM6BDW",
