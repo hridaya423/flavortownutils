@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-23T08:55:33.850Z",
+  "lastUpdated": "2026-02-23T09:58:14.903Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -31515,6 +31515,24 @@
         "userId": "U0A287MMYC8"
       }
     ],
+    "u0a2h749tl3": [
+      {
+        "ts": "2026-02-23T08:55:54.482Z",
+        "delta": 3,
+        "balance": 3,
+        "reason": "Home Cookin'",
+        "reasonType": "achievement",
+        "userId": "U0A2H749TL3"
+      },
+      {
+        "ts": "2026-02-23T08:55:54.773Z",
+        "delta": 2,
+        "balance": 5,
+        "reason": "Recipe Notes",
+        "reasonType": "achievement",
+        "userId": "U0A2H749TL3"
+      }
+    ],
     "u0a2jd33nfr": [
       {
         "ts": "2025-12-23T09:26:42.654Z",
@@ -33703,6 +33721,16 @@
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U0A525GDXCK"
+      }
+    ],
+    "u0a52avlxm5": [
+      {
+        "ts": "2026-02-23T09:06:32.284Z",
+        "delta": 10,
+        "balance": 57,
+        "reason": "Line Cook",
+        "reasonType": "achievement",
+        "userId": "U0A52AVLXM5"
       }
     ],
     "u0a52j7mz7f": [
@@ -61153,6 +61181,18 @@
     ]
   },
   "users": {
+    "U0A52AVLXM5": {
+      "id": "U0A52AVLXM5",
+      "username": "speedhawks83647",
+      "displayName": "speedhawks",
+      "avatar": "https://secure.gravatar.com/avatar/7555d9e63469aa893dbff15febd365fc.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0026-72.png"
+    },
+    "U0A2H749TL3": {
+      "id": "U0A2H749TL3",
+      "username": "jaw.inbox10",
+      "displayName": "jaw.inbox10",
+      "avatar": "https://secure.gravatar.com/avatar/f1d3380fd663aff4f394a2b2a9a13d14.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0017-72.png"
+    },
     "U08HR9MJ29M": {
       "id": "U08HR9MJ29M",
       "username": "may.jackson",
