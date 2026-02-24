@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-24T17:16:03.832Z",
+  "lastUpdated": "2026-02-24T18:32:32.882Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -13464,6 +13464,22 @@
         "ts": "2026-02-23T23:35:58.814Z",
         "delta": -88,
         "balance": 580,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U08FQEADNT0"
+      },
+      {
+        "ts": "2026-02-24T17:58:58.995Z",
+        "delta": -430,
+        "balance": 150,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U08FQEADNT0"
+      },
+      {
+        "ts": "2026-02-24T17:58:59.028Z",
+        "delta": -144,
+        "balance": 6,
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U08FQEADNT0"
@@ -61691,6 +61707,12 @@
     ]
   },
   "users": {
+    "U08FQEADNT0": {
+      "id": "U08FQEADNT0",
+      "username": "origamiking3612",
+      "displayName": "OrigamiKing3612",
+      "avatar": "https://avatars.slack-edge.com/2026-01-03/10225293455522_ea30b8ed6c0a51fcfbaf_72.png"
+    },
     "U0AAHSKAH6K": {
       "id": "U0AAHSKAH6K",
       "username": "manskill586",
@@ -61738,12 +61760,6 @@
       "username": "shiviwhivi",
       "displayName": "shivenbk",
       "avatar": "https://secure.gravatar.com/avatar/f85179b523dc07ba78c3cb784d9e5db9.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0006-72.png"
-    },
-    "U08FQEADNT0": {
-      "id": "U08FQEADNT0",
-      "username": "origamiking3612",
-      "displayName": "OrigamiKing3612",
-      "avatar": "https://avatars.slack-edge.com/2026-01-03/10225293455522_ea30b8ed6c0a51fcfbaf_72.png"
     },
     "U07UW1D35A5": {
       "id": "U07UW1D35A5",
@@ -62705,7 +62721,7 @@
       "id": "U0A4N2K2P8T",
       "username": "thiago.teixeira51",
       "displayName": "ChefThi",
-      "avatar": "https://secure.gravatar.com/avatar/3428c225c969b9f9cf45378b7b76939d.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0012-72.png"
+      "avatar": "https://secure.gravatar.com/avatar/79463b455fc0dc0a575448fd5315f718.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0012-72.png"
     },
     "U09CNHJA5D5": {
       "id": "U09CNHJA5D5",
