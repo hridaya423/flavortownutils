@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-24T07:04:41.552Z",
+  "lastUpdated": "2026-02-24T08:07:32.135Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -16595,6 +16595,14 @@
         "delta": -34,
         "balance": 50,
         "reason": "user grant",
+        "reasonType": "",
+        "userId": "U090XJF4NSD"
+      },
+      {
+        "ts": "2026-02-24T07:34:06.782Z",
+        "delta": -40,
+        "balance": 10,
+        "reason": "shop purchase",
         "reasonType": "",
         "userId": "U090XJF4NSD"
       }
@@ -61601,6 +61609,12 @@
     ]
   },
   "users": {
+    "U090XJF4NSD": {
+      "id": "U090XJF4NSD",
+      "username": "the_cubidian",
+      "displayName": "The Cubidian",
+      "avatar": "https://avatars.slack-edge.com/2025-06-09/9020487880196_42d2f06d2aecea35d9ad_72.png"
+    },
     "U0AG8L191HC": {
       "id": "U0AG8L191HC",
       "username": "shiviwhivi",
@@ -61691,12 +61705,6 @@
       "username": "jacob.navaratne",
       "displayName": "Jacob",
       "avatar": "https://avatars.slack-edge.com/2026-02-15/10507758480291_a56356891a1addcfd2bc_72.png"
-    },
-    "U090XJF4NSD": {
-      "id": "U090XJF4NSD",
-      "username": "the_cubidian",
-      "displayName": "The Cubidian",
-      "avatar": "https://avatars.slack-edge.com/2025-06-09/9020487880196_42d2f06d2aecea35d9ad_72.png"
     },
     "U0A4TBWJR42": {
       "id": "U0A4TBWJR42",
