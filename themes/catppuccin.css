@@ -1909,6 +1909,62 @@ a:hover {
     background-color: var(--ctp-accent) !important;
 }
 
+.platform-notice {
+    background: var(--color-surface) repeating-conic-gradient(from 0deg, color-mix(in srgb, var(--color-accent) 12%, transparent) 0deg 90deg, transparent 90deg 180deg) !important;
+    background-size: 120px 120px !important;
+    border: .4em solid var(--color-accent) !important;
+    color: var(--color-text-primary) !important;
+}
+
+.platform-notice__heading,
+.platform-notice__message,
+.platform-notice p {
+    color: var(--color-text-primary) !important;
+}
+
+.platform-notice__icon {
+    color: var(--color-accent) !important;
+}
+
+.platform-notice__icon path,
+.platform-notice__icon * {
+    fill: currentColor !important;
+}
+
+.projects-show__icon-btn svg {
+    color: var(--color-text-primary) !important;
+    fill: currentColor !important;
+}
+
+div[style*="display: flex"][style*="background: #fffbeb"] {
+    background: color-mix(in srgb, var(--color-surface) 82%, var(--color-accent) 18%) !important;
+    border: 1px solid var(--color-border) !important;
+}
+
+div[style*="display: flex"][style*="background: #fffbeb"] a[style*="color: #3b82f6"] {
+    color: var(--color-accent) !important;
+}
+
+div[style*="background: #f9fafb"][style*="padding: 1rem"],
+p[style*="background: #f9fafb"][style*="padding: 1rem"] {
+    background: color-mix(in srgb, var(--color-surface) 90%, var(--color-accent) 10%) !important;
+    color: var(--color-text-primary) !important;
+    border: 1px solid var(--color-border) !important;
+}
+
+.voting-table th,
+.voting-stat__value,
+.card h1,
+.card h2,
+.card h3,
+.card h4 {
+    color: var(--color-text-primary) !important;
+}
+
+.table-data tbody tr {
+    background: color-mix(in srgb, var(--color-surface) 94%, var(--color-accent) 6%) !important;
+}
+
 .input {
     background-color: var(--ctp-surface0) !important;
     border-color: var(--ctp-surface1) !important;
@@ -3079,7 +3135,7 @@ main:has(.chef-img) .btn:hover {
 }
 
 .table-data tbody tr {
-    background-color: transparent !important;
+    background-color: color-mix(in srgb, var(--ctp-surface0) 92%, var(--ctp-mauve) 8%) !important;
 }
 
 .card {
