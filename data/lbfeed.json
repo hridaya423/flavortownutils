@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-24T18:32:32.882Z",
+  "lastUpdated": "2026-02-24T19:50:10.525Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -7524,6 +7524,14 @@
         "ts": "2026-02-23T23:13:05.894Z",
         "delta": -700,
         "balance": 171,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U07UW1D35A5"
+      },
+      {
+        "ts": "2026-02-24T19:32:43.642Z",
+        "delta": 700,
+        "balance": 871,
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U07UW1D35A5"
@@ -61707,6 +61715,12 @@
     ]
   },
   "users": {
+    "U07UW1D35A5": {
+      "id": "U07UW1D35A5",
+      "username": "wjkisler",
+      "displayName": "W",
+      "avatar": "https://secure.gravatar.com/avatar/d355ce364494bde1105886b9cafebad8.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0020-72.png"
+    },
     "U08FQEADNT0": {
       "id": "U08FQEADNT0",
       "username": "origamiking3612",
@@ -61760,12 +61774,6 @@
       "username": "shiviwhivi",
       "displayName": "shivenbk",
       "avatar": "https://secure.gravatar.com/avatar/f85179b523dc07ba78c3cb784d9e5db9.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0006-72.png"
-    },
-    "U07UW1D35A5": {
-      "id": "U07UW1D35A5",
-      "username": "wjkisler",
-      "displayName": "W",
-      "avatar": "https://secure.gravatar.com/avatar/d355ce364494bde1105886b9cafebad8.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0020-72.png"
     },
     "U092TLL6ZH6": {
       "id": "U092TLL6ZH6",
@@ -64126,7 +64134,7 @@
       "id": "U0938MZG8Q6",
       "username": "christiandubsky20",
       "displayName": "christian",
-      "avatar": "https://avatars.slack-edge.com/2026-02-24/10571077467750_d844d21b5015397e9acf_72.png"
+      "avatar": "https://avatars.slack-edge.com/2026-02-24/10568062985427_18529d597307621823d5_72.png"
     },
     "U0A8U9Z77C2": {
       "id": "U0A8U9Z77C2",
