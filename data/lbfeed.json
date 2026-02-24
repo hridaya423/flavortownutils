@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-24T22:36:44.182Z",
+  "lastUpdated": "2026-02-24T23:34:49.575Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -9723,6 +9723,22 @@
         "delta": 833,
         "balance": 846,
         "reason": "user grant",
+        "reasonType": "",
+        "userId": "U084D1T5ZV0"
+      },
+      {
+        "ts": "2026-02-24T22:43:42.131Z",
+        "delta": -50,
+        "balance": 796,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U084D1T5ZV0"
+      },
+      {
+        "ts": "2026-02-24T23:10:58.206Z",
+        "delta": 50,
+        "balance": 846,
+        "reason": "shop purchase",
         "reasonType": "",
         "userId": "U084D1T5ZV0"
       }
@@ -61723,6 +61739,11 @@
     ]
   },
   "users": {
+    "U084D1T5ZV0": {
+      "id": "U084D1T5ZV0",
+      "username": "kashsuks",
+      "avatar": "https://avatars.slack-edge.com/2025-12-10/10078589222967_669bffbc7f9ee3695e9d_72.png"
+    },
     "U0924GFMY1X": {
       "id": "U0924GFMY1X",
       "username": "adon.omeri",
@@ -62842,11 +62863,6 @@
       "username": "nmsoukmandjiev007",
       "displayName": "nmsoukmandjiev007",
       "avatar": "https://secure.gravatar.com/avatar/895a326f79f3eb9b12e6a3f34bd23621.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0009-72.png"
-    },
-    "U084D1T5ZV0": {
-      "id": "U084D1T5ZV0",
-      "username": "kashsuks",
-      "avatar": "https://avatars.slack-edge.com/2025-12-10/10078589222967_669bffbc7f9ee3695e9d_72.png"
     },
     "U081RUXGF7H": {
       "id": "U081RUXGF7H",
