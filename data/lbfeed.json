@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-24T13:50:40.337Z",
+  "lastUpdated": "2026-02-24T14:54:20.400Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -12833,6 +12833,14 @@
         "delta": 25,
         "balance": 85,
         "reason": "user grant",
+        "reasonType": "",
+        "userId": "U08B60DCYG2"
+      },
+      {
+        "ts": "2026-02-24T14:21:02.672Z",
+        "delta": -50,
+        "balance": 35,
+        "reason": "shop purchase",
         "reasonType": "",
         "userId": "U08B60DCYG2"
       }
@@ -61643,6 +61651,12 @@
     ]
   },
   "users": {
+    "U08B60DCYG2": {
+      "id": "U08B60DCYG2",
+      "username": "me1853",
+      "displayName": "maddy",
+      "avatar": "https://avatars.slack-edge.com/2026-01-24/10378452028689_8f3a2ed55cd353fc69f6_72.png"
+    },
     "U0A9S13HQF3": {
       "id": "U0A9S13HQF3",
       "username": "alexfeed1990real",
@@ -62964,12 +62978,6 @@
       "id": "U08AT086H8E",
       "username": "itslukasreis",
       "avatar": "https://avatars.slack-edge.com/2025-12-14/10132050312737_cb30475cd6a3f962c644_72.jpg"
-    },
-    "U08B60DCYG2": {
-      "id": "U08B60DCYG2",
-      "username": "me1853",
-      "displayName": "maddy",
-      "avatar": "https://avatars.slack-edge.com/2026-01-24/10378452028689_8f3a2ed55cd353fc69f6_72.png"
     },
     "U091URR1YAJ": {
       "id": "U091URR1YAJ",
