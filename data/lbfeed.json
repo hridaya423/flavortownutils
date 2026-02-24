@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-24T21:37:44.064Z",
+  "lastUpdated": "2026-02-24T22:36:44.182Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -20298,6 +20298,14 @@
         "balance": 22,
         "reason": "shop purchase",
         "reasonType": "",
+        "userId": "U0924GFMY1X"
+      },
+      {
+        "ts": "2026-02-24T21:50:25.421Z",
+        "delta": 5,
+        "balance": 27,
+        "reason": "Cooking",
+        "reasonType": "achievement",
         "userId": "U0924GFMY1X"
       }
     ],
@@ -61715,6 +61723,12 @@
     ]
   },
   "users": {
+    "U0924GFMY1X": {
+      "id": "U0924GFMY1X",
+      "username": "adon.omeri",
+      "displayName": "Adon Omeri",
+      "avatar": "https://secure.gravatar.com/avatar/bebcb67885920b62df9b3355743e80ed.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0001-72.png"
+    },
     "U07UW1D35A5": {
       "id": "U07UW1D35A5",
       "username": "wjkisler",
@@ -63309,12 +63323,6 @@
       "username": "coolcream",
       "displayName": "Cool cream",
       "avatar": "https://avatars.slack-edge.com/2026-01-14/10280240625063_9e2703ca34c8122db01a_72.png"
-    },
-    "U0924GFMY1X": {
-      "id": "U0924GFMY1X",
-      "username": "adon.omeri",
-      "displayName": "Adon Omeri",
-      "avatar": "https://secure.gravatar.com/avatar/bebcb67885920b62df9b3355743e80ed.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0001-72.png"
     },
     "U0A73LN55TP": {
       "id": "U0A73LN55TP",
