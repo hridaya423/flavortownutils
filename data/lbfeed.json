@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-25T20:00:30.397Z",
+  "lastUpdated": "2026-02-25T20:48:42.298Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -223,6 +223,14 @@
         "delta": 3,
         "balance": 68,
         "reason": "Michelin Star",
+        "reasonType": "achievement",
+        "userId": "U04PEAECRA5"
+      },
+      {
+        "ts": "2026-02-25T20:17:39.877Z",
+        "delta": 5,
+        "balance": 73,
+        "reason": "Cooking",
         "reasonType": "achievement",
         "userId": "U04PEAECRA5"
       }
@@ -62065,6 +62073,11 @@
     ]
   },
   "users": {
+    "U04PEAECRA5": {
+      "id": "U04PEAECRA5",
+      "username": "amitdgames",
+      "avatar": "https://avatars.slack-edge.com/2023-02-10/4796560647681_b72c6a6e8fe908f961db_72.png"
+    },
     "U06391ZNZNW": {
       "id": "U06391ZNZNW",
       "username": "guy",
@@ -62268,11 +62281,6 @@
       "username": "harshitgupta0618",
       "displayName": "Harshit Gupta",
       "avatar": "https://secure.gravatar.com/avatar/02cc0b34d93f74296389a23039ca809a.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0011-72.png"
-    },
-    "U04PEAECRA5": {
-      "id": "U04PEAECRA5",
-      "username": "amitdgames",
-      "avatar": "https://avatars.slack-edge.com/2023-02-10/4796560647681_b72c6a6e8fe908f961db_72.png"
     },
     "U079Y8M0Q4B": {
       "id": "U079Y8M0Q4B",
@@ -63224,7 +63232,7 @@
       "id": "U09TNMQ9MCZ",
       "username": "code1fan2",
       "displayName": "Cris",
-      "avatar": "https://avatars.slack-edge.com/2026-02-03/10418543137911_40b80baf7061ec33256b_72.png"
+      "avatar": "https://avatars.slack-edge.com/2026-02-25/10568373125031_ed2f771b0e1645b5eb10_72.png"
     },
     "U09PHG7RLGG": {
       "id": "U09PHG7RLGG",
