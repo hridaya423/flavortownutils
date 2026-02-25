@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-25T22:37:49.101Z",
+  "lastUpdated": "2026-02-25T23:32:02.465Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -5344,6 +5344,14 @@
         "balance": 1052,
         "reason": "payout",
         "reasonType": "payout",
+        "userId": "U07LKN2HXT3"
+      },
+      {
+        "ts": "2026-02-25T23:19:49.207Z",
+        "delta": 170,
+        "balance": 1222,
+        "reason": "user grant",
+        "reasonType": "",
         "userId": "U07LKN2HXT3"
       }
     ],
@@ -62081,6 +62089,11 @@
     ]
   },
   "users": {
+    "U07LKN2HXT3": {
+      "id": "U07LKN2HXT3",
+      "username": "obay.developer",
+      "avatar": "https://avatars.slack-edge.com/2025-10-10/9678158748850_a132430cfd5e052a7045_72.jpg"
+    },
     "U0AAK0EB2LE": {
       "id": "U0AAK0EB2LE",
       "username": "adam.duda",
@@ -62301,11 +62314,6 @@
       "username": "endoftimee",
       "displayName": "End",
       "avatar": "https://avatars.slack-edge.com/2025-11-08/9903246661056_5c1e865544e3272a500a_72.png"
-    },
-    "U07LKN2HXT3": {
-      "id": "U07LKN2HXT3",
-      "username": "obay.developer",
-      "avatar": "https://avatars.slack-edge.com/2025-10-10/9678158748850_a132430cfd5e052a7045_72.jpg"
     },
     "U0A6YUW2LG3": {
       "id": "U0A6YUW2LG3",
