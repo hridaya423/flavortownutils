@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-26T15:56:12.560Z",
+  "lastUpdated": "2026-02-26T17:03:03.529Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -10312,6 +10312,14 @@
         "balance": 532,
         "reason": "shop purchase",
         "reasonType": "",
+        "userId": "U0864RMD6BE"
+      },
+      {
+        "ts": "2026-02-26T16:44:43.528Z",
+        "delta": 15,
+        "balance": 547,
+        "reason": "Cookbook Author",
+        "reasonType": "achievement",
         "userId": "U0864RMD6BE"
       }
     ],
@@ -30321,6 +30329,16 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U09R9SAUPTK"
+      }
+    ],
+    "u09rvnn62qm": [
+      {
+        "ts": "2026-02-26T16:59:06.955Z",
+        "delta": -10,
+        "balance": 0,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U09RVNN62QM"
       }
     ],
     "u09s2c21md1": [
@@ -62307,6 +62325,18 @@
     ]
   },
   "users": {
+    "U09RVNN62QM": {
+      "id": "U09RVNN62QM",
+      "username": "purpose.abraham01",
+      "displayName": "Purple",
+      "avatar": "https://avatars.slack-edge.com/2026-02-26/10593336863476_480af235c782e045d6b6_72.jpg"
+    },
+    "U0864RMD6BE": {
+      "id": "U0864RMD6BE",
+      "username": "pratik.personal4",
+      "displayName": "zesty plutonium",
+      "avatar": "https://avatars.slack-edge.com/2026-01-28/10388989246820_15feda01b683a8a87bc5_72.jpg"
+    },
     "U087X4AG35K": {
       "id": "U087X4AG35K",
       "username": "garygreg2011",
@@ -63571,12 +63601,6 @@
       "id": "U0A7776A2MT",
       "username": "kavyanshkhaitan11",
       "avatar": "https://secure.gravatar.com/avatar/2dd3b461e79afda6fbbc61878d93304e.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0003-72.png"
-    },
-    "U0864RMD6BE": {
-      "id": "U0864RMD6BE",
-      "username": "pratik.personal4",
-      "displayName": "zesty plutonium",
-      "avatar": "https://avatars.slack-edge.com/2026-01-28/10388989246820_15feda01b683a8a87bc5_72.jpg"
     },
     "U0ABED0LLCX": {
       "id": "U0ABED0LLCX",
