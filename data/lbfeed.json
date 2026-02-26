@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-26T08:06:46.521Z",
+  "lastUpdated": "2026-02-26T09:15:15.887Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -27792,6 +27792,14 @@
         "ts": "2026-02-18T14:14:55.794Z",
         "delta": 40,
         "balance": 164,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U09DYNHJN5B"
+      },
+      {
+        "ts": "2026-02-26T09:09:21.921Z",
+        "delta": -88,
+        "balance": 76,
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U09DYNHJN5B"
@@ -62145,6 +62153,12 @@
     ]
   },
   "users": {
+    "U09DYNHJN5B": {
+      "id": "U09DYNHJN5B",
+      "username": "abdulrafay88243",
+      "displayName": "mrsiuuuu_x1",
+      "avatar": "https://avatars.slack-edge.com/2026-01-21/10344219015060_1d9fdb6be9201c147e3e_72.jpg"
+    },
     "U0A60NZQCTA": {
       "id": "U0A60NZQCTA",
       "username": "jonas.gaden",
@@ -63484,12 +63498,6 @@
       "id": "U0A5L7XL4DR",
       "username": "fishygaming.life",
       "avatar": "https://secure.gravatar.com/avatar/7d55dc097985d807fd403ce4b3e9f629.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0017-72.png"
-    },
-    "U09DYNHJN5B": {
-      "id": "U09DYNHJN5B",
-      "username": "abdulrafay88243",
-      "displayName": "mrsiuuuu_x1",
-      "avatar": "https://avatars.slack-edge.com/2026-01-21/10344219015060_1d9fdb6be9201c147e3e_72.jpg"
     },
     "U0A5AMU9R4L": {
       "id": "U0A5AMU9R4L",
