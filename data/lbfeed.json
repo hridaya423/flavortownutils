@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-26T20:53:47.335Z",
+  "lastUpdated": "2026-02-26T21:36:30.135Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -4935,6 +4935,14 @@
         "delta": 2,
         "balance": 12,
         "reason": "Hello, Kitchen!",
+        "reasonType": "achievement",
+        "userId": "U07GXEVL48P"
+      },
+      {
+        "ts": "2026-02-26T21:22:54.148Z",
+        "delta": 15,
+        "balance": 27,
+        "reason": "Cookbook Author",
         "reasonType": "achievement",
         "userId": "U07GXEVL48P"
       }
@@ -25013,6 +25021,16 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U099JENAUGP"
+      }
+    ],
+    "u099l7zr75e": [
+      {
+        "ts": "2026-02-26T21:16:00.299Z",
+        "delta": 5,
+        "balance": 15,
+        "reason": "Very Fried",
+        "reasonType": "achievement",
+        "userId": "U099L7ZR75E"
       }
     ],
     "u099lhp1qkf": [
@@ -62373,6 +62391,18 @@
     ]
   },
   "users": {
+    "U07GXEVL48P": {
+      "id": "U07GXEVL48P",
+      "username": "hardikgupta2232",
+      "displayName": "Hardik Gupta",
+      "avatar": "https://avatars.slack-edge.com/2025-11-24/9982092454870_307cbb2859f1f604e28e_72.png"
+    },
+    "U099L7ZR75E": {
+      "id": "U099L7ZR75E",
+      "username": "syedbarimanjan",
+      "displayName": "Syed Bariman Jan",
+      "avatar": "https://avatars.slack-edge.com/2025-10-10/9667687546293_bbb668349decebfa71fd_72.png"
+    },
     "U0AF45LDUBC": {
       "id": "U0AF45LDUBC",
       "username": "nikolay.doychev11",
@@ -65442,7 +65472,7 @@
       "id": "U099SS7HM0V",
       "username": "shravanibacchu",
       "displayName": "shrav",
-      "avatar": "https://avatars.slack-edge.com/2026-01-04/10239984691489_fe7c3809190ff17b1197_72.jpg"
+      "avatar": "https://avatars.slack-edge.com/2026-02-26/10589341049749_5fc6e4a19cc594bd64b0_72.jpg"
     },
     "U0A2JD33NFR": {
       "id": "U0A2JD33NFR",
@@ -66265,12 +66295,6 @@
       "username": "alexanderherman270",
       "displayName": "Al7",
       "avatar": "https://avatars.slack-edge.com/2025-01-14/8316944384080_8bb0e7e071eddb6871d1_72.jpg"
-    },
-    "U07GXEVL48P": {
-      "id": "U07GXEVL48P",
-      "username": "hardikgupta2232",
-      "displayName": "Hardik Gupta",
-      "avatar": "https://avatars.slack-edge.com/2025-11-24/9982092454870_307cbb2859f1f604e28e_72.png"
     },
     "U078RQDM7CL": {
       "id": "U078RQDM7CL",
