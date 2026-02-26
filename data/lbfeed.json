@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-26T20:03:11.011Z",
+  "lastUpdated": "2026-02-26T20:53:47.335Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -62249,6 +62249,46 @@
         "reason": "user grant",
         "reasonType": "",
         "userId": "U0AF45LDUBC"
+      },
+      {
+        "ts": "2026-02-26T20:23:36.105Z",
+        "delta": 2,
+        "balance": 20,
+        "reason": "Recipe Notes",
+        "reasonType": "achievement",
+        "userId": "U0AF45LDUBC"
+      },
+      {
+        "ts": "2026-02-26T20:23:36.113Z",
+        "delta": 5,
+        "balance": 15,
+        "reason": "Very Fried",
+        "reasonType": "achievement",
+        "userId": "U0AF45LDUBC"
+      },
+      {
+        "ts": "2026-02-26T20:23:36.164Z",
+        "delta": 3,
+        "balance": 18,
+        "reason": "Home Cookin'",
+        "reasonType": "achievement",
+        "userId": "U0AF45LDUBC"
+      },
+      {
+        "ts": "2026-02-26T20:23:37.509Z",
+        "delta": 3,
+        "balance": 23,
+        "reason": "Order Up!",
+        "reasonType": "achievement",
+        "userId": "U0AF45LDUBC"
+      },
+      {
+        "ts": "2026-02-26T20:23:37.510Z",
+        "delta": 15,
+        "balance": 38,
+        "reason": "Cookbook Author",
+        "reasonType": "achievement",
+        "userId": "U0AF45LDUBC"
       }
     ],
     "u0af9md9lfr": [
@@ -62333,6 +62373,12 @@
     ]
   },
   "users": {
+    "U0AF45LDUBC": {
+      "id": "U0AF45LDUBC",
+      "username": "nikolay.doychev11",
+      "displayName": "nikolay.doychev11",
+      "avatar": "https://avatars.slack-edge.com/2026-02-26/10589105561797_55d2f77d94515c97245c_72.png"
+    },
     "U0A5C33BN94": {
       "id": "U0A5C33BN94",
       "username": "nisarga01052008",
@@ -63957,12 +64003,6 @@
       "username": "remo.kaljuste",
       "displayName": "BnaJns",
       "avatar": "https://avatars.slack-edge.com/2025-12-08/10080343547076_87459fece6fa6a936cc2_72.jpg"
-    },
-    "U0AF45LDUBC": {
-      "id": "U0AF45LDUBC",
-      "username": "nikolay.doychev11",
-      "displayName": "nikolay.doychev11",
-      "avatar": "https://secure.gravatar.com/avatar/5ca04ddf3b86b499e2ee90d714ac5c33.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0019-72.png"
     },
     "U0825SVHFJL": {
       "id": "U0825SVHFJL",
