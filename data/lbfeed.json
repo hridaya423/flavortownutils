@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-27T06:57:23.879Z",
+  "lastUpdated": "2026-02-27T07:50:44.193Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -14050,6 +14050,14 @@
         "balance": 0,
         "reason": "shop purchase",
         "reasonType": "",
+        "userId": "U08J9R1TUT1"
+      },
+      {
+        "ts": "2026-02-27T07:26:18.024Z",
+        "delta": 3,
+        "balance": 3,
+        "reason": "Order Up!",
+        "reasonType": "achievement",
         "userId": "U08J9R1TUT1"
       }
     ],
@@ -62459,6 +62467,12 @@
     ]
   },
   "users": {
+    "U08J9R1TUT1": {
+      "id": "U08J9R1TUT1",
+      "username": "elias.lindholm2010",
+      "displayName": "el4s",
+      "avatar": "https://avatars.slack-edge.com/2025-12-21/10152448709831_1decac186a333b2794fe_72.png"
+    },
     "U0A022J58PN": {
       "id": "U0A022J58PN",
       "username": "jydev",
@@ -64715,12 +64729,6 @@
       "displayName": "JxJo",
       "avatar": "https://avatars.slack-edge.com/2026-02-02/10426343546804_2b3953d7b271b9f10e55_72.jpg"
     },
-    "U08J9R1TUT1": {
-      "id": "U08J9R1TUT1",
-      "username": "elias.lindholm2010",
-      "displayName": "el4s",
-      "avatar": "https://avatars.slack-edge.com/2025-12-21/10152448709831_1decac186a333b2794fe_72.png"
-    },
     "U0A8KA80SPL": {
       "id": "U0A8KA80SPL",
       "username": "maverickroneal",
@@ -66057,7 +66065,7 @@
       "id": "U09PQ98JE12",
       "username": "huto25531112",
       "displayName": "Huto",
-      "avatar": "https://avatars.slack-edge.com/2025-12-13/10111238184565_58bfc72032791dcde230_72.jpg"
+      "avatar": "https://avatars.slack-edge.com/2026-02-27/10593623750822_b281684da78b32ef58cc_72.jpg"
     },
     "U0A7HDGHBPB": {
       "id": "U0A7HDGHBPB",
