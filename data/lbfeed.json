@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-27T05:37:08.573Z",
+  "lastUpdated": "2026-02-27T06:57:23.879Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -30864,6 +30864,30 @@
         "balance": 0,
         "reason": "shop purchase",
         "reasonType": "",
+        "userId": "U0A022J58PN"
+      },
+      {
+        "ts": "2026-02-27T05:40:01.702Z",
+        "delta": 5,
+        "balance": 5,
+        "reason": "Very Fried",
+        "reasonType": "achievement",
+        "userId": "U0A022J58PN"
+      },
+      {
+        "ts": "2026-02-27T05:40:01.767Z",
+        "delta": 3,
+        "balance": 8,
+        "reason": "Home Cookin'",
+        "reasonType": "achievement",
+        "userId": "U0A022J58PN"
+      },
+      {
+        "ts": "2026-02-27T05:40:01.828Z",
+        "delta": 2,
+        "balance": 10,
+        "reason": "Recipe Notes",
+        "reasonType": "achievement",
         "userId": "U0A022J58PN"
       }
     ],
@@ -62435,6 +62459,12 @@
     ]
   },
   "users": {
+    "U0A022J58PN": {
+      "id": "U0A022J58PN",
+      "username": "jydev",
+      "displayName": "Jaydev",
+      "avatar": "https://avatars.slack-edge.com/2026-02-03/10433007012820_01604ce61d61f54fbf53_72.png"
+    },
     "U09RVNN62QM": {
       "id": "U09RVNN62QM",
       "username": "purpose.abraham01",
@@ -64197,12 +64227,6 @@
       "username": "ragingthund3r3r",
       "displayName": "ragingthund3r3r",
       "avatar": "https://avatars.slack-edge.com/2026-01-14/10308394604737_8798fd7df6f3d6cbeb00_72.jpg"
-    },
-    "U0A022J58PN": {
-      "id": "U0A022J58PN",
-      "username": "jydev",
-      "displayName": "Jaydev",
-      "avatar": "https://avatars.slack-edge.com/2026-02-03/10433007012820_01604ce61d61f54fbf53_72.png"
     },
     "U086DTRRNSV": {
       "id": "U086DTRRNSV",
