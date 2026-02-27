@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-27T16:02:40.709Z",
+  "lastUpdated": "2026-02-27T16:55:02.681Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -22163,6 +22163,14 @@
         "delta": 25,
         "balance": 47,
         "reason": "user grant",
+        "reasonType": "",
+        "userId": "U0938MZG8Q6"
+      },
+      {
+        "ts": "2026-02-27T16:20:47.075Z",
+        "delta": -35,
+        "balance": 12,
+        "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0938MZG8Q6"
       }
@@ -62564,9 +62572,39 @@
         "reasonType": "",
         "userId": "U0AGUE4BKAP"
       }
+    ],
+    "u0agvajch27": [
+      {
+        "ts": "2026-02-27T15:59:49.574Z",
+        "delta": 5,
+        "balance": 10,
+        "reason": "Very Fried",
+        "reasonType": "achievement",
+        "userId": "U0AGVAJCH27"
+      },
+      {
+        "ts": "2026-02-27T16:04:54.414Z",
+        "delta": 10,
+        "balance": 20,
+        "reason": "Line Cook",
+        "reasonType": "achievement",
+        "userId": "U0AGVAJCH27"
+      }
     ]
   },
   "users": {
+    "U0938MZG8Q6": {
+      "id": "U0938MZG8Q6",
+      "username": "christiandubsky20",
+      "displayName": "christian",
+      "avatar": "https://avatars.slack-edge.com/2026-02-26/10602450803873_2b643adeeb3a6a36673d_72.png"
+    },
+    "U0AGVAJCH27": {
+      "id": "U0AGVAJCH27",
+      "username": "maks11",
+      "displayName": "maks11",
+      "avatar": "https://secure.gravatar.com/avatar/3392c809e96768222d84234de698f25a.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0014-72.png"
+    },
     "U078KKF3R1Q": {
       "id": "U078KKF3R1Q",
       "username": "alexjhayes1",
@@ -65075,12 +65113,6 @@
       "id": "U0A6RDDRWKH",
       "username": "miraclecutelemon",
       "avatar": "https://secure.gravatar.com/avatar/2078817cd538e05d41b1ec6684cfe24e.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0004-72.png"
-    },
-    "U0938MZG8Q6": {
-      "id": "U0938MZG8Q6",
-      "username": "christiandubsky20",
-      "displayName": "christian",
-      "avatar": "https://avatars.slack-edge.com/2026-02-26/10602450803873_2b643adeeb3a6a36673d_72.png"
     },
     "U0A8U9Z77C2": {
       "id": "U0A8U9Z77C2",
