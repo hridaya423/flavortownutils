@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-27T08:44:30.299Z",
+  "lastUpdated": "2026-02-27T09:43:53.623Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -56735,6 +56735,22 @@
         "reason": "Line Cook",
         "reasonType": "achievement",
         "userId": "U0A82Q8R464"
+      },
+      {
+        "ts": "2026-02-27T08:52:00.986Z",
+        "delta": 3,
+        "balance": 43,
+        "reason": "Michelin Star",
+        "reasonType": "achievement",
+        "userId": "U0A82Q8R464"
+      },
+      {
+        "ts": "2026-02-27T08:52:01.010Z",
+        "delta": 3,
+        "balance": 40,
+        "reason": "Order Up!",
+        "reasonType": "achievement",
+        "userId": "U0A82Q8R464"
       }
     ],
     "u0a83d4ukdw": [
@@ -62472,9 +62488,31 @@
         "reasonType": "payout",
         "userId": "U0AGSUVPTBJ"
       }
+    ],
+    "u0ague4bkap": [
+      {
+        "ts": "2026-02-27T09:28:27.070Z",
+        "delta": -10,
+        "balance": 5,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0AGUE4BKAP"
+      }
     ]
   },
   "users": {
+    "U0AGUE4BKAP": {
+      "id": "U0AGUE4BKAP",
+      "username": "2300090189csitelge",
+      "displayName": "2300090189csitelge",
+      "avatar": "https://secure.gravatar.com/avatar/2d622b6f79d2a40492e255d8bdeb418b.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0000-72.png"
+    },
+    "U0A82Q8R464": {
+      "id": "U0A82Q8R464",
+      "username": "gowthamnaveen124",
+      "displayName": "gowthamnaveen124",
+      "avatar": "https://secure.gravatar.com/avatar/5ae27670296027106489332003703a2d.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0009-72.png"
+    },
     "U0905G0BRU5": {
       "id": "U0905G0BRU5",
       "username": "moritz.leisner",
@@ -62753,12 +62791,6 @@
       "username": "vishnukumar.a2010",
       "displayName": "vishnukumar.a2010",
       "avatar": "https://avatars.slack-edge.com/2026-01-17/10310706256243_9f2746a52acac8befd10_72.jpg"
-    },
-    "U0A82Q8R464": {
-      "id": "U0A82Q8R464",
-      "username": "gowthamnaveen124",
-      "displayName": "gowthamnaveen124",
-      "avatar": "https://secure.gravatar.com/avatar/5ae27670296027106489332003703a2d.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0009-72.png"
     },
     "U091HJG84VD": {
       "id": "U091HJG84VD",
