@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-27T02:09:33.956Z",
+  "lastUpdated": "2026-02-27T04:28:06.377Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -30356,6 +30356,30 @@
         "balance": 0,
         "reason": "shop purchase",
         "reasonType": "",
+        "userId": "U09RVNN62QM"
+      },
+      {
+        "ts": "2026-02-27T03:58:58.842Z",
+        "delta": 3,
+        "balance": 8,
+        "reason": "Home Cookin'",
+        "reasonType": "achievement",
+        "userId": "U09RVNN62QM"
+      },
+      {
+        "ts": "2026-02-27T03:58:58.852Z",
+        "delta": 5,
+        "balance": 5,
+        "reason": "Very Fried",
+        "reasonType": "achievement",
+        "userId": "U09RVNN62QM"
+      },
+      {
+        "ts": "2026-02-27T03:58:58.877Z",
+        "delta": 2,
+        "balance": 10,
+        "reason": "Recipe Notes",
+        "reasonType": "achievement",
         "userId": "U09RVNN62QM"
       }
     ],
@@ -62411,6 +62435,12 @@
     ]
   },
   "users": {
+    "U09RVNN62QM": {
+      "id": "U09RVNN62QM",
+      "username": "purpose.abraham01",
+      "displayName": "Purple",
+      "avatar": "https://avatars.slack-edge.com/2026-02-26/10593336863476_480af235c782e045d6b6_72.jpg"
+    },
     "U0A3WSNS56Y": {
       "id": "U0A3WSNS56Y",
       "username": "ignaciocarmiol",
@@ -62446,12 +62476,6 @@
       "username": "nisarga01052008",
       "displayName": "nisarga01052008",
       "avatar": "https://avatars.slack-edge.com/2025-12-26/10189122277093_5ec73b9e36775937b1c0_72.png"
-    },
-    "U09RVNN62QM": {
-      "id": "U09RVNN62QM",
-      "username": "purpose.abraham01",
-      "displayName": "Purple",
-      "avatar": "https://avatars.slack-edge.com/2026-02-26/10593336863476_480af235c782e045d6b6_72.jpg"
     },
     "U0864RMD6BE": {
       "id": "U0864RMD6BE",
