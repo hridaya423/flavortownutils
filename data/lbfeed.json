@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-27T17:38:31.226Z",
+  "lastUpdated": "2026-02-27T18:46:21.505Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -58717,6 +58717,14 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0A84BWLWDS"
+      },
+      {
+        "ts": "2026-02-27T18:24:50.084Z",
+        "delta": -481,
+        "balance": 504,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A84BWLWDS"
       }
     ],
     "u0a84een34k": [
@@ -62589,21 +62597,35 @@
         "reason": "Line Cook",
         "reasonType": "achievement",
         "userId": "U0AGVAJCH27"
+      },
+      {
+        "ts": "2026-02-27T18:11:30.322Z",
+        "delta": 2,
+        "balance": 22,
+        "reason": "Hello, Kitchen!",
+        "reasonType": "achievement",
+        "userId": "U0AGVAJCH27"
       }
     ]
   },
   "users": {
-    "U0938MZG8Q6": {
-      "id": "U0938MZG8Q6",
-      "username": "christiandubsky20",
-      "displayName": "christian",
-      "avatar": "https://avatars.slack-edge.com/2026-02-26/10602450803873_2b643adeeb3a6a36673d_72.png"
+    "U0A84BWLWDS": {
+      "id": "U0A84BWLWDS",
+      "username": "alonsomartinezcarrata",
+      "displayName": "aloyak",
+      "avatar": "https://avatars.slack-edge.com/2026-01-11/10266469042067_79d016b502587f2b7d52_72.png"
     },
     "U0AGVAJCH27": {
       "id": "U0AGVAJCH27",
       "username": "maks11",
       "displayName": "maks11",
       "avatar": "https://secure.gravatar.com/avatar/3392c809e96768222d84234de698f25a.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0014-72.png"
+    },
+    "U0938MZG8Q6": {
+      "id": "U0938MZG8Q6",
+      "username": "christiandubsky20",
+      "displayName": "christian",
+      "avatar": "https://avatars.slack-edge.com/2026-02-26/10602450803873_2b643adeeb3a6a36673d_72.png"
     },
     "U078KKF3R1Q": {
       "id": "U078KKF3R1Q",
@@ -63668,12 +63690,6 @@
       "username": "loekoerlemans",
       "displayName": "loekman",
       "avatar": "https://avatars.slack-edge.com/2025-12-27/10200228423684_ab1a91a55d1f00669af3_72.png"
-    },
-    "U0A84BWLWDS": {
-      "id": "U0A84BWLWDS",
-      "username": "alonsomartinezcarrata",
-      "displayName": "aloyak",
-      "avatar": "https://avatars.slack-edge.com/2026-01-11/10266469042067_79d016b502587f2b7d52_72.png"
     },
     "U08SS7Z7LJD": {
       "id": "U08SS7Z7LJD",
