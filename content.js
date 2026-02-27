@@ -619,24 +619,12 @@ function applyTheme(theme, customColors, catppuccinAccent = 'mauve') {
     --ctp-accent-hue: 190deg !important;
     --ctp-mauve: #b4befe !important;
     --ctp-accent-text: #313244 !important;
+    --flavortown-on-accent: #313244 !important;
     --color-brown: #b4befe !important;
     --color-accent: #b4befe !important;
     --ft-votes-accent: #b4befe !important;
     --flavortown-preview-accent: #b4befe !important;
     --flavortown-doomscroll-btn-color: #b4befe !important;
-    --color-text-primary: #313244 !important;
-}
-
-.sidebar__nav-link--active {
-    color: #313244 !important;
-}
-
-.sidebar__nav-link--active:hover {
-    color: #313244 !important;
-}
-
-.votes-new__form {
-    color: #313244 !important;
 }
 `;
             document.head.appendChild(accentStyle);
