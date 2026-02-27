@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-27T14:11:58.707Z",
+  "lastUpdated": "2026-02-27T15:09:41.961Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -24162,6 +24162,14 @@
         "balance": 200,
         "reason": "payout",
         "reasonType": "payout",
+        "userId": "U097AHQQNN9"
+      },
+      {
+        "ts": "2026-02-27T14:13:33.677Z",
+        "delta": 10,
+        "balance": 210,
+        "reason": "Line Cook",
+        "reasonType": "achievement",
         "userId": "U097AHQQNN9"
       }
     ],
@@ -62551,6 +62559,12 @@
     ]
   },
   "users": {
+    "U097AHQQNN9": {
+      "id": "U097AHQQNN9",
+      "username": "quickhalewebtech",
+      "displayName": "satya//7YA",
+      "avatar": "https://avatars.slack-edge.com/2025-07-25/9248518529315_6f0a74151dad785891dd_72.jpg"
+    },
     "U092H6G33T2": {
       "id": "U092H6G33T2",
       "username": "bennet-wegener",
@@ -63665,12 +63679,6 @@
       "username": "daudshahbaz4life",
       "displayName": "Dead",
       "avatar": "https://avatars.slack-edge.com/2026-02-11/10492940165924_d7622bd8a53e0d769c2d_72.jpg"
-    },
-    "U097AHQQNN9": {
-      "id": "U097AHQQNN9",
-      "username": "quickhalewebtech",
-      "displayName": "satya//7YA",
-      "avatar": "https://avatars.slack-edge.com/2025-07-25/9248518529315_6f0a74151dad785891dd_72.jpg"
     },
     "U094ENJ7LAH": {
       "id": "U094ENJ7LAH",
@@ -65346,7 +65354,7 @@
       "id": "U0A0JJ603N2",
       "username": "baustinlynch",
       "displayName": "Brenden",
-      "avatar": "https://secure.gravatar.com/avatar/0b5377b2d17b5f181f2b242c3fab5ace.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0024-72.png"
+      "avatar": "https://avatars.slack-edge.com/2026-02-27/10594673867749_a79d89d0ec74bd0d43ea_72.png"
     },
     "U093RE2RUK0": {
       "id": "U093RE2RUK0",
