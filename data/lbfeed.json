@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-27T13:03:10.657Z",
+  "lastUpdated": "2026-02-27T14:11:58.707Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -21663,6 +21663,14 @@
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U092H6G33T2"
+      },
+      {
+        "ts": "2026-02-27T14:02:41.309Z",
+        "delta": -40,
+        "balance": 146,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U092H6G33T2"
       }
     ],
     "u092hjqpglt": [
@@ -38555,6 +38563,14 @@
         "delta": 10,
         "balance": 20,
         "reason": "Line Cook",
+        "reasonType": "achievement",
+        "userId": "U0A5C33BN94"
+      },
+      {
+        "ts": "2026-02-27T14:01:05.144Z",
+        "delta": 2,
+        "balance": 22,
+        "reason": "Hello, Kitchen!",
         "reasonType": "achievement",
         "userId": "U0A5C33BN94"
       }
@@ -62535,6 +62551,18 @@
     ]
   },
   "users": {
+    "U092H6G33T2": {
+      "id": "U092H6G33T2",
+      "username": "bennet-wegener",
+      "displayName": "Joan Code",
+      "avatar": "https://avatars.slack-edge.com/2026-02-22/10552039369923_3cf44f8eac11c8d5ae8f_72.jpg"
+    },
+    "U0A5C33BN94": {
+      "id": "U0A5C33BN94",
+      "username": "nisarga01052008",
+      "displayName": "nisarga01052008",
+      "avatar": "https://avatars.slack-edge.com/2025-12-26/10189122277093_5ec73b9e36775937b1c0_72.png"
+    },
     "U09BSMKPT7Y": {
       "id": "U09BSMKPT7Y",
       "username": "sarjak.khanal",
@@ -62618,12 +62646,6 @@
       "username": "nikolay.doychev11",
       "displayName": "nikolay.doychev11",
       "avatar": "https://avatars.slack-edge.com/2026-02-26/10589105561797_55d2f77d94515c97245c_72.png"
-    },
-    "U0A5C33BN94": {
-      "id": "U0A5C33BN94",
-      "username": "nisarga01052008",
-      "displayName": "nisarga01052008",
-      "avatar": "https://avatars.slack-edge.com/2025-12-26/10189122277093_5ec73b9e36775937b1c0_72.png"
     },
     "U0864RMD6BE": {
       "id": "U0864RMD6BE",
@@ -63546,12 +63568,6 @@
       "username": "spacexplorer11",
       "displayName": "Akaalroop",
       "avatar": "https://avatars.slack-edge.com/2025-09-03/9455259986946_0132317829bad75a5ad5_72.jpg"
-    },
-    "U092H6G33T2": {
-      "id": "U092H6G33T2",
-      "username": "bennet-wegener",
-      "displayName": "Joan Code",
-      "avatar": "https://avatars.slack-edge.com/2026-02-22/10552039369923_3cf44f8eac11c8d5ae8f_72.jpg"
     },
     "U0A74N2LAQY": {
       "id": "U0A74N2LAQY",
