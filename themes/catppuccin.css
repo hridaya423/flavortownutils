@@ -138,7 +138,7 @@ body::before {
 }
 
 .sidebar__nav-link--active:hover .sidebar__nav-icon {
-    color: var(--flavortown-on-accent) !important;
+    color: var(--ctp-accent) !important;
 }
 
 .sidebar__nav-link--active::before {
@@ -3149,70 +3149,6 @@ main:has(.chef-img) .btn:hover {
     color: inherit !important;
 }
 
-.ft-on-accent svg,
-[data-ft-on-accent="true"] svg {
-    color: inherit !important;
-    fill: currentColor !important;
-}
-
-.sidebar__user-name,
-.btn--brown,
-.btn-primary,
-.admin-btn--primary,
-.shop-order .btn-order,
-.input__label,
-.pagy.series-nav a[aria-current="page"],
-.my-votes a,
-.flavortown-emoji-suggest__item.is-selected,
-.shop-suggestion-modal__title,
-.report-btn,
-.shop-item-card__accessory-chip.is-selected,
-.shop-order__accessory-option-input:checked+.shop-order__accessory-option-block,
-#shopkeeper-submit.btn--striped,
-main:has(.chef-img) .btn,
-.xp-window-wrapper .window-body button:first-of-type,
-.ft-on-accent,
-[data-ft-on-accent="true"] {
-    color: var(--flavortown-on-accent) !important;
-}
-
-.sidebar__user-name a,
-.btn--brown a,
-.btn-primary a,
-.admin-btn--primary a,
-.shop-order .btn-order a,
-.input__label a,
-.pagy.series-nav a[aria-current="page"] a,
-.my-votes a a,
-.flavortown-emoji-suggest__item.is-selected a,
-.shop-suggestion-modal__title a,
-.report-btn a,
-.shop-item-card__accessory-chip.is-selected a,
-.shop-order__accessory-option-input:checked+.shop-order__accessory-option-block a,
-#shopkeeper-submit.btn--striped a,
-main:has(.chef-img) .btn a,
-.xp-window-wrapper .window-body button:first-of-type a,
-.ft-on-accent a,
-[data-ft-on-accent="true"] a {
-    color: inherit !important;
-}
-
-.sidebar__user-name svg,
-.btn--brown svg,
-.btn-primary svg,
-.admin-btn--primary svg,
-.shop-order .btn-order svg,
-.input__label svg,
-.pagy.series-nav a[aria-current="page"] svg,
-.my-votes a svg,
-.flavortown-emoji-suggest__item.is-selected svg,
-.shop-suggestion-modal__title svg,
-.report-btn svg,
-.shop-item-card__accessory-chip.is-selected svg,
-.shop-order__accessory-option-input:checked+.shop-order__accessory-option-block svg,
-#shopkeeper-submit.btn--striped svg,
-main:has(.chef-img) .btn svg,
-.xp-window-wrapper .window-body button:first-of-type svg,
 .ft-on-accent svg,
 [data-ft-on-accent="true"] svg {
     color: inherit !important;
