@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-27T07:50:44.193Z",
+  "lastUpdated": "2026-02-27T08:44:30.299Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -16773,6 +16773,14 @@
         "delta": 15,
         "balance": 25,
         "reason": "Cookbook Author",
+        "reasonType": "achievement",
+        "userId": "U0905G0BRU5"
+      },
+      {
+        "ts": "2026-02-27T08:00:32.978Z",
+        "delta": 3,
+        "balance": 28,
+        "reason": "Order Up!",
         "reasonType": "achievement",
         "userId": "U0905G0BRU5"
       }
@@ -62467,6 +62475,12 @@
     ]
   },
   "users": {
+    "U0905G0BRU5": {
+      "id": "U0905G0BRU5",
+      "username": "moritz.leisner",
+      "displayName": "Fantamomo",
+      "avatar": "https://secure.gravatar.com/avatar/77e1e7f3943b1d97a1414576883ad736.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0006-72.png"
+    },
     "U08J9R1TUT1": {
       "id": "U08J9R1TUT1",
       "username": "elias.lindholm2010",
@@ -64286,12 +64300,6 @@
       "username": "rchen7530",
       "displayName": "Ryan Chen",
       "avatar": "https://secure.gravatar.com/avatar/08f3344b3ab6dadb30365ac128c07783.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0017-72.png"
-    },
-    "U0905G0BRU5": {
-      "id": "U0905G0BRU5",
-      "username": "moritz.leisner",
-      "displayName": "Fantamomo",
-      "avatar": "https://secure.gravatar.com/avatar/77e1e7f3943b1d97a1414576883ad736.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0006-72.png"
     },
     "U08U32QC3ME": {
       "id": "U08U32QC3ME",
