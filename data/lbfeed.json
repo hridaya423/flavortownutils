@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-28T09:29:16.130Z",
+  "lastUpdated": "2026-02-28T09:50:30.271Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -3968,6 +3968,14 @@
         "balance": 142,
         "reason": "payout",
         "reasonType": "payout",
+        "userId": "U07AGEVSTD2"
+      },
+      {
+        "ts": "2026-02-28T09:38:26.581Z",
+        "delta": 10,
+        "balance": 152,
+        "reason": "Line Cook",
+        "reasonType": "achievement",
         "userId": "U07AGEVSTD2"
       }
     ],
@@ -62765,6 +62773,12 @@
     ]
   },
   "users": {
+    "U07AGEVSTD2": {
+      "id": "U07AGEVSTD2",
+      "username": "flx",
+      "displayName": "felix",
+      "avatar": "https://avatars.slack-edge.com/2026-01-03/10237694290737_fbe155cd349655407a04_72.png"
+    },
     "U0A022J58PN": {
       "id": "U0A022J58PN",
       "username": "jydev",
@@ -65434,12 +65448,6 @@
       "id": "U0A0G7QLN5C",
       "username": "matej.bielik",
       "avatar": "https://avatars.slack-edge.com/2025-12-02/10041213094772_29cc617bfdbffc1bd3dd_72.jpg"
-    },
-    "U07AGEVSTD2": {
-      "id": "U07AGEVSTD2",
-      "username": "flx",
-      "displayName": "felix",
-      "avatar": "https://avatars.slack-edge.com/2026-01-03/10237694290737_fbe155cd349655407a04_72.png"
     },
     "U091STGKU4D": {
       "id": "U091STGKU4D",
