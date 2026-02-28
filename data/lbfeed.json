@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-28T16:52:34.793Z",
+  "lastUpdated": "2026-02-28T17:22:53.661Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -61377,6 +61377,14 @@
         "reason": "tutorial",
         "reasonType": "",
         "userId": "U0AAHSKAH6K"
+      },
+      {
+        "ts": "2026-02-28T17:11:39.758Z",
+        "delta": 10,
+        "balance": 33,
+        "reason": "Line Cook",
+        "reasonType": "achievement",
+        "userId": "U0AAHSKAH6K"
       }
     ],
     "u0aak0eb2le": [
@@ -62845,6 +62853,24 @@
         "userId": "U0AH5QCV92L"
       }
     ],
+    "u0ahgn71g9l": [
+      {
+        "ts": "2026-02-28T17:03:23.394Z",
+        "delta": 3,
+        "balance": 3,
+        "reason": "Home Cookin'",
+        "reasonType": "achievement",
+        "userId": "U0AHGN71G9L"
+      },
+      {
+        "ts": "2026-02-28T17:03:23.492Z",
+        "delta": 2,
+        "balance": 5,
+        "reason": "Recipe Notes",
+        "reasonType": "achievement",
+        "userId": "U0AHGN71G9L"
+      }
+    ],
     "u0ahqadrj6n": [
       {
         "ts": "2026-02-28T10:47:37.471Z",
@@ -62873,6 +62899,18 @@
     ]
   },
   "users": {
+    "U0AAHSKAH6K": {
+      "id": "U0AAHSKAH6K",
+      "username": "manskill586",
+      "displayName": "Bob",
+      "avatar": "https://avatars.slack-edge.com/2026-02-20/10535720443815_36ddddb8875248e0a997_72.jpg"
+    },
+    "U0AHGN71G9L": {
+      "id": "U0AHGN71G9L",
+      "username": "provaridita",
+      "displayName": "provaridita",
+      "avatar": "https://secure.gravatar.com/avatar/62fa85b6cf1529ec5c0043743cd6e8b1.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0025-72.png"
+    },
     "U0666VATMT5": {
       "id": "U0666VATMT5",
       "username": "saif",
@@ -63391,12 +63429,6 @@
       "username": "origamiking3612",
       "displayName": "OrigamiKing3612",
       "avatar": "https://avatars.slack-edge.com/2026-01-03/10225293455522_ea30b8ed6c0a51fcfbaf_72.png"
-    },
-    "U0AAHSKAH6K": {
-      "id": "U0AAHSKAH6K",
-      "username": "manskill586",
-      "displayName": "Bob",
-      "avatar": "https://avatars.slack-edge.com/2026-02-20/10535720443815_36ddddb8875248e0a997_72.jpg"
     },
     "U0A9S13HQF3": {
       "id": "U0A9S13HQF3",
