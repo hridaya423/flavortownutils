@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-28T17:47:34.668Z",
+  "lastUpdated": "2026-02-28T18:36:27.481Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -5205,6 +5205,14 @@
         "delta": 2050,
         "balance": 2223,
         "reason": "user grant",
+        "reasonType": "",
+        "userId": "U07L45W79E1"
+      },
+      {
+        "ts": "2026-02-28T18:28:58.914Z",
+        "delta": -100,
+        "balance": 2132,
+        "reason": "shop purchase",
         "reasonType": "",
         "userId": "U07L45W79E1"
       }
@@ -54693,6 +54701,14 @@
         "reason": "Order Up!",
         "reasonType": "achievement",
         "userId": "U0A7R8V0ZC0"
+      },
+      {
+        "ts": "2026-02-28T17:58:58.650Z",
+        "delta": 3,
+        "balance": 18,
+        "reason": "Michelin Star",
+        "reasonType": "achievement",
+        "userId": "U0A7R8V0ZC0"
       }
     ],
     "u0a7tevv23e": [
@@ -62915,6 +62931,17 @@
     ]
   },
   "users": {
+    "U07L45W79E1": {
+      "id": "U07L45W79E1",
+      "username": "neongamerbot",
+      "avatar": "https://avatars.slack-edge.com/2025-12-16/10136478432406_6ff234900c7c0fd00abd_72.png"
+    },
+    "U0A7R8V0ZC0": {
+      "id": "U0A7R8V0ZC0",
+      "username": "alishalish107",
+      "displayName": "Alisha",
+      "avatar": "https://avatars.slack-edge.com/2026-01-06/10251580467393_4310249eab7559ec78b5_72.jpg"
+    },
     "U0AAHSKAH6K": {
       "id": "U0AAHSKAH6K",
       "username": "manskill586",
@@ -63033,12 +63060,6 @@
       "username": "mmk21",
       "displayName": "Mish",
       "avatar": "https://avatars.slack-edge.com/2025-06-02/8985528237266_d5f9ec0da853a1155f84_72.png"
-    },
-    "U0A7R8V0ZC0": {
-      "id": "U0A7R8V0ZC0",
-      "username": "alishalish107",
-      "displayName": "Alisha",
-      "avatar": "https://avatars.slack-edge.com/2026-01-06/10251580467393_4310249eab7559ec78b5_72.jpg"
     },
     "U0A82MP823X": {
       "id": "U0A82MP823X",
@@ -64027,11 +64048,6 @@
       "username": "nikopurdie",
       "displayName": "Niko",
       "avatar": "https://avatars.slack-edge.com/2026-01-15/10313166177313_128ec897aff0c665e1b1_72.jpg"
-    },
-    "U07L45W79E1": {
-      "id": "U07L45W79E1",
-      "username": "neongamerbot",
-      "avatar": "https://avatars.slack-edge.com/2025-12-16/10136478432406_6ff234900c7c0fd00abd_72.png"
     },
     "U0A50H47MT9": {
       "id": "U0A50H47MT9",
