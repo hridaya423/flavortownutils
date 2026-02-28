@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-28T11:44:39.863Z",
+  "lastUpdated": "2026-02-28T12:49:53.793Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -22959,6 +22959,14 @@
         "delta": 3,
         "balance": 273,
         "reason": "Michelin Star",
+        "reasonType": "achievement",
+        "userId": "U094ENJ7LAH"
+      },
+      {
+        "ts": "2026-02-28T12:31:33.655Z",
+        "delta": 15,
+        "balance": 288,
+        "reason": "Cookbook Author",
         "reasonType": "achievement",
         "userId": "U094ENJ7LAH"
       }
@@ -62823,6 +62831,12 @@
     ]
   },
   "users": {
+    "U094ENJ7LAH": {
+      "id": "U094ENJ7LAH",
+      "username": "joshatticus02",
+      "displayName": "Josh",
+      "avatar": "https://secure.gravatar.com/avatar/efb38c015065be6ed1bdb6792e12e2d8.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0021-72.png"
+    },
     "U0AHQADRJ6N": {
       "id": "U0AHQADRJ6N",
       "username": "sskept3",
@@ -64024,12 +64038,6 @@
       "username": "daudshahbaz4life",
       "displayName": "Dead",
       "avatar": "https://avatars.slack-edge.com/2026-02-11/10492940165924_d7622bd8a53e0d769c2d_72.jpg"
-    },
-    "U094ENJ7LAH": {
-      "id": "U094ENJ7LAH",
-      "username": "joshatticus02",
-      "displayName": "Josh",
-      "avatar": "https://secure.gravatar.com/avatar/efb38c015065be6ed1bdb6792e12e2d8.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0021-72.png"
     },
     "U0AF9MD9LFR": {
       "id": "U0AF9MD9LFR",
