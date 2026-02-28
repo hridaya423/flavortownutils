@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-27T23:49:55.834Z",
+  "lastUpdated": "2026-02-28T01:58:47.646Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -34087,6 +34087,30 @@
         "reason": "tutorial",
         "reasonType": "",
         "userId": "U0A4N2K2P8T"
+      },
+      {
+        "ts": "2026-02-28T00:04:26.269Z",
+        "delta": 3,
+        "balance": 25,
+        "reason": "Order Up!",
+        "reasonType": "achievement",
+        "userId": "U0A4N2K2P8T"
+      },
+      {
+        "ts": "2026-02-28T00:04:26.272Z",
+        "delta": 15,
+        "balance": 40,
+        "reason": "Cookbook Author",
+        "reasonType": "achievement",
+        "userId": "U0A4N2K2P8T"
+      },
+      {
+        "ts": "2026-02-28T00:04:26.283Z",
+        "delta": 10,
+        "balance": 22,
+        "reason": "Line Cook",
+        "reasonType": "achievement",
+        "userId": "U0A4N2K2P8T"
       }
     ],
     "u0a4pkzklf9": [
@@ -62659,6 +62683,12 @@
     ]
   },
   "users": {
+    "U0A4N2K2P8T": {
+      "id": "U0A4N2K2P8T",
+      "username": "thiago.teixeira51",
+      "displayName": "ChefThi",
+      "avatar": "https://avatars.slack-edge.com/2026-02-27/10601745651458_f0c2171b159b2740736f_72.png"
+    },
     "U073M5L9U13": {
       "id": "U073M5L9U13",
       "username": "mmk21",
@@ -63932,12 +63962,6 @@
       "username": "punithkumar.cse",
       "avatar": "https://avatars.slack-edge.com/2026-01-07/10253485303972_5f0a1732b9735f23cf8b_72.jpg"
     },
-    "U0A4N2K2P8T": {
-      "id": "U0A4N2K2P8T",
-      "username": "thiago.teixeira51",
-      "displayName": "ChefThi",
-      "avatar": "https://avatars.slack-edge.com/2026-02-27/10601745651458_f0c2171b159b2740736f_72.png"
-    },
     "U09CNHJA5D5": {
       "id": "U09CNHJA5D5",
       "username": "divyansh.hack.h205",
@@ -65177,7 +65201,7 @@
     "U0A87N7JQUV": {
       "id": "U0A87N7JQUV",
       "username": "hatted-bristly.1n",
-      "displayName": "Phenix Hartogh",
+      "displayName": "Phenix (taking a break from hc)",
       "avatar": "https://avatars.slack-edge.com/2026-02-07/10463174316690_3b94ee98678bfef36815_72.png"
     },
     "U09GMGHJLHW": {
