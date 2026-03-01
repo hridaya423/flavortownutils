@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-01T04:35:42.400Z",
+  "lastUpdated": "2026-03-01T05:55:26.913Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -29624,6 +29624,14 @@
         "balance": 2546,
         "reason": "payout",
         "reasonType": "payout",
+        "userId": "U09HW4WA0C9"
+      },
+      {
+        "ts": "2026-03-01T04:46:30.645Z",
+        "delta": -2546,
+        "balance": 0,
+        "reason": "user grant",
+        "reasonType": "",
         "userId": "U09HW4WA0C9"
       }
     ],
@@ -62997,6 +63005,12 @@
     ]
   },
   "users": {
+    "U09HW4WA0C9": {
+      "id": "U09HW4WA0C9",
+      "username": "aaravvishal11",
+      "displayName": "Aarav Sharma",
+      "avatar": "https://avatars.slack-edge.com/2025-09-27/9593425728950_f0fef76a510aff8c68d5_72.png"
+    },
     "U0A78UCA231": {
       "id": "U0A78UCA231",
       "username": "aayushydvnp",
@@ -63840,12 +63854,6 @@
       "username": "jayssarch",
       "displayName": "jayssarch",
       "avatar": "https://avatars.slack-edge.com/2026-01-12/10279435215202_ea7083b405c835e89aee_72.jpg"
-    },
-    "U09HW4WA0C9": {
-      "id": "U09HW4WA0C9",
-      "username": "aaravvishal11",
-      "displayName": "Aarav Sharma",
-      "avatar": "https://avatars.slack-edge.com/2025-09-27/9593425728950_f0fef76a510aff8c68d5_72.png"
     },
     "U08S00249M3": {
       "id": "U08S00249M3",
