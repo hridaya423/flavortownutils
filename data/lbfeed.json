@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-28T23:47:26.697Z",
+  "lastUpdated": "2026-03-01T02:29:12.679Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -3323,6 +3323,14 @@
         "delta": 5,
         "balance": 132,
         "reason": "tutorial",
+        "reasonType": "",
+        "userId": "U078VN0UU2K"
+      },
+      {
+        "ts": "2026-03-01T00:47:21.324Z",
+        "delta": 25,
+        "balance": 157,
+        "reason": "user grant",
         "reasonType": "",
         "userId": "U078VN0UU2K"
       }
@@ -13090,6 +13098,14 @@
         "balance": 40,
         "reason": "payout",
         "reasonType": "payout",
+        "userId": "U08AA6HA82F"
+      },
+      {
+        "ts": "2026-03-01T00:46:06.666Z",
+        "delta": 25,
+        "balance": 65,
+        "reason": "user grant",
+        "reasonType": "",
         "userId": "U08AA6HA82F"
       }
     ],
@@ -27481,6 +27497,14 @@
         "delta": 120,
         "balance": 485,
         "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U09BSMKPT7Y"
+      },
+      {
+        "ts": "2026-03-01T00:46:26.827Z",
+        "delta": 25,
+        "balance": 510,
+        "reason": "user grant",
         "reasonType": "",
         "userId": "U09BSMKPT7Y"
       }
@@ -62957,6 +62981,23 @@
     ]
   },
   "users": {
+    "U078VN0UU2K": {
+      "id": "U078VN0UU2K",
+      "username": "hippogriff",
+      "avatar": "https://avatars.slack-edge.com/2026-01-14/10294818167174_9836ff19df7225cbbc26_72.jpg"
+    },
+    "U09BSMKPT7Y": {
+      "id": "U09BSMKPT7Y",
+      "username": "sarjak.khanal",
+      "displayName": "En Passant",
+      "avatar": "https://avatars.slack-edge.com/2026-02-24/10593843313184_76cd3252ebac94d6fc11_72.jpg"
+    },
+    "U08AA6HA82F": {
+      "id": "U08AA6HA82F",
+      "username": "jaytirthjoshi",
+      "displayName": "Jay",
+      "avatar": "https://avatars.slack-edge.com/2026-01-12/10283520234852_fcbab6aa4367241d4ca8_72.png"
+    },
     "U0A59T9AJBB": {
       "id": "U0A59T9AJBB",
       "username": "sadlyrics121",
@@ -63155,12 +63196,6 @@
       "username": "nisarga01052008",
       "displayName": "nisarga01052008",
       "avatar": "https://avatars.slack-edge.com/2025-12-26/10189122277093_5ec73b9e36775937b1c0_72.png"
-    },
-    "U09BSMKPT7Y": {
-      "id": "U09BSMKPT7Y",
-      "username": "sarjak.khanal",
-      "displayName": "En Passant",
-      "avatar": "https://avatars.slack-edge.com/2026-02-24/10593843313184_76cd3252ebac94d6fc11_72.jpg"
     },
     "U091U38C2CA": {
       "id": "U091U38C2CA",
@@ -65091,11 +65126,6 @@
       "displayName": "late-parrot",
       "avatar": "https://avatars.slack-edge.com/2026-02-10/10484186493926_6d19c1559660687496cd_72.png"
     },
-    "U078VN0UU2K": {
-      "id": "U078VN0UU2K",
-      "username": "hippogriff",
-      "avatar": "https://avatars.slack-edge.com/2026-01-14/10294818167174_9836ff19df7225cbbc26_72.jpg"
-    },
     "U0A7TEVV23E": {
       "id": "U0A7TEVV23E",
       "username": "sfahuk",
@@ -65862,12 +65892,6 @@
       "id": "U07GV6PJU57",
       "username": "dzm2026",
       "avatar": "https://secure.gravatar.com/avatar/f97aa8fe112129ebd20addbe04728777.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0007-72.png"
-    },
-    "U08AA6HA82F": {
-      "id": "U08AA6HA82F",
-      "username": "jaytirthjoshi",
-      "displayName": "Jay",
-      "avatar": "https://avatars.slack-edge.com/2026-01-12/10283520234852_fcbab6aa4367241d4ca8_72.png"
     },
     "U09GESRAC8J": {
       "id": "U09GESRAC8J",
