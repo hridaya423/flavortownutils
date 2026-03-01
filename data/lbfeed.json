@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-01T13:42:23.461Z",
+  "lastUpdated": "2026-03-01T14:27:57.137Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -60161,6 +60161,22 @@
         "reason": "Hello, Kitchen!",
         "reasonType": "achievement",
         "userId": "U0A8J0XNCT1"
+      },
+      {
+        "ts": "2026-03-01T14:23:46.698Z",
+        "delta": 3,
+        "balance": 28,
+        "reason": "Michelin Star",
+        "reasonType": "achievement",
+        "userId": "U0A8J0XNCT1"
+      },
+      {
+        "ts": "2026-03-01T14:23:46.714Z",
+        "delta": 3,
+        "balance": 25,
+        "reason": "Order Up!",
+        "reasonType": "achievement",
+        "userId": "U0A8J0XNCT1"
       }
     ],
     "u0a8k57pse6": [
@@ -63119,6 +63135,12 @@
     ]
   },
   "users": {
+    "U0A8J0XNCT1": {
+      "id": "U0A8J0XNCT1",
+      "username": "voraviraj08",
+      "displayName": "iamdumb",
+      "avatar": "https://secure.gravatar.com/avatar/cc73620dd181a7f3acdd406ebaf32e42.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0005-72.png"
+    },
     "U08NXJL86KT": {
       "id": "U08NXJL86KT",
       "username": "froggington",
@@ -63232,7 +63254,7 @@
       "id": "U0AHGN71G9L",
       "username": "provaridita",
       "displayName": "provaridita",
-      "avatar": "https://secure.gravatar.com/avatar/62fa85b6cf1529ec5c0043743cd6e8b1.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0025-72.png"
+      "avatar": "https://avatars.slack-edge.com/2026-03-01/10604462261910_7a37ae6ff80efeab5e58_72.jpg"
     },
     "U0666VATMT5": {
       "id": "U0666VATMT5",
@@ -64964,12 +64986,6 @@
       "username": "vishalya18",
       "avatar": "https://secure.gravatar.com/avatar/0a45c7b164a8e5aca04def11393219dd.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0026-72.png"
     },
-    "U0A8J0XNCT1": {
-      "id": "U0A8J0XNCT1",
-      "username": "voraviraj08",
-      "displayName": "iamdumb",
-      "avatar": "https://secure.gravatar.com/avatar/cc73620dd181a7f3acdd406ebaf32e42.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0005-72.png"
-    },
     "U096RMRG03G": {
       "id": "U096RMRG03G",
       "username": "coolcream",
@@ -65507,7 +65523,7 @@
     "U09GJ7HH48Z": {
       "id": "U09GJ7HH48Z",
       "username": "bowlofneighs",
-      "displayName": "Bole",
+      "displayName": "Bowl",
       "avatar": "https://avatars.slack-edge.com/2026-02-11/10491764660534_ac397a332942009b4771_72.png"
     },
     "U09ALN5LPU5": {
