@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-01T12:53:03.572Z",
+  "lastUpdated": "2026-03-01T13:42:23.461Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -14545,6 +14545,14 @@
         "delta": 12,
         "balance": 753,
         "reason": "user grant",
+        "reasonType": "",
+        "userId": "U08NXJL86KT"
+      },
+      {
+        "ts": "2026-03-01T13:25:24.671Z",
+        "delta": -33,
+        "balance": 720,
+        "reason": "shop purchase",
         "reasonType": "",
         "userId": "U08NXJL86KT"
       }
@@ -63111,6 +63119,12 @@
     ]
   },
   "users": {
+    "U08NXJL86KT": {
+      "id": "U08NXJL86KT",
+      "username": "froggington",
+      "displayName": "Frog",
+      "avatar": "https://avatars.slack-edge.com/2026-01-19/10325947619670_a388b45b5e0808b2f201_72.png"
+    },
     "U07L45W79E1": {
       "id": "U07L45W79E1",
       "username": "neongamerbot",
@@ -63142,7 +63156,7 @@
     "U054VC2KM9P": {
       "id": "U054VC2KM9P",
       "username": "amber",
-      "displayName": "transcental",
+      "displayName": "amber",
       "avatar": "https://avatars.slack-edge.com/2026-03-01/10599797126067_7bbb980ae906a691a15a_72.jpg"
     },
     "U09N16WM1K2": {
@@ -63512,12 +63526,6 @@
       "username": "raqeeb",
       "displayName": "Raqeeb",
       "avatar": "https://avatars.slack-edge.com/2025-12-31/10239975055360_eff77c2080500c00c5ca_72.jpg"
-    },
-    "U08NXJL86KT": {
-      "id": "U08NXJL86KT",
-      "username": "froggington",
-      "displayName": "Frog",
-      "avatar": "https://avatars.slack-edge.com/2026-01-19/10325947619670_a388b45b5e0808b2f201_72.png"
     },
     "U08RJ1PEM7X": {
       "id": "U08RJ1PEM7X",
