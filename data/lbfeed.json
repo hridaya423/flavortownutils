@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-02T10:45:39.564Z",
+  "lastUpdated": "2026-03-02T11:34:06.944Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -32491,6 +32491,22 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0A1NME3EJD"
+      },
+      {
+        "ts": "2026-03-02T11:28:50.705Z",
+        "delta": 88,
+        "balance": 582,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A1NME3EJD"
+      },
+      {
+        "ts": "2026-03-02T11:30:21.518Z",
+        "delta": -88,
+        "balance": 494,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A1NME3EJD"
       }
     ],
     "u0a1nr7hksn": [
@@ -63365,6 +63381,11 @@
     ]
   },
   "users": {
+    "U0A1NME3EJD": {
+      "id": "U0A1NME3EJD",
+      "username": "nok",
+      "avatar": "https://avatars.slack-edge.com/2026-01-13/10282812823125_9fcc7248e736e16e62f6_72.png"
+    },
     "U092F9A8VMY": {
       "id": "U092F9A8VMY",
       "username": "foodegypt68",
@@ -63393,11 +63414,6 @@
       "username": "dhruvinsarkar",
       "displayName": "Dhruv",
       "avatar": "https://secure.gravatar.com/avatar/a96b93e161e0b0c74c5913458a981a03.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0025-72.png"
-    },
-    "U0A1NME3EJD": {
-      "id": "U0A1NME3EJD",
-      "username": "nok",
-      "avatar": "https://avatars.slack-edge.com/2026-01-13/10282812823125_9fcc7248e736e16e62f6_72.png"
     },
     "U092B73297B": {
       "id": "U092B73297B",
