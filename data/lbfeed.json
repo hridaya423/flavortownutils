@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-02T16:04:47.156Z",
+  "lastUpdated": "2026-03-02T17:13:55.881Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -3284,6 +3284,14 @@
         "balance": 2056,
         "reason": "user grant",
         "reasonType": "",
+        "userId": "U078VEJRBR7"
+      },
+      {
+        "ts": "2026-03-02T17:02:40.607Z",
+        "delta": 3,
+        "balance": 2059,
+        "reason": "Order Up!",
+        "reasonType": "achievement",
         "userId": "U078VEJRBR7"
       }
     ],
@@ -8008,6 +8016,14 @@
         "balance": 310,
         "reason": "payout",
         "reasonType": "payout",
+        "userId": "U07V12XBSF6"
+      },
+      {
+        "ts": "2026-03-02T16:50:19.437Z",
+        "delta": -133,
+        "balance": 177,
+        "reason": "shop purchase",
+        "reasonType": "",
         "userId": "U07V12XBSF6"
       }
     ],
@@ -63433,6 +63449,17 @@
     ]
   },
   "users": {
+    "U078VEJRBR7": {
+      "id": "U078VEJRBR7",
+      "username": "om.potter09",
+      "displayName": "Oliver",
+      "avatar": "https://avatars.slack-edge.com/2026-03-01/10591614177751_2e736160ecafd8dfc6ad_72.jpg"
+    },
+    "U07V12XBSF6": {
+      "id": "U07V12XBSF6",
+      "username": "praneetnrana",
+      "avatar": "https://avatars.slack-edge.com/2024-11-06/7981633353766_2c1d416704c08bf78e03_72.png"
+    },
     "U0A1NME3EJD": {
       "id": "U0A1NME3EJD",
       "username": "nok",
@@ -64046,12 +64073,6 @@
       "username": "me1853",
       "displayName": "maddy",
       "avatar": "https://avatars.slack-edge.com/2026-01-24/10378452028689_8f3a2ed55cd353fc69f6_72.png"
-    },
-    "U078VEJRBR7": {
-      "id": "U078VEJRBR7",
-      "username": "om.potter09",
-      "displayName": "Oliver",
-      "avatar": "https://avatars.slack-edge.com/2026-03-01/10591614177751_2e736160ecafd8dfc6ad_72.jpg"
     },
     "U0A7TV65SPL": {
       "id": "U0A7TV65SPL",
@@ -65398,11 +65419,6 @@
       "username": "ragingthund3r3r",
       "displayName": "ragingthund3r3r",
       "avatar": "https://avatars.slack-edge.com/2026-01-14/10308394604737_8798fd7df6f3d6cbeb00_72.jpg"
-    },
-    "U07V12XBSF6": {
-      "id": "U07V12XBSF6",
-      "username": "praneetnrana",
-      "avatar": "https://avatars.slack-edge.com/2024-11-06/7981633353766_2c1d416704c08bf78e03_72.png"
     },
     "U0A79MT63MG": {
       "id": "U0A79MT63MG",
