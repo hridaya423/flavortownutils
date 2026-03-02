@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-02T14:13:59.639Z",
+  "lastUpdated": "2026-03-02T15:08:43.599Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -32517,6 +32517,30 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0A1NME3EJD"
+      },
+      {
+        "ts": "2026-03-02T14:17:59.022Z",
+        "delta": 88,
+        "balance": 582,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A1NME3EJD"
+      },
+      {
+        "ts": "2026-03-02T14:18:09.872Z",
+        "delta": 88,
+        "balance": 670,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A1NME3EJD"
+      },
+      {
+        "ts": "2026-03-02T14:18:32.346Z",
+        "delta": -670,
+        "balance": 0,
+        "reason": "user grant",
+        "reasonType": "",
+        "userId": "U0A1NME3EJD"
       }
     ],
     "u0a1nr7hksn": [
@@ -63409,6 +63433,11 @@
     ]
   },
   "users": {
+    "U0A1NME3EJD": {
+      "id": "U0A1NME3EJD",
+      "username": "nok",
+      "avatar": "https://avatars.slack-edge.com/2026-01-13/10282812823125_9fcc7248e736e16e62f6_72.png"
+    },
     "U0AGAC4S7LG": {
       "id": "U0AGAC4S7LG",
       "username": "deepucreator9",
@@ -63420,11 +63449,6 @@
       "username": "bhelavevicky66675",
       "displayName": "bhelavevicky66675",
       "avatar": "https://secure.gravatar.com/avatar/234052690d16e602cc6a78f5725cae25.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0024-72.png"
-    },
-    "U0A1NME3EJD": {
-      "id": "U0A1NME3EJD",
-      "username": "nok",
-      "avatar": "https://avatars.slack-edge.com/2026-01-13/10282812823125_9fcc7248e736e16e62f6_72.png"
     },
     "U092F9A8VMY": {
       "id": "U092F9A8VMY",
@@ -63736,7 +63760,7 @@
       "id": "U0938MZG8Q6",
       "username": "christiandubsky20",
       "displayName": "christian",
-      "avatar": "https://avatars.slack-edge.com/2026-03-02/10607712485810_d2e82cc5e784abed980c_72.png"
+      "avatar": "https://avatars.slack-edge.com/2026-03-02/10640682775664_8e85431fce6656041837_72.png"
     },
     "U078KKF3R1Q": {
       "id": "U078KKF3R1Q",
