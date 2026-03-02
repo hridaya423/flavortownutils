@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-02T18:05:54.848Z",
+  "lastUpdated": "2026-03-02T19:13:19.676Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -30615,6 +30615,14 @@
         "delta": 40,
         "balance": 63,
         "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U09PHG7RLGG"
+      },
+      {
+        "ts": "2026-03-02T18:06:57.155Z",
+        "delta": 35,
+        "balance": 98,
+        "reason": "user grant",
         "reasonType": "",
         "userId": "U09PHG7RLGG"
       }
@@ -63457,6 +63465,11 @@
     ]
   },
   "users": {
+    "U09PHG7RLGG": {
+      "id": "U09PHG7RLGG",
+      "username": "iamaregularpersonthan",
+      "avatar": "https://avatars.slack-edge.com/2026-01-09/10272523291508_2b146bf349e9cb2c269e_72.jpg"
+    },
     "U078VEJRBR7": {
       "id": "U078VEJRBR7",
       "username": "om.potter09",
@@ -63795,7 +63808,7 @@
       "id": "U0938MZG8Q6",
       "username": "christiandubsky20",
       "displayName": "christian",
-      "avatar": "https://avatars.slack-edge.com/2026-03-02/10625789999553_4f09b676cc18af9e4028_72.png"
+      "avatar": "https://avatars.slack-edge.com/2026-03-02/10598788846423_067f3826a078054f5274_72.png"
     },
     "U078KKF3R1Q": {
       "id": "U078KKF3R1Q",
@@ -64973,11 +64986,6 @@
       "username": "code1fan2",
       "displayName": "Cris",
       "avatar": "https://avatars.slack-edge.com/2026-02-25/10568373125031_ed2f771b0e1645b5eb10_72.png"
-    },
-    "U09PHG7RLGG": {
-      "id": "U09PHG7RLGG",
-      "username": "iamaregularpersonthan",
-      "avatar": "https://avatars.slack-edge.com/2026-01-09/10272523291508_2b146bf349e9cb2c269e_72.jpg"
     },
     "U0A2L4NMA9X": {
       "id": "U0A2L4NMA9X",
