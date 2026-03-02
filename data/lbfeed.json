@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-02T07:55:43.731Z",
+  "lastUpdated": "2026-03-02T08:49:23.289Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -34315,6 +34315,22 @@
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U0A4D1JPX2B"
+      },
+      {
+        "ts": "2026-03-02T08:22:22.684Z",
+        "delta": 10,
+        "balance": 41,
+        "reason": "Line Cook",
+        "reasonType": "achievement",
+        "userId": "U0A4D1JPX2B"
+      },
+      {
+        "ts": "2026-03-02T08:23:32.338Z",
+        "delta": -35,
+        "balance": 6,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A4D1JPX2B"
       }
     ],
     "u0a4f3cgspr": [
@@ -63305,6 +63321,11 @@
     ]
   },
   "users": {
+    "U0A4D1JPX2B": {
+      "id": "U0A4D1JPX2B",
+      "username": "amitdey1350",
+      "avatar": "https://avatars.slack-edge.com/2025-12-20/10164683450962_352de197f63776470b82_72.jpg"
+    },
     "U0A2H749TL3": {
       "id": "U0A2H749TL3",
       "username": "jaw.inbox10",
@@ -66470,11 +66491,6 @@
       "username": "jitwongjit",
       "displayName": "Jazzzzzzzzzon",
       "avatar": "https://avatars.slack-edge.com/2025-12-31/10217866082420_136fd8b6e687427e8749_72.png"
-    },
-    "U0A4D1JPX2B": {
-      "id": "U0A4D1JPX2B",
-      "username": "amitdey1350",
-      "avatar": "https://avatars.slack-edge.com/2025-12-20/10164683450962_352de197f63776470b82_72.jpg"
     },
     "U0AAM0GL21M": {
       "id": "U0AAM0GL21M",
