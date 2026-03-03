@@ -8201,7 +8201,13 @@ function initPayoutVotesTextRestructure() {
     observer.observe(document.body, { childList: true, subtree: true });
 }
 
+function syncDocsCodeThemeClass() {
+    if (!document.body) return;
+    document.body.classList.toggle('flavortown-docs-no-code-theme', window.location.pathname === '/api/v1/docs');
+}
+
 function init() {
+    syncDocsCodeThemeClass();
     initLocalStorageSync();
     loadTheme();
     initCommandPaletteShortcut();
@@ -9715,6 +9721,7 @@ if (document.readyState === 'loading') {
 
 let lastPathname = window.location.pathname;
 document.addEventListener('turbo:load', () => {
+    syncDocsCodeThemeClass();
     if (window.location.pathname !== lastPathname) {
         inlineFormLoading = false;
         window.__flavortownGoalsEnhanced = false;

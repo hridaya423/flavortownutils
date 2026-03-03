@@ -3988,6 +3988,14 @@ code {
     background: #a65e42 !important;
 }
 
+body.flavortown-docs-no-code-theme pre,
+body.flavortown-docs-no-code-theme code,
+body.flavortown-docs-no-code-theme .card pre,
+body.flavortown-docs-no-code-theme .card code {
+    background: transparent !important;
+    color: inherit !important;
+}
+
 .flavortown-heatmap-legend-cell.level-3-blended {
     background: #b87333 !important;
 }

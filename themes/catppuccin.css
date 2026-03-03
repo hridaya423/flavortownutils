@@ -4048,3 +4048,11 @@ code {
     background: #3c3b4d;
     outline: 0.4em solid var(--ctp-accent) !important;
 }
+
+body.flavortown-docs-no-code-theme pre,
+body.flavortown-docs-no-code-theme code,
+body.flavortown-docs-no-code-theme .card pre,
+body.flavortown-docs-no-code-theme .card code {
+    background: transparent !important;
+    color: inherit !important;
+}
