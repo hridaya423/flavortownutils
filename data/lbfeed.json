@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-03T19:59:14.851Z",
+  "lastUpdated": "2026-03-03T21:36:32.443Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -13374,6 +13374,14 @@
         "balance": 1492,
         "reason": "user grant",
         "reasonType": "",
+        "userId": "U08AT086H8E"
+      },
+      {
+        "ts": "2026-03-03T20:13:00.920Z",
+        "delta": 5,
+        "balance": 1497,
+        "reason": "Cooking",
+        "reasonType": "achievement",
         "userId": "U08AT086H8E"
       }
     ],
@@ -63799,6 +63807,11 @@
     ]
   },
   "users": {
+    "U08AT086H8E": {
+      "id": "U08AT086H8E",
+      "username": "itslukasreis",
+      "avatar": "https://avatars.slack-edge.com/2025-12-14/10132050312737_cb30475cd6a3f962c644_72.jpg"
+    },
     "U09PHG7RLGG": {
       "id": "U09PHG7RLGG",
       "username": "iamaregularpersonthan",
@@ -65588,11 +65601,6 @@
       "username": "mitchell561",
       "displayName": "Mitchell Krummell",
       "avatar": "https://avatars.slack-edge.com/2025-12-13/10117137449442_26bfab8e484328873b37_72.png"
-    },
-    "U08AT086H8E": {
-      "id": "U08AT086H8E",
-      "username": "itslukasreis",
-      "avatar": "https://avatars.slack-edge.com/2025-12-14/10132050312737_cb30475cd6a3f962c644_72.jpg"
     },
     "U091URR1YAJ": {
       "id": "U091URR1YAJ",
