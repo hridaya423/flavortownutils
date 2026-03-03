@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-03T05:35:05.607Z",
+  "lastUpdated": "2026-03-03T06:55:39.675Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -30826,6 +30826,14 @@
         "balance": 15,
         "reason": "Hello, Kitchen!",
         "reasonType": "achievement",
+        "userId": "U09QS5TK198"
+      },
+      {
+        "ts": "2026-03-03T06:36:58.864Z",
+        "delta": -10,
+        "balance": 5,
+        "reason": "shop purchase",
+        "reasonType": "",
         "userId": "U09QS5TK198"
       }
     ],
@@ -63583,6 +63591,12 @@
     ]
   },
   "users": {
+    "U09QS5TK198": {
+      "id": "U09QS5TK198",
+      "username": "hyllusx",
+      "displayName": "mgalen007",
+      "avatar": "https://secure.gravatar.com/avatar/ebdb7c348c0d2d14026632c4befe7f61.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0016-72.png"
+    },
     "U0AH5QCV92L": {
       "id": "U0AH5QCV92L",
       "username": "thirumurugan.slice",
@@ -66414,7 +66428,7 @@
       "id": "U0923H02Y3B",
       "username": "me1011",
       "displayName": "inw",
-      "avatar": "https://avatars.slack-edge.com/2026-02-22/10557096291954_02efaa431cd9823bdb16_72.png"
+      "avatar": "https://avatars.slack-edge.com/2026-03-03/10646169336480_cac85360d61d2f3f0b1f_72.png"
     },
     "U09940XAJ3B": {
       "id": "U09940XAJ3B",
@@ -67179,12 +67193,6 @@
       "username": "shivnvm",
       "displayName": "shivnvm",
       "avatar": "https://secure.gravatar.com/avatar/1035a531b95f9620636d440cb0266884.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0018-72.png"
-    },
-    "U09QS5TK198": {
-      "id": "U09QS5TK198",
-      "username": "hyllusx",
-      "displayName": "mgalen007",
-      "avatar": "https://secure.gravatar.com/avatar/ebdb7c348c0d2d14026632c4befe7f61.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0016-72.png"
     },
     "U0A5YN1MLV6": {
       "id": "U0A5YN1MLV6",
@@ -68145,7 +68153,7 @@
     "U086TNY7PE0": {
       "id": "U086TNY7PE0",
       "username": "abulhasnat5737",
-      "displayName": "Hasnat",
+      "displayName": "Crine",
       "avatar": "https://avatars.slack-edge.com/2026-02-28/10601713344806_565db1f70c62a2afa174_72.jpg"
     },
     "U0A5HTUE2F3": {
