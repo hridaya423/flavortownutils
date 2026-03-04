@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-04T11:32:42.070Z",
+  "lastUpdated": "2026-03-04T13:00:41.656Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -34265,6 +34265,22 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0A3VK4GFRN"
+      },
+      {
+        "ts": "2026-03-04T12:28:23.819Z",
+        "delta": 28,
+        "balance": 33,
+        "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U0A3VK4GFRN"
+      },
+      {
+        "ts": "2026-03-04T12:29:11.581Z",
+        "delta": -25,
+        "balance": 8,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A3VK4GFRN"
       }
     ],
     "u0a3wsns56y": [
@@ -63885,6 +63901,11 @@
     ]
   },
   "users": {
+    "U0A3VK4GFRN": {
+      "id": "U0A3VK4GFRN",
+      "username": "bhatrichit10",
+      "avatar": "https://avatars.slack-edge.com/2025-12-23/10160500975127_4e0ba49afbde21f78807_72.png"
+    },
     "U0AHPBPPRRV": {
       "id": "U0AHPBPPRRV",
       "username": "miguelmfernandes1008",
@@ -64378,7 +64399,7 @@
       "id": "U0938MZG8Q6",
       "username": "christiandubsky20",
       "displayName": "christian",
-      "avatar": "https://avatars.slack-edge.com/2026-03-04/10630216611700_a1947a43005c5448ac8b_72.png"
+      "avatar": "https://avatars.slack-edge.com/2026-03-04/10625139313877_d80e3ea206bb1a19ad0e_72.png"
     },
     "U078KKF3R1Q": {
       "id": "U078KKF3R1Q",
@@ -66271,11 +66292,6 @@
       "username": "jan.richter2007",
       "displayName": "Hat Dealer",
       "avatar": "https://avatars.slack-edge.com/2025-05-30/8980670397188_afd3aeefffdf1868256a_72.png"
-    },
-    "U0A3VK4GFRN": {
-      "id": "U0A3VK4GFRN",
-      "username": "bhatrichit10",
-      "avatar": "https://avatars.slack-edge.com/2025-12-23/10160500975127_4e0ba49afbde21f78807_72.png"
     },
     "U04AQNZRJQ5": {
       "id": "U04AQNZRJQ5",
