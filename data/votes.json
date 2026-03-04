@@ -1,7 +1,329 @@
 {
-  "lastUpdated": "2026-03-04T18:03:25.203Z",
-  "totalVotes": 5820,
+  "lastUpdated": "2026-03-04T19:11:54.117Z",
+  "totalVotes": 5866,
   "votes": [
+    {
+      "project": "Fake Hacking Terminal",
+      "feedback": "I like the CSS! I would prefer to see the text come out at the speed of typing (e.g <https://hackertyper.com>) instead of me hitting one key and having a paragraph appear.",
+      "votedBy": "U081XAD26JZ",
+      "timestamp": "2026-03-04T19:10:54.590Z",
+      "slackTs": "1772651454.590809"
+    },
+    {
+      "project": "Wilber",
+      "feedback": "Interesting project. I had no idea it was possible to spend 40 hours making a glorified timer, lmao. I mean, it works with all the times including those outside of the unix time boundaries, though I imagine that's javascript's handling. Regardless, big fan of the \"closed source app is slop so I made an open source version\" software ideology. Keep doing what you're doing.",
+      "votedBy": "U081XAD26JZ",
+      "timestamp": "2026-03-04T19:03:02.215Z",
+      "slackTs": "1772650982.215409"
+    },
+    {
+      "project": "SpecScraper",
+      "feedback": "good project but not unique there are any scrappers on internet please next time build some different this is also good",
+      "votedBy": "U0A0TB2ETAB",
+      "timestamp": "2026-03-04T19:01:55.825Z",
+      "slackTs": "1772650915.825489"
+    },
+    {
+      "project": "Wilber",
+      "feedback": "i like the themes a lot!! and i also like that you can have multiple attempts",
+      "votedBy": "U0A5EMEKU3Z",
+      "timestamp": "2026-03-04T19:00:19.896Z",
+      "slackTs": "1772650819.896209"
+    },
+    {
+      "project": "Flappy Bird",
+      "feedback": "Good project but i seen but please create new game, this also good",
+      "votedBy": "U0A0TB2ETAB",
+      "timestamp": "2026-03-04T18:58:54.666Z",
+      "slackTs": "1772650734.666569"
+    },
+    {
+      "project": "Flappy Bird",
+      "feedback": "nice game! i think it would be nice to add a menu somewhere instead of manually restarting the exe for better usability :))",
+      "votedBy": "U0A5EMEKU3Z",
+      "timestamp": "2026-03-04T18:57:27.490Z",
+      "slackTs": "1772650647.490599"
+    },
+    {
+      "project": "Chess",
+      "feedback": "For some reason double clicking on the pieces would send them to the other side of the board &amp; delete the opposite pieces. Also this is probably a me problem but the icon pack you were using meant that on my computer the black pieces were bigger than all the other pieces.",
+      "votedBy": "U081XAD26JZ",
+      "timestamp": "2026-03-04T18:56:58.313Z",
+      "slackTs": "1772650618.313249"
+    },
+    {
+      "project": "Personal Website",
+      "feedback": "bro you cooked it , really i love that Ui and the design of the website.",
+      "votedBy": "U0A81UKS2JU",
+      "timestamp": "2026-03-04T18:55:49.863Z",
+      "slackTs": "1772650549.863789"
+    },
+    {
+      "project": "Keyboard Information Negotiator",
+      "feedback": "this is so cool! i don't think i've seen a project like this before and it's useful too!",
+      "votedBy": "U0A5EMEKU3Z",
+      "timestamp": "2026-03-04T18:55:07.370Z",
+      "slackTs": "1772650507.370039"
+    },
+    {
+      "project": "Personal Website",
+      "feedback": "Great first project! I am baffled by how easy AI has made the barrier to entry for Flavortown lower. I hope everything is usable.",
+      "votedBy": "U0AAVSGH3HC",
+      "timestamp": "2026-03-04T18:51:32.502Z",
+      "slackTs": "1772650292.502629"
+    },
+    {
+      "project": "Flappy Bird",
+      "feedback": "cool project , i love this game , i played it smooth animation and etc , i like it",
+      "votedBy": "U0A81UKS2JU",
+      "timestamp": "2026-03-04T18:47:53.058Z",
+      "slackTs": "1772650073.058549"
+    },
+    {
+      "project": "Chess",
+      "feedback": "took me a while to realize that the board was flipping, but that could be my stupidity. as someone who has previously made a chess engine (in go), i know how much effort actually went into this, since theres like 5 million edge cases and the way the pawn moves is very strange. you should mention in the github releases page to run `chmod +x Chess_Linux_x86` to make it actually executable. also i encountered a bug: LookupError: The king is gone, how did you even do that? This is illegal, get the chess police!, and i dont know what I did, but one side just didn't have a king and the game didnt restart",
+      "votedBy": "U07950S3GMC",
+      "timestamp": "2026-03-04T18:47:13.363Z",
+      "slackTs": "1772650033.363439"
+    },
+    {
+      "project": "Personal Website",
+      "feedback": "Very cool website. Fluid UI, clean animations, what more could you ask for",
+      "votedBy": "U0A5GJ8JP5F",
+      "timestamp": "2026-03-04T18:45:17.834Z",
+      "slackTs": "1772649917.834629"
+    },
+    {
+      "project": "Ticket System",
+      "feedback": "I don't understand Dutch, but I'm glad the readme is in English. I hope the test environment is separated from the real environment because I fear the delete account button could make serious damage. /s",
+      "votedBy": "U0AAVSGH3HC",
+      "timestamp": "2026-03-04T18:44:28.818Z",
+      "slackTs": "1772649868.818429"
+    },
+    {
+      "project": "Flappy Bird",
+      "feedback": "An old classic: Good start keep it up. Cool project ![cool-](<https://wsrv.nl/?url=https%3A%2F%2Femoji.slack-edge.com%2FT09V59WQY1E%2Fcool-%2F9e04db119d058fab.gif&amp;w=20&amp;h=20&amp;fit=contain>)",
+      "votedBy": "U0A5GJ8JP5F",
+      "timestamp": "2026-03-04T18:44:05.845Z",
+      "slackTs": "1772649845.845609"
+    },
+    {
+      "project": "Ticket System",
+      "feedback": "A very nice application and its a very cool idea, maybe make it in english next time (for voting purposes) :)",
+      "votedBy": "U0A5GJ8JP5F",
+      "timestamp": "2026-03-04T18:41:31.560Z",
+      "slackTs": "1772649691.560749"
+    },
+    {
+      "project": "Chess",
+      "feedback": "Super cool game, well done re making this from scratch!",
+      "votedBy": "U0AB1A4H9S8",
+      "timestamp": "2026-03-04T18:39:37.407Z",
+      "slackTs": "1772649577.407329"
+    },
+    {
+      "project": "Keyboard Information Negotiator",
+      "feedback": "Very cool, useful and creative project id love to use it for my next hardware project.",
+      "votedBy": "U0A5GJ8JP5F",
+      "timestamp": "2026-03-04T18:39:27.417Z",
+      "slackTs": "1772649567.417409"
+    },
+    {
+      "project": "Schooler",
+      "feedback": "I have a burner Google account I use to test applications like these, but I can't use it in school at the moment. However, I like the type safety in your choice of TypeScript. I would prefer if your terms of service and privacy policy showed the rendered Markdown instead of raw text. I don't really like indemnification clauses as they often lead into forced arbitration, and there is increased consumer demand not to force arbitration.",
+      "votedBy": "U0AAVSGH3HC",
+      "timestamp": "2026-03-04T18:35:10.303Z",
+      "slackTs": "1772649310.303299"
+    },
+    {
+      "project": "Pixel OS",
+      "feedback": "Its a nice clean OS, and i like how you can watch youtube videos in the browser.",
+      "votedBy": "U0A0A0S987Q",
+      "timestamp": "2026-03-04T18:30:56.703Z",
+      "slackTs": "1772649056.703329"
+    },
+    {
+      "project": "Flappy Bird",
+      "feedback": "The classic Flappy Bird! Did you use AI to write the readme?",
+      "votedBy": "U0AAVSGH3HC",
+      "timestamp": "2026-03-04T18:27:55.324Z",
+      "slackTs": "1772648875.324169"
+    },
+    {
+      "project": "Chess",
+      "feedback": "Chess is one of the hardest things to code for. Good job!",
+      "votedBy": "U0AAVSGH3HC",
+      "timestamp": "2026-03-04T18:22:48.782Z",
+      "slackTs": "1772648568.782279"
+    },
+    {
+      "project": "Inkly",
+      "feedback": "I like how you can test it out on the landings page, and the fucntion to see where your teammates are working on!",
+      "votedBy": "U0A0A0S987Q",
+      "timestamp": "2026-03-04T18:22:23.791Z",
+      "slackTs": "1772648543.791029"
+    },
+    {
+      "project": "Flappy Bird",
+      "feedback": "flappy bird with new version , try something new with adding more options",
+      "votedBy": "U0AGSUVPTBJ",
+      "timestamp": "2026-03-04T18:22:13.362Z",
+      "slackTs": "1772648533.362039"
+    },
+    {
+      "project": "Personal Website",
+      "feedback": "very interesting project! loved it, very unique and esoteric. keep it up",
+      "votedBy": "U0A50H47MT9",
+      "timestamp": "2026-03-04T18:21:53.296Z",
+      "slackTs": "1772648513.296219"
+    },
+    {
+      "project": "Flappy Bird",
+      "feedback": "the classic flappy bird game, very well! keep it up champ",
+      "votedBy": "U0A50H47MT9",
+      "timestamp": "2026-03-04T18:21:34.305Z",
+      "slackTs": "1772648494.305679"
+    },
+    {
+      "project": "Contact - rust cli contact manager",
+      "feedback": "A small amount of devlogs, but its a small project. I like the TUI with the table, and the colors are easy to read with!",
+      "votedBy": "U0A0A0S987Q",
+      "timestamp": "2026-03-04T18:21:10.322Z",
+      "slackTs": "1772648470.322699"
+    },
+    {
+      "project": "Keyboard Information Negotiator",
+      "feedback": "Interesting constraint, but counting, indexing, and loops may become tricky.",
+      "votedBy": "U0AGSUVPTBJ",
+      "timestamp": "2026-03-04T18:20:18.883Z",
+      "slackTs": "1772648418.883829"
+    },
+    {
+      "project": "Python-Untis-Telegram-Bot",
+      "feedback": "I like how you can change language's in the bot, i like the notification if a lesson is canceled!",
+      "votedBy": "U0A0A0S987Q",
+      "timestamp": "2026-03-04T18:19:55.890Z",
+      "slackTs": "1772648395.890149"
+    },
+    {
+      "project": "Keyboard Information Negotiator",
+      "feedback": "Interesting project, mechanical keyboards are becoming more popular! I went to a computer shop the other day and saw a bunch of them, and my sister really wanted one but we're best off saving $200 for other stuff. I accessed the demo video through <http://safeshare.tv|safeshare.tv> because YouTube was blocked.",
+      "votedBy": "U0AAVSGH3HC",
+      "timestamp": "2026-03-04T18:19:15.027Z",
+      "slackTs": "1772648355.027599"
+    },
+    {
+      "project": "Ticket System",
+      "feedback": "very much like jira, but very awesome indeed. looks cool",
+      "votedBy": "U0A50H47MT9",
+      "timestamp": "2026-03-04T18:17:41.970Z",
+      "slackTs": "1772648261.970549"
+    },
+    {
+      "project": "VoidRelay – Delay-Tolerant Communication for Deep Space Missions",
+      "feedback": "I like the style, but i don't really understand what to do, maybe change the color of the scroll bar top left, but overall nice work!",
+      "votedBy": "U0A0A0S987Q",
+      "timestamp": "2026-03-04T18:17:40.043Z",
+      "slackTs": "1772648260.043679"
+    },
+    {
+      "project": "Schooler",
+      "feedback": "awesome project. very well written readme, keep it up champ.",
+      "votedBy": "U0A50H47MT9",
+      "timestamp": "2026-03-04T18:16:45.183Z",
+      "slackTs": "1772648205.183039"
+    },
+    {
+      "project": "CHEESEISLIFE",
+      "feedback": "I like the simple style of the app, and the search bar works really well!",
+      "votedBy": "U0A0A0S987Q",
+      "timestamp": "2026-03-04T18:16:26.544Z",
+      "slackTs": "1772648186.544629"
+    },
+    {
+      "project": "Keyboard Information Negotiator",
+      "feedback": "very interesting project! loved it, very unique and esoteric. keep it up",
+      "votedBy": "U0A50H47MT9",
+      "timestamp": "2026-03-04T18:15:32.460Z",
+      "slackTs": "1772648132.460989"
+    },
+    {
+      "project": "calculatorWithoutInt",
+      "feedback": "very interesting project! loved it, very unique and esoteric. keep it up",
+      "votedBy": "U0A50H47MT9",
+      "timestamp": "2026-03-04T18:15:18.819Z",
+      "slackTs": "1772648118.819409"
+    },
+    {
+      "project": "calculatorWithoutInt",
+      "feedback": "I may not be able to run a Python program on a school computer at the moment. Sorry if this vote message sounds similar to the last vote; I hope this works via pipx because I care about my computer's security.",
+      "votedBy": "U0AAVSGH3HC",
+      "timestamp": "2026-03-04T18:12:19.362Z",
+      "slackTs": "1772647939.362029"
+    },
+    {
+      "project": "Photos",
+      "feedback": "It is a verry nice little app, and i like the meta embeds, and the icons",
+      "votedBy": "U0A0A0S987Q",
+      "timestamp": "2026-03-04T18:09:33.539Z",
+      "slackTs": "1772647773.539399"
+    },
+    {
+      "project": "From Pixels to Blocks: A 3D Transformation System",
+      "feedback": "I may not be able to run a C++ program on a school computer at the moment, but I value when devlogs show the output just as much as Flavortown staff do!",
+      "votedBy": "U0AAVSGH3HC",
+      "timestamp": "2026-03-04T18:09:20.327Z",
+      "slackTs": "1772647760.327149"
+    },
+    {
+      "project": "Quantum-Safe Extension IDs",
+      "feedback": "Its cool, but i dont see the point of this. the UI is kinda bad",
+      "votedBy": "U0A0A0S987Q",
+      "timestamp": "2026-03-04T18:08:31.038Z",
+      "slackTs": "1772647711.038019"
+    },
+    {
+      "project": "OpenSky",
+      "feedback": "This is verry cool! I like the User Interface a lot!",
+      "votedBy": "U0A0A0S987Q",
+      "timestamp": "2026-03-04T18:07:25.498Z",
+      "slackTs": "1772647645.498619"
+    },
+    {
+      "project": "Neon-snake",
+      "feedback": "It is nice, i like the style of the web site.",
+      "votedBy": "U0A0A0S987Q",
+      "timestamp": "2026-03-04T18:07:06.728Z",
+      "slackTs": "1772647626.728889"
+    },
+    {
+      "project": "Bubble Tea Legend",
+      "feedback": "This is sick! It's a nice game to play when your bored in class ;)",
+      "votedBy": "U0A0A0S987Q",
+      "timestamp": "2026-03-04T18:06:35.585Z",
+      "slackTs": "1772647595.585909"
+    },
+    {
+      "project": "LED bluetooth",
+      "feedback": "Nice project! I like how simple it is, but it works so its good!",
+      "votedBy": "U0A0A0S987Q",
+      "timestamp": "2026-03-04T18:06:04.331Z",
+      "slackTs": "1772647564.331369"
+    },
+    {
+      "project": "NeonType",
+      "feedback": "The description is real haha, but overall nice project! Good work!",
+      "votedBy": "U0A0A0S987Q",
+      "timestamp": "2026-03-04T18:05:13.244Z",
+      "slackTs": "1772647513.244809"
+    },
+    {
+      "project": "Yoink",
+      "feedback": "Cool project! Will be verry nice for people that work a lot with servers!",
+      "votedBy": "U0A0A0S987Q",
+      "timestamp": "2026-03-04T18:04:12.671Z",
+      "slackTs": "1772647452.671199"
+    },
     {
       "project": "Ticket System",
       "feedback": "I opened it and its not in english : ( lol maybe its built in that or i needed to switch language ahahaha",
@@ -42233,6 +42555,18 @@
       "username": "tarunpreetsinghk",
       "displayName": "Tarun",
       "avatar": "https://avatars.slack-edge.com/2026-01-02/10202177354887_cd8159b8cc55dc13c550_72.jpg"
+    },
+    "U081XAD26JZ": {
+      "id": "U081XAD26JZ",
+      "username": "henryvaniersel",
+      "displayName": "Henry",
+      "avatar": "https://secure.gravatar.com/avatar/42014e6fc0b559099ba18930ebfabba1.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0017-72.png"
+    },
+    "U07950S3GMC": {
+      "id": "U07950S3GMC",
+      "username": "shuflduf",
+      "displayName": "Shuflentity",
+      "avatar": "https://avatars.slack-edge.com/2026-02-10/10498415177345_16a6504fc94cd7ee5ef7_72.png"
     }
   }
 }
