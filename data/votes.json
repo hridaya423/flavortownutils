@@ -1,7 +1,252 @@
 {
-  "lastUpdated": "2026-03-04T21:35:29.664Z",
-  "totalVotes": 5920,
+  "lastUpdated": "2026-03-04T22:32:57.221Z",
+  "totalVotes": 5955,
   "votes": [
+    {
+      "project": "RuntimeFS",
+      "feedback": "Neat idea, but it seems that my browser is blocking all the js/css files I upload, making it just a wee bit pointless for me. (\"The resource from “<https://plasma4.org/projects/RuntimeFS/n/website/main.js>” was blocked due to MIME type (“text/html”) mismatch (X-Content-Type-Options: nosniff).\"",
+      "votedBy": "U081XAD26JZ",
+      "timestamp": "2026-03-04T22:32:04.211Z",
+      "slackTs": "1772663524.211949"
+    },
+    {
+      "project": "HealthCode",
+      "feedback": "Clean design, informative content, but navigation could be improved slightly",
+      "votedBy": "U0AGSUVPTBJ",
+      "timestamp": "2026-03-04T22:30:23.239Z",
+      "slackTs": "1772663423.239769"
+    },
+    {
+      "project": "FocusForge",
+      "feedback": "It's decent. I like the concept but it would be nice to polish the ui/ux since it feels pretty inconsistent and could use some work.",
+      "votedBy": "U0A7J4EHADP",
+      "timestamp": "2026-03-04T22:27:24.227Z",
+      "slackTs": "1772663244.227069"
+    },
+    {
+      "project": "FocusForge",
+      "feedback": "I wonder how far ahead society would be if we stopped coding new todo lists and pomodoro timers for nth time? Jokes aside, clean project, but the progress panel doesn't seem to work. I can only delete tasks from my todo list.",
+      "votedBy": "U081XAD26JZ",
+      "timestamp": "2026-03-04T22:26:58.145Z",
+      "slackTs": "1772663218.145419"
+    },
+    {
+      "project": "Pixel OS",
+      "feedback": "WebOS project, nice. I like the applets and the web browser is pretty cool. Nice job.",
+      "votedBy": "U0A7J4EHADP",
+      "timestamp": "2026-03-04T22:23:11.215Z",
+      "slackTs": "1772662991.215609"
+    },
+    {
+      "project": "Pixel OS",
+      "feedback": "Cool project, but come on you called it \"PixelOS\" and the first thing I see when I open it is a clearly vectorized font. COME ON YOU HAD ONE JOB!!! Very cool regardless, but maybe fix that font and add more info about yourself.",
+      "votedBy": "U081XAD26JZ",
+      "timestamp": "2026-03-04T22:22:55.219Z",
+      "slackTs": "1772662975.219779"
+    },
+    {
+      "project": "Inkly",
+      "feedback": "Very cool project. Do note that for some reason the line tool doesn't line up with the mouse. Did you hard-code screen resolution somewhere or something? also the default org name generator will generate it with out the 's' (\"Henry' org\" instead of \"Henry's org\")",
+      "votedBy": "U081XAD26JZ",
+      "timestamp": "2026-03-04T22:19:53.727Z",
+      "slackTs": "1772662793.727839"
+    },
+    {
+      "project": "Orosemo new website",
+      "feedback": "Creative indie developer portfolio showcasing games and tools, simple design, promising projects, could improve visuals.",
+      "votedBy": "U0AGSUVPTBJ",
+      "timestamp": "2026-03-04T22:18:07.670Z",
+      "slackTs": "1772662687.670489"
+    },
+    {
+      "project": "Inkly",
+      "feedback": "This is really good. I can see this as a replacement for the now disconfinued google jamboard. Great work.",
+      "votedBy": "U0A7J4EHADP",
+      "timestamp": "2026-03-04T22:17:06.339Z",
+      "slackTs": "1772662626.339029"
+    },
+    {
+      "project": "Contact - rust cli contact manager",
+      "feedback": "Pretty cool project, I've got no idea how to use Rust lmao. Maybe try adding multi-word names with quotes (e.g \"Henry Van Iersel\" would work as one name) and also add the ability to spell the word \"favourite\" the correct way.",
+      "votedBy": "U081XAD26JZ",
+      "timestamp": "2026-03-04T22:15:59.139Z",
+      "slackTs": "1772662559.139799"
+    },
+    {
+      "project": "portfolio",
+      "feedback": "Clean portfolio layout, clear skills showcase, simple design, could add more interactivity.",
+      "votedBy": "U0AGSUVPTBJ",
+      "timestamp": "2026-03-04T22:15:34.197Z",
+      "slackTs": "1772662534.197009"
+    },
+    {
+      "project": "RuntimeFS",
+      "feedback": "Innovative browser filesystem concept, powerful offline localhost idea, but interface feels technical",
+      "votedBy": "U0AGSUVPTBJ",
+      "timestamp": "2026-03-04T22:13:39.870Z",
+      "slackTs": "1772662419.870679"
+    },
+    {
+      "project": "FocusForge",
+      "feedback": "Nice productivity concept, clean interface, helpful focus idea, but features could expand",
+      "votedBy": "U0AGSUVPTBJ",
+      "timestamp": "2026-03-04T22:12:35.426Z",
+      "slackTs": "1772662355.426379"
+    },
+    {
+      "project": "Contact - rust cli contact manager",
+      "feedback": "It's a good first project. A simple cli but I think it does what it needs to do as a contact manager.",
+      "votedBy": "U0A7J4EHADP",
+      "timestamp": "2026-03-04T22:11:58.269Z",
+      "slackTs": "1772662318.269469"
+    },
+    {
+      "project": "Pixel OS",
+      "feedback": "pixel os with fun idea, but functionality and polish feel limited",
+      "votedBy": "U0AGSUVPTBJ",
+      "timestamp": "2026-03-04T22:11:25.429Z",
+      "slackTs": "1772662285.429689"
+    },
+    {
+      "project": "Inkly",
+      "feedback": "Clean modern UI, smooth layout, simple concept, but features and content feel minimal.",
+      "votedBy": "U0AGSUVPTBJ",
+      "timestamp": "2026-03-04T22:08:40.883Z",
+      "slackTs": "1772662120.883939"
+    },
+    {
+      "project": "Python-Untis-Telegram-Bot",
+      "feedback": "Its a useful telegram bot. I can see this being helpful in quickly getting dates and deadlines without having to dig through announcements.",
+      "votedBy": "U0A7J4EHADP",
+      "timestamp": "2026-03-04T22:08:35.858Z",
+      "slackTs": "1772662115.858489"
+    },
+    {
+      "project": "Contact - rust cli contact manager",
+      "feedback": "Great first Rust project, simple CLI tool, code structure could improve.",
+      "votedBy": "U0AGSUVPTBJ",
+      "timestamp": "2026-03-04T22:05:42.675Z",
+      "slackTs": "1772661942.675119"
+    },
+    {
+      "project": "Python-Untis-Telegram-Bot",
+      "feedback": "Useful Telegram bot idea, tracks lessons and exams, customizable for schools.",
+      "votedBy": "U0AGSUVPTBJ",
+      "timestamp": "2026-03-04T22:04:31.698Z",
+      "slackTs": "1772661871.698189"
+    },
+    {
+      "project": "VoidRelay – Delay-Tolerant Communication for Deep Space Missions",
+      "feedback": "Its a bit confusing. Also, the controls do get cutoff so I cant press the transmit button (1920x1080 display). I do think that the space theme is pretty nice. However, some stuff like the readme seems ai generated (please declare in the ai declaration).",
+      "votedBy": "U0A7J4EHADP",
+      "timestamp": "2026-03-04T22:02:54.130Z",
+      "slackTs": "1772661774.130609"
+    },
+    {
+      "project": "VoidRelay – Delay-Tolerant Communication for Deep Space Missions",
+      "feedback": "Minimal futuristic interface, intriguing concept, smooth animations, but content limited",
+      "votedBy": "U0AGSUVPTBJ",
+      "timestamp": "2026-03-04T22:02:03.326Z",
+      "slackTs": "1772661723.326469"
+    },
+    {
+      "project": "CHEESEISLIFE",
+      "feedback": "This is funny! I think you can add a tiered cheese list system.",
+      "votedBy": "U0A9TGM769K",
+      "timestamp": "2026-03-04T21:57:44.777Z",
+      "slackTs": "1772661464.777429"
+    },
+    {
+      "project": "CHEESEISLIFE",
+      "feedback": "Who doesn't like cheese. It's a decent website but it's a very simple project considering its just a cheese wiki. Next time, please add devlogs as there are 11 hours of development and no devlogs shocasing progress. I do like how you really went all out with so many cheeses.",
+      "votedBy": "U0A7J4EHADP",
+      "timestamp": "2026-03-04T21:55:22.943Z",
+      "slackTs": "1772661322.943989"
+    },
+    {
+      "project": "Quantum-Safe Extension IDs",
+      "feedback": "At first, I had difficulty understanding the ID and extension system, so it would be helpful to add more visual explanations. Otherwise, once I understood it, it works perfectly.",
+      "votedBy": "U0A9TGM769K",
+      "timestamp": "2026-03-04T21:53:36.272Z",
+      "slackTs": "1772661216.272019"
+    },
+    {
+      "project": "Quantum-Safe Extension IDs",
+      "feedback": "I honestly don't understand it, but it works i guess. PLEASE WRITE DESCRIPTIONS WITH CLARITY.",
+      "votedBy": "U086M56BZ4Z",
+      "timestamp": "2026-03-04T21:49:34.715Z",
+      "slackTs": "1772660974.715109"
+    },
+    {
+      "project": "Photos",
+      "feedback": "This looks pretty cool. I'm not a photographer nor do I have flickr pro so I cant really test this and could only use the demo. I will say that the details pane + sharable links seem cool. My feedback is maybe to make it simpler to link it with our own data.",
+      "votedBy": "U0A7J4EHADP",
+      "timestamp": "2026-03-04T21:49:34.268Z",
+      "slackTs": "1772660974.268739"
+    },
+    {
+      "project": "Quantum-Safe Extension IDs",
+      "feedback": "Clean interface, interesting tools, useful resources, but design feels basic",
+      "votedBy": "U0AGSUVPTBJ",
+      "timestamp": "2026-03-04T21:49:22.469Z",
+      "slackTs": "1772660962.469189"
+    },
+    {
+      "project": "Quantum-Safe Extension IDs",
+      "feedback": "very interesting project! loved it, very unique and esoteric. keep it up",
+      "votedBy": "U0A50H47MT9",
+      "timestamp": "2026-03-04T21:45:15.682Z",
+      "slackTs": "1772660715.682759"
+    },
+    {
+      "project": "Neon-snake",
+      "feedback": "might be great if you could add a leaderboard or smth like that. otherwise cool!",
+      "votedBy": "U0A50H47MT9",
+      "timestamp": "2026-03-04T21:42:07.098Z",
+      "slackTs": "1772660527.098769"
+    },
+    {
+      "project": "OpenSky",
+      "feedback": "A sattelite map bro? Cool.  Way to add originality to a classic weather app",
+      "votedBy": "U086M56BZ4Z",
+      "timestamp": "2026-03-04T21:41:48.000Z",
+      "slackTs": "1772660508.000889"
+    },
+    {
+      "project": "VoidRelay – Delay-Tolerant Communication for Deep Space Missions",
+      "feedback": "Wow. Very impressive project but could have been polished a tad more. Wow. Great job.",
+      "votedBy": "U0AEYDUCLKF",
+      "timestamp": "2026-03-04T21:39:11.387Z",
+      "slackTs": "1772660351.387689"
+    },
+    {
+      "project": "Quantum-Safe Extension IDs",
+      "feedback": "It's a cool project. It's great how this solves an actual problem. Feedback would be to improve the user experience since its pretty minimal.",
+      "votedBy": "U0A7J4EHADP",
+      "timestamp": "2026-03-04T21:38:37.671Z",
+      "slackTs": "1772660317.671199"
+    },
+    {
+      "project": "Neon-snake",
+      "feedback": "T'was sooo good. How you did this in 2 hours tho? Anyways, could be more fun with more modes.",
+      "votedBy": "U086M56BZ4Z",
+      "timestamp": "2026-03-04T21:37:13.526Z",
+      "slackTs": "1772660233.526959"
+    },
+    {
+      "project": "CHEESEISLIFE",
+      "feedback": "My gosh. Finally a project worth all 9s (sadly didn't actually give it that...) but a great UI nice info and works well! CHEESE CHEESE ASSEMBLE",
+      "votedBy": "U0AEYDUCLKF",
+      "timestamp": "2026-03-04T21:37:12.429Z",
+      "slackTs": "1772660232.429519"
+    },
+    {
+      "project": "Photos",
+      "feedback": "Apart from not being very original - a great project with a sleek up. Works well and photos are good!!!",
+      "votedBy": "U0AEYDUCLKF",
+      "timestamp": "2026-03-04T21:35:42.321Z",
+      "slackTs": "1772660142.321349"
+    },
     {
       "project": "Quantum-Safe Extension IDs",
       "feedback": "Not too sure what the point or idea of this project is. Please elaborate.",
