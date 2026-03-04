@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-04T20:39:39.487Z",
+  "lastUpdated": "2026-03-04T21:37:03.653Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -39817,6 +39817,14 @@
         "reason": "ship event payout",
         "reasonType": "",
         "userId": "U0A5DVA4Q4R"
+      },
+      {
+        "ts": "2026-03-04T20:40:01.868Z",
+        "delta": -1150,
+        "balance": 424,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A5DVA4Q4R"
       }
     ],
     "u0a5eeq1rfy": [
@@ -47653,6 +47661,22 @@
         "delta": 414,
         "balance": 86,
         "reason": "user grant",
+        "reasonType": "",
+        "userId": "U0A72UR2VTP"
+      },
+      {
+        "ts": "2026-03-04T20:51:52.170Z",
+        "delta": -25,
+        "balance": 61,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A72UR2VTP"
+      },
+      {
+        "ts": "2026-03-04T20:54:41.584Z",
+        "delta": -40,
+        "balance": 21,
+        "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0A72UR2VTP"
       }
@@ -64183,6 +64207,11 @@
     ]
   },
   "users": {
+    "U0A72UR2VTP": {
+      "id": "U0A72UR2VTP",
+      "username": "scitechexperiments",
+      "avatar": "https://secure.gravatar.com/avatar/6b3e9f83d7c786d5a4671ce82d0666be.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0012-72.png"
+    },
     "U0A5DVA4Q4R": {
       "id": "U0A5DVA4Q4R",
       "username": "erik1",
@@ -66973,11 +67002,6 @@
       "username": "eigbekoyi",
       "displayName": "esther",
       "avatar": "https://avatars.slack-edge.com/2025-09-13/9514066007890_e8b0fc8e47b61576933c_72.png"
-    },
-    "U0A72UR2VTP": {
-      "id": "U0A72UR2VTP",
-      "username": "scitechexperiments",
-      "avatar": "https://secure.gravatar.com/avatar/6b3e9f83d7c786d5a4671ce82d0666be.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0012-72.png"
     },
     "U0AC0RGRJF8": {
       "id": "U0AC0RGRJF8",
