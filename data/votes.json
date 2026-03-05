@@ -1,7 +1,21 @@
 {
-  "lastUpdated": "2026-03-05T09:43:40.323Z",
-  "totalVotes": 6116,
+  "lastUpdated": "2026-03-05T10:39:47.653Z",
+  "totalVotes": 6118,
   "votes": [
+    {
+      "project": "ZepMail",
+      "feedback": "I tested this website by creating a new ChatGPT account, and it worked just fine! One recommendation I'd have is to add a hover color over the email in light mode, and maybe add some kind of dummy profile picture similar to gmail? I don't know how feasible this is, I'm not speaking from much experience on how email clients work, but it'd definitely make it look cooler.",
+      "votedBy": "U0AH1BANK5J",
+      "timestamp": "2026-03-05T10:05:30.743Z",
+      "slackTs": "1772705130.743829"
+    },
+    {
+      "project": "BoxCAD",
+      "feedback": "The project features so much. I really think, for the demo, try running it on Render or something, so people can enjoy your project, without downloading it.",
+      "votedBy": "U09736L44JZ",
+      "timestamp": "2026-03-05T09:46:27.862Z",
+      "slackTs": "1772703987.862399"
+    },
     {
       "project": "Among Us Clone",
       "feedback": "its a pretty nice clone, but sadly i couldn't test it out. you should add a demo video",
@@ -44335,6 +44349,12 @@
       "username": "idlisambarchutneychut",
       "displayName": "Sid Batra",
       "avatar": "https://secure.gravatar.com/avatar/285f58c01c8424d56ddbd86fd3cd8a30.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0011-72.png"
+    },
+    "U0AH1BANK5J": {
+      "id": "U0AH1BANK5J",
+      "username": "avighnakc",
+      "displayName": "avighnakc",
+      "avatar": "https://secure.gravatar.com/avatar/629904fe8c350444f99a7ca2abbf468e.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0010-72.png"
     }
   }
 }
