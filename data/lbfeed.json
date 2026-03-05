@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-05T10:41:48.331Z",
+  "lastUpdated": "2026-03-05T11:35:59.039Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -10875,6 +10875,14 @@
         "delta": 25,
         "balance": 140,
         "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U087X4AG35K"
+      },
+      {
+        "ts": "2026-03-05T10:45:08.489Z",
+        "delta": 30,
+        "balance": 170,
+        "reason": "ship event payout",
         "reasonType": "",
         "userId": "U087X4AG35K"
       }
@@ -64605,6 +64613,11 @@
     ]
   },
   "users": {
+    "U087X4AG35K": {
+      "id": "U087X4AG35K",
+      "username": "garygreg2011",
+      "avatar": "https://avatars.slack-edge.com/2026-01-20/10359714188368_8664ad8fbb930725e4c6_72.jpg"
+    },
     "U0AH7BLJDKQ": {
       "id": "U0AH7BLJDKQ",
       "username": "hamednoordin95",
@@ -65448,11 +65461,6 @@
       "username": "pratik.personal4",
       "displayName": "zesty plutonium",
       "avatar": "https://avatars.slack-edge.com/2026-01-28/10388989246820_15feda01b683a8a87bc5_72.jpg"
-    },
-    "U087X4AG35K": {
-      "id": "U087X4AG35K",
-      "username": "garygreg2011",
-      "avatar": "https://avatars.slack-edge.com/2026-01-20/10359714188368_8664ad8fbb930725e4c6_72.jpg"
     },
     "U0AEYDUCLKF": {
       "id": "U0AEYDUCLKF",
