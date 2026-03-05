@@ -1399,6 +1399,25 @@ a:hover {
     color: var(--ctp-subtext0) !important;
 }
 
+.shop-order__achievement-requirement--locked {
+    background-color: var(--ctp-surface1) !important;
+    color: var(--ctp-text) !important;
+    border: 1px solid var(--ctp-accent) !important;
+}
+
+.shop-order__customs-warning {
+    background-color: var(--ctp-surface1) !important;
+    border: 1px solid var(--ctp-accent) !important;
+    color: var(--ctp-text) !important;
+}
+
+.shop-order__disclaimer {
+    background: var(--ctp-surface0) repeating-conic-gradient(from 0deg, rgba(203, 166, 247, 0.12) 0deg 90deg, transparent 90deg 180deg) !important;
+    background-size: 120px 120px !important;
+    outline: .4em solid var(--ctp-accent) !important;
+    color: var(--ctp-text) !important;
+}
+
 .shop-order .btn-order {
     background-color: var(--ctp-accent) !important;
     color: var(--ctp-crust) !important;

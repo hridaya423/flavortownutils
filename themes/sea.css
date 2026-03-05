@@ -1327,6 +1327,25 @@ a:hover {
     color: var(--sea-foam) !important;
 }
 
+.shop-order__achievement-requirement--locked {
+    background-color: var(--sea-mid) !important;
+    color: var(--sea-white) !important;
+    border: 1px solid var(--sea-cyan) !important;
+}
+
+.shop-order__customs-warning {
+    background-color: var(--sea-mid) !important;
+    border: 1px solid var(--sea-cyan) !important;
+    color: var(--sea-white) !important;
+}
+
+.shop-order__disclaimer {
+    background: var(--sea-dark) repeating-conic-gradient(from 0deg, rgba(34, 211, 238, 0.12) 0deg 90deg, transparent 90deg 180deg) !important;
+    background-size: 120px 120px !important;
+    outline: .4em solid var(--sea-cyan) !important;
+    color: var(--sea-white) !important;
+}
+
 .shop-order .btn-order {
     background-color: var(--sea-cyan) !important;
     color: var(--sea-abyss) !important;
@@ -4075,7 +4094,6 @@ code {
     background: #1c3553 !important;
     outline: 0.4em solid var(--sea-cyan) !important;
 }
-
 body.flavortown-docs-no-code-theme pre,
 body.flavortown-docs-no-code-theme code,
 body.flavortown-docs-no-code-theme .card pre,

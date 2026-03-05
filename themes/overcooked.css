@@ -1334,6 +1334,25 @@ a:hover {
     color: var(--overcooked-foam) !important;
 }
 
+.shop-order__achievement-requirement--locked {
+    background-color: var(--overcooked-mid) !important;
+    color: var(--overcooked-white) !important;
+    border: 1px solid var(--overcooked-cyan) !important;
+}
+
+.shop-order__customs-warning {
+    background-color: var(--overcooked-mid) !important;
+    border: 1px solid var(--overcooked-cyan) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.shop-order__disclaimer {
+    background: var(--overcooked-dark) repeating-conic-gradient(from 0deg, rgba(237, 137, 54, 0.13) 0deg 90deg, transparent 90deg 180deg) !important;
+    background-size: 120px 120px !important;
+    outline: .4em solid var(--overcooked-cyan) !important;
+    color: var(--overcooked-white) !important;
+}
+
 .shop-order .btn-order {
     background-color: var(--overcooked-cyan) !important;
     color: var(--overcooked-abyss) !important;
@@ -3995,7 +4014,6 @@ body.flavortown-docs-no-code-theme .card code {
     background: transparent !important;
     color: inherit !important;
 }
-
 .flavortown-heatmap-legend-cell.level-3-blended {
     background: #b87333 !important;
 }
