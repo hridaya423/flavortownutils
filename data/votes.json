@@ -1,7 +1,28 @@
 {
-  "lastUpdated": "2026-03-05T20:38:14.815Z",
-  "totalVotes": 6273,
+  "lastUpdated": "2026-03-05T21:36:38.352Z",
+  "totalVotes": 6276,
   "votes": [
+    {
+      "project": "PasteShield",
+      "feedback": "This is very cool! I like the demo video as well as the actual functionality. This seems very usefull, well done!",
+      "votedBy": "U078VN0UU2K",
+      "timestamp": "2026-03-05T21:35:02.322Z",
+      "slackTs": "1772746502.322459"
+    },
+    {
+      "project": "Shell for LCD pcb",
+      "feedback": "A demo video would be cool but overall good project.",
+      "votedBy": "U078VN0UU2K",
+      "timestamp": "2026-03-05T21:31:31.948Z",
+      "slackTs": "1772746291.948389"
+    },
+    {
+      "project": "BrainRust",
+      "feedback": "Really impressive for a second Rust project. The macro system, multi-tape support, and debugging tools are great additions. It might help to add clearer documentation and example programs so others can easily try out the extended commands.",
+      "votedBy": "U0914NPNKM2",
+      "timestamp": "2026-03-05T20:42:02.323Z",
+      "slackTs": "1772743322.323879"
+    },
     {
       "project": "FTS3",
       "feedback": "Woah this is cool. It's pretty brave to put uploads from the internet on your server...",
@@ -45482,6 +45503,12 @@
       "username": "hamzasayedabdelhafez",
       "displayName": "Hamza Sayed",
       "avatar": "https://avatars.slack-edge.com/2025-08-22/9421549398768_e95a8a345d5dbb9a256f_72.jpg"
+    },
+    "U0914NPNKM2": {
+      "id": "U0914NPNKM2",
+      "username": "dhruvinsarkar",
+      "displayName": "Dhruv",
+      "avatar": "https://secure.gravatar.com/avatar/a96b93e161e0b0c74c5913458a981a03.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0025-72.png"
     }
   }
 }
