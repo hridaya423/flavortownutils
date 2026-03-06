@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-05T23:54:34.714Z",
+  "lastUpdated": "2026-03-06T02:10:18.995Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -10203,6 +10203,14 @@
         "reason": "Hello, Kitchen!",
         "reasonType": "achievement",
         "userId": "U0847KFMUSC"
+      },
+      {
+        "ts": "2026-03-06T00:04:45.273Z",
+        "delta": 10,
+        "balance": 184,
+        "reason": "Line Cook",
+        "reasonType": "achievement",
+        "userId": "U0847KFMUSC"
       }
     ],
     "u084d1t5zv0": [
@@ -17639,6 +17647,14 @@
         "reason": "ship event payout",
         "reasonType": "",
         "userId": "U0918MSQ7E3"
+      },
+      {
+        "ts": "2026-03-05T23:52:03.107Z",
+        "delta": -206,
+        "balance": 108,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0918MSQ7E3"
       }
     ],
     "u09197c6m2b": [
@@ -20875,6 +20891,14 @@
         "delta": 3,
         "balance": 366,
         "reason": "user grant",
+        "reasonType": "",
+        "userId": "U091XKGS8SF"
+      },
+      {
+        "ts": "2026-03-06T01:45:55.981Z",
+        "delta": -111,
+        "balance": 255,
+        "reason": "shop purchase",
         "reasonType": "",
         "userId": "U091XKGS8SF"
       }
@@ -64555,6 +64579,16 @@
         "userId": "U0AFWJX9CP2"
       }
     ],
+    "u0ag29hfpsr": [
+      {
+        "ts": "2026-03-06T00:39:40.977Z",
+        "delta": 10,
+        "balance": 10,
+        "reason": "user grant",
+        "reasonType": "",
+        "userId": "U0AG29HFPSR"
+      }
+    ],
     "u0ag8bal0ah": [
       {
         "ts": "2026-02-21T16:11:42.608Z",
@@ -64969,6 +65003,29 @@
     ]
   },
   "users": {
+    "U091XKGS8SF": {
+      "id": "U091XKGS8SF",
+      "username": "jmeow3587",
+      "avatar": "https://avatars.slack-edge.com/2026-01-08/10255010542579_2f8b32551704851ce1cd_72.jpg"
+    },
+    "U0AG29HFPSR": {
+      "id": "U0AG29HFPSR",
+      "username": "wardaqasim5",
+      "displayName": "Warda5",
+      "avatar": "https://avatars.slack-edge.com/2026-02-27/10590444668821_035ac8f25911c55d9962_72.png"
+    },
+    "U0847KFMUSC": {
+      "id": "U0847KFMUSC",
+      "username": "dwait.pandhi",
+      "displayName": "gamer_waves",
+      "avatar": "https://avatars.slack-edge.com/2026-02-19/10540089133763_4966cad904423e223206_72.png"
+    },
+    "U0918MSQ7E3": {
+      "id": "U0918MSQ7E3",
+      "username": "duyduy15456",
+      "displayName": "vair.​nooi",
+      "avatar": "https://avatars.slack-edge.com/2026-01-19/10339124565665_d1b880cce06974971c2b_72.jpg"
+    },
     "U09A5QHUPPW": {
       "id": "U09A5QHUPPW",
       "username": "goldmonke",
@@ -65151,12 +65208,6 @@
       "username": "raqeeb",
       "displayName": "Raqeeb",
       "avatar": "https://avatars.slack-edge.com/2025-12-31/10239975055360_eff77c2080500c00c5ca_72.jpg"
-    },
-    "U0918MSQ7E3": {
-      "id": "U0918MSQ7E3",
-      "username": "duyduy15456",
-      "displayName": "vair.​nooi",
-      "avatar": "https://avatars.slack-edge.com/2026-01-19/10339124565665_d1b880cce06974971c2b_72.jpg"
     },
     "U0825TMAF4K": {
       "id": "U0825TMAF4K",
@@ -65927,11 +65978,6 @@
       "id": "U059VC0UDEU",
       "username": "mahadkalam1234",
       "avatar": "https://avatars.slack-edge.com/2026-01-21/10348205812084_9fe0580a6956b5c631aa_72.jpg"
-    },
-    "U091XKGS8SF": {
-      "id": "U091XKGS8SF",
-      "username": "jmeow3587",
-      "avatar": "https://avatars.slack-edge.com/2026-01-08/10255010542579_2f8b32551704851ce1cd_72.jpg"
     },
     "U07B27ZHEJU": {
       "id": "U07B27ZHEJU",
@@ -67680,12 +67726,6 @@
       "id": "U0A35867UF5",
       "username": "jibarram5",
       "avatar": "https://secure.gravatar.com/avatar/513f2f6e167b8b4bddd23cdfb4aeb143.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0025-72.png"
-    },
-    "U0847KFMUSC": {
-      "id": "U0847KFMUSC",
-      "username": "dwait.pandhi",
-      "displayName": "gamer_waves",
-      "avatar": "https://avatars.slack-edge.com/2026-02-19/10540089133763_4966cad904423e223206_72.png"
     },
     "U093URNVC84": {
       "id": "U093URNVC84",
