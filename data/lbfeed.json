@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-06T09:42:14.563Z",
+  "lastUpdated": "2026-03-06T10:37:57.817Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -13445,6 +13445,24 @@
         "reason": "user grant",
         "reasonType": "",
         "userId": "U08AA6HA82F"
+      }
+    ],
+    "u08afjfprj7": [
+      {
+        "ts": "2026-03-06T09:59:13.875Z",
+        "delta": -10,
+        "balance": 8,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U08AFJFPRJ7"
+      },
+      {
+        "ts": "2026-03-06T10:17:55.404Z",
+        "delta": 2,
+        "balance": 10,
+        "reason": "Recipe Notes",
+        "reasonType": "achievement",
+        "userId": "U08AFJFPRJ7"
       }
     ],
     "u08at086h8e": [
@@ -65209,6 +65227,12 @@
     ]
   },
   "users": {
+    "U08AFJFPRJ7": {
+      "id": "U08AFJFPRJ7",
+      "username": "alimkotb",
+      "displayName": "Aly",
+      "avatar": "https://avatars.slack-edge.com/2025-11-18/9924972538519_386e028c647b0d6e5647_72.png"
+    },
     "U0918MSQ7E3": {
       "id": "U0918MSQ7E3",
       "username": "duyduy15456",
