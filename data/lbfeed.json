@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-06T20:34:43.639Z",
+  "lastUpdated": "2026-03-06T21:31:43.005Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -35215,6 +35215,24 @@
         "userId": "U0A3HP8944S"
       }
     ],
+    "u0a3t8zq2e8": [
+      {
+        "ts": "2026-03-06T21:09:03.462Z",
+        "delta": 10,
+        "balance": 10,
+        "reason": "user grant",
+        "reasonType": "",
+        "userId": "U0A3T8ZQ2E8"
+      },
+      {
+        "ts": "2026-03-06T21:11:42.632Z",
+        "delta": -10,
+        "balance": 0,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A3T8ZQ2E8"
+      }
+    ],
     "u0a3u5x0que": [
       {
         "ts": "2026-01-21T12:10:33.822Z",
@@ -65761,6 +65779,12 @@
     ]
   },
   "users": {
+    "U0A3T8ZQ2E8": {
+      "id": "U0A3T8ZQ2E8",
+      "username": "shivangsaabxxx",
+      "displayName": "Shivang",
+      "avatar": "https://avatars.slack-edge.com/2026-03-02/10606386859603_6f128556986a22334bc4_72.jpg"
+    },
     "U0A3CR82Y30": {
       "id": "U0A3CR82Y30",
       "username": "mare.maretou",
