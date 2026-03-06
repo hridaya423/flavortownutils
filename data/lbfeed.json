@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-06T10:37:57.817Z",
+  "lastUpdated": "2026-03-06T11:31:46.115Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -23202,6 +23202,14 @@
         "balance": 474,
         "reason": "payout",
         "reasonType": "payout",
+        "userId": "U093DK2JL0Y"
+      },
+      {
+        "ts": "2026-03-06T11:22:25.024Z",
+        "delta": 51,
+        "balance": 525,
+        "reason": "ship event payout",
+        "reasonType": "",
         "userId": "U093DK2JL0Y"
       }
     ],
@@ -65224,9 +65232,39 @@
         "reasonType": "achievement",
         "userId": "U0AK897QZA4"
       }
+    ],
+    "u0akc97mrjm": [
+      {
+        "ts": "2026-03-06T11:25:42.327Z",
+        "delta": 10,
+        "balance": 10,
+        "reason": "user grant",
+        "reasonType": "",
+        "userId": "U0AKC97MRJM"
+      },
+      {
+        "ts": "2026-03-06T11:26:12.961Z",
+        "delta": -10,
+        "balance": 0,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0AKC97MRJM"
+      }
     ]
   },
   "users": {
+    "U0AKC97MRJM": {
+      "id": "U0AKC97MRJM",
+      "username": "przemekgruca21",
+      "displayName": "przemekgruca21",
+      "avatar": "https://secure.gravatar.com/avatar/57eae5ff196190ea5a3e3274c66e380c.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0022-72.png"
+    },
+    "U093DK2JL0Y": {
+      "id": "U093DK2JL0Y",
+      "username": "pranjal.prakarsh",
+      "displayName": "1nf1n0t1v3r",
+      "avatar": "https://avatars.slack-edge.com/2026-02-26/10590741968340_5b5850fb43a909c5d23e_72.png"
+    },
     "U08AFJFPRJ7": {
       "id": "U08AFJFPRJ7",
       "username": "alimkotb",
@@ -67781,12 +67819,6 @@
       "username": "shashankprasanna1",
       "displayName": "spyguy",
       "avatar": "https://avatars.slack-edge.com/2024-06-26/7351666672081_47ed5a96ed11ce944043_72.jpg"
-    },
-    "U093DK2JL0Y": {
-      "id": "U093DK2JL0Y",
-      "username": "pranjal.prakarsh",
-      "displayName": "1nf1n0t1v3r",
-      "avatar": "https://avatars.slack-edge.com/2026-02-26/10590741968340_5b5850fb43a909c5d23e_72.png"
     },
     "U0A6ZC8LTSP": {
       "id": "U0A6ZC8LTSP",
