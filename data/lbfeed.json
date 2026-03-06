@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-06T11:31:46.115Z",
+  "lastUpdated": "2026-03-06T11:55:55.291Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -51019,6 +51019,22 @@
         "reason": "ship event payout",
         "reasonType": "",
         "userId": "U0A7A7TT28L"
+      },
+      {
+        "ts": "2026-03-06T11:47:03.371Z",
+        "delta": -1596,
+        "balance": 2285,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A7A7TT28L"
+      },
+      {
+        "ts": "2026-03-06T11:47:03.393Z",
+        "delta": -720,
+        "balance": 1565,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A7A7TT28L"
       }
     ],
     "u0a7a9jmz0v": [
@@ -65253,6 +65269,12 @@
     ]
   },
   "users": {
+    "U0A7A7TT28L": {
+      "id": "U0A7A7TT28L",
+      "username": "korbinvanettedev",
+      "displayName": "korbinvanettedev",
+      "avatar": "https://secure.gravatar.com/avatar/a64ad70863a777fd78e15d79601368a8.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0024-72.png"
+    },
     "U0AKC97MRJM": {
       "id": "U0AKC97MRJM",
       "username": "przemekgruca21",
@@ -65282,12 +65304,6 @@
       "username": "bansodetanishk",
       "displayName": "tanishk",
       "avatar": "https://secure.gravatar.com/avatar/eef9b9f078704b61c248526ab7d9f1f5.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0011-72.png"
-    },
-    "U0A7A7TT28L": {
-      "id": "U0A7A7TT28L",
-      "username": "korbinvanettedev",
-      "displayName": "korbinvanettedev",
-      "avatar": "https://secure.gravatar.com/avatar/a64ad70863a777fd78e15d79601368a8.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0024-72.png"
     },
     "U0AA3RZMGPK": {
       "id": "U0AA3RZMGPK",
