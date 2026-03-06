@@ -1,7 +1,35 @@
 {
-  "lastUpdated": "2026-03-06T21:54:02.058Z",
-  "totalVotes": 6541,
+  "lastUpdated": "2026-03-06T22:29:30.859Z",
+  "totalVotes": 6545,
   "votes": [
+    {
+      "project": "GPT-5 Mini Playground",
+      "feedback": "So I think your UI is really basic and lame so I think you need to work on that. Also, If i tried to summuraze something, it summuraized a big text into a small 3 line papragraph which destroys the overall purpose of summarizing. So give options and make sure it is something users feel like using it.",
+      "votedBy": "U0AA6DWRDL0",
+      "timestamp": "2026-03-06T22:26:46.591Z",
+      "slackTs": "1772836006.591279"
+    },
+    {
+      "project": "Focus Flow",
+      "feedback": "I like the design, super clean and also functional. Nice project.",
+      "votedBy": "U078VN0UU2K",
+      "timestamp": "2026-03-06T22:26:39.612Z",
+      "slackTs": "1772835999.612109"
+    },
+    {
+      "project": "Roverlay",
+      "feedback": "I like your idea and i belive this is usable to all the devs out there. I think I might get it too lol :D",
+      "votedBy": "U0AA6DWRDL0",
+      "timestamp": "2026-03-06T22:20:53.605Z",
+      "slackTs": "1772835653.605549"
+    },
+    {
+      "project": "Metroid Mania Site",
+      "feedback": "This project has a lot of thought into it. 53 Devlogs is a crazy amount and your 71 hours of work and dedication deserves a lot. Congrats.",
+      "votedBy": "U0AA6DWRDL0",
+      "timestamp": "2026-03-06T22:17:32.790Z",
+      "slackTs": "1772835452.790679"
+    },
     {
       "project": "a C compiler",
       "feedback": "I tried compiling a hello world C file; this didn't work :(. Then I tried a simple a+b program (that doesn't print anything!), that didn't work either. This is not ready to be shipped, I think there's some more work that's needed to be done!",
@@ -47376,6 +47404,12 @@
       "username": "alaricabyasa11",
       "displayName": "alarixfr",
       "avatar": "https://avatars.slack-edge.com/2026-02-18/10531657718310_799dd47e9fd737eba258_72.png"
+    },
+    "U0AA6DWRDL0": {
+      "id": "U0AA6DWRDL0",
+      "username": "karthikeyasaiyeruva",
+      "displayName": "Mr invincible",
+      "avatar": "https://secure.gravatar.com/avatar/e4d8731a6e7ff4c783f7a04ec672851b.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0004-72.png"
     }
   }
 }
