@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-06T22:31:57.383Z",
+  "lastUpdated": "2026-03-06T23:00:10.860Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -61103,6 +61103,14 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0A83LHGY7K"
+      },
+      {
+        "ts": "2026-03-06T22:38:42.490Z",
+        "delta": 79,
+        "balance": 82,
+        "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U0A83LHGY7K"
       }
     ],
     "u0a83mt0tu0": [
@@ -64229,6 +64237,14 @@
         "reason": "sidequest rejection fee",
         "reasonType": "",
         "userId": "U0AAVSGH3HC"
+      },
+      {
+        "ts": "2026-03-06T22:36:03.703Z",
+        "delta": 7,
+        "balance": 16,
+        "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U0AAVSGH3HC"
       }
     ],
     "u0ab4awmbk3": [
@@ -65495,6 +65511,16 @@
         "userId": "U0AGVAJCH27"
       }
     ],
+    "u0ah1bank5j": [
+      {
+        "ts": "2026-03-06T22:30:52.430Z",
+        "delta": 8,
+        "balance": 8,
+        "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U0AH1BANK5J"
+      }
+    ],
     "u0ah1pk93nk": [
       {
         "ts": "2026-03-01T08:27:19.717Z",
@@ -65787,6 +65813,24 @@
     ]
   },
   "users": {
+    "U0A83LHGY7K": {
+      "id": "U0A83LHGY7K",
+      "username": "shaikhsamir8442",
+      "displayName": "shaikhsamir8442",
+      "avatar": "https://secure.gravatar.com/avatar/48c99bb64ffb536bca0dadf2b763c552.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0023-72.png"
+    },
+    "U0AAVSGH3HC": {
+      "id": "U0AAVSGH3HC",
+      "username": "hackclub8",
+      "displayName": "46009361",
+      "avatar": "https://avatars.slack-edge.com/2026-01-29/10433002833120_f403f3da778a713c59df_72.png"
+    },
+    "U0AH1BANK5J": {
+      "id": "U0AH1BANK5J",
+      "username": "avighnakc",
+      "displayName": "avighnakc",
+      "avatar": "https://secure.gravatar.com/avatar/629904fe8c350444f99a7ca2abbf468e.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0010-72.png"
+    },
     "U078KKF3R1Q": {
       "id": "U078KKF3R1Q",
       "username": "alexjhayes1",
@@ -66375,12 +66419,6 @@
       "username": "vishnukumar.a2010",
       "displayName": "vishnukumar.a2010",
       "avatar": "https://avatars.slack-edge.com/2026-01-17/10310706256243_9f2746a52acac8befd10_72.jpg"
-    },
-    "U0AAVSGH3HC": {
-      "id": "U0AAVSGH3HC",
-      "username": "hackclub8",
-      "displayName": "46009361",
-      "avatar": "https://avatars.slack-edge.com/2026-01-29/10433002833120_f403f3da778a713c59df_72.png"
     },
     "U097N0AKR6Z": {
       "id": "U097N0AKR6Z",
@@ -66971,12 +67009,6 @@
       "username": "manthanjindal2008",
       "displayName": "Manthan Jindal",
       "avatar": "https://secure.gravatar.com/avatar/33ef6dd3ff51d1cf5d239d9ce9dbba17.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0013-72.png"
-    },
-    "U0A83LHGY7K": {
-      "id": "U0A83LHGY7K",
-      "username": "shaikhsamir8442",
-      "displayName": "shaikhsamir8442",
-      "avatar": "https://secure.gravatar.com/avatar/48c99bb64ffb536bca0dadf2b763c552.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0023-72.png"
     },
     "U0A848RGULQ": {
       "id": "U0A848RGULQ",
