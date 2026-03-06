@@ -1064,11 +1064,6 @@ async function addUnshippedCookieEstimate(attempt = 0) {
     const pagePayouts = getShipPayoutsFromProjectPage();
     const payouts = pagePayouts.length ? pagePayouts : await fetchShipPayouts();
 
-    const isCookieTotalStat = (el) => {
-        const text = (el?.textContent || '').trim();
-        if (!text) return false;
-        return text.includes('🍪') || /^cookies?\b/i.test(text);
-    };
     const projectPayouts = payouts.filter(payout => projectNameMatches(payout.projectName, projectName));
     const payoutCookies = projectPayouts.reduce((sum, payout) => sum + (payout.amount || 0), 0);
     const baselineCookies = payoutCookies > 0 ? payoutCookies : (stats?.paidCookies || 0);
@@ -1100,6 +1095,12 @@ function projectNameMatches(nameA, nameB) {
     const normalizedA = normalizeProjectName(nameA);
     const normalizedB = normalizeProjectName(nameB);
     return normalizedA === normalizedB || normalizedA.includes(normalizedB) || normalizedB.includes(normalizedA);
+}
+
+function isCookieTotalStat(el) {
+    const text = (el?.textContent || '').trim();
+    if (!text) return false;
+    return text.includes('🍪') || /^cookies?\b/i.test(text);
 }
 
 function getShipPayoutsFromProjectPage() {
@@ -4148,8 +4149,21 @@ async function addProjectCardCookieStats() {
         const projectId = card.id ? card.id.replace('project_', '') : null;
         const cachedUnshipped = projectId ? getCachedProjectUnshipped(projectId) : null;
         const projectStatsMinutes = projectId ? getProjectStatsMinutes(projectId) : 0;
+        const payoutCookies = projectPayouts.reduce((sum, payout) => sum + payout.amount, 0);
 
-        if (!projectPayouts.length) {
+        let totalCookies = payoutCookies;
+        if (totalCookies <= 0 && cachedUnshipped && typeof cachedUnshipped.paidCookies === 'number') {
+            totalCookies = cachedUnshipped.paidCookies;
+        }
+
+        if (totalCookies <= 0 && projectId) {
+            fetchProjectUnshippedStats(projectId).then(stats => {
+                if (!stats || stats.paidCookies <= 0) return;
+                renderCardStat(card, stats.paidCookies, stats.paidShipMinutes || 0);
+            });
+        }
+
+        if (totalCookies <= 0) {
             if (projectId && projectStatsMinutes > 0) {
                 setCachedProjectUnshipped(projectId, {
                     totalMinutes: projectStatsMinutes,
@@ -4160,9 +4174,6 @@ async function addProjectCardCookieStats() {
             }
             return;
         }
-
-        const totalCookies = projectPayouts.reduce((sum, payout) => sum + payout.amount, 0);
-        if (totalCookies <= 0) return;
 
         const cachedPaidMinutes = cachedUnshipped && typeof cachedUnshipped.paidShipMinutes === 'number'
             ? cachedUnshipped.paidShipMinutes
