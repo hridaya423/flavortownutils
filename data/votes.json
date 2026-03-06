@@ -1,7 +1,63 @@
 {
-  "lastUpdated": "2026-03-06T11:54:07.365Z",
-  "totalVotes": 6425,
+  "lastUpdated": "2026-03-06T12:58:09.941Z",
+  "totalVotes": 6433,
   "votes": [
+    {
+      "project": "StardewOS",
+      "feedback": "Very interesting and original project. It's a shame that it was not continued and improved. I encountered many problems while using it, and the project is not documented at all.",
+      "votedBy": "U0A71MJF9L5",
+      "timestamp": "2026-03-06T12:18:14.261Z",
+      "slackTs": "1772799494.261229"
+    },
+    {
+      "project": "Tower Defence",
+      "feedback": "Very interesting and really fun project! However, I find that the project is not sufficiently documented or explained. The game becomes boring from wave 4 because the same enemies keep appearing, which is a bit of a shame.",
+      "votedBy": "U0A71MJF9L5",
+      "timestamp": "2026-03-06T12:11:50.465Z",
+      "slackTs": "1772799110.465779"
+    },
+    {
+      "project": "Website",
+      "feedback": "I checked out your website, but honestly, I didn’t fully understand it. It seems to showcase your Hack Club projects and activities, but the layout and purpose weren’t completely clear to me.",
+      "votedBy": "U0A9FMXLULT",
+      "timestamp": "2026-03-06T12:08:54.778Z",
+      "slackTs": "1772798934.778359"
+    },
+    {
+      "project": "Cric Legends",
+      "feedback": "This project is impressive and very practical. It efficiently extracts structured cricket match data from raw PDF scorecards, making the information easy to use and analyze. The combination of PDFPlumber, Regex, and a Flask server makes it feel robust and well-built.",
+      "votedBy": "U0A9FMXLULT",
+      "timestamp": "2026-03-06T12:06:41.420Z",
+      "slackTs": "1772798801.420149"
+    },
+    {
+      "project": "Mindstorm INO V1",
+      "feedback": "This project is really impressive! It’s clear a lot of effort went into making a Lego Mindstorms–style Arduino library. The modular approach and detailed support for motors, sensors, and LCD make it very usable and educational. The devlogs and documentation show a thoughtful and organized development process.",
+      "votedBy": "U0A9FMXLULT",
+      "timestamp": "2026-03-06T12:00:10.354Z",
+      "slackTs": "1772798410.354599"
+    },
+    {
+      "project": "DataArrays.java",
+      "feedback": "Great project, clear and well organized. The documentation makes it easy to understand how arrays work in Java, and the examples help beginners follow along. You might consider adding more practical exercises or small challenges so users can practice what they learn and deepen their understanding.",
+      "votedBy": "U0A71MJF9L5",
+      "timestamp": "2026-03-06T11:58:53.855Z",
+      "slackTs": "1772798333.855739"
+    },
+    {
+      "project": "DuckOS",
+      "feedback": "I checked out DuckOS, and honestly, it didn’t really appeal to me. The idea is interesting, but the design and usability felt a bit messy, and it was hard to get a smooth experience exploring the apps.",
+      "votedBy": "U0A9FMXLULT",
+      "timestamp": "2026-03-06T11:58:24.244Z",
+      "slackTs": "1772798304.244529"
+    },
+    {
+      "project": "Stock Simulator Web Designs",
+      "feedback": "Your Stock Simulator web design looks really polished and well thought out! The interface is sleek, responsive, and easy to navigate, and it’s clear a lot of effort went into the features and mobile usability. I’d love to see a few more devlogs to follow your development journey more closely.",
+      "votedBy": "U0A9FMXLULT",
+      "timestamp": "2026-03-06T11:57:17.782Z",
+      "slackTs": "1772798237.782099"
+    },
     {
       "project": "PlasmaOS",
       "feedback": "I checked out PlasmaOS, and honestly, it didn’t really click for me. The concept is interesting, but the design and usability felt a bit rough, and it was hard to get into the flow of using it.",
