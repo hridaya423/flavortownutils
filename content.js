@@ -97,7 +97,7 @@ const CATEGORY_SCORE_RANGES = {
     usability: { min: 1.5577755101474042, max: 5.333419758087392, percentileSlope: -0.3 },
     storytelling: { min: 0.9456184633427491, max: 6.136955727382335 }
 };
-const SHIP_PAYOUT_CACHE_KEY = 'flavortown_ship_payouts';
+const SHIP_PAYOUT_CACHE_KEY = 'flavortown_ship_payouts_v2';
 const SHIP_PAYOUT_CACHE_TTL = 15 * 60 * 1000;
 const SHIP_TIME_CACHE_KEY = 'flavortown_ship_minutes';
 const SHIP_TIME_CACHE_TTL = 24 * 60 * 60 * 1000;
@@ -1061,7 +1061,14 @@ async function addUnshippedCookieEstimate(attempt = 0) {
     const paidMinutes = stats?.paidShipMinutes || 0;
     if (paidMinutes <= 0) return;
 
-    const payouts = await fetchShipPayouts();
+    const pagePayouts = getShipPayoutsFromProjectPage();
+    const payouts = pagePayouts.length ? pagePayouts : await fetchShipPayouts();
+
+    const isCookieTotalStat = (el) => {
+        const text = (el?.textContent || '').trim();
+        if (!text) return false;
+        return text.includes('🍪') || /^cookies?\b/i.test(text);
+    };
     const projectPayouts = payouts.filter(payout => projectNameMatches(payout.projectName, projectName));
     const payoutCookies = projectPayouts.reduce((sum, payout) => sum + (payout.amount || 0), 0);
     const baselineCookies = payoutCookies > 0 ? payoutCookies : (stats?.paidCookies || 0);
@@ -1093,6 +1100,65 @@ function projectNameMatches(nameA, nameB) {
     const normalizedA = normalizeProjectName(nameA);
     const normalizedB = normalizeProjectName(nameB);
     return normalizedA === normalizedB || normalizedA.includes(normalizedB) || normalizedB.includes(normalizedA);
+}
+
+function getShipPayoutsFromProjectPage() {
+    if (!/\/projects\/\d+$/.test(window.location.pathname)) return [];
+
+    const projectName = getCurrentProjectName();
+    if (!projectName) return [];
+
+    const payouts = [];
+    const shipPosts = document.querySelectorAll('article.post--ship, .post--ship');
+    shipPosts.forEach(shipPost => {
+        const footer = shipPost.querySelector('.post__payout-footer');
+        if (!footer) return;
+
+        const payoutItems = Array.from(footer.querySelectorAll('.post__payout-item'));
+        const cookiesItem = payoutItems.find(entry => {
+            const labelText = entry.querySelector('.post__payout-label')?.textContent || '';
+            return labelText.toLowerCase().includes('cookies');
+        });
+        if (!cookiesItem) return;
+
+        const cookiesText = cookiesItem.querySelector('.post__payout-value')?.textContent?.trim() || '';
+        const amount = parseNumberFromText(cookiesText);
+        if (!amount || amount <= 0) return;
+
+        const timeEl = shipPost.querySelector('.post__time');
+        let stableDate = null;
+        if (timeEl) {
+            const timeTag = timeEl.matches('time') ? timeEl : timeEl.querySelector('time');
+            const datetime = timeTag?.getAttribute('datetime');
+            if (datetime) {
+                const parsed = new Date(datetime);
+                if (!isNaN(parsed.getTime())) stableDate = parsed;
+            }
+            if (!stableDate) {
+                const timestamp = timeEl.getAttribute('data-timestamp') || timeEl.dataset?.timestamp;
+                if (timestamp) {
+                    const parsedTs = parseInt(timestamp, 10);
+                    if (!isNaN(parsedTs)) {
+                        const normalizedTs = parsedTs < 1000000000000 ? parsedTs * 1000 : parsedTs;
+                        const parsed = new Date(normalizedTs);
+                        if (!isNaN(parsed.getTime())) stableDate = parsed;
+                    }
+                }
+            }
+        }
+
+        const date = stableDate || (timeEl ? parseDateFromTimeElement(timeEl) : new Date());
+        if (!date || isNaN(date.getTime())) return;
+
+        const relativeKey = (timeEl?.textContent || '').trim().toLowerCase();
+        const dedupeKey = stableDate
+            ? `${normalizeProjectName(projectName)}|${amount}|${stableDate.toISOString()}`
+            : `${normalizeProjectName(projectName)}|${amount}|rel:${relativeKey}`;
+
+        payouts.push({ projectName, amount, date, cacheable: !!stableDate, dedupeKey });
+    });
+
+    return payouts;
 }
 
 const PROJECT_REPO_MAP_KEY = 'flavortown-project-repo-map';
@@ -2669,101 +2735,44 @@ function writeShipPayoutCache(payouts) {
     }
 }
 
+function mergeShipPayouts(existingPayouts, newPayouts) {
+    const merged = [];
+    const seen = new Set();
 
-function parseShipPayoutsFromBalance(doc) {
-    if (!doc) return [];
-    let rows = doc.querySelectorAll('.balance-history__table tbody tr');
-    if (rows.length === 0) {
-        rows = doc.querySelectorAll('table tbody tr');
-    }
-
-    if (rows.length === 0) {
-        const streamTemplates = doc.querySelectorAll('turbo-stream template');
-        if (streamTemplates.length) {
-            const parsedRows = [];
-            streamTemplates.forEach(template => {
-                const fragmentDoc = new DOMParser().parseFromString(template.innerHTML, 'text/html');
-                const templateRows = fragmentDoc.querySelectorAll('.balance-history__table tbody tr, table tbody tr');
-                parsedRows.push(...Array.from(templateRows));
-            });
-            rows = parsedRows;
-        }
-    }
-
-    const payouts = [];
-
-
-    rows.forEach(row => {
-        const cells = row.querySelectorAll('td');
-        if (cells.length < 3) return;
-
-        const reason = cells[0].textContent.replace(/\s+/g, ' ').trim();
-        const match = reason.match(/ship event payout:\s*(.+)$/i);
-        if (!match) return;
-
-        const projectName = match[1].trim();
-        const amountText = cells[1].textContent.trim();
-        const numMatch = amountText.match(/(\d+)/);
-        if (!numMatch) return;
-
-        let amount = parseInt(numMatch[1], 10);
-        if (amountText.includes('-')) amount = -amount;
-        if (amount <= 0) return;
-
-        const date = parseDateFromCell(cells[2]);
-        if (!date || isNaN(date.getTime())) return;
-
-        payouts.push({ projectName, amount, date });
+    [...(existingPayouts || []), ...(newPayouts || [])].forEach(payout => {
+        if (!payout || !payout.projectName || !payout.date || !payout.amount) return;
+        const dateIso = payout.date instanceof Date ? payout.date.toISOString() : new Date(payout.date).toISOString();
+        const key = payout.dedupeKey || `${normalizeProjectName(payout.projectName)}|${payout.amount}|${dateIso}`;
+        if (seen.has(key)) return;
+        seen.add(key);
+        merged.push({
+            projectName: payout.projectName,
+            amount: Number(payout.amount) || 0,
+            date: payout.date instanceof Date ? payout.date : new Date(payout.date),
+            dedupeKey: payout.dedupeKey
+        });
     });
 
-    return payouts;
+    return merged.filter(entry => entry.amount > 0 && entry.date && !isNaN(entry.date.getTime()));
 }
 
+
 async function fetchShipPayouts() {
-    const cached = readShipPayoutCache();
-    if (cached) return cached;
+    const cached = readShipPayoutCache() || [];
+    const pagePayouts = getShipPayoutsFromProjectPage();
 
-    try {
-        const balanceUrl = new URL('/my/balance', window.location.origin).toString();
-        
-        const response = await fetch(balanceUrl, {
-            credentials: 'include',
-            headers: {
-                'Accept': 'text/html, application/xhtml+xml',
-                'Turbo-Frame': 'balance_history',
-                'X-Flavortown-Ext-135': 'true'
-            }
-        });
-
-        if (!response.ok) return [];
-
-        const html = await response.text();
-        const doc = new DOMParser().parseFromString(html, 'text/html');
-        let payouts = parseShipPayoutsFromBalance(doc);
-
-        if (payouts.length === 0) {
-            const fallbackResponse = await fetch(balanceUrl, {
-                credentials: 'include',
-                headers: {
-                    'Accept': 'text/html, application/xhtml+xml',
-                    'X-Flavortown-Ext-135': 'true'
-                }
-            });
-
-            if (fallbackResponse.ok) {
-                const fallbackHtml = await fallbackResponse.text();
-                const fallbackDoc = new DOMParser().parseFromString(fallbackHtml, 'text/html');
-                payouts = parseShipPayoutsFromBalance(fallbackDoc);
-            }
-        }
-
-        if (payouts.length > 0) {
-            writeShipPayoutCache(payouts);
-        }
-        return payouts;
-    } catch (e) {
-        return [];
+    if (!pagePayouts.length) {
+        return cached;
     }
+
+    const cacheablePagePayouts = pagePayouts.filter(payout => payout.cacheable);
+    if (cacheablePagePayouts.length) {
+        const mergedCache = mergeShipPayouts(cached, cacheablePagePayouts);
+        if (mergedCache.length) {
+            writeShipPayoutCache(mergedCache);
+        }
+    }
+    return mergeShipPayouts(cached, pagePayouts);
 }
 
 function readShipTimeCache() {
@@ -4017,7 +4026,8 @@ async function addProjectCardCookieStats() {
     const cards = document.querySelectorAll('.projects-board__grid-item .project-card');
     if (!cards.length) return;
 
-    const payouts = await fetchShipPayouts();
+    const pagePayouts = getShipPayoutsFromProjectPage();
+    const payouts = pagePayouts.length ? pagePayouts : await fetchShipPayouts();
 
     const renderCardStat = (card, totalCookies, minutes) => {
         const existing = card.querySelector('.flavortown-project-cookies');
@@ -4041,7 +4051,13 @@ async function addProjectCardCookieStats() {
             statsRow.className = 'flavortown-project-stats-row';
 
             const existingStats = Array.from(statsContainer.querySelectorAll('h5'));
-            existingStats.forEach(stat => statsRow.appendChild(stat));
+            existingStats.forEach(stat => {
+                if (isCookieTotalStat(stat)) {
+                    stat.remove();
+                    return;
+                }
+                statsRow.appendChild(stat);
+            });
             statsContainer.appendChild(statsRow);
         }
 
@@ -4224,7 +4240,21 @@ async function addProjectShowCookieStat(forceRefresh = false) {
     const projectId = projectIdMatch ? projectIdMatch[1] : null;
 
     const payouts = await fetchShipPayouts();
-    if (!payouts.length) {
+    const shipPostsOnPage = Array.from(document.querySelectorAll('article.post--ship, .post--ship'));
+    const domPaidCookies = shipPostsOnPage.reduce((sum, shipPost) => {
+        const footer = shipPost.querySelector('.post__payout-footer');
+        if (!footer) return sum;
+        const payoutItems = Array.from(footer.querySelectorAll('.post__payout-item'));
+        const cookiesItem = payoutItems.find(entry => {
+            const labelText = entry.querySelector('.post__payout-label')?.textContent || '';
+            return labelText.toLowerCase().includes('cookies');
+        });
+        const cookiesText = cookiesItem?.querySelector('.post__payout-value')?.textContent?.trim() || '';
+        const cookiesValue = parseNumberFromText(cookiesText);
+        return cookiesValue > 0 ? sum + cookiesValue : sum;
+    }, 0);
+
+    if (!payouts.length && domPaidCookies <= 0) {
         if (projectId) {
             const totalMinutes = getTotalDevlogMinutesFromDocument(document);
             if (totalMinutes > 0) {
@@ -4240,7 +4270,7 @@ async function addProjectShowCookieStat(forceRefresh = false) {
     }
 
     const projectPayouts = payouts.filter(payout => projectNameMatches(payout.projectName, projectName));
-    if (!projectPayouts.length) {
+    if (!projectPayouts.length && domPaidCookies <= 0) {
         if (projectId) {
             const totalMinutes = getTotalDevlogMinutesFromDocument(document);
             if (totalMinutes > 0) {
@@ -4255,17 +4285,20 @@ async function addProjectShowCookieStat(forceRefresh = false) {
         return;
     }
 
-    const totalCookies = projectPayouts.reduce((sum, payout) => sum + payout.amount, 0);
+    const totalCookies = projectPayouts.reduce((sum, payout) => sum + payout.amount, 0) || domPaidCookies;
     if (totalCookies <= 0) return;
 
     const statsWrapper = document.querySelector('.project-show-card__stats');
     if (!statsWrapper) return;
 
     const statsContainer = statsWrapper.querySelector('.project-show-card__stats') || statsWrapper;
+    statsContainer.querySelectorAll('.project-show-card__stat').forEach(stat => {
+        const text = (stat.textContent || '').trim();
+        if (text.includes('🍪')) stat.remove();
+    });
 
-    const shipPosts = document.querySelectorAll('article.post--ship, .post--ship');
     let minutes = 0;
-    shipPosts.forEach(shipPost => {
+    shipPostsOnPage.forEach(shipPost => {
         const footer = shipPost.querySelector('.post__payout-footer');
         if (!footer) return;
 
