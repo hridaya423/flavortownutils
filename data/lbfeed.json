@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-07T20:29:00.554Z",
+  "lastUpdated": "2026-03-07T20:52:36.269Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -3508,6 +3508,14 @@
         "ts": "2026-03-05T22:44:46.137Z",
         "delta": 5,
         "balance": 162,
+        "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U078VN0UU2K"
+      },
+      {
+        "ts": "2026-03-07T20:27:24.111Z",
+        "delta": 36,
+        "balance": 198,
         "reason": "ship event payout",
         "reasonType": "",
         "userId": "U078VN0UU2K"
@@ -66471,6 +66479,11 @@
     ]
   },
   "users": {
+    "U078VN0UU2K": {
+      "id": "U078VN0UU2K",
+      "username": "hippogriff",
+      "avatar": "https://avatars.slack-edge.com/2026-01-14/10294818167174_9836ff19df7225cbbc26_72.jpg"
+    },
     "U0A5WME44L8": {
       "id": "U0A5WME44L8",
       "username": "lisardowo",
@@ -67006,11 +67019,6 @@
       "username": "abbiemarch10",
       "displayName": "abbie",
       "avatar": "https://avatars.slack-edge.com/2025-12-30/10218799325601_9913a73e812d36b0e7df_72.jpg"
-    },
-    "U078VN0UU2K": {
-      "id": "U078VN0UU2K",
-      "username": "hippogriff",
-      "avatar": "https://avatars.slack-edge.com/2026-01-14/10294818167174_9836ff19df7225cbbc26_72.jpg"
     },
     "U099D74CAUR": {
       "id": "U099D74CAUR",
