@@ -2456,11 +2456,31 @@ async function initProjectTodos() {
 
     const syncSlackTasks = async (force = false) => {
         const local = readProjectTodos(projectId);
+        const localItems = Array.isArray(local.items) ? local.items : [];
         const slackData = await fetchTodoData(force);
+        if (!slackData) {
+            items = localItems;
+            if (metaEl) {
+                metaEl.textContent = 'Slack sync unavailable • showing cached tasks';
+            }
+            renderTabs();
+            return;
+        }
+
         const tasks = extractTodoTasks(slackData);
         const filtered = filterSlackTodosForProject(tasks, projectId, projectName, getCurrentUserName());
         const slackItems = filtered.map(normalizeSlackTodo).filter(Boolean);
-        items = mergeSlackTodos(local.items, slackItems);
+
+        if (!slackItems.length) {
+            items = localItems;
+            if (metaEl) {
+                metaEl.textContent = 'Slack sync empty • showing cached tasks';
+            }
+            renderTabs();
+            return;
+        }
+
+        items = mergeSlackTodos(localItems, slackItems, { preserveMissingSlack: !force });
         writeProjectTodos(projectId, items, Date.now());
         if (metaEl) {
             const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -2511,6 +2531,13 @@ async function initProjectTodos() {
     }
     renderTabs();
     await syncSlackTasks(false);
+    if (!items.length) {
+        const fallback = readProjectTodos(projectId);
+        if (Array.isArray(fallback.items) && fallback.items.length) {
+            items = fallback.items;
+            renderTabs();
+        }
+    }
 }
 
 function initProjectRepoSuggestions() {
@@ -5345,7 +5372,8 @@ function filterSlackTodosForProject(tasks, projectId, projectName, currentUser) 
     });
 }
 
-function mergeSlackTodos(localItems, slackItems) {
+function mergeSlackTodos(localItems, slackItems, options = {}) {
+    const preserveMissingSlack = !!options.preserveMissingSlack;
     const local = Array.isArray(localItems) ? localItems : [];
     const slackMap = new Map();
     local.forEach(item => {
@@ -5375,7 +5403,10 @@ function mergeSlackTodos(localItems, slackItems) {
     });
 
     const localOnly = local.filter(item => item?.source !== 'slack');
-    return [...localOnly, ...mergedSlack];
+    const preservedSlack = preserveMissingSlack
+        ? local.filter(item => item?.source === 'slack' && item.externalId && !slackIds.has(item.externalId))
+        : [];
+    return [...localOnly, ...mergedSlack, ...preservedSlack];
 }
 
 function sortTodos(items) {
