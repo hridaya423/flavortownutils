@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-07T20:52:36.269Z",
+  "lastUpdated": "2026-03-07T21:24:43.652Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -25264,6 +25264,14 @@
         "ts": "2026-03-07T09:40:21.055Z",
         "delta": 99,
         "balance": 1944,
+        "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U096RMRG03G"
+      },
+      {
+        "ts": "2026-03-07T20:53:32.800Z",
+        "delta": 89,
+        "balance": 2033,
         "reason": "ship event payout",
         "reasonType": "",
         "userId": "U096RMRG03G"
@@ -66479,6 +66487,12 @@
     ]
   },
   "users": {
+    "U096RMRG03G": {
+      "id": "U096RMRG03G",
+      "username": "coolcream",
+      "displayName": "Cool cream",
+      "avatar": "https://avatars.slack-edge.com/2026-01-14/10280240625063_9e2703ca34c8122db01a_72.png"
+    },
     "U078VN0UU2K": {
       "id": "U078VN0UU2K",
       "username": "hippogriff",
@@ -66628,12 +66642,6 @@
       "username": "mare.maretou",
       "displayName": "mare.maretou",
       "avatar": "https://secure.gravatar.com/avatar/616490657bdb4d5424d54055781b608a.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0013-72.png"
-    },
-    "U096RMRG03G": {
-      "id": "U096RMRG03G",
-      "username": "coolcream",
-      "displayName": "Cool cream",
-      "avatar": "https://avatars.slack-edge.com/2026-01-14/10280240625063_9e2703ca34c8122db01a_72.png"
     },
     "U09GESRAC8J": {
       "id": "U09GESRAC8J",
