@@ -2368,6 +2368,32 @@ p[style*="background: #f9fafb"][style*="padding: 1rem"] {
     color: var(--sea-cyan) !important;
 }
 
+.votes-new__project-description {
+    color: var(--sea-foam) !important;
+}
+
+.votes-new__project-card-stat span {
+    color: var(--sea-foam) !important;
+}
+
+.votes-new__score-card-toggle {
+    background-color: var(--sea-mid) !important;
+    color: var(--sea-white) !important;
+}
+
+.votes-new__score-card::before {
+    background: var(--sea-dark) repeating-conic-gradient(from 0deg, rgba(34, 211, 238, 0.12) 0deg 90deg, transparent 90deg 180deg) !important;
+    background-size: 40px 40px !important;
+}
+
+.vote-category__score {
+    color: var(--sea-cyan) !important;
+}
+
+.vote-category__stars {
+    background-color: var(--sea-dark) !important;
+}
+
 .votes-new__project-buttons {
     background-color: transparent !important;
 }

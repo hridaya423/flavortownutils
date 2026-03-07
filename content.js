@@ -8368,9 +8368,9 @@ function getCurrentVotesProjectKey() {
 }
 
 const SPEED_READER_TOO_FAST_KEY = 'flavortown_speed_reader_too_fast';
-const SPEED_READER_DEFAULT_WPM = 300;
+const SPEED_READER_DEFAULT_WPM = 330;
 const SPEED_READER_MIN_WPM = 150;
-const SPEED_READER_MAX_WPM = 700;
+const SPEED_READER_MAX_WPM = 850;
 const SPEED_READER_STEP = 25;
 const SPEED_READER_RAMP_STEP_MIN = 3;
 const SPEED_READER_RAMP_STEP_MAX = 4;
@@ -8557,7 +8557,7 @@ function showSpeedReader(words) {
         timer: null,
         rampTimeout: null,
         rampActive: true,
-        maxWpm: Math.floor(650 + Math.random() * 51),
+        maxWpm: Math.floor(780 + Math.random() * 71),
     };
 
     function scheduleRamp() {

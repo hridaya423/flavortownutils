@@ -1413,7 +1413,7 @@ a:hover {
 
 .shop-order__disclaimer {
     background: var(--ctp-surface0) repeating-conic-gradient(from 0deg, rgba(203, 166, 247, 0.12) 0deg 90deg, transparent 90deg 180deg) !important;
-    background-size: 120px 120px !important;
+    background-size: 40px 40px !important;
     outline: .4em solid var(--ctp-accent) !important;
     color: var(--ctp-text) !important;
 }
@@ -1931,7 +1931,7 @@ a:hover {
 
 .platform-notice {
     background: var(--color-surface) repeating-conic-gradient(from 0deg, color-mix(in srgb, var(--color-accent) 12%, transparent) 0deg 90deg, transparent 90deg 180deg) !important;
-    background-size: 120px 120px !important;
+    background-size: 40px 40px !important;
     border: .4em solid var(--color-accent) !important;
     color: var(--color-text-primary) !important;
 }
@@ -2463,6 +2463,32 @@ p[style*="background: #f9fafb"][style*="padding: 1rem"] {
 
 .votes-new__project-card-stat svg {
     color: var(--ctp-accent) !important;
+}
+
+.votes-new__project-description {
+    color: var(--ctp-subtext0) !important;
+}
+
+.votes-new__project-card-stat span {
+    color: var(--ctp-subtext0) !important;
+}
+
+.votes-new__score-card-toggle {
+    background-color: var(--ctp-surface1) !important;
+    color: var(--ctp-text) !important;
+}
+
+.votes-new__score-card::before {
+    background: var(--ctp-surface0) repeating-conic-gradient(from 0deg, rgba(203, 166, 247, 0.12) 0deg 90deg, transparent 90deg 180deg) !important;
+    background-size: 40px 40px !important;
+}
+
+.vote-category__score {
+    color: var(--ctp-lavender) !important;
+}
+
+.vote-category__stars {
+    background-color: var(--ctp-surface0) !important;
 }
 
 .votes-new__project-buttons {

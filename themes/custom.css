@@ -2462,6 +2462,32 @@ p[style*="background: #f9fafb"][style*="padding: 1rem"] {
     color: var(--custom-accent) !important;
 }
 
+.votes-new__project-description {
+    color: var(--custom-subtext) !important;
+}
+
+.votes-new__project-card-stat span {
+    color: var(--custom-subtext) !important;
+}
+
+.votes-new__score-card-toggle {
+    background-color: var(--custom-surface-hover) !important;
+    color: var(--custom-text-primary) !important;
+}
+
+.votes-new__score-card::before {
+    background: var(--custom-bg-surface) repeating-conic-gradient(from 0deg, rgba(203, 166, 247, 0.12) 0deg 90deg, transparent 90deg 180deg) !important;
+    background-size: 40px 40px !important;
+}
+
+.vote-category__score {
+    color: var(--custom-accent-alt) !important;
+}
+
+.vote-category__stars {
+    background-color: var(--custom-bg-surface) !important;
+}
+
 .votes-new__project-buttons {
     background-color: transparent !important;
 }
