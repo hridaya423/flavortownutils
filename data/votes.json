@@ -1,7 +1,70 @@
 {
-  "lastUpdated": "2026-03-07T18:35:16.329Z",
-  "totalVotes": 6795,
+  "lastUpdated": "2026-03-07T19:22:48.006Z",
+  "totalVotes": 6804,
   "votes": [
+    {
+      "project": "HACKABLE conference badge",
+      "feedback": "Cool hardware project! It would be nice to get a display video to see how it looks like",
+      "votedBy": "U0A8B5H5DNY",
+      "timestamp": "2026-03-07T19:02:55.688Z",
+      "slackTs": "1772910175.688649"
+    },
+    {
+      "project": "~||| SUDOKU |||~",
+      "feedback": "I would expect to be able to actually play the generated sudoku board!",
+      "votedBy": "U0A8B5H5DNY",
+      "timestamp": "2026-03-07T19:00:48.736Z",
+      "slackTs": "1772910048.736919"
+    },
+    {
+      "project": "PasteShield",
+      "feedback": "You should put the demo in a website you're hosting rather than immediately make it install upon clicking. Also, 40 hours per one devlog? Very, very weird.",
+      "votedBy": "U0A8B5H5DNY",
+      "timestamp": "2026-03-07T18:59:08.222Z",
+      "slackTs": "1772909948.222129"
+    },
+    {
+      "project": "Shell for LCD pcb",
+      "feedback": "Unfortunately none of the code is available publicly in the github file. Rather, there is two distinct code blocks that seem to be just installing a publicly available repository, and what seems to be the remainder of an AI conversation?",
+      "votedBy": "U0A8B5H5DNY",
+      "timestamp": "2026-03-07T18:56:41.552Z",
+      "slackTs": "1772909801.552599"
+    },
+    {
+      "project": "FlavorBot",
+      "feedback": "Good devlogs, the code for the bot is monolithic. I would recommend to. whenever possible, try to separate your code into multiple files!",
+      "votedBy": "U0A8B5H5DNY",
+      "timestamp": "2026-03-07T18:54:31.893Z",
+      "slackTs": "1772909671.893109"
+    },
+    {
+      "project": "Sail Away (Exploration Game)",
+      "feedback": "Simple game, with a very non simple implementation! I can see how much work you put into this, congratulations!!! Some recommendations would be to remove the shadow of the player model (otherwise you can see the moving pill that is 'you' and to take a look at some of the collisions with poles/vertical objects. Again, great job!",
+      "votedBy": "U0A8B5H5DNY",
+      "timestamp": "2026-03-07T18:52:49.490Z",
+      "slackTs": "1772909569.490369"
+    },
+    {
+      "project": "eigen PDF viewer",
+      "feedback": "Works as listed, and works really well! Great job, down with edge.",
+      "votedBy": "U0A8B5H5DNY",
+      "timestamp": "2026-03-07T18:48:59.627Z",
+      "slackTs": "1772909339.627929"
+    },
+    {
+      "project": "Keyboard Information Negotiator",
+      "feedback": "I like that this was an originally small project that was blown out of proportion. Very good work!",
+      "votedBy": "U0A8B5H5DNY",
+      "timestamp": "2026-03-07T18:46:54.567Z",
+      "slackTs": "1772909214.567669"
+    },
+    {
+      "project": "Hacked WebOS",
+      "feedback": "This project is vibed together. It provides far too much features for far too little time. If you listed all the features you put in, you'd be spending less than 3 minutes per feature!!",
+      "votedBy": "U0A8B5H5DNY",
+      "timestamp": "2026-03-07T18:45:05.691Z",
+      "slackTs": "1772909105.691599"
+    },
     {
       "project": "Hacked WebOS",
       "feedback": "Great aesthetics. Some compononents do not work like the ls command in the terminal was not working",
