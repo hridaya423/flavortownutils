@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-07T09:55:53.109Z",
+  "lastUpdated": "2026-03-07T10:28:01.374Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -64761,6 +64761,16 @@
         "userId": "U0AC0RGRJF8"
       }
     ],
+    "u0ac0u1frnw": [
+      {
+        "ts": "2026-03-07T09:54:41.440Z",
+        "delta": 22,
+        "balance": 330,
+        "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U0AC0U1FRNW"
+      }
+    ],
     "u0ac18dac9z": [
       {
         "ts": "2026-02-01T01:50:06.984Z",
@@ -66113,6 +66123,12 @@
     ]
   },
   "users": {
+    "U0AC0U1FRNW": {
+      "id": "U0AC0U1FRNW",
+      "username": "arav6635",
+      "displayName": "Arav Thakur",
+      "avatar": "https://secure.gravatar.com/avatar/977bff97821bd3c5dbf7c6b98d337672.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0017-72.png"
+    },
     "U0A3CR82Y30": {
       "id": "U0A3CR82Y30",
       "username": "mare.maretou",
