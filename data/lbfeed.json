@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-07T06:57:44.323Z",
+  "lastUpdated": "2026-03-07T07:30:56.732Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -31149,6 +31149,14 @@
         "reason": "ship event payout",
         "reasonType": "",
         "userId": "U09JBJ0FW0P"
+      },
+      {
+        "ts": "2026-03-07T06:56:52.722Z",
+        "delta": 5,
+        "balance": 1722,
+        "reason": "Cooking",
+        "reasonType": "achievement",
+        "userId": "U09JBJ0FW0P"
       }
     ],
     "u09jfs1bu2v": [
@@ -33117,6 +33125,14 @@
         "delta": 25,
         "balance": 83,
         "reason": "user grant",
+        "reasonType": "",
+        "userId": "U0A0TB2ETAB"
+      },
+      {
+        "ts": "2026-03-07T07:10:54.309Z",
+        "delta": 6,
+        "balance": 89,
+        "reason": "ship event payout",
         "reasonType": "",
         "userId": "U0A0TB2ETAB"
       }
@@ -65991,6 +66007,16 @@
     ]
   },
   "users": {
+    "U0A0TB2ETAB": {
+      "id": "U0A0TB2ETAB",
+      "username": "tejasmali",
+      "avatar": "https://secure.gravatar.com/avatar/eac5774eaf2bf8783d6c7c07a0e97c6d.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0017-72.png"
+    },
+    "U09JBJ0FW0P": {
+      "id": "U09JBJ0FW0P",
+      "username": "1401054",
+      "avatar": "https://avatars.slack-edge.com/2025-12-25/10202085160225_56ccb81bba9610810f02_72.png"
+    },
     "U078LR508E7": {
       "id": "U078LR508E7",
       "username": "artciob09",
@@ -66218,11 +66244,6 @@
       "username": "rohanseshasai.vasa",
       "displayName": "Rohan Seshasai Vasa",
       "avatar": "https://avatars.slack-edge.com/2025-07-08/9162052834450_14aa557e9ac19949047c_72.png"
-    },
-    "U09JBJ0FW0P": {
-      "id": "U09JBJ0FW0P",
-      "username": "1401054",
-      "avatar": "https://avatars.slack-edge.com/2025-12-25/10202085160225_56ccb81bba9610810f02_72.png"
     },
     "U0A81UKS2JU": {
       "id": "U0A81UKS2JU",
@@ -66474,11 +66495,6 @@
       "username": "wowstar",
       "displayName": "Wowstar",
       "avatar": "https://secure.gravatar.com/avatar/814670d57d746711abbe74d16ee210cc.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0011-72.png"
-    },
-    "U0A0TB2ETAB": {
-      "id": "U0A0TB2ETAB",
-      "username": "tejasmali",
-      "avatar": "https://secure.gravatar.com/avatar/eac5774eaf2bf8783d6c7c07a0e97c6d.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0017-72.png"
     },
     "U046VA0KR8R": {
       "id": "U046VA0KR8R",
