@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-07T07:52:50.251Z",
+  "lastUpdated": "2026-03-07T08:34:52.242Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -14876,6 +14876,14 @@
         "balance": 325,
         "reason": "payout",
         "reasonType": "payout",
+        "userId": "U08NCJDJEE4"
+      },
+      {
+        "ts": "2026-03-07T07:58:39.128Z",
+        "delta": 158,
+        "balance": 483,
+        "reason": "ship event payout",
+        "reasonType": "",
         "userId": "U08NCJDJEE4"
       }
     ],
@@ -65959,6 +65967,16 @@
         "userId": "U0AJ1QA2354"
       }
     ],
+    "u0aj2ddj996": [
+      {
+        "ts": "2026-03-07T08:26:20.411Z",
+        "delta": 15,
+        "balance": 58,
+        "reason": "Cookbook Author",
+        "reasonType": "achievement",
+        "userId": "U0AJ2DDJ996"
+      }
+    ],
     "u0aj55ffgje": [
       {
         "ts": "2026-03-03T04:24:42.104Z",
@@ -66015,6 +66033,18 @@
     ]
   },
   "users": {
+    "U0AJ2DDJ996": {
+      "id": "U0AJ2DDJ996",
+      "username": "brahmtejsawhney",
+      "displayName": "brahmtejsawhney",
+      "avatar": "https://secure.gravatar.com/avatar/12d9b4e2de5c4301ce58c88c6e05a6a2.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0015-72.png"
+    },
+    "U08NCJDJEE4": {
+      "id": "U08NCJDJEE4",
+      "username": "ethan637",
+      "displayName": "Ethan Hawksley",
+      "avatar": "https://avatars.slack-edge.com/2025-05-03/8845549387106_89927692da002f358eb8_72.png"
+    },
     "U09GESRAC8J": {
       "id": "U09GESRAC8J",
       "username": "logmedha09",
@@ -68214,7 +68244,7 @@
       "id": "U07JEDAMFV3",
       "username": "genr234",
       "displayName": "genr234",
-      "avatar": "https://avatars.slack-edge.com/2026-01-10/10270714507986_815976ebfbb2fbb3bd29_72.png"
+      "avatar": "https://avatars.slack-edge.com/2026-03-07/10648020329317_bc3cd0601b29f22f6ae2_72.png"
     },
     "U091SN3UVMJ": {
       "id": "U091SN3UVMJ",
@@ -68533,12 +68563,6 @@
       "username": "1i56qh121a5xl9",
       "displayName": "Foxreef",
       "avatar": "https://avatars.slack-edge.com/2026-01-21/10340817560598_d552685c6d62d4f93e5f_72.jpg"
-    },
-    "U08NCJDJEE4": {
-      "id": "U08NCJDJEE4",
-      "username": "ethan637",
-      "displayName": "Ethan Hawksley",
-      "avatar": "https://avatars.slack-edge.com/2025-05-03/8845549387106_89927692da002f358eb8_72.png"
     },
     "U07URV8HZEJ": {
       "id": "U07URV8HZEJ",
