@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-07T14:52:22.294Z",
+  "lastUpdated": "2026-03-07T15:27:43.882Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -15421,6 +15421,16 @@
         "reason": "unknown",
         "reasonType": "",
         "userId": "U08S62VB6AJ"
+      }
+    ],
+    "u08s8u1hugg": [
+      {
+        "ts": "2026-03-07T15:12:20.017Z",
+        "delta": -10,
+        "balance": 5,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U08S8U1HUGG"
       }
     ],
     "u08sbbph8uc": [
@@ -66311,6 +66321,12 @@
     ]
   },
   "users": {
+    "U08S8U1HUGG": {
+      "id": "U08S8U1HUGG",
+      "username": "oliver.cingl",
+      "displayName": "Oliver Cingl",
+      "avatar": "https://avatars.slack-edge.com/2025-05-21/8913894432551_3240bfe69fcb7090b3f1_72.png"
+    },
     "U0A5WSLGHUY": {
       "id": "U0A5WSLGHUY",
       "username": "loekoerlemans",
