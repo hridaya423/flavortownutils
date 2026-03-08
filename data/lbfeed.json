@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-08T21:26:41.793Z",
+  "lastUpdated": "2026-03-08T21:48:02.907Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -15344,6 +15344,14 @@
         "balance": 32,
         "reason": "payout",
         "reasonType": "payout",
+        "userId": "U08Q75EBX53"
+      },
+      {
+        "ts": "2026-03-08T21:44:03.901Z",
+        "delta": 491,
+        "balance": 523,
+        "reason": "ship event payout",
+        "reasonType": "",
         "userId": "U08Q75EBX53"
       }
     ],
@@ -66983,6 +66991,12 @@
     ]
   },
   "users": {
+    "U08Q75EBX53": {
+      "id": "U08Q75EBX53",
+      "username": "matthewsequeir",
+      "displayName": "mattseq",
+      "avatar": "https://avatars.slack-edge.com/2025-06-19/9099542398496_686de8eb53df145a992c_72.png"
+    },
     "U0A7ZKP5MA4": {
       "id": "U0A7ZKP5MA4",
       "username": "theepicstudent",
@@ -70463,12 +70477,6 @@
       "username": "ngarnsworthy",
       "displayName": "ngarnsworthy",
       "avatar": "https://avatars.slack-edge.com/2025-09-18/9543139226082_fcacc0fcc7448dfe2cf0_72.jpg"
-    },
-    "U08Q75EBX53": {
-      "id": "U08Q75EBX53",
-      "username": "matthewsequeir",
-      "displayName": "mattseq",
-      "avatar": "https://avatars.slack-edge.com/2025-06-19/9099542398496_686de8eb53df145a992c_72.png"
     },
     "U09UJUSPDT5": {
       "id": "U09UJUSPDT5",
