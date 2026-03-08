@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-08T08:35:54.316Z",
+  "lastUpdated": "2026-03-08T09:32:27.047Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -15243,6 +15243,16 @@
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U08Q75EBX53"
+      }
+    ],
+    "u08qelyf79q": [
+      {
+        "ts": "2026-03-08T09:26:07.606Z",
+        "delta": 10,
+        "balance": 10,
+        "reason": "user grant",
+        "reasonType": "",
+        "userId": "U08QELYF79Q"
       }
     ],
     "u08r49h9vrv": [
@@ -66637,6 +66647,12 @@
     ]
   },
   "users": {
+    "U08QELYF79Q": {
+      "id": "U08QELYF79Q",
+      "username": "cartoontv123098",
+      "displayName": "Slayer",
+      "avatar": "https://avatars.slack-edge.com/2026-03-06/10675947598256_3c4868776cb5776482cf_72.jpg"
+    },
     "U091WRH4EQN": {
       "id": "U091WRH4EQN",
       "username": "daniels",
