@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-08T16:56:45.781Z",
+  "lastUpdated": "2026-03-08T17:25:21.017Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -24,6 +24,14 @@
         "balance": 10,
         "reason": "Recipe Notes",
         "reasonType": "achievement",
+        "userId": "U01MPHKFZ7S"
+      },
+      {
+        "ts": "2026-03-08T17:16:50.669Z",
+        "delta": 40,
+        "balance": 50,
+        "reason": "user grant",
+        "reasonType": "",
         "userId": "U01MPHKFZ7S"
       }
     ],
@@ -3847,6 +3855,16 @@
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U079E6V7R28"
+      }
+    ],
+    "u079eqy9x1d": [
+      {
+        "ts": "2026-03-08T17:16:18.008Z",
+        "delta": 20,
+        "balance": 30,
+        "reason": "user grant",
+        "reasonType": "",
+        "userId": "U079EQY9X1D"
       }
     ],
     "u079qltjz7h": [
@@ -66791,6 +66809,18 @@
     ]
   },
   "users": {
+    "U01MPHKFZ7S": {
+      "id": "U01MPHKFZ7S",
+      "username": "treegs",
+      "displayName": "radioblahaj",
+      "avatar": "https://avatars.slack-edge.com/2026-03-05/10635778022725_1aec91fba16a80dc8001_72.png"
+    },
+    "U079EQY9X1D": {
+      "id": "U079EQY9X1D",
+      "username": "irtaza",
+      "displayName": "Irtaza",
+      "avatar": "https://avatars.slack-edge.com/2024-09-06/7712925628192_b06f6a3e27bee2a5d86c_72.jpg"
+    },
     "U0AAHSKAH6K": {
       "id": "U0AAHSKAH6K",
       "username": "manskill586",
@@ -69170,12 +69200,6 @@
       "username": "pythonatsea",
       "displayName": "pythonatsea",
       "avatar": "https://avatars.slack-edge.com/2025-12-08/10057694652215_d8df43dbdb25ae107d21_72.png"
-    },
-    "U01MPHKFZ7S": {
-      "id": "U01MPHKFZ7S",
-      "username": "treegs",
-      "displayName": "radioblahaj",
-      "avatar": "https://avatars.slack-edge.com/2026-03-05/10635778022725_1aec91fba16a80dc8001_72.png"
     },
     "U0A61G78DMG": {
       "id": "U0A61G78DMG",
