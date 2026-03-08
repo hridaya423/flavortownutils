@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-08T13:42:17.353Z",
+  "lastUpdated": "2026-03-08T14:28:59.690Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -66613,6 +66613,14 @@
         "reason": "Very Fried",
         "reasonType": "achievement",
         "userId": "U0AHQEPUQ7R"
+      },
+      {
+        "ts": "2026-03-08T13:41:17.923Z",
+        "delta": 15,
+        "balance": 25,
+        "reason": "Cookbook Author",
+        "reasonType": "achievement",
+        "userId": "U0AHQEPUQ7R"
       }
     ],
     "u0aj1qa2354": [
@@ -66738,9 +66746,39 @@
         "reasonType": "",
         "userId": "U0AKF5AKP41"
       }
+    ],
+    "u0akrk1gfqq": [
+      {
+        "ts": "2026-03-08T14:00:06.748Z",
+        "delta": 5,
+        "balance": 12,
+        "reason": "Very Fried",
+        "reasonType": "achievement",
+        "userId": "U0AKRK1GFQQ"
+      },
+      {
+        "ts": "2026-03-08T14:00:09.152Z",
+        "delta": 3,
+        "balance": 15,
+        "reason": "Order Up!",
+        "reasonType": "achievement",
+        "userId": "U0AKRK1GFQQ"
+      }
     ]
   },
   "users": {
+    "U0AKRK1GFQQ": {
+      "id": "U0AKRK1GFQQ",
+      "username": "jacobjraaff",
+      "displayName": "Silverhoft",
+      "avatar": "https://secure.gravatar.com/avatar/c96dfa4cb23183e80cf3d5ba8d36f604.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0022-72.png"
+    },
+    "U0AHQEPUQ7R": {
+      "id": "U0AHQEPUQ7R",
+      "username": "bartoszkasyna",
+      "displayName": "bartoszkasyna",
+      "avatar": "https://secure.gravatar.com/avatar/41e990e4e09227cd048a746d176e1fee.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0024-72.png"
+    },
     "U091WTWA2MQ": {
       "id": "U091WTWA2MQ",
       "username": "jatekdani",
@@ -67697,12 +67735,6 @@
       "id": "U09PHG7RLGG",
       "username": "iamaregularpersonthan",
       "avatar": "https://avatars.slack-edge.com/2026-01-09/10272523291508_2b146bf349e9cb2c269e_72.jpg"
-    },
-    "U0AHQEPUQ7R": {
-      "id": "U0AHQEPUQ7R",
-      "username": "bartoszkasyna",
-      "displayName": "bartoszkasyna",
-      "avatar": "https://secure.gravatar.com/avatar/41e990e4e09227cd048a746d176e1fee.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0024-72.png"
     },
     "U0A4PL1DFUP": {
       "id": "U0A4PL1DFUP",
