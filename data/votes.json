@@ -1,7 +1,14 @@
 {
-  "lastUpdated": "2026-03-08T22:49:55.154Z",
-  "totalVotes": 6957,
+  "lastUpdated": "2026-03-08T23:25:58.592Z",
+  "totalVotes": 6958,
   "votes": [
+    {
+      "project": "Online voting",
+      "feedback": "I liked the consept but it isnt my thing tbh",
+      "votedBy": "U09G4M3NZNC",
+      "timestamp": "2026-03-08T23:24:43.732Z",
+      "slackTs": "1773012283.732339"
+    },
     {
       "project": "TermaGotchi",
       "feedback": "Sorry if I wasn't clear in the last vote I made before this one.\n\nRegarding your project, I don't quite understand the meaning of **/* in this line: <https://github.com/Tom-De-Jong/TermaGotchi/blob/ec2b681e682c47353ca1b8aec10a531000c63475/.vscode-test.mjs#L4>",
@@ -50360,6 +50367,12 @@
       "username": "s30aem",
       "displayName": "Karim",
       "avatar": "https://avatars.slack-edge.com/2026-03-07/10656046164132_67fc05382fb182557180_72.jpg"
+    },
+    "U09G4M3NZNC": {
+      "id": "U09G4M3NZNC",
+      "username": "livejo0045",
+      "displayName": "Jonas",
+      "avatar": "https://avatars.slack-edge.com/2026-03-03/10622706237172_a8f9c228ea1b2a67e745_72.png"
     }
   }
 }
