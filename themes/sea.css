@@ -2376,6 +2376,10 @@ p[style*="background: #f9fafb"][style*="padding: 1rem"] {
     color: var(--sea-foam) !important;
 }
 
+.votes-new__project-card-byline {
+    color: var(--sea-foam) !important;
+}
+
 .votes-new__score-card-toggle {
     background-color: var(--sea-mid) !important;
     color: var(--sea-white) !important;

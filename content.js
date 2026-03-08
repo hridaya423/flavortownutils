@@ -114,6 +114,7 @@ const CHANGELOG_DISMISS_KEY = 'flavortown_changelog_dismissed';
 const CHANGELOG_OVERRIDE_KEY = 'flavortown_changelog_override';
 const CHANGELOG_CACHE_KEY = 'flavortown_changelog_cache';
 const CHANGELOG_FORMAT_KEY = 'flavortown_changelog_format';
+const GITHUB_API_KEY_KEY = 'flavortown_github_api_key';
 const CHANGELOG_FORMATS = [
     { id: 'subject', label: 'Commit message' },
     { id: 'subject-hash', label: 'Commit message (hash)' },
@@ -154,6 +155,31 @@ function loadTheme() {
         const customColors = result.customColors || {};
         const catppuccinAccent = result.catppuccinAccent || 'mauve';
         applyTheme(theme, customColors, catppuccinAccent);
+    });
+}
+
+function getGithubApiKey() {
+    return localStorage.getItem(GITHUB_API_KEY_KEY) || '';
+}
+
+function setGithubApiKey(key) {
+    if (key) {
+        localStorage.setItem(GITHUB_API_KEY_KEY, key);
+        browserAPI.storage.sync.set({ [GITHUB_API_KEY_KEY]: key });
+    } else {
+        localStorage.removeItem(GITHUB_API_KEY_KEY);
+        browserAPI.storage.sync.remove(GITHUB_API_KEY_KEY);
+    }
+}
+
+function loadGithubApiKey() {
+    const cached = localStorage.getItem(GITHUB_API_KEY_KEY);
+    if (cached) return;
+    browserAPI.storage.sync.get([GITHUB_API_KEY_KEY], (result) => {
+        const syncKey = result?.[GITHUB_API_KEY_KEY];
+        if (syncKey) {
+            localStorage.setItem(GITHUB_API_KEY_KEY, syncKey);
+        }
     });
 }
 
@@ -1476,8 +1502,13 @@ async function fetchGithubRepos(username) {
     if (cached) return cached;
 
     try {
+        const apiKey = getGithubApiKey();
+        const headers = { 'Accept': 'application/vnd.github+json' };
+        if (apiKey) {
+            headers['Authorization'] = `Bearer ${apiKey}`;
+        }
         const res = await fetch(`https://api.github.com/users/${username}/repos?per_page=100&sort=updated`, {
-            headers: { 'Accept': 'application/vnd.github+json' }
+            headers
         });
         if (!res.ok) return [];
         const data = await res.json();
@@ -5483,7 +5514,12 @@ function getNextLinkFromHeader(linkHeader) {
 async function fetchGithubCommitDate(owner, repo, sha) {
     if (!owner || !repo || !sha) return null;
     const url = `https://api.github.com/repos/${owner}/${repo}/commits/${sha}`;
-    const res = await fetch(url, { headers: { 'Accept': 'application/vnd.github+json' } });
+    const apiKey = getGithubApiKey();
+    const headers = { 'Accept': 'application/vnd.github+json' };
+    if (apiKey) {
+        headers['Authorization'] = `Bearer ${apiKey}`;
+    }
+    const res = await fetch(url, { headers });
     if (!res.ok) return null;
     const data = await res.json();
     const dateStr = data?.commit?.author?.date || data?.commit?.committer?.date;
@@ -5499,9 +5535,14 @@ async function fetchGithubCommitsSince(owner, repo, sinceIso, branch = null) {
         url += `&sha=${encodeURIComponent(branch)}`;
     }
     const commits = [];
+    const apiKey = getGithubApiKey();
+    const headers = { 'Accept': 'application/vnd.github+json' };
+    if (apiKey) {
+        headers['Authorization'] = `Bearer ${apiKey}`;
+    }
 
     while (url && commits.length < CHANGELOG_MAX_COMMITS) {
-        const res = await fetch(url, { headers: { 'Accept': 'application/vnd.github+json' } });
+        const res = await fetch(url, { headers });
         if (!res.ok) {
             const remaining = res.headers.get('x-ratelimit-remaining');
             if (res.status === 403 && remaining === '0') {
@@ -5523,9 +5564,14 @@ async function fetchGithubCommitsSince(owner, repo, sinceIso, branch = null) {
 async function fetchGithubBranches(owner, repo) {
     if (!owner || !repo) return [];
     const url = `https://api.github.com/repos/${owner}/${repo}/branches?per_page=100`;
+    const apiKey = getGithubApiKey();
+    const headers = { 'Accept': 'application/vnd.github+json' };
+    if (apiKey) {
+        headers['Authorization'] = `Bearer ${apiKey}`;
+    }
 
     try {
-        const res = await fetch(url, { headers: { 'Accept': 'application/vnd.github+json' } });
+        const res = await fetch(url, { headers });
         if (!res.ok) {
             return [];
         }
@@ -5593,7 +5639,12 @@ async function fetchGithubRecentCommits(owner, repo, limit = CHANGELOG_RECENT_CO
     if (!owner || !repo) return { commits: [], error: 'missing' };
     const safeLimit = Math.max(1, Math.min(limit || CHANGELOG_RECENT_COMMITS, 50));
     const url = `https://api.github.com/repos/${owner}/${repo}/commits?per_page=${safeLimit}`;
-    const res = await fetch(url, { headers: { 'Accept': 'application/vnd.github+json' } });
+    const apiKey = getGithubApiKey();
+    const headers = { 'Accept': 'application/vnd.github+json' };
+    if (apiKey) {
+        headers['Authorization'] = `Bearer ${apiKey}`;
+    }
+    const res = await fetch(url, { headers });
     if (!res.ok) {
         const remaining = res.headers.get('x-ratelimit-remaining');
         if (res.status === 403 && remaining === '0') {
@@ -5650,6 +5701,8 @@ async function initDevlogChangelog(wrapper) {
             </select>
             <label class="flavortown-changelog__adjust-label">Commit display</label>
             <select class="flavortown-changelog__input" data-role="format-select"></select>
+            <label class="flavortown-changelog__adjust-label">GitHub API Key <span style="opacity:0.6;font-size:0.85em">(prevents rate limits)</span></label>
+            <input type="password" class="flavortown-changelog__input" data-role="github-key" placeholder="ghp_xxxx..." />
             <div class="flavortown-changelog__adjust-actions">
                 <button type="button" class="btn btn--borderless" data-action="reset">Use last devlog</button>
                 <button type="button" class="btn btn--brown" data-action="apply">Apply</button>
@@ -5668,6 +5721,10 @@ async function initDevlogChangelog(wrapper) {
     const sinceInput = card.querySelector('[data-role="since-input"]');
     const commitSelect = card.querySelector('[data-role="commit-select"]');
     const formatSelect = card.querySelector('[data-role="format-select"]');
+    const githubKeyInput = card.querySelector('[data-role="github-key"]');
+    if (githubKeyInput) {
+        githubKeyInput.value = getGithubApiKey();
+    }
     const insertBtn = card.querySelector('[data-action="insert"]');
     const adjustBtn = card.querySelector('[data-action="adjust"]');
     const refreshBtn = card.querySelector('[data-action="refresh"]');
@@ -5721,6 +5778,14 @@ async function initDevlogChangelog(wrapper) {
     });
 
     applyBtn?.addEventListener('click', async () => {
+        if (githubKeyInput) {
+            const key = githubKeyInput.value.trim();
+            if (key) {
+                setGithubApiKey(key);
+            } else {
+                setGithubApiKey('');
+            }
+        }
         const inputDate = parseLocalDatetimeInput(sinceInput.value);
         if (!inputDate || isNaN(inputDate.getTime())) return;
         if (projectId) setChangelogOverride(projectId, { since: inputDate.toISOString() });
@@ -8285,6 +8350,7 @@ function init() {
     syncDocsCodeThemeClass();
     initLocalStorageSync();
     loadTheme();
+    loadGithubApiKey();
     initCommandPaletteShortcut();
     checkForUpdates();
     addDevlogFrequencyStat();
@@ -12976,6 +13042,8 @@ function setupCommandPalette() {
         { id: 'setting-leaderboard', label: 'Toggle: Leaderboard Opt-in', category: 'Settings', action: 'toggleSetting', settingId: 'leaderboard_optin' },
         { id: 'setting-balance', label: 'Toggle: Balance Notifications', category: 'Settings', action: 'toggleSetting', settingId: 'slack_balance_notifications' },
         { id: 'setting-effects', label: 'Toggle: Special Effects', category: 'Settings', action: 'toggleSetting', settingId: 'special_effects_enabled' },
+        { id: 'set-github-key', label: 'Set GitHub API Key', category: 'Settings', action: 'setGithubApiKey' },
+        { id: 'clear-github-key', label: 'Clear GitHub API Key', category: 'Settings', action: 'clearGithubApiKey' },
         { id: 'theme-default', label: 'Theme: Default', category: 'Themes', action: 'theme', theme: 'default' },
         { id: 'theme-catppuccin', label: 'Theme: Catppuccin', category: 'Themes', action: 'theme', theme: 'catppuccin' },
         { id: 'theme-sea', label: 'Theme: Sea', category: 'Themes', action: 'theme', theme: 'sea' },
@@ -13194,6 +13262,24 @@ function setupCommandPalette() {
                 const searchInput = document.querySelector('.flavortown-search-container input, .flavortown-search-input');
                 if (searchInput) searchInput.focus();
             }
+        } else if (cmd.action === 'setGithubApiKey') {
+            const currentKey = getGithubApiKey();
+            const key = prompt('Enter your GitHub Personal Access Token:\n\nThis will be used for the changelog to avoid rate limits.\nCreate one at: https://github.com/settings/tokens\n\nRequired scopes: repo (full)', currentKey || '');
+            if (key !== null) {
+                setGithubApiKey(key.trim());
+                const toast = document.createElement('div');
+                toast.style.cssText = 'position:fixed;bottom:20px;right:20px;background:#4ade80;color:#15803d;padding:12px 20px;border-radius:8px;font-weight:600;z-index:999999;animation:fadeOut 2s forwards';
+                toast.textContent = key.trim() ? 'GitHub API key saved!' : 'GitHub API key cleared';
+                document.body.appendChild(toast);
+                setTimeout(() => toast.remove(), 2000);
+            }
+        } else if (cmd.action === 'clearGithubApiKey') {
+            setGithubApiKey('');
+            const toast = document.createElement('div');
+            toast.style.cssText = 'position:fixed;bottom:20px;right:20px;background:#4ade80;color:#15803d;padding:12px 20px;border-radius:8px;font-weight:600;z-index:999999;animation:fadeOut 2s forwards';
+            toast.textContent = 'GitHub API key cleared';
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 2000);
         }
     }
 

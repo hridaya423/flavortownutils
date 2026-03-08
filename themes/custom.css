@@ -2470,6 +2470,10 @@ p[style*="background: #f9fafb"][style*="padding: 1rem"] {
     color: var(--custom-subtext) !important;
 }
 
+.votes-new__project-card-byline {
+    color: var(--custom-subtext) !important;
+}
+
 .votes-new__score-card-toggle {
     background-color: var(--custom-surface-hover) !important;
     color: var(--custom-text-primary) !important;

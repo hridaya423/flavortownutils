@@ -2473,6 +2473,10 @@ p[style*="background: #f9fafb"][style*="padding: 1rem"] {
     color: var(--ctp-subtext0) !important;
 }
 
+.votes-new__project-card-byline {
+    color: var(--ctp-subtext0) !important;
+}
+
 .votes-new__score-card-toggle {
     background-color: var(--ctp-surface1) !important;
     color: var(--ctp-text) !important;
