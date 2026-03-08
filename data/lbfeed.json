@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-08T07:10:01.337Z",
+  "lastUpdated": "2026-03-08T07:53:36.936Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -35509,6 +35509,14 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0A3DKS46R3"
+      },
+      {
+        "ts": "2026-03-08T07:28:39.720Z",
+        "delta": 970,
+        "balance": 1196,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A3DKS46R3"
       }
     ],
     "u0a3dlebg67": [
@@ -66593,6 +66601,12 @@
     ]
   },
   "users": {
+    "U0A3DKS46R3": {
+      "id": "U0A3DKS46R3",
+      "username": "coder.hoang",
+      "displayName": "hoang.nguyen",
+      "avatar": "https://secure.gravatar.com/avatar/4e45435aca088e4226fcf09d5a230967.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0023-72.png"
+    },
     "U0A7A7TT28L": {
       "id": "U0A7A7TT28L",
       "username": "korbinvanettedev",
@@ -66631,12 +66645,6 @@
       "id": "U090LAT6QKB",
       "username": "dinosaur890123",
       "avatar": "https://avatars.slack-edge.com/2025-12-09/10077925689238_2149e0ba18d7110e7a3f_72.png"
-    },
-    "U0A3DKS46R3": {
-      "id": "U0A3DKS46R3",
-      "username": "coder.hoang",
-      "displayName": "hoang.nguyen",
-      "avatar": "https://secure.gravatar.com/avatar/4e45435aca088e4226fcf09d5a230967.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0023-72.png"
     },
     "U0A6TF5Q4H0": {
       "id": "U0A6TF5Q4H0",
