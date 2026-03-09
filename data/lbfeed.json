@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-09T09:09:45.487Z",
+  "lastUpdated": "2026-03-09T10:15:13.388Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -20531,6 +20531,22 @@
         "delta": 2,
         "balance": 27,
         "reason": "Hello, Kitchen!",
+        "reasonType": "achievement",
+        "userId": "U091LN2KLF2"
+      },
+      {
+        "ts": "2026-03-09T10:07:44.216Z",
+        "delta": 10,
+        "balance": 37,
+        "reason": "Line Cook",
+        "reasonType": "achievement",
+        "userId": "U091LN2KLF2"
+      },
+      {
+        "ts": "2026-03-09T10:08:02.981Z",
+        "delta": 3,
+        "balance": 40,
+        "reason": "Order Up!",
         "reasonType": "achievement",
         "userId": "U091LN2KLF2"
       }
@@ -67147,6 +67163,12 @@
     ]
   },
   "users": {
+    "U091LN2KLF2": {
+      "id": "U091LN2KLF2",
+      "username": "amronos",
+      "displayName": "amronos",
+      "avatar": "https://secure.gravatar.com/avatar/b3f22b118bb410f35402068ae2d47dc2.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0017-72.png"
+    },
     "U0A78UCA231": {
       "id": "U0A78UCA231",
       "username": "aayushydvnp",
@@ -67415,12 +67437,6 @@
       "username": "pratik.personal4",
       "displayName": "zesty plutonium",
       "avatar": "https://avatars.slack-edge.com/2026-01-28/10388989246820_15feda01b683a8a87bc5_72.jpg"
-    },
-    "U091LN2KLF2": {
-      "id": "U091LN2KLF2",
-      "username": "amronos",
-      "displayName": "amronos",
-      "avatar": "https://secure.gravatar.com/avatar/b3f22b118bb410f35402068ae2d47dc2.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0017-72.png"
     },
     "U0A022J58PN": {
       "id": "U0A022J58PN",
@@ -71920,7 +71936,7 @@
       "id": "U09D3NKRES1",
       "username": "hassanosaid123",
       "displayName": "Osaidii",
-      "avatar": "https://avatars.slack-edge.com/2025-09-28/9591388201043_10d39cea1bb85dc254f3_72.jpg"
+      "avatar": "https://avatars.slack-edge.com/2026-03-09/10655432805717_c72f00c8346a5f63be60_72.jpg"
     },
     "U0A5DG6PZSP": {
       "id": "U0A5DG6PZSP",
