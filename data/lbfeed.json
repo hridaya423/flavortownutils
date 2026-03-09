@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-09T04:32:24.539Z",
+  "lastUpdated": "2026-03-09T05:45:05.988Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -64249,6 +64249,14 @@
         "reason": "ship event payout",
         "reasonType": "",
         "userId": "U0A9HLY6ETE"
+      },
+      {
+        "ts": "2026-03-09T05:36:24.681Z",
+        "delta": -1131,
+        "balance": 139,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A9HLY6ETE"
       }
     ],
     "u0a9ke6q0hm": [
@@ -65288,6 +65296,14 @@
         "ts": "2026-03-06T22:36:03.703Z",
         "delta": 7,
         "balance": 16,
+        "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U0AAVSGH3HC"
+      },
+      {
+        "ts": "2026-03-09T04:35:38.913Z",
+        "delta": 2,
+        "balance": 18,
         "reason": "ship event payout",
         "reasonType": "",
         "userId": "U0AAVSGH3HC"
@@ -67115,6 +67131,18 @@
     ]
   },
   "users": {
+    "U0A9HLY6ETE": {
+      "id": "U0A9HLY6ETE",
+      "username": "filipkolenc8",
+      "displayName": "2klxst",
+      "avatar": "https://avatars.slack-edge.com/2026-01-17/10318097768086_9147dc488f8aaf14d2a8_72.jpg"
+    },
+    "U0AAVSGH3HC": {
+      "id": "U0AAVSGH3HC",
+      "username": "hackclub8",
+      "displayName": "46009361",
+      "avatar": "https://avatars.slack-edge.com/2026-01-29/10433002833120_f403f3da778a713c59df_72.png"
+    },
     "U09CY2QAZMJ": {
       "id": "U09CY2QAZMJ",
       "username": "tonyforself",
@@ -67625,12 +67653,6 @@
       "displayName": "Khushi",
       "avatar": "https://secure.gravatar.com/avatar/0613481dea439f35c05b3fa1cb7ca46e.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0013-72.png"
     },
-    "U0AAVSGH3HC": {
-      "id": "U0AAVSGH3HC",
-      "username": "hackclub8",
-      "displayName": "46009361",
-      "avatar": "https://avatars.slack-edge.com/2026-01-29/10433002833120_f403f3da778a713c59df_72.png"
-    },
     "U0AH1BANK5J": {
       "id": "U0AH1BANK5J",
       "username": "avighnakc",
@@ -67889,12 +67911,6 @@
       "username": "corentincaron76",
       "displayName": "Cocoboyyy",
       "avatar": "https://avatars.slack-edge.com/2026-02-07/10462206138246_a371e038e1e72f1993fa_72.png"
-    },
-    "U0A9HLY6ETE": {
-      "id": "U0A9HLY6ETE",
-      "username": "filipkolenc8",
-      "displayName": "2klxst",
-      "avatar": "https://avatars.slack-edge.com/2026-01-17/10318097768086_9147dc488f8aaf14d2a8_72.jpg"
     },
     "U0AH8A6FU2V": {
       "id": "U0AH8A6FU2V",
@@ -68762,7 +68778,7 @@
     "U07EB2Y76DP": {
       "id": "U07EB2Y76DP",
       "username": "bettatested",
-      "displayName": "fsh (you snk we snk)",
+      "displayName": "fsh",
       "avatar": "https://avatars.slack-edge.com/2026-03-03/10614155190197_85728863f026bc5ca3b5_72.png"
     },
     "U080V8UG5BR": {
