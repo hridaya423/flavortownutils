@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-09T11:59:15.443Z",
+  "lastUpdated": "2026-03-09T13:13:01.950Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -29581,6 +29581,14 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U09CY2QAZMJ"
+      },
+      {
+        "ts": "2026-03-09T12:24:43.719Z",
+        "delta": -50,
+        "balance": 25,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U09CY2QAZMJ"
       }
     ],
     "u09d27k9xu5": [
@@ -36242,6 +36250,14 @@
         "balance": 8,
         "reason": "shop purchase",
         "reasonType": "",
+        "userId": "U0A3VK4GFRN"
+      },
+      {
+        "ts": "2026-03-09T12:41:00.775Z",
+        "delta": 10,
+        "balance": 18,
+        "reason": "Line Cook",
+        "reasonType": "achievement",
         "userId": "U0A3VK4GFRN"
       }
     ],
@@ -67179,6 +67195,16 @@
     ]
   },
   "users": {
+    "U0A3VK4GFRN": {
+      "id": "U0A3VK4GFRN",
+      "username": "bhatrichit10",
+      "avatar": "https://avatars.slack-edge.com/2025-12-23/10160500975127_4e0ba49afbde21f78807_72.png"
+    },
+    "U09CY2QAZMJ": {
+      "id": "U09CY2QAZMJ",
+      "username": "tonyforself",
+      "avatar": "https://avatars.slack-edge.com/2025-12-29/10197320008051_09090f790fd53d59b8a8_72.jpg"
+    },
     "U093B3R6HCK": {
       "id": "U093B3R6HCK",
       "username": "timslawncare.ok",
@@ -67219,11 +67245,6 @@
       "username": "hackclub8",
       "displayName": "46009361",
       "avatar": "https://avatars.slack-edge.com/2026-01-29/10433002833120_f403f3da778a713c59df_72.png"
-    },
-    "U09CY2QAZMJ": {
-      "id": "U09CY2QAZMJ",
-      "username": "tonyforself",
-      "avatar": "https://avatars.slack-edge.com/2025-12-29/10197320008051_09090f790fd53d59b8a8_72.jpg"
     },
     "U07QKHJKLN6": {
       "id": "U07QKHJKLN6",
@@ -68224,11 +68245,6 @@
       "username": "abdulrafay88243",
       "displayName": "mrsiuuuu_x1",
       "avatar": "https://avatars.slack-edge.com/2026-01-21/10344219015060_1d9fdb6be9201c147e3e_72.jpg"
-    },
-    "U0A3VK4GFRN": {
-      "id": "U0A3VK4GFRN",
-      "username": "bhatrichit10",
-      "avatar": "https://avatars.slack-edge.com/2025-12-23/10160500975127_4e0ba49afbde21f78807_72.png"
     },
     "U0A75231T7C": {
       "id": "U0A75231T7C",
