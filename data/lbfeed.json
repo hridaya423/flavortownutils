@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-09T11:12:21.796Z",
+  "lastUpdated": "2026-03-09T11:59:15.443Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -23723,6 +23723,14 @@
         "reason": "show and tell payout",
         "reasonType": "",
         "userId": "U093B3R6HCK"
+      },
+      {
+        "ts": "2026-03-09T11:16:43.345Z",
+        "delta": 1591,
+        "balance": 2456,
+        "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U093B3R6HCK"
       }
     ],
     "u093bfubeba": [
@@ -30267,6 +30275,14 @@
         "delta": 3,
         "balance": 16,
         "reason": "Michelin Star",
+        "reasonType": "achievement",
+        "userId": "U09G4M3NZNC"
+      },
+      {
+        "ts": "2026-03-09T11:14:52.419Z",
+        "delta": 2,
+        "balance": 18,
+        "reason": "Hello, Kitchen!",
         "reasonType": "achievement",
         "userId": "U09G4M3NZNC"
       }
@@ -67163,6 +67179,18 @@
     ]
   },
   "users": {
+    "U093B3R6HCK": {
+      "id": "U093B3R6HCK",
+      "username": "timslawncare.ok",
+      "displayName": "Steve",
+      "avatar": "https://avatars.slack-edge.com/2025-12-31/10227680231761_579bd70387c3d904bfb5_72.jpg"
+    },
+    "U09G4M3NZNC": {
+      "id": "U09G4M3NZNC",
+      "username": "livejo0045",
+      "displayName": "Jonas",
+      "avatar": "https://avatars.slack-edge.com/2026-03-03/10622706237172_a8f9c228ea1b2a67e745_72.png"
+    },
     "U091LN2KLF2": {
       "id": "U091LN2KLF2",
       "username": "amronos",
@@ -67207,12 +67235,6 @@
       "id": "U059VC0UDEU",
       "username": "mahadkalam1234",
       "avatar": "https://avatars.slack-edge.com/2026-01-21/10348205812084_9fe0580a6956b5c631aa_72.jpg"
-    },
-    "U09G4M3NZNC": {
-      "id": "U09G4M3NZNC",
-      "username": "livejo0045",
-      "displayName": "Jonas",
-      "avatar": "https://avatars.slack-edge.com/2026-03-03/10622706237172_a8f9c228ea1b2a67e745_72.png"
     },
     "U0A7ZKP5MA4": {
       "id": "U0A7ZKP5MA4",
@@ -68263,12 +68285,6 @@
       "username": "orangebox759",
       "displayName": "filyentity",
       "avatar": "https://avatars.slack-edge.com/2026-02-28/10631042984768_3812e89bee17271cb954_72.png"
-    },
-    "U093B3R6HCK": {
-      "id": "U093B3R6HCK",
-      "username": "timslawncare.ok",
-      "displayName": "Steve",
-      "avatar": "https://avatars.slack-edge.com/2025-12-31/10227680231761_579bd70387c3d904bfb5_72.jpg"
     },
     "U0A21RY9NTY": {
       "id": "U0A21RY9NTY",
