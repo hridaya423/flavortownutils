@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-10T04:22:33.723Z",
+  "lastUpdated": "2026-03-10T05:34:20.622Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -38555,6 +38555,14 @@
         "reason": "user grant",
         "reasonType": "",
         "userId": "U0A58U4MHC2"
+      },
+      {
+        "ts": "2026-03-10T04:25:17.044Z",
+        "delta": 4,
+        "balance": 111,
+        "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U0A58U4MHC2"
       }
     ],
     "u0a59t9ajbb": [
@@ -67717,6 +67725,12 @@
     ]
   },
   "users": {
+    "U0A58U4MHC2": {
+      "id": "U0A58U4MHC2",
+      "username": "mayankkumar.inc",
+      "displayName": "mayankkumar.inc",
+      "avatar": "https://secure.gravatar.com/avatar/8fb8cbea5bef62c995cb6e1a3bec807d.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0007-72.png"
+    },
     "U0A0TB2ETAB": {
       "id": "U0A0TB2ETAB",
       "username": "tejasmali",
@@ -70390,12 +70404,6 @@
       "username": "tritranduc11",
       "displayName": "nbth",
       "avatar": "https://secure.gravatar.com/avatar/7f7fb3266a58b2a319c5fb5da86c8884.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0005-72.png"
-    },
-    "U0A58U4MHC2": {
-      "id": "U0A58U4MHC2",
-      "username": "mayankkumar.inc",
-      "displayName": "mayankkumar.inc",
-      "avatar": "https://secure.gravatar.com/avatar/8fb8cbea5bef62c995cb6e1a3bec807d.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0007-72.png"
     },
     "U0AETSFQ17B": {
       "id": "U0AETSFQ17B",
