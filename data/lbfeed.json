@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-10T02:06:19.209Z",
+  "lastUpdated": "2026-03-10T04:22:33.723Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -34019,6 +34019,14 @@
         "reason": "show and tell payout",
         "reasonType": "",
         "userId": "U0A0TB2ETAB"
+      },
+      {
+        "ts": "2026-03-10T04:09:14.780Z",
+        "delta": -70,
+        "balance": 15,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A0TB2ETAB"
       }
     ],
     "u0a0xp8kn4q": [
@@ -67249,6 +67257,14 @@
         "reason": "Line Cook",
         "reasonType": "achievement",
         "userId": "U0AGSUVPTBJ"
+      },
+      {
+        "ts": "2026-03-10T04:00:09.678Z",
+        "delta": 2,
+        "balance": 494,
+        "reason": "Hello, Kitchen!",
+        "reasonType": "achievement",
+        "userId": "U0AGSUVPTBJ"
       }
     ],
     "u0ague4bkap": [
@@ -67701,6 +67717,17 @@
     ]
   },
   "users": {
+    "U0A0TB2ETAB": {
+      "id": "U0A0TB2ETAB",
+      "username": "tejasmali",
+      "avatar": "https://secure.gravatar.com/avatar/eac5774eaf2bf8783d6c7c07a0e97c6d.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0017-72.png"
+    },
+    "U0AGSUVPTBJ": {
+      "id": "U0AGSUVPTBJ",
+      "username": "ethicalhacker001100",
+      "displayName": "Khushi",
+      "avatar": "https://secure.gravatar.com/avatar/0613481dea439f35c05b3fa1cb7ca46e.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0013-72.png"
+    },
     "U06QST7V0J2": {
       "id": "U06QST7V0J2",
       "username": "eeshaskothari",
@@ -67747,11 +67774,6 @@
       "username": "speedhawks83647",
       "displayName": "speedhawks",
       "avatar": "https://secure.gravatar.com/avatar/7555d9e63469aa893dbff15febd365fc.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0026-72.png"
-    },
-    "U0A0TB2ETAB": {
-      "id": "U0A0TB2ETAB",
-      "username": "tejasmali",
-      "avatar": "https://secure.gravatar.com/avatar/eac5774eaf2bf8783d6c7c07a0e97c6d.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0017-72.png"
     },
     "U09JBJ0FW0P": {
       "id": "U09JBJ0FW0P",
@@ -67859,12 +67881,6 @@
       "id": "U09UU7TETBR",
       "username": "simonhroff",
       "avatar": "https://avatars.slack-edge.com/2025-11-25/10024094435280_d4db6c77b2d72752558c_72.png"
-    },
-    "U0AGSUVPTBJ": {
-      "id": "U0AGSUVPTBJ",
-      "username": "ethicalhacker001100",
-      "displayName": "Khushi",
-      "avatar": "https://secure.gravatar.com/avatar/0613481dea439f35c05b3fa1cb7ca46e.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0013-72.png"
     },
     "U0A17N2KAGN": {
       "id": "U0A17N2KAGN",
@@ -68143,7 +68159,7 @@
       "id": "U092J7619CN",
       "username": "sofaomda738",
       "displayName": "Sub",
-      "avatar": "https://avatars.slack-edge.com/2026-03-09/10654051811299_fecf92f7228da175ffbe_72.jpg"
+      "avatar": "https://avatars.slack-edge.com/2026-03-10/10662104454789_fae7d5b4b2fbc4b912e6_72.png"
     },
     "U09EB9V2NBB": {
       "id": "U09EB9V2NBB",
@@ -70971,7 +70987,7 @@
     "U0923H02Y3B": {
       "id": "U0923H02Y3B",
       "username": "me1011",
-      "displayName": "inw (tell me to do my homework)",
+      "displayName": "inw",
       "avatar": "https://avatars.slack-edge.com/2026-03-03/10646169336480_cac85360d61d2f3f0b1f_72.png"
     },
     "U09940XAJ3B": {
