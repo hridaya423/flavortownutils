@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-10T17:52:52.653Z",
+  "lastUpdated": "2026-03-10T18:52:08.033Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -14579,6 +14579,14 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U08D3AY7BG8"
+      },
+      {
+        "ts": "2026-03-10T18:10:25.525Z",
+        "delta": -175,
+        "balance": 81,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U08D3AY7BG8"
       }
     ],
     "u08dktu2qrl": [
@@ -22579,6 +22587,14 @@
         "delta": 10,
         "balance": 22,
         "reason": "Line Cook",
+        "reasonType": "achievement",
+        "userId": "U092B73297B"
+      },
+      {
+        "ts": "2026-03-10T18:15:31.160Z",
+        "delta": 3,
+        "balance": 25,
+        "reason": "Order Up!",
         "reasonType": "achievement",
         "userId": "U092B73297B"
       }
@@ -68029,6 +68045,17 @@
     ]
   },
   "users": {
+    "U092B73297B": {
+      "id": "U092B73297B",
+      "username": "a.y.liang9",
+      "displayName": "arie",
+      "avatar": "https://avatars.slack-edge.com/2026-03-01/10604522153813_d290020ca5ce5d0af27d_72.jpg"
+    },
+    "U08D3AY7BG8": {
+      "id": "U08D3AY7BG8",
+      "username": "me1978",
+      "avatar": "https://avatars.slack-edge.com/2026-01-13/10292071246820_9386a1b8c19f67927074_72.png"
+    },
     "U0AAHSKAH6K": {
       "id": "U0AAHSKAH6K",
       "username": "manskill586",
@@ -68121,11 +68148,6 @@
       "username": "amber",
       "displayName": "amber",
       "avatar": "https://avatars.slack-edge.com/2026-03-01/10599797126067_7bbb980ae906a691a15a_72.jpg"
-    },
-    "U08D3AY7BG8": {
-      "id": "U08D3AY7BG8",
-      "username": "me1978",
-      "avatar": "https://avatars.slack-edge.com/2026-01-13/10292071246820_9386a1b8c19f67927074_72.png"
     },
     "U0A6PJQQ5GU": {
       "id": "U0A6PJQQ5GU",
@@ -69370,12 +69392,6 @@
       "username": "jaw.inbox10",
       "displayName": "jaw.inbox10",
       "avatar": "https://secure.gravatar.com/avatar/f1d3380fd663aff4f394a2b2a9a13d14.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0017-72.png"
-    },
-    "U092B73297B": {
-      "id": "U092B73297B",
-      "username": "a.y.liang9",
-      "displayName": "arie",
-      "avatar": "https://avatars.slack-edge.com/2026-03-01/10604522153813_d290020ca5ce5d0af27d_72.jpg"
     },
     "U07A10XBMGQ": {
       "id": "U07A10XBMGQ",
