@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-10T06:54:21.175Z",
+  "lastUpdated": "2026-03-10T07:44:14.996Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -14091,6 +14091,24 @@
         "reason": "user grant",
         "reasonType": "",
         "userId": "U08B60DCYG2"
+      }
+    ],
+    "u08b8rbpll8": [
+      {
+        "ts": "2026-03-10T07:30:47.356Z",
+        "delta": 5,
+        "balance": 10,
+        "reason": "Very Fried",
+        "reasonType": "achievement",
+        "userId": "U08B8RBPLL8"
+      },
+      {
+        "ts": "2026-03-10T07:35:53.449Z",
+        "delta": 2,
+        "balance": 12,
+        "reason": "Hello, Kitchen!",
+        "reasonType": "achievement",
+        "userId": "U08B8RBPLL8"
       }
     ],
     "u08bk9uec9y": [
@@ -35249,6 +35267,14 @@
         "delta": 2,
         "balance": 15,
         "reason": "Hello, Kitchen!",
+        "reasonType": "achievement",
+        "userId": "U0A21RY9NTY"
+      },
+      {
+        "ts": "2026-03-10T07:22:18.480Z",
+        "delta": 3,
+        "balance": 18,
+        "reason": "Michelin Star",
         "reasonType": "achievement",
         "userId": "U0A21RY9NTY"
       }
@@ -67725,6 +67751,18 @@
     ]
   },
   "users": {
+    "U08B8RBPLL8": {
+      "id": "U08B8RBPLL8",
+      "username": "darsh.patel6",
+      "displayName": "Dash",
+      "avatar": "https://avatars.slack-edge.com/2025-09-30/9590196156039_73f829d9f5483caaf15e_72.png"
+    },
+    "U0A21RY9NTY": {
+      "id": "U0A21RY9NTY",
+      "username": "fakewetzi",
+      "displayName": "fakewetzi",
+      "avatar": "https://secure.gravatar.com/avatar/e897e3e14195df0b2c5f74ad2287fce8.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0009-72.png"
+    },
     "U0A58U4MHC2": {
       "id": "U0A58U4MHC2",
       "username": "mayankkumar.inc",
@@ -67872,12 +67910,6 @@
       "username": "artciob09",
       "displayName": "artur33",
       "avatar": "https://avatars.slack-edge.com/2024-11-01/7965965994053_f49d6bf5750bb5f1a141_72.png"
-    },
-    "U0A21RY9NTY": {
-      "id": "U0A21RY9NTY",
-      "username": "fakewetzi",
-      "displayName": "fakewetzi",
-      "avatar": "https://secure.gravatar.com/avatar/e897e3e14195df0b2c5f74ad2287fce8.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0009-72.png"
     },
     "U0A7KLAGP89": {
       "id": "U0A7KLAGP89",
