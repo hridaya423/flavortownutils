@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-11T09:44:36.535Z",
+  "lastUpdated": "2026-03-11T10:42:20.816Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -36003,6 +36003,14 @@
         "reason": "ship event payout",
         "reasonType": "",
         "userId": "U0A2L4NMA9X"
+      },
+      {
+        "ts": "2026-03-11T09:46:23.401Z",
+        "delta": 5,
+        "balance": 877,
+        "reason": "Cooking",
+        "reasonType": "achievement",
+        "userId": "U0A2L4NMA9X"
       }
     ],
     "u0a2l9t7c12": [
@@ -54151,6 +54159,14 @@
         "reason": "Cooking",
         "reasonType": "achievement",
         "userId": "U0A7KLAGP89"
+      },
+      {
+        "ts": "2026-03-11T10:28:40.840Z",
+        "delta": -35,
+        "balance": 17,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A7KLAGP89"
       }
     ],
     "u0a7l0utgqz": [
@@ -68361,6 +68377,18 @@
     ]
   },
   "users": {
+    "U0A7KLAGP89": {
+      "id": "U0A7KLAGP89",
+      "username": "bansodetanishk",
+      "displayName": "tanishk",
+      "avatar": "https://secure.gravatar.com/avatar/eef9b9f078704b61c248526ab7d9f1f5.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0011-72.png"
+    },
+    "U0A2L4NMA9X": {
+      "id": "U0A2L4NMA9X",
+      "username": "mtthsschrbr",
+      "displayName": "Matthias",
+      "avatar": "https://avatars.slack-edge.com/2026-01-02/10233020067361_50bd91783e169d82ff5a_72.png"
+    },
     "U0AD3MLC07L": {
       "id": "U0AD3MLC07L",
       "username": "bebowagdy666",
@@ -68456,12 +68484,6 @@
       "id": "U09A7GEM760",
       "username": "sadiyameem123",
       "avatar": "https://avatars.slack-edge.com/2025-12-13/10144998433360_d12c0c70edd22615e94d_72.png"
-    },
-    "U0A2L4NMA9X": {
-      "id": "U0A2L4NMA9X",
-      "username": "mtthsschrbr",
-      "displayName": "Matthias",
-      "avatar": "https://avatars.slack-edge.com/2026-01-02/10233020067361_50bd91783e169d82ff5a_72.png"
     },
     "U0A8DPQ5T2M": {
       "id": "U0A8DPQ5T2M",
@@ -68572,12 +68594,6 @@
       "username": "daniels",
       "displayName": "Spiyse",
       "avatar": "https://avatars.slack-edge.com/2025-12-14/10147014446144_6baf14c1246997fbab90_72.jpg"
-    },
-    "U0A7KLAGP89": {
-      "id": "U0A7KLAGP89",
-      "username": "bansodetanishk",
-      "displayName": "tanishk",
-      "avatar": "https://secure.gravatar.com/avatar/eef9b9f078704b61c248526ab7d9f1f5.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0011-72.png"
     },
     "U09F440F99P": {
       "id": "U09F440F99P",
