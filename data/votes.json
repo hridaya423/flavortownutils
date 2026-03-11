@@ -1,7 +1,238 @@
 {
-  "lastUpdated": "2026-03-11T05:32:44.404Z",
-  "totalVotes": 7313,
+  "lastUpdated": "2026-03-11T06:55:26.953Z",
+  "totalVotes": 7346,
   "votes": [
+    {
+      "project": "PetRock game",
+      "feedback": "Fun game! I like the art style and the idea!",
+      "votedBy": "U091HG1TP6K",
+      "timestamp": "2026-03-11T06:52:55.403Z",
+      "slackTs": "1773211975.403509"
+    },
+    {
+      "project": "Aether-Motive:VELOCITY",
+      "feedback": "Nice, fun game! Easy to learn controls. Also the devlogs are nice!",
+      "votedBy": "U091HG1TP6K",
+      "timestamp": "2026-03-11T06:42:13.015Z",
+      "slackTs": "1773211333.015179"
+    },
+    {
+      "project": "Fortune Teller",
+      "feedback": "Unfortunately my browser wouldn't let me download the file but the demo video on the readme was great to show it off!",
+      "votedBy": "U091HG1TP6K",
+      "timestamp": "2026-03-11T06:36:22.834Z",
+      "slackTs": "1773210982.834109"
+    },
+    {
+      "project": "Circurity",
+      "feedback": "Amazing project for simulating logic circuits in a browser. The demo works well, and adding components, connecting wires, and simulating circuits is intuitive. Devlogs show detailed progress and effort. Adding more visual feedback for components and errors could improve usability.",
+      "votedBy": "U0AF05FTK51",
+      "timestamp": "2026-03-11T06:35:21.903Z",
+      "slackTs": "1773210921.903749"
+    },
+    {
+      "project": "construct-watcher",
+      "feedback": "A useful Slack-related bot project. The devlogs show progress and bug fixes. Making the demo easier to test and providing instructions for adding the bot could improve usability.",
+      "votedBy": "U0AF05FTK51",
+      "timestamp": "2026-03-11T06:30:03.845Z",
+      "slackTs": "1773210603.845329"
+    },
+    {
+      "project": "Why is my Slack ID?",
+      "feedback": "Interesting project idea using the Slack API to analyze user IDs and profile data. The demo works properly and shows the concept clearly. Adding more features or deeper analysis could make it even more useful.",
+      "votedBy": "U0AF05FTK51",
+      "timestamp": "2026-03-11T06:24:23.820Z",
+      "slackTs": "1773210263.820469"
+    },
+    {
+      "project": "Internet Speedtest",
+      "feedback": "The speed test works well and displays download, upload, ping, and latency results clearly. The interface is simple and easy to understand. Improving accuracy and adding more visual elements could make the project even better.",
+      "votedBy": "U0AF05FTK51",
+      "timestamp": "2026-03-11T06:20:19.326Z",
+      "slackTs": "1773210019.326779"
+    },
+    {
+      "project": "Conway's Game of Life",
+      "feedback": "Nice implementation of Conway’s Game of Life in Python. The devlogs clearly show your development process and improvements over time. Adding more visual polish and interactive controls could make the project even better.",
+      "votedBy": "U0AF05FTK51",
+      "timestamp": "2026-03-11T06:17:50.633Z",
+      "slackTs": "1773209870.633229"
+    },
+    {
+      "project": "BTify.",
+      "feedback": "Nice concept of creating a web-based interface for managing router devices. The demo loads and shows a clean GUI layout. Adding more interactive features and clearer device information could make the project even better.",
+      "votedBy": "U0AF05FTK51",
+      "timestamp": "2026-03-11T06:15:31.344Z",
+      "slackTs": "1773209731.344539"
+    },
+    {
+      "project": "Curve Crafter",
+      "feedback": "Not your fault but I wanted to point out the voting page doesn't render Markdown properly",
+      "votedBy": "U0AAVSGH3HC",
+      "timestamp": "2026-03-11T06:13:31.021Z",
+      "slackTs": "1773209611.021479"
+    },
+    {
+      "project": "Discord WakeonLan",
+      "feedback": "Nice idea to control Wake-on-LAN through a Discord bot. The concept is useful for remote PC management and the devlogs show clear progress during development.",
+      "votedBy": "U0AF05FTK51",
+      "timestamp": "2026-03-11T06:12:20.168Z",
+      "slackTs": "1773209540.168079"
+    },
+    {
+      "project": "Pomodoro timer",
+      "feedback": "Another timer. A pretty nice one,I saw that em dash in the readme (I write with these too but it made me take a closer look at your project link because the voting page doesn't show the AI declaration for some reason)",
+      "votedBy": "U0AAVSGH3HC",
+      "timestamp": "2026-03-11T06:11:31.553Z",
+      "slackTs": "1773209491.553419"
+    },
+    {
+      "project": "Circurity",
+      "feedback": "Good for porting a basic EveryCircuit-like project to the web! I'll add 1 score for usability because someone else reported the same mobile issue I got",
+      "votedBy": "U0AAVSGH3HC",
+      "timestamp": "2026-03-11T06:07:53.683Z",
+      "slackTs": "1773209273.683159"
+    },
+    {
+      "project": "construct-watcher",
+      "feedback": "It says \"Drat, your login didn't work\" when I open in the Slack Android app. Is there some ID in the URL that's different for every Slack account or is that an internal issue?",
+      "votedBy": "U0AAVSGH3HC",
+      "timestamp": "2026-03-11T06:05:25.988Z",
+      "slackTs": "1773209125.988839"
+    },
+    {
+      "project": "PetRock game",
+      "feedback": "The idea of a pet rock game is fun and creative for a beginner project. However, when I tried to open the demo it showed a “429 Too Many Requests” error, so I could not properly test the game.",
+      "votedBy": "U0AF05FTK51",
+      "timestamp": "2026-03-11T06:03:44.957Z",
+      "slackTs": "1773209024.957709"
+    },
+    {
+      "project": "Why is my Slack ID?",
+      "feedback": "This is the funniest channel name a bot has ever used in this server! Haha",
+      "votedBy": "U0AAVSGH3HC",
+      "timestamp": "2026-03-11T06:01:54.289Z",
+      "slackTs": "1773208914.289629"
+    },
+    {
+      "project": "Internet Speedtest",
+      "feedback": "Clean and useful speed test web app with thoughtful handling of accuracy issues. Good learning project and nice use of Cloudflare workers.",
+      "votedBy": "U0A58U4MHC2",
+      "timestamp": "2026-03-11T06:01:46.679Z",
+      "slackTs": "1773208906.679909"
+    },
+    {
+      "project": "Aether-Motive:VELOCITY",
+      "feedback": "Interesting 2.5D horror game concept with enemy AI and chase mechanics. The devlogs show clear progress and effort during development. The project could be improved with better optimization and smoother performance.",
+      "votedBy": "U0AF05FTK51",
+      "timestamp": "2026-03-11T06:00:07.121Z",
+      "slackTs": "1773208807.121639"
+    },
+    {
+      "project": "Conway's Game of Life",
+      "feedback": "Nice Python implementation of Conway’s Game of Life with a functional web UI. Good learning project with clear progress shown through devlogs.",
+      "votedBy": "U0A58U4MHC2",
+      "timestamp": "2026-03-11T05:59:57.375Z",
+      "slackTs": "1773208797.375149"
+    },
+    {
+      "project": "BTify.",
+      "feedback": "Clean idea and solid Python work, but still feels unfinished. GUI concept is cool, yet usability and polish need more refinement.",
+      "votedBy": "U0A58U4MHC2",
+      "timestamp": "2026-03-11T05:58:28.693Z",
+      "slackTs": "1773208708.693189"
+    },
+    {
+      "project": "Fortune Teller",
+      "feedback": "This is a fun idea for a browser extension with random fortune messages. However, the demo redirects to GitHub and requires downloading the extension, so it’s harder to quickly test. A live preview would make it easier for users to try.",
+      "votedBy": "U0AF05FTK51",
+      "timestamp": "2026-03-11T05:57:12.561Z",
+      "slackTs": "1773208632.561979"
+    },
+    {
+      "project": "Discord WakeonLan",
+      "feedback": "I truly enjoyed that you recorded all aspects of your development, including the errors. Your project was excellent, good work!",
+      "votedBy": "U0A58U4MHC2",
+      "timestamp": "2026-03-11T05:56:27.471Z",
+      "slackTs": "1773208587.471489"
+    },
+    {
+      "project": "Internet Speedtest",
+      "feedback": "We both know this is inaccurate, but it doesn't seem useful when it's like that, sorry",
+      "votedBy": "U0AAVSGH3HC",
+      "timestamp": "2026-03-11T05:55:21.484Z",
+      "slackTs": "1773208521.484829"
+    },
+    {
+      "project": "PetRock game",
+      "feedback": "I really enjoyed playing this game. Perhaps the development log could be improved a bit.",
+      "votedBy": "U0A58U4MHC2",
+      "timestamp": "2026-03-11T05:54:20.524Z",
+      "slackTs": "1773208460.524869"
+    },
+    {
+      "project": "Aether-Motive:VELOCITY",
+      "feedback": "I really liked your project! It's super fun to play, and I also liked how you share your progress in devlogs. Great job!",
+      "votedBy": "U0A58U4MHC2",
+      "timestamp": "2026-03-11T05:52:17.795Z",
+      "slackTs": "1773208337.795379"
+    },
+    {
+      "project": "Telegradroid",
+      "feedback": "The project idea looks interesting, but when I try to open the demo it asks me to download something first. Because of this, I’m unable to properly test the demo before voting. It would be better if the demo could be accessed directly in the browser without requiring a download.",
+      "votedBy": "U0AF05FTK51",
+      "timestamp": "2026-03-11T05:51:52.250Z",
+      "slackTs": "1773208312.250409"
+    },
+    {
+      "project": "Fortune Teller",
+      "feedback": "I'm not able too use the project plus I don't know how you managed to publish an extension in 35 minutes.",
+      "votedBy": "U0A58U4MHC2",
+      "timestamp": "2026-03-11T05:49:59.334Z",
+      "slackTs": "1773208199.334909"
+    },
+    {
+      "project": "Conway's Game of Life",
+      "feedback": "A classic, the nice thing about this game is it doesn't have an expiry date :) or any reliance with an online server",
+      "votedBy": "U0AAVSGH3HC",
+      "timestamp": "2026-03-11T05:49:04.129Z",
+      "slackTs": "1773208144.129079"
+    },
+    {
+      "project": "BTify.",
+      "feedback": "One of the much more creative projects! 9/9 for originality but it's pretty clunky on mobile",
+      "votedBy": "U0AAVSGH3HC",
+      "timestamp": "2026-03-11T05:47:51.166Z",
+      "slackTs": "1773208071.166559"
+    },
+    {
+      "project": "Telegradroid",
+      "feedback": "When I sent message to the bot nothing happened. I don't know if I'm doing soemthing wrong but good work on the devlog.",
+      "votedBy": "U0A58U4MHC2",
+      "timestamp": "2026-03-11T05:47:18.856Z",
+      "slackTs": "1773208038.856079"
+    },
+    {
+      "project": "Discord WakeonLan",
+      "feedback": "The all caps may be useful for the word important on your readme but it doesn't need to be in every section",
+      "votedBy": "U0AAVSGH3HC",
+      "timestamp": "2026-03-11T05:44:30.620Z",
+      "slackTs": "1773207870.620899"
+    },
+    {
+      "project": "PetRock game",
+      "feedback": "I would like a squishy rock without the pixelation in real life, aww :smiling_face_with_3_hearts:",
+      "votedBy": "U0AAVSGH3HC",
+      "timestamp": "2026-03-11T05:36:20.830Z",
+      "slackTs": "1773207380.830889"
+    },
+    {
+      "project": "Aether-Motive:VELOCITY",
+      "feedback": "MakeCode and mazes… haven't heard of these in a long time",
+      "votedBy": "U0AAVSGH3HC",
+      "timestamp": "2026-03-11T05:33:15.543Z",
+      "slackTs": "1773207195.543529"
+    },
     {
       "project": "Fortune Teller",
       "feedback": "<https://github.com/FarciarzYT/Fortune-Teller/blob/63dd2c40c471300cec19a467cea09c8bf813fa62/background.js#L10> because this extension doesn't actually interact with the Flavortown website I see no reason for it to be in the extensions directory. . But your fortune options are quite nice",
