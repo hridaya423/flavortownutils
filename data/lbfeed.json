@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-11T19:27:00.347Z",
+  "lastUpdated": "2026-03-11T20:00:29.571Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -17894,6 +17894,14 @@
         "balance": 18,
         "reason": "Hello, Kitchen!",
         "reasonType": "achievement",
+        "userId": "U08SS88NYMP"
+      },
+      {
+        "ts": "2026-03-11T19:50:21.966Z",
+        "delta": 9,
+        "balance": 27,
+        "reason": "ship event payout",
+        "reasonType": "",
         "userId": "U08SS88NYMP"
       }
     ],
@@ -37105,6 +37113,14 @@
         "delta": 285,
         "balance": 303,
         "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U0A3U5X0QUE"
+      },
+      {
+        "ts": "2026-03-11T19:24:32.730Z",
+        "delta": -88,
+        "balance": 215,
+        "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0A3U5X0QUE"
       }
@@ -68739,6 +68755,18 @@
     ]
   },
   "users": {
+    "U08SS88NYMP": {
+      "id": "U08SS88NYMP",
+      "username": "zak",
+      "displayName": "Zak",
+      "avatar": "https://avatars.slack-edge.com/2026-03-05/10644688383236_1bbfd00135ded150c244_72.jpg"
+    },
+    "U0A3U5X0QUE": {
+      "id": "U0A3U5X0QUE",
+      "username": "begmetovrustambek",
+      "displayName": "Fish Jr.",
+      "avatar": "https://avatars.slack-edge.com/2026-01-22/10381259128640_eb99c53625608ef13dd8_72.png"
+    },
     "U0A72EJABAA": {
       "id": "U0A72EJABAA",
       "username": "theodarville",
@@ -68940,12 +68968,6 @@
       "id": "U091HG1TP6K",
       "username": "kyle.bendall",
       "avatar": "https://avatars.slack-edge.com/2025-12-27/10222476722736_6cdf723bd5ac23558306_72.png"
-    },
-    "U0A3U5X0QUE": {
-      "id": "U0A3U5X0QUE",
-      "username": "begmetovrustambek",
-      "displayName": "Fish Jr.",
-      "avatar": "https://avatars.slack-edge.com/2026-01-22/10381259128640_eb99c53625608ef13dd8_72.png"
     },
     "U09GESRAC8J": {
       "id": "U09GESRAC8J",
@@ -69992,12 +70014,6 @@
       "username": "sukarthacharya",
       "displayName": "Sukarth Acharya",
       "avatar": "https://avatars.slack-edge.com/2025-06-19/9076073937314_87578b0024dd94e01e50_72.jpg"
-    },
-    "U08SS88NYMP": {
-      "id": "U08SS88NYMP",
-      "username": "zak",
-      "displayName": "Zak",
-      "avatar": "https://avatars.slack-edge.com/2026-03-05/10644688383236_1bbfd00135ded150c244_72.jpg"
     },
     "U0A4SQJ7CJY": {
       "id": "U0A4SQJ7CJY",
