@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-11T22:29:37.732Z",
+  "lastUpdated": "2026-03-11T22:54:27.802Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -6014,6 +6014,54 @@
         "ts": "2026-02-20T20:14:25.778Z",
         "delta": -40,
         "balance": 152,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U07MJ75J4PK"
+      },
+      {
+        "ts": "2026-03-11T22:44:37.564Z",
+        "delta": 10,
+        "balance": 162,
+        "reason": "Line Cook",
+        "reasonType": "achievement",
+        "userId": "U07MJ75J4PK"
+      },
+      {
+        "ts": "2026-03-11T22:44:37.640Z",
+        "delta": 3,
+        "balance": 165,
+        "reason": "Order Up!",
+        "reasonType": "achievement",
+        "userId": "U07MJ75J4PK"
+      },
+      {
+        "ts": "2026-03-11T22:44:37.658Z",
+        "delta": 3,
+        "balance": 168,
+        "reason": "Michelin Star",
+        "reasonType": "achievement",
+        "userId": "U07MJ75J4PK"
+      },
+      {
+        "ts": "2026-03-11T22:44:37.716Z",
+        "delta": 15,
+        "balance": 183,
+        "reason": "Cookbook Author",
+        "reasonType": "achievement",
+        "userId": "U07MJ75J4PK"
+      },
+      {
+        "ts": "2026-03-11T22:48:27.971Z",
+        "delta": -111,
+        "balance": 72,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U07MJ75J4PK"
+      },
+      {
+        "ts": "2026-03-11T22:48:50.592Z",
+        "delta": -60,
+        "balance": 12,
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U07MJ75J4PK"
@@ -68797,6 +68845,11 @@
     ]
   },
   "users": {
+    "U07MJ75J4PK": {
+      "id": "U07MJ75J4PK",
+      "username": "kasen.engel",
+      "avatar": "https://avatars.slack-edge.com/2026-01-08/10258630961302_bad04ea72ec7ac6c2463_72.png"
+    },
     "U09428VMA4R": {
       "id": "U09428VMA4R",
       "username": "contact709",
@@ -71103,11 +71156,6 @@
       "username": "avycado13",
       "displayName": "Avy C",
       "avatar": "https://secure.gravatar.com/avatar/275548372ba8b731035de746f01cb997.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0020-72.png"
-    },
-    "U07MJ75J4PK": {
-      "id": "U07MJ75J4PK",
-      "username": "kasen.engel",
-      "avatar": "https://avatars.slack-edge.com/2026-01-08/10258630961302_bad04ea72ec7ac6c2463_72.png"
     },
     "U09CBF0DS4F": {
       "id": "U09CBF0DS4F",
