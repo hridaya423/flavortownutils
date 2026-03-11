@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-11T22:54:27.802Z",
+  "lastUpdated": "2026-03-11T23:29:07.451Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -6062,6 +6062,22 @@
         "ts": "2026-03-11T22:48:50.592Z",
         "delta": -60,
         "balance": 12,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U07MJ75J4PK"
+      },
+      {
+        "ts": "2026-03-11T22:54:44.337Z",
+        "delta": 111,
+        "balance": 123,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U07MJ75J4PK"
+      },
+      {
+        "ts": "2026-03-11T22:54:46.804Z",
+        "delta": 60,
+        "balance": 183,
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U07MJ75J4PK"

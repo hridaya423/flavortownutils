@@ -1,7 +1,28 @@
 {
-  "lastUpdated": "2026-03-11T22:27:55.360Z",
-  "totalVotes": 7468,
+  "lastUpdated": "2026-03-11T23:27:17.864Z",
+  "totalVotes": 7471,
   "votes": [
+    {
+      "project": "MEDLAB",
+      "feedback": "It's a pretty interesting website, but I would 1,000% put a disclaimer somewhere that this is not medical advice and to seek medical help if you believe something is seriously wrong. As for the design of the site itself, the top bar is weirdly off-center and the continue button is really hard to find. Other than those minor nitpicks, I thought it was really interesting and cool!",
+      "votedBy": "U07EB1FUPRP",
+      "timestamp": "2026-03-11T23:14:07.184Z",
+      "slackTs": "1773270847.184559"
+    },
+    {
+      "project": "The Great Space Timeline",
+      "feedback": "For a first project, it relies a bit too much on vibecoding. All the icons are AI generated with html shapes, all the info on the pages are AI generated, I can only assume most of the remaining text was AI generated too because of stuff like \"Contact for a full bibliography\" and \"Links and citations available on request.\" I'm assuming you don't plan on sending a list of links to anyone who emails you lol. Don't give up though. The fact you are willing to learn means you are on the right track!",
+      "votedBy": "U07EB1FUPRP",
+      "timestamp": "2026-03-11T23:00:35.450Z",
+      "slackTs": "1773270035.450389"
+    },
+    {
+      "project": "GIMME VIDEO",
+      "feedback": "Nice downloader! A YouTube downloader was one of my first Hack Club ships back in the Arcade days. Yours has a lot more personality though :) Great job",
+      "votedBy": "U07EB1FUPRP",
+      "timestamp": "2026-03-11T22:55:44.964Z",
+      "slackTs": "1773269744.964229"
+    },
     {
       "project": "Particle Simulation - Learning OpenGL and C++",
       "feedback": "I'm not sure what you meant by the project not being demo-able. It opened and worked just fine for me. The particles bounce around the wireframe sphere at a buttery smooth 240 frames per second. My only complaint in terms of usability is that it traps your mouse with no way to escape. I had to Ctrl Alt Delete into task manager and end the process to close the program. Good on you for learning low-level programming and graphics API programming. I ought to do that myself",
