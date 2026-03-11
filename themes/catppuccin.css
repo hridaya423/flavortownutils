@@ -563,6 +563,22 @@ svg {
     background-color: var(--ctp-base) !important;
 }
 
+.projects-show__info-card {
+    background: var(--ctp-surface0) repeating-conic-gradient(from 0deg, rgba(203, 166, 247, 0.12) 0deg 90deg, transparent 90deg 180deg) !important;
+    border-color: var(--color-border) !important;
+}
+
+.projects-show__info-card-dismiss-button {
+    background-color: var(--ctp-surface1) !important;
+    color: var(--ctp-text) !important;
+    border-color: var(--color-border) !important;
+}
+
+.projects-show__info-card-dismiss-button:hover {
+    background-color: var(--ctp-surface2) !important;
+    color: var(--ctp-accent) !important;
+}
+
 .projects-show__timeline {
     background-color: transparent !important;
 }

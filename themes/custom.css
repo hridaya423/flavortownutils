@@ -560,6 +560,22 @@ svg {
     background-color: var(--custom-bg-base) !important;
 }
 
+.projects-show__info-card {
+    background: var(--custom-bg-surface) repeating-conic-gradient(from 0deg, color-mix(in srgb, var(--custom-accent) 12%, transparent) 0deg 90deg, transparent 90deg 180deg) !important;
+    border-color: var(--color-border) !important;
+}
+
+.projects-show__info-card-dismiss-button {
+    background-color: var(--custom-surface-hover) !important;
+    color: var(--custom-text-primary) !important;
+    border-color: var(--color-border) !important;
+}
+
+.projects-show__info-card-dismiss-button:hover {
+    background-color: var(--custom-accent) !important;
+    color: var(--custom-bg-base) !important;
+}
+
 .projects-show__timeline {
     background-color: transparent !important;
 }

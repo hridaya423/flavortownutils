@@ -525,6 +525,22 @@ svg {
     background-color: var(--overcooked-abyss) !important;
 }
 
+.projects-show__info-card {
+    background: var(--overcooked-dark) repeating-conic-gradient(from 0deg, rgba(237, 137, 54, 0.13) 0deg 90deg, transparent 90deg 180deg) !important;
+    border-color: var(--color-border) !important;
+}
+
+.projects-show__info-card-dismiss-button {
+    background-color: var(--overcooked-mid) !important;
+    color: var(--overcooked-white) !important;
+    border-color: var(--color-border) !important;
+}
+
+.projects-show__info-card-dismiss-button:hover {
+    background-color: var(--overcooked-cyan) !important;
+    color: var(--overcooked-abyss) !important;
+}
+
 .projects-show__timeline {
     background-color: transparent !important;
 }
