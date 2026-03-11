@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-11T06:57:31.087Z",
+  "lastUpdated": "2026-03-11T07:47:12.290Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -48259,6 +48259,14 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0A6U1V879V"
+      },
+      {
+        "ts": "2026-03-11T07:43:45.931Z",
+        "delta": -346,
+        "balance": 62,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A6U1V879V"
       }
     ],
     "u0a6u6qbjg7": [
@@ -58847,6 +58855,14 @@
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U0A7QRVE0EB"
+      },
+      {
+        "ts": "2026-03-11T07:09:40.445Z",
+        "delta": -175,
+        "balance": 8,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A7QRVE0EB"
       }
     ],
     "u0a7r62v3rr": [
@@ -68321,6 +68337,18 @@
     ]
   },
   "users": {
+    "U0A6U1V879V": {
+      "id": "U0A6U1V879V",
+      "username": "abtheinnovator",
+      "displayName": "abtheinnovator",
+      "avatar": "https://secure.gravatar.com/avatar/7b7faa3b1aadcebeb63cd8dcdb82d74e.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0020-72.png"
+    },
+    "U0A7QRVE0EB": {
+      "id": "U0A7QRVE0EB",
+      "username": "takshcpatel",
+      "displayName": "Crazy Taxi",
+      "avatar": "https://avatars.slack-edge.com/2026-01-17/10327481653681_d5dc06211d5590cb96c3_72.jpg"
+    },
     "U0AEP2DSQ11": {
       "id": "U0AEP2DSQ11",
       "username": "shreerangbhavsar912",
@@ -70041,12 +70069,6 @@
       "displayName": "Khaled Wael",
       "avatar": "https://avatars.slack-edge.com/2025-06-17/9089247612208_99b4d84b87baa9e6036d_72.png"
     },
-    "U0A6U1V879V": {
-      "id": "U0A6U1V879V",
-      "username": "abtheinnovator",
-      "displayName": "abtheinnovator",
-      "avatar": "https://secure.gravatar.com/avatar/7b7faa3b1aadcebeb63cd8dcdb82d74e.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0020-72.png"
-    },
     "U091NS83K98": {
       "id": "U091NS83K98",
       "username": "sakshamgoel1107",
@@ -71353,12 +71375,6 @@
       "username": "tue.le",
       "displayName": "SpeedySchweppers",
       "avatar": "https://secure.gravatar.com/avatar/a9f41cf458aa71c4720f87bc3b4494b3.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0023-72.png"
-    },
-    "U0A7QRVE0EB": {
-      "id": "U0A7QRVE0EB",
-      "username": "takshcpatel",
-      "displayName": "Crazy Taxi",
-      "avatar": "https://avatars.slack-edge.com/2026-01-17/10327481653681_d5dc06211d5590cb96c3_72.jpg"
     },
     "U0801PU0MTQ": {
       "id": "U0801PU0MTQ",
