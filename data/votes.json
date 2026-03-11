@@ -1,7 +1,21 @@
 {
-  "lastUpdated": "2026-03-11T17:27:02.573Z",
-  "totalVotes": 7460,
+  "lastUpdated": "2026-03-11T18:11:00.300Z",
+  "totalVotes": 7462,
   "votes": [
+    {
+      "project": "Rode",
+      "feedback": "I like the devlogs and the technicality, however I suppose a demo vid would be better",
+      "votedBy": "U07GLQY6UN4",
+      "timestamp": "2026-03-11T17:40:34.807Z",
+      "slackTs": "1773250834.807359"
+    },
+    {
+      "project": "Gnitarepo",
+      "feedback": "pretty technical project, however the demo and presentation isnt good",
+      "votedBy": "U07GLQY6UN4",
+      "timestamp": "2026-03-11T17:38:49.070Z",
+      "slackTs": "1773250729.070129"
+    },
     {
       "project": "PasswordNoProb",
       "feedback": "pretty cool! maybe you could add more security features, perhaps encrypting the passwords instead of just storing them in a json database?",
@@ -53923,6 +53937,12 @@
       "username": "leviwarrendumas91908",
       "displayName": "CoolBean",
       "avatar": "https://avatars.slack-edge.com/2024-07-25/7462962929607_2ead44059bb5c44930a7_72.png"
+    },
+    "U07GLQY6UN4": {
+      "id": "U07GLQY6UN4",
+      "username": "ashai.daamin",
+      "displayName": "daamin",
+      "avatar": "https://avatars.slack-edge.com/2026-03-08/10654529852578_b6642754beb8b66ecc09_72.jpg"
     }
   }
 }
