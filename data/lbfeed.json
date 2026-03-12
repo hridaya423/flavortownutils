@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-12T21:35:39.498Z",
+  "lastUpdated": "2026-03-12T22:29:18.876Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -10424,6 +10424,14 @@
         "balance": 15,
         "reason": "Order Up!",
         "reasonType": "achievement",
+        "userId": "U082DRXPMF1"
+      },
+      {
+        "ts": "2026-03-12T22:16:01.940Z",
+        "delta": 14,
+        "balance": 29,
+        "reason": "ship event payout",
+        "reasonType": "",
         "userId": "U082DRXPMF1"
       }
     ],
@@ -69633,6 +69641,12 @@
     ]
   },
   "users": {
+    "U082DRXPMF1": {
+      "id": "U082DRXPMF1",
+      "username": "s30aem",
+      "displayName": "Karim",
+      "avatar": "https://avatars.slack-edge.com/2026-03-07/10656046164132_67fc05382fb182557180_72.jpg"
+    },
     "U091Q62131A": {
       "id": "U091Q62131A",
       "username": "darius",
@@ -70366,12 +70380,6 @@
       "id": "U092SRUUSTS",
       "username": "birajbh65",
       "avatar": "https://secure.gravatar.com/avatar/64e5f6b68ed00deb626aa085dcb1c207.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0005-72.png"
-    },
-    "U082DRXPMF1": {
-      "id": "U082DRXPMF1",
-      "username": "s30aem",
-      "displayName": "Karim",
-      "avatar": "https://avatars.slack-edge.com/2026-03-07/10656046164132_67fc05382fb182557180_72.jpg"
     },
     "U0824G9PTFE": {
       "id": "U0824G9PTFE",
