@@ -1456,122 +1456,6 @@
     height: 100% !important;
 }
 
-.table-data {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    background: #fff;
-    border: 2px solid #e6d5c3;
-    border-radius: 16px;
-    margin: 20px 0;
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(93, 78, 55, 0.05);
-}
-
-.table-data thead th {
-    background: #efe6d5;
-    color: #5d4e37;
-    font-weight: 700;
-    text-transform: uppercase;
-    font-size: 0.85em;
-    letter-spacing: 0.05em;
-    padding: 16px 20px;
-    text-align: left;
-    border-bottom: 2px solid #e6d5c3;
-}
-
-.table-data tbody td {
-    padding: 14px 20px;
-    border-bottom: 1px solid #f0e6d9;
-    color: #5d4e37;
-    font-size: 0.95em;
-    vertical-align: middle;
-}
-
-.table-data tbody tr:last-child td {
-    border-bottom: none;
-}
-
-.table-data tbody tr:hover td {
-    background: #fff8f0;
-}
-
-.pagination {
-    display: flex;
-    justify-content: center;
-    margin: 30px 0;
-}
-
-.pagy.series-nav {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    flex-wrap: wrap;
-    background: #fff;
-    padding: 8px 16px;
-    border-radius: 999px;
-    border: 2px solid #e6d5c3;
-    box-shadow: 0 4px 12px rgba(93, 78, 55, 0.05);
-}
-
-.pagy.series-nav a,
-.pagy.series-nav span {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 32px;
-    height: 32px;
-    padding: 0 6px;
-    border-radius: 50%;
-    text-decoration: none;
-    color: #8b7355;
-    font-weight: 600;
-    transition: all 0.2s ease;
-}
-
-.pagy.series-nav a:hover:not([disabled]) {
-    background: #f0e6d9;
-    color: #5d4e37;
-}
-
-.pagy.series-nav a[aria-current="page"] {
-    background: #5d4e37;
-    color: #fff;
-}
-
-.pagy.series-nav a[aria-disabled="true"] {
-    opacity: 0.4;
-    cursor: default;
-}
-
-.form-basic {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 24px;
-}
-
-.input-primary {
-    flex: 1;
-    padding: 12px 20px;
-    border: 2px solid #e6d5c3;
-    border-radius: 12px;
-    font-size: 1em;
-    color: #5d4e37;
-    transition: all 0.2s ease;
-}
-
-.input-primary:focus {
-    border-color: #c9a86c;
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(201, 168, 108, 0.2);
-}
-
-.btn-primary.slim {
-    padding: 0 24px;
-    border-radius: 12px;
-}
-
-
 .shop-item-card {
     flex-direction: column !important;
 }
@@ -2156,146 +2040,239 @@
     border: 2px solid #90caf9;
 }
 
-.card {
-    background: #ffffff !important;
-    border: 2px solid #e6d5c3 !important;
-    border-radius: 12px !important;
-    padding: 12px !important;
-    margin-bottom: 12px !important;
-    box-shadow: 0 4px 12px rgba(93, 78, 55, 0.05) !important;
+.flavortown-users-hidden {
+    display: none !important;
 }
 
-.card h2 {
-    color: #5d4e37 !important;
-    margin-top: 0 !important;
-    font-size: 1.25em !important;
-    border-bottom: 2px solid #e6d5c3 !important;
-    padding-bottom: 8px !important;
-    margin-bottom: 12px !important;
+.flavortown-users-page {
+    margin: 24px 0 32px 0;
 }
 
-.card pre {
-    padding: 8px !important;
-    margin: 8px 0 !important;
-    white-space: pre-wrap !important;
+.flavortown-users-search-form {
+    max-width: 1120px;
+    margin: 0 auto 14px auto;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
-.text-muted {
-    color: #8b7355 !important;
-    font-style: italic !important;
+.flavortown-users-search-input-wrapper {
+    flex: 1;
+    min-width: 240px;
+    background: var(--color-surface, #fff);
+    border: 1px solid var(--color-border, #d8c9ba);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
 }
 
-.form-control {
-    width: 100% !important;
-    padding: 12px 16px !important;
-    border: 2px solid #e6d5c3 !important;
-    border-radius: 12px !important;
-    background: #ffffff !important;
-    color: #5d4e37 !important;
-    font-size: 0.95em !important;
-    transition: all 0.2s ease !important;
+.flavortown-users-search-input-wrapper .flavortown-search-input {
+    color: var(--color-text-primary, #5d4e37);
 }
 
-.form-control:focus {
-    border-color: #c9a86c !important;
-    outline: none !important;
-    box-shadow: 0 0 0 3px rgba(201, 168, 108, 0.2) !important;
+.flavortown-users-search-input-wrapper .flavortown-search-input::placeholder {
+    color: var(--color-text-muted, #9f8f79);
 }
 
-.badge {
-    padding: 6px 12px !important;
-    border-radius: 50px !important;
-    font-size: 0.85em !important;
-    font-weight: 700 !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.05em !important;
+.flavortown-users-search-input-wrapper .flavortown-search-icon {
+    color: var(--color-text-muted, #9f8f79);
 }
 
-.badge-pending {
-    background: #fff8e1 !important;
-    color: #b7791f !important;
-    border: 1px solid #fbd38d !important;
+.flavortown-users-search-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
 }
 
-.badge-reviewed {
-    background: #e6fffa !important;
-    color: #2c7a7b !important;
-    border: 1px solid #81e6d9 !important;
+.flavortown-users-clear-btn {
+    border: 1px solid var(--color-border, #d8c9ba);
+    background: var(--color-surface, #fff);
+    color: var(--color-text-secondary, #6a5846);
 }
 
-.badge-dismissed {
-    background: #edf2f7 !important;
-    color: #4a5568 !important;
-    border: 1px solid #cbd5e0 !important;
+.flavortown-users-status {
+    max-width: 1120px;
+    margin: 0 auto 12px auto;
+    padding: 8px 10px;
+    font-size: 0.9em;
+    font-weight: 600;
+    color: var(--color-text-muted, #7a6652);
 }
 
-.btn-secondary {
-    background: #f0e6d9 !important;
-    color: #5d4e37 !important;
-    border: none !important;
-    padding: 8px 16px !important;
-    border-radius: 8px !important;
-    font-weight: 600 !important;
-    text-decoration: none !important;
-    transition: all 0.2s ease !important;
-    cursor: pointer !important;
-    display: inline-block !important;
+.flavortown-users-status[data-state="loading"] {
+    color: var(--color-text-secondary, #8a6a2f);
 }
 
-.btn-secondary:hover {
-    background: #e6d5c3 !important;
-    transform: translateY(-1px) !important;
+.flavortown-users-status[data-state="ok"] {
+    color: var(--color-text-primary, #2f7a43);
 }
 
-.btn-primary.slim,
-.btn-secondary.slim {
-    padding: 6px 12px !important;
-    font-size: 0.9em !important;
+.flavortown-users-status[data-state="warn"] {
+    color: var(--color-accent, #9a6200);
 }
 
-.action-leaderboard {
-    max-width: 100% !important;
-    background: #ffffff !important;
-    border: 2px solid #e6d5c3 !important;
-    border-radius: 16px !important;
-    box-shadow: 0 4px 12px rgba(93, 78, 55, 0.05) !important;
+.flavortown-users-status[data-state="error"] {
+    color: var(--color-red-500, #b63f32);
 }
 
-.leaderboard-table th {
-    border-bottom: 2px solid #e6d5c3 !important;
-    color: #5d4e37 !important;
+.flavortown-users-grid {
+    max-width: 1320px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 420px));
+    justify-content: center;
+    gap: 16px;
 }
 
-.leaderboard-table tr.highlight {
-    background: #fff8e1 !important;
+.flavortown-user-card {
+    background: var(--color-surface, #fff);
+    border: 1px solid var(--color-border, #e6d5c3);
+    border-radius: 18px;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
-.leaderboard-table tr:hover {
-    background: #fff8f0 !important;
+.flavortown-user-card__content {
+    padding: 14px 14px 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
 }
 
-.leaderboard-table .stat-approved {
-    color: #2e7d32 !important;
+.flavortown-user-card__name {
+    display: inline-block;
+    max-width: 100%;
+    text-decoration: none;
+    color: var(--color-text-primary, #5d4e37);
+    font-weight: 700;
+    font-size: 1.2em;
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
-.leaderboard-table .stat-rejected {
-    color: #c62828 !important;
+.flavortown-user-card__name:hover {
+    color: var(--color-accent, #c9a86c);
 }
 
-.leaderboard-table .stat-on_hold {
-    color: #ef6c00 !important;
+.flavortown-user-card__profile-link {
+    color: var(--color-text-muted, #8b7355);
+    font-size: 0.82em;
+    text-decoration: none;
+    font-weight: 600;
 }
 
-.leaderboard-table .stat-fulfilled {
-    color: #1565c0 !important;
+.flavortown-user-card__stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 7px;
+    margin-top: auto;
 }
 
-.leaderboard-table .stat-total {
-    color: #5d4e37 !important;
+.flavortown-user-card__stat {
+    background: var(--color-cream, #fff9f2);
+    border: 1px solid var(--color-border, #d8c9ba);
+    border-radius: 10px;
+    padding: 7px;
+    min-width: 0;
 }
- 
-.shop-order__details .shop-order__address .dropdown__button .dropdown__selected {
-    background-color: var(--color-background, #fff) !important;
+
+.flavortown-user-card__stat-value {
+    display: block;
+    font-size: 0.95em;
+    color: var(--color-text-primary, #5d4e37);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.flavortown-user-card__stat-label {
+    display: block;
+    margin-top: 2px;
+    font-size: 0.72em;
+    color: var(--color-text-muted, #8b7355);
+    letter-spacing: 0.01em;
+}
+
+.flavortown-user-card__media {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: linear-gradient(155deg, rgba(0, 0, 0, 0.08), transparent 62%);
+}
+
+.flavortown-user-card__avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.35s ease;
+}
+
+.flavortown-user-card:hover .flavortown-user-card__avatar {
+    transform: scale(1.035);
+}
+
+.flavortown-user-card__avatar-fallback {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.8em;
+    font-weight: 700;
+    color: var(--color-text-primary, #5d4e37);
+    background: var(--color-cream-dark, #f0e7db);
+}
+
+.flavortown-users-pagination {
+    max-width: 1320px;
+    margin: 14px auto 0 auto;
+    display: flex;
+    justify-content: center;
+}
+
+@media (max-width: 720px) {
+    .flavortown-users-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .flavortown-users-search-actions {
+        width: 100%;
+    }
+
+    .flavortown-users-search-actions .btn {
+        flex: 1;
+    }
+
+    .flavortown-user-card__stats {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 560px) {
+    .flavortown-user-card__media {
+        aspect-ratio: 4 / 3;
+    }
+
+    .flavortown-user-card__stats {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 5px;
+    }
+
+    .flavortown-user-card__stat {
+        padding: 6px 5px;
+    }
+
+    .flavortown-user-card__stat-label {
+        font-size: 0.68em;
+    }
 }
 
 .shop-item-card__accessories-toggle {

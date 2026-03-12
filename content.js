@@ -130,6 +130,10 @@ const DEFAULT_COMMAND_PALETTE_SHORTCUT = /Mac|iPhone|iPad|iPod/i.test(navigator.
     : 'Ctrl+K';
 const PROJECT_TODO_DISABLED_KEY = 'flavortown_project_todos_disabled';
 const PROJECT_TODO_HIDDEN_KEY = 'flavortown_project_todos_hidden';
+const USERS_API_RATE_LIMIT = 5;
+const USERS_API_RATE_WINDOW_MS = 60 * 1000;
+const USERS_PROJECT_STATS_CONCURRENCY = 3;
+const USERS_TOTAL_PAGES_CACHE_KEY = 'flavortown_users_total_pages';
 const LOCAL_STORAGE_SYNC_KEYS = [
     'flavortown_progress_mode',
     'flavortown_projection_mode',
@@ -146,6 +150,8 @@ let isApplyingLocalStorageSync = false;
 let localStorageSyncEnabled = false;
 let localStoragePatched = false;
 let commandPaletteShortcut = parseShortcutString(DEFAULT_COMMAND_PALETTE_SHORTCUT);
+const usersProjectMinutesCache = new Map();
+const usersAggregateCache = new Map();
 const originalLocalStorageSetItem = localStorage.setItem.bind(localStorage);
 const originalLocalStorageRemoveItem = localStorage.removeItem.bind(localStorage);
 
@@ -3301,6 +3307,34 @@ function toAbsoluteUrl(pathOrUrl) {
     } catch (e) {
         return null;
     }
+}
+
+function createAsyncLimiter(maxConcurrent = 2) {
+    let active = 0;
+    const queue = [];
+
+    const runNext = () => {
+        if (active >= maxConcurrent) return;
+        const next = queue.shift();
+        if (!next) return;
+        active += 1;
+        next();
+    };
+
+    return (task) => new Promise((resolve, reject) => {
+        const execute = () => {
+            Promise.resolve()
+                .then(task)
+                .then(resolve, reject)
+                .finally(() => {
+                    active = Math.max(0, active - 1);
+                    runNext();
+                });
+        };
+
+        queue.push(execute);
+        runNext();
+    });
 }
 
 async function fetchApiKeyFromSettings() {
@@ -8112,6 +8146,469 @@ function addExploreSearch() {
     });
 }
 
+function addExploreUsersPage() {
+    if (!window.location.pathname.startsWith('/explore')) return;
+    if (document.querySelector('.flavortown-users-nav')) return;
+
+    captureApiKey();
+
+    const exploreRoot = document.querySelector('.explore');
+    const exploreNav = document.querySelector('.explore__nav');
+    if (!exploreRoot || !exploreNav) return;
+
+    const desktopNav = exploreNav.querySelector('.explore__nav--type.explore__nav--desktop');
+    if (!desktopNav) return;
+
+    const usersNavItem = document.createElement('a');
+    usersNavItem.href = '#';
+    usersNavItem.className = 'explore__nav-component flavortown-users-nav';
+    usersNavItem.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        Users
+    `;
+    desktopNav.appendChild(usersNavItem);
+
+    const usersPage = document.createElement('section');
+    usersPage.className = 'flavortown-users-page';
+    usersPage.style.display = 'none';
+    usersPage.innerHTML = `
+        <form class="flavortown-users-search-form" autocomplete="off">
+            <div class="flavortown-search-input-wrapper flavortown-users-search-input-wrapper">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="flavortown-search-icon"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" class="flavortown-search-input flavortown-users-search-input" placeholder="Search users by display name or Slack ID" />
+            </div>
+            <div class="flavortown-users-search-actions">
+                <button type="submit" class="btn btn--brown flavortown-users-search-btn">Search</button>
+                <button type="button" class="btn flavortown-users-clear-btn">Clear</button>
+            </div>
+        </form>
+        <p class="flavortown-users-status" data-state="info">Search users to get started.</p>
+        <div class="flavortown-users-grid"></div>
+        <div class="flavortown-users-pagination">
+            <button type="button" class="btn btn--brown flavortown-users-load-more" style="display: none;">Load More Users</button>
+        </div>
+    `;
+    exploreRoot.appendChild(usersPage);
+
+    const searchForm = usersPage.querySelector('.flavortown-users-search-form');
+    const searchInput = usersPage.querySelector('.flavortown-users-search-input');
+    const searchBtn = usersPage.querySelector('.flavortown-users-search-btn');
+    const clearBtn = usersPage.querySelector('.flavortown-users-clear-btn');
+    const statusEl = usersPage.querySelector('.flavortown-users-status');
+    const usersGrid = usersPage.querySelector('.flavortown-users-grid');
+    const loadMoreBtn = usersPage.querySelector('.flavortown-users-load-more');
+
+    const hideSelectors = [
+        '.explore__header',
+        '.project-list__search-container',
+        '#project-list',
+        '.explore__pagination',
+        '.explore__list',
+        '.explore__nav--sort',
+        '.flavortown-explore-search'
+    ];
+
+    const runProjectStatsTask = createAsyncLimiter(USERS_PROJECT_STATS_CONCURRENCY);
+    let usersRequestTimestamps = [];
+    let currentQuery = '';
+    let currentPage = 1;
+    let nextPage = null;
+    let isLoading = false;
+    let hasLoadedInitial = false;
+    let usersModeActive = false;
+    let previousSelectedNav = null;
+    let knownTotalPages = (() => {
+        try {
+            const raw = localStorage.getItem(USERS_TOTAL_PAGES_CACHE_KEY);
+            const parsed = raw ? parseInt(raw, 10) : 1;
+            return Number.isFinite(parsed) && parsed > 0 ? parsed : 1;
+        } catch (e) {
+            return 1;
+        }
+    })();
+
+    const setStatus = (message, state = 'info') => {
+        statusEl.textContent = message;
+        statusEl.dataset.state = state;
+    };
+
+    const setKnownTotalPages = (value) => {
+        const parsed = parseInt(value, 10);
+        if (!Number.isFinite(parsed) || parsed <= 0) return;
+        knownTotalPages = parsed;
+        try {
+            localStorage.setItem(USERS_TOTAL_PAGES_CACHE_KEY, String(parsed));
+        } catch (e) {
+        }
+    };
+
+    const getRandomUsersPage = () => {
+        const maxPage = Math.max(1, knownTotalPages || 1);
+        return Math.floor(Math.random() * maxPage) + 1;
+    };
+
+    const getRateLimitWaitSeconds = () => {
+        const now = Date.now();
+        usersRequestTimestamps = usersRequestTimestamps.filter(ts => now - ts < USERS_API_RATE_WINDOW_MS);
+        if (usersRequestTimestamps.length < USERS_API_RATE_LIMIT) return 0;
+        const oldest = usersRequestTimestamps[0];
+        const waitMs = USERS_API_RATE_WINDOW_MS - (now - oldest);
+        return Math.max(1, Math.ceil(waitMs / 1000));
+    };
+
+    const normalizeCookies = (value) => {
+        if (typeof value === 'number' && isFinite(value)) return Math.max(0, Math.round(value));
+        if (typeof value === 'string') {
+            const parsed = parseNumberFromText(value);
+            if (parsed && isFinite(parsed)) return Math.max(0, Math.round(parsed));
+        }
+        return 0;
+    };
+
+    const normalizeProjectIds = (projectIds) => {
+        if (!Array.isArray(projectIds)) return [];
+        const unique = new Set();
+        projectIds.forEach(projectId => {
+            if (projectId === null || projectId === undefined) return;
+            const normalized = String(projectId).trim();
+            if (!normalized) return;
+            unique.add(normalized);
+        });
+        return Array.from(unique);
+    };
+
+    const fetchProjectMinutesForUsers = async (projectId) => {
+        const cacheKey = String(projectId);
+        if (usersProjectMinutesCache.has(cacheKey)) {
+            return usersProjectMinutesCache.get(cacheKey);
+        }
+
+        const statsPromise = runProjectStatsTask(async () => {
+            const stats = await fetchProjectUnshippedStats(cacheKey);
+            if (!stats || !isFinite(stats.totalMinutes)) return null;
+            return Math.max(0, Math.round(stats.totalMinutes));
+        });
+
+        usersProjectMinutesCache.set(cacheKey, statsPromise);
+        return statsPromise;
+    };
+
+    const fetchUserAggregateMinutes = async (user) => {
+        const projectIds = normalizeProjectIds(user.project_ids);
+        const aggregateKey = `${user.id}:${projectIds.join(',')}`;
+        if (usersAggregateCache.has(aggregateKey)) {
+            return usersAggregateCache.get(aggregateKey);
+        }
+
+        const aggregatePromise = (async () => {
+            if (!projectIds.length) {
+                return { totalMinutes: 0, failedProjects: 0, projectCount: 0 };
+            }
+
+            const minutesList = await Promise.all(projectIds.map(async (projectId) => {
+                try {
+                    return await fetchProjectMinutesForUsers(projectId);
+                } catch (e) {
+                    return null;
+                }
+            }));
+
+            let totalMinutes = 0;
+            let failedProjects = 0;
+
+            minutesList.forEach(minutes => {
+                if (typeof minutes === 'number' && isFinite(minutes)) {
+                    totalMinutes += Math.max(0, minutes);
+                } else {
+                    failedProjects += 1;
+                }
+            });
+
+            return {
+                totalMinutes: Math.max(0, Math.round(totalMinutes)),
+                failedProjects,
+                projectCount: projectIds.length
+            };
+        })();
+
+        usersAggregateCache.set(aggregateKey, aggregatePromise);
+        return aggregatePromise;
+    };
+
+    const setExploreSectionVisibility = (hidden) => {
+        hideSelectors.forEach(selector => {
+            document.querySelectorAll(selector).forEach(el => {
+                if (usersPage.contains(el)) return;
+                el.classList.toggle('flavortown-users-hidden', hidden);
+            });
+        });
+    };
+
+    const createStatBlock = (label, value, statKey = null) => {
+        const stat = document.createElement('div');
+        stat.className = 'flavortown-user-card__stat';
+
+        const valueEl = document.createElement('strong');
+        valueEl.className = 'flavortown-user-card__stat-value';
+        valueEl.textContent = value;
+        if (statKey) {
+            valueEl.dataset.stat = statKey;
+        }
+
+        const labelEl = document.createElement('span');
+        labelEl.className = 'flavortown-user-card__stat-label';
+        labelEl.textContent = label;
+
+        stat.appendChild(valueEl);
+        stat.appendChild(labelEl);
+        return stat;
+    };
+
+    const hydrateUserCard = async (user, card) => {
+        const hoursEl = card.querySelector('[data-stat="hours"]');
+        if (!hoursEl) return;
+
+        const projectIds = normalizeProjectIds(user.project_ids);
+        if (!projectIds.length) {
+            hoursEl.textContent = '0m';
+            return;
+        }
+
+        const aggregate = await fetchUserAggregateMinutes(user);
+        if (!document.body.contains(card)) return;
+
+        const totalMinutes = aggregate.totalMinutes || 0;
+        hoursEl.textContent = formatMinutesCompact(totalMinutes);
+    };
+
+    const createUserCard = (user) => {
+        const card = document.createElement('article');
+        card.className = 'flavortown-user-card';
+
+        const content = document.createElement('div');
+        content.className = 'flavortown-user-card__content';
+
+        const nameLink = document.createElement('a');
+        nameLink.className = 'flavortown-user-card__name';
+        nameLink.href = `/users/${user.id}`;
+        nameLink.target = '_blank';
+        nameLink.rel = 'noopener noreferrer';
+        nameLink.textContent = user.display_name || `User #${user.id}`;
+
+        const profileLink = document.createElement('a');
+        profileLink.className = 'flavortown-user-card__profile-link';
+        profileLink.href = `/users/${user.id}`;
+        profileLink.target = '_blank';
+        profileLink.rel = 'noopener noreferrer';
+        profileLink.textContent = 'Open profile';
+
+        const stats = document.createElement('div');
+        stats.className = 'flavortown-user-card__stats';
+        stats.appendChild(createStatBlock('Cookies', normalizeCookies(user.cookies).toLocaleString()));
+        stats.appendChild(createStatBlock('Projects', String(normalizeProjectIds(user.project_ids).length)));
+        stats.appendChild(createStatBlock('Hours', '...', 'hours'));
+
+        const mediaLink = document.createElement('a');
+        mediaLink.className = 'flavortown-user-card__media';
+        mediaLink.href = `/users/${user.id}`;
+        mediaLink.target = '_blank';
+        mediaLink.rel = 'noopener noreferrer';
+
+        if (user.avatar) {
+            const avatar = document.createElement('img');
+            avatar.className = 'flavortown-user-card__avatar';
+            avatar.alt = user.display_name ? `${user.display_name} avatar` : `User #${user.id} avatar`;
+            avatar.loading = 'lazy';
+            avatar.src = user.avatar;
+            avatar.referrerPolicy = 'no-referrer';
+            mediaLink.appendChild(avatar);
+        } else {
+            const fallback = document.createElement('div');
+            fallback.className = 'flavortown-user-card__avatar-fallback';
+            fallback.textContent = (user.display_name || 'U').trim().charAt(0).toUpperCase() || 'U';
+            mediaLink.appendChild(fallback);
+        }
+
+        content.appendChild(nameLink);
+        content.appendChild(profileLink);
+        content.appendChild(stats);
+
+        card.appendChild(mediaLink);
+        card.appendChild(content);
+
+        hydrateUserCard(user, card).catch(() => {
+            if (!document.body.contains(card)) return;
+            const hoursEl = card.querySelector('[data-stat="hours"]');
+            if (hoursEl) hoursEl.textContent = '--';
+        });
+
+        return card;
+    };
+
+    const fetchUsersPage = async (page, query) => {
+        const waitSeconds = getRateLimitWaitSeconds();
+        if (waitSeconds > 0) {
+            throw new Error(`Rate limited locally. Try again in ${waitSeconds}s.`);
+        }
+
+        usersRequestTimestamps.push(Date.now());
+
+        const params = [`page=${page}`];
+        if (query) params.push(`query=${encodeURIComponent(query)}`);
+        return apiFetch(`/users?${params.join('&')}`);
+    };
+
+    const setButtonsLoadingState = (loading) => {
+        searchBtn.disabled = loading;
+        clearBtn.disabled = loading;
+        loadMoreBtn.disabled = loading;
+        searchBtn.textContent = loading ? 'Loading...' : 'Search';
+    };
+
+    const runUsersSearch = async ({ append = false } = {}) => {
+        if (isLoading) return;
+
+        const nextQuery = searchInput.value.trim();
+        if (!append) {
+            currentQuery = nextQuery;
+            currentPage = 1;
+            nextPage = null;
+            usersGrid.innerHTML = '';
+        }
+
+        let requestPage = append ? nextPage : 1;
+        if (!append && !currentQuery) {
+            requestPage = getRandomUsersPage();
+        }
+        if (append && !requestPage) return;
+
+        isLoading = true;
+        setButtonsLoadingState(true);
+        setStatus(append ? 'Loading more users...' : 'Loading users...', 'loading');
+
+        try {
+            const data = await fetchUsersPage(requestPage, currentQuery);
+            const users = Array.isArray(data?.users) ? data.users : [];
+
+            if (!append) {
+                usersGrid.innerHTML = '';
+            }
+
+            if (!users.length && !append) {
+                const message = currentQuery
+                    ? `No users found for "${currentQuery}".`
+                    : 'No users found.';
+                setStatus(message, 'info');
+                loadMoreBtn.style.display = 'none';
+                return;
+            }
+
+            const fragment = document.createDocumentFragment();
+            users.forEach(user => {
+                fragment.appendChild(createUserCard(user));
+            });
+            usersGrid.appendChild(fragment);
+
+            const pagination = data?.pagination || {};
+            currentPage = pagination.current_page || requestPage;
+            nextPage = pagination.next_page || null;
+            if (!currentQuery) {
+                setKnownTotalPages(pagination.total_pages || knownTotalPages);
+            }
+
+            const shownCount = usersGrid.children.length;
+            const totalCount = typeof pagination.total_count === 'number' ? pagination.total_count : shownCount;
+            const suffix = currentQuery ? ` for "${currentQuery}"` : '';
+            setStatus(`Page ${currentPage} - Showing ${shownCount} of ${totalCount} users${suffix}.`, 'ok');
+            loadMoreBtn.style.display = nextPage ? 'inline-flex' : 'none';
+        } catch (err) {
+            const message = err?.message || 'Failed to fetch users.';
+            if (message.includes('No API key')) {
+                setStatus('No API key found. Generate one from settings.', 'error');
+            } else if (message.includes('Invalid API key') || message.includes('401')) {
+                setStatus('API key is invalid. Regenerate your key in settings.', 'error');
+            } else if (message.toLowerCase().includes('rate') || message.includes('429')) {
+                setStatus(message.includes('Try again in') ? message : 'Rate limited. Try again in about a minute.', 'warn');
+            } else {
+                setStatus(`Failed to fetch users: ${message}`, 'error');
+            }
+            loadMoreBtn.style.display = 'none';
+            if (!append) {
+                usersGrid.innerHTML = '';
+            }
+        } finally {
+            isLoading = false;
+            setButtonsLoadingState(false);
+        }
+    };
+
+    const activateUsersMode = () => {
+        if (usersModeActive) return;
+        usersModeActive = true;
+        previousSelectedNav = document.querySelector('.explore__nav-component.selected:not(.flavortown-users-nav)');
+
+        document.querySelectorAll('.explore__nav-component.selected').forEach(el => {
+            if (el !== usersNavItem) el.classList.remove('selected');
+        });
+
+        usersNavItem.classList.add('selected');
+        usersPage.style.display = 'block';
+        setExploreSectionVisibility(true);
+
+        if (!hasLoadedInitial) {
+            hasLoadedInitial = true;
+            runUsersSearch({ append: false });
+        } else {
+            if (!searchInput.value.trim()) {
+                runUsersSearch({ append: false });
+            }
+            searchInput.focus();
+        }
+    };
+
+    const deactivateUsersMode = () => {
+        if (!usersModeActive) return;
+        usersModeActive = false;
+
+        usersNavItem.classList.remove('selected');
+        usersPage.style.display = 'none';
+        setExploreSectionVisibility(false);
+
+        if (previousSelectedNav && document.body.contains(previousSelectedNav)) {
+            previousSelectedNav.classList.add('selected');
+        }
+    };
+
+    usersNavItem.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (usersModeActive) {
+            deactivateUsersMode();
+        } else {
+            activateUsersMode();
+        }
+    });
+
+    desktopNav.addEventListener('click', (e) => {
+        const target = e.target.closest('.explore__nav-component');
+        if (!target || target === usersNavItem) return;
+        deactivateUsersMode();
+    });
+
+    searchForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        runUsersSearch({ append: false });
+    });
+
+    clearBtn.addEventListener('click', () => {
+        searchInput.value = '';
+        runUsersSearch({ append: false });
+    });
+
+    loadMoreBtn.addEventListener('click', () => {
+        runUsersSearch({ append: true });
+    });
+}
+
 function initProjectBoardStats() {
     if (!window.location.pathname.endsWith('/projects')) return;
 
@@ -8372,6 +8869,7 @@ function init() {
     initShopAccessories();
     addShopCardEfficiency();
     addExploreSearch();
+    addExploreUsersPage();
     captureApiKey();
     initProjectBoardStats();
     addProjectCardCookieStats();
@@ -9892,6 +10390,7 @@ document.addEventListener('turbo:load', () => {
     initShopAccessories();
     addShopCardEfficiency();
     addExploreSearch();
+    addExploreUsersPage();
     captureApiKey();
     initProjectBoardStats();
     addSkipButton();
