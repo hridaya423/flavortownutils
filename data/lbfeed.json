@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-12T02:11:45.422Z",
+  "lastUpdated": "2026-03-12T04:27:00.060Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -774,6 +774,14 @@
         "balance": 2431,
         "reason": "shop purchase",
         "reasonType": "",
+        "userId": "U0616280E6P"
+      },
+      {
+        "ts": "2026-03-12T03:40:42.964Z",
+        "delta": 5,
+        "balance": 2436,
+        "reason": "Cooking",
+        "reasonType": "achievement",
         "userId": "U0616280E6P"
       }
     ],
@@ -36233,6 +36241,22 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0A2K2WS709"
+      },
+      {
+        "ts": "2026-03-12T02:26:06.314Z",
+        "delta": 245,
+        "balance": 264,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A2K2WS709"
+      },
+      {
+        "ts": "2026-03-12T02:27:00.312Z",
+        "delta": -264,
+        "balance": 0,
+        "reason": "user grant",
+        "reasonType": "",
+        "userId": "U0A2K2WS709"
       }
     ],
     "u0a2l4nma9x": [
@@ -68893,6 +68917,16 @@
     ]
   },
   "users": {
+    "U0616280E6P": {
+      "id": "U0616280E6P",
+      "username": "aram",
+      "avatar": "https://avatars.slack-edge.com/2026-01-20/10335517998837_4aceb7340b2e2dc9c883_72.png"
+    },
+    "U0A2K2WS709": {
+      "id": "U0A2K2WS709",
+      "username": "daviipkp",
+      "avatar": "https://avatars.slack-edge.com/2025-12-21/10166525632101_67b369dacb6ba131739f_72.jpg"
+    },
     "U091NS83K98": {
       "id": "U091NS83K98",
       "username": "sakshamgoel1107",
@@ -68925,11 +68959,6 @@
       "id": "U084D1T5ZV0",
       "username": "kashsuks",
       "avatar": "https://avatars.slack-edge.com/2025-12-10/10078589222967_669bffbc7f9ee3695e9d_72.png"
-    },
-    "U0A2K2WS709": {
-      "id": "U0A2K2WS709",
-      "username": "daviipkp",
-      "avatar": "https://avatars.slack-edge.com/2025-12-21/10166525632101_67b369dacb6ba131739f_72.jpg"
     },
     "U0ALDEJTZ4Z": {
       "id": "U0ALDEJTZ4Z",
@@ -69496,11 +69525,6 @@
       "username": "alishalish107",
       "displayName": "Lisha",
       "avatar": "https://avatars.slack-edge.com/2026-03-06/10632467382599_af9d6c85ff0672b65c0e_72.jpg"
-    },
-    "U0616280E6P": {
-      "id": "U0616280E6P",
-      "username": "aram",
-      "avatar": "https://avatars.slack-edge.com/2026-01-20/10335517998837_4aceb7340b2e2dc9c883_72.png"
     },
     "U096J8GJ87J": {
       "id": "U096J8GJ87J",
