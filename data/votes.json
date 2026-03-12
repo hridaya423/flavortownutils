@@ -1,7 +1,21 @@
 {
-  "lastUpdated": "2026-03-12T16:36:28.694Z",
-  "totalVotes": 7542,
+  "lastUpdated": "2026-03-12T17:49:52.577Z",
+  "totalVotes": 7544,
   "votes": [
+    {
+      "project": "Wordle AI",
+      "feedback": "Nice project! I wish you had compiled this project into a file runnable on Unix systems or atleast created a requirements.txt for one to easily download the python dependencies.",
+      "votedBy": "U091LN2KLF2",
+      "timestamp": "2026-03-12T17:12:34.419Z",
+      "slackTs": "1773335554.419099"
+    },
+    {
+      "project": "LearningAtlas",
+      "feedback": "The website has a great UI! I would recommend using a service like Broweserbase to get data from the internet instead of gathering data by yourself and putting it in a CSV.",
+      "votedBy": "U091LN2KLF2",
+      "timestamp": "2026-03-12T17:07:43.468Z",
+      "slackTs": "1773335263.468149"
+    },
     {
       "project": "Roverlay",
       "feedback": "The UI is nice! A suggestion would be to add more information to it, for ex. storage.",
