@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-12T23:30:26.249Z",
+  "lastUpdated": "2026-03-12T23:54:49.255Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -19529,6 +19529,14 @@
         "delta": 216,
         "balance": 3881,
         "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U091KALMG3Y"
+      },
+      {
+        "ts": "2026-03-12T23:46:28.228Z",
+        "delta": -3881,
+        "balance": 0,
+        "reason": "user grant",
         "reasonType": "",
         "userId": "U091KALMG3Y"
       }
@@ -69657,6 +69665,11 @@
     ]
   },
   "users": {
+    "U091KALMG3Y": {
+      "id": "U091KALMG3Y",
+      "username": "braxtonhood23",
+      "avatar": "https://avatars.slack-edge.com/2026-01-22/10336148649699_bd08305f939082ce41ab_72.jpg"
+    },
     "U0A778JGV18": {
       "id": "U0A778JGV18",
       "username": "vikramhero26",
@@ -70429,11 +70442,6 @@
       "username": "someguest4",
       "displayName": "someguest4",
       "avatar": "https://secure.gravatar.com/avatar/39ca3709cb30d7bd5ccaacf64bd10a47.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0022-72.png"
-    },
-    "U091KALMG3Y": {
-      "id": "U091KALMG3Y",
-      "username": "braxtonhood23",
-      "avatar": "https://avatars.slack-edge.com/2026-01-22/10336148649699_bd08305f939082ce41ab_72.jpg"
     },
     "U0A6860UHC4": {
       "id": "U0A6860UHC4",
