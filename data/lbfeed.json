@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-12T11:33:58.816Z",
+  "lastUpdated": "2026-03-12T13:04:08.864Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -18339,6 +18339,14 @@
         "reason": "Michelin Star",
         "reasonType": "achievement",
         "userId": "U0905G0BRU5"
+      },
+      {
+        "ts": "2026-03-12T11:50:25.532Z",
+        "delta": 5,
+        "balance": 36,
+        "reason": "Cooking",
+        "reasonType": "achievement",
+        "userId": "U0905G0BRU5"
       }
     ],
     "u090l2kb23t": [
@@ -32095,6 +32103,16 @@
         "reason": "user grant",
         "reasonType": "",
         "userId": "U09GMGHJLHW"
+      }
+    ],
+    "u09gt04p248": [
+      {
+        "ts": "2026-03-12T12:18:32.856Z",
+        "delta": 19,
+        "balance": 55,
+        "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U09GT04P248"
       }
     ],
     "u09gt3z6fc7": [
@@ -53391,6 +53409,14 @@
         "reason": "ship event payout",
         "reasonType": "",
         "userId": "U0A7776A2MT"
+      },
+      {
+        "ts": "2026-03-12T12:07:30.125Z",
+        "delta": -140,
+        "balance": 22,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A7776A2MT"
       }
     ],
     "u0a778jgv18": [
@@ -59655,6 +59681,14 @@
         "delta": 34,
         "balance": 519,
         "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U0A7TV65SPL"
+      },
+      {
+        "ts": "2026-03-12T13:00:22.450Z",
+        "delta": -346,
+        "balance": 173,
+        "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0A7TV65SPL"
       }
@@ -69099,6 +69133,29 @@
     ]
   },
   "users": {
+    "U0A7TV65SPL": {
+      "id": "U0A7TV65SPL",
+      "username": "vishnukumar.a2010",
+      "displayName": "vishnukumar.a2010",
+      "avatar": "https://avatars.slack-edge.com/2026-01-17/10310706256243_9f2746a52acac8befd10_72.jpg"
+    },
+    "U09GT04P248": {
+      "id": "U09GT04P248",
+      "username": "tharunfounder",
+      "displayName": "Tharun K",
+      "avatar": "https://secure.gravatar.com/avatar/0690518e9724cc446b20c78d6583853d.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0010-72.png"
+    },
+    "U0A7776A2MT": {
+      "id": "U0A7776A2MT",
+      "username": "kavyanshkhaitan11",
+      "avatar": "https://secure.gravatar.com/avatar/2dd3b461e79afda6fbbc61878d93304e.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0003-72.png"
+    },
+    "U0905G0BRU5": {
+      "id": "U0905G0BRU5",
+      "username": "moritz.leisner",
+      "displayName": "Fantamomo",
+      "avatar": "https://secure.gravatar.com/avatar/77e1e7f3943b1d97a1414576883ad736.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0006-72.png"
+    },
     "U0A8SENLBK2": {
       "id": "U0A8SENLBK2",
       "username": "timfranck6",
@@ -69116,11 +69173,6 @@
       "username": "sofaomda738",
       "displayName": "Sub",
       "avatar": "https://avatars.slack-edge.com/2026-03-10/10662104454789_fae7d5b4b2fbc4b912e6_72.png"
-    },
-    "U0A7776A2MT": {
-      "id": "U0A7776A2MT",
-      "username": "kavyanshkhaitan11",
-      "avatar": "https://secure.gravatar.com/avatar/2dd3b461e79afda6fbbc61878d93304e.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0003-72.png"
     },
     "U093DK2JL0Y": {
       "id": "U093DK2JL0Y",
@@ -69293,12 +69345,6 @@
       "username": "parthdhiman",
       "displayName": "parthdhiman.pd",
       "avatar": "https://avatars.slack-edge.com/2026-03-04/10612748477415_370c9facde4be4b92986_72.png"
-    },
-    "U0905G0BRU5": {
-      "id": "U0905G0BRU5",
-      "username": "moritz.leisner",
-      "displayName": "Fantamomo",
-      "avatar": "https://secure.gravatar.com/avatar/77e1e7f3943b1d97a1414576883ad736.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0006-72.png"
     },
     "U0A7AELFK6G": {
       "id": "U0A7AELFK6G",
@@ -70097,12 +70143,6 @@
       "id": "U09736L44JZ",
       "username": "satyamrajgaya434",
       "avatar": "https://avatars.slack-edge.com/2025-09-19/9577172238240_ca93b692b12938796d47_72.jpg"
-    },
-    "U0A7TV65SPL": {
-      "id": "U0A7TV65SPL",
-      "username": "vishnukumar.a2010",
-      "displayName": "vishnukumar.a2010",
-      "avatar": "https://avatars.slack-edge.com/2026-01-17/10310706256243_9f2746a52acac8befd10_72.jpg"
     },
     "U0ABED0LLCX": {
       "id": "U0ABED0LLCX",
