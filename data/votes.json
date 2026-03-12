@@ -1,7 +1,28 @@
 {
-  "lastUpdated": "2026-03-11T23:51:11.418Z",
-  "totalVotes": 7472,
+  "lastUpdated": "2026-03-12T02:10:05.167Z",
+  "totalVotes": 7475,
   "votes": [
+    {
+      "project": "peerdrop",
+      "feedback": "The file sharing works between browser windows on the same PC, but when I tried sending a file to my phone, it downloaded the raw data as a txt file. I could see it being useful with a bit of patchwork.",
+      "votedBy": "U07EB1FUPRP",
+      "timestamp": "2026-03-12T00:32:29.476Z",
+      "slackTs": "1773275549.476549"
+    },
+    {
+      "project": "AsteriskOS",
+      "feedback": "It's quite nice how many features there are. I love the Konami code easter egg. I don't love the window dragging, and the feature lab is seemingly non-functional. Overall, good work but maybe a few tune-ups are in order for this space vessel.",
+      "votedBy": "U07EB1FUPRP",
+      "timestamp": "2026-03-12T00:23:11.006Z",
+      "slackTs": "1773274991.006119"
+    },
+    {
+      "project": "PasswordNoProb",
+      "feedback": "The file in the demo link is a generic file that can't be opened. I tried running it as a .exe executable and unzipping it as a .zip file, but nothing worked. As for the actual code, storing the passwords in plaintext json is a HUGE security vulnerability. You would be creating a single unencrypted file containing the password to literally all of your accounts. I would suggest encrypting the data with a master password or generated key the user stores somewhere that acts as the decryption key to the file all the passwords are stored in.",
+      "votedBy": "U07EB1FUPRP",
+      "timestamp": "2026-03-12T00:06:25.063Z",
+      "slackTs": "1773273985.063089"
+    },
     {
       "project": "Cheminformatic Engine",
       "feedback": "I really like this project. I think it could be useful for students as a look-up table. Einsteinium is missing an image though, but that's understandable.",
