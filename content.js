@@ -908,6 +908,29 @@ function addVotesDevlogFrequencyStat() {
     });
 }
 
+function makeVoteReasonMultiline() {
+    if (!window.location.pathname.startsWith('/votes/new')) return;
+
+    const reasonInput = document.querySelector('input#vote_reason');
+    if (!reasonInput) return;
+
+    const textarea = document.createElement('textarea');
+    const attrsToSkip = new Set(['type', 'value']);
+    for (const attrName of reasonInput.getAttributeNames()) {
+        if (attrsToSkip.has(attrName)) continue;
+        textarea.setAttribute(attrName, reasonInput.getAttribute(attrName) || '');
+    }
+
+    textarea.value = reasonInput.value || reasonInput.getAttribute('value') || '';
+    textarea.rows = Math.max(3, Number(textarea.getAttribute('rows')) || 3);
+
+    if (!textarea.classList.contains('input__field--textarea')) {
+        textarea.classList.add('input__field--textarea');
+    }
+
+    reasonInput.replaceWith(textarea);
+}
+
 async function addShipStats() {
     if (!/\/projects\/\d+$/.test(window.location.pathname)) {
         return;
@@ -16843,6 +16866,7 @@ function addSpeedReaderStyles() {
 }
 
 function initVotesFeature() {
+    makeVoteReasonMultiline();
     addProjectVotesDisplay();
     initSpeedReaderOnVotesPage();
     addSpeedReaderStyles();

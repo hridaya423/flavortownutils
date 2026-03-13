@@ -596,6 +596,14 @@ svg {
     color: var(--custom-text-primary) !important;
 }
 
+.votes-new__payout-meter-label {
+    color: var(--custom-text-secondary) !important;
+}
+
+.votes-new__payout-meter-value {
+    color: var(--custom-text-primary) !important;
+}
+
 .projects-show__payout-votes-progress {
     width: 100% !important;
     height: 30px !important;
@@ -2496,8 +2504,8 @@ p[style*="background: #f9fafb"][style*="padding: 1rem"] {
 }
 
 .votes-new__score-card::before {
-    background: var(--custom-bg-surface) repeating-conic-gradient(from 0deg, rgba(203, 166, 247, 0.12) 0deg 90deg, transparent 90deg 180deg) !important;
-    background-size: 40px 40px !important;
+    background: linear-gradient(180deg, color-mix(in srgb, var(--custom-bg-surface) 97%, var(--custom-accent) 3%) 0%, var(--custom-bg-surface) 100%) !important;
+    background-size: auto !important;
 }
 
 .vote-category__score {
@@ -2517,8 +2525,8 @@ p[style*="background: #f9fafb"][style*="padding: 1rem"] {
 }
 
 .votes-new__form {
-    background-color: color-mix(in srgb, var(--custom-accent-hover), black 70%) !important;
-    background-blend-mode: multiply !important;
+    background-color: transparent !important;
+    background-blend-mode: normal !important;
     border-color: var(--custom-surface-hover) !important;
     color: var(--custom-text-primary) !important;
 }
@@ -2530,7 +2538,8 @@ p[style*="background: #f9fafb"][style*="padding: 1rem"] {
 .vote-category {
     background-color: var(--custom-bg-surface) !important;
     border-color: var(--custom-surface-hover) !important;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3)) !important;
+    filter: none !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.16) !important;
 }
 
 .vote-category__header {

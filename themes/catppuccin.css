@@ -599,6 +599,14 @@ svg {
     color: var(--ctp-text) !important;
 }
 
+.votes-new__payout-meter-label {
+    color: var(--ctp-subtext0) !important;
+}
+
+.votes-new__payout-meter-value {
+    color: var(--ctp-text) !important;
+}
+
 .projects-show__payout-votes-progress {
     width: 100% !important;
     height: 30px !important;
@@ -2499,8 +2507,8 @@ p[style*="background: #f9fafb"][style*="padding: 1rem"] {
 }
 
 .votes-new__score-card::before {
-    background: var(--ctp-surface0) repeating-conic-gradient(from 0deg, rgba(203, 166, 247, 0.12) 0deg 90deg, transparent 90deg 180deg) !important;
-    background-size: 40px 40px !important;
+    background: linear-gradient(180deg, color-mix(in srgb, var(--ctp-surface0) 97%, var(--ctp-accent) 3%) 0%, var(--ctp-surface0) 100%) !important;
+    background-size: auto !important;
 }
 
 .vote-category__score {
@@ -2520,8 +2528,8 @@ p[style*="background: #f9fafb"][style*="padding: 1rem"] {
 }
 
 .votes-new__form {
-    background-color: color-mix(in srgb, var(--ctp-lavender), black 70%) !important;
-    background-blend-mode: multiply !important;
+    background-color: transparent !important;
+    background-blend-mode: normal !important;
     border-color: var(--ctp-surface1) !important;
     color: var(--ctp-text) !important;
 }
@@ -2533,7 +2541,8 @@ p[style*="background: #f9fafb"][style*="padding: 1rem"] {
 .vote-category {
     background-color: var(--ctp-surface0) !important;
     border-color: var(--ctp-surface1) !important;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3)) !important;
+    filter: none !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.16) !important;
 }
 
 .vote-category__header {
