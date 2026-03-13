@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-13T22:29:00.889Z",
+  "lastUpdated": "2026-03-13T22:55:40.135Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -25731,6 +25731,14 @@
         "reason": "payout",
         "reasonType": "payout",
         "userId": "U093U1MM8H4"
+      },
+      {
+        "ts": "2026-03-13T22:37:31.299Z",
+        "delta": 405,
+        "balance": 2162,
+        "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U093U1MM8H4"
       }
     ],
     "u093urnvc84": [
@@ -31999,6 +32007,22 @@
         "reason": "ship event payout",
         "reasonType": "",
         "userId": "U09G4M3NZNC"
+      },
+      {
+        "ts": "2026-03-13T22:37:58.920Z",
+        "delta": -22,
+        "balance": 38,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U09G4M3NZNC"
+      },
+      {
+        "ts": "2026-03-13T22:38:25.186Z",
+        "delta": -25,
+        "balance": 13,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U09G4M3NZNC"
       }
     ],
     "u09gd76n509": [
@@ -37684,6 +37708,14 @@
         "balance": 167,
         "reason": "shop purchase",
         "reasonType": "",
+        "userId": "U0A3ASF212B"
+      },
+      {
+        "ts": "2026-03-13T22:47:35.135Z",
+        "delta": 5,
+        "balance": 172,
+        "reason": "Cooking",
+        "reasonType": "achievement",
         "userId": "U0A3ASF212B"
       }
     ],
@@ -70435,6 +70467,23 @@
     ]
   },
   "users": {
+    "U0A3ASF212B": {
+      "id": "U0A3ASF212B",
+      "username": "secretaditzu78",
+      "avatar": "https://avatars.slack-edge.com/2026-01-05/10213206999143_b4517487a2e3a03c4e5a_72.jpg"
+    },
+    "U09G4M3NZNC": {
+      "id": "U09G4M3NZNC",
+      "username": "livejo0045",
+      "displayName": "Jonas",
+      "avatar": "https://avatars.slack-edge.com/2026-03-03/10622706237172_a8f9c228ea1b2a67e745_72.png"
+    },
+    "U093U1MM8H4": {
+      "id": "U093U1MM8H4",
+      "username": "hungchi970104",
+      "displayName": "Hung-Chi Wang",
+      "avatar": "https://avatars.slack-edge.com/2025-07-01/9157068578752_0459174f9e6efff0b989_72.png"
+    },
     "U091KE59H5H": {
       "id": "U091KE59H5H",
       "username": "joooooshp",
@@ -70488,11 +70537,6 @@
       "displayName": "jam06452",
       "avatar": "https://avatars.slack-edge.com/2026-02-03/10428401167669_923724959d03151f5ee3_72.jpg"
     },
-    "U0A3ASF212B": {
-      "id": "U0A3ASF212B",
-      "username": "secretaditzu78",
-      "avatar": "https://avatars.slack-edge.com/2026-01-05/10213206999143_b4517487a2e3a03c4e5a_72.jpg"
-    },
     "U080DB49RCY": {
       "id": "U080DB49RCY",
       "username": "paylicier",
@@ -70531,12 +70575,6 @@
       "username": "mathdudex09",
       "displayName": "xFN10x",
       "avatar": "https://avatars.slack-edge.com/2025-08-03/9295106914389_7daba3e74ddbaf58bb1c_72.png"
-    },
-    "U09G4M3NZNC": {
-      "id": "U09G4M3NZNC",
-      "username": "livejo0045",
-      "displayName": "Jonas",
-      "avatar": "https://avatars.slack-edge.com/2026-03-03/10622706237172_a8f9c228ea1b2a67e745_72.png"
     },
     "U088Z65TDRN": {
       "id": "U088Z65TDRN",
@@ -72592,12 +72630,6 @@
       "username": "jiayangc1",
       "displayName": "Jiayang",
       "avatar": "https://avatars.slack-edge.com/2024-11-21/8081123181169_dd7576f1c7dae19bc8eb_72.png"
-    },
-    "U093U1MM8H4": {
-      "id": "U093U1MM8H4",
-      "username": "hungchi970104",
-      "displayName": "Hung-Chi Wang",
-      "avatar": "https://avatars.slack-edge.com/2025-07-01/9157068578752_0459174f9e6efff0b989_72.png"
     },
     "U08HYM19NJE": {
       "id": "U08HYM19NJE",
