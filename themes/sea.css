@@ -554,6 +554,36 @@ svg {
     color: var(--sea-white) !important;
 }
 
+.post__votes-breakdown {
+    background: linear-gradient(180deg, var(--sea-dark) 0%, var(--sea-deep) 100%) !important;
+    border-color: var(--sea-mid) !important;
+}
+
+.post__votes-breakdown > summary {
+    color: var(--sea-white) !important;
+}
+
+.post__votes-breakdown > summary:hover {
+    background: var(--sea-mid) !important;
+}
+
+.post__votes-breakdown .post__vote-entry > p.flavortown-vote-meta-scores,
+.post__votes-breakdown .post__vote-entry > p:nth-of-type(2) {
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    color: var(--sea-mist) !important;
+}
+
+.post__votes-breakdown .post__vote-reason {
+    background: transparent !important;
+    padding-top: 6px !important;
+    padding-bottom: 6px !important;
+    border-radius: 0 !important;
+    border-left-color: var(--sea-cyan) !important;
+    color: var(--sea-white) !important;
+}
+
 .votes-new__payout-meter-label {
     color: var(--sea-foam) !important;
 }
@@ -1351,10 +1381,22 @@ a:hover {
     color: var(--sea-foam) !important;
 }
 
+.shop-order__achievement-requirement {
+    background-color: var(--sea-mid) !important;
+    color: var(--sea-kelp) !important;
+    border: 1px solid var(--sea-kelp) !important;
+}
+
 .shop-order__achievement-requirement--locked {
     background-color: var(--sea-mid) !important;
     color: var(--sea-white) !important;
     border: 1px solid var(--sea-cyan) !important;
+}
+
+.shop-order__stock-indicator--low {
+    background-color: var(--sea-mid) !important;
+    color: var(--sea-gold) !important;
+    border-color: var(--sea-gold) !important;
 }
 
 .shop-order__customs-warning {

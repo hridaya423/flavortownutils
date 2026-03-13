@@ -908,6 +908,46 @@ function addVotesDevlogFrequencyStat() {
     });
 }
 
+function mergeVoteBreakdownMetaIntoScores() {
+    const entries = document.querySelectorAll('.post__votes-breakdown .post__vote-entry');
+    if (!entries.length) return;
+
+    entries.forEach((entry) => {
+        if (entry.dataset.flavortownVotesMerged === 'true') return;
+
+        const rows = entry.querySelectorAll(':scope > p');
+        if (!rows.length) return;
+
+        const metaRow = rows[0];
+        const scoreRow = rows[1] || rows[0];
+
+        const normalize = (value) => (value || '').replace(/\s+/g, ' ').trim();
+        const scoreText = normalize(scoreRow.textContent);
+        const metaRowText = normalize(metaRow.textContent);
+        const voterMatch = metaRowText.match(/Voter\s*#(\d+)/i);
+        const voteLabel = voterMatch ? `Vote #${voterMatch[1]}` : '';
+        let metaText = metaRowText
+            .replace(/^Voter\s*#\d+\s*/i, '')
+            .replace(/^[·•\-\s]+/, '')
+            .trim();
+
+        const mergedPieces = [voteLabel, metaText, scoreText].filter(Boolean);
+        const mergedText = mergedPieces.join(' · ');
+
+        if (scoreRow !== metaRow) {
+            if (mergedText) {
+                scoreRow.textContent = mergedText;
+            }
+            metaRow.remove();
+        } else if (mergedText) {
+            scoreRow.textContent = mergedText;
+        }
+
+        scoreRow.classList.add('flavortown-vote-meta-scores');
+        entry.dataset.flavortownVotesMerged = 'true';
+    });
+}
+
 function makeVoteReasonMultiline() {
     if (!window.location.pathname.startsWith('/votes/new')) return;
 
@@ -8875,6 +8915,7 @@ function init() {
     checkForUpdates();
     addDevlogFrequencyStat();
     addVotesDevlogFrequencyStat();
+    mergeVoteBreakdownMetaIntoScores();
     ensureShipStatsReady();
     addShipStats();
     addUnshippedCookieEstimate();
@@ -10402,6 +10443,7 @@ document.addEventListener('turbo:load', () => {
     sessionStorage.removeItem(VOTES_SKIP_TRIGGER_KEY);
     addDevlogFrequencyStat();
     addVotesDevlogFrequencyStat();
+    mergeVoteBreakdownMetaIntoScores();
     ensureShipStatsReady();
     addShipStats();
     addUnshippedCookieEstimate();

@@ -599,6 +599,36 @@ svg {
     color: var(--ctp-text) !important;
 }
 
+.post__votes-breakdown {
+    background: linear-gradient(180deg, var(--ctp-surface0) 0%, var(--ctp-mantle) 100%) !important;
+    border-color: var(--ctp-surface1) !important;
+}
+
+.post__votes-breakdown > summary {
+    color: var(--ctp-text) !important;
+}
+
+.post__votes-breakdown > summary:hover {
+    background: var(--ctp-surface1) !important;
+}
+
+.post__votes-breakdown .post__vote-entry > p.flavortown-vote-meta-scores,
+.post__votes-breakdown .post__vote-entry > p:nth-of-type(2) {
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    color: var(--ctp-subtext1) !important;
+}
+
+.post__votes-breakdown .post__vote-reason {
+    background: transparent !important;
+    padding-top: 6px !important;
+    padding-bottom: 6px !important;
+    border-radius: 0 !important;
+    border-left-color: var(--ctp-accent) !important;
+    color: var(--ctp-text) !important;
+}
+
 .votes-new__payout-meter-label {
     color: var(--ctp-subtext0) !important;
 }
@@ -1423,10 +1453,22 @@ a:hover {
     color: var(--ctp-subtext0) !important;
 }
 
+.shop-order__achievement-requirement {
+    background-color: var(--ctp-surface1) !important;
+    color: var(--ctp-green) !important;
+    border: 1px solid var(--ctp-green) !important;
+}
+
 .shop-order__achievement-requirement--locked {
     background-color: var(--ctp-surface1) !important;
     color: var(--ctp-text) !important;
     border: 1px solid var(--ctp-accent) !important;
+}
+
+.shop-order__stock-indicator--low {
+    background-color: var(--ctp-surface1) !important;
+    color: var(--ctp-yellow) !important;
+    border-color: var(--ctp-yellow) !important;
 }
 
 .shop-order__customs-warning {

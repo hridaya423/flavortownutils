@@ -1431,6 +1431,47 @@
     color: rgba(253, 246, 227, 0.75) !important;
 }
 
+[data-flavortown-theme="default"] .post__votes-breakdown {
+    background: transparent !important;
+    border-color: rgba(93, 78, 55, 0.28) !important;
+}
+
+[data-flavortown-theme="default"] .post__votes-breakdown > summary {
+    background: transparent !important;
+}
+
+[data-flavortown-theme="default"] .post__votes-breakdown,
+[data-flavortown-theme="default"] .post__votes-breakdown > summary,
+[data-flavortown-theme="default"] .post__votes-breakdown .post__vote-entry > p,
+[data-flavortown-theme="default"] .post__votes-breakdown .post__vote-reason {
+    color: inherit !important;
+}
+
+[data-flavortown-theme="default"] .post__votes-breakdown > summary:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
+}
+
+[data-flavortown-theme="default"] .post__votes-breakdown[open] > summary {
+    border-bottom-color: rgba(93, 78, 55, 0.2) !important;
+}
+
+[data-flavortown-theme="default"] .post__votes-breakdown .post__vote-entry {
+    border-bottom-color: rgba(93, 78, 55, 0.15) !important;
+}
+
+[data-flavortown-theme="default"] .post__votes-breakdown .post__vote-entry > p.flavortown-vote-meta-scores,
+[data-flavortown-theme="default"] .post__votes-breakdown .post__vote-entry > p:nth-of-type(2) {
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
+}
+
+[data-flavortown-theme="default"] .post__votes-breakdown .post__vote-reason {
+    padding-top: 6px;
+    padding-bottom: 6px;
+    background: transparent !important;
+}
+
 .flavortown-stat-pill {
     display: inline-flex;
     align-items: center;
@@ -1590,6 +1631,122 @@
 
 .post__body img {
     vertical-align: middle !important;
+}
+
+.post__votes-breakdown {
+    margin-top: 12px;
+    border: 1px solid var(--color-border, #d7c5af);
+    border-radius: 12px;
+    overflow: hidden;
+    background: linear-gradient(
+        180deg,
+        var(--color-surface, #f8f2e8) 0%,
+        var(--color-background, var(--color-background-color, #fffdf9)) 100%
+    );
+}
+
+.post__votes-breakdown > summary {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    cursor: pointer;
+    font-size: 0.92em;
+    font-weight: 700;
+    color: var(--color-text-primary, #5d4e37);
+    transition: background-color 0.2s ease;
+}
+
+.post__votes-breakdown > summary::-webkit-details-marker {
+    display: none;
+}
+
+.post__votes-breakdown > summary::marker {
+    content: '';
+}
+
+.post__votes-breakdown > summary::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(-45deg) translateY(1px);
+    transform-origin: center;
+    opacity: 0.72;
+    transition: transform 0.2s ease;
+}
+
+.post__votes-breakdown[open] > summary::before {
+    transform: rotate(45deg) translateY(-1px);
+}
+
+.post__votes-breakdown > summary:hover {
+    background: rgba(0, 0, 0, 0.04);
+}
+
+.post__votes-breakdown[open] > summary {
+    border-bottom: 1px solid var(--color-border, #d7c5af);
+}
+
+.post__votes-breakdown .post__vote-entry {
+    display: grid;
+    gap: 9px;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--color-border, #e1d1bc);
+}
+
+.post__votes-breakdown .post__vote-entry:last-child {
+    border-bottom: none;
+}
+
+.post__votes-breakdown .post__vote-entry > p {
+    margin: 0;
+}
+
+.post__votes-breakdown .post__vote-entry > p:first-of-type {
+    font-size: 0.84rem;
+    color: var(--color-text-muted, #8f7d66);
+}
+
+.post__votes-breakdown .post__vote-entry > p:first-of-type strong {
+    display: none;
+}
+
+.post__votes-breakdown .post__vote-entry > p.flavortown-vote-meta-scores,
+.post__votes-breakdown .post__vote-entry > p:nth-of-type(2) {
+    padding: 7px 10px;
+    border: 1px dashed var(--color-border, #d7c5af);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--color-text-primary, #5d4e37);
+    font-size: 0.82rem;
+    line-height: 1.45;
+}
+
+.post__votes-breakdown .post__vote-reason {
+    margin: 0;
+    padding: 10px 12px 10px 14px;
+    border-radius: 0 10px 10px 0;
+    border-left: 3px solid var(--color-accent, #c9a86c);
+    background: transparent;
+    color: var(--color-text-primary, #5d4e37);
+    font-size: 0.92rem;
+    line-height: 1.55;
+    white-space: pre-wrap;
+}
+
+@media (max-width: 640px) {
+    .post__votes-breakdown > summary,
+    .post__votes-breakdown .post__vote-entry {
+        padding-left: 11px;
+        padding-right: 11px;
+    }
+
+    .post__votes-breakdown .post__vote-reason {
+        font-size: 0.9rem;
+    }
 }
 
 .shop-item-card__add-to-goals {

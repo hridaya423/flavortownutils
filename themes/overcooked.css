@@ -561,6 +561,36 @@ svg {
     color: var(--overcooked-white) !important;
 }
 
+.post__votes-breakdown {
+    background: linear-gradient(180deg, var(--overcooked-dark) 0%, var(--overcooked-charcoal) 100%) !important;
+    border-color: var(--overcooked-mid) !important;
+}
+
+.post__votes-breakdown > summary {
+    color: var(--overcooked-white) !important;
+}
+
+.post__votes-breakdown > summary:hover {
+    background: var(--overcooked-mid) !important;
+}
+
+.post__votes-breakdown .post__vote-entry > p.flavortown-vote-meta-scores,
+.post__votes-breakdown .post__vote-entry > p:nth-of-type(2) {
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    color: var(--overcooked-mist) !important;
+}
+
+.post__votes-breakdown .post__vote-reason {
+    background: transparent !important;
+    padding-top: 6px !important;
+    padding-bottom: 6px !important;
+    border-radius: 0 !important;
+    border-left-color: var(--overcooked-cyan) !important;
+    color: var(--overcooked-white) !important;
+}
+
 .votes-new__payout-meter-label {
     color: var(--overcooked-foam) !important;
 }
@@ -1358,10 +1388,22 @@ a:hover {
     color: var(--overcooked-foam) !important;
 }
 
+.shop-order__achievement-requirement {
+    background-color: var(--overcooked-mid) !important;
+    color: var(--overcooked-kelp) !important;
+    border: 1px solid var(--overcooked-kelp) !important;
+}
+
 .shop-order__achievement-requirement--locked {
     background-color: var(--overcooked-mid) !important;
     color: var(--overcooked-white) !important;
     border: 1px solid var(--overcooked-cyan) !important;
+}
+
+.shop-order__stock-indicator--low {
+    background-color: var(--overcooked-mid) !important;
+    color: var(--overcooked-gold) !important;
+    border-color: var(--overcooked-gold) !important;
 }
 
 .shop-order__customs-warning {
