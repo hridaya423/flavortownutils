@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-13T04:26:41.516Z",
+  "lastUpdated": "2026-03-13T05:34:35.849Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -22035,6 +22035,14 @@
         "reason": "Cooking",
         "reasonType": "achievement",
         "userId": "U091RHATJBW"
+      },
+      {
+        "ts": "2026-03-13T05:24:27.246Z",
+        "delta": -85,
+        "balance": 8,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U091RHATJBW"
       }
     ],
     "u091s46dvng": [
@@ -25664,6 +25672,14 @@
         "balance": 295,
         "reason": "Cooking",
         "reasonType": "achievement",
+        "userId": "U094ENJ7LAH"
+      },
+      {
+        "ts": "2026-03-13T05:11:24.538Z",
+        "delta": 89,
+        "balance": 384,
+        "reason": "ship event payout",
+        "reasonType": "",
         "userId": "U094ENJ7LAH"
       }
     ],
@@ -69835,6 +69851,18 @@
     ]
   },
   "users": {
+    "U091RHATJBW": {
+      "id": "U091RHATJBW",
+      "username": "rchen7530",
+      "displayName": "Ryan Chen",
+      "avatar": "https://secure.gravatar.com/avatar/08f3344b3ab6dadb30365ac128c07783.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0017-72.png"
+    },
+    "U094ENJ7LAH": {
+      "id": "U094ENJ7LAH",
+      "username": "joshatticus02",
+      "displayName": "Josh",
+      "avatar": "https://avatars.slack-edge.com/2026-03-07/10648547343925_d60f27f31533198ff615_72.png"
+    },
     "U091KALMG3Y": {
       "id": "U091KALMG3Y",
       "username": "braxtonhood23",
@@ -71063,12 +71091,6 @@
       "username": "al3x.radu1",
       "displayName": "Alex",
       "avatar": "https://avatars.slack-edge.com/2026-02-14/10511020907174_3c607ebaf05d0b8a70fc_72.png"
-    },
-    "U094ENJ7LAH": {
-      "id": "U094ENJ7LAH",
-      "username": "joshatticus02",
-      "displayName": "Josh",
-      "avatar": "https://avatars.slack-edge.com/2026-03-07/10648547343925_d60f27f31533198ff615_72.png"
     },
     "U0AKC97MRJM": {
       "id": "U0AKC97MRJM",
@@ -72638,12 +72660,6 @@
       "username": "martiksimonian27",
       "displayName": "martik",
       "avatar": "https://secure.gravatar.com/avatar/7c6e2d7184a2d5d00a0e3d01cda12493.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0000-72.png"
-    },
-    "U091RHATJBW": {
-      "id": "U091RHATJBW",
-      "username": "rchen7530",
-      "displayName": "Ryan Chen",
-      "avatar": "https://secure.gravatar.com/avatar/08f3344b3ab6dadb30365ac128c07783.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0017-72.png"
     },
     "U08U32QC3ME": {
       "id": "U08U32QC3ME",
