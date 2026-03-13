@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-13T15:11:00.681Z",
+  "lastUpdated": "2026-03-13T16:05:13.952Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -8217,6 +8217,14 @@
         "delta": 25,
         "balance": 73,
         "reason": "user grant",
+        "reasonType": "",
+        "userId": "U07TY6SHYA3"
+      },
+      {
+        "ts": "2026-03-13T15:39:20.703Z",
+        "delta": -56,
+        "balance": 17,
+        "reason": "shop purchase",
         "reasonType": "",
         "userId": "U07TY6SHYA3"
       }
@@ -48685,6 +48693,14 @@
         "reason": "ship event payout",
         "reasonType": "",
         "userId": "U0A6860UHC4"
+      },
+      {
+        "ts": "2026-03-13T15:16:01.273Z",
+        "delta": 10,
+        "balance": 101,
+        "reason": "Line Cook",
+        "reasonType": "achievement",
+        "userId": "U0A6860UHC4"
       }
     ],
     "u0a68hsj3tk": [
@@ -70185,6 +70201,17 @@
     ]
   },
   "users": {
+    "U07TY6SHYA3": {
+      "id": "U07TY6SHYA3",
+      "username": "aperaine.0",
+      "avatar": "https://avatars.slack-edge.com/2025-11-30/10013350444419_8f8eb52e3b98332ccb6d_72.png"
+    },
+    "U0A6860UHC4": {
+      "id": "U0A6860UHC4",
+      "username": "padamnabhnamdeo",
+      "displayName": "The Outlier",
+      "avatar": "https://secure.gravatar.com/avatar/f5cecfd91f653ea398db8f9f8ff498ce.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0004-72.png"
+    },
     "U07Q0L51QMV": {
       "id": "U07Q0L51QMV",
       "username": "faizancurious",
@@ -71117,12 +71144,6 @@
       "username": "someguest4",
       "displayName": "someguest4",
       "avatar": "https://secure.gravatar.com/avatar/39ca3709cb30d7bd5ccaacf64bd10a47.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0022-72.png"
-    },
-    "U0A6860UHC4": {
-      "id": "U0A6860UHC4",
-      "username": "padamnabhnamdeo",
-      "displayName": "The Outlier",
-      "avatar": "https://secure.gravatar.com/avatar/f5cecfd91f653ea398db8f9f8ff498ce.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0004-72.png"
     },
     "U0A7A7TT28L": {
       "id": "U0A7A7TT28L",
@@ -72883,11 +72904,6 @@
       "username": "dona.philipp",
       "displayName": "phorb",
       "avatar": "https://avatars.slack-edge.com/2025-08-15/9360747253494_4c988b724a7c39f0b237_72.png"
-    },
-    "U07TY6SHYA3": {
-      "id": "U07TY6SHYA3",
-      "username": "aperaine.0",
-      "avatar": "https://avatars.slack-edge.com/2025-11-30/10013350444419_8f8eb52e3b98332ccb6d_72.png"
     },
     "U0827A6KT29": {
       "id": "U0827A6KT29",
