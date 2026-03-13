@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-13T05:34:35.849Z",
+  "lastUpdated": "2026-03-13T06:57:25.578Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -69725,6 +69725,24 @@
         "userId": "U0AK897QZA4"
       }
     ],
+    "u0ak8es3j3u": [
+      {
+        "ts": "2026-03-13T06:20:08.796Z",
+        "delta": 10,
+        "balance": 10,
+        "reason": "user grant",
+        "reasonType": "",
+        "userId": "U0AK8ES3J3U"
+      },
+      {
+        "ts": "2026-03-13T06:20:43.716Z",
+        "delta": -10,
+        "balance": 0,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0AK8ES3J3U"
+      }
+    ],
     "u0akc97mrjm": [
       {
         "ts": "2026-03-06T11:25:42.327Z",
@@ -69851,6 +69869,12 @@
     ]
   },
   "users": {
+    "U0AK8ES3J3U": {
+      "id": "U0AK8ES3J3U",
+      "username": "lovro.kastelic011",
+      "displayName": "Kastelc",
+      "avatar": "https://secure.gravatar.com/avatar/4336c3545a34b50137793745697342c9.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0007-72.png"
+    },
     "U091RHATJBW": {
       "id": "U091RHATJBW",
       "username": "rchen7530",
