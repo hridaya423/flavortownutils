@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-13T18:59:00.409Z",
+  "lastUpdated": "2026-03-13T19:37:49.517Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -9126,6 +9126,14 @@
         "balance": 16,
         "reason": "Michelin Star",
         "reasonType": "achievement",
+        "userId": "U080DB49RCY"
+      },
+      {
+        "ts": "2026-03-13T19:12:20.957Z",
+        "delta": 19,
+        "balance": 35,
+        "reason": "ship event payout",
+        "reasonType": "",
         "userId": "U080DB49RCY"
       }
     ],
@@ -70299,6 +70307,12 @@
     ]
   },
   "users": {
+    "U080DB49RCY": {
+      "id": "U080DB49RCY",
+      "username": "paylicier",
+      "displayName": "Paul",
+      "avatar": "https://avatars.slack-edge.com/2025-11-16/9956052720176_b94579a6e3f2d90488eb_72.png"
+    },
     "U091KALMG3Y": {
       "id": "U091KALMG3Y",
       "username": "braxtonhood23",
@@ -71328,12 +71342,6 @@
       "username": "matthewsequeir",
       "displayName": "mattseq",
       "avatar": "https://avatars.slack-edge.com/2025-06-19/9099542398496_686de8eb53df145a992c_72.png"
-    },
-    "U080DB49RCY": {
-      "id": "U080DB49RCY",
-      "username": "paylicier",
-      "displayName": "Paul",
-      "avatar": "https://avatars.slack-edge.com/2025-11-16/9956052720176_b94579a6e3f2d90488eb_72.png"
     },
     "U0A81UKS2JU": {
       "id": "U0A81UKS2JU",
