@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-13T02:09:08.472Z",
+  "lastUpdated": "2026-03-13T04:26:41.516Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -98,6 +98,22 @@
         "balance": 1714,
         "reason": "ship event payout",
         "reasonType": "",
+        "userId": "U046VA0KR8R"
+      },
+      {
+        "ts": "2026-03-13T02:35:13.501Z",
+        "delta": 3,
+        "balance": 1717,
+        "reason": "Michelin Star",
+        "reasonType": "achievement",
+        "userId": "U046VA0KR8R"
+      },
+      {
+        "ts": "2026-03-13T02:35:13.539Z",
+        "delta": 5,
+        "balance": 1722,
+        "reason": "Cooking",
+        "reasonType": "achievement",
         "userId": "U046VA0KR8R"
       }
     ],
@@ -19632,6 +19648,14 @@
         "ts": "2026-03-12T23:46:28.228Z",
         "delta": -3881,
         "balance": 0,
+        "reason": "user grant",
+        "reasonType": "",
+        "userId": "U091KALMG3Y"
+      },
+      {
+        "ts": "2026-03-13T02:59:45.810Z",
+        "delta": 3492,
+        "balance": 3492,
         "reason": "user grant",
         "reasonType": "",
         "userId": "U091KALMG3Y"
@@ -69625,6 +69649,40 @@
         "userId": "U0AJKN13NDS"
       }
     ],
+    "u0ajyl7g1k2": [
+      {
+        "ts": "2026-03-13T02:56:15.077Z",
+        "delta": 5,
+        "balance": 10,
+        "reason": "Very Fried",
+        "reasonType": "achievement",
+        "userId": "U0AJYL7G1K2"
+      },
+      {
+        "ts": "2026-03-13T02:56:16.549Z",
+        "delta": 2,
+        "balance": 12,
+        "reason": "Hello, Kitchen!",
+        "reasonType": "achievement",
+        "userId": "U0AJYL7G1K2"
+      },
+      {
+        "ts": "2026-03-13T02:56:16.611Z",
+        "delta": 3,
+        "balance": 15,
+        "reason": "Order Up!",
+        "reasonType": "achievement",
+        "userId": "U0AJYL7G1K2"
+      },
+      {
+        "ts": "2026-03-13T02:56:16.615Z",
+        "delta": 3,
+        "balance": 18,
+        "reason": "Michelin Star",
+        "reasonType": "achievement",
+        "userId": "U0AJYL7G1K2"
+      }
+    ],
     "u0ak897qza4": [
       {
         "ts": "2026-03-05T18:06:30.916Z",
@@ -69777,6 +69835,23 @@
     ]
   },
   "users": {
+    "U091KALMG3Y": {
+      "id": "U091KALMG3Y",
+      "username": "braxtonhood23",
+      "avatar": "https://avatars.slack-edge.com/2026-01-22/10336148649699_bd08305f939082ce41ab_72.jpg"
+    },
+    "U0AJYL7G1K2": {
+      "id": "U0AJYL7G1K2",
+      "username": "jackjacobson.co",
+      "displayName": "jokingjack1037",
+      "avatar": "https://secure.gravatar.com/avatar/e7bfabbe6dc725e9bcd1b7d534e990fd.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0005-72.png"
+    },
+    "U046VA0KR8R": {
+      "id": "U046VA0KR8R",
+      "username": "scooter.y",
+      "displayName": "Scooter Y",
+      "avatar": "https://avatars.slack-edge.com/2024-09-05/7699775824753_b19823deb141ed9d7deb_72.png"
+    },
     "U07AZFQLPQ8": {
       "id": "U07AZFQLPQ8",
       "username": "kittycat",
@@ -69849,11 +69924,6 @@
       "username": "zc123playz",
       "displayName": "Gongitygongitygong",
       "avatar": "https://avatars.slack-edge.com/2025-12-14/10122466931860_80b23b259c63ec807155_72.jpg"
-    },
-    "U091KALMG3Y": {
-      "id": "U091KALMG3Y",
-      "username": "braxtonhood23",
-      "avatar": "https://avatars.slack-edge.com/2026-01-22/10336148649699_bd08305f939082ce41ab_72.jpg"
     },
     "U0A778JGV18": {
       "id": "U0A778JGV18",
@@ -71135,12 +71205,6 @@
       "username": "wowstar",
       "displayName": "Wowstar",
       "avatar": "https://secure.gravatar.com/avatar/814670d57d746711abbe74d16ee210cc.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0011-72.png"
-    },
-    "U046VA0KR8R": {
-      "id": "U046VA0KR8R",
-      "username": "scooter.y",
-      "displayName": "Scooter Y",
-      "avatar": "https://avatars.slack-edge.com/2024-09-05/7699775824753_b19823deb141ed9d7deb_72.png"
     },
     "U094FQCCF40": {
       "id": "U094FQCCF40",
