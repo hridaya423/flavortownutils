@@ -13945,6 +13945,8 @@ setupCommandPalette();
 
 
 const VOTES_JSON_URL = 'https://raw.githubusercontent.com/hridaya423/flavortownutils/refs/heads/main/data/votes.json';
+const COMMUNITY_VOTES_SHIP_CUTOFF_ISO = '2026-02-23T20:41:00.000Z';
+const COMMUNITY_VOTES_SHIP_CUTOFF_TS = new Date(COMMUNITY_VOTES_SHIP_CUTOFF_ISO).getTime();
 const LEADERBOARD_FEED_URL = 'https://raw.githubusercontent.com/hridaya423/flavortownutils/refs/heads/main/data/lbfeed.json';
 const TODO_JSON_URL = 'https://flavortown-todo-bot.hridayahoney.workers.dev/todos.json';
 const TODO_CACHE_KEY = 'flavortown_todos_cache';
@@ -15942,6 +15944,26 @@ function parseDateFromTimeElement(timeEl) {
     return parseRelativeTime(text);
 }
 
+function getTimeElementTimestampForCutoff(timeEl, fallbackDate = null) {
+    if (!timeEl) return fallbackDate instanceof Date ? fallbackDate.getTime() : NaN;
+
+    const timeTag = timeEl.matches('time') ? timeEl : timeEl.querySelector('time');
+    if (timeTag) {
+        const datetime = (timeTag.getAttribute('datetime') || '').trim();
+        if (datetime) {
+            const hasTimezone = /(?:Z|[+-]\d{2}:?\d{2})$/i.test(datetime);
+            const normalized = hasTimezone ? datetime : `${datetime}Z`;
+            const parsed = new Date(normalized);
+            if (!isNaN(parsed.getTime())) return parsed.getTime();
+        }
+    }
+
+    if (fallbackDate instanceof Date && !isNaN(fallbackDate.getTime())) {
+        return fallbackDate.getTime();
+    }
+    return NaN;
+}
+
 function parseDateFromCell(cell) {
     if (!cell) return null;
     const timeTag = cell.querySelector('time');
@@ -16258,10 +16280,12 @@ async function addProjectVotesDisplay() {
             const date = parseDateFromTimeElement(timeEl);
 
             if (date) {
+                const cutoffTimestamp = getTimeElementTimestampForCutoff(timeEl, date);
                 ships.push({
                     element: post,
                     statsElement: shipStats,
                     date: date,
+                    cutoffTimestamp,
                     relativeTime: relativeTime
                 });
             }
@@ -16270,9 +16294,17 @@ async function addProjectVotesDisplay() {
 
     if (ships.length === 0) return;
 
-    const clusteredVotes = clusterVotesToShips(projectVotes, ships);
+    const eligibleShips = ships.filter(ship => {
+        const shipTs = Number.isFinite(ship?.cutoffTimestamp)
+            ? ship.cutoffTimestamp
+            : (ship?.date ? ship.date.getTime() : NaN);
+        return Number.isFinite(shipTs) && shipTs < COMMUNITY_VOTES_SHIP_CUTOFF_TS;
+    });
+    if (eligibleShips.length === 0) return;
 
-    ships.forEach(ship => {
+    const clusteredVotes = clusterVotesToShips(projectVotes, eligibleShips);
+
+    eligibleShips.forEach(ship => {
         const shipVotes = clusteredVotes.get(ship);
         if (!shipVotes || shipVotes.length === 0) return;
 
@@ -17061,15 +17093,6 @@ const TUTORIAL_PHASE_2 = [
         position: 'center',
         icon: '📈',
         interactive: 'navigate-dashboard'
-    },
-    {
-        id: 'community-votes',
-        title: 'Community votes',
-        description: 'See feedback from people who voted on your projects, right on the project page.',
-        target: null,
-        position: 'center',
-        icon: '⭐',
-        skip: true
     },
     {
         id: 'shop-time-calc',
@@ -18479,7 +18502,7 @@ class TutorialController {
             }
         }
 
-        if (step.id === 'community-votes' || step.skip) {
+        if (step.skip) {
             if (this.currentStep < this.steps.length - 1) {
                 this.showStep(this.currentStep + 1);
             } else {

@@ -3,7 +3,6 @@ const fs = require('fs');
 const path = require('path');
 
 const SLACK_TOKEN = process.env.SLACK_TOKEN;
-const VOTES_CHANNEL_ID = 'C0A2DTFSYSD';
 const LBFEED_CHANNEL_ID = 'C0A3JN1CMNE';
 const CUTOFF_ISO = '2026-01-14T00:00:00.000Z';
 const CUTOFF_TS = Math.floor(new Date(CUTOFF_ISO).getTime() / 1000);
@@ -298,7 +297,7 @@ async function fetchUserInfo(userId) {
 }
 
 function loadCachedUsers() {
-  const outputPath = path.join(__dirname, '..', 'data', 'votes.json');
+  const outputPath = path.join(__dirname, '..', 'data', 'lbfeed.json');
   try {
     if (fs.existsSync(outputPath)) {
       const data = JSON.parse(fs.readFileSync(outputPath, 'utf8'));
@@ -361,49 +360,6 @@ async function fetchLeaderboardUsers(entries) {
 }
 
 async function main() {
-  const messages = await fetchSlackMessages(VOTES_CHANNEL_ID);
-
-  const votes = messages
-    .map(parseVoteMessage)
-    .filter(Boolean)
-    .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-
-  const outputPath = path.join(__dirname, '..', 'data', 'votes.json');
-  const outputDir = path.dirname(outputPath);
-
-  if (!fs.existsSync(outputDir)) {
-    fs.mkdirSync(outputDir, { recursive: true });
-  }
-
-  let existingData = null;
-  try {
-    if (fs.existsSync(outputPath)) {
-      existingData = JSON.parse(fs.readFileSync(outputPath, 'utf8'));
-    }
-  } catch (e) {
-    console.warn('Could not read existing data:', e.message);
-  }
-
-  const existingVoteCount = existingData?.totalVotes || 0;
-  const existingLatestTs = existingData?.votes?.[0]?.slackTs || null;
-  const newLatestTs = votes[0]?.slackTs || null;
-
-  const shouldWriteVotes = !(existingVoteCount === votes.length && existingLatestTs === newLatestTs);
-  if (!shouldWriteVotes) {
-    console.log('No new votes detected, skipping write.');
-  } else {
-    const users = await fetchAllUsers(votes);
-
-    const output = {
-      lastUpdated: new Date().toISOString(),
-      totalVotes: votes.length,
-      votes: votes,
-      users: users,
-    };
-
-    fs.writeFileSync(outputPath, JSON.stringify(output, null, 2));
-  }
-
   const leaderboardMessages = await fetchSlackMessages(LBFEED_CHANNEL_ID);
   if (process.env.DEBUG_LBFEED === '1') {
     const sampleTexts = leaderboardMessages

@@ -1,4 +1,4 @@
-name: Fetch Slack Votes
+name: Fetch Leaderboard Feed
 
 on:
   schedule:
@@ -21,7 +21,7 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Fetch votes from Slack
+      - name: Fetch leaderboard feed from Slack
         env:
           SLACK_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
         run: |
@@ -31,7 +31,7 @@ jobs:
       - name: Check for changes
         id: changes
         run: |
-          git add data/votes.json data/lbfeed.json
+          git add data/lbfeed.json
           if git diff --staged --quiet; then
             echo "changed=false" >> $GITHUB_OUTPUT
           else
@@ -43,5 +43,5 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git commit -m "Update votes data [automated]"
+          git commit -m "Update leaderboard feed [automated]"
           git push
