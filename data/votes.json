@@ -1,7 +1,28 @@
 {
-  "lastUpdated": "2026-03-12T23:28:43.725Z",
-  "totalVotes": 7599,
+  "lastUpdated": "2026-03-13T02:07:27.229Z",
+  "totalVotes": 7602,
   "votes": [
+    {
+      "project": "Zod Playground",
+      "feedback": "Perhaps explain further what zod is and what it is used for.",
+      "votedBy": "U0AJYL7G1K2",
+      "timestamp": "2026-03-13T02:04:30.937Z",
+      "slackTs": "1773367470.937269"
+    },
+    {
+      "project": "Machine-Learning Apriltag Detection",
+      "feedback": "Maybe make an easier way to use, also for us outside of the FRC community to understand what an apriltag is and why it is useful.",
+      "votedBy": "U0AJYL7G1K2",
+      "timestamp": "2026-03-13T01:45:12.385Z",
+      "slackTs": "1773366312.385659"
+    },
+    {
+      "project": "Space Shooter",
+      "feedback": "nice assets and music, however its possible to fly outside of the viewport and there is no health bar",
+      "votedBy": "U08Q75EBX53",
+      "timestamp": "2026-03-13T01:39:23.260Z",
+      "slackTs": "1773365963.260479"
+    },
     {
       "project": "OpenAnalytics",
       "feedback": "Great work\nThe idea itself of an analysis api is not new \nBut i see that this is pretty well made",
@@ -54920,6 +54941,12 @@
       "username": "rylanjarboe8",
       "displayName": "awsome-webdev",
       "avatar": "https://avatars.slack-edge.com/2025-02-07/8406330816295_63b7b8ef68aa940756cc_72.png"
+    },
+    "U0AJYL7G1K2": {
+      "id": "U0AJYL7G1K2",
+      "username": "jackjacobson.co",
+      "displayName": "jokingjack1037",
+      "avatar": "https://secure.gravatar.com/avatar/e7bfabbe6dc725e9bcd1b7d534e990fd.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0005-72.png"
     }
   }
 }
