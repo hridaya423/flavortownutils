@@ -1154,6 +1154,15 @@ function formatMinutesCompact(totalMinutes) {
     return `${mins}m`;
 }
 
+let unshippedEstimateRunId = 0;
+
+function shouldShowUnshippedCookieEstimate(shipButton) {
+    if (!shipButton) return false;
+    const labelText = (shipButton.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase();
+    if (!labelText) return true;
+    return !labelText.includes('follow');
+}
+
 async function addUnshippedCookieEstimate(attempt = 0) {
     if (!/\/projects\/\d+$/.test(window.location.pathname)) return;
 
@@ -1172,6 +1181,10 @@ async function addUnshippedCookieEstimate(attempt = 0) {
     }
 
     shipButton.querySelectorAll('.flavortown-unshipped-cookie-est').forEach(el => el.remove());
+
+    if (!shouldShowUnshippedCookieEstimate(shipButton)) return;
+
+    const runId = ++unshippedEstimateRunId;
 
     const unshippedMinutes = getUnshippedMinutesSinceLastShip();
     if (unshippedMinutes <= 0) return;
@@ -1207,6 +1220,10 @@ async function addUnshippedCookieEstimate(attempt = 0) {
     const projectedCookies = Math.round(rate * (unshippedMinutes / 60));
 
     if (!projectedCookies || !isFinite(projectedCookies) || projectedCookies <= 0) return;
+
+    if (runId !== unshippedEstimateRunId || !shipButton.isConnected) return;
+    shipButton.querySelectorAll('.flavortown-unshipped-cookie-est').forEach(el => el.remove());
+    if (!shouldShowUnshippedCookieEstimate(shipButton)) return;
 
     const estimate = document.createElement('span');
     estimate.className = 'flavortown-unshipped-cookie-est';
