@@ -9209,6 +9209,116 @@ function initProjectBoardStats() {
             heading.appendChild(statsEl);
         }
     }
+
+    addProjectPinsFeature();
+}
+
+const PINNED_PROJECTS_KEY = 'flavortown_pinned_projects';
+
+function getPinnedProjectIds() {
+    try {
+        const raw = localStorage.getItem(PINNED_PROJECTS_KEY);
+        if (!raw) return [];
+        const parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed)) return [];
+        return parsed
+            .map(id => String(id || '').trim())
+            .filter(Boolean);
+    } catch (e) {
+        return [];
+    }
+}
+
+function setPinnedProjectIds(ids) {
+    try {
+        const uniqueIds = [];
+        const seen = new Set();
+        (ids || []).forEach(id => {
+            const normalized = String(id || '').trim();
+            if (!normalized || seen.has(normalized)) return;
+            seen.add(normalized);
+            uniqueIds.push(normalized);
+        });
+        localStorage.setItem(PINNED_PROJECTS_KEY, JSON.stringify(uniqueIds));
+    } catch (e) {
+    }
+}
+
+function addProjectPinsFeature() {
+    if (!window.location.pathname.endsWith('/projects')) return;
+
+    const grid = document.querySelector('.projects-board__grid');
+    if (!grid) return;
+
+    const allItems = Array.from(grid.querySelectorAll(':scope > .projects-board__grid-item'));
+    const createItem = allItems.find(item => item.classList.contains('projects-board__grid-item--create')) || null;
+    const projectItems = allItems.filter(item => item.querySelector('.project-card'));
+    if (!projectItems.length) return;
+
+    const pinnedIds = getPinnedProjectIds();
+    const pinnedSet = new Set(pinnedIds);
+
+    const itemByProjectId = new Map();
+    projectItems.forEach((item) => {
+        const card = item.querySelector('.project-card');
+        const projectId = card?.id?.replace('project_', '') || '';
+        if (!projectId) return;
+
+        itemByProjectId.set(projectId, item);
+        item.dataset.flavortownProjectId = projectId;
+
+        card.classList.add('flavortown-project-pin-enabled');
+
+        let pinBtn = card.querySelector('.flavortown-project-pin-btn');
+        if (!pinBtn) {
+            pinBtn = document.createElement('button');
+            pinBtn.type = 'button';
+            pinBtn.className = 'flavortown-project-pin-btn';
+            pinBtn.innerHTML = `
+                <svg class="flavortown-project-pin-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path fill="currentColor" d="M16 12V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v8l-2 2v2h5v6h2v-6h5v-2z"/>
+                </svg>
+            `;
+            pinBtn.addEventListener('click', (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+
+                const currentId = card.id?.replace('project_', '') || '';
+                if (!currentId) return;
+
+                const currentPinned = getPinnedProjectIds();
+                const alreadyPinned = currentPinned.includes(currentId);
+                const nextPinned = alreadyPinned
+                    ? currentPinned.filter(id => id !== currentId)
+                    : [currentId, ...currentPinned.filter(id => id !== currentId)];
+                setPinnedProjectIds(nextPinned);
+                addProjectPinsFeature();
+            });
+            card.appendChild(pinBtn);
+        }
+
+        const isPinned = pinnedSet.has(projectId);
+        card.classList.toggle('flavortown-project-pinned', isPinned);
+        pinBtn.classList.toggle('is-pinned', isPinned);
+        pinBtn.setAttribute('aria-pressed', isPinned ? 'true' : 'false');
+        const label = isPinned ? 'Unpin project' : 'Pin project';
+        pinBtn.setAttribute('title', label);
+        pinBtn.setAttribute('aria-label', label);
+    });
+
+    const orderedPinnedItems = pinnedIds
+        .map(id => itemByProjectId.get(id))
+        .filter(Boolean);
+    const unpinnedItems = projectItems.filter(item => !pinnedSet.has(item.dataset.flavortownProjectId || ''));
+
+    const orderedItems = [...orderedPinnedItems, ...unpinnedItems];
+    orderedItems.forEach(item => {
+        grid.insertBefore(item, createItem && createItem.parentElement === grid ? createItem : null);
+    });
+
+    if (createItem && createItem.parentElement === grid) {
+        grid.appendChild(createItem);
+    }
 }
 
 const UPDATE_CHECK_KEY = 'flavortown_last_update_check';

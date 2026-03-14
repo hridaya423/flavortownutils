@@ -941,6 +941,27 @@ a:hover {
     color: var(--overcooked-surface) !important;
 }
 
+.project-card .flavortown-project-pin-btn {
+    background-color: var(--overcooked-mid) !important;
+    border-color: var(--overcooked-surface) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.project-card .flavortown-project-pin-btn:hover {
+    background-color: var(--overcooked-surface) !important;
+    border-color: var(--overcooked-cyan) !important;
+}
+
+.project-card .flavortown-project-pin-btn.is-pinned {
+    background-color: var(--overcooked-cyan) !important;
+    border-color: var(--overcooked-cyan) !important;
+    color: var(--overcooked-burnt) !important;
+}
+
+.project-card.flavortown-project-pinned {
+    outline-color: rgba(237, 137, 54, 0.65) !important;
+}
+
 .projects-show__admin-actions {
     background-color: transparent !important;
 }

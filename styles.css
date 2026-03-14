@@ -1396,6 +1396,60 @@
     flex-wrap: wrap;
 }
 
+.flavortown-project-pin-enabled {
+    position: relative;
+}
+
+.flavortown-project-pin-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 3;
+    border: 1px solid var(--color-border, #d7c5af);
+    background: var(--color-background, #fffdf9);
+    color: var(--color-text-primary, #5d4e37);
+    width: 30px;
+    height: 30px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    line-height: 1;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.18);
+    opacity: 0.9;
+    transition: transform 0.15s ease, opacity 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.flavortown-project-pin-icon {
+    width: 16px;
+    height: 16px;
+    display: block;
+    transform: rotate(0deg);
+    transition: transform 0.15s ease;
+}
+
+.flavortown-project-pin-btn.is-pinned .flavortown-project-pin-icon {
+    transform: rotate(45deg);
+}
+
+.flavortown-project-pin-btn:hover {
+    transform: translateY(-1px);
+    opacity: 1;
+}
+
+.flavortown-project-pin-btn.is-pinned {
+    background: var(--color-accent, #ec8b33);
+    border-color: var(--color-accent, #ec8b33);
+    color: #fff;
+    opacity: 1;
+}
+
+.project-card.flavortown-project-pinned {
+    outline: 2px solid rgba(236, 139, 51, 0.55);
+    outline-offset: 1px;
+}
+
 .flavortown-project-category-stats {
     width: 100%;
     margin-top: 8px;
