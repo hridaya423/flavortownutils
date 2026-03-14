@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-14T22:55:06.268Z",
+  "lastUpdated": "2026-03-14T23:28:46.063Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -56187,6 +56187,14 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0A7HGGFLPK"
+      },
+      {
+        "ts": "2026-03-14T23:20:35.527Z",
+        "delta": -674,
+        "balance": 0,
+        "reason": "user grant",
+        "reasonType": "",
+        "userId": "U0A7HGGFLPK"
       }
     ],
     "u0a7j2dbkng": [
@@ -71147,6 +71155,12 @@
     ]
   },
   "users": {
+    "U0A7HGGFLPK": {
+      "id": "U0A7HGGFLPK",
+      "username": "fa24-bse-046",
+      "displayName": "Lilith",
+      "avatar": "https://avatars.slack-edge.com/2026-01-14/10311775706785_f36a92993a6d56dc816a_72.jpg"
+    },
     "U04K7BXT95X": {
       "id": "U04K7BXT95X",
       "username": "nidheeshpusuluri",
@@ -71771,12 +71785,6 @@
       "username": "coding.tathya",
       "displayName": "tathya is aweomse",
       "avatar": "https://avatars.slack-edge.com/2025-12-28/10209904503377_04e45737dceb9383dc84_72.jpg"
-    },
-    "U0A7HGGFLPK": {
-      "id": "U0A7HGGFLPK",
-      "username": "fa24-bse-046",
-      "displayName": "Lilith",
-      "avatar": "https://avatars.slack-edge.com/2026-01-14/10311775706785_f36a92993a6d56dc816a_72.jpg"
     },
     "U08NXSM8A79": {
       "id": "U08NXSM8A79",
