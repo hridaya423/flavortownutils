@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-14T12:54:10.666Z",
+  "lastUpdated": "2026-03-14T13:47:39.370Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -66803,6 +66803,14 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0A8KA80SPL"
+      },
+      {
+        "ts": "2026-03-14T13:24:28.176Z",
+        "delta": 31,
+        "balance": 53,
+        "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U0A8KA80SPL"
       }
     ],
     "u0a8m0llabs": [
@@ -70771,6 +70779,12 @@
     ]
   },
   "users": {
+    "U0A8KA80SPL": {
+      "id": "U0A8KA80SPL",
+      "username": "maverickroneal",
+      "displayName": "maverickroneal",
+      "avatar": "https://avatars.slack-edge.com/2026-03-08/10654004087830_f1afebfacddac279cdbb_72.png"
+    },
     "U07T7BUQMGF": {
       "id": "U07T7BUQMGF",
       "username": "hello631",
@@ -72657,12 +72671,6 @@
       "username": "ivo.theis",
       "displayName": "Ivole32",
       "avatar": "https://avatars.slack-edge.com/2026-01-15/10317576012353_4fe6b55c0a18ccfc75c5_72.png"
-    },
-    "U0A8KA80SPL": {
-      "id": "U0A8KA80SPL",
-      "username": "maverickroneal",
-      "displayName": "maverickroneal",
-      "avatar": "https://avatars.slack-edge.com/2026-03-08/10654004087830_f1afebfacddac279cdbb_72.png"
     },
     "U09JMHJ0B8E": {
       "id": "U09JMHJ0B8E",
