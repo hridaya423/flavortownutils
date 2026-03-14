@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-14T13:47:39.370Z",
+  "lastUpdated": "2026-03-14T14:30:01.712Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -25401,6 +25401,14 @@
         "delta": 5207,
         "balance": 7693,
         "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U093B3R6HCK"
+      },
+      {
+        "ts": "2026-03-14T14:20:42.902Z",
+        "delta": -5400,
+        "balance": 2293,
+        "reason": "shop purchase",
         "reasonType": "",
         "userId": "U093B3R6HCK"
       }
@@ -70779,6 +70787,12 @@
     ]
   },
   "users": {
+    "U093B3R6HCK": {
+      "id": "U093B3R6HCK",
+      "username": "timslawncare.ok",
+      "displayName": "Steve",
+      "avatar": "https://avatars.slack-edge.com/2025-12-31/10227680231761_579bd70387c3d904bfb5_72.jpg"
+    },
     "U0A8KA80SPL": {
       "id": "U0A8KA80SPL",
       "username": "maverickroneal",
@@ -70872,12 +70886,6 @@
       "username": "cyteon",
       "displayName": "Cyteon",
       "avatar": "https://avatars.slack-edge.com/2025-04-05/8722129902817_bed15dc712f97108332d_72.png"
-    },
-    "U093B3R6HCK": {
-      "id": "U093B3R6HCK",
-      "username": "timslawncare.ok",
-      "displayName": "Steve",
-      "avatar": "https://avatars.slack-edge.com/2025-12-31/10227680231761_579bd70387c3d904bfb5_72.jpg"
     },
     "U087X4AG35K": {
       "id": "U087X4AG35K",
