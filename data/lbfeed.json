@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-14T21:51:07.628Z",
+  "lastUpdated": "2026-03-14T22:27:50.758Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -67773,6 +67773,14 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0A9MGA54RK"
+      },
+      {
+        "ts": "2026-03-14T21:52:12.539Z",
+        "delta": -22,
+        "balance": 4,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A9MGA54RK"
       }
     ],
     "u0a9qqrk6k0": [
@@ -70041,6 +70049,22 @@
         "reason": "ship event payout",
         "reasonType": "",
         "userId": "U0AEYDUCLKF"
+      },
+      {
+        "ts": "2026-03-14T22:23:48.345Z",
+        "delta": 3,
+        "balance": 56,
+        "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U0AEYDUCLKF"
+      },
+      {
+        "ts": "2026-03-14T22:23:48.535Z",
+        "delta": 4,
+        "balance": 60,
+        "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U0AEYDUCLKF"
       }
     ],
     "u0af05ftk51": [
@@ -71083,6 +71107,12 @@
     ]
   },
   "users": {
+    "U0AEYDUCLKF": {
+      "id": "U0AEYDUCLKF",
+      "username": "jacob.navaratne",
+      "displayName": "Jacob",
+      "avatar": "https://avatars.slack-edge.com/2026-02-15/10507758480291_a56356891a1addcfd2bc_72.png"
+    },
     "U0A9MGA54RK": {
       "id": "U0A9MGA54RK",
       "username": "3129209",
@@ -72539,12 +72569,6 @@
       "username": "thiago.teixeira51",
       "displayName": "ChefThi",
       "avatar": "https://avatars.slack-edge.com/2026-02-27/10601745651458_f0c2171b159b2740736f_72.png"
-    },
-    "U0AEYDUCLKF": {
-      "id": "U0AEYDUCLKF",
-      "username": "jacob.navaratne",
-      "displayName": "Jacob",
-      "avatar": "https://avatars.slack-edge.com/2026-02-15/10507758480291_a56356891a1addcfd2bc_72.png"
     },
     "U053T7BB7JQ": {
       "id": "U053T7BB7JQ",
