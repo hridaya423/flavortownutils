@@ -73,6 +73,7 @@
 - Activity heatmap
 - TODOs & Sync with slack feature.
 - Multiline vote feedback field on `/votes/new`
+- Pin projects.
 
 ## Feature showcase:
 
