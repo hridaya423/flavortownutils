@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-14T17:27:23.066Z",
+  "lastUpdated": "2026-03-14T17:53:01.384Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -28819,6 +28819,14 @@
         "delta": -206,
         "balance": 111,
         "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U099JENAUGP"
+      },
+      {
+        "ts": "2026-03-14T17:32:09.497Z",
+        "delta": 111,
+        "balance": 222,
+        "reason": "ship event payout",
         "reasonType": "",
         "userId": "U099JENAUGP"
       }
@@ -70953,6 +70961,11 @@
     ]
   },
   "users": {
+    "U099JENAUGP": {
+      "id": "U099JENAUGP",
+      "username": "jakebuckhouse",
+      "avatar": "https://avatars.slack-edge.com/2025-11-30/10020041914373_9151e4cf03a368cae425_72.png"
+    },
     "U078G7DML8P": {
       "id": "U078G7DML8P",
       "username": "trey.manutes",
@@ -74746,11 +74759,6 @@
       "id": "U0A4FK3G99V",
       "username": "jomanaworld433",
       "avatar": "https://avatars.slack-edge.com/2025-12-22/10183158307921_f757a9e959be2daf05cf_72.jpg"
-    },
-    "U099JENAUGP": {
-      "id": "U099JENAUGP",
-      "username": "jakebuckhouse",
-      "avatar": "https://avatars.slack-edge.com/2025-11-30/10020041914373_9151e4cf03a368cae425_72.png"
     },
     "U07DG1B3VHP": {
       "id": "U07DG1B3VHP",
