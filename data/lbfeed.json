@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-14T06:50:01.359Z",
+  "lastUpdated": "2026-03-14T07:35:18.669Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -10717,6 +10717,14 @@
         "delta": 4,
         "balance": 2475,
         "reason": "user grant",
+        "reasonType": "",
+        "userId": "U082GTRTR5X"
+      },
+      {
+        "ts": "2026-03-14T07:08:54.683Z",
+        "delta": 707,
+        "balance": 3182,
+        "reason": "ship event payout",
         "reasonType": "",
         "userId": "U082GTRTR5X"
       }
@@ -70627,6 +70635,12 @@
     ]
   },
   "users": {
+    "U082GTRTR5X": {
+      "id": "U082GTRTR5X",
+      "username": "cyteon",
+      "displayName": "Cyteon",
+      "avatar": "https://avatars.slack-edge.com/2025-04-05/8722129902817_bed15dc712f97108332d_72.png"
+    },
     "U093B3R6HCK": {
       "id": "U093B3R6HCK",
       "username": "timslawncare.ok",
@@ -70990,12 +71004,6 @@
       "username": "pianoman0_",
       "displayName": "PianoMan0",
       "avatar": "https://avatars.slack-edge.com/2026-01-14/10283237214791_d5355bd1e025e117308b_72.png"
-    },
-    "U082GTRTR5X": {
-      "id": "U082GTRTR5X",
-      "username": "cyteon",
-      "displayName": "Cyteon",
-      "avatar": "https://avatars.slack-edge.com/2025-04-05/8722129902817_bed15dc712f97108332d_72.png"
     },
     "U059VC0UDEU": {
       "id": "U059VC0UDEU",
