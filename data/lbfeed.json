@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-14T08:36:32.674Z",
+  "lastUpdated": "2026-03-14T09:34:10.666Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -26972,6 +26972,14 @@
         "balance": 1128,
         "reason": "shop purchase",
         "reasonType": "",
+        "userId": "U096NGLTF4K"
+      },
+      {
+        "ts": "2026-03-14T09:30:10.895Z",
+        "delta": 5,
+        "balance": 1133,
+        "reason": "Cooking",
+        "reasonType": "achievement",
         "userId": "U096NGLTF4K"
       }
     ],
@@ -70635,6 +70643,11 @@
     ]
   },
   "users": {
+    "U096NGLTF4K": {
+      "id": "U096NGLTF4K",
+      "username": "lordseriouspig",
+      "avatar": "https://avatars.slack-edge.com/2025-08-03/9311717326353_c74908988c852687be47_72.jpg"
+    },
     "U082GTRTR5X": {
       "id": "U082GTRTR5X",
       "username": "cyteon",
@@ -74462,11 +74475,6 @@
       "username": "nishindudu",
       "displayName": "duduz",
       "avatar": "https://avatars.slack-edge.com/2026-02-04/10470347857232_91278a4fac32a3e4456f_72.png"
-    },
-    "U096NGLTF4K": {
-      "id": "U096NGLTF4K",
-      "username": "lordseriouspig",
-      "avatar": "https://avatars.slack-edge.com/2025-08-03/9311717326353_c74908988c852687be47_72.jpg"
     },
     "U0825U4K39Q": {
       "id": "U0825U4K39Q",
