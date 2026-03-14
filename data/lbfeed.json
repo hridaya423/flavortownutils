@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-14T21:28:22.100Z",
+  "lastUpdated": "2026-03-14T21:51:07.628Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -67757,6 +67757,22 @@
         "reason": "Hello, Kitchen!",
         "reasonType": "achievement",
         "userId": "U0A9MGA54RK"
+      },
+      {
+        "ts": "2026-03-14T21:45:46.686Z",
+        "delta": 68,
+        "balance": 96,
+        "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U0A9MGA54RK"
+      },
+      {
+        "ts": "2026-03-14T21:50:33.672Z",
+        "delta": -70,
+        "balance": 26,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A9MGA54RK"
       }
     ],
     "u0a9qqrk6k0": [
@@ -71067,6 +71083,12 @@
     ]
   },
   "users": {
+    "U0A9MGA54RK": {
+      "id": "U0A9MGA54RK",
+      "username": "3129209",
+      "displayName": "Null",
+      "avatar": "https://secure.gravatar.com/avatar/9b2169a96c23115d5cecacd744db9d06.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0017-72.png"
+    },
     "U09S4K4C2BA": {
       "id": "U09S4K4C2BA",
       "username": "wowstar",
@@ -71095,12 +71117,6 @@
       "username": "lovro.kastelic011",
       "displayName": "Kastelc",
       "avatar": "https://secure.gravatar.com/avatar/4336c3545a34b50137793745697342c9.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0007-72.png"
-    },
-    "U0A9MGA54RK": {
-      "id": "U0A9MGA54RK",
-      "username": "3129209",
-      "displayName": "Null",
-      "avatar": "https://secure.gravatar.com/avatar/9b2169a96c23115d5cecacd744db9d06.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0017-72.png"
     },
     "U0A0JJ603N2": {
       "id": "U0A0JJ603N2",
