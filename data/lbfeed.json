@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-14T16:33:46.131Z",
+  "lastUpdated": "2026-03-14T17:27:23.066Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -3388,6 +3388,14 @@
         "balance": 83,
         "reason": "Michelin Star",
         "reasonType": "achievement",
+        "userId": "U078G7DML8P"
+      },
+      {
+        "ts": "2026-03-14T16:50:06.647Z",
+        "delta": 640,
+        "balance": 723,
+        "reason": "ship event payout",
+        "reasonType": "",
         "userId": "U078G7DML8P"
       }
     ],
@@ -70945,17 +70953,17 @@
     ]
   },
   "users": {
-    "U0A7DTQ90BE": {
-      "id": "U0A7DTQ90BE",
-      "username": "coozywana9",
-      "displayName": "cw",
-      "avatar": "https://secure.gravatar.com/avatar/8dfd8a90c8981219235a3db471350187.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0019-72.png"
-    },
     "U078G7DML8P": {
       "id": "U078G7DML8P",
       "username": "trey.manutes",
       "displayName": "Trey",
       "avatar": "https://secure.gravatar.com/avatar/b9040021914f3127b29b1acc93efeeca.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0003-72.png"
+    },
+    "U0A7DTQ90BE": {
+      "id": "U0A7DTQ90BE",
+      "username": "coozywana9",
+      "displayName": "cw",
+      "avatar": "https://secure.gravatar.com/avatar/8dfd8a90c8981219235a3db471350187.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0019-72.png"
     },
     "U0AKXLZ8ZN0": {
       "id": "U0AKXLZ8ZN0",
