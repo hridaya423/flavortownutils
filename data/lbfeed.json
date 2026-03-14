@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-14T22:27:50.758Z",
+  "lastUpdated": "2026-03-14T22:55:06.268Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -224,6 +224,30 @@
         "balance": 0,
         "reason": "shop purchase",
         "reasonType": "",
+        "userId": "U04K7BXT95X"
+      },
+      {
+        "ts": "2026-03-14T22:53:49.505Z",
+        "delta": 5,
+        "balance": 5,
+        "reason": "Very Fried",
+        "reasonType": "achievement",
+        "userId": "U04K7BXT95X"
+      },
+      {
+        "ts": "2026-03-14T22:53:49.577Z",
+        "delta": 3,
+        "balance": 8,
+        "reason": "Home Cookin'",
+        "reasonType": "achievement",
+        "userId": "U04K7BXT95X"
+      },
+      {
+        "ts": "2026-03-14T22:53:49.604Z",
+        "delta": 2,
+        "balance": 10,
+        "reason": "Recipe Notes",
+        "reasonType": "achievement",
         "userId": "U04K7BXT95X"
       }
     ],
@@ -68885,6 +68909,22 @@
         "reason": "ship event payout",
         "reasonType": "",
         "userId": "U0AAVSGH3HC"
+      },
+      {
+        "ts": "2026-03-14T22:35:49.482Z",
+        "delta": -40,
+        "balance": 31,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0AAVSGH3HC"
+      },
+      {
+        "ts": "2026-03-14T22:39:47.411Z",
+        "delta": 40,
+        "balance": 71,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0AAVSGH3HC"
       }
     ],
     "u0ab4awmbk3": [
@@ -71107,6 +71147,18 @@
     ]
   },
   "users": {
+    "U04K7BXT95X": {
+      "id": "U04K7BXT95X",
+      "username": "nidheeshpusuluri",
+      "displayName": "Nidheesh",
+      "avatar": "https://avatars.slack-edge.com/2025-03-31/8688245620914_4561828f1d55fc23a0e2_72.png"
+    },
+    "U0AAVSGH3HC": {
+      "id": "U0AAVSGH3HC",
+      "username": "hackclub8",
+      "displayName": "46009361",
+      "avatar": "https://avatars.slack-edge.com/2026-01-29/10433002833120_f403f3da778a713c59df_72.png"
+    },
     "U0AEYDUCLKF": {
       "id": "U0AEYDUCLKF",
       "username": "jacob.navaratne",
@@ -71158,12 +71210,6 @@
       "id": "U0A4UTULSLE",
       "username": "rupnil.codes",
       "avatar": "https://avatars.slack-edge.com/2025-12-25/10186215766325_741ba211d5076230ce5e_72.png"
-    },
-    "U0AAVSGH3HC": {
-      "id": "U0AAVSGH3HC",
-      "username": "hackclub8",
-      "displayName": "46009361",
-      "avatar": "https://avatars.slack-edge.com/2026-01-29/10433002833120_f403f3da778a713c59df_72.png"
     },
     "U07Q0L51QMV": {
       "id": "U07Q0L51QMV",
@@ -71404,12 +71450,6 @@
       "username": "albert.lungu.2010",
       "displayName": "albert",
       "avatar": "https://avatars.slack-edge.com/2025-10-17/9715553568275_1d9aa44fe90babbcc6ae_72.png"
-    },
-    "U04K7BXT95X": {
-      "id": "U04K7BXT95X",
-      "username": "nidheeshpusuluri",
-      "displayName": "Nidheesh",
-      "avatar": "https://avatars.slack-edge.com/2025-03-31/8688245620914_4561828f1d55fc23a0e2_72.png"
     },
     "U0842GMRJKC": {
       "id": "U0842GMRJKC",
