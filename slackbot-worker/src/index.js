@@ -590,7 +590,11 @@ async function processUserProfileMention(slackEvent, env) {
     text,
     slackEvent.thread_ts || slackEvent.ts,
     env.SLACK_BOT_TOKEN,
-    { blocks }
+    {
+      blocks,
+      unfurlLinks: false,
+      unfurlMedia: false
+    }
   );
 }
 
@@ -894,6 +898,14 @@ async function postSlackMessage(channel, text, threadTs, token, options = {}) {
 
   if (Array.isArray(options.blocks) && options.blocks.length) {
     payload.blocks = options.blocks;
+  }
+
+  if (typeof options.unfurlLinks === 'boolean') {
+    payload.unfurl_links = options.unfurlLinks;
+  }
+
+  if (typeof options.unfurlMedia === 'boolean') {
+    payload.unfurl_media = options.unfurlMedia;
   }
 
   const response = await fetch('https://slack.com/api/chat.postMessage', {
