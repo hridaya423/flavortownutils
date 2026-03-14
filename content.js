@@ -64,6 +64,8 @@ const PAYOUT_LOW_DOLLARS_PER_HOUR = 0.3;
 const PAYOUT_HIGH_DOLLARS_PER_HOUR = 6.0;
 const PAYOUT_GAMMA = 1.745427173;
 const PAYOUT_TICKETS_PER_DOLLAR = 5;
+const COMMUNITY_VOTES_SHIP_CUTOFF_ISO = '2026-02-23T20:41:00.000Z';
+const COMMUNITY_VOTES_SHIP_CUTOFF_TS = new Date(COMMUNITY_VOTES_SHIP_CUTOFF_ISO).getTime();
 const PERCENTILE_HILL_SHAPE = 1.08;
 const THEME_CACHE_KEY = 'flavortown-theme-cache';
 const THEME_PRELOAD_STYLE_ID = 'flavortown-theme-preload';
@@ -1036,45 +1038,73 @@ async function addShipStats() {
             currentElement = currentElement.nextElementSibling;
         }
 
-        let cookiesValue = 0;
-        let hoursValue = 0;
-        let multiplierValue = 0;
+        const timeEl = shipPost.querySelector('.post__time');
+        const shipDate = parseDateFromTimeElement(timeEl);
+        const shipTimestamp = getTimeElementTimestampForCutoff(timeEl, shipDate);
 
-        if (footer) {
-            const payoutItems = Array.from(footer.querySelectorAll('.post__payout-item'));
-            const getPayoutValue = (labelMatch) => {
-                const item = payoutItems.find(entry => {
-                    const labelText = entry.querySelector('.post__payout-label')?.textContent || '';
-                    return labelText.toLowerCase().includes(labelMatch);
-                });
-                return item ? item.querySelector('.post__payout-value')?.textContent?.trim() : '';
-            };
-
-            hoursValue = parseNumberFromText(getPayoutValue('hours'));
-            cookiesValue = parseNumberFromText(getPayoutValue('cookies'));
-            multiplierValue = parseNumberFromText(getPayoutValue('multiplier'));
-        }
+        const { cookiesValue, hoursValue, multiplierValue } = getShipFooterPayoutMetrics(footer);
 
         const isPaidShip = cookiesValue && cookiesValue > 0;
         if (isPaidShip && footer) {
             const rate = multiplierValue || (hoursValue && cookiesValue ? getMultiplierFromCookies(cookiesValue, hoursValue) : null);
-            const estimate = rate ? buildVoteEstimate(rate) : null;
+            const estimate = rate ? buildShipVoteEstimate(shipPost, rate, shipTimestamp) : null;
+            const isExactEstimate = estimate?.source === 'exact-votes';
+            const overallScoreText = estimate?.overallScore
+                ? (isExactEstimate
+                    ? formatScoreWithScale(estimate.overallScore, estimate.scaleMax || 9)
+                    : formatScoreValue(estimate.overallScore))
+                : '--';
 
             footer.appendChild(buildPayoutItem('Devlogs', devlogCount ? String(devlogCount) : '--'));
             footer.appendChild(buildPayoutItem('Percentile', rate ? formatCookiePercentileLine(rate) : '--'));
-            footer.appendChild(buildPayoutItem('Avg stars', estimate?.overallScore ? `★ ${formatScoreValue(estimate.overallScore)}` : '--'));
+            footer.appendChild(buildPayoutItem('Avg stars', estimate?.overallScore ? `★ ${overallScoreText}` : '--'));
 
             if (estimate?.categories) {
+                const formatCategory = (label, value) => {
+                    const scoreText = isExactEstimate
+                        ? formatScoreWithScale(value, estimate.scaleMax || 9)
+                        : formatScoreValue(value);
+                    return `${label} ★${scoreText}`;
+                };
                 const mediansText = [
-                    `Originality ★${formatScoreValue(estimate.categories.originality)}`,
-                    `Technical ★${formatScoreValue(estimate.categories.technical)}`,
-                    `Usability ★${formatScoreValue(estimate.categories.usability)}`,
-                    `Storytelling ★${formatScoreValue(estimate.categories.storytelling)}`
+                    formatCategory('Originality', estimate.categories.originality),
+                    formatCategory('Technical', estimate.categories.technical),
+                    formatCategory('Usability', estimate.categories.usability),
+                    formatCategory('Storytelling', estimate.categories.storytelling)
                 ].join(' • ');
-                footer.appendChild(buildPayoutItem('Est. medians', mediansText));
+                footer.appendChild(buildPayoutItem(isExactEstimate ? 'Medians' : 'Est. medians', mediansText));
             }
-        } else if (paidRate && totalMinutes > 0) {
-            const estimatedCookies = Math.round(paidRate * (totalMinutes / 60));
+        } else {
+            const estimateHours = totalMinutes > 0
+                ? (totalMinutes / 60)
+                : (hoursValue && hoursValue > 0 ? hoursValue : 0);
+            if (estimateHours <= 0) {
+                if (totalMinutes > 0) {
+                    shipPost.dataset.flavortownShipMinutes = String(totalMinutes);
+                }
+                if (footer) {
+                    footer.dataset.flavortownExtras = 'true';
+                }
+                return;
+            }
+
+            const exactEstimate = buildShipVoteEstimate(shipPost, null, shipTimestamp);
+            const exactRate = exactEstimate?.source === 'exact-votes' ? exactEstimate.multiplier : null;
+            const avgRate = getAverageMultiplierFallback();
+            const estimatedRate = [multiplierValue, exactRate, paidRate, avgRate]
+                .find(rate => rate && isFinite(rate) && rate > 0);
+
+            if (!estimatedRate) {
+                if (totalMinutes > 0) {
+                    shipPost.dataset.flavortownShipMinutes = String(totalMinutes);
+                }
+                if (footer) {
+                    footer.dataset.flavortownExtras = 'true';
+                }
+                return;
+            }
+
+            const estimatedCookies = Math.round(estimatedRate * estimateHours);
             if (estimatedCookies > 0) {
                 if (!footer) {
                     footer = document.createElement('div');
@@ -1088,7 +1118,11 @@ async function addShipStats() {
                 }
 
                 footer.querySelectorAll('.flavortown-unpaid-ship-est').forEach(el => el.remove());
-                const estimateItem = buildPayoutItem('Est payout', `~${estimatedCookies.toLocaleString()} cookies`);
+                const usesFallbackAverage = !multiplierValue
+                    && !(exactRate && isFinite(exactRate) && exactRate > 0)
+                    && !(paidRate && isFinite(paidRate) && paidRate > 0);
+                const estimateLabel = usesFallbackAverage ? 'Est payout (avg)' : 'Est payout';
+                const estimateItem = buildPayoutItem(estimateLabel, `~${estimatedCookies.toLocaleString()} cookies`);
                 estimateItem.classList.add('flavortown-unpaid-ship-est');
                 footer.appendChild(estimateItem);
             }
@@ -1154,7 +1188,6 @@ async function addUnshippedCookieEstimate(attempt = 0) {
     }
 
     const paidMinutes = stats?.paidShipMinutes || 0;
-    if (paidMinutes <= 0) return;
 
     const pagePayouts = getShipPayoutsFromProjectPage();
     const payouts = pagePayouts.length ? pagePayouts : await fetchShipPayouts();
@@ -1162,10 +1195,14 @@ async function addUnshippedCookieEstimate(attempt = 0) {
     const projectPayouts = payouts.filter(payout => projectNameMatches(payout.projectName, projectName));
     const payoutCookies = projectPayouts.reduce((sum, payout) => sum + (payout.amount || 0), 0);
     const baselineCookies = payoutCookies > 0 ? payoutCookies : (stats?.paidCookies || 0);
-    if (baselineCookies <= 0) return;
-
-    const rate = getMultiplierFromCookies(baselineCookies, paidMinutes / 60);
-    if (!rate || !isFinite(rate)) return;
+    let rate = null;
+    if (paidMinutes > 0 && baselineCookies > 0) {
+        rate = getMultiplierFromCookies(baselineCookies, paidMinutes / 60);
+    }
+    if (!rate || !isFinite(rate) || rate <= 0) {
+        rate = getAverageMultiplierFallback();
+    }
+    if (!rate || !isFinite(rate) || rate <= 0) return;
 
     const projectedCookies = Math.round(rate * (unshippedMinutes / 60));
 
@@ -2666,6 +2703,26 @@ function parseNumberFromText(text) {
     return match ? parseFloat(match[0]) : null;
 }
 
+function getShipFooterPayoutMetrics(footer) {
+    const empty = { cookiesValue: 0, hoursValue: 0, multiplierValue: 0 };
+    if (!footer) return empty;
+
+    const payoutItems = Array.from(footer.querySelectorAll('.post__payout-item'));
+    const getPayoutValue = (labelMatch) => {
+        const item = payoutItems.find(entry => {
+            const labelText = entry.querySelector('.post__payout-label')?.textContent || '';
+            return labelText.toLowerCase().includes(labelMatch);
+        });
+        return item ? item.querySelector('.post__payout-value')?.textContent?.trim() : '';
+    };
+
+    return {
+        hoursValue: parseNumberFromText(getPayoutValue('hours')) || 0,
+        cookiesValue: parseNumberFromText(getPayoutValue('cookies')) || 0,
+        multiplierValue: parseNumberFromText(getPayoutValue('multiplier')) || 0
+    };
+}
+
 function formatCookieRate(rate) {
     if (rate === null || rate === undefined || !isFinite(rate)) return '--';
     return rate.toFixed(1);
@@ -2714,6 +2771,278 @@ function roundToHalf(value) {
     return Math.round(value * 2) / 2;
 }
 
+function medianOfSorted(values) {
+    if (!Array.isArray(values) || values.length === 0) return null;
+    const sorted = [...values]
+        .map(value => Number(value))
+        .filter(value => isFinite(value))
+        .sort((a, b) => a - b);
+    if (!sorted.length) return null;
+    const mid = Math.floor(sorted.length / 2);
+    if (sorted.length % 2 === 1) return sorted[mid];
+    return (sorted[mid - 1] + sorted[mid]) / 2;
+}
+
+function averageNumbers(values) {
+    if (!Array.isArray(values) || values.length === 0) return null;
+    const nums = values.map(value => Number(value)).filter(value => isFinite(value));
+    if (!nums.length) return null;
+    return nums.reduce((sum, value) => sum + value, 0) / nums.length;
+}
+
+function estimateMultiplierFromPercentile(percentile) {
+    if (percentile === null || percentile === undefined || !isFinite(percentile)) return null;
+    const p = clampValue(percentile / 100, 0, 1);
+    if (!isFinite(p)) return null;
+
+    if (!isFinite(PAYOUT_LOW_DOLLARS_PER_HOUR)
+        || !isFinite(PAYOUT_HIGH_DOLLARS_PER_HOUR)
+        || !isFinite(PAYOUT_GAMMA)
+        || !isFinite(PAYOUT_TICKETS_PER_DOLLAR)
+        || PAYOUT_HIGH_DOLLARS_PER_HOUR < PAYOUT_LOW_DOLLARS_PER_HOUR
+        || PAYOUT_TICKETS_PER_DOLLAR <= 0) {
+        return null;
+    }
+
+    const hourlyRate = PAYOUT_LOW_DOLLARS_PER_HOUR
+        + (PAYOUT_HIGH_DOLLARS_PER_HOUR - PAYOUT_LOW_DOLLARS_PER_HOUR) * Math.pow(p, PAYOUT_GAMMA);
+    if (!isFinite(hourlyRate) || hourlyRate <= 0) return null;
+    return hourlyRate * PAYOUT_TICKETS_PER_DOLLAR;
+}
+
+function getAverageMultiplierFallback() {
+    return estimateMultiplierFromPercentile(50);
+}
+
+function estimatePercentileFromNormalizedScore(scoreNorm) {
+    if (!isFinite(scoreNorm)) return null;
+    const target = clampValue(scoreNorm, 0, 1);
+
+    let bestX = 0;
+    let bestDiff = Infinity;
+    const steps = 800;
+    for (let i = 0; i <= steps; i++) {
+        const x = i / steps;
+        const y = polynomialCurve(x, SCORE_CURVE_COEFFS);
+        const diff = Math.abs(y - target);
+        if (diff < bestDiff) {
+            bestDiff = diff;
+            bestX = x;
+        }
+    }
+
+    const corrected = hillCurve(bestX, PERCENTILE_HILL_SHAPE);
+    return clampValue(corrected * 100, 0.01, 99.99);
+}
+
+function estimatePercentileFromOverallScore(overallScore, scaleMax = 6) {
+    if (!overallScore || !isFinite(overallScore)) return null;
+    const safeScale = isFinite(scaleMax) && scaleMax > 1 ? scaleMax : 6;
+    const scoreNorm = clampValue((overallScore - 1) / (safeScale - 1), 0, 1);
+    return estimatePercentileFromNormalizedScore(scoreNorm);
+}
+
+function parseVoteEntryScores(entry) {
+    if (!entry) return null;
+    const text = Array.from(entry.querySelectorAll(':scope > p'))
+        .map(node => (node.textContent || '').trim())
+        .filter(Boolean)
+        .join(' · ')
+        .replace(/\s+/g, ' ')
+        .trim();
+    if (!text) return null;
+
+    const patterns = [
+        { key: 'originality', regex: /Originality\s+([0-9]+(?:\.[0-9]+)?)\s*\/\s*([0-9]+(?:\.[0-9]+)?)/i },
+        { key: 'technical', regex: /Technical(?:ity)?\s+([0-9]+(?:\.[0-9]+)?)\s*\/\s*([0-9]+(?:\.[0-9]+)?)/i },
+        { key: 'usability', regex: /Usability\s+([0-9]+(?:\.[0-9]+)?)\s*\/\s*([0-9]+(?:\.[0-9]+)?)/i },
+        { key: 'storytelling', regex: /Storytelling\s+([0-9]+(?:\.[0-9]+)?)\s*\/\s*([0-9]+(?:\.[0-9]+)?)/i }
+    ];
+
+    const scores = {};
+    const scales = [];
+
+    patterns.forEach(({ key, regex }) => {
+        const match = text.match(regex);
+        if (!match) return;
+        const value = Number(match[1]);
+        const scale = Number(match[2]);
+        if (!isFinite(value) || !isFinite(scale) || scale <= 0) return;
+        scores[key] = value;
+        scales.push(scale);
+    });
+
+    if (!Object.keys(scores).length) return null;
+
+    const scaleMax = medianOfSorted(scales) || Math.max(...scales, 0) || 9;
+    return { scores, scaleMax };
+}
+
+function buildExactVoteEstimateFromShipPost(shipPost, fallbackMultiplier = null) {
+    if (!shipPost) return null;
+
+    const breakdown = shipPost.querySelector('details.post__votes-breakdown');
+    if (!breakdown) return null;
+
+    const entries = Array.from(breakdown.querySelectorAll('.post__vote-entry'));
+    if (!entries.length) return null;
+
+    const categoryScores = {
+        originality: [],
+        technical: [],
+        usability: [],
+        storytelling: []
+    };
+    const scaleCandidates = [];
+
+    entries.forEach((entry) => {
+        const parsed = parseVoteEntryScores(entry);
+        if (!parsed) return;
+
+        scaleCandidates.push(parsed.scaleMax);
+        Object.entries(parsed.scores).forEach(([key, value]) => {
+            if (!Array.isArray(categoryScores[key])) return;
+            if (!isFinite(value)) return;
+            categoryScores[key].push(value);
+        });
+    });
+
+    const categories = {
+        originality: medianOfSorted(categoryScores.originality),
+        technical: medianOfSorted(categoryScores.technical),
+        usability: medianOfSorted(categoryScores.usability),
+        storytelling: medianOfSorted(categoryScores.storytelling)
+    };
+
+    const overallScore = averageNumbers(Object.values(categories).filter(value => value !== null));
+    if (!isFinite(overallScore)) return null;
+
+    const scaleMax = medianOfSorted(scaleCandidates) || 9;
+    const percentile = (fallbackMultiplier && isFinite(fallbackMultiplier) && fallbackMultiplier > 0)
+        ? estimatePercentileFromMultiplier(fallbackMultiplier)
+        : estimatePercentileFromOverallScore(overallScore, scaleMax);
+    const inferredMultiplier = (fallbackMultiplier && isFinite(fallbackMultiplier) && fallbackMultiplier > 0)
+        ? fallbackMultiplier
+        : estimateMultiplierFromPercentile(percentile);
+
+    return {
+        source: 'exact-votes',
+        voteCount: entries.length,
+        scaleMax,
+        percentile,
+        overallScore,
+        categories,
+        multiplier: inferredMultiplier
+    };
+}
+
+function buildShipVoteEstimate(shipPost, multiplier, shipTimestamp) {
+    const isCurrentScaleShip = Number.isFinite(shipTimestamp) && shipTimestamp >= COMMUNITY_VOTES_SHIP_CUTOFF_TS;
+    if (isCurrentScaleShip) {
+        const exact = buildExactVoteEstimateFromShipPost(shipPost, multiplier);
+        if (exact) return exact;
+    }
+
+    if (!multiplier || !isFinite(multiplier)) return null;
+    const legacy = buildVoteEstimate(multiplier);
+    return legacy ? { ...legacy, source: 'legacy-multiplier', scaleMax: 6 } : null;
+}
+
+function getShipPostTimestamp(shipPost) {
+    if (!shipPost) return NaN;
+    const timeEl = shipPost.querySelector('.post__time');
+    const shipDate = parseDateFromTimeElement(timeEl);
+    return getTimeElementTimestampForCutoff(timeEl, shipDate);
+}
+
+function aggregateExactShipEstimates(estimates) {
+    if (!Array.isArray(estimates) || !estimates.length) return null;
+
+    const overallScore = averageNumbers(estimates.map(estimate => estimate?.overallScore));
+    if (!isFinite(overallScore)) return null;
+
+    const categoryKeys = ['originality', 'technical', 'usability', 'storytelling'];
+    const categories = categoryKeys.reduce((result, key) => {
+        result[key] = averageNumbers(estimates.map(estimate => estimate?.categories?.[key]));
+        return result;
+    }, {});
+
+    const percentile = averageNumbers(estimates.map(estimate => estimate?.percentile));
+    let multiplier = averageNumbers(estimates.map(estimate => estimate?.multiplier));
+    if ((!multiplier || !isFinite(multiplier)) && percentile && isFinite(percentile)) {
+        multiplier = estimateMultiplierFromPercentile(percentile);
+    }
+
+    return {
+        source: 'exact-votes',
+        scaleMax: 9,
+        shipCount: estimates.length,
+        voteCount: estimates.reduce((sum, estimate) => {
+            const voteCount = Number(estimate?.voteCount);
+            return sum + (isFinite(voteCount) && voteCount > 0 ? voteCount : 0);
+        }, 0),
+        percentile: percentile && isFinite(percentile) ? percentile : null,
+        multiplier: multiplier && isFinite(multiplier) ? multiplier : null,
+        overallScore,
+        categories
+    };
+}
+
+function getCurrentScaleProjectEstimateFromShipPosts(shipPosts) {
+    const posts = Array.isArray(shipPosts) ? shipPosts : Array.from(shipPosts || []);
+    if (!posts.length) {
+        return {
+            legacyShipCount: 0,
+            currentShipCount: 0,
+            exactCurrentShipCount: 0,
+            currentScaleEstimate: null,
+            usesMixedCurrentOnly: false
+        };
+    }
+
+    let legacyShipCount = 0;
+    let currentShipCount = 0;
+    const exactCurrentEstimates = [];
+
+    posts.forEach((shipPost) => {
+        const shipTimestamp = getShipPostTimestamp(shipPost);
+        if (!Number.isFinite(shipTimestamp)) return;
+
+        if (shipTimestamp < COMMUNITY_VOTES_SHIP_CUTOFF_TS) {
+            legacyShipCount += 1;
+            return;
+        }
+
+        currentShipCount += 1;
+        const footer = shipPost.querySelector('.post__payout-footer');
+        const { cookiesValue, hoursValue, multiplierValue } = getShipFooterPayoutMetrics(footer);
+        const rate = multiplierValue || (hoursValue && cookiesValue ? getMultiplierFromCookies(cookiesValue, hoursValue) : null);
+        const estimate = buildShipVoteEstimate(shipPost, rate, shipTimestamp);
+        if (estimate?.source === 'exact-votes') {
+            exactCurrentEstimates.push(estimate);
+        }
+    });
+
+    const currentScaleEstimate = aggregateExactShipEstimates(exactCurrentEstimates);
+    const usesMixedCurrentOnly = legacyShipCount > 0 && currentShipCount > 0 && !!currentScaleEstimate;
+
+    return {
+        legacyShipCount,
+        currentShipCount,
+        exactCurrentShipCount: exactCurrentEstimates.length,
+        currentScaleEstimate,
+        usesMixedCurrentOnly
+    };
+}
+
+function formatScoreWithScale(score, scaleMax) {
+    const formatted = formatScoreValue(score);
+    if (formatted === '--') return formatted;
+    if (!scaleMax || !isFinite(scaleMax) || scaleMax <= 0) return formatted;
+    const formattedScale = formatScoreValue(scaleMax);
+    return `${formatted}/${formattedScale}`;
+}
+
 function estimatePercentileFromMultiplier(multiplier) {
     if (!multiplier || !isFinite(multiplier)) return null;
     const hourlyRate = multiplier / PAYOUT_TICKETS_PER_DOLLAR;
@@ -2754,9 +3083,19 @@ function buildVoteEstimate(multiplier) {
     const overallScore = estimateOverallScoreFromMultiplier(multiplier);
     if (!overallScore) return null;
     const categoriesRaw = estimateCategoryScoresFromOverall(overallScore, percentile);
-    if (!categoriesRaw) return { percentile, overallScore, categories: null };
+    if (!categoriesRaw) {
+        return {
+            source: 'legacy-multiplier',
+            scaleMax: 6,
+            percentile,
+            overallScore,
+            categories: null
+        };
+    }
 
     return {
+        source: 'legacy-multiplier',
+        scaleMax: 6,
         percentile,
         overallScore,
         categories: {
@@ -2805,23 +3144,32 @@ function formatCookiePercentileLine(rate) {
 function createVoteEstimateElement(estimate, options = {}) {
     if (!estimate) return null;
 
-    const overallText = formatScoreValue(estimate.overallScore);
+    const isExact = options.exact || estimate.source === 'exact-votes';
+    const scaleMax = options.scaleMax || estimate.scaleMax || (isExact ? 9 : 6);
+    const overallText = isExact
+        ? formatScoreWithScale(estimate.overallScore, scaleMax)
+        : formatScoreValue(estimate.overallScore);
 
     const scorePill = document.createElement('h5');
     scorePill.className = 'flavortown-vote-estimate-pill';
-    scorePill.textContent = `~ avg ⭐ ${overallText}`;
+    scorePill.textContent = `${isExact ? '' : '~ '}avg ⭐ ${overallText}`;
 
     let accordion = null;
     if (estimate.categories) {
+        const formatCategory = (value) => (
+            isExact
+                ? formatScoreWithScale(value, scaleMax)
+                : formatScoreValue(value)
+        );
         accordion = document.createElement('details');
         accordion.className = 'flavortown-vote-estimate-accordion';
         accordion.innerHTML = `
-            <summary class="flavortown-vote-estimate-accordion__toggle">Est. category medians</summary>
+            <summary class="flavortown-vote-estimate-accordion__toggle">${isExact ? 'Category medians' : 'Est. category medians'}</summary>
             <div class="flavortown-vote-estimate-accordion__categories">
-                <span>Originality ★${formatScoreValue(estimate.categories.originality)}</span>
-                <span>Technical ★${formatScoreValue(estimate.categories.technical)}</span>
-                <span>Usability ★${formatScoreValue(estimate.categories.usability)}</span>
-                <span>Storytelling ★${formatScoreValue(estimate.categories.storytelling)}</span>
+                <span>Originality ★${formatCategory(estimate.categories.originality)}</span>
+                <span>Technical ★${formatCategory(estimate.categories.technical)}</span>
+                <span>Usability ★${formatCategory(estimate.categories.usability)}</span>
+                <span>Storytelling ★${formatCategory(estimate.categories.storytelling)}</span>
             </div>
         `;
     }
@@ -3093,6 +3441,13 @@ function setCachedProjectUnshipped(projectId, entry, ownerName = null) {
         paidShipMinutes: Math.max(0, entry.paidShipMinutes || 0),
         paidCookies: Math.max(0, entry.paidCookies || 0),
         unshippedMinutes: Math.max(0, entry.unshippedMinutes || 0),
+        singleCurrentScaleShip: !!entry.singleCurrentScaleShip,
+        exactSingleShipEstimate: entry.exactSingleShipEstimate || null,
+        legacyShipCount: Math.max(0, Number(entry.legacyShipCount) || 0),
+        currentShipCount: Math.max(0, Number(entry.currentShipCount) || 0),
+        exactCurrentShipCount: Math.max(0, Number(entry.exactCurrentShipCount) || 0),
+        currentScaleEstimate: entry.currentScaleEstimate || null,
+        usesMixedCurrentOnly: !!entry.usesMixedCurrentOnly,
         updatedAt: Date.now()
     };
     writeProjectUnshippedCache(cache);
@@ -3158,7 +3513,8 @@ async function fetchProjectUnshippedStats(projectId) {
         const doc = new DOMParser().parseFromString(html, 'text/html');
         const totalMinutes = getTotalDevlogMinutesFromDocument(doc);
         const ownerName = getProjectOwnerNameFromDocument(doc);
-        const shipPosts = doc.querySelectorAll('article.post--ship, .post--ship');
+        const shipPosts = Array.from(doc.querySelectorAll('article.post--ship, .post--ship'));
+        const projectVoteMeta = getCurrentScaleProjectEstimateFromShipPosts(shipPosts);
         let totalShipMinutes = 0;
         let paidShipMinutes = 0;
         let paidCookies = 0;
@@ -3168,18 +3524,7 @@ async function fetchProjectUnshippedStats(projectId) {
             if (shipMinutes > 0) totalShipMinutes += shipMinutes;
 
             const footer = shipPost.querySelector('.post__payout-footer');
-            if (!footer) return;
-
-            const payoutItems = Array.from(footer.querySelectorAll('.post__payout-item'));
-            const getPayoutValue = (labelMatch) => {
-                const item = payoutItems.find(entry => {
-                    const labelText = entry.querySelector('.post__payout-label')?.textContent || '';
-                    return labelText.toLowerCase().includes(labelMatch);
-                });
-                return item ? item.querySelector('.post__payout-value')?.textContent?.trim() : '';
-            };
-
-            const cookiesValue = parseNumberFromText(getPayoutValue('cookies'));
+            const { cookiesValue } = getShipFooterPayoutMetrics(footer);
             if (cookiesValue && cookiesValue > 0) {
                 if (shipMinutes > 0) paidShipMinutes += shipMinutes;
                 paidCookies += cookiesValue;
@@ -3193,14 +3538,21 @@ async function fetchProjectUnshippedStats(projectId) {
             totalShipMinutes,
             paidShipMinutes,
             paidCookies,
-            unshippedMinutes
+            unshippedMinutes,
+            singleCurrentScaleShip: projectVoteMeta.currentShipCount === 1,
+            exactSingleShipEstimate: projectVoteMeta.currentShipCount === 1 ? projectVoteMeta.currentScaleEstimate : null,
+            legacyShipCount: projectVoteMeta.legacyShipCount,
+            currentShipCount: projectVoteMeta.currentShipCount,
+            exactCurrentShipCount: projectVoteMeta.exactCurrentShipCount,
+            currentScaleEstimate: projectVoteMeta.currentScaleEstimate,
+            usesMixedCurrentOnly: projectVoteMeta.usesMixedCurrentOnly
         };
 
         if (stats.totalShipMinutes > 0) {
             setCachedShipMinutes(projectId, stats.totalShipMinutes);
         }
 
-        if (stats.totalMinutes > 0 || stats.paidCookies > 0) {
+        if (stats.totalMinutes > 0 || stats.paidCookies > 0 || stats.currentScaleEstimate) {
             setCachedProjectUnshipped(projectId, stats, ownerName);
         }
 
@@ -4185,7 +4537,7 @@ async function addProjectCardCookieStats() {
     const pagePayouts = getShipPayoutsFromProjectPage();
     const payouts = pagePayouts.length ? pagePayouts : await fetchShipPayouts();
 
-    const renderCardStat = (card, totalCookies, minutes) => {
+    const renderCardStat = (card, totalCookies, minutes, estimateOverride = null, estimateMeta = {}) => {
         const existing = card.querySelector('.flavortown-project-cookies');
         if (existing) existing.remove();
         const existingDetails = card.querySelector('.flavortown-project-cookies-details');
@@ -4241,51 +4593,77 @@ async function addProjectCardCookieStats() {
         statsRow.querySelectorAll('h5').forEach(stat => applyRowStatLayout(stat));
 
         const hours = minutes > 0 ? minutes / 60 : null;
-        const rate = hours ? getMultiplierFromCookies(totalCookies, hours) : null;
-        const rateLine = formatCookieRateLine(rate);
-        const percentileLine = formatCookiePercentileLine(rate);
-        const estimate = rate ? buildVoteEstimate(rate) : null;
+        const rate = hours && totalCookies > 0 ? getMultiplierFromCookies(totalCookies, hours) : null;
+        const estimate = estimateOverride || (rate ? buildVoteEstimate(rate) : null);
+        const isExactEstimate = estimate?.source === 'exact-votes';
 
-        const cookieStat = document.createElement('h5');
-        cookieStat.className = 'flavortown-project-cookies';
-        cookieStat.style.display = 'inline-flex';
-        cookieStat.style.alignItems = 'center';
-        cookieStat.style.gap = '6px';
-        cookieStat.style.whiteSpace = 'nowrap';
-        cookieStat.style.margin = '0';
-        cookieStat.style.flex = '0 0 auto';
-        cookieStat.style.padding = '0.2em 0.6em';
-        cookieStat.style.lineHeight = '1.1';
-        cookieStat.replaceChildren();
-        const cookieIcon = document.createElement('span');
-        cookieIcon.style.cssText = 'display: inline-flex; align-items: center; justify-content: center; font-size: 1em; line-height: 1; opacity: 0.9;';
-        cookieIcon.textContent = '🍪';
-        const cookieValue = document.createElement('span');
-        cookieValue.textContent = totalCookies.toLocaleString();
-        cookieStat.appendChild(cookieIcon);
-        cookieStat.appendChild(cookieValue);
-        statsRow.appendChild(cookieStat);
+        let rateLine = formatCookieRateLine(rate);
+        if ((!rate || !isFinite(rate)) && isExactEstimate && estimate?.multiplier) {
+            rateLine = `~${formatCookieRate(estimate.multiplier)} cookies/h`;
+        }
 
-        if (minutes > 0) {
+        let percentileLine = formatCookiePercentileLine(rate);
+        if ((!rate || !isFinite(rate)) && isExactEstimate && estimate?.percentile) {
+            percentileLine = formatPercentileFromPercentile(estimate.percentile);
+        }
+
+        if (totalCookies > 0) {
+            const cookieStat = document.createElement('h5');
+            cookieStat.className = 'flavortown-project-cookies';
+            cookieStat.style.display = 'inline-flex';
+            cookieStat.style.alignItems = 'center';
+            cookieStat.style.gap = '6px';
+            cookieStat.style.whiteSpace = 'nowrap';
+            cookieStat.style.margin = '0';
+            cookieStat.style.flex = '0 0 auto';
+            cookieStat.style.padding = '0.2em 0.6em';
+            cookieStat.style.lineHeight = '1.1';
+            cookieStat.replaceChildren();
+            const cookieIcon = document.createElement('span');
+            cookieIcon.style.cssText = 'display: inline-flex; align-items: center; justify-content: center; font-size: 1em; line-height: 1; opacity: 0.9;';
+            cookieIcon.textContent = '🍪';
+            const cookieValue = document.createElement('span');
+            cookieValue.textContent = totalCookies.toLocaleString();
+            cookieStat.appendChild(cookieIcon);
+            cookieStat.appendChild(cookieValue);
+            statsRow.appendChild(cookieStat);
+        }
+
+        const shouldRenderDetails = minutes > 0 || !!estimate;
+        if (shouldRenderDetails) {
             const detailsRow = document.createElement('div');
             detailsRow.className = 'flavortown-project-cookies-details';
             detailsRow.style.cssText = 'width: 100%; margin-top: 8px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap;';
 
-            const rateBox = document.createElement('h5');
-            rateBox.textContent = rateLine;
-            applyDetailStyle(rateBox);
+            if (rateLine && rateLine !== '--') {
+                const rateBox = document.createElement('h5');
+                rateBox.textContent = rateLine;
+                applyDetailStyle(rateBox);
+                detailsRow.appendChild(rateBox);
+            }
 
-            const percentileBox = document.createElement('h5');
-            percentileBox.textContent = percentileLine;
-            applyDetailStyle(percentileBox);
+            if (percentileLine && percentileLine !== '--') {
+                const percentileBox = document.createElement('h5');
+                percentileBox.textContent = percentileLine;
+                applyDetailStyle(percentileBox);
+                detailsRow.appendChild(percentileBox);
+            }
 
-            detailsRow.appendChild(rateBox);
-            detailsRow.appendChild(percentileBox);
-
-            const estimateResult = estimate ? createVoteEstimateElement(estimate) : null;
+            const estimateResult = estimate
+                ? createVoteEstimateElement(estimate, { exact: isExactEstimate, scaleMax: estimate.scaleMax })
+                : null;
             if (estimateResult && estimateResult.scorePill) {
                 applyDetailStyle(estimateResult.scorePill);
                 detailsRow.appendChild(estimateResult.scorePill);
+            }
+
+            if (estimateMeta.usesMixedCurrentOnly) {
+                const mixedInfo = document.createElement('h5');
+                mixedInfo.className = 'flavortown-project-mixed-scale-info';
+                mixedInfo.innerHTML = '<span aria-hidden="true">ℹ</span><span>Current-scale stats</span>';
+                mixedInfo.title = 'Mixed voting scales detected. Showing stats from post-Feb-23 ships only for better accuracy.';
+                applyDetailStyle(mixedInfo);
+                detailsRow.appendChild(mixedInfo);
             }
 
             statsContainer.appendChild(detailsRow);
@@ -4303,8 +4681,17 @@ async function addProjectCardCookieStats() {
         const projectPayouts = payouts.filter(payout => projectNameMatches(payout.projectName, projectName));
         const projectId = card.id ? card.id.replace('project_', '') : null;
         const cachedUnshipped = projectId ? getCachedProjectUnshipped(projectId) : null;
+        const cachedCurrentEstimate = cachedUnshipped?.currentScaleEstimate || cachedUnshipped?.exactSingleShipEstimate || null;
+        const cachedEstimateMeta = {
+            usesMixedCurrentOnly: !!cachedUnshipped?.usesMixedCurrentOnly,
+            currentShipCount: Number(cachedUnshipped?.currentShipCount) || 0,
+            legacyShipCount: Number(cachedUnshipped?.legacyShipCount) || 0
+        };
         const projectStatsMinutes = projectId ? getProjectStatsMinutes(projectId) : 0;
         const payoutCookies = projectPayouts.reduce((sum, payout) => sum + payout.amount, 0);
+        const cachedPaidMinutes = cachedUnshipped && typeof cachedUnshipped.paidShipMinutes === 'number'
+            ? cachedUnshipped.paidShipMinutes
+            : 0;
 
         let totalCookies = payoutCookies;
         if (totalCookies <= 0 && cachedUnshipped && typeof cachedUnshipped.paidCookies === 'number') {
@@ -4313,12 +4700,24 @@ async function addProjectCardCookieStats() {
 
         if (totalCookies <= 0 && projectId) {
             fetchProjectUnshippedStats(projectId).then(stats => {
-                if (!stats || stats.paidCookies <= 0) return;
-                renderCardStat(card, stats.paidCookies, stats.paidShipMinutes || 0);
+                if (!stats) return;
+                const fetchedEstimate = stats.currentScaleEstimate || stats.exactSingleShipEstimate || null;
+                const fetchedMeta = {
+                    usesMixedCurrentOnly: !!stats.usesMixedCurrentOnly,
+                    currentShipCount: Number(stats.currentShipCount) || 0,
+                    legacyShipCount: Number(stats.legacyShipCount) || 0
+                };
+                const fetchedCookies = stats.paidCookies || 0;
+                const fetchedMinutes = stats.paidShipMinutes || 0;
+                if (fetchedCookies <= 0 && !fetchedEstimate) return;
+                renderCardStat(card, fetchedCookies, fetchedMinutes, fetchedEstimate, fetchedMeta);
             });
         }
 
         if (totalCookies <= 0) {
+            if (cachedCurrentEstimate) {
+                renderCardStat(card, 0, cachedPaidMinutes, cachedCurrentEstimate, cachedEstimateMeta);
+            }
             if (projectId && projectStatsMinutes > 0) {
                 setCachedProjectUnshipped(projectId, {
                     totalMinutes: projectStatsMinutes,
@@ -4330,16 +4729,27 @@ async function addProjectCardCookieStats() {
             return;
         }
 
-        const cachedPaidMinutes = cachedUnshipped && typeof cachedUnshipped.paidShipMinutes === 'number'
-            ? cachedUnshipped.paidShipMinutes
-            : 0;
-        renderCardStat(card, totalCookies, cachedPaidMinutes);
+        renderCardStat(card, totalCookies, cachedPaidMinutes, cachedCurrentEstimate, cachedEstimateMeta);
 
-        if (projectId && (!cachedUnshipped || cachedPaidMinutes === 0)) {
+        const shouldRefreshFromProjectPage = projectId
+            && (!cachedUnshipped
+                || cachedPaidMinutes === 0
+                || typeof cachedUnshipped.currentShipCount !== 'number'
+                || (cachedUnshipped.currentShipCount > 0 && !cachedUnshipped.currentScaleEstimate));
+
+        if (shouldRefreshFromProjectPage) {
             fetchProjectUnshippedStats(projectId).then(stats => {
-                if (stats && stats.paidShipMinutes > 0) {
-                    renderCardStat(card, totalCookies, stats.paidShipMinutes);
-                }
+                if (!stats) return;
+                const fetchedEstimate = stats.currentScaleEstimate || stats.exactSingleShipEstimate || null;
+                const fetchedMeta = {
+                    usesMixedCurrentOnly: !!stats.usesMixedCurrentOnly,
+                    currentShipCount: Number(stats.currentShipCount) || 0,
+                    legacyShipCount: Number(stats.legacyShipCount) || 0
+                };
+                const fetchedCookies = stats.paidCookies > 0 ? stats.paidCookies : totalCookies;
+                const fetchedMinutes = stats.paidShipMinutes || 0;
+                if (fetchedMinutes <= 0 && !fetchedEstimate) return;
+                renderCardStat(card, fetchedCookies, fetchedMinutes, fetchedEstimate, fetchedMeta);
             });
         }
     });
@@ -4407,20 +4817,15 @@ async function addProjectShowCookieStat(forceRefresh = false) {
 
     const payouts = await fetchShipPayouts();
     const shipPostsOnPage = Array.from(document.querySelectorAll('article.post--ship, .post--ship'));
+    const projectVoteMeta = getCurrentScaleProjectEstimateFromShipPosts(shipPostsOnPage);
+    const currentScaleProjectEstimate = projectVoteMeta.currentScaleEstimate;
     const domPaidCookies = shipPostsOnPage.reduce((sum, shipPost) => {
         const footer = shipPost.querySelector('.post__payout-footer');
-        if (!footer) return sum;
-        const payoutItems = Array.from(footer.querySelectorAll('.post__payout-item'));
-        const cookiesItem = payoutItems.find(entry => {
-            const labelText = entry.querySelector('.post__payout-label')?.textContent || '';
-            return labelText.toLowerCase().includes('cookies');
-        });
-        const cookiesText = cookiesItem?.querySelector('.post__payout-value')?.textContent?.trim() || '';
-        const cookiesValue = parseNumberFromText(cookiesText);
+        const { cookiesValue } = getShipFooterPayoutMetrics(footer);
         return cookiesValue > 0 ? sum + cookiesValue : sum;
     }, 0);
 
-    if (!payouts.length && domPaidCookies <= 0) {
+    if (!payouts.length && domPaidCookies <= 0 && !currentScaleProjectEstimate) {
         if (projectId) {
             const totalMinutes = getTotalDevlogMinutesFromDocument(document);
             if (totalMinutes > 0) {
@@ -4436,7 +4841,7 @@ async function addProjectShowCookieStat(forceRefresh = false) {
     }
 
     const projectPayouts = payouts.filter(payout => projectNameMatches(payout.projectName, projectName));
-    if (!projectPayouts.length && domPaidCookies <= 0) {
+    if (!projectPayouts.length && domPaidCookies <= 0 && !currentScaleProjectEstimate) {
         if (projectId) {
             const totalMinutes = getTotalDevlogMinutesFromDocument(document);
             if (totalMinutes > 0) {
@@ -4452,7 +4857,7 @@ async function addProjectShowCookieStat(forceRefresh = false) {
     }
 
     const totalCookies = projectPayouts.reduce((sum, payout) => sum + payout.amount, 0) || domPaidCookies;
-    if (totalCookies <= 0) return;
+    if (totalCookies <= 0 && !currentScaleProjectEstimate) return;
 
     const statsWrapper = document.querySelector('.project-show-card__stats');
     if (!statsWrapper) return;
@@ -4466,18 +4871,7 @@ async function addProjectShowCookieStat(forceRefresh = false) {
     let minutes = 0;
     shipPostsOnPage.forEach(shipPost => {
         const footer = shipPost.querySelector('.post__payout-footer');
-        if (!footer) return;
-
-        const payoutItems = Array.from(footer.querySelectorAll('.post__payout-item'));
-        const getPayoutValue = (labelMatch) => {
-            const item = payoutItems.find(entry => {
-                const labelText = entry.querySelector('.post__payout-label')?.textContent || '';
-                return labelText.toLowerCase().includes(labelMatch);
-            });
-            return item ? item.querySelector('.post__payout-value')?.textContent?.trim() : '';
-        };
-
-        const cookiesValue = parseNumberFromText(getPayoutValue('cookies'));
+        const { cookiesValue } = getShipFooterPayoutMetrics(footer);
         if (!cookiesValue || cookiesValue <= 0) return;
 
         const cachedMinutes = shipPost.dataset.flavortownShipMinutes;
@@ -4497,22 +4891,34 @@ async function addProjectShowCookieStat(forceRefresh = false) {
     }
 
     const hours = minutes > 0 ? minutes / 60 : null;
-    const rate = hours ? getMultiplierFromCookies(totalCookies, hours) : null;
-    const rateLine = formatCookieRateLine(rate);
-    const percentileLine = formatCookiePercentileLine(rate);
+    const rate = hours && totalCookies > 0 ? getMultiplierFromCookies(totalCookies, hours) : null;
+    const projectEstimate = currentScaleProjectEstimate || (rate ? buildVoteEstimate(rate) : null);
+    const isExactProjectEstimate = projectEstimate?.source === 'exact-votes';
 
-    const cookieStat = document.createElement('div');
-    cookieStat.className = 'project-show-card__stat flavortown-project-cookies-stat';
-    cookieStat.style.cssText = 'display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; flex: 0 0 auto;';
-    cookieStat.innerHTML = `
-        <span style="font-size: 1em; opacity: 0.8;">🍪</span>
-        <span>${totalCookies.toLocaleString()}</span>
-    `;
-    const frequencyStat = statsContainer.querySelector('.flavortown-utils-frequency-stat');
-    if (frequencyStat) {
-        frequencyStat.after(cookieStat);
-    } else {
-        statsContainer.appendChild(cookieStat);
+    let rateLine = formatCookieRateLine(rate);
+    if ((!rate || !isFinite(rate)) && isExactProjectEstimate && projectEstimate?.multiplier) {
+        rateLine = `~${formatCookieRate(projectEstimate.multiplier)} cookies/h`;
+    }
+
+    let percentileLine = formatCookiePercentileLine(rate);
+    if ((!rate || !isFinite(rate)) && isExactProjectEstimate && projectEstimate?.percentile) {
+        percentileLine = formatPercentileFromPercentile(projectEstimate.percentile);
+    }
+
+    if (totalCookies > 0) {
+        const cookieStat = document.createElement('div');
+        cookieStat.className = 'project-show-card__stat flavortown-project-cookies-stat';
+        cookieStat.style.cssText = 'display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; flex: 0 0 auto;';
+        cookieStat.innerHTML = `
+            <span style="font-size: 1em; opacity: 0.8;">🍪</span>
+            <span>${totalCookies.toLocaleString()}</span>
+        `;
+        const frequencyStat = statsContainer.querySelector('.flavortown-utils-frequency-stat');
+        if (frequencyStat) {
+            frequencyStat.after(cookieStat);
+        } else {
+            statsContainer.appendChild(cookieStat);
+        }
     }
 
     const detailsParent = statsWrapper.parentNode || statsWrapper;
@@ -4520,8 +4926,9 @@ async function addProjectShowCookieStat(forceRefresh = false) {
     if (detailsToRemove) detailsToRemove.remove();
     detailsParent.querySelectorAll('.flavortown-vote-estimate, .flavortown-vote-estimate-pill, .flavortown-vote-estimate-accordion, .flavortown-project-category-stats').forEach(el => el.remove());
 
-    if (minutes > 0) {
-        const estimate = rate ? buildVoteEstimate(rate) : null;
+    const shouldRenderDetails = minutes > 0 || !!projectEstimate;
+    if (shouldRenderDetails) {
+        const estimate = projectEstimate;
         const sinceLastShipMinutes = getUnshippedMinutesSinceLastShip();
 
         const detailsRow = document.createElement('div');
@@ -4545,13 +4952,20 @@ async function addProjectShowCookieStat(forceRefresh = false) {
             </svg>
         `;
 
-        detailsRow.appendChild(createProjectShowStat(rateLine, clockIcon));
-        detailsRow.appendChild(createProjectShowStat(percentileLine, trophyIcon));
+        if (rateLine && rateLine !== '--') {
+            detailsRow.appendChild(createProjectShowStat(rateLine, clockIcon));
+        }
+        if (percentileLine && percentileLine !== '--') {
+            detailsRow.appendChild(createProjectShowStat(percentileLine, trophyIcon));
+        }
         if (sinceLastShipMinutes > 0) {
             detailsRow.appendChild(createProjectShowStat(`${formatMinutesCompact(sinceLastShipMinutes)} since latest ship`, clockIcon));
         }
         if (estimate?.overallScore) {
-            const scoreText = `~ avg ⭐ ${formatScoreValue(estimate.overallScore)}`;
+            const scoreValue = isExactProjectEstimate
+                ? formatScoreWithScale(estimate.overallScore, estimate.scaleMax || 9)
+                : formatScoreValue(estimate.overallScore);
+            const scoreText = `${isExactProjectEstimate ? '' : '~ '}avg ⭐ ${scoreValue}`;
             detailsRow.appendChild(createProjectShowStat(scoreText));
         }
 
@@ -4562,10 +4976,16 @@ async function addProjectShowCookieStat(forceRefresh = false) {
             const categoriesRow = document.createElement('div');
             categoriesRow.className = 'project-show-card__stats flavortown-project-category-stats';
 
-            categoriesRow.appendChild(createProjectShowStat(`Originality ★${formatScoreValue(estimate.categories.originality)}`));
-            categoriesRow.appendChild(createProjectShowStat(`Technical ★${formatScoreValue(estimate.categories.technical)}`));
-            categoriesRow.appendChild(createProjectShowStat(`Usability ★${formatScoreValue(estimate.categories.usability)}`));
-            categoriesRow.appendChild(createProjectShowStat(`Storytelling ★${formatScoreValue(estimate.categories.storytelling)}`));
+            const formatCategoryScore = (value) => (
+                isExactProjectEstimate
+                    ? formatScoreWithScale(value, estimate.scaleMax || 9)
+                    : formatScoreValue(value)
+            );
+
+            categoriesRow.appendChild(createProjectShowStat(`Originality ★${formatCategoryScore(estimate.categories.originality)}`));
+            categoriesRow.appendChild(createProjectShowStat(`Technical ★${formatCategoryScore(estimate.categories.technical)}`));
+            categoriesRow.appendChild(createProjectShowStat(`Usability ★${formatCategoryScore(estimate.categories.usability)}`));
+            categoriesRow.appendChild(createProjectShowStat(`Storytelling ★${formatCategoryScore(estimate.categories.storytelling)}`));
 
             detailsParent.insertBefore(categoriesRow, detailsRow.nextSibling);
         }
@@ -14010,8 +14430,6 @@ setupCommandPalette();
 
 
 const VOTES_JSON_URL = 'https://raw.githubusercontent.com/hridaya423/flavortownutils/refs/heads/main/data/votes.json';
-const COMMUNITY_VOTES_SHIP_CUTOFF_ISO = '2026-02-23T20:41:00.000Z';
-const COMMUNITY_VOTES_SHIP_CUTOFF_TS = new Date(COMMUNITY_VOTES_SHIP_CUTOFF_ISO).getTime();
 const LEADERBOARD_FEED_URL = 'https://raw.githubusercontent.com/hridaya423/flavortownutils/refs/heads/main/data/lbfeed.json';
 const TODO_JSON_URL = 'https://flavortown-todo-bot.hridayahoney.workers.dev/todos.json';
 const TODO_CACHE_KEY = 'flavortown_todos_cache';

@@ -1070,6 +1070,11 @@
     font-weight: 600;
 }
 
+.flavortown-project-mixed-scale-info {
+    opacity: 0.85;
+    font-size: 0.9em;
+}
+
 .flavortown-vote-estimate-accordion {
     width: 100%;
     font-size: 0.85em;

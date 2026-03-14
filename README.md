@@ -34,6 +34,9 @@
   - Time estimates of ship items based on your average efficiency
 - Auto achievement claim
 - Search bar for projects
+- Explore Users page in Explore
+  - Search by display name or Slack ID
+  - User cards and quick stats
 - Makes images not crop in devlogs
 - Total project stats
 - Kitchen dashboard
@@ -54,7 +57,7 @@
   - Themes
   - New devlog
   - Settings
-- See some feedback that other people gave, while voting for your project! Data from #flavortown-share-votes
+- See historical feedback people gave while voting for your project (ships before Feb 23). Data from #flavortown-share-votes
 - Inline devlog editing
 - Inline version history
 - Speed read devlogs
@@ -69,6 +72,7 @@
 - Ship efficiency graph
 - Activity heatmap
 - TODOs & Sync with slack feature.
+- Multiline vote feedback field on `/votes/new`
 
 ## Feature showcase:
 
