@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-15T17:28:42.124Z",
+  "lastUpdated": "2026-03-15T17:55:32.044Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -19803,6 +19803,14 @@
         "delta": -88,
         "balance": 20,
         "reason": "user grant",
+        "reasonType": "",
+        "userId": "U0918MSQ7E3"
+      },
+      {
+        "ts": "2026-03-15T17:31:13.428Z",
+        "delta": 145,
+        "balance": 165,
+        "reason": "ship event payout",
         "reasonType": "",
         "userId": "U0918MSQ7E3"
       }
@@ -71631,6 +71639,12 @@
     ]
   },
   "users": {
+    "U0918MSQ7E3": {
+      "id": "U0918MSQ7E3",
+      "username": "duyduy15456",
+      "displayName": "vair.​nooi",
+      "avatar": "https://avatars.slack-edge.com/2026-01-19/10339124565665_d1b880cce06974971c2b_72.jpg"
+    },
     "U0847KFMUSC": {
       "id": "U0847KFMUSC",
       "username": "dwait.pandhi",
@@ -73188,12 +73202,6 @@
       "username": "sivayogeith",
       "displayName": "sage",
       "avatar": "https://avatars.slack-edge.com/2025-10-28/9784347823266_b6d78ff4d18909c2f6e2_72.jpg"
-    },
-    "U0918MSQ7E3": {
-      "id": "U0918MSQ7E3",
-      "username": "duyduy15456",
-      "displayName": "vair.​nooi",
-      "avatar": "https://avatars.slack-edge.com/2026-01-19/10339124565665_d1b880cce06974971c2b_72.jpg"
     },
     "U0AFWJX9CP2": {
       "id": "U0AFWJX9CP2",
