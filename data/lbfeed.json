@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-15T18:40:35.534Z",
+  "lastUpdated": "2026-03-15T19:28:29.890Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -10359,6 +10359,14 @@
         "delta": 40,
         "balance": 445,
         "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0825SVHFJL"
+      },
+      {
+        "ts": "2026-03-15T18:43:38.076Z",
+        "delta": 1000,
+        "balance": 1445,
+        "reason": "ship event payout",
         "reasonType": "",
         "userId": "U0825SVHFJL"
       }
@@ -71647,6 +71655,11 @@
     ]
   },
   "users": {
+    "U0825SVHFJL": {
+      "id": "U0825SVHFJL",
+      "username": "techedreal",
+      "avatar": "https://avatars.slack-edge.com/2025-12-07/10099376260944_616f006eb6847aed4221_72.jpg"
+    },
     "U0A1JP5Q3JP": {
       "id": "U0A1JP5Q3JP",
       "username": "ryderorzyrey",
@@ -74591,11 +74604,6 @@
       "username": "remo.kaljuste",
       "displayName": "BnaJns",
       "avatar": "https://avatars.slack-edge.com/2025-12-08/10080343547076_87459fece6fa6a936cc2_72.jpg"
-    },
-    "U0825SVHFJL": {
-      "id": "U0825SVHFJL",
-      "username": "techedreal",
-      "avatar": "https://avatars.slack-edge.com/2025-12-07/10099376260944_616f006eb6847aed4221_72.jpg"
     },
     "U0930DMR4BA": {
       "id": "U0930DMR4BA",
