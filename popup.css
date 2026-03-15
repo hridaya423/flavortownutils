@@ -420,6 +420,11 @@ body {
     color: var(--popup-text);
 }
 
+#migrateSpicetownBtn {
+    grid-column: 1 / -1;
+    width: 100%;
+}
+
 .popup__cache {
     margin-top: 10px;
     padding-top: 10px;

@@ -142,10 +142,17 @@ const LOCAL_STORAGE_SYNC_KEYS = [
     'shop_wishlist',
     'shop_wishlist_priorities',
     'shop_wishlist_order',
+    'flavortown_shop_wishlist_ordered',
     'flavortown_project_stats',
     'flavortown_tutorial_state',
     'flavortown_cmd_recent',
-    'flavortown_heatmap_data'
+    'flavortown_heatmap_data',
+    'flavortown_known_achievements',
+    'flavortown_last_achievement_check',
+    'bg-color-theme',
+    'use-inline-devlog',
+    'known_achievements',
+    'auto_achievements_last_claim'
 ];
 let localStorageSyncTimer = null;
 let isApplyingLocalStorageSync = false;

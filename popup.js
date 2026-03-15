@@ -112,10 +112,40 @@ const LOCAL_STORAGE_EXPORT_KEYS = [
     'shop_wishlist',
     'shop_wishlist_priorities',
     'shop_wishlist_order',
+    'flavortown_shop_wishlist_ordered',
     'flavortown_project_stats',
     'flavortown_tutorial_state',
-    'flavortown_cmd_recent'
+    'flavortown_cmd_recent',
+    'flavortown_heatmap_data',
+    'flavortown_known_achievements',
+    'flavortown_last_achievement_check',
+    'bg-color-theme',
+    'use-inline-devlog',
+    'known_achievements',
+    'auto_achievements_last_claim'
 ];
+const SPICETOWN_LOCAL_KEYS = [
+    'bg-color-theme',
+    'use-inline-devlog',
+    'known_achievements',
+    'auto_achievements_last_claim'
+];
+const SPICETOWN_THEME_MAP = {
+    'bg-color-vanilla': { theme: 'default' },
+    'bg-color-catppuccin-mocha': { theme: 'catppuccin', catppuccinAccent: 'mauve' },
+    'bg-color-catppuccin-macchiato': { theme: 'catppuccin', catppuccinAccent: 'lavender' },
+    'bg-color-aurora': { theme: 'sea' },
+    'bg-color-midnight': { theme: 'sea' },
+    'bg-color-onyx': { theme: 'sea' },
+    'bg-color-ruby': { theme: 'overcooked' },
+    'bg-color-charcoal': { theme: 'overcooked' },
+    'bg-color-leafy': { theme: 'default' },
+    custom: { theme: 'custom' },
+    default: { theme: 'default' },
+    catppuccin: { theme: 'catppuccin' },
+    sea: { theme: 'sea' },
+    overcooked: { theme: 'overcooked' }
+};
 
 let currentTheme = 'default';
 let customColors = { ...DEFAULT_CUSTOM_COLORS };
@@ -204,6 +234,7 @@ function setupEventListeners() {
 
     document.getElementById('exportBtn')?.addEventListener('click', exportData);
     document.getElementById('importFile')?.addEventListener('change', handleImportFile);
+    document.getElementById('migrateSpicetownBtn')?.addEventListener('click', migrateSpicetownFromLocalStorage);
 
     const shortcutBtn = document.getElementById('commandPaletteShortcut');
     const shortcutReset = document.getElementById('commandPaletteShortcutReset');
@@ -526,37 +557,8 @@ async function handleImportFile(event) {
     if (!file) return;
 
     try {
-        const text = await file.text();
-        const payload = JSON.parse(text);
-
-        if (!payload || typeof payload !== 'object') {
-            throw new Error('Invalid payload');
-        }
-
-        if (payload.sync && typeof payload.sync === 'object') {
-            await browserAPI.storage.sync.set(payload.sync);
-        }
-
-        if (payload.localStorage && typeof payload.localStorage === 'object') {
-            const importPayload = {
-                version: EXPORT_VERSION,
-                updatedAt: Date.now(),
-                data: payload.localStorage
-            };
-            try {
-                await browserAPI.storage.sync.set({
-                    [LOCAL_STORAGE_IMPORT_KEY]: importPayload,
-                    [LOCAL_STORAGE_SYNC_KEY]: importPayload
-                });
-            } catch (syncError) {
-                console.warn('Sync import skipped:', syncError);
-            }
-            await importLocalStorageSnapshot(payload.localStorage);
-        }
-
-        await loadSettings();
-        updateUI();
-        showStatus('Imported data');
+        const payload = await readJsonFile(file);
+        await importBackupPayload(payload, { source: 'auto' });
     } catch (error) {
         console.error('Import failed:', error);
         showStatus('Import failed', true);
@@ -565,13 +567,407 @@ async function handleImportFile(event) {
     }
 }
 
-async function getLocalStorageSnapshot() {
+async function migrateSpicetownFromLocalStorage() {
+    try {
+        const localSnapshot = await getLocalStorageSnapshot(SPICETOWN_LOCAL_KEYS);
+        if (!isObject(localSnapshot) || Object.keys(localSnapshot).length === 0) {
+            showStatus('No Spicetown local keys found', true);
+            return;
+        }
+
+        await importBackupPayload({ browserLocal: localSnapshot }, { source: 'spicetown-local' });
+    } catch (error) {
+        console.error('Spicetown local migration failed:', error);
+        showStatus('Spicetown migration failed', true);
+    }
+}
+
+function isObject(value) {
+    return !!value && typeof value === 'object' && !Array.isArray(value);
+}
+
+async function readJsonFile(file) {
+    const text = await file.text();
+    const payload = JSON.parse(text);
+    if (!isObject(payload)) throw new Error('Invalid payload');
+    return payload;
+}
+
+function toStoredString(value) {
+    if (value === null || value === undefined) return null;
+    return typeof value === 'string' ? value : JSON.stringify(value);
+}
+
+function mapSpicetownTheme(themeId) {
+    if (!themeId || typeof themeId !== 'string') return null;
+    return SPICETOWN_THEME_MAP[themeId] || null;
+}
+
+function mapSpicetownCustomTheme(values) {
+    if (!isObject(values)) return null;
+    const mapped = { ...DEFAULT_CUSTOM_COLORS };
+
+    if (typeof values['--bg-primary'] === 'string') mapped['bg-base'] = values['--bg-primary'];
+    if (typeof values['--surface-card'] === 'string') mapped['bg-surface'] = values['--surface-card'];
+    if (typeof values['--accent'] === 'string') {
+        mapped['accent'] = values['--accent'];
+        mapped['btn-primary-bg'] = values['--accent'];
+        mapped['accent-hover'] = values['--accent'];
+    }
+    if (typeof values['--text-primary'] === 'string') {
+        mapped['text-primary'] = values['--text-primary'];
+        mapped['text-secondary'] = values['--text-primary'];
+    }
+
+    return mapped;
+}
+
+function normalizeProgressMode(value) {
+    if (value === 'cumulative' || value === 'individual') return value;
+    return 'individual';
+}
+
+async function fetchShopCatalogSnapshot() {
+    try {
+        const response = await fetch('https://flavortown.hackclub.com/shop', {
+            method: 'GET',
+            credentials: 'include'
+        });
+        if (!response.ok) return {};
+
+        const html = await response.text();
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        const map = {};
+
+        doc.querySelectorAll('.shop-item-card[data-shop-id]').forEach((card) => {
+            const id = card.getAttribute('data-shop-id');
+            if (!id) return;
+
+            const titleEl = card.querySelector('.shop-item-card__title');
+            const name = titleEl ? titleEl.textContent.trim() : `Item ${id}`;
+
+            const pricedEl = card.querySelector('[data-shop-wishlist-item-price-value]');
+            const rawPrice = pricedEl?.dataset?.shopWishlistItemPriceValue || card.getAttribute('data-shop-wishlist-item-price-value') || '';
+            const parsedRawPrice = Number(rawPrice);
+
+            let price = 0;
+            if (Number.isFinite(parsedRawPrice) && parsedRawPrice > 0) {
+                price = parsedRawPrice;
+            } else {
+                const textPrice = card.querySelector('.shop-item-card__price')?.textContent || '';
+                const numeric = textPrice.replace(/[^0-9.]/g, '');
+                const parsed = Number(numeric);
+                if (Number.isFinite(parsed) && parsed > 0) {
+                    price = parsed;
+                }
+            }
+
+            const image = card.querySelector('img')?.getAttribute('src') || '';
+
+            map[id] = {
+                name,
+                price,
+                image
+            };
+        });
+
+        return map;
+    } catch (error) {
+        console.warn('Could not load shop catalog snapshot for migration:', error);
+        return {};
+    }
+}
+
+async function fetchAccessoryCatalogForGoals(goalIds) {
+    const accessoryMap = {};
+    if (!Array.isArray(goalIds) || goalIds.length === 0) return accessoryMap;
+
+    await Promise.all(goalIds.map(async (goalId) => {
+        try {
+            const response = await fetch(`https://flavortown.hackclub.com/shop/order?shop_item_id=${goalId}`, {
+                method: 'GET',
+                credentials: 'include'
+            });
+            if (!response.ok) return;
+
+            const html = await response.text();
+            const doc = new DOMParser().parseFromString(html, 'text/html');
+
+            doc.querySelectorAll('.shop-order__accessory-option-label').forEach((label) => {
+                const input = label.querySelector('input');
+                const id = input?.value;
+                if (!id) return;
+
+                const name = label.querySelector('.shop-order__accessory-option-name')?.textContent?.trim() || `Accessory ${id}`;
+                const rawPrice = input?.dataset?.price || '';
+                const price = Number.isFinite(Number(rawPrice)) ? Number(rawPrice) : 0;
+
+                accessoryMap[`${goalId}:${id}`] = { name, price };
+            });
+        } catch (error) {
+            console.warn(`Could not fetch accessories for goal ${goalId}:`, error);
+        }
+    }));
+
+    return accessoryMap;
+}
+
+function extractSpicetownGoals(storageData, catalogById, accessoryCatalogByGoalAndId = {}) {
+    if (!isObject(storageData)) {
+        return { wishlist: {}, order: [] };
+    }
+
+    const idSet = new Set();
+    Object.keys(storageData).forEach((key) => {
+        let match = key.match(/^shop_goal_qty_(\d+)$/);
+        if (match) {
+            idSet.add(match[1]);
+            return;
+        }
+
+        match = key.match(/^shop_goal_name_(\d+)$/);
+        if (match) {
+            idSet.add(match[1]);
+            return;
+        }
+
+        match = key.match(/^shop_goal_accessory_(\d+)_\d+$/);
+        if (match) {
+            idSet.add(match[1]);
+        }
+    });
+
+    const wishlist = {};
+
+    idSet.forEach((id) => {
+        const qtyRaw = Number(storageData[`shop_goal_qty_${id}`]);
+        const quantity = Number.isFinite(qtyRaw) && qtyRaw > 0 ? Math.round(qtyRaw) : 1;
+        const catalogItem = catalogById[id] || {};
+        const name = storageData[`shop_goal_name_${id}`] || catalogItem.name || `Item ${id}`;
+        const unitPrice = Number.isFinite(Number(catalogItem.price)) ? Number(catalogItem.price) : 0;
+        const image = typeof catalogItem.image === 'string' ? catalogItem.image : '';
+
+        wishlist[id] = {
+            id,
+            name,
+            quantity,
+            price: unitPrice,
+            basePrice: unitPrice,
+            accessories: [],
+            image
+        };
+    });
+
+    const orderRaw = storageData.shop_goal_priority_order;
+    const order = Array.isArray(orderRaw)
+        ? orderRaw.map((entry) => String(entry)).filter((id) => !!wishlist[id])
+        : [];
+
+    const now = Date.now();
+
+    idSet.forEach((id) => {
+        const selectedAccessories = [];
+        let accessoryTotal = 0;
+
+        Object.keys(storageData).forEach((key) => {
+            const match = key.match(new RegExp(`^shop_goal_accessory_${id}_(\\d+)$`));
+            if (!match) return;
+            if (storageData[key] !== true) return;
+
+            const accessoryId = match[1];
+            const mapped = accessoryCatalogByGoalAndId[`${id}:${accessoryId}`] || { name: `Accessory ${accessoryId}`, price: 0 };
+            const price = Number.isFinite(Number(mapped.price)) ? Number(mapped.price) : 0;
+            selectedAccessories.push({ name: mapped.name, price });
+            accessoryTotal += price;
+        });
+
+        if (wishlist[id]) {
+            wishlist[id].accessories = selectedAccessories;
+            wishlist[id].price = (wishlist[id].basePrice || wishlist[id].price || 0) + accessoryTotal;
+        }
+    });
+
+    const processedOrdersRaw = storageData.processed_orders;
+    let processedOrders = {};
+    if (Array.isArray(processedOrdersRaw) && processedOrdersRaw.length > 0) {
+        processedOrdersRaw.forEach((orderId) => {
+            if (!orderId) return;
+            processedOrders[String(orderId)] = { processedAt: now, quantity: 1 };
+        });
+    }
+
+    return { wishlist, order, processedOrders };
+}
+
+async function buildMigrationFromSpicetown(payload) {
+    const storageData = isObject(payload.storage) ? payload.storage : {};
+    const browserLocal = isObject(payload.browserLocal) ? payload.browserLocal : {};
+
+    const syncData = {};
+    const localStorageData = {};
+    const shopCatalogById = await fetchShopCatalogSnapshot();
+    const goalIds = Object.keys(storageData)
+        .map((key) => key.match(/^shop_goal_qty_(\d+)$/)?.[1] || key.match(/^shop_goal_name_(\d+)$/)?.[1])
+        .filter(Boolean)
+        .filter((value, index, arr) => arr.indexOf(value) === index);
+    const accessoryCatalogByGoalAndId = await fetchAccessoryCatalogForGoals(goalIds);
+    const { wishlist, order, processedOrders } = extractSpicetownGoals(storageData, shopCatalogById, accessoryCatalogByGoalAndId);
+
+    SPICETOWN_LOCAL_KEYS.forEach((key) => {
+        const value = browserLocal[key] ?? storageData[key];
+        const normalized = toStoredString(value);
+        if (normalized !== null) {
+            localStorageData[key] = normalized;
+        }
+    });
+
+    if (typeof storageData.shop_progress_mode === 'string') {
+        localStorageData.flavortown_progress_mode = normalizeProgressMode(storageData.shop_progress_mode);
+    }
+
+    if (typeof storageData.shop_use_projected === 'boolean') {
+        localStorageData.flavortown_projection_mode = storageData.shop_use_projected ? 'projected' : 'actual';
+    }
+
+    if (Object.keys(wishlist).length > 0) {
+        localStorageData.shop_wishlist = JSON.stringify(wishlist);
+    }
+
+    if (order.length > 0) {
+        localStorageData.shop_wishlist_order = JSON.stringify(order);
+    }
+
+    if (processedOrders && Object.keys(processedOrders).length > 0) {
+        localStorageData.flavortown_shop_wishlist_ordered = JSON.stringify(processedOrders);
+    }
+
+    const knownAchievements = browserLocal.known_achievements ?? storageData.known_achievements;
+    if (knownAchievements !== undefined) {
+        const normalized = toStoredString(knownAchievements);
+        if (normalized !== null) localStorageData.flavortown_known_achievements = normalized;
+    }
+
+    const lastAutoClaim = browserLocal.auto_achievements_last_claim ?? storageData.auto_achievements_last_claim;
+    if (lastAutoClaim !== undefined && lastAutoClaim !== null) {
+        localStorageData.flavortown_last_achievement_check = String(lastAutoClaim);
+    }
+
+    const themeCandidate = storageData.selectedTheme || browserLocal['bg-color-theme'];
+    const mappedTheme = mapSpicetownTheme(themeCandidate);
+    if (mappedTheme?.theme) {
+        syncData.theme = mappedTheme.theme;
+        if (mappedTheme.catppuccinAccent) {
+            syncData.catppuccinAccent = mappedTheme.catppuccinAccent;
+        }
+    }
+
+    if (syncData.theme === 'custom') {
+        const mappedCustomColors = mapSpicetownCustomTheme(storageData.customThemeValues);
+        if (mappedCustomColors) {
+            syncData.customColors = mappedCustomColors;
+        }
+    }
+
+    return { syncData, localStorageData, migratedGoalsCount: Object.keys(wishlist).length };
+}
+
+function buildMigrationFromSpicetownLocal(browserLocalData) {
+    const browserLocal = isObject(browserLocalData) ? browserLocalData : {};
+    const syncData = {};
+    const localStorageData = {};
+
+    SPICETOWN_LOCAL_KEYS.forEach((key) => {
+        const normalized = toStoredString(browserLocal[key]);
+        if (normalized !== null) {
+            localStorageData[key] = normalized;
+        }
+    });
+
+    const knownAchievements = browserLocal.known_achievements;
+    if (knownAchievements !== undefined) {
+        const normalized = toStoredString(knownAchievements);
+        if (normalized !== null) localStorageData.flavortown_known_achievements = normalized;
+    }
+
+    const lastAutoClaim = browserLocal.auto_achievements_last_claim;
+    if (lastAutoClaim !== undefined && lastAutoClaim !== null) {
+        localStorageData.flavortown_last_achievement_check = String(lastAutoClaim);
+    }
+
+    const themeCandidate = browserLocal['bg-color-theme'];
+    const mappedTheme = mapSpicetownTheme(themeCandidate);
+    if (mappedTheme?.theme) {
+        syncData.theme = mappedTheme.theme;
+        if (mappedTheme.catppuccinAccent) {
+            syncData.catppuccinAccent = mappedTheme.catppuccinAccent;
+        }
+    }
+
+    return { syncData, localStorageData };
+}
+
+async function importBackupPayload(payload, options = { source: 'auto' }) {
+    const source = options.source || 'auto';
+
+    let syncData = {};
+    let localStorageData = {};
+    let importedLabel = 'Imported data';
+
+    if ((source === 'auto' || source === 'flavortown') && (isObject(payload.sync) || isObject(payload.localStorage))) {
+        syncData = isObject(payload.sync) ? payload.sync : {};
+        localStorageData = isObject(payload.localStorage) ? payload.localStorage : {};
+        importedLabel = 'Imported data';
+    } else if (source === 'spicetown-local' && isObject(payload.browserLocal)) {
+        const migratedLocal = buildMigrationFromSpicetownLocal(payload.browserLocal);
+        syncData = migratedLocal.syncData;
+        localStorageData = migratedLocal.localStorageData;
+        importedLabel = 'Migrated Spicetown local keys';
+    } else if ((source === 'auto' || source === 'spicetown') && (isObject(payload.storage) || isObject(payload.browserLocal))) {
+        const migrated = await buildMigrationFromSpicetown(payload);
+        syncData = migrated.syncData;
+        localStorageData = migrated.localStorageData;
+        importedLabel = migrated.migratedGoalsCount > 0
+            ? `Imported Spicetown data (${migrated.migratedGoalsCount} goals)`
+            : 'Imported Spicetown data';
+    } else {
+        throw new Error('Unsupported backup format');
+    }
+
+    if (isObject(syncData) && Object.keys(syncData).length > 0) {
+        await browserAPI.storage.sync.set(syncData);
+    }
+
+    if (isObject(localStorageData) && Object.keys(localStorageData).length > 0) {
+        const importPayload = {
+            version: EXPORT_VERSION,
+            updatedAt: Date.now(),
+            data: localStorageData
+        };
+
+        try {
+            await browserAPI.storage.sync.set({
+                [LOCAL_STORAGE_IMPORT_KEY]: importPayload,
+                [LOCAL_STORAGE_SYNC_KEY]: importPayload
+            });
+        } catch (syncError) {
+            console.warn('Sync import skipped:', syncError);
+        }
+
+        await importLocalStorageSnapshot(localStorageData);
+    }
+
+    await loadSettings();
+    updateUI();
+    showStatus(importedLabel);
+}
+
+async function getLocalStorageSnapshot(keys = LOCAL_STORAGE_EXPORT_KEYS) {
     const tabs = await browserAPI.tabs.query({ url: 'https://flavortown.hackclub.com/*' });
     for (const tab of tabs) {
         try {
             const response = await browserAPI.tabs.sendMessage(tab.id, {
                 type: 'EXPORT_DATA',
-                keys: LOCAL_STORAGE_EXPORT_KEYS
+                keys
             });
             if (response?.localStorage) {
                 return response.localStorage;
