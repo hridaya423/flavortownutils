@@ -10235,9 +10235,9 @@ async function enhanceKitchenDashboard() {
                     totalDevlogs += project.devlogs || 0;
                 });
                 if (totalDevlogs > 0 && totalMinutes > 0) {
-                    const avgMinutesPerDevlog = totalMinutes / totalDevlogs;
+                    const avgMinutesPerDevlog = Math.max(1, Math.round(totalMinutes / totalDevlogs));
                     const hours = Math.floor(avgMinutesPerDevlog / 60);
-                    const mins = Math.round(avgMinutesPerDevlog % 60);
+                    const mins = avgMinutesPerDevlog % 60;
                     devlogFrequency = hours > 0 ? `${hours}h ${mins}m/devlog` : `${mins}m/devlog`;
                 }
             }
