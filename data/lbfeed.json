@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-15T11:49:22.254Z",
+  "lastUpdated": "2026-03-15T12:55:04.227Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -9415,6 +9415,22 @@
         "delta": 2,
         "balance": 32,
         "reason": "Hello, Kitchen!",
+        "reasonType": "achievement",
+        "userId": "U080F22CTJN"
+      },
+      {
+        "ts": "2026-03-15T11:54:48.330Z",
+        "delta": 3,
+        "balance": 35,
+        "reason": "Order Up!",
+        "reasonType": "achievement",
+        "userId": "U080F22CTJN"
+      },
+      {
+        "ts": "2026-03-15T11:54:48.368Z",
+        "delta": 3,
+        "balance": 38,
+        "reason": "Michelin Star",
         "reasonType": "achievement",
         "userId": "U080F22CTJN"
       }
@@ -18845,6 +18861,22 @@
         "delta": 93,
         "balance": 1555,
         "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U08SS7Z7LJD"
+      },
+      {
+        "ts": "2026-03-15T12:51:19.782Z",
+        "delta": -1495,
+        "balance": 60,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U08SS7Z7LJD"
+      },
+      {
+        "ts": "2026-03-15T12:52:11.619Z",
+        "delta": -60,
+        "balance": 0,
+        "reason": "shop purchase",
         "reasonType": "",
         "userId": "U08SS7Z7LJD"
       }
@@ -34132,6 +34164,14 @@
         "ts": "2026-03-12T14:35:33.843Z",
         "delta": 2,
         "balance": 146,
+        "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U09JFS1BU2V"
+      },
+      {
+        "ts": "2026-03-15T12:33:46.087Z",
+        "delta": 119,
+        "balance": 265,
         "reason": "ship event payout",
         "reasonType": "",
         "userId": "U09JFS1BU2V"
@@ -50817,6 +50857,78 @@
         "delta": 798,
         "balance": 813,
         "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U0A6ZC8LTSP"
+      },
+      {
+        "ts": "2026-03-15T11:58:02.364Z",
+        "delta": -471,
+        "balance": 342,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A6ZC8LTSP"
+      },
+      {
+        "ts": "2026-03-15T12:02:03.291Z",
+        "delta": 3,
+        "balance": 345,
+        "reason": "Michelin Star",
+        "reasonType": "achievement",
+        "userId": "U0A6ZC8LTSP"
+      },
+      {
+        "ts": "2026-03-15T12:02:35.791Z",
+        "delta": -111,
+        "balance": 234,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A6ZC8LTSP"
+      },
+      {
+        "ts": "2026-03-15T12:03:34.158Z",
+        "delta": -35,
+        "balance": 199,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A6ZC8LTSP"
+      },
+      {
+        "ts": "2026-03-15T12:04:51.609Z",
+        "delta": -35,
+        "balance": 164,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A6ZC8LTSP"
+      },
+      {
+        "ts": "2026-03-15T12:05:09.865Z",
+        "delta": -22,
+        "balance": 142,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A6ZC8LTSP"
+      },
+      {
+        "ts": "2026-03-15T12:05:25.740Z",
+        "delta": -60,
+        "balance": 82,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A6ZC8LTSP"
+      },
+      {
+        "ts": "2026-03-15T12:06:17.121Z",
+        "delta": -35,
+        "balance": 47,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A6ZC8LTSP"
+      },
+      {
+        "ts": "2026-03-15T12:06:46.962Z",
+        "delta": -40,
+        "balance": 7,
+        "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0A6ZC8LTSP"
       }
@@ -71349,11 +71461,27 @@
     ]
   },
   "users": {
+    "U08SS7Z7LJD": {
+      "id": "U08SS7Z7LJD",
+      "username": "thcheetah777",
+      "avatar": "https://avatars.slack-edge.com/2026-01-24/10350559044679_3049587262a711c69f08_72.jpg"
+    },
+    "U09JFS1BU2V": {
+      "id": "U09JFS1BU2V",
+      "username": "wenfeng110402",
+      "avatar": "https://avatars.slack-edge.com/2025-12-11/10095113772678_b009e6916bfea723fa01_72.png"
+    },
     "U0A6ZC8LTSP": {
       "id": "U0A6ZC8LTSP",
       "username": "dante.edmiston",
       "displayName": "JustAnotherCoder",
       "avatar": "https://avatars.slack-edge.com/2026-01-27/10382540955170_f7d39e7350e7b6a9713d_72.jpg"
+    },
+    "U080F22CTJN": {
+      "id": "U080F22CTJN",
+      "username": "code.org.establish106",
+      "displayName": "Henry W",
+      "avatar": "https://avatars.slack-edge.com/2026-02-07/10456672540275_ac2d9ac747824860b779_72.png"
     },
     "U092H6G33T2": {
       "id": "U092H6G33T2",
@@ -71401,11 +71529,6 @@
       "username": "shige-rin",
       "displayName": "Rintaりんた",
       "avatar": "https://avatars.slack-edge.com/2025-12-29/10206925466820_e4fe5e9dbbebcbc8719c_72.jpg"
-    },
-    "U08SS7Z7LJD": {
-      "id": "U08SS7Z7LJD",
-      "username": "thcheetah777",
-      "avatar": "https://avatars.slack-edge.com/2026-01-24/10350559044679_3049587262a711c69f08_72.jpg"
     },
     "U0A7QRVE0EB": {
       "id": "U0A7QRVE0EB",
@@ -72112,11 +72235,6 @@
       "username": "shavendulnethwickrama",
       "displayName": "Shaven Wickramanayaka",
       "avatar": "https://avatars.slack-edge.com/2026-01-18/10320527381474_017f41acf5ddc54cead0_72.jpg"
-    },
-    "U09JFS1BU2V": {
-      "id": "U09JFS1BU2V",
-      "username": "wenfeng110402",
-      "avatar": "https://avatars.slack-edge.com/2025-12-11/10095113772678_b009e6916bfea723fa01_72.png"
     },
     "U0A3VK4GFRN": {
       "id": "U0A3VK4GFRN",
@@ -76243,12 +76361,6 @@
       "username": "krypt0s231",
       "displayName": "krypt0s231",
       "avatar": "https://avatars.slack-edge.com/2026-02-21/10560352122980_e5cfd6223132b1c50621_72.png"
-    },
-    "U080F22CTJN": {
-      "id": "U080F22CTJN",
-      "username": "code.org.establish106",
-      "displayName": "Henry W",
-      "avatar": "https://avatars.slack-edge.com/2026-02-07/10456672540275_ac2d9ac747824860b779_72.png"
     },
     "U0925CUPLHZ": {
       "id": "U0925CUPLHZ",
