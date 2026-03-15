@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-15T09:35:48.435Z",
+  "lastUpdated": "2026-03-15T10:31:04.923Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -16283,6 +16283,22 @@
         "reason": "ship event payout",
         "reasonType": "",
         "userId": "U08NCJDJEE4"
+      },
+      {
+        "ts": "2026-03-15T10:28:11.218Z",
+        "delta": -460,
+        "balance": 102,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U08NCJDJEE4"
+      },
+      {
+        "ts": "2026-03-15T10:28:38.153Z",
+        "delta": -78,
+        "balance": 24,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U08NCJDJEE4"
       }
     ],
     "u08ncje9sgg": [
@@ -24887,6 +24903,14 @@
         "delta": -70,
         "balance": 76,
         "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U092H6G33T2"
+      },
+      {
+        "ts": "2026-03-15T09:37:17.723Z",
+        "delta": 290,
+        "balance": 366,
+        "reason": "ship event payout",
         "reasonType": "",
         "userId": "U092H6G33T2"
       }
@@ -71285,6 +71309,18 @@
     ]
   },
   "users": {
+    "U08NCJDJEE4": {
+      "id": "U08NCJDJEE4",
+      "username": "ethan637",
+      "displayName": "Ethan Hawksley",
+      "avatar": "https://avatars.slack-edge.com/2025-05-03/8845549387106_89927692da002f358eb8_72.png"
+    },
+    "U092H6G33T2": {
+      "id": "U092H6G33T2",
+      "username": "bennet-wegener",
+      "displayName": "Joan Code",
+      "avatar": "https://avatars.slack-edge.com/2026-02-22/10552039369923_3cf44f8eac11c8d5ae8f_72.jpg"
+    },
     "U0A042DKA31": {
       "id": "U0A042DKA31",
       "username": "nzralghifary",
@@ -71481,12 +71517,6 @@
       "username": "playerone99",
       "displayName": "Joko26",
       "avatar": "https://avatars.slack-edge.com/2026-02-07/10458110978563_7dcdcad97b993680f9d7_72.jpg"
-    },
-    "U092H6G33T2": {
-      "id": "U092H6G33T2",
-      "username": "bennet-wegener",
-      "displayName": "Joan Code",
-      "avatar": "https://avatars.slack-edge.com/2026-02-22/10552039369923_3cf44f8eac11c8d5ae8f_72.jpg"
     },
     "U093B3R6HCK": {
       "id": "U093B3R6HCK",
@@ -72105,12 +72135,6 @@
       "username": "quickhalewebtech",
       "displayName": "satya//7YA",
       "avatar": "https://avatars.slack-edge.com/2025-07-25/9248518529315_6f0a74151dad785891dd_72.jpg"
-    },
-    "U08NCJDJEE4": {
-      "id": "U08NCJDJEE4",
-      "username": "ethan637",
-      "displayName": "Ethan Hawksley",
-      "avatar": "https://avatars.slack-edge.com/2025-05-03/8845549387106_89927692da002f358eb8_72.png"
     },
     "U0A5Z4ZTLJC": {
       "id": "U0A5Z4ZTLJC",
