@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-15T15:54:12.978Z",
+  "lastUpdated": "2026-03-15T16:34:38.668Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -16245,6 +16245,14 @@
         "delta": 4,
         "balance": 22,
         "reason": "tutorial",
+        "reasonType": "",
+        "userId": "U08MGN5EPHV"
+      },
+      {
+        "ts": "2026-03-15T16:05:13.065Z",
+        "delta": 5,
+        "balance": 27,
+        "reason": "ship event payout",
         "reasonType": "",
         "userId": "U08MGN5EPHV"
       }
@@ -71607,6 +71615,12 @@
     ]
   },
   "users": {
+    "U08MGN5EPHV": {
+      "id": "U08MGN5EPHV",
+      "username": "carbonical80",
+      "displayName": "carbon",
+      "avatar": "https://secure.gravatar.com/avatar/a24cb48ee2317659c0ff81fd794e8a45.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0026-72.png"
+    },
     "U074LUX88PJ": {
       "id": "U074LUX88PJ",
       "username": "makstmguzun",
@@ -75267,12 +75281,6 @@
       "username": "coeuzsnotionz",
       "displayName": "coeuzsnotionz",
       "avatar": "https://secure.gravatar.com/avatar/1a44049000bdcd7d25d99fd26385f748.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0007-72.png"
-    },
-    "U08MGN5EPHV": {
-      "id": "U08MGN5EPHV",
-      "username": "carbonical80",
-      "displayName": "carbon",
-      "avatar": "https://secure.gravatar.com/avatar/a24cb48ee2317659c0ff81fd794e8a45.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0026-72.png"
     },
     "U0A5KFABMNY": {
       "id": "U0A5KFABMNY",
