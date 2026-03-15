@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-15T11:27:11.628Z",
+  "lastUpdated": "2026-03-15T11:49:22.254Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -24927,6 +24927,14 @@
         "delta": 290,
         "balance": 366,
         "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U092H6G33T2"
+      },
+      {
+        "ts": "2026-03-15T11:32:51.678Z",
+        "delta": -70,
+        "balance": 296,
+        "reason": "shop purchase",
         "reasonType": "",
         "userId": "U092H6G33T2"
       }
@@ -50803,6 +50811,14 @@
         "reason": "Order Up!",
         "reasonType": "achievement",
         "userId": "U0A6ZC8LTSP"
+      },
+      {
+        "ts": "2026-03-15T11:47:13.342Z",
+        "delta": 798,
+        "balance": 813,
+        "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U0A6ZC8LTSP"
       }
     ],
     "u0a718b489k": [
@@ -71333,6 +71349,18 @@
     ]
   },
   "users": {
+    "U0A6ZC8LTSP": {
+      "id": "U0A6ZC8LTSP",
+      "username": "dante.edmiston",
+      "displayName": "JustAnotherCoder",
+      "avatar": "https://avatars.slack-edge.com/2026-01-27/10382540955170_f7d39e7350e7b6a9713d_72.jpg"
+    },
+    "U092H6G33T2": {
+      "id": "U092H6G33T2",
+      "username": "bennet-wegener",
+      "displayName": "Joan Code",
+      "avatar": "https://avatars.slack-edge.com/2026-02-22/10552039369923_3cf44f8eac11c8d5ae8f_72.jpg"
+    },
     "U0A7CQD6W1E": {
       "id": "U0A7CQD6W1E",
       "username": "m8000",
@@ -71349,12 +71377,6 @@
       "username": "ethan637",
       "displayName": "Ethan Hawksley",
       "avatar": "https://avatars.slack-edge.com/2025-05-03/8845549387106_89927692da002f358eb8_72.png"
-    },
-    "U092H6G33T2": {
-      "id": "U092H6G33T2",
-      "username": "bennet-wegener",
-      "displayName": "Joan Code",
-      "avatar": "https://avatars.slack-edge.com/2026-02-22/10552039369923_3cf44f8eac11c8d5ae8f_72.jpg"
     },
     "U0A042DKA31": {
       "id": "U0A042DKA31",
@@ -74459,12 +74481,6 @@
       "username": "shashankprasanna1",
       "displayName": "spyguy",
       "avatar": "https://avatars.slack-edge.com/2024-06-26/7351666672081_47ed5a96ed11ce944043_72.jpg"
-    },
-    "U0A6ZC8LTSP": {
-      "id": "U0A6ZC8LTSP",
-      "username": "dante.edmiston",
-      "displayName": "JustAnotherCoder",
-      "avatar": "https://avatars.slack-edge.com/2026-01-27/10382540955170_f7d39e7350e7b6a9713d_72.jpg"
     },
     "U09HF9B02TY": {
       "id": "U09HF9B02TY",
