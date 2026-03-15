@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-15T15:29:59.667Z",
+  "lastUpdated": "2026-03-15T15:54:12.978Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -3243,6 +3243,14 @@
         "delta": 15,
         "balance": 30,
         "reason": "Cookbook Author",
+        "reasonType": "achievement",
+        "userId": "U074LUX88PJ"
+      },
+      {
+        "ts": "2026-03-15T15:37:00.449Z",
+        "delta": 3,
+        "balance": 33,
+        "reason": "Michelin Star",
         "reasonType": "achievement",
         "userId": "U074LUX88PJ"
       }
@@ -71599,6 +71607,12 @@
     ]
   },
   "users": {
+    "U074LUX88PJ": {
+      "id": "U074LUX88PJ",
+      "username": "makstmguzun",
+      "displayName": "Noname",
+      "avatar": "https://avatars.slack-edge.com/2026-03-09/10657621289538_c94b5f67d0fb13e8bf4e_72.jpg"
+    },
     "U0AHQEPUQ7R": {
       "id": "U0AHQEPUQ7R",
       "username": "bartoszkasyna",
@@ -71657,12 +71671,6 @@
       "username": "tarunpreetsinghk",
       "displayName": "Tarun",
       "avatar": "https://avatars.slack-edge.com/2026-01-02/10202177354887_cd8159b8cc55dc13c550_72.jpg"
-    },
-    "U074LUX88PJ": {
-      "id": "U074LUX88PJ",
-      "username": "makstmguzun",
-      "displayName": "Noname",
-      "avatar": "https://avatars.slack-edge.com/2026-03-09/10657621289538_c94b5f67d0fb13e8bf4e_72.jpg"
     },
     "U092J7619CN": {
       "id": "U092J7619CN",
