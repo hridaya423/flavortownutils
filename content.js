@@ -17822,6 +17822,15 @@ const TUTORIAL_PHASE_3 = [
 ];
 
 const VERSION_FEATURES = {
+    '3.3.0': [
+        { title: 'Explore Users page', description: 'Browse Flavortown users from Explore with search by display name or Slack ID and quick user cards.', icon: '👥' },
+        { title: 'Multiline vote feedback', description: 'Vote feedback on /votes/new now supports multiline input for clearer, richer feedback.', icon: '📝' },
+        { title: 'New voting system support', description: 'Updated vote handling for the current Flavortown voting flow with improved estimate reliability.', icon: '⭐' },
+        { title: 'Vote UI polish', description: 'Cleaner vote breakdown presentation and better theme consistency in voting surfaces.', icon: '🎨' },
+        { title: 'Pinned projects', description: 'Pin your important projects so they stay easy to access on the projects board.', icon: '📌' },
+        { title: 'Spicetown -> FT Utils migration', description: 'Migrate key Spicetown settings/data into Flavortown Utils from the popup.', icon: '🔁' },
+        { title: 'General improvements', description: 'Bug fixes and quality-of-life polish across core extension flows.', icon: '✨' }
+    ],
     '2.9.0': [
         { title: 'Project Todos', description: 'Add and manage todos directly on project pages. Use the Slack bot to create tasks from Slack!', icon: '✅' },
         { title: 'Frequently used emojis', description: 'Slack emojis you use most often appear first in autocomplete suggestions.', icon: '😀' },
