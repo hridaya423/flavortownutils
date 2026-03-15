@@ -108,10 +108,15 @@ const PROJECT_UNSHIPPED_CACHE_TTL = 24 * 60 * 60 * 1000;
 const PROJECT_UNSHIPPED_CLEANUP_KEY = 'flavortown_project_unshipped_cleanup';
 const SHOP_WISHLIST_ORDERED_ITEMS_KEY = 'flavortown_shop_wishlist_ordered';
 const LOCAL_STORAGE_SYNC_ENABLED_KEY = 'flavortownLocalStorageSyncEnabled';
+const LOGPHEUS_SYNC_ENABLED_KEY = 'flavortownLogpheusGoalSyncEnabled';
 const LOCAL_STORAGE_SYNC_KEY = 'flavortownLocalStorageSync';
 const LOCAL_STORAGE_IMPORT_KEY = 'flavortownLocalStorageImport';
 const LOCAL_STORAGE_SYNC_UPDATED_AT_KEY = 'flavortownLocalStorageSyncUpdatedAt';
 const LOCAL_STORAGE_SYNC_MAX_BYTES = 90000;
+const LOGPHEUS_API_BASE_URL = 'https://logpheus.gizzy.gay';
+const LOGPHEUS_GOALS_ENDPOINT = `${LOGPHEUS_API_BASE_URL}/api/v1/goals`;
+const LOGPHEUS_LAST_SYNC_SIGNATURE_KEY = 'flavortown_logpheus_sync_signature';
+const LOGPHEUS_LAST_SYNC_AT_KEY = 'flavortown_logpheus_sync_at';
 const CHANGELOG_DISMISS_KEY = 'flavortown_changelog_dismissed';
 const CHANGELOG_OVERRIDE_KEY = 'flavortown_changelog_override';
 const CHANGELOG_CACHE_KEY = 'flavortown_changelog_cache';
@@ -158,6 +163,17 @@ let localStorageSyncTimer = null;
 let isApplyingLocalStorageSync = false;
 let localStorageSyncEnabled = false;
 let localStoragePatched = false;
+let logpheusSyncEnabled = false;
+let logpheusWatcherInterval = null;
+let logpheusDebounceTimer = null;
+let logpheusRetryTimer = null;
+let logpheusLastWishlistRaw = null;
+let logpheusLastSyncedSignature = null;
+let logpheusSyncInFlight = false;
+let logpheusSyncQueued = false;
+let logpheusSyncFailureCount = 0;
+let logpheusCorsBlockedUntil = 0;
+let logpheusCorsWarned = false;
 let commandPaletteShortcut = parseShortcutString(DEFAULT_COMMAND_PALETTE_SHORTCUT);
 const usersProjectMinutesCache = new Map();
 const usersAggregateCache = new Map();
@@ -3841,6 +3857,239 @@ async function apiFetch(endpoint) {
     }
     
     return response.json();
+}
+
+function parseLogpheusGoalIds(rawWishlist) {
+    if (!rawWishlist) return [];
+
+    let parsed = null;
+    try {
+        parsed = JSON.parse(rawWishlist);
+    } catch (e) {
+        return [];
+    }
+
+    if (!parsed || typeof parsed !== 'object') return [];
+
+    const ids = Object.keys(parsed)
+        .map((key) => parseInt(key, 10))
+        .filter((id) => Number.isFinite(id) && id > 0);
+
+    return Array.from(new Set(ids)).sort((a, b) => a - b);
+}
+
+function queueLogpheusGoalsSync(delayMs = 1000) {
+    if (!logpheusSyncEnabled) return;
+    clearTimeout(logpheusDebounceTimer);
+    logpheusDebounceTimer = setTimeout(() => {
+        syncShopGoalsToLogpheus();
+    }, delayMs);
+}
+
+function resetLogpheusSyncTimers() {
+    clearInterval(logpheusWatcherInterval);
+    clearTimeout(logpheusDebounceTimer);
+    clearTimeout(logpheusRetryTimer);
+    logpheusWatcherInterval = null;
+    logpheusDebounceTimer = null;
+    logpheusRetryTimer = null;
+}
+
+function startLogpheusSyncWatcher() {
+    if (logpheusWatcherInterval) return;
+
+    const checkForWishlistChanges = () => {
+        const currentRaw = localStorage.getItem('shop_wishlist') || '{}';
+        if (currentRaw !== logpheusLastWishlistRaw) {
+            logpheusLastWishlistRaw = currentRaw;
+            queueLogpheusGoalsSync(650);
+        }
+    };
+
+    checkForWishlistChanges();
+    logpheusWatcherInterval = setInterval(checkForWishlistChanges, 1200);
+}
+
+function scheduleLogpheusRetry() {
+    if (!logpheusSyncEnabled) return;
+    clearTimeout(logpheusRetryTimer);
+    const retryDelay = Math.min(60000, Math.max(1500, 1500 * (2 ** Math.min(logpheusSyncFailureCount, 5))));
+    logpheusRetryTimer = setTimeout(() => {
+        syncShopGoalsToLogpheus();
+    }, retryDelay);
+}
+
+function scheduleLogpheusCorsCooldown() {
+    const cooldownMs = 10 * 60 * 1000;
+    logpheusCorsBlockedUntil = Date.now() + cooldownMs;
+    clearTimeout(logpheusRetryTimer);
+    logpheusRetryTimer = setTimeout(() => {
+        logpheusCorsBlockedUntil = 0;
+        syncShopGoalsToLogpheus();
+    }, cooldownMs);
+}
+
+function sendLogpheusSyncRequest(goals, apiKey) {
+    return new Promise((resolve, reject) => {
+        const payload = {
+            type: 'LOGPHEUS_SYNC_GOALS',
+            endpoint: LOGPHEUS_GOALS_ENDPOINT,
+            method: 'PUT',
+            goals,
+            apiKey
+        };
+
+        let settled = false;
+        const finalizeResolve = (value) => {
+            if (settled) return;
+            settled = true;
+            resolve(value);
+        };
+        const finalizeReject = (error) => {
+            if (settled) return;
+            settled = true;
+            reject(error);
+        };
+
+        const callback = (response) => {
+            const lastError = browserAPI.runtime && browserAPI.runtime.lastError;
+            if (lastError) {
+                finalizeReject(new Error(lastError.message || 'Background request failed'));
+                return;
+            }
+
+            if (!response) {
+                finalizeReject(new Error('No response from background sync'));
+                return;
+            }
+
+            finalizeResolve(response);
+        };
+
+        try {
+            const maybePromise = browserAPI.runtime.sendMessage(payload, callback);
+            if (maybePromise && typeof maybePromise.then === 'function') {
+                maybePromise.then(finalizeResolve).catch(finalizeReject);
+            }
+        } catch (error) {
+            finalizeReject(error);
+        }
+    });
+}
+
+async function syncShopGoalsToLogpheus(force = false) {
+    if (!logpheusSyncEnabled) return;
+
+    if (!force && logpheusCorsBlockedUntil && Date.now() < logpheusCorsBlockedUntil) {
+        return;
+    }
+
+    if (logpheusSyncInFlight) {
+        logpheusSyncQueued = true;
+        return;
+    }
+
+    const wishlistRaw = localStorage.getItem('shop_wishlist') || '{}';
+    const goals = parseLogpheusGoalIds(wishlistRaw);
+    const signature = JSON.stringify(goals);
+
+    if (!force && signature === logpheusLastSyncedSignature) return;
+
+    const lastSharedSignature = localStorage.getItem(LOGPHEUS_LAST_SYNC_SIGNATURE_KEY);
+    const lastSharedSyncAt = parseInt(localStorage.getItem(LOGPHEUS_LAST_SYNC_AT_KEY) || '0', 10);
+    if (!force && lastSharedSignature === signature && Number.isFinite(lastSharedSyncAt) && Date.now() - lastSharedSyncAt < 5000) {
+        logpheusLastSyncedSignature = signature;
+        return;
+    }
+
+    const apiKey = await getApiKey();
+    if (!apiKey) {
+        scheduleLogpheusRetry();
+        return;
+    }
+
+    logpheusSyncInFlight = true;
+
+    try {
+        const result = await sendLogpheusSyncRequest(goals, apiKey);
+
+        if (!result.ok) {
+            const statusCode = Number(result.status || 0);
+            const isTransient = [408, 429, 500, 502, 503, 504].includes(statusCode);
+            const maybeCors = statusCode === 0;
+
+            if (maybeCors) {
+                if (!logpheusCorsWarned) {
+                    console.warn('Logpheus goal sync blocked by CORS/preflight on server. Waiting before retrying.');
+                    logpheusCorsWarned = true;
+                }
+                throw new Error('Logpheus sync CORS/preflight blocked (0)');
+            }
+
+            if (!isTransient) {
+                const payloadText = result.data ? JSON.stringify(result.data) : (result.raw || result.error || '');
+                throw new Error(`Logpheus sync failed (${statusCode}) ${payloadText}`.trim());
+            }
+            throw new Error(`Logpheus sync transient failure (${statusCode})`);
+        }
+
+        logpheusLastSyncedSignature = signature;
+        localStorage.setItem(LOGPHEUS_LAST_SYNC_SIGNATURE_KEY, signature);
+        localStorage.setItem(LOGPHEUS_LAST_SYNC_AT_KEY, String(Date.now()));
+        logpheusSyncFailureCount = 0;
+        logpheusCorsBlockedUntil = 0;
+        logpheusCorsWarned = false;
+        clearTimeout(logpheusRetryTimer);
+        logpheusRetryTimer = null;
+    } catch (error) {
+        logpheusSyncFailureCount += 1;
+        const message = (error?.message || String(error || '')).toLowerCase();
+        if (message.includes('cors/preflight blocked') || message.includes('(0)')) {
+            scheduleLogpheusCorsCooldown();
+        } else {
+            if (logpheusSyncFailureCount <= 3 || logpheusSyncFailureCount % 5 === 0) {
+                console.warn('Logpheus goal sync failed:', error?.message || error);
+            }
+            scheduleLogpheusRetry();
+        }
+    } finally {
+        logpheusSyncInFlight = false;
+        if (logpheusSyncQueued) {
+            logpheusSyncQueued = false;
+            queueLogpheusGoalsSync(200);
+        }
+    }
+}
+
+function setLogpheusSyncEnabled(enabled) {
+    logpheusSyncEnabled = !!enabled;
+
+    if (logpheusSyncEnabled) {
+        logpheusLastWishlistRaw = localStorage.getItem('shop_wishlist') || '{}';
+        startLogpheusSyncWatcher();
+        syncShopGoalsToLogpheus(true);
+        return;
+    }
+
+    resetLogpheusSyncTimers();
+    logpheusSyncInFlight = false;
+    logpheusSyncQueued = false;
+    logpheusSyncFailureCount = 0;
+    logpheusCorsBlockedUntil = 0;
+    logpheusCorsWarned = false;
+}
+
+function initLogpheusGoalsSync() {
+    browserAPI.storage.sync.get([LOGPHEUS_SYNC_ENABLED_KEY], (result) => {
+        setLogpheusSyncEnabled(!!result?.[LOGPHEUS_SYNC_ENABLED_KEY]);
+    });
+
+    browserAPI.storage.onChanged.addListener((changes, area) => {
+        if (area !== 'sync') return;
+        if (changes[LOGPHEUS_SYNC_ENABLED_KEY]) {
+            setLogpheusSyncEnabled(!!changes[LOGPHEUS_SYNC_ENABLED_KEY].newValue);
+        }
+    });
 }
 
 async function fetchProjectIdsFromPage() {
@@ -9463,6 +9712,7 @@ function syncDocsCodeThemeClass() {
 function init() {
     syncDocsCodeThemeClass();
     initLocalStorageSync();
+    initLogpheusGoalsSync();
     loadTheme();
     loadGithubApiKey();
     initCommandPaletteShortcut();

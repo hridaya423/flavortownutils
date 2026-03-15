@@ -102,6 +102,7 @@ const POPUP_THEMES = {
 };
 
 const LOCAL_STORAGE_SYNC_ENABLED_KEY = 'flavortownLocalStorageSyncEnabled';
+const LOGPHEUS_SYNC_ENABLED_KEY = 'flavortownLogpheusGoalSyncEnabled';
 const LOCAL_STORAGE_SYNC_KEY = 'flavortownLocalStorageSync';
 const LOCAL_STORAGE_IMPORT_KEY = 'flavortownLocalStorageImport';
 const COMMAND_PALETTE_SHORTCUT_KEY = 'flavortownCommandPaletteShortcut';
@@ -151,6 +152,7 @@ let currentTheme = 'default';
 let customColors = { ...DEFAULT_CUSTOM_COLORS };
 let catppuccinAccent = 'mauve';
 let localStorageSyncEnabled = false;
+let logpheusSyncEnabled = false;
 let commandPaletteShortcut = null;
 const isMac = /Mac|iPhone|iPad|iPod/i.test(navigator.platform || navigator.userAgent);
 const DEFAULT_COMMAND_PALETTE_SHORTCUT = isMac ? 'Cmd+K' : 'Ctrl+K';
@@ -167,6 +169,7 @@ async function loadSettings() {
         'customColors',
         'catppuccinAccent',
         LOCAL_STORAGE_SYNC_ENABLED_KEY,
+        LOGPHEUS_SYNC_ENABLED_KEY,
         COMMAND_PALETTE_SHORTCUT_KEY
     ]);
     currentTheme = result.theme || 'default';
@@ -175,6 +178,7 @@ async function loadSettings() {
         customColors = migrateCustomColors(result.customColors);
     }
     localStorageSyncEnabled = !!result[LOCAL_STORAGE_SYNC_ENABLED_KEY];
+    logpheusSyncEnabled = !!result[LOGPHEUS_SYNC_ENABLED_KEY];
     commandPaletteShortcut = normalizeShortcutString(result[COMMAND_PALETTE_SHORTCUT_KEY]) || DEFAULT_COMMAND_PALETTE_SHORTCUT;
 }
 
@@ -232,6 +236,15 @@ function setupEventListeners() {
         showStatus(localStorageSyncEnabled ? 'Auto-sync on' : 'Auto-sync off');
     });
 
+    const logpheusToggle = document.getElementById('logpheusSyncToggle');
+    logpheusToggle?.addEventListener('change', async (event) => {
+        logpheusSyncEnabled = event.target.checked;
+        await browserAPI.storage.sync.set({
+            [LOGPHEUS_SYNC_ENABLED_KEY]: logpheusSyncEnabled
+        });
+        showStatus(logpheusSyncEnabled ? 'Logpheus sync on' : 'Logpheus sync off');
+    });
+
     document.getElementById('exportBtn')?.addEventListener('click', exportData);
     document.getElementById('importFile')?.addEventListener('change', handleImportFile);
     document.getElementById('migrateSpicetownBtn')?.addEventListener('click', migrateSpicetownFromLocalStorage);
@@ -284,6 +297,11 @@ function updateSyncToggleUI() {
     const syncToggle = document.getElementById('autoSyncToggle');
     if (syncToggle) {
         syncToggle.checked = localStorageSyncEnabled;
+    }
+
+    const logpheusToggle = document.getElementById('logpheusSyncToggle');
+    if (logpheusToggle) {
+        logpheusToggle.checked = logpheusSyncEnabled;
     }
 }
 

@@ -101,6 +101,54 @@ browserAPI.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
         return true;
     }
+
+    if (message.type === 'LOGPHEUS_SYNC_GOALS') {
+        const endpoint = message.endpoint;
+        const goals = Array.isArray(message.goals) ? message.goals : [];
+        const apiKey = typeof message.apiKey === 'string' ? message.apiKey.trim() : '';
+        const method = typeof message.method === 'string' ? message.method.toUpperCase() : 'PUT';
+
+        if (!endpoint) {
+            sendResponse({ ok: false, status: 0, error: 'Missing endpoint' });
+            return false;
+        }
+
+        if (!apiKey) {
+            sendResponse({ ok: false, status: 0, error: 'Missing API key' });
+            return false;
+        }
+
+        fetch(endpoint, {
+            method,
+            headers: {
+                'Authorization': `Bearer ${apiKey}`,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ goals })
+        })
+            .then(async (response) => {
+                const text = await response.text().catch(() => '');
+                let data = null;
+                try {
+                    data = text ? JSON.parse(text) : null;
+                } catch (e) {
+                    data = null;
+                }
+
+                sendResponse({
+                    ok: response.ok,
+                    status: response.status,
+                    data,
+                    raw: data ? null : text
+                });
+            })
+            .catch((err) => {
+                sendResponse({ ok: false, status: 0, error: err?.message || 'Network error' });
+            });
+
+        return true;
+    }
 });
 
 function loadImageIntoShotsso(imageDataUrl, secondImageDataUrl) {
