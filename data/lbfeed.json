@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-16T09:40:24.217Z",
+  "lastUpdated": "2026-03-16T10:53:59.210Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -16231,6 +16231,14 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U08J9R1TUT1"
+      },
+      {
+        "ts": "2026-03-16T10:42:06.152Z",
+        "delta": -35,
+        "balance": 15,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U08J9R1TUT1"
       }
     ],
     "u08kphzt0n4": [
@@ -19832,6 +19840,46 @@
         "ts": "2026-03-13T11:05:50.366Z",
         "delta": 56,
         "balance": 67,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0914NPNKM2"
+      },
+      {
+        "ts": "2026-03-16T10:42:40.284Z",
+        "delta": 955,
+        "balance": 1022,
+        "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U0914NPNKM2"
+      },
+      {
+        "ts": "2026-03-16T10:44:56.624Z",
+        "delta": -44,
+        "balance": 978,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0914NPNKM2"
+      },
+      {
+        "ts": "2026-03-16T10:48:33.692Z",
+        "delta": -350,
+        "balance": 628,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0914NPNKM2"
+      },
+      {
+        "ts": "2026-03-16T10:50:13.141Z",
+        "delta": -396,
+        "balance": 232,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0914NPNKM2"
+      },
+      {
+        "ts": "2026-03-16T10:51:35.380Z",
+        "delta": -200,
+        "balance": 32,
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0914NPNKM2"
@@ -72007,6 +72055,12 @@
     ]
   },
   "users": {
+    "U0914NPNKM2": {
+      "id": "U0914NPNKM2",
+      "username": "dhruvinsarkar",
+      "displayName": "Dhruv",
+      "avatar": "https://secure.gravatar.com/avatar/a96b93e161e0b0c74c5913458a981a03.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0025-72.png"
+    },
     "U08J9R1TUT1": {
       "id": "U08J9R1TUT1",
       "username": "elias.lindholm2010",
@@ -72701,12 +72755,6 @@
       "id": "U09JBJ0FW0P",
       "username": "1401054",
       "avatar": "https://avatars.slack-edge.com/2025-12-25/10202085160225_56ccb81bba9610810f02_72.png"
-    },
-    "U0914NPNKM2": {
-      "id": "U0914NPNKM2",
-      "username": "dhruvinsarkar",
-      "displayName": "Dhruv",
-      "avatar": "https://secure.gravatar.com/avatar/a96b93e161e0b0c74c5913458a981a03.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0025-72.png"
     },
     "U0823L7CE83": {
       "id": "U0823L7CE83",
