@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-16T10:53:59.210Z",
+  "lastUpdated": "2026-03-16T11:48:45.298Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -19879,6 +19879,30 @@
       {
         "ts": "2026-03-16T10:51:35.380Z",
         "delta": -200,
+        "balance": 32,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0914NPNKM2"
+      },
+      {
+        "ts": "2026-03-16T11:40:31.794Z",
+        "delta": 44,
+        "balance": 76,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0914NPNKM2"
+      },
+      {
+        "ts": "2026-03-16T11:40:35.146Z",
+        "delta": 396,
+        "balance": 472,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0914NPNKM2"
+      },
+      {
+        "ts": "2026-03-16T11:40:53.541Z",
+        "delta": -440,
         "balance": 32,
         "reason": "shop purchase",
         "reasonType": "",
@@ -55491,6 +55515,14 @@
         "reason": "ship event payout",
         "reasonType": "",
         "userId": "U0A75AZ7ZJN"
+      },
+      {
+        "ts": "2026-03-16T11:20:53.531Z",
+        "delta": -1495,
+        "balance": 31,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A75AZ7ZJN"
       }
     ],
     "u0a760de2t0": [
@@ -72061,6 +72093,11 @@
       "displayName": "Dhruv",
       "avatar": "https://secure.gravatar.com/avatar/a96b93e161e0b0c74c5913458a981a03.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0025-72.png"
     },
+    "U0A75AZ7ZJN": {
+      "id": "U0A75AZ7ZJN",
+      "username": "seradedstripes",
+      "avatar": "https://secure.gravatar.com/avatar/ff46040875bd323e4078b8ba78c48257.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0014-72.png"
+    },
     "U08J9R1TUT1": {
       "id": "U08J9R1TUT1",
       "username": "elias.lindholm2010",
@@ -72199,11 +72236,6 @@
       "username": "bartoszkasyna",
       "displayName": "bartoszkasyna",
       "avatar": "https://secure.gravatar.com/avatar/41e990e4e09227cd048a746d176e1fee.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0024-72.png"
-    },
-    "U0A75AZ7ZJN": {
-      "id": "U0A75AZ7ZJN",
-      "username": "seradedstripes",
-      "avatar": "https://secure.gravatar.com/avatar/ff46040875bd323e4078b8ba78c48257.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0014-72.png"
     },
     "U0825SVHFJL": {
       "id": "U0825SVHFJL",
