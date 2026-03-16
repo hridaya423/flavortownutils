@@ -110,6 +110,7 @@ const EXPORT_VERSION = 1;
 const LOCAL_STORAGE_EXPORT_KEYS = [
     'flavortown_progress_mode',
     'flavortown_projection_mode',
+    'flavortown_projection_source',
     'shop_wishlist',
     'shop_wishlist_priorities',
     'shop_wishlist_order',

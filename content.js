@@ -144,6 +144,7 @@ const USERS_TOTAL_PAGES_CACHE_KEY = 'flavortown_users_total_pages';
 const LOCAL_STORAGE_SYNC_KEYS = [
     'flavortown_progress_mode',
     'flavortown_projection_mode',
+    'flavortown_projection_source',
     'shop_wishlist',
     'shop_wishlist_priorities',
     'shop_wishlist_order',
@@ -3521,6 +3522,64 @@ function getAggregateUnshippedStats() {
     });
 
     return { totalUnshippedMinutes, totalPaidMinutes, totalPaidCookies };
+}
+
+function getShopGoalProjectionStats(currentCookies) {
+    const { totalUnshippedMinutes, totalPaidMinutes, totalPaidCookies } = getAggregateUnshippedStats();
+
+    const averageRate = totalPaidMinutes > 0 ? totalPaidCookies / (totalPaidMinutes / 60) : null;
+    const hasAverageRate = Number.isFinite(averageRate) && averageRate > 0;
+
+    const averageProjectedCookies = hasAverageRate && totalUnshippedMinutes > 0
+        ? Math.round(currentCookies + (averageRate * (totalUnshippedMinutes / 60)))
+        : null;
+
+    const cache = readProjectUnshippedCache();
+    let projectExtraCookies = 0;
+    let projectMinutesCovered = 0;
+    let fallbackMinutes = 0;
+
+    Object.values(cache).forEach((entry) => {
+        if (!entry) return;
+        const unshippedMinutes = Math.max(0, Number(entry.unshippedMinutes) || 0);
+        if (unshippedMinutes <= 0) return;
+
+        const paidMinutes = Math.max(0, Number(entry.paidShipMinutes) || 0);
+        const paidCookies = Math.max(0, Number(entry.paidCookies) || 0);
+
+        if (paidMinutes > 0 && paidCookies > 0) {
+            const projectRate = paidCookies / (paidMinutes / 60);
+            if (Number.isFinite(projectRate) && projectRate > 0) {
+                projectExtraCookies += projectRate * (unshippedMinutes / 60);
+                projectMinutesCovered += unshippedMinutes;
+                return;
+            }
+        }
+
+        fallbackMinutes += unshippedMinutes;
+    });
+
+    if (fallbackMinutes > 0 && hasAverageRate) {
+        projectExtraCookies += averageRate * (fallbackMinutes / 60);
+        projectMinutesCovered += fallbackMinutes;
+    }
+
+    const hasProjectRate = projectMinutesCovered > 0 && Number.isFinite(projectExtraCookies) && projectExtraCookies >= 0;
+    const projectRate = hasProjectRate ? projectExtraCookies / (projectMinutesCovered / 60) : null;
+    const projectProjectedCookies = hasProjectRate
+        ? Math.round(currentCookies + projectExtraCookies)
+        : null;
+
+    return {
+        totalUnshippedMinutes,
+        averageRate: hasAverageRate ? averageRate : null,
+        averageProjectedCookies,
+        projectRate,
+        projectProjectedCookies,
+        projectFallbackMinutes: fallbackMinutes,
+        hasAverageProjection: Number.isFinite(averageProjectedCookies),
+        hasProjectProjection: Number.isFinite(projectProjectedCookies)
+    };
 }
 
 function getTotalDevlogMinutesFromDocument(doc) {
@@ -7371,16 +7430,19 @@ function enhanceShopGoals() {
         const balanceText = balanceBtn ? balanceBtn.textContent.trim() : '0';
         const currentCookies = parseInt(balanceText.replace(/[^0-9]/g, ''), 10) || 0;
 
-        const { totalUnshippedMinutes, totalPaidMinutes, totalPaidCookies } = getAggregateUnshippedStats();
-        const totalUnshippedHours = totalUnshippedMinutes / 60;
-        const efficiency = totalPaidMinutes > 0 ? totalPaidCookies / (totalPaidMinutes / 60) : null;
-        const projectedCookies = efficiency && totalUnshippedMinutes > 0
-            ? Math.round(currentCookies + (efficiency * totalUnshippedHours))
-            : null;
-        const hasProjectedData = projectedCookies !== null && isFinite(projectedCookies) && totalUnshippedMinutes > 0;
+        const projectionStats = getShopGoalProjectionStats(currentCookies);
+        const hasAverageProjection = !!projectionStats.hasAverageProjection;
+        const hasProjectProjection = !!projectionStats.hasProjectProjection;
+        const hasAnyProjection = hasAverageProjection || hasProjectProjection;
 
         let stackMode = localStorage.getItem('flavortown_progress_mode') || 'individual';
         let projectionMode = localStorage.getItem('flavortown_projection_mode') || 'actual';
+        let projectionSource = localStorage.getItem('flavortown_projection_source') || 'average';
+
+        if (projectionSource !== 'average' && projectionSource !== 'project') {
+            projectionSource = 'average';
+            localStorage.setItem('flavortown_projection_source', projectionSource);
+        }
 
         if (stackMode === 'projected') {
             stackMode = 'individual';
@@ -7389,13 +7451,34 @@ function enhanceShopGoals() {
             localStorage.setItem('flavortown_projection_mode', projectionMode);
         }
 
-        if (projectionMode === 'projected' && !hasProjectedData) {
+        if (projectionMode === 'projected' && !hasAnyProjection) {
             projectionMode = 'actual';
             localStorage.setItem('flavortown_projection_mode', projectionMode);
         }
 
+        if (projectionMode === 'projected') {
+            if (projectionSource === 'project' && !hasProjectProjection && hasAverageProjection) {
+                projectionSource = 'average';
+                localStorage.setItem('flavortown_projection_source', projectionSource);
+            } else if (projectionSource === 'average' && !hasAverageProjection && hasProjectProjection) {
+                projectionSource = 'project';
+                localStorage.setItem('flavortown_projection_source', projectionSource);
+            }
+        }
+
+        const selectedProjectedCookies = projectionSource === 'project'
+            ? projectionStats.projectProjectedCookies
+            : projectionStats.averageProjectedCookies;
+        const selectedProjectionRate = projectionSource === 'project'
+            ? projectionStats.projectRate
+            : projectionStats.averageRate;
+
+        const hasProjectedData = projectionMode === 'projected'
+            && selectedProjectedCookies !== null
+            && isFinite(selectedProjectedCookies);
+
         const effectiveCookies = projectionMode === 'projected' && hasProjectedData
-            ? projectedCookies
+            ? selectedProjectedCookies
             : currentCookies;
 
         const existingStats = document.querySelector('.flavortown-goals-enhanced');
@@ -7420,7 +7503,10 @@ function enhanceShopGoals() {
         const goals = Object.entries(wishlist).map(([id, g]) => ({ ...g, id, price: Math.ceil(g.price || 0) }));
         if (goals.length === 0) return;
 
-        const effectiveRate = efficiency && efficiency > 0 ? efficiency : 10;
+        const fallbackRate = projectionStats.averageRate && projectionStats.averageRate > 0 ? projectionStats.averageRate : 10;
+        const effectiveRate = projectionMode === 'projected' && hasProjectedData && selectedProjectionRate && selectedProjectionRate > 0
+            ? selectedProjectionRate
+            : fallbackRate;
 
         const goalsWithQty = goals.map(g => ({
             ...g,
@@ -7564,11 +7650,37 @@ function enhanceShopGoals() {
             </div>
         ` : '';
 
-        const progressLabel = projectionMode === 'projected' && hasProjectedData ? 'Projected' : 'Progress';
+        const progressLabel = projectionMode === 'projected' && hasProjectedData
+            ? (projectionSource === 'project' ? 'Projected (per project)' : 'Projected (avg)')
+            : 'Progress';
         const progressValue = projectionMode === 'projected' && hasProjectedData
             ? `🍪 ${effectiveCookies.toLocaleString()}/${totalCookiesNeeded.toLocaleString()}`
             : `🍪 ${currentCookies.toLocaleString()}/${totalCookiesNeeded.toLocaleString()}`;
-        const projectedToggleDisabled = hasProjectedData ? '' : 'disabled';
+        const projectedToggleDisabled = hasAnyProjection ? '' : 'disabled';
+        const projectionHintText = projectionSource === 'project'
+            ? (projectionStats.projectFallbackMinutes > 0
+                ? `Project-aware estimate. Avg fallback used for ${formatMinutesCompact(projectionStats.projectFallbackMinutes)}.`
+                : 'Project-aware estimate using per-project rates.')
+            : 'Single average rate across projects.';
+        const projectionHintTitle = projectionSource === 'project' && projectionStats.projectFallbackMinutes > 0
+            ? 'Some projects do not have enough paid-ship history yet, so their unpaid time uses your overall average rate.'
+            : '';
+
+        const projectionSourceToggleHtml = projectionMode === 'projected' ? `
+            <div class="flavortown-progress-toggle-wrapper flavortown-progress-toggle-wrapper--source">
+                <div class="flavortown-progress-toggle flavortown-progress-toggle--source">
+                    <button class="flavortown-progress-toggle__btn ${projectionSource === 'average' ? 'active' : ''}" data-kind="projection-source" data-mode="average" ${hasAverageProjection ? '' : 'disabled'}>
+                        Avg rate
+                    </button>
+                    <button class="flavortown-progress-toggle__btn ${projectionSource === 'project' ? 'active' : ''}" data-kind="projection-source" data-mode="project" ${hasProjectProjection ? '' : 'disabled'}>
+                        Per project
+                    </button>
+                </div>
+                <span class="flavortown-progress-toggle__hint" title="${projectionHintTitle}">
+                    ${projectionHintText}
+                </span>
+            </div>
+        ` : '';
 
         const projectionToggleHtml = `
             <div class="flavortown-progress-toggle">
@@ -7608,6 +7720,7 @@ function enhanceShopGoals() {
                     </div>
                 </div>
                 ${prioritySectionHtml}
+                ${projectionSourceToggleHtml}
                 <div class="flavortown-progress-toggle-wrapper">
                     <div class="flavortown-progress-toggle">
                         <button class="flavortown-progress-toggle__btn ${stackMode === 'cumulative' ? 'active' : ''}" data-kind="stack" data-mode="cumulative">
@@ -7759,6 +7872,8 @@ function enhanceShopGoals() {
             const kind = progressToggleBtn.dataset.kind || 'stack';
             if (kind === 'projection') {
                 localStorage.setItem('flavortown_projection_mode', newMode);
+            } else if (kind === 'projection-source') {
+                localStorage.setItem('flavortown_projection_source', newMode === 'project' ? 'project' : 'average');
             } else {
                 localStorage.setItem('flavortown_progress_mode', newMode);
             }
