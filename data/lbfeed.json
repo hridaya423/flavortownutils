@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-16T20:00:24.375Z",
+  "lastUpdated": "2026-03-16T20:52:16.995Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -51891,6 +51891,14 @@
         "reason": "ship event payout",
         "reasonType": "",
         "userId": "U0A71TWUM7D"
+      },
+      {
+        "ts": "2026-03-16T20:29:11.109Z",
+        "delta": -56,
+        "balance": 338,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A71TWUM7D"
       }
     ],
     "u0a72ejabaa": [
@@ -72307,6 +72315,32 @@
         "userId": "U0AJKN13NDS"
       }
     ],
+    "u0ajyfqdplp": [
+      {
+        "ts": "2026-03-16T20:10:25.330Z",
+        "delta": 5,
+        "balance": 5,
+        "reason": "Very Fried",
+        "reasonType": "achievement",
+        "userId": "U0AJYFQDPLP"
+      },
+      {
+        "ts": "2026-03-16T20:10:25.397Z",
+        "delta": 3,
+        "balance": 8,
+        "reason": "Home Cookin'",
+        "reasonType": "achievement",
+        "userId": "U0AJYFQDPLP"
+      },
+      {
+        "ts": "2026-03-16T20:10:25.427Z",
+        "delta": 2,
+        "balance": 10,
+        "reason": "Recipe Notes",
+        "reasonType": "achievement",
+        "userId": "U0AJYFQDPLP"
+      }
+    ],
     "u0ajyl7g1k2": [
       {
         "ts": "2026-03-13T02:56:15.077Z",
@@ -72599,6 +72633,18 @@
     ]
   },
   "users": {
+    "U0A71TWUM7D": {
+      "id": "U0A71TWUM7D",
+      "username": "nmsoukmandjiev007",
+      "displayName": "nmsoukmandjiev007",
+      "avatar": "https://secure.gravatar.com/avatar/895a326f79f3eb9b12e6a3f34bd23621.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0009-72.png"
+    },
+    "U0AJYFQDPLP": {
+      "id": "U0AJYFQDPLP",
+      "username": "tejasjoshi4598",
+      "displayName": "ChickenSlayer",
+      "avatar": "https://secure.gravatar.com/avatar/e091ac937b68ca5044359baabf8e27a7.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0007-72.png"
+    },
     "U08J9R1TUT1": {
       "id": "U08J9R1TUT1",
       "username": "elias.lindholm2010",
@@ -72774,12 +72820,6 @@
       "username": "captaintriton167",
       "displayName": "captaintriton167",
       "avatar": "https://secure.gravatar.com/avatar/27f4059aec8c333bef1e0b46c49ce6bd.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0014-72.png"
-    },
-    "U0A71TWUM7D": {
-      "id": "U0A71TWUM7D",
-      "username": "nmsoukmandjiev007",
-      "displayName": "nmsoukmandjiev007",
-      "avatar": "https://secure.gravatar.com/avatar/895a326f79f3eb9b12e6a3f34bd23621.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0009-72.png"
     },
     "U0A21RY9NTY": {
       "id": "U0A21RY9NTY",
