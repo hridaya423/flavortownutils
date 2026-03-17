@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-17T04:29:33.369Z",
+  "lastUpdated": "2026-03-17T05:44:00.497Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -15003,6 +15003,14 @@
         "reason": "Cooking",
         "reasonType": "achievement",
         "userId": "U08AT086H8E"
+      },
+      {
+        "ts": "2026-03-17T05:37:13.421Z",
+        "delta": 157,
+        "balance": 1654,
+        "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U08AT086H8E"
       }
     ],
     "u08b4gtklds": [
@@ -20216,6 +20224,14 @@
         "balance": 276,
         "reason": "Michelin Star",
         "reasonType": "achievement",
+        "userId": "U09197C6M2B"
+      },
+      {
+        "ts": "2026-03-17T05:22:18.351Z",
+        "delta": 362,
+        "balance": 638,
+        "reason": "ship event payout",
+        "reasonType": "",
         "userId": "U09197C6M2B"
       }
     ],
@@ -72779,6 +72795,17 @@
     ]
   },
   "users": {
+    "U08AT086H8E": {
+      "id": "U08AT086H8E",
+      "username": "itslukasreis",
+      "avatar": "https://avatars.slack-edge.com/2025-12-14/10132050312737_cb30475cd6a3f962c644_72.jpg"
+    },
+    "U09197C6M2B": {
+      "id": "U09197C6M2B",
+      "username": "eli.n992",
+      "displayName": "Eli Nelson",
+      "avatar": "https://avatars.slack-edge.com/2025-10-11/9709170507968_b8fafb0135a9e708a0fb_72.png"
+    },
     "U09DJMWTL07": {
       "id": "U09DJMWTL07",
       "username": "shreemahor5",
@@ -74722,11 +74749,6 @@
       "username": "umigame3456",
       "displayName": "umi",
       "avatar": "https://secure.gravatar.com/avatar/6605fd4240f0fba79ba216deb8cdc4bd.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0015-72.png"
-    },
-    "U08AT086H8E": {
-      "id": "U08AT086H8E",
-      "username": "itslukasreis",
-      "avatar": "https://avatars.slack-edge.com/2025-12-14/10132050312737_cb30475cd6a3f962c644_72.jpg"
     },
     "U0A4PL1DFUP": {
       "id": "U0A4PL1DFUP",
@@ -76717,12 +76739,6 @@
       "id": "U092DA495UY",
       "username": "grayson",
       "avatar": "https://avatars.slack-edge.com/2026-01-07/10251766558980_2e3ccf213cb2238f4d55_72.jpg"
-    },
-    "U09197C6M2B": {
-      "id": "U09197C6M2B",
-      "username": "eli.n992",
-      "displayName": "Eli Nelson",
-      "avatar": "https://avatars.slack-edge.com/2025-10-11/9709170507968_b8fafb0135a9e708a0fb_72.png"
     },
     "U08TRR1KEMD": {
       "id": "U08TRR1KEMD",
