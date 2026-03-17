@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-17T07:05:35.311Z",
+  "lastUpdated": "2026-03-17T08:06:53.203Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -14692,6 +14692,14 @@
         "ts": "2026-03-17T06:31:03.707Z",
         "delta": -520,
         "balance": 105,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U089QTPBYJ0"
+      },
+      {
+        "ts": "2026-03-17T07:21:24.829Z",
+        "delta": 520,
+        "balance": 625,
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U089QTPBYJ0"
@@ -39647,6 +39655,22 @@
       {
         "ts": "2026-03-12T04:28:21.208Z",
         "delta": 22,
+        "balance": 215,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A3U5X0QUE"
+      },
+      {
+        "ts": "2026-03-17T07:06:50.353Z",
+        "delta": -140,
+        "balance": 75,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A3U5X0QUE"
+      },
+      {
+        "ts": "2026-03-17T07:07:01.726Z",
+        "delta": 140,
         "balance": 215,
         "reason": "shop purchase",
         "reasonType": "",
@@ -72825,6 +72849,12 @@
       "displayName": "temidaradev",
       "avatar": "https://avatars.slack-edge.com/2025-07-03/9138406944899_8ff0acbf1e9dbedc50d2_72.jpg"
     },
+    "U0A3U5X0QUE": {
+      "id": "U0A3U5X0QUE",
+      "username": "begmetovrustambek",
+      "displayName": "Fish Jr.",
+      "avatar": "https://avatars.slack-edge.com/2026-01-22/10381259128640_eb99c53625608ef13dd8_72.png"
+    },
     "U0AF05FTK51": {
       "id": "U0AF05FTK51",
       "username": "apurnaray25",
@@ -73997,12 +74027,6 @@
       "id": "U0A0TB2ETAB",
       "username": "tejasmali",
       "avatar": "https://secure.gravatar.com/avatar/eac5774eaf2bf8783d6c7c07a0e97c6d.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0017-72.png"
-    },
-    "U0A3U5X0QUE": {
-      "id": "U0A3U5X0QUE",
-      "username": "begmetovrustambek",
-      "displayName": "Fish Jr.",
-      "avatar": "https://avatars.slack-edge.com/2026-01-22/10381259128640_eb99c53625608ef13dd8_72.png"
     },
     "U0A2K2WS709": {
       "id": "U0A2K2WS709",
