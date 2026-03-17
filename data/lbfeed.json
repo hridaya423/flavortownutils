@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-17T09:28:23.092Z",
+  "lastUpdated": "2026-03-17T10:27:34.357Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -39069,6 +39069,14 @@
         "reason": "Cooking",
         "reasonType": "achievement",
         "userId": "U0A3ASF212B"
+      },
+      {
+        "ts": "2026-03-17T10:24:35.830Z",
+        "delta": 126,
+        "balance": 298,
+        "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U0A3ASF212B"
       }
     ],
     "u0a3cr82y30": [
@@ -63099,6 +63107,38 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0A7YQ0KVKJ"
+      },
+      {
+        "ts": "2026-03-17T10:10:24.900Z",
+        "delta": 954,
+        "balance": 1034,
+        "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U0A7YQ0KVKJ"
+      },
+      {
+        "ts": "2026-03-17T10:17:58.238Z",
+        "delta": -350,
+        "balance": 684,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A7YQ0KVKJ"
+      },
+      {
+        "ts": "2026-03-17T10:18:07.189Z",
+        "delta": -350,
+        "balance": 334,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A7YQ0KVKJ"
+      },
+      {
+        "ts": "2026-03-17T10:18:15.413Z",
+        "delta": -105,
+        "balance": 229,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A7YQ0KVKJ"
       }
     ],
     "u0a7zecg8rl": [
@@ -70497,6 +70537,14 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0AAVSGH3HC"
+      },
+      {
+        "ts": "2026-03-17T09:36:29.299Z",
+        "delta": -40,
+        "balance": 31,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0AAVSGH3HC"
       }
     ],
     "u0ab4awmbk3": [
@@ -72885,6 +72933,23 @@
     ]
   },
   "users": {
+    "U0A3ASF212B": {
+      "id": "U0A3ASF212B",
+      "username": "secretaditzu78",
+      "avatar": "https://avatars.slack-edge.com/2026-01-05/10213206999143_b4517487a2e3a03c4e5a_72.jpg"
+    },
+    "U0A7YQ0KVKJ": {
+      "id": "U0A7YQ0KVKJ",
+      "username": "danjward8",
+      "displayName": "jam06452",
+      "avatar": "https://avatars.slack-edge.com/2026-02-03/10428401167669_923724959d03151f5ee3_72.jpg"
+    },
+    "U0AAVSGH3HC": {
+      "id": "U0AAVSGH3HC",
+      "username": "hackclub8",
+      "displayName": "46009361",
+      "avatar": "https://avatars.slack-edge.com/2026-01-29/10433002833120_f403f3da778a713c59df_72.png"
+    },
     "U08SS88NYMP": {
       "id": "U08SS88NYMP",
       "username": "zak",
@@ -73266,12 +73331,6 @@
       "displayName": "Simha Saraswati",
       "avatar": "https://avatars.slack-edge.com/2025-12-10/10122464508192_28489fd33a843ee78bc5_72.png"
     },
-    "U0AAVSGH3HC": {
-      "id": "U0AAVSGH3HC",
-      "username": "hackclub8",
-      "displayName": "46009361",
-      "avatar": "https://avatars.slack-edge.com/2026-01-29/10433002833120_f403f3da778a713c59df_72.png"
-    },
     "U091M21518T": {
       "id": "U091M21518T",
       "username": "amusoni240",
@@ -73380,12 +73439,6 @@
       "username": "ab.8192125",
       "displayName": "Aaron",
       "avatar": "https://avatars.slack-edge.com/2026-02-26/10597775637857_2df1535e17070c02d273_72.jpg"
-    },
-    "U0A7YQ0KVKJ": {
-      "id": "U0A7YQ0KVKJ",
-      "username": "danjward8",
-      "displayName": "jam06452",
-      "avatar": "https://avatars.slack-edge.com/2026-02-03/10428401167669_923724959d03151f5ee3_72.jpg"
     },
     "U0A50H47MT9": {
       "id": "U0A50H47MT9",
@@ -73691,11 +73744,6 @@
       "username": "hridayahoney",
       "displayName": "Hridya",
       "avatar": "https://secure.gravatar.com/avatar/5b54a7a1c2382dea03b98bd77e571f92.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0014-72.png"
-    },
-    "U0A3ASF212B": {
-      "id": "U0A3ASF212B",
-      "username": "secretaditzu78",
-      "avatar": "https://avatars.slack-edge.com/2026-01-05/10213206999143_b4517487a2e3a03c4e5a_72.jpg"
     },
     "U09G4M3NZNC": {
       "id": "U09G4M3NZNC",
