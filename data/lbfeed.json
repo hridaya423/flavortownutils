@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-17T23:00:17.245Z",
+  "lastUpdated": "2026-03-17T23:41:40.858Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -20433,6 +20433,14 @@
         "delta": 362,
         "balance": 638,
         "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U09197C6M2B"
+      },
+      {
+        "ts": "2026-03-17T23:14:50.411Z",
+        "delta": -240,
+        "balance": 398,
+        "reason": "shop purchase",
         "reasonType": "",
         "userId": "U09197C6M2B"
       }
@@ -73571,6 +73579,12 @@
     ]
   },
   "users": {
+    "U09197C6M2B": {
+      "id": "U09197C6M2B",
+      "username": "eli.n992",
+      "displayName": "Eli Nelson",
+      "avatar": "https://avatars.slack-edge.com/2025-10-11/9709170507968_b8fafb0135a9e708a0fb_72.png"
+    },
     "U0A779X1YDR": {
       "id": "U0A779X1YDR",
       "username": "thomasjedwards10",
@@ -73885,12 +73899,6 @@
       "id": "U08AT086H8E",
       "username": "itslukasreis",
       "avatar": "https://avatars.slack-edge.com/2025-12-14/10132050312737_cb30475cd6a3f962c644_72.jpg"
-    },
-    "U09197C6M2B": {
-      "id": "U09197C6M2B",
-      "username": "eli.n992",
-      "displayName": "Eli Nelson",
-      "avatar": "https://avatars.slack-edge.com/2025-10-11/9709170507968_b8fafb0135a9e708a0fb_72.png"
     },
     "U09DJMWTL07": {
       "id": "U09DJMWTL07",
