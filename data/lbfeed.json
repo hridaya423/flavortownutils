@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-17T05:44:00.497Z",
+  "lastUpdated": "2026-03-17T07:05:35.311Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -14677,6 +14677,22 @@
         "delta": -176,
         "balance": 32,
         "reason": "user grant",
+        "reasonType": "",
+        "userId": "U089QTPBYJ0"
+      },
+      {
+        "ts": "2026-03-17T05:44:12.044Z",
+        "delta": 593,
+        "balance": 625,
+        "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U089QTPBYJ0"
+      },
+      {
+        "ts": "2026-03-17T06:31:03.707Z",
+        "delta": -520,
+        "balance": 105,
+        "reason": "shop purchase",
         "reasonType": "",
         "userId": "U089QTPBYJ0"
       }
@@ -71687,6 +71703,14 @@
         "reason": "Michelin Star",
         "reasonType": "achievement",
         "userId": "U0AF05FTK51"
+      },
+      {
+        "ts": "2026-03-17T05:54:41.717Z",
+        "delta": -35,
+        "balance": 10,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0AF05FTK51"
       }
     ],
     "u0af45ldubc": [
@@ -72795,6 +72819,18 @@
     ]
   },
   "users": {
+    "U089QTPBYJ0": {
+      "id": "U089QTPBYJ0",
+      "username": "ahmet.affan.ebcioglu",
+      "displayName": "temidaradev",
+      "avatar": "https://avatars.slack-edge.com/2025-07-03/9138406944899_8ff0acbf1e9dbedc50d2_72.jpg"
+    },
+    "U0AF05FTK51": {
+      "id": "U0AF05FTK51",
+      "username": "apurnaray25",
+      "displayName": "apurnaray25",
+      "avatar": "https://avatars.slack-edge.com/2026-02-15/10520575279988_c2c19efcd216ac119b8f_72.jpg"
+    },
     "U08AT086H8E": {
       "id": "U08AT086H8E",
       "username": "itslukasreis",
@@ -73127,12 +73163,6 @@
       "username": "amronos",
       "displayName": "amronos",
       "avatar": "https://secure.gravatar.com/avatar/b3f22b118bb410f35402068ae2d47dc2.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0017-72.png"
-    },
-    "U0AF05FTK51": {
-      "id": "U0AF05FTK51",
-      "username": "apurnaray25",
-      "displayName": "apurnaray25",
-      "avatar": "https://avatars.slack-edge.com/2026-02-15/10520575279988_c2c19efcd216ac119b8f_72.jpg"
     },
     "U09TKL54J0P": {
       "id": "U09TKL54J0P",
@@ -74160,12 +74190,6 @@
       "username": "renudilip19",
       "displayName": "Anirudh",
       "avatar": "https://avatars.slack-edge.com/2026-03-05/10622782448583_218d50bcdd00aea5788a_72.jpg"
-    },
-    "U089QTPBYJ0": {
-      "id": "U089QTPBYJ0",
-      "username": "ahmet.affan.ebcioglu",
-      "displayName": "temidaradev",
-      "avatar": "https://avatars.slack-edge.com/2025-07-03/9138406944899_8ff0acbf1e9dbedc50d2_72.jpg"
     },
     "U091WRH4EQN": {
       "id": "U091WRH4EQN",
