@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-18T08:52:18.234Z",
+  "lastUpdated": "2026-03-18T09:56:09.306Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -10283,6 +10283,14 @@
         "delta": 2812,
         "balance": 3546,
         "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U0824382CPP"
+      },
+      {
+        "ts": "2026-03-18T09:19:09.361Z",
+        "delta": -118,
+        "balance": 3428,
+        "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0824382CPP"
       }
@@ -73773,6 +73781,12 @@
     ]
   },
   "users": {
+    "U0824382CPP": {
+      "id": "U0824382CPP",
+      "username": "toni512mail",
+      "displayName": "toni",
+      "avatar": "https://secure.gravatar.com/avatar/6a4085fbd11973fd296d2f4bfcbedc20.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0021-72.png"
+    },
     "U0842GMRJKC": {
       "id": "U0842GMRJKC",
       "username": "hridayahoney",
@@ -74345,12 +74359,6 @@
       "username": "miftasigma11",
       "displayName": "whysixmift",
       "avatar": "https://avatars.slack-edge.com/2025-11-09/9879376453652_eb6de39b96f87c9d5fbe_72.png"
-    },
-    "U0824382CPP": {
-      "id": "U0824382CPP",
-      "username": "toni512mail",
-      "displayName": "toni",
-      "avatar": "https://secure.gravatar.com/avatar/6a4085fbd11973fd296d2f4bfcbedc20.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0021-72.png"
     },
     "U0A3WSNS56Y": {
       "id": "U0A3WSNS56Y",
