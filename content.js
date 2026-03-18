@@ -66,6 +66,7 @@ const PAYOUT_GAMMA = 1.745427173;
 const PAYOUT_TICKETS_PER_DOLLAR = 5;
 const COMMUNITY_VOTES_SHIP_CUTOFF_ISO = '2026-02-23T20:41:00.000Z';
 const COMMUNITY_VOTES_SHIP_CUTOFF_TS = new Date(COMMUNITY_VOTES_SHIP_CUTOFF_ISO).getTime();
+const CURRENT_SCALE_ESTIMATE_MIN_VOTES = 12;
 const PERCENTILE_HILL_SHAPE = 1.08;
 const THEME_CACHE_KEY = 'flavortown-theme-cache';
 const THEME_PRELOAD_STYLE_ID = 'flavortown-theme-preload';
@@ -1112,10 +1113,8 @@ async function addShipStats() {
                 return;
             }
 
-            const exactEstimate = buildShipVoteEstimate(shipPost, null, shipTimestamp);
-            const exactRate = exactEstimate?.source === 'exact-votes' ? exactEstimate.multiplier : null;
             const avgRate = getAverageMultiplierFallback();
-            const estimatedRate = [multiplierValue, exactRate, paidRate, avgRate]
+            const estimatedRate = [multiplierValue, paidRate, avgRate]
                 .find(rate => rate && isFinite(rate) && rate > 0);
 
             if (!estimatedRate) {
@@ -1143,7 +1142,6 @@ async function addShipStats() {
 
                 footer.querySelectorAll('.flavortown-unpaid-ship-est').forEach(el => el.remove());
                 const usesFallbackAverage = !multiplierValue
-                    && !(exactRate && isFinite(exactRate) && exactRate > 0)
                     && !(paidRate && isFinite(paidRate) && paidRate > 0);
                 const estimateLabel = usesFallbackAverage ? 'Est payout (avg)' : 'Est payout';
                 const estimateItem = buildPayoutItem(estimateLabel, `~${estimatedCookies.toLocaleString()} cookies`);
@@ -2987,6 +2985,19 @@ function buildShipVoteEstimate(shipPost, multiplier, shipTimestamp) {
     if (!multiplier || !isFinite(multiplier)) return null;
     const legacy = buildVoteEstimate(multiplier);
     return legacy ? { ...legacy, source: 'legacy-multiplier', scaleMax: 6 } : null;
+}
+
+function hasReliableCurrentScaleEstimate(estimate, minVotes = CURRENT_SCALE_ESTIMATE_MIN_VOTES) {
+    if (!estimate || estimate.source !== 'exact-votes') return false;
+    const voteCount = Number(estimate.voteCount);
+    return Number.isFinite(voteCount) && voteCount >= minVotes;
+}
+
+function pickReliableCurrentScaleEstimate(...candidates) {
+    for (const candidate of candidates) {
+        if (hasReliableCurrentScaleEstimate(candidate)) return candidate;
+    }
+    return null;
 }
 
 function getShipPostTimestamp(shipPost) {
@@ -4876,6 +4887,26 @@ async function addProjectCardCookieStats() {
         if (existingDetails) existingDetails.remove();
         card.querySelectorAll('.flavortown-vote-estimate, .flavortown-vote-estimate-pill, .flavortown-vote-estimate-accordion').forEach(el => el.remove());
 
+        const existingMixedTip = card.querySelector('.flavortown-project-mixed-scale-tip');
+        if (existingMixedTip) existingMixedTip.remove();
+
+        if (estimateMeta.usesMixedCurrentOnly) {
+            const mixedTip = document.createElement('button');
+            mixedTip.type = 'button';
+            mixedTip.className = 'flavortown-project-mixed-scale-tip';
+            mixedTip.textContent = 'i';
+            mixedTip.setAttribute('aria-label', 'Current-scale stats info');
+            mixedTip.setAttribute('data-tooltip', 'Mixed voting scales detected. Showing stats from post-Feb-23 ships only for better accuracy.');
+            if (!card.querySelector('.flavortown-project-pin-btn')) {
+                mixedTip.classList.add('no-pin');
+            }
+            mixedTip.addEventListener('click', (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+            });
+            card.appendChild(mixedTip);
+        }
+
         const statsContainer = card.querySelector('.project-card__stats');
         if (!statsContainer) return;
 
@@ -4989,15 +5020,6 @@ async function addProjectCardCookieStats() {
                 detailsRow.appendChild(estimateResult.scorePill);
             }
 
-            if (estimateMeta.usesMixedCurrentOnly) {
-                const mixedInfo = document.createElement('h5');
-                mixedInfo.className = 'flavortown-project-mixed-scale-info';
-                mixedInfo.innerHTML = '<span aria-hidden="true">ℹ</span><span>Current-scale stats</span>';
-                mixedInfo.title = 'Mixed voting scales detected. Showing stats from post-Feb-23 ships only for better accuracy.';
-                applyDetailStyle(mixedInfo);
-                detailsRow.appendChild(mixedInfo);
-            }
-
             statsContainer.appendChild(detailsRow);
 
             if (estimateResult && estimateResult.accordion) {
@@ -5013,7 +5035,10 @@ async function addProjectCardCookieStats() {
         const projectPayouts = payouts.filter(payout => projectNameMatches(payout.projectName, projectName));
         const projectId = card.id ? card.id.replace('project_', '') : null;
         const cachedUnshipped = projectId ? getCachedProjectUnshipped(projectId) : null;
-        const cachedCurrentEstimate = cachedUnshipped?.currentScaleEstimate || cachedUnshipped?.exactSingleShipEstimate || null;
+        const cachedCurrentEstimate = pickReliableCurrentScaleEstimate(
+            cachedUnshipped?.currentScaleEstimate,
+            cachedUnshipped?.exactSingleShipEstimate
+        );
         const cachedEstimateMeta = {
             usesMixedCurrentOnly: !!cachedUnshipped?.usesMixedCurrentOnly,
             currentShipCount: Number(cachedUnshipped?.currentShipCount) || 0,
@@ -5033,7 +5058,10 @@ async function addProjectCardCookieStats() {
         if (totalCookies <= 0 && projectId) {
             fetchProjectUnshippedStats(projectId).then(stats => {
                 if (!stats) return;
-                const fetchedEstimate = stats.currentScaleEstimate || stats.exactSingleShipEstimate || null;
+                const fetchedEstimate = pickReliableCurrentScaleEstimate(
+                    stats.currentScaleEstimate,
+                    stats.exactSingleShipEstimate
+                );
                 const fetchedMeta = {
                     usesMixedCurrentOnly: !!stats.usesMixedCurrentOnly,
                     currentShipCount: Number(stats.currentShipCount) || 0,
@@ -5067,12 +5095,15 @@ async function addProjectCardCookieStats() {
             && (!cachedUnshipped
                 || cachedPaidMinutes === 0
                 || typeof cachedUnshipped.currentShipCount !== 'number'
-                || (cachedUnshipped.currentShipCount > 0 && !cachedUnshipped.currentScaleEstimate));
+                || (cachedUnshipped.currentShipCount > 0 && !hasReliableCurrentScaleEstimate(cachedUnshipped.currentScaleEstimate)));
 
         if (shouldRefreshFromProjectPage) {
             fetchProjectUnshippedStats(projectId).then(stats => {
                 if (!stats) return;
-                const fetchedEstimate = stats.currentScaleEstimate || stats.exactSingleShipEstimate || null;
+                const fetchedEstimate = pickReliableCurrentScaleEstimate(
+                    stats.currentScaleEstimate,
+                    stats.exactSingleShipEstimate
+                );
                 const fetchedMeta = {
                     usesMixedCurrentOnly: !!stats.usesMixedCurrentOnly,
                     currentShipCount: Number(stats.currentShipCount) || 0,
@@ -5150,7 +5181,9 @@ async function addProjectShowCookieStat(forceRefresh = false) {
     const payouts = await fetchShipPayouts();
     const shipPostsOnPage = Array.from(document.querySelectorAll('article.post--ship, .post--ship'));
     const projectVoteMeta = getCurrentScaleProjectEstimateFromShipPosts(shipPostsOnPage);
-    const currentScaleProjectEstimate = projectVoteMeta.currentScaleEstimate;
+    const currentScaleProjectEstimate = hasReliableCurrentScaleEstimate(projectVoteMeta.currentScaleEstimate)
+        ? projectVoteMeta.currentScaleEstimate
+        : null;
     const domPaidCookies = shipPostsOnPage.reduce((sum, shipPost) => {
         const footer = shipPost.querySelector('.post__payout-footer');
         const { cookiesValue } = getShipFooterPayoutMetrics(footer);

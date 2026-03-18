@@ -1070,11 +1070,6 @@
     font-weight: 600;
 }
 
-.flavortown-project-mixed-scale-info {
-    opacity: 0.85;
-    font-size: 0.9em;
-}
-
 .flavortown-vote-estimate-accordion {
     width: 100%;
     font-size: 0.85em;
@@ -1443,6 +1438,68 @@
     border-color: var(--color-accent, #ec8b33);
     color: #fff;
     opacity: 1;
+}
+
+.flavortown-project-mixed-scale-tip {
+    position: absolute;
+    top: 8px;
+    right: 44px;
+    z-index: 3;
+    border: 1px solid var(--color-accent, #ec8b33);
+    background: var(--color-accent, #ec8b33);
+    color: #fff;
+    width: 30px;
+    height: 30px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: default;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.18);
+    opacity: 1;
+    transition: transform 0.15s ease, opacity 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.flavortown-project-mixed-scale-tip.no-pin {
+    right: 8px;
+}
+
+.flavortown-project-mixed-scale-tip:hover,
+.flavortown-project-mixed-scale-tip:focus-visible {
+    transform: translateY(-1px);
+    opacity: 1;
+}
+
+.flavortown-project-mixed-scale-tip::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    min-width: 210px;
+    max-width: 240px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: var(--color-surface, #f7efe5);
+    border: 1px solid var(--color-border, #d7c5af);
+    color: var(--color-text-primary, #5d4e37);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.35;
+    white-space: normal;
+    opacity: 0;
+    transform: translateY(-2px);
+    pointer-events: none;
+    transition: opacity 0.14s ease, transform 0.14s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.16);
+}
+
+.flavortown-project-mixed-scale-tip:hover::after,
+.flavortown-project-mixed-scale-tip:focus-visible::after {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .project-card.flavortown-project-pinned {
