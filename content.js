@@ -10653,8 +10653,7 @@ async function enhanceKitchenDashboard() {
             dataPoints.push({ date: t.date, balance, reason: t.reason, amount: t.amount });
         });
 
-        const totalEarned = transactions.filter(t => t.amount > 0).reduce((sum, t) => sum + t.amount, 0);
-        const totalSpent = Math.abs(transactions.filter(t => t.amount < 0).reduce((sum, t) => sum + t.amount, 0));
+        const { totalEarned, totalSpent } = calculateSpendAndEarnTotals(transactions, 'amount');
 
         const statCards = dashboard.querySelector('#flavortownKitchenStatCards');
         if (statCards) {
@@ -16265,9 +16264,161 @@ function buildLeaderboardDataPoints(entries) {
     });
 }
 
+function normalizeBalanceReason(reason) {
+    if (!reason) return '';
+    return String(reason).trim().replace(/\s+/g, ' ').toLowerCase();
+}
+
+function getPairingLabelFromReason(reason) {
+    const normalizedReason = normalizeBalanceReason(reason);
+    if (!normalizedReason) {
+        return { normalizedReason: '', exactLabel: null, isDomainSpend: false, isGenericDomainRefund: false };
+    }
+
+    const rejectedOrderRefundMatch = normalizedReason.match(/^refund for rejected order of\s+(.+)$/i);
+    if (rejectedOrderRefundMatch?.[1]) {
+        return {
+            normalizedReason,
+            exactLabel: rejectedOrderRefundMatch[1].trim(),
+            isDomainSpend: false,
+            isGenericDomainRefund: false,
+        };
+    }
+
+    const domainGrantRefundMatch = normalizedReason.match(/^refund of domain grant(?:\s+(?:for|of)\s+(.+))?$/i);
+    if (domainGrantRefundMatch) {
+        const grantLabel = domainGrantRefundMatch[1]?.trim();
+        return {
+            normalizedReason,
+            exactLabel: grantLabel || null,
+            isDomainSpend: false,
+            isGenericDomainRefund: !grantLabel,
+        };
+    }
+
+    const shopOrderMatch = normalizedReason.match(/^shop order of\s+(.+)$/i);
+    if (shopOrderMatch?.[1]) {
+        const label = shopOrderMatch[1].trim();
+        return {
+            normalizedReason,
+            exactLabel: label,
+            isDomainSpend: /\bdomain\b/i.test(label),
+            isGenericDomainRefund: false,
+        };
+    }
+
+    const domainGrantSpendMatch = normalizedReason.match(/^domain grant(?:\s+(?:for|of)\s+(.+))?$/i);
+    if (domainGrantSpendMatch) {
+        const grantLabel = domainGrantSpendMatch[1]?.trim();
+        return {
+            normalizedReason,
+            exactLabel: grantLabel || null,
+            isDomainSpend: true,
+            isGenericDomainRefund: false,
+        };
+    }
+
+    return { normalizedReason, exactLabel: null, isDomainSpend: false, isGenericDomainRefund: false };
+}
+
+function getRejectedOrderRefundPairKey(reason, amount) {
+    if (!Number.isFinite(amount) || amount <= 0) return null;
+    const { exactLabel } = getPairingLabelFromReason(reason);
+    if (!exactLabel) return null;
+    return `${amount}::${exactLabel}`;
+}
+
+function getRejectedOrderSpendPairKey(reason, amount) {
+    if (!Number.isFinite(amount) || amount >= 0) return null;
+    const { exactLabel } = getPairingLabelFromReason(reason);
+    if (!exactLabel) return null;
+    return `${Math.abs(amount)}::${exactLabel}`;
+}
+
+function calculateSpendAndEarnTotals(entries, amountKey = 'amount') {
+    if (!Array.isArray(entries) || entries.length === 0) {
+        return { totalEarned: 0, totalSpent: 0 };
+    }
+
+    const refundCounts = new Map();
+    const spendCounts = new Map();
+    const domainSpendByAmount = new Map();
+    const genericDomainRefundByAmount = new Map();
+    const spendKeyMeta = new Map();
+    let totalEarned = 0;
+    let totalSpent = 0;
+
+    entries.forEach(entry => {
+        if (!entry || typeof entry !== 'object') return;
+        const amount = Number(entry[amountKey]);
+        if (!Number.isFinite(amount) || amount === 0) return;
+
+        if (amount > 0) {
+            totalEarned += amount;
+            const refundKey = getRejectedOrderRefundPairKey(entry.reason, amount);
+            if (refundKey) {
+                refundCounts.set(refundKey, (refundCounts.get(refundKey) || 0) + 1);
+            }
+            const { isGenericDomainRefund } = getPairingLabelFromReason(entry.reason);
+            if (isGenericDomainRefund) {
+                genericDomainRefundByAmount.set(amount, (genericDomainRefundByAmount.get(amount) || 0) + 1);
+            }
+            return;
+        }
+
+        totalSpent += Math.abs(amount);
+        const spendKey = getRejectedOrderSpendPairKey(entry.reason, amount);
+        if (spendKey) {
+            spendCounts.set(spendKey, (spendCounts.get(spendKey) || 0) + 1);
+            const { isDomainSpend } = getPairingLabelFromReason(entry.reason);
+            spendKeyMeta.set(spendKey, { isDomainSpend, amount: Math.abs(amount) });
+        }
+
+        const { isDomainSpend } = getPairingLabelFromReason(entry.reason);
+        if (isDomainSpend) {
+            const absAmount = Math.abs(amount);
+            domainSpendByAmount.set(absAmount, (domainSpendByAmount.get(absAmount) || 0) + 1);
+        }
+    });
+
+    let pairedAmount = 0;
+    refundCounts.forEach((refundCount, pairKey) => {
+        const spendCount = spendCounts.get(pairKey) || 0;
+        if (spendCount === 0) return;
+
+        const splitIndex = pairKey.indexOf('::');
+        const amountValue = Number(pairKey.slice(0, splitIndex));
+        if (!Number.isFinite(amountValue) || amountValue <= 0) return;
+
+        const matchedCount = Math.min(refundCount, spendCount);
+        pairedAmount += matchedCount * amountValue;
+
+        spendCounts.set(pairKey, spendCount - matchedCount);
+
+        const meta = spendKeyMeta.get(pairKey);
+        if (meta?.isDomainSpend) {
+            const remainingDomainSpend = domainSpendByAmount.get(meta.amount) || 0;
+            domainSpendByAmount.set(meta.amount, Math.max(0, remainingDomainSpend - matchedCount));
+        }
+    });
+
+    genericDomainRefundByAmount.forEach((refundCount, amountValue) => {
+        const domainSpendCount = domainSpendByAmount.get(amountValue) || 0;
+        if (domainSpendCount === 0) return;
+
+        const matchedCount = Math.min(refundCount, domainSpendCount);
+        pairedAmount += matchedCount * amountValue;
+        domainSpendByAmount.set(amountValue, Math.max(0, domainSpendCount - matchedCount));
+    });
+
+    return {
+        totalEarned: Math.max(0, totalEarned - pairedAmount),
+        totalSpent: Math.max(0, totalSpent - pairedAmount),
+    };
+}
+
 function getLeaderboardStats(entries) {
-    const totalEarned = entries.reduce((sum, entry) => sum + (entry.delta > 0 ? entry.delta : 0), 0);
-    const totalSpent = Math.abs(entries.reduce((sum, entry) => sum + (entry.delta < 0 ? entry.delta : 0), 0));
+    const { totalEarned, totalSpent } = calculateSpendAndEarnTotals(entries, 'delta');
     const netChange = entries.reduce((sum, entry) => sum + entry.delta, 0);
     const latestEntry = entries.length ? entries[entries.length - 1] : null;
     const recentReason = [...entries].reverse().find(entry => entry.reason);
