@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-18T11:47:02.278Z",
+  "lastUpdated": "2026-03-18T13:14:57.892Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -41459,6 +41459,22 @@
         "reason": "Hello, Kitchen!",
         "reasonType": "achievement",
         "userId": "U0A4TBWJR42"
+      },
+      {
+        "ts": "2026-03-18T12:07:43.813Z",
+        "delta": 1286,
+        "balance": 1672,
+        "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U0A4TBWJR42"
+      },
+      {
+        "ts": "2026-03-18T12:57:29.371Z",
+        "delta": -800,
+        "balance": 872,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A4TBWJR42"
       }
     ],
     "u0a4u73dyf7": [
@@ -73805,6 +73821,12 @@
     ]
   },
   "users": {
+    "U0A4TBWJR42": {
+      "id": "U0A4TBWJR42",
+      "username": "milo1004",
+      "displayName": "milo1004",
+      "avatar": "https://avatars.slack-edge.com/2025-12-22/10168640612229_e72fcb4aecb4d239fc90_72.png"
+    },
     "U0A75AZ7ZJN": {
       "id": "U0A75AZ7ZJN",
       "username": "seradedstripes",
@@ -76197,12 +76219,6 @@
       "username": "harshitgupta0618",
       "displayName": "Harshit Gupta",
       "avatar": "https://secure.gravatar.com/avatar/02cc0b34d93f74296389a23039ca809a.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0011-72.png"
-    },
-    "U0A4TBWJR42": {
-      "id": "U0A4TBWJR42",
-      "username": "milo1004",
-      "displayName": "milo1004",
-      "avatar": "https://avatars.slack-edge.com/2025-12-22/10168640612229_e72fcb4aecb4d239fc90_72.png"
     },
     "U09H4EDADB9": {
       "id": "U09H4EDADB9",
