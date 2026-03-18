@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-18T10:55:15.182Z",
+  "lastUpdated": "2026-03-18T11:47:02.278Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -56785,6 +56785,14 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0A75AZ7ZJN"
+      },
+      {
+        "ts": "2026-03-18T11:41:28.637Z",
+        "delta": 402,
+        "balance": 1928,
+        "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U0A75AZ7ZJN"
       }
     ],
     "u0a760de2t0": [
@@ -73797,6 +73805,11 @@
     ]
   },
   "users": {
+    "U0A75AZ7ZJN": {
+      "id": "U0A75AZ7ZJN",
+      "username": "seradedstripes",
+      "avatar": "https://secure.gravatar.com/avatar/ff46040875bd323e4078b8ba78c48257.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0014-72.png"
+    },
     "U0AKRK1GFQQ": {
       "id": "U0AKRK1GFQQ",
       "username": "jacobjraaff",
@@ -74097,11 +74110,6 @@
       "username": "ultraviolet.asdf",
       "displayName": "ultraviolet.asdf",
       "avatar": "https://avatars.slack-edge.com/2026-01-01/10213474322310_832c6c62bf9720bdf942_72.png"
-    },
-    "U0A75AZ7ZJN": {
-      "id": "U0A75AZ7ZJN",
-      "username": "seradedstripes",
-      "avatar": "https://secure.gravatar.com/avatar/ff46040875bd323e4078b8ba78c48257.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0014-72.png"
     },
     "U0A1NME3EJD": {
       "id": "U0A1NME3EJD",
