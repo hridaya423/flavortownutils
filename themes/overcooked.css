@@ -1421,10 +1421,39 @@ a:hover {
     border: 1px solid var(--overcooked-cyan) !important;
 }
 
+.shop-order__stock-indicator {
+    background-color: var(--overcooked-mid) !important;
+    color: var(--overcooked-kelp) !important;
+    border-color: var(--overcooked-kelp) !important;
+}
+
 .shop-order__stock-indicator--low {
     background-color: var(--overcooked-mid) !important;
     color: var(--overcooked-gold) !important;
     border-color: var(--overcooked-gold) !important;
+}
+
+.shop-order__no-phone-warning {
+    padding: 0.75em !important;
+    background: var(--overcooked-mid) !important;
+    border: 1px solid var(--overcooked-gold) !important;
+    border-radius: 8px !important;
+    text-align: center !important;
+    margin-top: 4rem !important;
+}
+
+.shop-order__no-phone-warning p {
+    color: var(--overcooked-gold) !important;
+    margin: 0 !important;
+}
+
+.shop-order__no-phone-warning p:first-child {
+    margin-bottom: 0.5em !important;
+    font-weight: 600 !important;
+}
+
+.shop-order__no-phone-warning p:last-child {
+    font-size: 0.875rem !important;
 }
 
 .shop-order__customs-warning {
