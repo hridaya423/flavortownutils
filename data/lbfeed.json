@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-19T11:57:44.107Z",
+  "lastUpdated": "2026-03-19T13:23:11.165Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -6211,6 +6211,22 @@
         "delta": 85,
         "balance": 2235,
         "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U07L45W79E1"
+      },
+      {
+        "ts": "2026-03-19T12:36:08.200Z",
+        "delta": 1,
+        "balance": 2236,
+        "reason": "user grant",
+        "reasonType": "",
+        "userId": "U07L45W79E1"
+      },
+      {
+        "ts": "2026-03-19T12:36:12.554Z",
+        "delta": -1,
+        "balance": 2235,
+        "reason": "user grant",
         "reasonType": "",
         "userId": "U07L45W79E1"
       }
@@ -27713,6 +27729,24 @@
         "userId": "U094FQCCF40"
       }
     ],
+    "u094gmttntx": [
+      {
+        "ts": "2026-03-19T12:15:12.634Z",
+        "delta": 5769,
+        "balance": 5769,
+        "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U094GMTTNTX"
+      },
+      {
+        "ts": "2026-03-19T12:26:22.087Z",
+        "delta": -3000,
+        "balance": 2769,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U094GMTTNTX"
+      }
+    ],
     "u094hhps5b8": [
       {
         "ts": "2026-02-13T11:05:12.269Z",
@@ -33881,6 +33915,14 @@
         "delta": 2,
         "balance": 7,
         "reason": "Hello, Kitchen!",
+        "reasonType": "achievement",
+        "userId": "U09FZUW9FQB"
+      },
+      {
+        "ts": "2026-03-19T13:20:32.058Z",
+        "delta": 5,
+        "balance": 12,
+        "reason": "Very Fried",
         "reasonType": "achievement",
         "userId": "U09FZUW9FQB"
       }
@@ -41419,6 +41461,14 @@
         "delta": 25,
         "balance": 684,
         "reason": "show and tell payout",
+        "reasonType": "",
+        "userId": "U0A4H78N1BR"
+      },
+      {
+        "ts": "2026-03-19T12:21:09.758Z",
+        "delta": -7,
+        "balance": 677,
+        "reason": "user grant",
         "reasonType": "",
         "userId": "U0A4H78N1BR"
       }
@@ -74501,6 +74551,28 @@
     ]
   },
   "users": {
+    "U09FZUW9FQB": {
+      "id": "U09FZUW9FQB",
+      "username": "airinazaria.h.putri",
+      "displayName": "Airin a",
+      "avatar": "https://secure.gravatar.com/avatar/445fed5ff0c7eb333bc487623900ef08.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0014-72.png"
+    },
+    "U07L45W79E1": {
+      "id": "U07L45W79E1",
+      "username": "neongamerbot",
+      "avatar": "https://avatars.slack-edge.com/2025-12-16/10136478432406_6ff234900c7c0fd00abd_72.png"
+    },
+    "U094GMTTNTX": {
+      "id": "U094GMTTNTX",
+      "username": "ildocdelfitness",
+      "displayName": "gue doc",
+      "avatar": "https://avatars.slack-edge.com/2025-07-06/9154009136834_13f3e8ded8a1b800fe92_72.png"
+    },
+    "U0A4H78N1BR": {
+      "id": "U0A4H78N1BR",
+      "username": "saksham.khatod27",
+      "avatar": "https://secure.gravatar.com/avatar/0cb4017c3f993cd8556a309315ec2352.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0014-72.png"
+    },
     "U0A1NME3EJD": {
       "id": "U0A1NME3EJD",
       "username": "nok",
@@ -74652,11 +74724,6 @@
       "username": "timslawncare.ok",
       "displayName": "Steve",
       "avatar": "https://avatars.slack-edge.com/2025-12-31/10227680231761_579bd70387c3d904bfb5_72.jpg"
-    },
-    "U0A4H78N1BR": {
-      "id": "U0A4H78N1BR",
-      "username": "saksham.khatod27",
-      "avatar": "https://secure.gravatar.com/avatar/0cb4017c3f993cd8556a309315ec2352.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0014-72.png"
     },
     "U0A0TB2ETAB": {
       "id": "U0A0TB2ETAB",
@@ -75855,11 +75922,6 @@
       "id": "U08D3AY7BG8",
       "username": "me1978",
       "avatar": "https://avatars.slack-edge.com/2026-01-13/10292071246820_9386a1b8c19f67927074_72.png"
-    },
-    "U07L45W79E1": {
-      "id": "U07L45W79E1",
-      "username": "neongamerbot",
-      "avatar": "https://avatars.slack-edge.com/2025-12-16/10136478432406_6ff234900c7c0fd00abd_72.png"
     },
     "U082L0UTJ66": {
       "id": "U082L0UTJ66",
@@ -78558,12 +78620,6 @@
       "id": "U08NYCWPRCG",
       "username": "powellcaleb09",
       "avatar": "https://secure.gravatar.com/avatar/ad47fed5a9c08f177cab3462aa952cb7.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0016-72.png"
-    },
-    "U09FZUW9FQB": {
-      "id": "U09FZUW9FQB",
-      "username": "airinazaria.h.putri",
-      "displayName": "Airin a",
-      "avatar": "https://secure.gravatar.com/avatar/445fed5ff0c7eb333bc487623900ef08.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0014-72.png"
     },
     "U0A9KE6Q0HM": {
       "id": "U0A9KE6Q0HM",
