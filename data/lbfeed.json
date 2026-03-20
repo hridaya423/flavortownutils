@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-20T07:49:47.617Z",
+  "lastUpdated": "2026-03-20T08:41:43.227Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -5722,6 +5722,38 @@
         "ts": "2026-03-20T07:14:46.426Z",
         "delta": -35,
         "balance": 1774,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U07ES48RES3"
+      },
+      {
+        "ts": "2026-03-20T08:11:25.369Z",
+        "delta": 35,
+        "balance": 1634,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U07ES48RES3"
+      },
+      {
+        "ts": "2026-03-20T08:11:25.373Z",
+        "delta": 175,
+        "balance": 1809,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U07ES48RES3"
+      },
+      {
+        "ts": "2026-03-20T08:11:44.161Z",
+        "delta": -35,
+        "balance": 1774,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U07ES48RES3"
+      },
+      {
+        "ts": "2026-03-20T08:11:44.332Z",
+        "delta": -175,
+        "balance": 1599,
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U07ES48RES3"
@@ -75625,6 +75657,12 @@
     ]
   },
   "users": {
+    "U07ES48RES3": {
+      "id": "U07ES48RES3",
+      "username": "renudilip19",
+      "displayName": "Anirudh",
+      "avatar": "https://avatars.slack-edge.com/2026-03-05/10622782448583_218d50bcdd00aea5788a_72.jpg"
+    },
     "U09HQH0PNEN": {
       "id": "U09HQH0PNEN",
       "username": "heyyitsmeaditya",
@@ -75636,12 +75674,6 @@
       "username": "ddemireser",
       "displayName": "ddemireser",
       "avatar": "https://secure.gravatar.com/avatar/10a7eb481ae1778f9e1c677808397b77.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0000-72.png"
-    },
-    "U07ES48RES3": {
-      "id": "U07ES48RES3",
-      "username": "renudilip19",
-      "displayName": "Anirudh",
-      "avatar": "https://avatars.slack-edge.com/2026-03-05/10622782448583_218d50bcdd00aea5788a_72.jpg"
     },
     "U090LAT6QKB": {
       "id": "U090LAT6QKB",
