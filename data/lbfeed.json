@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-20T04:25:30.020Z",
+  "lastUpdated": "2026-03-20T05:34:37.578Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -29257,6 +29257,62 @@
         "reason": "ship event payout",
         "reasonType": "",
         "userId": "U096RMRG03G"
+      },
+      {
+        "ts": "2026-03-20T04:32:29.494Z",
+        "delta": -350,
+        "balance": 1838,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U096RMRG03G"
+      },
+      {
+        "ts": "2026-03-20T04:32:52.177Z",
+        "delta": -350,
+        "balance": 1488,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U096RMRG03G"
+      },
+      {
+        "ts": "2026-03-20T04:33:16.858Z",
+        "delta": -350,
+        "balance": 1138,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U096RMRG03G"
+      },
+      {
+        "ts": "2026-03-20T04:33:31.775Z",
+        "delta": -350,
+        "balance": 788,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U096RMRG03G"
+      },
+      {
+        "ts": "2026-03-20T04:33:48.282Z",
+        "delta": -350,
+        "balance": 438,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U096RMRG03G"
+      },
+      {
+        "ts": "2026-03-20T04:34:03.731Z",
+        "delta": -350,
+        "balance": 88,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U096RMRG03G"
+      },
+      {
+        "ts": "2026-03-20T04:38:25.820Z",
+        "delta": -70,
+        "balance": 18,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U096RMRG03G"
       }
     ],
     "u096spfn951": [
@@ -37267,6 +37323,14 @@
         "delta": -85,
         "balance": 11,
         "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U09T6KV30KX"
+      },
+      {
+        "ts": "2026-03-20T05:11:47.600Z",
+        "delta": 3,
+        "balance": 14,
+        "reason": "ship event payout",
         "reasonType": "",
         "userId": "U09T6KV30KX"
       }
@@ -75423,6 +75487,18 @@
     ]
   },
   "users": {
+    "U09T6KV30KX": {
+      "id": "U09T6KV30KX",
+      "username": "aymane.berhoua",
+      "displayName": "Cotti",
+      "avatar": "https://avatars.slack-edge.com/2026-01-26/10382493833649_233155ce3f26335e1655_72.jpg"
+    },
+    "U096RMRG03G": {
+      "id": "U096RMRG03G",
+      "username": "coolcream",
+      "displayName": "Cool cream",
+      "avatar": "https://avatars.slack-edge.com/2026-01-14/10280240625063_9e2703ca34c8122db01a_72.png"
+    },
     "U07EB2Y76DP": {
       "id": "U07EB2Y76DP",
       "username": "bettatested",
@@ -75486,12 +75562,6 @@
       "username": "jiayangc1",
       "displayName": "Jiayang",
       "avatar": "https://avatars.slack-edge.com/2024-11-21/8081123181169_dd7576f1c7dae19bc8eb_72.png"
-    },
-    "U09T6KV30KX": {
-      "id": "U09T6KV30KX",
-      "username": "aymane.berhoua",
-      "displayName": "Cotti",
-      "avatar": "https://avatars.slack-edge.com/2026-01-26/10382493833649_233155ce3f26335e1655_72.jpg"
     },
     "U0AA527K2Q1": {
       "id": "U0AA527K2Q1",
@@ -76118,12 +76188,6 @@
       "id": "U0A6RDDRWKH",
       "username": "miraclecutelemon",
       "avatar": "https://secure.gravatar.com/avatar/2078817cd538e05d41b1ec6684cfe24e.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0004-72.png"
-    },
-    "U096RMRG03G": {
-      "id": "U096RMRG03G",
-      "username": "coolcream",
-      "displayName": "Cool cream",
-      "avatar": "https://avatars.slack-edge.com/2026-01-14/10280240625063_9e2703ca34c8122db01a_72.png"
     },
     "U09F62UUWDN": {
       "id": "U09F62UUWDN",
