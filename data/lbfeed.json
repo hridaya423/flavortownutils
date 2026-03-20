@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-20T15:10:38.892Z",
+  "lastUpdated": "2026-03-20T16:04:53.547Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -8672,6 +8672,14 @@
         "ts": "2026-03-20T14:10:18.081Z",
         "delta": -210,
         "balance": 437,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U07QC35DFV0"
+      },
+      {
+        "ts": "2026-03-20T15:27:37.294Z",
+        "delta": -176,
+        "balance": 261,
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U07QC35DFV0"
@@ -34617,6 +34625,22 @@
         "reason": "Line Cook",
         "reasonType": "achievement",
         "userId": "U09FZUW9FQB"
+      },
+      {
+        "ts": "2026-03-20T15:36:28.487Z",
+        "delta": 3,
+        "balance": 25,
+        "reason": "Order Up!",
+        "reasonType": "achievement",
+        "userId": "U09FZUW9FQB"
+      },
+      {
+        "ts": "2026-03-20T15:36:28.508Z",
+        "delta": 15,
+        "balance": 40,
+        "reason": "Cookbook Author",
+        "reasonType": "achievement",
+        "userId": "U09FZUW9FQB"
       }
     ],
     "u09g4m3nznc": [
@@ -42372,6 +42396,14 @@
         "ts": "2026-03-20T02:15:52.689Z",
         "delta": 50,
         "balance": 732,
+        "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U0A4H78N1BR"
+      },
+      {
+        "ts": "2026-03-20T15:15:19.362Z",
+        "delta": 222,
+        "balance": 954,
         "reason": "ship event payout",
         "reasonType": "",
         "userId": "U0A4H78N1BR"
@@ -58990,6 +59022,22 @@
         "balance": 0,
         "reason": "shop purchase",
         "reasonType": "",
+        "userId": "U0A78CT01A6"
+      },
+      {
+        "ts": "2026-03-20T15:25:58.051Z",
+        "delta": 3,
+        "balance": 3,
+        "reason": "Order Up!",
+        "reasonType": "achievement",
+        "userId": "U0A78CT01A6"
+      },
+      {
+        "ts": "2026-03-20T15:25:58.064Z",
+        "delta": 3,
+        "balance": 6,
+        "reason": "Michelin Star",
+        "reasonType": "achievement",
         "userId": "U0A78CT01A6"
       }
     ],
@@ -75855,6 +75903,29 @@
     ]
   },
   "users": {
+    "U09FZUW9FQB": {
+      "id": "U09FZUW9FQB",
+      "username": "airinazaria.h.putri",
+      "displayName": "Airin a",
+      "avatar": "https://secure.gravatar.com/avatar/445fed5ff0c7eb333bc487623900ef08.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0014-72.png"
+    },
+    "U07QC35DFV0": {
+      "id": "U07QC35DFV0",
+      "username": "priyanshuverma",
+      "displayName": "Pz",
+      "avatar": "https://avatars.slack-edge.com/2025-12-31/10240195089968_6e6e5a2a1b92e77489e6_72.jpg"
+    },
+    "U0A78CT01A6": {
+      "id": "U0A78CT01A6",
+      "username": "sanjeevirajanramajaya",
+      "displayName": "sanjeevirajanramajaya",
+      "avatar": "https://secure.gravatar.com/avatar/8ea085ad6342f0bf912390d29e6d22b6.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0023-72.png"
+    },
+    "U0A4H78N1BR": {
+      "id": "U0A4H78N1BR",
+      "username": "saksham.khatod27",
+      "avatar": "https://secure.gravatar.com/avatar/0cb4017c3f993cd8556a309315ec2352.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0014-72.png"
+    },
     "U087X4AG35K": {
       "id": "U087X4AG35K",
       "username": "garygreg2011",
@@ -75864,12 +75935,6 @@
       "id": "U0616280E6P",
       "username": "aram",
       "avatar": "https://avatars.slack-edge.com/2026-01-20/10335517998837_4aceb7340b2e2dc9c883_72.png"
-    },
-    "U07QC35DFV0": {
-      "id": "U07QC35DFV0",
-      "username": "priyanshuverma",
-      "displayName": "Pz",
-      "avatar": "https://avatars.slack-edge.com/2025-12-31/10240195089968_6e6e5a2a1b92e77489e6_72.jpg"
     },
     "U0A7BF4MB0A": {
       "id": "U0A7BF4MB0A",
@@ -75993,11 +76058,6 @@
       "username": "bettatested",
       "displayName": "fsh",
       "avatar": "https://avatars.slack-edge.com/2026-03-03/10614155190197_85728863f026bc5ca3b5_72.png"
-    },
-    "U0A4H78N1BR": {
-      "id": "U0A4H78N1BR",
-      "username": "saksham.khatod27",
-      "avatar": "https://secure.gravatar.com/avatar/0cb4017c3f993cd8556a309315ec2352.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0014-72.png"
     },
     "U0ADCR7FSP4": {
       "id": "U0ADCR7FSP4",
@@ -76316,12 +76376,6 @@
       "username": "rojenchakradhar72",
       "displayName": "Rojen Chakradhar",
       "avatar": "https://avatars.slack-edge.com/2025-08-19/9368585555539_0c7e38edb2910b198132_72.png"
-    },
-    "U09FZUW9FQB": {
-      "id": "U09FZUW9FQB",
-      "username": "airinazaria.h.putri",
-      "displayName": "Airin a",
-      "avatar": "https://secure.gravatar.com/avatar/445fed5ff0c7eb333bc487623900ef08.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0014-72.png"
     },
     "U07950S3GMC": {
       "id": "U07950S3GMC",
@@ -77353,12 +77407,6 @@
       "username": "keyboard1000n17",
       "displayName": "Keyboard1000n17",
       "avatar": "https://avatars.slack-edge.com/2025-06-19/9099193859040_baec610ae81aa3acc9f9_72.jpg"
-    },
-    "U0A78CT01A6": {
-      "id": "U0A78CT01A6",
-      "username": "sanjeevirajanramajaya",
-      "displayName": "sanjeevirajanramajaya",
-      "avatar": "https://secure.gravatar.com/avatar/8ea085ad6342f0bf912390d29e6d22b6.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0023-72.png"
     },
     "U0A7Q0H63C2": {
       "id": "U0A7Q0H63C2",
