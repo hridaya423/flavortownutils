@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-20T09:42:11.230Z",
+  "lastUpdated": "2026-03-20T10:38:56.825Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -23867,6 +23867,14 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U091NS83K98"
+      },
+      {
+        "ts": "2026-03-20T10:09:57.402Z",
+        "delta": 6,
+        "balance": 152,
+        "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U091NS83K98"
       }
     ],
     "u091p2h4zhr": [
@@ -30031,6 +30039,16 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U097N0AKR6Z"
+      }
+    ],
+    "u097njclanp": [
+      {
+        "ts": "2026-03-20T10:33:54.186Z",
+        "delta": 3,
+        "balance": 16,
+        "reason": "Michelin Star",
+        "reasonType": "achievement",
+        "userId": "U097NJCLANP"
       }
     ],
     "u097suckj90": [
@@ -75683,6 +75701,18 @@
     ]
   },
   "users": {
+    "U097NJCLANP": {
+      "id": "U097NJCLANP",
+      "username": "zainabbasraza0",
+      "displayName": "Zain",
+      "avatar": "https://secure.gravatar.com/avatar/e525d8a8c310f61345f827cdfe3dfc9a.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0003-72.png"
+    },
+    "U091NS83K98": {
+      "id": "U091NS83K98",
+      "username": "sakshamgoel1107",
+      "displayName": "SAKSHAM GOEL",
+      "avatar": "https://avatars.slack-edge.com/2025-06-16/9049936028595_5d70b459518dc7a8ba6e_72.png"
+    },
     "U0A6DSNSV7A": {
       "id": "U0A6DSNSV7A",
       "username": "ddemireser",
@@ -76158,12 +76188,6 @@
       "username": "izan",
       "displayName": "eth0",
       "avatar": "https://avatars.slack-edge.com/2026-02-20/10535766619703_0ea03bf74f6a02d6ba5c_72.jpg"
-    },
-    "U091NS83K98": {
-      "id": "U091NS83K98",
-      "username": "sakshamgoel1107",
-      "displayName": "SAKSHAM GOEL",
-      "avatar": "https://avatars.slack-edge.com/2025-06-16/9049936028595_5d70b459518dc7a8ba6e_72.png"
     },
     "U06MC0G7A4R": {
       "id": "U06MC0G7A4R",
