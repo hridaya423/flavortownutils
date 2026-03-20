@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-20T22:58:27.125Z",
+  "lastUpdated": "2026-03-20T23:37:23.269Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -3415,6 +3415,14 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U074LUX88PJ"
+      },
+      {
+        "ts": "2026-03-20T23:10:43.535Z",
+        "delta": -60,
+        "balance": 2,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U074LUX88PJ"
       }
     ],
     "u078a01glb0": [
@@ -3630,6 +3638,14 @@
         "balance": 1361,
         "reason": "Cooking",
         "reasonType": "achievement",
+        "userId": "U078G7DML8P"
+      },
+      {
+        "ts": "2026-03-20T23:00:39.824Z",
+        "delta": -119,
+        "balance": 1242,
+        "reason": "shop purchase",
+        "reasonType": "",
         "userId": "U078G7DML8P"
       }
     ],
@@ -76509,6 +76525,18 @@
     ]
   },
   "users": {
+    "U074LUX88PJ": {
+      "id": "U074LUX88PJ",
+      "username": "makstmguzun",
+      "displayName": "Noname",
+      "avatar": "https://avatars.slack-edge.com/2026-03-09/10657621289538_c94b5f67d0fb13e8bf4e_72.jpg"
+    },
+    "U078G7DML8P": {
+      "id": "U078G7DML8P",
+      "username": "trey.manutes",
+      "displayName": "Trey",
+      "avatar": "https://secure.gravatar.com/avatar/b9040021914f3127b29b1acc93efeeca.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0003-72.png"
+    },
     "U092F9A8VMY": {
       "id": "U092F9A8VMY",
       "username": "foodegypt68",
@@ -76536,12 +76564,6 @@
       "username": "sanderhoudijk10",
       "displayName": "Sander",
       "avatar": "https://avatars.slack-edge.com/2026-03-02/10614646956130_e05d9ed698a6ad5d385f_72.jpg"
-    },
-    "U074LUX88PJ": {
-      "id": "U074LUX88PJ",
-      "username": "makstmguzun",
-      "displayName": "Noname",
-      "avatar": "https://avatars.slack-edge.com/2026-03-09/10657621289538_c94b5f67d0fb13e8bf4e_72.jpg"
     },
     "U084D1T5ZV0": {
       "id": "U084D1T5ZV0",
@@ -76710,12 +76732,6 @@
       "username": "axel2",
       "displayName": "ItsAxel",
       "avatar": "https://avatars.slack-edge.com/2026-01-13/10286155225862_d6618e55219ed1955329_72.webp"
-    },
-    "U078G7DML8P": {
-      "id": "U078G7DML8P",
-      "username": "trey.manutes",
-      "displayName": "Trey",
-      "avatar": "https://secure.gravatar.com/avatar/b9040021914f3127b29b1acc93efeeca.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0003-72.png"
     },
     "U0A6U1V879V": {
       "id": "U0A6U1V879V",
