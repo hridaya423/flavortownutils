@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-21T21:26:30.524Z",
+  "lastUpdated": "2026-03-21T21:48:47.846Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -60605,6 +60605,16 @@
         "userId": "U0A7E30ACEQ"
       }
     ],
+    "u0a7ebgqevd": [
+      {
+        "ts": "2026-03-21T21:34:51.310Z",
+        "delta": -5,
+        "balance": 7,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A7EBGQEVD"
+      }
+    ],
     "u0a7eclu570": [
       {
         "ts": "2026-01-08T13:58:54.864Z",
@@ -77049,6 +77059,12 @@
     ]
   },
   "users": {
+    "U0A7EBGQEVD": {
+      "id": "U0A7EBGQEVD",
+      "username": "diegogs2305",
+      "displayName": "diegogs2305",
+      "avatar": "https://secure.gravatar.com/avatar/16be7eef74d6bdbca7eefa37fcde8c91.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0020-72.png"
+    },
     "U0A4YTQVCCE": {
       "id": "U0A4YTQVCCE",
       "username": "armand.hulin23",
