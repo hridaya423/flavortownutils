@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-21T13:42:45.437Z",
+  "lastUpdated": "2026-03-21T14:28:15.144Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -27463,6 +27463,22 @@
         "reason": "ship event payout",
         "reasonType": "",
         "userId": "U092STH5TAL"
+      },
+      {
+        "ts": "2026-03-21T14:18:25.433Z",
+        "delta": 3,
+        "balance": 1187,
+        "reason": "Order Up!",
+        "reasonType": "achievement",
+        "userId": "U092STH5TAL"
+      },
+      {
+        "ts": "2026-03-21T14:18:25.437Z",
+        "delta": 3,
+        "balance": 1190,
+        "reason": "Michelin Star",
+        "reasonType": "achievement",
+        "userId": "U092STH5TAL"
       }
     ],
     "u092tll6zh6": [
@@ -35015,6 +35031,14 @@
         "delta": 8,
         "balance": 26,
         "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U09F62UUWDN"
+      },
+      {
+        "ts": "2026-03-21T14:22:34.220Z",
+        "delta": -25,
+        "balance": 1,
+        "reason": "shop purchase",
         "reasonType": "",
         "userId": "U09F62UUWDN"
       }
@@ -76869,6 +76893,18 @@
     ]
   },
   "users": {
+    "U09F62UUWDN": {
+      "id": "U09F62UUWDN",
+      "username": "lucy.edwards.dcs",
+      "displayName": "Henrique Da Silva",
+      "avatar": "https://avatars.slack-edge.com/2025-10-30/9809167873410_e46a651f629238feffba_72.png"
+    },
+    "U092STH5TAL": {
+      "id": "U092STH5TAL",
+      "username": "nguyensynguyen7856",
+      "displayName": "Brandon",
+      "avatar": "https://avatars.slack-edge.com/2026-01-03/10237425021265_537f629429cea20dd123_72.png"
+    },
     "U08J9R1TUT1": {
       "id": "U08J9R1TUT1",
       "username": "elias.lindholm2010",
@@ -77558,12 +77594,6 @@
       "displayName": "lolodotzip",
       "avatar": "https://avatars.slack-edge.com/2026-01-18/10319340088386_39a558046f8ecfb9e124_72.jpg"
     },
-    "U092STH5TAL": {
-      "id": "U092STH5TAL",
-      "username": "nguyensynguyen7856",
-      "displayName": "Brandon",
-      "avatar": "https://avatars.slack-edge.com/2026-01-03/10237425021265_537f629429cea20dd123_72.png"
-    },
     "U0847KFMUSC": {
       "id": "U0847KFMUSC",
       "username": "dwait.pandhi",
@@ -77862,12 +77892,6 @@
       "id": "U0A6RDDRWKH",
       "username": "miraclecutelemon",
       "avatar": "https://secure.gravatar.com/avatar/2078817cd538e05d41b1ec6684cfe24e.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0004-72.png"
-    },
-    "U09F62UUWDN": {
-      "id": "U09F62UUWDN",
-      "username": "lucy.edwards.dcs",
-      "displayName": "Henrique Da Silva",
-      "avatar": "https://avatars.slack-edge.com/2025-10-30/9809167873410_e46a651f629238feffba_72.png"
     },
     "U0A779X1YDR": {
       "id": "U0A779X1YDR",
