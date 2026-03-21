@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-21T18:37:45.511Z",
+  "lastUpdated": "2026-03-21T19:25:20.144Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -4765,6 +4765,14 @@
         "delta": 10,
         "balance": 948,
         "reason": "Line Cook",
+        "reasonType": "achievement",
+        "userId": "U07A10XBMGQ"
+      },
+      {
+        "ts": "2026-03-21T18:59:55.568Z",
+        "delta": 5,
+        "balance": 953,
+        "reason": "Cooking",
         "reasonType": "achievement",
         "userId": "U07A10XBMGQ"
       }
@@ -77017,6 +77025,11 @@
     ]
   },
   "users": {
+    "U07A10XBMGQ": {
+      "id": "U07A10XBMGQ",
+      "username": "devcmb",
+      "avatar": "https://avatars.slack-edge.com/2024-06-23/7315572905317_9c11d9d2de7e23a1f5b1_72.png"
+    },
     "U0918MSQ7E3": {
       "id": "U0918MSQ7E3",
       "username": "duyduy15456",
@@ -79443,11 +79456,6 @@
       "username": "jaw.inbox10",
       "displayName": "jaw.inbox10",
       "avatar": "https://secure.gravatar.com/avatar/f1d3380fd663aff4f394a2b2a9a13d14.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0017-72.png"
-    },
-    "U07A10XBMGQ": {
-      "id": "U07A10XBMGQ",
-      "username": "devcmb",
-      "avatar": "https://avatars.slack-edge.com/2024-06-23/7315572905317_9c11d9d2de7e23a1f5b1_72.png"
     },
     "U0A54C206BX": {
       "id": "U0A54C206BX",
