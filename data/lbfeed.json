@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-21T22:51:21.466Z",
+  "lastUpdated": "2026-03-21T23:26:23.244Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -2784,6 +2784,14 @@
         "balance": 20,
         "reason": "Cookbook Author",
         "reasonType": "achievement",
+        "userId": "U0666VATMT5"
+      },
+      {
+        "ts": "2026-03-21T23:24:19.916Z",
+        "delta": 256,
+        "balance": 276,
+        "reason": "ship event payout",
+        "reasonType": "",
         "userId": "U0666VATMT5"
       }
     ],
@@ -18436,6 +18444,14 @@
         "balance": 49,
         "reason": "payout",
         "reasonType": "payout",
+        "userId": "U08S00249M3"
+      },
+      {
+        "ts": "2026-03-21T23:10:08.079Z",
+        "delta": -35,
+        "balance": 14,
+        "reason": "shop purchase",
+        "reasonType": "",
         "userId": "U08S00249M3"
       }
     ],
@@ -77107,6 +77123,18 @@
     ]
   },
   "users": {
+    "U0666VATMT5": {
+      "id": "U0666VATMT5",
+      "username": "saif",
+      "displayName": "Saif (A8K)",
+      "avatar": "https://avatars.slack-edge.com/2025-04-04/8718809197329_286f155c27b6ce1c9cb2_72.jpg"
+    },
+    "U08S00249M3": {
+      "id": "U08S00249M3",
+      "username": "kendell.r",
+      "displayName": "Kendell",
+      "avatar": "https://avatars.slack-edge.com/2026-02-11/10490175786725_5e57344e2bc0b04cb5bf_72.png"
+    },
     "U0A5EMEKU3Z": {
       "id": "U0A5EMEKU3Z",
       "username": "vishalya18",
@@ -79603,12 +79631,6 @@
       "displayName": "provaridita",
       "avatar": "https://avatars.slack-edge.com/2026-03-01/10604462261910_7a37ae6ff80efeab5e58_72.jpg"
     },
-    "U0666VATMT5": {
-      "id": "U0666VATMT5",
-      "username": "saif",
-      "displayName": "Saif (A8K)",
-      "avatar": "https://avatars.slack-edge.com/2025-04-04/8718809197329_286f155c27b6ce1c9cb2_72.jpg"
-    },
     "U091Q3TGSS0": {
       "id": "U091Q3TGSS0",
       "username": "ivo.theis",
@@ -79871,12 +79893,6 @@
       "username": "jayssarch",
       "displayName": "jayssarch",
       "avatar": "https://avatars.slack-edge.com/2026-01-12/10279435215202_ea7083b405c835e89aee_72.jpg"
-    },
-    "U08S00249M3": {
-      "id": "U08S00249M3",
-      "username": "kendell.r",
-      "displayName": "Kendell",
-      "avatar": "https://avatars.slack-edge.com/2026-02-11/10490175786725_5e57344e2bc0b04cb5bf_72.png"
     },
     "U0ACQTB5ZDK": {
       "id": "U0ACQTB5ZDK",
