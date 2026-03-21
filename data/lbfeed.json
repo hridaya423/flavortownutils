@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-21T23:26:23.244Z",
+  "lastUpdated": "2026-03-21T23:49:11.987Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -2791,6 +2791,46 @@
         "delta": 256,
         "balance": 276,
         "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U0666VATMT5"
+      },
+      {
+        "ts": "2026-03-21T23:43:29.622Z",
+        "delta": -35,
+        "balance": 241,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0666VATMT5"
+      },
+      {
+        "ts": "2026-03-21T23:44:25.657Z",
+        "delta": -35,
+        "balance": 206,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0666VATMT5"
+      },
+      {
+        "ts": "2026-03-21T23:44:47.469Z",
+        "delta": -35,
+        "balance": 171,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0666VATMT5"
+      },
+      {
+        "ts": "2026-03-21T23:44:51.117Z",
+        "delta": -35,
+        "balance": 136,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0666VATMT5"
+      },
+      {
+        "ts": "2026-03-21T23:44:53.686Z",
+        "delta": -35,
+        "balance": 101,
+        "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0666VATMT5"
       }
@@ -53041,6 +53081,30 @@
         "reason": "ship event payout",
         "reasonType": "",
         "userId": "U0A5Z4ZTLJC"
+      },
+      {
+        "ts": "2026-03-21T23:28:43.293Z",
+        "delta": 10,
+        "balance": 329,
+        "reason": "Line Cook",
+        "reasonType": "achievement",
+        "userId": "U0A5Z4ZTLJC"
+      },
+      {
+        "ts": "2026-03-21T23:28:43.424Z",
+        "delta": 3,
+        "balance": 332,
+        "reason": "Order Up!",
+        "reasonType": "achievement",
+        "userId": "U0A5Z4ZTLJC"
+      },
+      {
+        "ts": "2026-03-21T23:28:43.426Z",
+        "delta": 3,
+        "balance": 335,
+        "reason": "Michelin Star",
+        "reasonType": "achievement",
+        "userId": "U0A5Z4ZTLJC"
       }
     ],
     "u0a60nzqcta": [
@@ -77057,6 +77121,14 @@
         "reason": "Order Up!",
         "reasonType": "achievement",
         "userId": "U0AMM0S4SQ4"
+      },
+      {
+        "ts": "2026-03-21T23:30:33.218Z",
+        "delta": 88,
+        "balance": 101,
+        "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U0AMM0S4SQ4"
       }
     ],
     "u0amw3zr0uv": [
@@ -77128,6 +77200,18 @@
       "username": "saif",
       "displayName": "Saif (A8K)",
       "avatar": "https://avatars.slack-edge.com/2025-04-04/8718809197329_286f155c27b6ce1c9cb2_72.jpg"
+    },
+    "U0AMM0S4SQ4": {
+      "id": "U0AMM0S4SQ4",
+      "username": "pd541664",
+      "displayName": "pd541664",
+      "avatar": "https://secure.gravatar.com/avatar/6d30ed0a6527234a65c778de7728329c.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0010-72.png"
+    },
+    "U0A5Z4ZTLJC": {
+      "id": "U0A5Z4ZTLJC",
+      "username": "tue.le",
+      "displayName": "SpeedySchweppers",
+      "avatar": "https://secure.gravatar.com/avatar/a9f41cf458aa71c4720f87bc3b4494b3.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0023-72.png"
     },
     "U08S00249M3": {
       "id": "U08S00249M3",
@@ -77564,12 +77648,6 @@
       "username": "alonsomartinezcarrata",
       "displayName": "aloyak",
       "avatar": "https://avatars.slack-edge.com/2026-01-11/10266469042067_79d016b502587f2b7d52_72.png"
-    },
-    "U0AMM0S4SQ4": {
-      "id": "U0AMM0S4SQ4",
-      "username": "pd541664",
-      "displayName": "pd541664",
-      "avatar": "https://secure.gravatar.com/avatar/6d30ed0a6527234a65c778de7728329c.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0010-72.png"
     },
     "U0A6PMU30V7": {
       "id": "U0A6PMU30V7",
@@ -78968,12 +79046,6 @@
       "username": "quickhalewebtech",
       "displayName": "satya//7YA",
       "avatar": "https://avatars.slack-edge.com/2025-07-25/9248518529315_6f0a74151dad785891dd_72.jpg"
-    },
-    "U0A5Z4ZTLJC": {
-      "id": "U0A5Z4ZTLJC",
-      "username": "tue.le",
-      "displayName": "SpeedySchweppers",
-      "avatar": "https://secure.gravatar.com/avatar/a9f41cf458aa71c4720f87bc3b4494b3.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0023-72.png"
     },
     "U092H9HRZDE": {
       "id": "U092H9HRZDE",
