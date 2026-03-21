@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-21T05:27:24.443Z",
+  "lastUpdated": "2026-03-21T06:02:42.429Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -28085,6 +28085,14 @@
         "delta": -475,
         "balance": 1087,
         "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U093R7D3XGC"
+      },
+      {
+        "ts": "2026-03-21T05:53:55.723Z",
+        "delta": 1130,
+        "balance": 2217,
+        "reason": "ship event payout",
         "reasonType": "",
         "userId": "U093R7D3XGC"
       }
@@ -73867,6 +73875,14 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0AAVSGH3HC"
+      },
+      {
+        "ts": "2026-03-21T05:33:44.214Z",
+        "delta": 4,
+        "balance": 62,
+        "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U0AAVSGH3HC"
       }
     ],
     "u0ab4awmbk3": [
@@ -76697,6 +76713,18 @@
     ]
   },
   "users": {
+    "U093R7D3XGC": {
+      "id": "U093R7D3XGC",
+      "username": "zainmarshall1000",
+      "displayName": "Zain Marshall",
+      "avatar": "https://avatars.slack-edge.com/2025-06-30/9126146856722_2a5a72ed428cf0440df0_72.jpg"
+    },
+    "U0AAVSGH3HC": {
+      "id": "U0AAVSGH3HC",
+      "username": "hackclub8",
+      "displayName": "46009361",
+      "avatar": "https://avatars.slack-edge.com/2026-01-29/10433002833120_f403f3da778a713c59df_72.png"
+    },
     "U0AMXHHE2CE": {
       "id": "U0AMXHHE2CE",
       "username": "roshini.g010",
@@ -76798,12 +76826,6 @@
       "username": "dante.edmiston",
       "displayName": "JustAnotherCoder",
       "avatar": "https://avatars.slack-edge.com/2026-01-27/10382540955170_f7d39e7350e7b6a9713d_72.jpg"
-    },
-    "U0AAVSGH3HC": {
-      "id": "U0AAVSGH3HC",
-      "username": "hackclub8",
-      "displayName": "46009361",
-      "avatar": "https://avatars.slack-edge.com/2026-01-29/10433002833120_f403f3da778a713c59df_72.png"
     },
     "U074LUX88PJ": {
       "id": "U074LUX88PJ",
@@ -77082,12 +77104,6 @@
       "username": "benjnib09",
       "displayName": "eee",
       "avatar": "https://avatars.slack-edge.com/2026-01-17/10331374533137_f368ac4e91fc2dac3d23_72.png"
-    },
-    "U093R7D3XGC": {
-      "id": "U093R7D3XGC",
-      "username": "zainmarshall1000",
-      "displayName": "Zain Marshall",
-      "avatar": "https://avatars.slack-edge.com/2025-06-30/9126146856722_2a5a72ed428cf0440df0_72.jpg"
     },
     "U0A6DSNSV7A": {
       "id": "U0A6DSNSV7A",
