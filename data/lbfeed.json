@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-21T07:08:47.723Z",
+  "lastUpdated": "2026-03-21T07:52:30.191Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -76681,6 +76681,24 @@
         "userId": "U0ALFC53SLX"
       }
     ],
+    "u0alp92fq3u": [
+      {
+        "ts": "2026-03-21T07:36:50.907Z",
+        "delta": 3,
+        "balance": 23,
+        "reason": "Order Up!",
+        "reasonType": "achievement",
+        "userId": "U0ALP92FQ3U"
+      },
+      {
+        "ts": "2026-03-21T07:36:50.959Z",
+        "delta": 3,
+        "balance": 26,
+        "reason": "Michelin Star",
+        "reasonType": "achievement",
+        "userId": "U0ALP92FQ3U"
+      }
+    ],
     "u0alvdmnmpt": [
       {
         "ts": "2026-03-13T16:30:46.220Z",
@@ -76763,6 +76781,12 @@
     ]
   },
   "users": {
+    "U0ALP92FQ3U": {
+      "id": "U0ALP92FQ3U",
+      "username": "thathsi2025",
+      "displayName": "thathsi2025",
+      "avatar": "https://secure.gravatar.com/avatar/e1370c200d7c3a4dab050dc77e3ac820.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0016-72.png"
+    },
     "U078KKF3R1Q": {
       "id": "U078KKF3R1Q",
       "username": "alexjhayes1",
