@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-22T21:27:44.620Z",
+  "lastUpdated": "2026-03-22T21:51:20.221Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -36565,6 +36565,24 @@
         "userId": "U09GT3Z6FC7"
       }
     ],
+    "u09gt65jgnr": [
+      {
+        "ts": "2026-03-22T21:33:21.891Z",
+        "delta": 10,
+        "balance": 10,
+        "reason": "user grant",
+        "reasonType": "",
+        "userId": "U09GT65JGNR"
+      },
+      {
+        "ts": "2026-03-22T21:35:34.093Z",
+        "delta": -10,
+        "balance": 0,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U09GT65JGNR"
+      }
+    ],
     "u09gzaz7nc8": [
       {
         "ts": "2026-01-24T12:33:37.895Z",
@@ -48892,6 +48910,14 @@
         "ts": "2026-03-22T07:58:49.831Z",
         "delta": -35,
         "balance": 819,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A5DVA4Q4R"
+      },
+      {
+        "ts": "2026-03-22T21:33:22.522Z",
+        "delta": -140,
+        "balance": 679,
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0A5DVA4Q4R"
@@ -77845,6 +77871,17 @@
     ]
   },
   "users": {
+    "U09GT65JGNR": {
+      "id": "U09GT65JGNR",
+      "username": "ishaangupta240",
+      "displayName": "ishaan",
+      "avatar": "https://secure.gravatar.com/avatar/565ca46efe2847767229f8c40e5863dc.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0024-72.png"
+    },
+    "U0A5DVA4Q4R": {
+      "id": "U0A5DVA4Q4R",
+      "username": "erik1",
+      "avatar": "https://secure.gravatar.com/avatar/c572f43e3e0cef8ff09bad6075ad78b3.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0024-72.png"
+    },
     "U0A8GGF9PDZ": {
       "id": "U0A8GGF9PDZ",
       "username": "giovannirizzello09",
@@ -78031,11 +78068,6 @@
       "username": "renudilip19",
       "displayName": "Anirudh",
       "avatar": "https://avatars.slack-edge.com/2026-03-05/10622782448583_218d50bcdd00aea5788a_72.jpg"
-    },
-    "U0A5DVA4Q4R": {
-      "id": "U0A5DVA4Q4R",
-      "username": "erik1",
-      "avatar": "https://secure.gravatar.com/avatar/c572f43e3e0cef8ff09bad6075ad78b3.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0024-72.png"
     },
     "U0A042DKA31": {
       "id": "U0A042DKA31",
