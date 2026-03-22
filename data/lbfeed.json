@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-22T14:55:28.318Z",
+  "lastUpdated": "2026-03-22T15:27:46.349Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -122,6 +122,14 @@
         "balance": 1786,
         "reason": "ship event payout",
         "reasonType": "",
+        "userId": "U046VA0KR8R"
+      },
+      {
+        "ts": "2026-03-22T15:20:39.213Z",
+        "delta": 15,
+        "balance": 1801,
+        "reason": "Cookbook Author",
+        "reasonType": "achievement",
         "userId": "U046VA0KR8R"
       }
     ],
@@ -77643,6 +77651,12 @@
     ]
   },
   "users": {
+    "U046VA0KR8R": {
+      "id": "U046VA0KR8R",
+      "username": "scooter.y",
+      "displayName": "Scooter Y",
+      "avatar": "https://avatars.slack-edge.com/2024-09-05/7699775824753_b19823deb141ed9d7deb_72.png"
+    },
     "U09JBJ0FW0P": {
       "id": "U09JBJ0FW0P",
       "username": "1401054",
@@ -78892,12 +78906,6 @@
       "username": "nmsoukmandjiev007",
       "displayName": "nmsoukmandjiev007",
       "avatar": "https://secure.gravatar.com/avatar/895a326f79f3eb9b12e6a3f34bd23621.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0009-72.png"
-    },
-    "U046VA0KR8R": {
-      "id": "U046VA0KR8R",
-      "username": "scooter.y",
-      "displayName": "Scooter Y",
-      "avatar": "https://avatars.slack-edge.com/2024-09-05/7699775824753_b19823deb141ed9d7deb_72.png"
     },
     "U0A793WKUBW": {
       "id": "U0A793WKUBW",
