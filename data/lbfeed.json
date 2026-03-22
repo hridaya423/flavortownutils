@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-22T17:51:55.871Z",
+  "lastUpdated": "2026-03-22T18:38:39.694Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -72735,6 +72735,54 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0A8NC64K2L"
+      },
+      {
+        "ts": "2026-03-22T18:00:21.611Z",
+        "delta": -206,
+        "balance": 147,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A8NC64K2L"
+      },
+      {
+        "ts": "2026-03-22T18:04:06.082Z",
+        "delta": -100,
+        "balance": 47,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A8NC64K2L"
+      },
+      {
+        "ts": "2026-03-22T18:12:14.639Z",
+        "delta": -44,
+        "balance": 3,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A8NC64K2L"
+      },
+      {
+        "ts": "2026-03-22T18:36:15.506Z",
+        "delta": 100,
+        "balance": 103,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A8NC64K2L"
+      },
+      {
+        "ts": "2026-03-22T18:36:31.540Z",
+        "delta": 206,
+        "balance": 309,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A8NC64K2L"
+      },
+      {
+        "ts": "2026-03-22T18:37:01.870Z",
+        "delta": 44,
+        "balance": 353,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A8NC64K2L"
       }
     ],
     "u0a8q5f3khc": [
@@ -77741,6 +77789,12 @@
     ]
   },
   "users": {
+    "U0A8NC64K2L": {
+      "id": "U0A8NC64K2L",
+      "username": "axel2",
+      "displayName": "ItsAxel",
+      "avatar": "https://avatars.slack-edge.com/2026-01-13/10286155225862_d6618e55219ed1955329_72.webp"
+    },
     "U08NXJL86KT": {
       "id": "U08NXJL86KT",
       "username": "froggington",
@@ -78361,12 +78415,6 @@
       "username": "saltichash",
       "displayName": "SalticHash",
       "avatar": "https://secure.gravatar.com/avatar/5f402c70ea77295cef1810629e3e2159.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0018-72.png"
-    },
-    "U0A8NC64K2L": {
-      "id": "U0A8NC64K2L",
-      "username": "axel2",
-      "displayName": "ItsAxel",
-      "avatar": "https://avatars.slack-edge.com/2026-01-13/10286155225862_d6618e55219ed1955329_72.webp"
     },
     "U099SS7HM0V": {
       "id": "U099SS7HM0V",
