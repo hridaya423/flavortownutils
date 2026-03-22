@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-22T16:32:28.672Z",
+  "lastUpdated": "2026-03-22T17:26:42.290Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -18167,6 +18167,62 @@
         "delta": -40,
         "balance": 19,
         "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U08NXJL86KT"
+      },
+      {
+        "ts": "2026-03-22T17:11:19.682Z",
+        "delta": 72,
+        "balance": 91,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U08NXJL86KT"
+      },
+      {
+        "ts": "2026-03-22T17:11:25.312Z",
+        "delta": 220,
+        "balance": 311,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U08NXJL86KT"
+      },
+      {
+        "ts": "2026-03-22T17:11:30.840Z",
+        "delta": 220,
+        "balance": 531,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U08NXJL86KT"
+      },
+      {
+        "ts": "2026-03-22T17:11:30.844Z",
+        "delta": 220,
+        "balance": 531,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U08NXJL86KT"
+      },
+      {
+        "ts": "2026-03-22T17:11:35.812Z",
+        "delta": 220,
+        "balance": 971,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U08NXJL86KT"
+      },
+      {
+        "ts": "2026-03-22T17:13:14.475Z",
+        "delta": -676,
+        "balance": 295,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U08NXJL86KT"
+      },
+      {
+        "ts": "2026-03-22T17:18:12.379Z",
+        "delta": -220,
+        "balance": 75,
+        "reason": "user grant",
         "reasonType": "",
         "userId": "U08NXJL86KT"
       }
@@ -77685,6 +77741,12 @@
     ]
   },
   "users": {
+    "U08NXJL86KT": {
+      "id": "U08NXJL86KT",
+      "username": "froggington",
+      "displayName": "Frog",
+      "avatar": "https://avatars.slack-edge.com/2026-03-11/10707007801568_a1e3e7d3c411cbea9c7a_72.png"
+    },
     "U0AMXHHE2CE": {
       "id": "U0AMXHHE2CE",
       "username": "roshini.g010",
@@ -78245,12 +78307,6 @@
       "username": "shige-rin",
       "displayName": "Rintaりんた",
       "avatar": "https://avatars.slack-edge.com/2025-12-29/10206925466820_e4fe5e9dbbebcbc8719c_72.jpg"
-    },
-    "U08NXJL86KT": {
-      "id": "U08NXJL86KT",
-      "username": "froggington",
-      "displayName": "Frog",
-      "avatar": "https://avatars.slack-edge.com/2026-03-11/10707007801568_a1e3e7d3c411cbea9c7a_72.png"
     },
     "U07950S3GMC": {
       "id": "U07950S3GMC",
