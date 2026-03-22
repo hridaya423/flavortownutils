@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-22T04:31:57.845Z",
+  "lastUpdated": "2026-03-22T05:54:32.397Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -28865,6 +28865,14 @@
         "reason": "ship event payout",
         "reasonType": "",
         "userId": "U094ENJ7LAH"
+      },
+      {
+        "ts": "2026-03-22T04:43:49.603Z",
+        "delta": 10,
+        "balance": 394,
+        "reason": "Line Cook",
+        "reasonType": "achievement",
+        "userId": "U094ENJ7LAH"
       }
     ],
     "u094fqccf40": [
@@ -40371,6 +40379,14 @@
         "delta": -124,
         "balance": 2324,
         "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A1NME3EJD"
+      },
+      {
+        "ts": "2026-03-22T05:01:53.717Z",
+        "delta": 53,
+        "balance": 2377,
+        "reason": "ship event payout",
         "reasonType": "",
         "userId": "U0A1NME3EJD"
       }
@@ -77357,16 +77373,22 @@
     ]
   },
   "users": {
+    "U0A1NME3EJD": {
+      "id": "U0A1NME3EJD",
+      "username": "nok",
+      "avatar": "https://avatars.slack-edge.com/2026-01-13/10282812823125_9fcc7248e736e16e62f6_72.png"
+    },
+    "U094ENJ7LAH": {
+      "id": "U094ENJ7LAH",
+      "username": "joshatticus02",
+      "displayName": "Josh",
+      "avatar": "https://avatars.slack-edge.com/2026-03-07/10648547343925_d60f27f31533198ff615_72.png"
+    },
     "U091MNGNRA9": {
       "id": "U091MNGNRA9",
       "username": "drewratner27",
       "displayName": "MrDiamond",
       "avatar": "https://secure.gravatar.com/avatar/2f6fa1a082c932ada7e2abbdc8c19be8.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0015-72.png"
-    },
-    "U0A1NME3EJD": {
-      "id": "U0A1NME3EJD",
-      "username": "nok",
-      "avatar": "https://avatars.slack-edge.com/2026-01-13/10282812823125_9fcc7248e736e16e62f6_72.png"
     },
     "U0923H02Y3B": {
       "id": "U0923H02Y3B",
@@ -79080,12 +79102,6 @@
       "username": "rchen7530",
       "displayName": "Ryan Chen",
       "avatar": "https://secure.gravatar.com/avatar/08f3344b3ab6dadb30365ac128c07783.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0017-72.png"
-    },
-    "U094ENJ7LAH": {
-      "id": "U094ENJ7LAH",
-      "username": "joshatticus02",
-      "displayName": "Josh",
-      "avatar": "https://avatars.slack-edge.com/2026-03-07/10648547343925_d60f27f31533198ff615_72.png"
     },
     "U07AZFQLPQ8": {
       "id": "U07AZFQLPQ8",
