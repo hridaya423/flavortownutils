@@ -3097,6 +3097,165 @@ p[style*="background: #f9fafb"][style*="padding: 1rem"] {
     background-color: color-mix(in srgb, var(--sea-dark) 92%, var(--sea-cyan) 8%) !important;
 }
 
+.flavortown-admin-reports-page .reports-stats {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)) !important;
+    gap: 0.75rem !important;
+    margin-bottom: 1rem !important;
+}
+
+.flavortown-admin-reports-page .reports-stat-card {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.7rem !important;
+    min-height: 72px !important;
+    padding: 0.75rem 0.9rem !important;
+    border-radius: 12px !important;
+    border: 1px solid var(--sea-mid) !important;
+    background: color-mix(in srgb, var(--sea-dark) 92%, var(--sea-abyss) 8%) !important;
+}
+
+.flavortown-admin-reports-page .reports-stat-card--pending {
+    border-color: color-mix(in srgb, var(--sea-gold), transparent 55%) !important;
+    background: color-mix(in srgb, var(--sea-gold), transparent 88%) !important;
+}
+
+.flavortown-admin-reports-page .reports-stat-card--reviewed {
+    border-color: color-mix(in srgb, var(--sea-kelp), transparent 55%) !important;
+    background: color-mix(in srgb, var(--sea-kelp), transparent 90%) !important;
+}
+
+.flavortown-admin-reports-page .reports-stat-card--dismissed {
+    border-color: color-mix(in srgb, var(--sea-surface), transparent 55%) !important;
+    background: color-mix(in srgb, var(--sea-surface), transparent 90%) !important;
+}
+
+.flavortown-admin-reports-page .reports-stat-icon {
+    font-size: 1.15rem !important;
+}
+
+.flavortown-admin-reports-page .reports-stat-value {
+    display: block !important;
+    color: var(--sea-white) !important;
+    font-size: 1.05rem !important;
+    font-weight: 700 !important;
+    line-height: 1.1 !important;
+}
+
+.flavortown-admin-reports-page .reports-stat-label {
+    display: block !important;
+    color: var(--sea-foam) !important;
+    font-size: 0.78rem !important;
+    letter-spacing: 0.03em !important;
+    text-transform: uppercase !important;
+}
+
+.flavortown-admin-reports-page .reports-stat-card form.button_to {
+    width: 100% !important;
+    margin: 0 !important;
+}
+
+.flavortown-admin-reports-page .reports-stat-card .btn-primary.slim {
+    width: 100% !important;
+    justify-content: center !important;
+    border-radius: 10px !important;
+}
+
+.flavortown-admin-reports-page .flavortown-reports-table {
+    border-radius: 14px !important;
+    overflow: hidden !important;
+}
+
+.flavortown-admin-reports-page .flavortown-report-group-row td {
+    background: color-mix(in srgb, var(--sea-mid) 82%, var(--sea-cyan) 18%) !important;
+    border-bottom-color: var(--sea-surface) !important;
+    padding: 0.6rem 0.8rem !important;
+}
+
+.flavortown-admin-reports-page .flavortown-report-group {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.6rem !important;
+}
+
+.flavortown-admin-reports-page .flavortown-report-group-rank,
+.flavortown-admin-reports-page .flavortown-report-group-count {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 999px !important;
+    font-size: 0.72rem !important;
+    font-weight: 700 !important;
+    padding: 0.12rem 0.5rem !important;
+}
+
+.flavortown-admin-reports-page .flavortown-report-group-rank {
+    background: color-mix(in srgb, var(--sea-cyan), transparent 78%) !important;
+    color: var(--sea-cyan) !important;
+}
+
+.flavortown-admin-reports-page .flavortown-report-group-title {
+    color: var(--sea-white) !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+}
+
+.flavortown-admin-reports-page .flavortown-report-group-title:hover {
+    color: var(--sea-cyan) !important;
+}
+
+.flavortown-admin-reports-page .flavortown-report-group-count {
+    background: color-mix(in srgb, var(--sea-gold), transparent 80%) !important;
+    color: var(--sea-gold) !important;
+}
+
+.flavortown-admin-reports-page .reports-project-link,
+.flavortown-admin-reports-page .reports-user a {
+    color: var(--sea-cyan) !important;
+    text-decoration: none !important;
+}
+
+.flavortown-admin-reports-page .reports-project-link:hover,
+.flavortown-admin-reports-page .reports-user a:hover {
+    color: var(--sea-mist) !important;
+}
+
+.flavortown-admin-reports-page .reports-avatar {
+    border: 1px solid var(--sea-mid) !important;
+}
+
+.flavortown-admin-reports-page .reports-id {
+    color: var(--sea-cyan) !important;
+    background: color-mix(in srgb, var(--sea-mid) 82%, transparent) !important;
+}
+
+.flavortown-admin-reports-page .reports-actions {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.35rem !important;
+}
+
+.flavortown-admin-reports-page .reports-actions .button_to {
+    margin: 0 !important;
+    display: inline-flex !important;
+}
+
+.flavortown-admin-reports-page .reports-actions .btn-secondary.slim {
+    min-width: 2rem !important;
+    justify-content: center !important;
+}
+
+.flavortown-admin-reports-page .reports-muted,
+.flavortown-admin-reports-page .reports-age {
+    color: var(--sea-foam) !important;
+}
+
+.flavortown-admin-reports-page .badge[class*="badge-reason-"] {
+    background-color: color-mix(in srgb, var(--sea-cyan), transparent 88%) !important;
+    color: var(--sea-cyan) !important;
+    border-color: color-mix(in srgb, var(--sea-cyan), transparent 72%) !important;
+}
+
 .card {
     background-color: var(--sea-abyss) !important;
     border-color: var(--sea-mid) !important;
@@ -3123,19 +3282,22 @@ p[style*="background: #f9fafb"][style*="padding: 1rem"] {
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--sea-cyan), transparent 80%) !important;
 }
 
-.badge-pending {
+.badge-pending,
+.badge-status-pending {
     background-color: color-mix(in srgb, var(--sea-gold), transparent 85%) !important;
     color: var(--sea-gold) !important;
     border-color: color-mix(in srgb, var(--sea-gold), transparent 70%) !important;
 }
 
-.badge-reviewed {
+.badge-reviewed,
+.badge-status-reviewed {
     background-color: color-mix(in srgb, var(--sea-kelp), transparent 85%) !important;
     color: var(--sea-kelp) !important;
     border-color: color-mix(in srgb, var(--sea-kelp), transparent 70%) !important;
 }
 
-.badge-dismissed {
+.badge-dismissed,
+.badge-status-dismissed {
     background-color: color-mix(in srgb, var(--sea-mid), transparent 85%) !important;
     color: var(--sea-foam) !important;
     border-color: color-mix(in srgb, var(--sea-mid), transparent 70%) !important;

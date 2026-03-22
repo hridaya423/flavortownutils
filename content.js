@@ -13985,6 +13985,106 @@ function enhanceAdminPage() {
     if (window.location.pathname.match(/\/admin\/users\/\d+/)) {
         enhanceAdminUserPage();
     }
+
+    if (window.location.pathname === '/admin/reports') {
+        enhanceAdminReportsPage();
+    }
+}
+
+function enhanceAdminReportsPage() {
+    document.body.classList.add('flavortown-admin-reports-page');
+
+    const reportsStats = document.querySelector('.reports-stats');
+    if (reportsStats) {
+        reportsStats.classList.add('flavortown-reports-stats');
+        reportsStats.querySelectorAll('.reports-stat-card').forEach(card => {
+            card.classList.add('flavortown-reports-stat-card');
+        });
+    }
+
+    const reportsTable = Array.from(document.querySelectorAll('.table-data')).find(table => {
+        const headers = Array.from(table.querySelectorAll('thead th')).map(th => th.textContent.trim().toLowerCase());
+        return headers.includes('report') && headers.includes('project') && headers.includes('reporter');
+    });
+    if (!reportsTable || reportsTable.dataset.flavortownGrouped === 'true') return;
+
+    const tbody = reportsTable.querySelector('tbody');
+    if (!tbody) return;
+
+    const rows = Array.from(tbody.querySelectorAll('tr')).filter(row => row.querySelector('td'));
+    if (!rows.length) return;
+
+    const projectGroups = new Map();
+    rows.forEach((row, index) => {
+        const projectLink = row.querySelector('td:nth-child(2) a');
+        const projectName = projectLink?.textContent?.trim() || 'Unknown Project';
+        const projectHref = projectLink?.getAttribute('href') || '';
+        const groupKey = `${projectHref}::${projectName.toLowerCase()}`;
+
+        row.classList.add('flavortown-report-row');
+
+        if (!projectGroups.has(groupKey)) {
+            projectGroups.set(groupKey, {
+                projectName,
+                projectHref,
+                rows: [],
+                firstIndex: index,
+            });
+        }
+
+        projectGroups.get(groupKey).rows.push(row);
+    });
+
+    const groupedProjects = Array.from(projectGroups.values())
+        .sort((a, b) => {
+            if (b.rows.length !== a.rows.length) return b.rows.length - a.rows.length;
+            if (a.firstIndex !== b.firstIndex) return a.firstIndex - b.firstIndex;
+            return a.projectName.localeCompare(b.projectName);
+        });
+
+    tbody.innerHTML = '';
+
+    groupedProjects.forEach((group, index) => {
+        if (group.rows.length <= 1) {
+            group.rows.forEach(row => tbody.appendChild(row));
+            return;
+        }
+
+        const groupRow = document.createElement('tr');
+        groupRow.className = 'flavortown-report-group-row';
+
+        const groupCell = document.createElement('td');
+        groupCell.className = 'flavortown-report-group-cell';
+        groupCell.colSpan = 8;
+
+        const groupWrap = document.createElement('div');
+        groupWrap.className = 'flavortown-report-group';
+
+        const rankBadge = document.createElement('span');
+        rankBadge.className = 'flavortown-report-group-rank';
+        rankBadge.textContent = `#${index + 1}`;
+
+        const titleEl = group.projectHref ? document.createElement('a') : document.createElement('span');
+        titleEl.className = 'flavortown-report-group-title';
+        if (group.projectHref) {
+            titleEl.setAttribute('href', group.projectHref);
+        }
+        titleEl.textContent = group.projectName;
+
+        const countBadge = document.createElement('span');
+        countBadge.className = 'flavortown-report-group-count';
+        countBadge.textContent = `${group.rows.length} report${group.rows.length === 1 ? '' : 's'}`;
+
+        groupWrap.append(rankBadge, titleEl, countBadge);
+        groupCell.appendChild(groupWrap);
+        groupRow.appendChild(groupCell);
+        tbody.appendChild(groupRow);
+
+        group.rows.forEach(row => tbody.appendChild(row));
+    });
+
+    reportsTable.classList.add('flavortown-reports-table');
+    reportsTable.dataset.flavortownGrouped = 'true';
 }
 
 function enhanceAdminUserPage() {
@@ -14082,27 +14182,37 @@ function enhanceAdminUserPage() {
         }
     }
 
-    let achievementCredits = 0;
-    if (actionHistoryCard) {
-        const rows = actionHistoryCard.querySelectorAll('tbody tr');
+    const ledgerHistoryCard = Array.from(document.querySelectorAll('.card')).find(card => {
+        const heading = card.querySelector('h3, h2');
+        return heading && heading.textContent.toLowerCase().includes('ledger history');
+    });
+
+    const showAndTellRegex = /\bshow\s*(?:and|&)\s*tell\b/i;
+    const showAndTellSourceRegex = /show[_\s]*and[_\s]*tell/i;
+    let showAndTellCredits = 0;
+    if (ledgerHistoryCard) {
+        const rows = ledgerHistoryCard.querySelectorAll('tbody tr');
         rows.forEach(row => {
-            const text = row.textContent;
-            if (text.toLowerCase().includes('achievement')) {
-                const ticketMatch = text.match(/\+(\d+)\s*tickets/i);
-                if (ticketMatch) {
-                    achievementCredits += parseInt(ticketMatch[1], 10);
-                } else {
-                    const balanceChange = text.match(/Balance:\s*(\d+)\s*→\s*(\d+)/);
-                    if (balanceChange) {
-                        const diff = parseInt(balanceChange[2], 10) - parseInt(balanceChange[1], 10);
-                        if (diff > 0) achievementCredits += diff;
-                    }
-                }
+            const cells = row.querySelectorAll('td');
+            if (cells.length < 6) return;
+
+            const amountText = cells[2].textContent || '';
+            const amountNumberMatch = amountText.match(/(\d[\d,]*)/);
+            if (!amountNumberMatch) return;
+
+            const parsedAmount = parseInt(amountNumberMatch[1].replace(/,/g, ''), 10);
+            if (!Number.isFinite(parsedAmount) || parsedAmount <= 0 || amountText.includes('-')) return;
+
+            const reasonText = (cells[3].textContent || '').trim();
+            const sourceText = `${(cells[4].textContent || '').trim()} ${(cells[5].textContent || '').trim()}`.trim();
+            const isShowAndTell = showAndTellRegex.test(reasonText) || showAndTellSourceRegex.test(sourceText);
+            if (isShowAndTell) {
+                showAndTellCredits += parsedAmount;
             }
         });
     }
 
-    const deductableBalance = Math.max(0, currentBalance - achievementCredits);
+    const deductableBalance = Math.max(0, currentBalance - showAndTellCredits);
 
     const deductionCard = document.createElement('div');
     deductionCard.className = 'card';
@@ -14117,8 +14227,8 @@ function enhanceAdminUserPage() {
                 <span class="font-mono">${currentBalance}</span>
             </div>
             <div style="display: flex; justify-content: space-between; color: var(--color-gray-dark, #666);">
-                <span>Achievement Credits:</span>
-                <span class="font-mono">-${achievementCredits}</span>
+                <span>Show &amp; Tell Credits:</span>
+                <span class="font-mono">-${showAndTellCredits}</span>
             </div>
             <div style="display: flex; justify-content: space-between; border-top: 1px dashed #ddd; padding-top: 4px; margin-top: 2px;">
                 <span style="font-weight: 500;">Deductable Balance:</span>

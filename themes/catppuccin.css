@@ -3305,6 +3305,165 @@ main:has(.chef-img) .btn:hover {
     background-color: color-mix(in srgb, var(--ctp-surface0) 92%, var(--ctp-mauve) 8%) !important;
 }
 
+.flavortown-admin-reports-page .reports-stats {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)) !important;
+    gap: 0.75rem !important;
+    margin-bottom: 1rem !important;
+}
+
+.flavortown-admin-reports-page .reports-stat-card {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.7rem !important;
+    min-height: 72px !important;
+    padding: 0.75rem 0.9rem !important;
+    border-radius: 12px !important;
+    border: 1px solid var(--ctp-surface2) !important;
+    background: color-mix(in srgb, var(--ctp-surface0) 92%, var(--ctp-base) 8%) !important;
+}
+
+.flavortown-admin-reports-page .reports-stat-card--pending {
+    border-color: color-mix(in srgb, var(--ctp-yellow), transparent 55%) !important;
+    background: color-mix(in srgb, var(--ctp-yellow), transparent 88%) !important;
+}
+
+.flavortown-admin-reports-page .reports-stat-card--reviewed {
+    border-color: color-mix(in srgb, var(--ctp-green), transparent 55%) !important;
+    background: color-mix(in srgb, var(--ctp-green), transparent 90%) !important;
+}
+
+.flavortown-admin-reports-page .reports-stat-card--dismissed {
+    border-color: color-mix(in srgb, var(--ctp-overlay1), transparent 55%) !important;
+    background: color-mix(in srgb, var(--ctp-overlay1), transparent 90%) !important;
+}
+
+.flavortown-admin-reports-page .reports-stat-icon {
+    font-size: 1.15rem !important;
+}
+
+.flavortown-admin-reports-page .reports-stat-value {
+    display: block !important;
+    color: var(--ctp-text) !important;
+    font-size: 1.05rem !important;
+    font-weight: 700 !important;
+    line-height: 1.1 !important;
+}
+
+.flavortown-admin-reports-page .reports-stat-label {
+    display: block !important;
+    color: var(--ctp-subtext0) !important;
+    font-size: 0.78rem !important;
+    letter-spacing: 0.03em !important;
+    text-transform: uppercase !important;
+}
+
+.flavortown-admin-reports-page .reports-stat-card form.button_to {
+    width: 100% !important;
+    margin: 0 !important;
+}
+
+.flavortown-admin-reports-page .reports-stat-card .btn-primary.slim {
+    width: 100% !important;
+    justify-content: center !important;
+    border-radius: 10px !important;
+}
+
+.flavortown-admin-reports-page .flavortown-reports-table {
+    border-radius: 14px !important;
+    overflow: hidden !important;
+}
+
+.flavortown-admin-reports-page .flavortown-report-group-row td {
+    background: color-mix(in srgb, var(--ctp-surface1) 86%, var(--ctp-mauve) 14%) !important;
+    border-bottom-color: var(--ctp-surface2) !important;
+    padding: 0.6rem 0.8rem !important;
+}
+
+.flavortown-admin-reports-page .flavortown-report-group {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.6rem !important;
+}
+
+.flavortown-admin-reports-page .flavortown-report-group-rank,
+.flavortown-admin-reports-page .flavortown-report-group-count {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 999px !important;
+    font-size: 0.72rem !important;
+    font-weight: 700 !important;
+    padding: 0.12rem 0.5rem !important;
+}
+
+.flavortown-admin-reports-page .flavortown-report-group-rank {
+    background: color-mix(in srgb, var(--ctp-lavender), transparent 78%) !important;
+    color: var(--ctp-lavender) !important;
+}
+
+.flavortown-admin-reports-page .flavortown-report-group-title {
+    color: var(--ctp-text) !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+}
+
+.flavortown-admin-reports-page .flavortown-report-group-title:hover {
+    color: var(--ctp-mauve) !important;
+}
+
+.flavortown-admin-reports-page .flavortown-report-group-count {
+    background: color-mix(in srgb, var(--ctp-peach), transparent 80%) !important;
+    color: var(--ctp-peach) !important;
+}
+
+.flavortown-admin-reports-page .reports-project-link,
+.flavortown-admin-reports-page .reports-user a {
+    color: var(--ctp-blue) !important;
+    text-decoration: none !important;
+}
+
+.flavortown-admin-reports-page .reports-project-link:hover,
+.flavortown-admin-reports-page .reports-user a:hover {
+    color: var(--ctp-sky) !important;
+}
+
+.flavortown-admin-reports-page .reports-avatar {
+    border: 1px solid var(--ctp-surface2) !important;
+}
+
+.flavortown-admin-reports-page .reports-id {
+    color: var(--ctp-lavender) !important;
+    background: color-mix(in srgb, var(--ctp-surface1) 82%, transparent) !important;
+}
+
+.flavortown-admin-reports-page .reports-actions {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.35rem !important;
+}
+
+.flavortown-admin-reports-page .reports-actions .button_to {
+    margin: 0 !important;
+    display: inline-flex !important;
+}
+
+.flavortown-admin-reports-page .reports-actions .btn-secondary.slim {
+    min-width: 2rem !important;
+    justify-content: center !important;
+}
+
+.flavortown-admin-reports-page .reports-muted,
+.flavortown-admin-reports-page .reports-age {
+    color: var(--ctp-overlay1) !important;
+}
+
+.flavortown-admin-reports-page .badge[class*="badge-reason-"] {
+    background-color: color-mix(in srgb, var(--ctp-blue), transparent 88%) !important;
+    color: var(--ctp-blue) !important;
+    border-color: color-mix(in srgb, var(--ctp-blue), transparent 72%) !important;
+}
+
 .ft-on-accent,
 [data-ft-on-accent="true"] {
     color: var(--flavortown-on-accent) !important;
@@ -3347,19 +3506,22 @@ main:has(.chef-img) .btn:hover {
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--ctp-mauve), transparent 80%) !important;
 }
 
-.badge-pending {
+.badge-pending,
+.badge-status-pending {
     background-color: color-mix(in srgb, var(--ctp-yellow), transparent 85%) !important;
     color: var(--ctp-yellow) !important;
     border-color: color-mix(in srgb, var(--ctp-yellow), transparent 70%) !important;
 }
 
-.badge-reviewed {
+.badge-reviewed,
+.badge-status-reviewed {
     background-color: color-mix(in srgb, var(--ctp-green), transparent 85%) !important;
     color: var(--ctp-green) !important;
     border-color: color-mix(in srgb, var(--ctp-green), transparent 70%) !important;
 }
 
-.badge-dismissed {
+.badge-dismissed,
+.badge-status-dismissed {
     background-color: color-mix(in srgb, var(--ctp-overlay0), transparent 85%) !important;
     color: var(--ctp-overlay2) !important;
     border-color: color-mix(in srgb, var(--ctp-overlay0), transparent 70%) !important;
