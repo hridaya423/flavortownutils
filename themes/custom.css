@@ -3266,6 +3266,15 @@ main:has(.chef-img) .btn:hover {
     color: var(--custom-overlay) !important;
 }
 
+.flavortown-project-sort-controls {
+    --flavortown-project-sort-bg: var(--custom-bg-surface);
+    --flavortown-project-sort-bg-hover: color-mix(in srgb, var(--custom-surface-hover) 82%, var(--custom-accent) 18%);
+    --flavortown-project-sort-border: var(--custom-surface-hover);
+    --flavortown-project-sort-text: var(--custom-text-primary);
+    --flavortown-project-sort-muted: var(--custom-text-muted);
+    --flavortown-project-sort-focus: var(--custom-accent);
+}
+
 .table-data {
     background-color: var(--custom-bg-base) !important;
     border-color: var(--custom-surface-hover) !important;
@@ -4380,4 +4389,15 @@ body.flavortown-docs-no-code-theme .card pre,
 body.flavortown-docs-no-code-theme .card code {
     background: transparent !important;
     color: inherit !important;
+}
+
+.kitchen-flavortime-banner__primary-download {
+    border: 1px solid var(--custom-accent-alt) !important;
+    background: var(--custom-bg-crust) !important;
+    color: var(--custom-accent-alt) !important;
+}
+
+.kitchen-pyramid-banner {
+    background: var(--custom-accent) !important;
+    border-color: var(--custom-accent) !important;
 }

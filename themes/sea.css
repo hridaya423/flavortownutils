@@ -3061,6 +3061,15 @@ p[style*="background: #f9fafb"][style*="padding: 1rem"] {
     color: var(--sea-mid) !important;
 }
 
+.flavortown-project-sort-controls {
+    --flavortown-project-sort-bg: var(--sea-dark);
+    --flavortown-project-sort-bg-hover: color-mix(in srgb, var(--sea-mid) 82%, var(--sea-cyan) 18%);
+    --flavortown-project-sort-border: var(--sea-mid);
+    --flavortown-project-sort-text: var(--sea-white);
+    --flavortown-project-sort-muted: var(--sea-foam);
+    --flavortown-project-sort-focus: var(--sea-cyan);
+}
+
 .table-data {
     background-color: var(--sea-abyss) !important;
     border-color: var(--sea-mid) !important;
@@ -4431,4 +4440,15 @@ body.flavortown-docs-no-code-theme .card pre,
 body.flavortown-docs-no-code-theme .card code {
     background: transparent !important;
     color: inherit !important;
+}
+
+.kitchen-flavortime-banner__primary-download {
+    border: 1px solid var(--sea-cyan) !important;
+    background: var(--sea-abyss) !important;
+    color: var(--sea-cyan) !important;
+}
+
+.kitchen-pyramid-banner {
+    background: var(--sea-cyan) !important;
+    border-color: var(--sea-cyan) !important;
 }

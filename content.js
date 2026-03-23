@@ -5046,6 +5046,10 @@ async function addProjectCardCookieStats() {
                 statsContainer.appendChild(estimateResult.accordion);
             }
         }
+
+        if (getProjectSortPreference() !== 'default') {
+            scheduleProjectBoardReorder();
+        }
     };
 
     cards.forEach(card => {
@@ -9651,10 +9655,222 @@ function initProjectBoardStats() {
         }
     }
 
+    ensureProjectBoardSortControls();
     addProjectPinsFeature();
 }
 
 const PINNED_PROJECTS_KEY = 'flavortown_pinned_projects';
+const PROJECT_SORT_KEY = 'flavortown_projects_sort';
+const PROJECT_SORT_OPTIONS = [
+    { value: 'default', label: 'Default' },
+    { value: 'time_desc', label: 'Most Time Spent' },
+    { value: 'devlogs_desc', label: 'Most Devlogs' },
+    { value: 'time_asc', label: 'Least Time Spent' },
+    { value: 'devlogs_asc', label: 'Least Devlogs' },
+    { value: 'cookies_desc', label: 'Most Cookies' },
+    { value: 'cookies_asc', label: 'Least Cookies' },
+    { value: 'cookies_per_hour_desc', label: 'Highest Cookies/h' },
+    { value: 'cookies_per_hour_asc', label: 'Lowest Cookies/h' }
+];
+let projectBoardReorderScheduled = false;
+
+function scheduleProjectBoardReorder() {
+    if (!window.location.pathname.endsWith('/projects')) return;
+    if (projectBoardReorderScheduled) return;
+
+    projectBoardReorderScheduled = true;
+    requestAnimationFrame(() => {
+        projectBoardReorderScheduled = false;
+        addProjectPinsFeature();
+    });
+}
+
+function getProjectSortPreference() {
+    try {
+        const value = (localStorage.getItem(PROJECT_SORT_KEY) || 'default').trim();
+        return PROJECT_SORT_OPTIONS.some(option => option.value === value) ? value : 'default';
+    } catch (e) {
+        return 'default';
+    }
+}
+
+function setProjectSortPreference(value) {
+    const normalized = PROJECT_SORT_OPTIONS.some(option => option.value === value)
+        ? value
+        : 'default';
+    try {
+        localStorage.setItem(PROJECT_SORT_KEY, normalized);
+    } catch (e) {
+    }
+}
+
+function parseProjectMinutesFromCard(card) {
+    const statLines = card.querySelectorAll('.project-card__stats h5');
+    const timeText = statLines[1]?.textContent?.trim() || '';
+    const hoursMatch = timeText.match(/(\d+)h/);
+    const minsMatch = timeText.match(/(\d+)m/);
+
+    let minutes = 0;
+    if (hoursMatch) minutes += parseInt(hoursMatch[1], 10) * 60;
+    if (minsMatch) minutes += parseInt(minsMatch[1], 10);
+    return minutes;
+}
+
+function parseProjectDevlogsFromCard(card) {
+    const statLines = card.querySelectorAll('.project-card__stats h5');
+    const devlogText = statLines[0]?.textContent?.trim() || '';
+    const match = devlogText.match(/([\d,]+)/);
+    if (!match?.[1]) return 0;
+    const parsed = parseInt(match[1].replace(/,/g, ''), 10);
+    return Number.isFinite(parsed) ? parsed : 0;
+}
+
+function parseProjectCookiesFromCard(card) {
+    const cookieValueEl = card.querySelector('.flavortown-project-cookies span:last-child');
+    if (cookieValueEl) {
+        const parsed = parseInt((cookieValueEl.textContent || '').replace(/,/g, ''), 10);
+        if (Number.isFinite(parsed)) return parsed;
+    }
+
+    const cookieLine = Array.from(card.querySelectorAll('.project-card__stats h5'))
+        .find(el => (el.textContent || '').includes('🍪'));
+    if (!cookieLine) return 0;
+
+    const parsed = parseInt((cookieLine.textContent || '').replace(/,/g, ''), 10);
+    return Number.isFinite(parsed) ? parsed : 0;
+}
+
+function parseProjectCookiesPerHourFromCard(card) {
+    const details = Array.from(card.querySelectorAll('.flavortown-project-cookies-details h5'));
+    const rateLine = details.find(el => /cookies\s*\/\s*h/i.test(el.textContent || ''));
+    if (!rateLine) return 0;
+
+    const match = (rateLine.textContent || '').match(/([\d,.]+)\s*cookies\s*\/\s*h/i);
+    if (!match?.[1]) return 0;
+    const parsed = parseFloat(match[1].replace(/,/g, ''));
+    return Number.isFinite(parsed) ? parsed : 0;
+}
+
+function getProjectSortMetrics(item) {
+    const card = item.querySelector('.project-card');
+    if (!card) {
+        return { devlogs: 0, minutes: 0, cookies: 0, cookiesPerHour: 0 };
+    }
+
+    return {
+        devlogs: parseProjectDevlogsFromCard(card),
+        minutes: parseProjectMinutesFromCard(card),
+        cookies: parseProjectCookiesFromCard(card),
+        cookiesPerHour: parseProjectCookiesPerHourFromCard(card)
+    };
+}
+
+function compareProjectItemsBySort(a, b, sortPreference) {
+    if (sortPreference === 'default') {
+        const aBase = parseInt(a.dataset.flavortownBaseOrder || '0', 10) || 0;
+        const bBase = parseInt(b.dataset.flavortownBaseOrder || '0', 10) || 0;
+        return aBase - bBase;
+    }
+
+    const aMetrics = getProjectSortMetrics(a);
+    const bMetrics = getProjectSortMetrics(b);
+
+    const compareDesc = (left, right) => right - left;
+    const compareAsc = (left, right) => left - right;
+
+    let comparison = 0;
+    switch (sortPreference) {
+    case 'time_desc':
+        comparison = compareDesc(aMetrics.minutes, bMetrics.minutes);
+        break;
+    case 'time_asc':
+        comparison = compareAsc(aMetrics.minutes, bMetrics.minutes);
+        break;
+    case 'devlogs_desc':
+        comparison = compareDesc(aMetrics.devlogs, bMetrics.devlogs);
+        break;
+    case 'devlogs_asc':
+        comparison = compareAsc(aMetrics.devlogs, bMetrics.devlogs);
+        break;
+    case 'cookies_desc':
+        comparison = compareDesc(aMetrics.cookies, bMetrics.cookies);
+        break;
+    case 'cookies_asc':
+        comparison = compareAsc(aMetrics.cookies, bMetrics.cookies);
+        break;
+    case 'cookies_per_hour_desc':
+        comparison = compareDesc(aMetrics.cookiesPerHour, bMetrics.cookiesPerHour);
+        break;
+    case 'cookies_per_hour_asc':
+        comparison = compareAsc(aMetrics.cookiesPerHour, bMetrics.cookiesPerHour);
+        break;
+    default:
+        comparison = 0;
+        break;
+    }
+
+    if (comparison !== 0) return comparison;
+
+    const aBase = parseInt(a.dataset.flavortownBaseOrder || '0', 10) || 0;
+    const bBase = parseInt(b.dataset.flavortownBaseOrder || '0', 10) || 0;
+    return aBase - bBase;
+}
+
+function ensureProjectBoardSortControls() {
+    if (!window.location.pathname.endsWith('/projects')) return;
+
+    const header = document.querySelector('.projects-board__header');
+    if (!header) return;
+
+    const ideaButton = header.querySelector('.btn[data-action*="project-ideas#toggle"], .btn.btn--red[data-controller="project-ideas"]');
+    let actionsWrap = header.querySelector('.flavortown-project-header-actions');
+    if (!actionsWrap) {
+        actionsWrap = document.createElement('div');
+        actionsWrap.className = 'flavortown-project-header-actions';
+        if (ideaButton && ideaButton.parentElement === header) {
+            header.insertBefore(actionsWrap, ideaButton);
+            actionsWrap.appendChild(ideaButton);
+        } else {
+            header.appendChild(actionsWrap);
+        }
+    } else if (ideaButton && ideaButton.parentElement !== actionsWrap) {
+        actionsWrap.appendChild(ideaButton);
+    }
+
+    const existing = header.querySelector('.flavortown-project-sort-controls');
+    const currentPreference = getProjectSortPreference();
+    if (existing) {
+        if (existing.parentElement !== actionsWrap) {
+            actionsWrap.prepend(existing);
+        }
+        const select = existing.querySelector('.flavortown-project-sort-select');
+        if (select) select.value = currentPreference;
+        return;
+    }
+
+    const controls = document.createElement('div');
+    controls.className = 'flavortown-project-sort-controls';
+    controls.innerHTML = `
+        <label class="flavortown-project-sort-label" for="flavortownProjectSortSelect">Sort:</label>
+        <div class="flavortown-project-sort-select-wrap">
+            <span class="flavortown-project-sort-icon" aria-hidden="true">↕</span>
+            <select id="flavortownProjectSortSelect" class="flavortown-project-sort-select" aria-label="Sort projects">
+                ${PROJECT_SORT_OPTIONS.map(option => `<option value="${option.value}">${option.label}</option>`).join('')}
+            </select>
+        </div>
+    `;
+
+    const select = controls.querySelector('.flavortown-project-sort-select');
+    if (select) {
+        select.value = currentPreference;
+        select.addEventListener('change', () => {
+            setProjectSortPreference(select.value);
+            addProjectPinsFeature();
+        });
+    }
+
+    actionsWrap.prepend(controls);
+}
 
 function getPinnedProjectIds() {
     try {
@@ -9700,7 +9916,11 @@ function addProjectPinsFeature() {
     const pinnedSet = new Set(pinnedIds);
 
     const itemByProjectId = new Map();
-    projectItems.forEach((item) => {
+    projectItems.forEach((item, index) => {
+        if (!item.dataset.flavortownBaseOrder) {
+            item.dataset.flavortownBaseOrder = String(index);
+        }
+
         const card = item.querySelector('.project-card');
         const projectId = card?.id?.replace('project_', '') || '';
         if (!projectId) return;
@@ -9750,7 +9970,10 @@ function addProjectPinsFeature() {
     const orderedPinnedItems = pinnedIds
         .map(id => itemByProjectId.get(id))
         .filter(Boolean);
-    const unpinnedItems = projectItems.filter(item => !pinnedSet.has(item.dataset.flavortownProjectId || ''));
+    const sortPreference = getProjectSortPreference();
+    const unpinnedItems = projectItems
+        .filter(item => !pinnedSet.has(item.dataset.flavortownProjectId || ''))
+        .sort((a, b) => compareProjectItemsBySort(a, b, sortPreference));
 
     const orderedItems = [...orderedPinnedItems, ...unpinnedItems];
     orderedItems.forEach(item => {

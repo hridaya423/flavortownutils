@@ -76,7 +76,7 @@
 .flavortown-changelog__icon-btn {
     width: 28px;
     height: 28px;
-    border-radius: 999px;
+    border-radius: 4px;
     border: 1px solid var(--color-border, #d8c9ba);
     background: rgba(0, 0, 0, 0.05);
     color: var(--color-text-secondary, #6b5c4a);
@@ -209,7 +209,7 @@
 }
 
 .flavortown-changelog__repo-btn {
-    border-radius: 999px;
+    border-radius: 4px;
     border: 1px solid transparent;
     background: var(--color-accent, #ec8b33);
     color: #1f140c;
@@ -248,7 +248,7 @@
 .flavortown-repo-suggestion__apply {
     width: 28px;
     height: 28px;
-    border-radius: 999px;
+    border-radius: 4px;
     border: 1px solid transparent;
     background: var(--color-accent, #ec8b33);
     color: #1f140c;
@@ -270,7 +270,7 @@
 .flavortown-repo-suggestion__close {
     width: 28px;
     height: 28px;
-    border-radius: 999px;
+    border-radius: 4px;
     border: 1px solid var(--color-border, #d8c9ba);
     background: rgba(0, 0, 0, 0.05);
     color: var(--color-text-secondary, #6b5c4a);
@@ -320,7 +320,7 @@
     letter-spacing: 0.08em;
     text-transform: uppercase;
     padding: 2px 6px;
-    border-radius: 999px;
+    border-radius: 4px;
     background: rgba(0, 0, 0, 0.08);
     color: var(--color-text-secondary, #6b5c4a);
 }
@@ -336,7 +336,7 @@
 }
 
 .flavortown-repo-suggestion__btn {
-    border-radius: 999px;
+    border-radius: 4px;
     border: 1px solid transparent;
     padding: 6px 12px;
     font-size: 0.85rem;
@@ -1391,6 +1391,110 @@
     flex-wrap: wrap;
 }
 
+.flavortown-project-header-actions {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-left: auto;
+}
+
+.flavortown-project-sort-controls {
+    --ft-sort-bg: var(--flavortown-project-sort-bg, var(--color-surface, #fffdf9));
+    --ft-sort-bg-hover: var(--flavortown-project-sort-bg-hover, color-mix(in srgb, var(--color-accent, #ec8b33), transparent 92%));
+    --ft-sort-border: var(--flavortown-project-sort-border, var(--color-border, #d7c5af));
+    --ft-sort-text: var(--flavortown-project-sort-text, var(--color-text-primary, #5d4e37));
+    --ft-sort-muted: var(--flavortown-project-sort-muted, var(--color-text-secondary, #7a6750));
+    --ft-sort-focus: var(--flavortown-project-sort-focus, var(--color-accent, #ec8b33));
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 0;
+    padding: 4px 10px;
+    border-radius: calc(.6 * var(--border-radius));
+    border-top-left-radius: calc(0.48rem);
+    border-top-right-radius: calc(0.48rem);
+    border-bottom-right-radius: calc(0.48rem);
+    border-bottom-left-radius: calc(0.48rem);
+    border: 1px solid var(--ft-sort-border);
+    background: color-mix(in srgb, var(--ft-sort-bg), transparent 8%);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+.flavortown-project-sort-label {
+    font-size: 0.74em;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ft-sort-muted);
+}
+
+.flavortown-project-sort-select-wrap {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.flavortown-project-sort-icon {
+    display: none;
+}
+
+.flavortown-project-sort-select {
+    appearance: none;
+    border: 1px solid transparent;
+    background-color: var(--ft-sort-bg);
+    color: var(--ft-sort-text);
+    border-radius: calc(.6 * var(--border-radius));
+    border-top-left-radius: calc(0.48rem);
+    border-top-right-radius: calc(0.48rem);
+    border-bottom-right-radius: calc(0.48rem);
+    border-bottom-left-radius: calc(0.48rem);
+    padding: 7px 30px 7px 12px;
+    font-size: 0.82em;
+    font-weight: 600;
+    line-height: 1.2;
+    cursor: pointer;
+    min-width: 220px;
+    background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%);
+    background-position: calc(100% - 15px) calc(50% + 1px), calc(100% - 10px) calc(50% + 1px);
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+.flavortown-project-sort-select:hover {
+    background-color: var(--ft-sort-bg-hover);
+}
+
+.flavortown-project-sort-select option {
+    color: var(--ft-sort-text);
+    background: var(--ft-sort-bg);
+}
+
+.flavortown-project-sort-select:focus {
+    outline: none;
+    border-color: var(--ft-sort-focus);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--ft-sort-focus), transparent 75%);
+}
+
+@media (max-width: 680px) {
+    .flavortown-project-header-actions {
+        width: 100%;
+        justify-content: flex-start;
+        margin-top: 8px;
+    }
+
+    .flavortown-project-sort-controls {
+        width: auto;
+    }
+
+    .flavortown-project-sort-select {
+        min-width: 220px;
+        max-width: 100%;
+    }
+}
+
 .flavortown-project-pin-enabled {
     position: relative;
 }
@@ -1405,7 +1509,7 @@
     color: var(--color-text-primary, #5d4e37);
     width: 30px;
     height: 30px;
-    border-radius: 999px;
+    border-radius: 4px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -1450,7 +1554,7 @@
     color: #fff;
     width: 30px;
     height: 30px;
-    border-radius: 999px;
+    border-radius: 4px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -2217,7 +2321,7 @@
 .flavortown-search-more {
     margin-top: 6px;
     padding: 8px 12px;
-    border-radius: 999px;
+    border-radius: 4px;
     border: 2px solid #e6d5c3;
     background: #fff;
     color: #5d4e37;
@@ -4883,7 +4987,7 @@
 .flavortown-annotator-tool,
 .flavortown-annotator-btn {
     padding: 6px 10px;
-    border-radius: 999px;
+    border-radius: 4px;
     border: 1px solid var(--color-border, #d8c9ba);
     background: var(--color-surface, #f5efe6);
     color: var(--color-text-primary, #5d4e3c);
@@ -5478,7 +5582,7 @@
     align-items: center;
     gap: 4px;
     padding: 4px 8px;
-    border-radius: 999px;
+    border-radius: 4px;
     background: var(--color-cream-dark, #efe6d5);
     color: var(--color-text-secondary, #6b5c4a);
     font-size: 0.75em;
@@ -5639,7 +5743,7 @@
 
 .flavortown-todo-tab {
     border: 1px solid var(--color-border, #e2d8cc);
-    border-radius: 999px;
+    border-radius: 4px;
     background: var(--color-cream-dark, #efe6d5);
     color: var(--color-text-secondary, #6b5c4a);
     padding: 5px 10px;
@@ -5707,7 +5811,7 @@
     font-size: 0.65em;
     font-weight: 700;
     padding: 2px 6px;
-    border-radius: 999px;
+    border-radius: 4px;
     background: var(--color-cream-dark, #efe6d5);
     color: var(--color-text-muted, #8b7355);
     border: 1px solid var(--color-border, #e2d8cc);

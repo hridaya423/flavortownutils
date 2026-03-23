@@ -4482,22 +4482,13 @@ body.flavortown-docs-no-code-theme .card code {
     background: var(--overcooked-gold) !important;
 }
 
-.flavortown-heatmap-legend-cell.level-0-blended {
-    background: var(--overcooked-mid) !important;
+.kitchen-flavortime-banner__primary-download {
+    border: 1px solid var(--overcooked-cyan) !important;
+    background: var(--overcooked-burnt) !important;
+    color: var(--overcooked-cyan) !important;
 }
 
-.flavortown-heatmap-legend-cell.level-1-blended {
-    background: #8f4a3a !important;
-}
-
-.flavortown-heatmap-legend-cell.level-2-blended {
-    background: #a65e42 !important;
-}
-
-.flavortown-heatmap-legend-cell.level-3-blended {
-    background: #b87333 !important;
-}
-
-.flavortown-heatmap-legend-cell.level-4-blended {
-    background: #c9882a !important;
+.kitchen-pyramid-banner {
+    background: var(--overcooked-cyan) !important;
+    border-color: var(--overcooked-cyan) !important;
 }
