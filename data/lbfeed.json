@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-23T07:44:43.825Z",
+  "lastUpdated": "2026-03-23T08:58:01.421Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -74715,6 +74715,14 @@
         "reason": "ship event payout",
         "reasonType": "",
         "userId": "U0AAS4E80N6"
+      },
+      {
+        "ts": "2026-03-23T08:13:53.510Z",
+        "delta": 245,
+        "balance": 844,
+        "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U0AAS4E80N6"
       }
     ],
     "u0aav909j68": [
@@ -76579,6 +76587,24 @@
         "userId": "U0AF05FTK51"
       }
     ],
+    "u0af05k107m": [
+      {
+        "ts": "2026-03-23T08:25:17.475Z",
+        "delta": -35,
+        "balance": 41,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0AF05K107M"
+      },
+      {
+        "ts": "2026-03-23T08:30:05.498Z",
+        "delta": 2,
+        "balance": 43,
+        "reason": "Hello, Kitchen!",
+        "reasonType": "achievement",
+        "userId": "U0AF05K107M"
+      }
+    ],
     "u0af45ldubc": [
       {
         "ts": "2026-02-16T19:07:15.583Z",
@@ -78113,6 +78139,17 @@
     ]
   },
   "users": {
+    "U0AF05K107M": {
+      "id": "U0AF05K107M",
+      "username": "himanshibisht25",
+      "displayName": "himanshibisht25",
+      "avatar": "https://secure.gravatar.com/avatar/6a8ef723e2e2eb49d3f10a46e9e7eca3.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0023-72.png"
+    },
+    "U0AAS4E80N6": {
+      "id": "U0AAS4E80N6",
+      "username": "louiskhooxunfu",
+      "avatar": "https://secure.gravatar.com/avatar/a41e9ee81cea998b989dc616d257d219.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0000-72.png"
+    },
     "U091U38C2CA": {
       "id": "U091U38C2CA",
       "username": "riccardotedeschi247",
@@ -78528,11 +78565,6 @@
       "username": "jackjacobson.co",
       "displayName": "jokingjack1037",
       "avatar": "https://secure.gravatar.com/avatar/e7bfabbe6dc725e9bcd1b7d534e990fd.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0005-72.png"
-    },
-    "U0AAS4E80N6": {
-      "id": "U0AAS4E80N6",
-      "username": "louiskhooxunfu",
-      "avatar": "https://secure.gravatar.com/avatar/a41e9ee81cea998b989dc616d257d219.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0000-72.png"
     },
     "U07EB2Y76DP": {
       "id": "U07EB2Y76DP",
