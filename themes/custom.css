@@ -1234,6 +1234,28 @@ a:hover {
     background-color: var(--custom-bg-surface) !important;
 }
 
+.sidequest-card__converge-author {
+    color: var(--custom-text-primary) !important;
+}
+
+.sidequest-card__converge-text {
+    color: var(--custom-text-muted) !important;
+}
+
+.sidequest-card__converge-text strong {
+    color: var(--custom-accent) !important;
+}
+
+.sidequest-card__converge-meta {
+    color: var(--custom-overlay) !important;
+}
+
+.sidequest-card__converge-app-badge {
+    background-color: color-mix(in srgb, var(--custom-accent-alt), transparent 82%) !important;
+    color: var(--custom-accent-alt) !important;
+    border: 1px solid color-mix(in srgb, var(--custom-accent-alt), transparent 64%) !important;
+}
+
 .sidequest-card__buttons .btn--blue,
 .sidequest-card__buttons .btn--red,
 .sidequest-card__buttons .btn--green,

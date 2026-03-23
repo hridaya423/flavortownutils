@@ -10697,7 +10697,7 @@ async function enhanceKitchenDashboard() {
             let revealProgress = 1;
             let rafId = null;
 
-            const drawGraph = (lineReveal = 1) => {
+            const drawGraph = (lineReveal = 1, animationState = null) => {
                 const ctx = canvas.getContext('2d');
                 const dpr = window.devicePixelRatio || 1;
                 const rect = canvas.getBoundingClientRect();
@@ -10716,8 +10716,9 @@ async function enhanceKitchenDashboard() {
                 const textColor = isDarkTheme ? '#cdd6f4' : (styles.getPropertyValue('--color-text-primary')?.trim() || '#333');
                 const gridColor = isDarkTheme ? '#45475a' : (styles.getPropertyValue('--color-border')?.trim() || '#e2d8cc');
 
-                const minBalance = Math.min(...dataPoints.map(d => d.balance));
-                const maxBalance = Math.max(...dataPoints.map(d => d.balance));
+                const balances = dataPoints.map(d => d.balance);
+                const minBalance = Math.min(0, ...balances);
+                const maxBalance = Math.max(...balances);
                 const balanceRange = maxBalance - minBalance || 1;
 
                 ctx.strokeStyle = gridColor;
@@ -10744,6 +10745,11 @@ async function enhanceKitchenDashboard() {
                 const maxSegmentFloat = Math.max(0, Math.min(points.length - 1, lineReveal * (points.length - 1)));
                 const fullSegments = Math.floor(maxSegmentFloat);
                 const segmentFraction = maxSegmentFloat - fullSegments;
+                const pausedPointIndex = Number.isInteger(animationState?.pausedPointIndex)
+                    ? animationState.pausedPointIndex
+                    : -1;
+                const pauseProgress = Math.max(0, Math.min(1, animationState?.pauseProgress || 0));
+                const pausePulse = Math.sin(pauseProgress * Math.PI);
 
                 const cubicPoint = (p0, p1, p2, p3, t) => {
                     const inv = 1 - t;
@@ -10798,12 +10804,29 @@ async function enhanceKitchenDashboard() {
 
                 points.forEach((point, idx) => {
                     if (idx > fullSegments) return;
+
+                    let pointRadius = 6;
+                    if (idx === pausedPointIndex) {
+                        pointRadius += 2.6 * pausePulse;
+                    }
+
+                    if (idx === pausedPointIndex && pausePulse > 0.02) {
+                        const glowColor = point.data.amount >= 0
+                            ? 'rgba(56, 161, 105, 0.45)'
+                            : 'rgba(229, 62, 62, 0.45)';
+                        ctx.beginPath();
+                        ctx.arc(point.x, point.y, pointRadius + 3 + pausePulse * 2, 0, Math.PI * 2);
+                        ctx.strokeStyle = glowColor;
+                        ctx.lineWidth = 2;
+                        ctx.stroke();
+                    }
+
                     ctx.beginPath();
-                    ctx.arc(point.x, point.y, 6, 0, Math.PI * 2);
+                    ctx.arc(point.x, point.y, pointRadius, 0, Math.PI * 2);
                     ctx.fillStyle = point.data.amount >= 0 ? '#38a169' : '#e53e3e';
                     ctx.fill();
                     ctx.strokeStyle = '#fff';
-                    ctx.lineWidth = 2;
+                    ctx.lineWidth = idx === pausedPointIndex ? 2.5 : 2;
                     ctx.stroke();
                 });
 
@@ -10832,7 +10855,7 @@ async function enhanceKitchenDashboard() {
                 canvas._pointPositions = points;
             };
 
-            const animateLineReveal = () => {
+            const animateLineReveal = ({ initial = false } = {}) => {
                 if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
                     revealProgress = 1;
                     drawGraph(revealProgress);
@@ -10848,6 +10871,8 @@ async function enhanceKitchenDashboard() {
                     ? sortedMoves[Math.floor(sortedMoves.length / 2)]
                     : 0;
 
+                const speedFactor = initial ? 0.52 : 1;
+                const pauseFactor = initial ? 0.35 : 1;
                 const baseSegmentDuration = 90;
                 const basePointPause = 14;
                 const segmentDurations = [];
@@ -10857,8 +10882,8 @@ async function enhanceKitchenDashboard() {
                     const move = Math.abs(dataPoints[i + 1]?.amount || 0);
                     const drama = medianMove > 0 ? Math.max(0, move / medianMove - 1) : 0;
                     const dramaticBoost = Math.min(1.8, drama);
-                    segmentDurations.push(baseSegmentDuration + dramaticBoost * 40);
-                    pointPauses.push(basePointPause + dramaticBoost * 110);
+                    segmentDurations.push((baseSegmentDuration + dramaticBoost * 40) * speedFactor);
+                    pointPauses.push((basePointPause + dramaticBoost * 110) * pauseFactor);
                 }
 
                 const duration = segmentDurations.reduce((sum, value) => sum + value, 0)
@@ -10869,6 +10894,8 @@ async function enhanceKitchenDashboard() {
                     let remaining = elapsed;
                     let segmentsDone = 0;
                     let frac = 0;
+                    let pausedPointIndex = null;
+                    let pauseProgress = 0;
 
                     for (let i = 0; i < segmentCount; i++) {
                         const segmentDuration = segmentDurations[i];
@@ -10881,6 +10908,10 @@ async function enhanceKitchenDashboard() {
                                     remaining -= pointPause;
                                 } else {
                                     frac = 0;
+                                    pausedPointIndex = i + 1;
+                                    pauseProgress = pointPause > 0
+                                        ? Math.max(0, Math.min(1, remaining / pointPause))
+                                        : 0;
                                     break;
                                 }
                             }
@@ -10893,10 +10924,14 @@ async function enhanceKitchenDashboard() {
 
                     if (elapsed >= duration) {
                         revealProgress = 1;
+                        pausedPointIndex = null;
                     } else {
                         revealProgress = (segmentsDone + frac) / segmentCount;
                     }
-                    drawGraph(revealProgress);
+                    drawGraph(revealProgress, {
+                        pausedPointIndex,
+                        pauseProgress,
+                    });
                     if (elapsed < duration) rafId = requestAnimationFrame(tick);
                 };
                 rafId = requestAnimationFrame(tick);
@@ -10905,35 +10940,58 @@ async function enhanceKitchenDashboard() {
             if (!canvas._flavortownGraphTooltipAttached) {
                 const tooltip = document.createElement('div');
                 tooltip.className = 'flavortown-graph-tooltip';
-                tooltip.style.cssText = 'position:absolute;display:none;background:var(--color-surface,#fff);border:2px solid var(--color-border,#e2d8cc);border-radius:8px;padding:10px 14px;font-size:0.9em;pointer-events:none;z-index:1000;box-shadow:0 4px 12px rgba(0,0,0,0.15);max-width:220px;white-space:nowrap;';
-                canvas.parentNode.style.position = 'relative';
-                canvas.parentNode.appendChild(tooltip);
+                tooltip.style.cssText = 'position:fixed;display:none;background:var(--color-surface,#fff);border:2px solid var(--color-border,#e2d8cc);border-radius:8px;padding:10px 14px;font-size:0.9em;line-height:1.35;pointer-events:none;z-index:1000;box-shadow:0 4px 12px rgba(0,0,0,0.15);max-width:280px;white-space:normal;word-break:break-word;overflow-wrap:anywhere;';
+                document.body.appendChild(tooltip);
 
-                canvas.addEventListener('mouseenter', animateLineReveal);
+                canvas.addEventListener('click', () => animateLineReveal());
                 canvas.addEventListener('mousemove', (e) => {
                     const points = canvas._pointPositions;
                     if (!points) return;
                     const rect = canvas.getBoundingClientRect();
                     const mouseX = e.clientX - rect.left;
                     const mouseY = e.clientY - rect.top;
+
                     let closest = null;
-                    let closestDist = Infinity;
+                    let closestXDist = Infinity;
                     points.forEach(p => {
-                        const dist = Math.hypot(p.x - mouseX, p.y - mouseY);
-                        if (dist < closestDist && dist < 50) {
-                            closestDist = dist;
+                        const xDist = Math.abs(p.x - mouseX);
+                        if (xDist < closestXDist) {
+                            closestXDist = xDist;
                             closest = p;
                         }
                     });
-                    if (!closest) {
+
+                    if (!closest || closestXDist > 30) {
                         tooltip.style.display = 'none';
                         return;
                     }
+
                     const amountStr = closest.data.amount >= 0 ? `+${closest.data.amount}` : `${closest.data.amount}`;
                     tooltip.innerHTML = `<div style="font-weight:700;margin-bottom:4px;">🍪 ${closest.data.balance}</div><div style="color:${closest.data.amount >= 0 ? '#38a169' : '#e53e3e'};font-weight:600;">${amountStr}</div><div style="font-size:0.85em;color:var(--color-text-muted,#888);margin-top:4px;">${closest.data.reason}</div>`;
                     tooltip.style.display = 'block';
-                    tooltip.style.left = `${Math.min(rect.width - 225, closest.x + 15)}px`;
-                    tooltip.style.top = `${closest.y - 20}px`;
+
+                    const tooltipWidth = tooltip.offsetWidth;
+                    const tooltipHeight = tooltip.offsetHeight;
+
+                    const anchorX = rect.left + closest.x;
+                    const anchorY = rect.top + closest.y;
+
+                    let tooltipLeft = anchorX + 14;
+                    if (tooltipLeft + tooltipWidth > window.innerWidth - 8) {
+                        tooltipLeft = anchorX - tooltipWidth - 14;
+                    }
+                    tooltipLeft = Math.max(8, Math.min(window.innerWidth - tooltipWidth - 8, tooltipLeft));
+
+                    let tooltipTop = anchorY - tooltipHeight - 12;
+                    if (tooltipTop < 8) {
+                        tooltipTop = anchorY + 12;
+                    }
+                    if (tooltipTop + tooltipHeight > window.innerHeight - 8) {
+                        tooltipTop = Math.max(8, window.innerHeight - tooltipHeight - 8);
+                    }
+
+                    tooltip.style.left = `${tooltipLeft}px`;
+                    tooltip.style.top = `${tooltipTop}px`;
                 });
                 canvas.addEventListener('mouseleave', () => {
                     tooltip.style.display = 'none';
@@ -10943,7 +11001,12 @@ async function enhanceKitchenDashboard() {
                 canvas._flavortownGraphTooltipAttached = true;
             }
 
-            drawGraph(1);
+            if (!canvas._flavortownGraphInitialAnimated) {
+                canvas._flavortownGraphInitialAnimated = true;
+                animateLineReveal({ initial: true });
+            } else {
+                drawGraph(1);
+            }
             document.addEventListener('flavortown-theme-changed', () => setTimeout(() => drawGraph(1), 150));
         }
 

@@ -1187,6 +1187,28 @@ a:hover {
     background-color: var(--overcooked-dark) !important;
 }
 
+.sidequest-card__converge-author {
+    color: var(--overcooked-white) !important;
+}
+
+.sidequest-card__converge-text {
+    color: var(--overcooked-foam) !important;
+}
+
+.sidequest-card__converge-text strong {
+    color: var(--overcooked-cyan) !important;
+}
+
+.sidequest-card__converge-meta {
+    color: var(--overcooked-surface) !important;
+}
+
+.sidequest-card__converge-app-badge {
+    background-color: color-mix(in srgb, var(--overcooked-cyan), transparent 82%) !important;
+    color: var(--overcooked-cyan) !important;
+    border: 1px solid color-mix(in srgb, var(--overcooked-cyan), transparent 64%) !important;
+}
+
 .sidequest-card__buttons .btn--blue,
 .sidequest-card__buttons .btn--red,
 .sidequest-card__buttons .btn--green,

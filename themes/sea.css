@@ -1180,6 +1180,28 @@ a:hover {
     background-color: var(--sea-dark) !important;
 }
 
+.sidequest-card__converge-author {
+    color: var(--sea-white) !important;
+}
+
+.sidequest-card__converge-text {
+    color: var(--sea-foam) !important;
+}
+
+.sidequest-card__converge-text strong {
+    color: var(--sea-cyan) !important;
+}
+
+.sidequest-card__converge-meta {
+    color: var(--sea-surface) !important;
+}
+
+.sidequest-card__converge-app-badge {
+    background-color: color-mix(in srgb, var(--sea-cyan), transparent 82%) !important;
+    color: var(--sea-cyan) !important;
+    border: 1px solid color-mix(in srgb, var(--sea-cyan), transparent 64%) !important;
+}
+
 .sidequest-card__buttons .btn--blue,
 .sidequest-card__buttons .btn--red,
 .sidequest-card__buttons .btn--green,
