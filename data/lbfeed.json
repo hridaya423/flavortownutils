@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-23T10:09:43.457Z",
+  "lastUpdated": "2026-03-23T11:23:46.530Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -76585,6 +76585,22 @@
         "reason": "Hello, Kitchen!",
         "reasonType": "achievement",
         "userId": "U0AF05FTK51"
+      },
+      {
+        "ts": "2026-03-23T10:52:04.444Z",
+        "delta": 15,
+        "balance": 87,
+        "reason": "Cookbook Author",
+        "reasonType": "achievement",
+        "userId": "U0AF05FTK51"
+      },
+      {
+        "ts": "2026-03-23T10:52:32.650Z",
+        "delta": -75,
+        "balance": 12,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0AF05FTK51"
       }
     ],
     "u0af05k107m": [
@@ -78139,6 +78155,12 @@
     ]
   },
   "users": {
+    "U0AF05FTK51": {
+      "id": "U0AF05FTK51",
+      "username": "apurnaray25",
+      "displayName": "apurnaray25",
+      "avatar": "https://avatars.slack-edge.com/2026-02-15/10520575279988_c2c19efcd216ac119b8f_72.jpg"
+    },
     "U0AF05K107M": {
       "id": "U0AF05K107M",
       "username": "himanshibisht25",
@@ -78382,12 +78404,6 @@
       "username": "tanjim",
       "displayName": "tanjim",
       "avatar": "https://avatars.slack-edge.com/2025-08-17/9353261346055_c03b1e4852e31751d7a4_72.jpg"
-    },
-    "U0AF05FTK51": {
-      "id": "U0AF05FTK51",
-      "username": "apurnaray25",
-      "displayName": "apurnaray25",
-      "avatar": "https://avatars.slack-edge.com/2026-02-15/10520575279988_c2c19efcd216ac119b8f_72.jpg"
     },
     "U08D22QNUVD": {
       "id": "U08D22QNUVD",
