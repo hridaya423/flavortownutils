@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-23T21:56:37.233Z",
+  "lastUpdated": "2026-03-23T22:37:18.619Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -33508,6 +33508,22 @@
         "balance": 241,
         "reason": "ship event payout",
         "reasonType": "",
+        "userId": "U09A7GEM760"
+      },
+      {
+        "ts": "2026-03-23T22:04:33.866Z",
+        "delta": 5,
+        "balance": 246,
+        "reason": "Fleet Captain",
+        "reasonType": "achievement",
+        "userId": "U09A7GEM760"
+      },
+      {
+        "ts": "2026-03-23T22:04:33.877Z",
+        "delta": 15,
+        "balance": 261,
+        "reason": "Five Star Chef",
+        "reasonType": "achievement",
         "userId": "U09A7GEM760"
       }
     ],
@@ -80325,6 +80341,11 @@
     ]
   },
   "users": {
+    "U09A7GEM760": {
+      "id": "U09A7GEM760",
+      "username": "sadiyameem123",
+      "avatar": "https://avatars.slack-edge.com/2025-12-13/10144998433360_d12c0c70edd22615e94d_72.png"
+    },
     "U0A74N2LAQY": {
       "id": "U0A74N2LAQY",
       "username": "ultraviolet.asdf",
@@ -81326,11 +81347,6 @@
       "id": "U093RE2RUK0",
       "username": "hb.hugo.brisebois",
       "avatar": "https://avatars.slack-edge.com/2025-10-06/9629194930839_27844c6db28857bb79d8_72.png"
-    },
-    "U09A7GEM760": {
-      "id": "U09A7GEM760",
-      "username": "sadiyameem123",
-      "avatar": "https://avatars.slack-edge.com/2025-12-13/10144998433360_d12c0c70edd22615e94d_72.png"
     },
     "U0A8GDTG4LQ": {
       "id": "U0A8GDTG4LQ",
