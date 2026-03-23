@@ -4432,7 +4432,6 @@ function prepareHeatmapData(dailyAggregates) {
 
     const firstDate = new Date(dates[0]);
     const lastDate = new Date();
-    lastDate.setMonth(lastDate.getMonth() + 1);
 
     let maxDevlogs = 0;
     let maxHours = 0;
@@ -4498,9 +4497,24 @@ function renderHeatmap(canvas, data, viewMode) {
     const cols = weeks.length;
     const rows = 7;
 
-    const cellSize = 28;
-    const gap = 4;
+    let cellSize = 28;
+    let gap = 4;
     const padding = { top: 40, right: 20, bottom: 48, left: 56 };
+
+    const containerWidth = canvas.parentElement?.clientWidth || 0;
+    if (containerWidth > 0) {
+        const availableGridWidth = containerWidth - padding.left - padding.right;
+        const minCellSize = 16;
+        if (availableGridWidth > 0) {
+            const fittedCellSize = Math.floor((availableGridWidth - (cols - 1) * gap) / cols);
+            if (fittedCellSize < cellSize) {
+                cellSize = Math.max(minCellSize, fittedCellSize);
+            }
+            if (cellSize <= 20) {
+                gap = 3;
+            }
+        }
+    }
 
     const width = padding.left + cols * (cellSize + gap) + padding.right;
     const height = padding.top + rows * (cellSize + gap) + padding.bottom;
@@ -4785,7 +4799,13 @@ function createHeatmapComponent(data) {
     const canvas = container.querySelector('#flavortown-heatmap-canvas');
     const tooltip = createHeatmapTooltip();
 
-    renderHeatmap(canvas, data, currentViewMode);
+    const renderCurrentHeatmap = (sourceData = getHeatmapData()) => {
+        renderHeatmap(canvas, sourceData, currentViewMode);
+    };
+
+    requestAnimationFrame(() => {
+        renderCurrentHeatmap(data);
+    });
 
     container.querySelectorAll('.flavortown-heatmap-view-toggle .flavortown-heatmap-btn').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -4793,7 +4813,7 @@ function createHeatmapComponent(data) {
             btn.classList.add('active');
             currentViewMode = btn.dataset.mode;
             setHeatmapPrefs({ ...getHeatmapPrefs(), lastViewMode: currentViewMode });
-            renderHeatmap(canvas, getHeatmapData(), currentViewMode);
+            renderCurrentHeatmap();
             updateHeatmapLegend(container, currentViewMode);
         });
     });
@@ -4829,7 +4849,7 @@ function createHeatmapComponent(data) {
     });
     
     document.addEventListener('flavortown-theme-changed', () => {
-        renderHeatmap(canvas, getHeatmapData(), currentViewMode);
+        renderCurrentHeatmap();
     });
     
     return container;
