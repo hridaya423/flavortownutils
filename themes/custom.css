@@ -1406,6 +1406,8 @@ a:hover {
 
 .dropdown__label {
     color: var(--custom-text-muted) !important;
+    z-index: 1 !important;
+    position: relative !important;
 }
 
 .dropdown__button {
@@ -4400,4 +4402,16 @@ body.flavortown-docs-no-code-theme .card code {
 .kitchen-pyramid-banner {
     background: var(--custom-accent) !important;
     border-color: var(--custom-accent) !important;
+}
+
+.flavortown-oos-toggle {
+    color: var(--custom-text-muted) !important;
+}
+
+.flavortown-oos-switch {
+    background: var(--custom-surface-hover) !important;
+}
+
+.flavortown-oos-checkbox:checked + .flavortown-oos-switch {
+    background: var(--custom-accent-alt) !important;
 }

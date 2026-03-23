@@ -1340,6 +1340,8 @@ a:hover {
 
 .dropdown__label {
     color: var(--overcooked-foam) !important;
+    z-index: 1 !important;
+    position: relative !important;
 }
 
 .dropdown__button {
@@ -4491,4 +4493,16 @@ body.flavortown-docs-no-code-theme .card code {
 .kitchen-pyramid-banner {
     background: var(--overcooked-cyan) !important;
     border-color: var(--overcooked-cyan) !important;
+}
+
+.flavortown-oos-toggle {
+    color: var(--overcooked-foam) !important;
+}
+
+.flavortown-oos-switch {
+    background: var(--overcooked-mid) !important;
+}
+
+.flavortown-oos-checkbox:checked + .flavortown-oos-switch {
+    background: var(--overcooked-cyan) !important;
 }

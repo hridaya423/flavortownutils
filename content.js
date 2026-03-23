@@ -8755,6 +8755,40 @@ function addShopCardEfficiency() {
     });
 }
 
+function addOutOfStockToggle() {
+    if (window.location.pathname !== '/shop') return;
+    if (document.querySelector('.flavortown-oos-toggle')) return;
+
+    const container = document.querySelector('.shop__buttons');
+    if (!container) return;
+
+    const toggle = document.createElement('label');
+    toggle.className = 'flavortown-oos-toggle';
+    toggle.innerHTML = `
+        <input type="checkbox" class="flavortown-oos-checkbox">
+        <span class="flavortown-oos-switch"></span>
+        <span class="flavortown-oos-label">Don't display out of stock items.</span>
+    `;
+
+    const checkbox = toggle.querySelector('input');
+    checkbox.addEventListener('change', () => {
+        const hideOOS = checkbox.checked;
+        document.querySelectorAll('.shop-item-card--out-of-stock').forEach(card => {
+            card.style.display = hideOOS ? 'none' : 'flex';
+        });
+        localStorage.setItem('flavortown-hide-oos', hideOOS);
+    });
+
+    const saved = localStorage.getItem('flavortown-hide-oos') === 'true';
+    if (saved) {
+        checkbox.checked = true;
+        document.querySelectorAll('.shop-item-card--out-of-stock').forEach(card => {
+            card.style.display = 'none';
+        });
+    }
+
+    container.insertBefore(toggle, container.firstChild);
+}
 const ACHIEVEMENT_STORAGE_KEY = 'flavortown_known_achievements';
 const ACHIEVEMENT_CHECK_INTERVAL = 12 * 60 * 60 * 1000;
 const ACHIEVEMENT_LAST_CHECK_KEY = 'flavortown_last_achievement_check';
@@ -10127,6 +10161,7 @@ function init() {
     runShopOrdersSync();
     initShopAccessories();
     addShopCardEfficiency();
+    addOutOfStockToggle();
     addExploreSearch();
     addExploreUsersPage();
     captureApiKey();
@@ -11711,6 +11746,7 @@ document.addEventListener('turbo:load', () => {
     runShopOrdersSync();
     initShopAccessories();
     addShopCardEfficiency();
+    addOutOfStockToggle();
     addExploreSearch();
     addExploreUsersPage();
     captureApiKey();
