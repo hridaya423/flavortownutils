@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-24T19:04:37.462Z",
+  "lastUpdated": "2026-03-24T20:02:20.443Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -45533,6 +45533,14 @@
         "reason": "Show and tell local",
         "reasonType": "achievement",
         "userId": "U0A3WSNS56Y"
+      },
+      {
+        "ts": "2026-03-24T19:40:02.396Z",
+        "delta": -10,
+        "balance": 383,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A3WSNS56Y"
       }
     ],
     "u0a3x8etq7q": [
@@ -52797,6 +52805,14 @@
         "delta": 25,
         "balance": 187,
         "reason": "user grant",
+        "reasonType": "",
+        "userId": "U0A5TL58UTW"
+      },
+      {
+        "ts": "2026-03-24T19:15:19.829Z",
+        "delta": -40,
+        "balance": 147,
+        "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0A5TL58UTW"
       }
@@ -81837,6 +81853,30 @@
         "reason": "user grant",
         "reasonType": "",
         "userId": "U0ALSGPC08G"
+      },
+      {
+        "ts": "2026-03-24T19:56:16.236Z",
+        "delta": 5,
+        "balance": 15,
+        "reason": "Very Fried",
+        "reasonType": "achievement",
+        "userId": "U0ALSGPC08G"
+      },
+      {
+        "ts": "2026-03-24T19:56:16.321Z",
+        "delta": 3,
+        "balance": 18,
+        "reason": "Home Cookin'",
+        "reasonType": "achievement",
+        "userId": "U0ALSGPC08G"
+      },
+      {
+        "ts": "2026-03-24T19:56:16.475Z",
+        "delta": 2,
+        "balance": 20,
+        "reason": "Recipe Notes",
+        "reasonType": "achievement",
+        "userId": "U0ALSGPC08G"
       }
     ],
     "u0alvdmnmpt": [
@@ -82105,6 +82145,24 @@
     ]
   },
   "users": {
+    "U0ALSGPC08G": {
+      "id": "U0ALSGPC08G",
+      "username": "alexeiemaillover",
+      "displayName": "AlexeiCheeseLover",
+      "avatar": "https://avatars.slack-edge.com/2026-03-23/10740705107815_f57175267bad7d1219f4_72.jpg"
+    },
+    "U0A3WSNS56Y": {
+      "id": "U0A3WSNS56Y",
+      "username": "saltichash",
+      "displayName": "SalticHash",
+      "avatar": "https://secure.gravatar.com/avatar/5f402c70ea77295cef1810629e3e2159.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0018-72.png"
+    },
+    "U0A5TL58UTW": {
+      "id": "U0A5TL58UTW",
+      "username": "luci",
+      "displayName": "Luci",
+      "avatar": "https://avatars.slack-edge.com/2026-01-01/10213685935029_bb9a4797b03a7a91ccdd_72.png"
+    },
     "U07UGRYER5G": {
       "id": "U07UGRYER5G",
       "username": "shahbazu628",
@@ -82145,12 +82203,6 @@
       "username": "albert.lungu.2010",
       "displayName": "albert",
       "avatar": "https://avatars.slack-edge.com/2025-10-17/9715553568275_1d9aa44fe90babbcc6ae_72.png"
-    },
-    "U0ALSGPC08G": {
-      "id": "U0ALSGPC08G",
-      "username": "alexeiemaillover",
-      "displayName": "AlexeiCheeseLover",
-      "avatar": "https://avatars.slack-edge.com/2026-03-23/10740705107815_f57175267bad7d1219f4_72.jpg"
     },
     "U084D1T5ZV0": {
       "id": "U084D1T5ZV0",
@@ -82762,12 +82814,6 @@
       "id": "U0A3VK4GFRN",
       "username": "bhatrichit10",
       "avatar": "https://avatars.slack-edge.com/2025-12-23/10160500975127_4e0ba49afbde21f78807_72.png"
-    },
-    "U0A3WSNS56Y": {
-      "id": "U0A3WSNS56Y",
-      "username": "saltichash",
-      "displayName": "SalticHash",
-      "avatar": "https://secure.gravatar.com/avatar/5f402c70ea77295cef1810629e3e2159.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0018-72.png"
     },
     "U0A8NC64K2L": {
       "id": "U0A8NC64K2L",
@@ -85066,12 +85112,6 @@
       "username": "dristantatiwari9",
       "displayName": "Iszq",
       "avatar": "https://avatars.slack-edge.com/2026-01-22/10338079454695_f5ea95b2d9b85fe36df6_72.jpg"
-    },
-    "U0A5TL58UTW": {
-      "id": "U0A5TL58UTW",
-      "username": "luci",
-      "displayName": "Luci",
-      "avatar": "https://avatars.slack-edge.com/2026-01-01/10213685935029_bb9a4797b03a7a91ccdd_72.png"
     },
     "U09MQ8PKNMU": {
       "id": "U09MQ8PKNMU",
