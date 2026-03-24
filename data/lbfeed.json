@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-24T22:58:06.223Z",
+  "lastUpdated": "2026-03-24T23:39:31.902Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -12497,6 +12497,14 @@
         "delta": 14,
         "balance": 29,
         "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U082DRXPMF1"
+      },
+      {
+        "ts": "2026-03-24T23:19:55.817Z",
+        "delta": -22,
+        "balance": 7,
+        "reason": "shop purchase",
         "reasonType": "",
         "userId": "U082DRXPMF1"
       }
@@ -82195,6 +82203,12 @@
     ]
   },
   "users": {
+    "U082DRXPMF1": {
+      "id": "U082DRXPMF1",
+      "username": "s30aem",
+      "displayName": "Karim",
+      "avatar": "https://avatars.slack-edge.com/2026-03-07/10656046164132_67fc05382fb182557180_72.jpg"
+    },
     "U0AAVSGH3HC": {
       "id": "U0AAVSGH3HC",
       "username": "hackclub8",
@@ -84374,12 +84388,6 @@
       "username": "zc123playz",
       "displayName": "Gongitygongitygong",
       "avatar": "https://avatars.slack-edge.com/2025-12-14/10122466931860_80b23b259c63ec807155_72.jpg"
-    },
-    "U082DRXPMF1": {
-      "id": "U082DRXPMF1",
-      "username": "s30aem",
-      "displayName": "Karim",
-      "avatar": "https://avatars.slack-edge.com/2026-03-07/10656046164132_67fc05382fb182557180_72.jpg"
     },
     "U08NXSM8A79": {
       "id": "U08NXSM8A79",
