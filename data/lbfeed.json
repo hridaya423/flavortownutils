@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-24T21:04:26.854Z",
+  "lastUpdated": "2026-03-24T22:00:37.836Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -57627,6 +57627,14 @@
         "reason": "ship event payout",
         "reasonType": "",
         "userId": "U0A6PJQQ5GU"
+      },
+      {
+        "ts": "2026-03-24T21:25:21.291Z",
+        "delta": 15,
+        "balance": 169,
+        "reason": "Five Star Chef",
+        "reasonType": "achievement",
+        "userId": "U0A6PJQQ5GU"
       }
     ],
     "u0a6pmu30v7": [
@@ -78643,6 +78651,14 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0AAVSGH3HC"
+      },
+      {
+        "ts": "2026-03-24T21:30:53.286Z",
+        "delta": -35,
+        "balance": 3,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0AAVSGH3HC"
       }
     ],
     "u0ab4awmbk3": [
@@ -82179,6 +82195,18 @@
     ]
   },
   "users": {
+    "U0AAVSGH3HC": {
+      "id": "U0AAVSGH3HC",
+      "username": "hackclub8",
+      "displayName": "46009361",
+      "avatar": "https://avatars.slack-edge.com/2026-01-29/10433002833120_f403f3da778a713c59df_72.png"
+    },
+    "U0A6PJQQ5GU": {
+      "id": "U0A6PJQQ5GU",
+      "username": "laurentmaxhuni1234",
+      "displayName": "LauMaX",
+      "avatar": "https://avatars.slack-edge.com/2026-02-15/10498749814471_369b24ae2118d8bd0ffb_72.png"
+    },
     "U0A0A0S987Q": {
       "id": "U0A0A0S987Q",
       "username": "sanderhoudijk10",
@@ -82483,12 +82511,6 @@
       "username": "adam.duda",
       "displayName": "adamd",
       "avatar": "https://avatars.slack-edge.com/2026-01-24/10349513961271_dc766ac7b818a8c3e2a2_72.png"
-    },
-    "U0AAVSGH3HC": {
-      "id": "U0AAVSGH3HC",
-      "username": "hackclub8",
-      "displayName": "46009361",
-      "avatar": "https://avatars.slack-edge.com/2026-01-29/10433002833120_f403f3da778a713c59df_72.png"
     },
     "U0A78CT01A6": {
       "id": "U0A78CT01A6",
@@ -84522,12 +84544,6 @@
       "username": "roylu0404",
       "displayName": "MisplacedOrange",
       "avatar": "https://secure.gravatar.com/avatar/6f84c02732d1711b5c0085433bd895ff.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0026-72.png"
-    },
-    "U0A6PJQQ5GU": {
-      "id": "U0A6PJQQ5GU",
-      "username": "laurentmaxhuni1234",
-      "displayName": "LauMaX",
-      "avatar": "https://avatars.slack-edge.com/2026-02-15/10498749814471_369b24ae2118d8bd0ffb_72.png"
     },
     "U0AA3RZMGPK": {
       "id": "U0AA3RZMGPK",
