@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-24T23:39:31.902Z",
+  "lastUpdated": "2026-03-25T02:21:40.116Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -22418,6 +22418,14 @@
         "ts": "2026-03-24T07:40:59.088Z",
         "delta": -10,
         "balance": 391,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U090LAT6QKB"
+      },
+      {
+        "ts": "2026-03-25T02:06:43.947Z",
+        "delta": -100,
+        "balance": 291,
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U090LAT6QKB"
@@ -82203,6 +82211,11 @@
     ]
   },
   "users": {
+    "U090LAT6QKB": {
+      "id": "U090LAT6QKB",
+      "username": "dinosaur890123",
+      "avatar": "https://avatars.slack-edge.com/2025-12-09/10077925689238_2149e0ba18d7110e7a3f_72.png"
+    },
     "U082DRXPMF1": {
       "id": "U082DRXPMF1",
       "username": "s30aem",
@@ -82566,11 +82579,6 @@
       "username": "bartoszkasyna",
       "displayName": "bartoszkasyna",
       "avatar": "https://secure.gravatar.com/avatar/41e990e4e09227cd048a746d176e1fee.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0024-72.png"
-    },
-    "U090LAT6QKB": {
-      "id": "U090LAT6QKB",
-      "username": "dinosaur890123",
-      "avatar": "https://avatars.slack-edge.com/2025-12-09/10077925689238_2149e0ba18d7110e7a3f_72.png"
     },
     "U0A74N2LAQY": {
       "id": "U0A74N2LAQY",
