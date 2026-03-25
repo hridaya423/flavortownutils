@@ -17,6 +17,111 @@
 
 .flavortown-inline-form .projects-new__actions {
     padding: 4px 16px 8px 16px !important;
+    display: flex !important;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.flavortown-devlog-draft-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    min-width: 0;
+    flex-wrap: wrap;
+}
+
+.flavortown-devlog-draft-trailing {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+    flex-wrap: wrap;
+}
+
+.flavortown-devlog-draft-btn-save {
+    background: var(--color-accent, #ec8b33) !important;
+    border-color: var(--color-accent, #ec8b33) !important;
+    color: var(--flavortown-on-accent, #fff) !important;
+}
+
+.flavortown-devlog-draft-btn-clear {
+    width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid color-mix(in srgb, var(--color-accent, #ec8b33), transparent 30%);
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--color-accent, #ec8b33), transparent 86%);
+    color: var(--color-accent, #ec8b33);
+    font-size: 1.05rem;
+    font-weight: 800;
+    padding: 0;
+    cursor: pointer;
+}
+
+.flavortown-devlog-draft-autosave {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95em;
+    color: var(--color-text-secondary, #7a6750);
+    user-select: none;
+    cursor: pointer;
+}
+
+.flavortown-devlog-draft-autosave-checkbox {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.flavortown-devlog-draft-autosave-switch {
+    position: relative;
+    width: 44px;
+    height: 24px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--color-accent, #ec8b33), transparent 78%);
+    transition: background 0.18s ease;
+}
+
+.flavortown-devlog-draft-autosave-switch::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+    transition: transform 0.18s ease;
+}
+
+.flavortown-devlog-draft-autosave-checkbox:checked + .flavortown-devlog-draft-autosave-switch {
+    background: var(--color-accent, #ec8b33);
+}
+
+.flavortown-devlog-draft-autosave-checkbox:checked + .flavortown-devlog-draft-autosave-switch::after {
+    transform: translateX(20px);
+}
+
+.flavortown-devlog-draft-autosave-text {
+    font-weight: 700;
+}
+
+.flavortown-devlog-draft-status {
+    font-size: 0.8em;
+    color: var(--color-text-muted, #8b7355);
+    white-space: nowrap;
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: auto;
 }
 
 .flavortown-unshipped-cookie-est {

@@ -67,6 +67,8 @@ const PAYOUT_TICKETS_PER_DOLLAR = 5;
 const COMMUNITY_VOTES_SHIP_CUTOFF_ISO = '2026-02-23T20:41:00.000Z';
 const COMMUNITY_VOTES_SHIP_CUTOFF_TS = new Date(COMMUNITY_VOTES_SHIP_CUTOFF_ISO).getTime();
 const CURRENT_SCALE_ESTIMATE_MIN_VOTES = 12;
+const LEGACY_VOTE_SCALE_MAX = 6;
+const CURRENT_VOTE_SCALE_MAX = 9;
 const PERCENTILE_HILL_SHAPE = 1.08;
 const THEME_CACHE_KEY = 'flavortown-theme-cache';
 const THEME_PRELOAD_STYLE_ID = 'flavortown-theme-preload';
@@ -107,6 +109,8 @@ const SHIP_TIME_CACHE_TTL = 24 * 60 * 60 * 1000;
 const PROJECT_UNSHIPPED_CACHE_KEY = 'flavortown_project_unshipped';
 const PROJECT_UNSHIPPED_CACHE_TTL = 24 * 60 * 60 * 1000;
 const PROJECT_UNSHIPPED_CLEANUP_KEY = 'flavortown_project_unshipped_cleanup';
+const DEVLOG_DRAFT_KEY_PREFIX = 'flavortown_devlog_draft_v1:';
+const DEVLOG_DRAFT_AUTOSAVE_KEY = 'flavortown_devlog_draft_autosave';
 const SHOP_WISHLIST_ORDERED_ITEMS_KEY = 'flavortown_shop_wishlist_ordered';
 const LOCAL_STORAGE_SYNC_ENABLED_KEY = 'flavortownLocalStorageSyncEnabled';
 const LOGPHEUS_SYNC_ENABLED_KEY = 'flavortownLogpheusGoalSyncEnabled';
@@ -1074,8 +1078,9 @@ async function addShipStats() {
             const rate = multiplierValue || (hoursValue && cookiesValue ? getMultiplierFromCookies(cookiesValue, hoursValue) : null);
             const estimate = rate ? buildShipVoteEstimate(shipPost, rate, shipTimestamp) : null;
             const isExactEstimate = estimate?.source === 'exact-votes';
+            const useScaledEstimateDisplay = isExactEstimate || (Number(estimate?.scaleMax) > LEGACY_VOTE_SCALE_MAX);
             const overallScoreText = estimate?.overallScore
-                ? (isExactEstimate
+                ? (useScaledEstimateDisplay
                     ? formatScoreWithScale(estimate.overallScore, estimate.scaleMax || 9)
                     : formatScoreValue(estimate.overallScore))
                 : '--';
@@ -1086,7 +1091,7 @@ async function addShipStats() {
 
             if (estimate?.categories) {
                 const formatCategory = (label, value) => {
-                    const scoreText = isExactEstimate
+                    const scoreText = useScaledEstimateDisplay
                         ? formatScoreWithScale(value, estimate.scaleMax || 9)
                         : formatScoreValue(value);
                     return `${label} ★${scoreText}`;
@@ -2874,9 +2879,22 @@ function estimatePercentileFromNormalizedScore(scoreNorm) {
     return clampValue(corrected * 100, 0.01, 99.99);
 }
 
-function estimatePercentileFromOverallScore(overallScore, scaleMax = 6) {
+function getSafeVoteScaleMax(scaleMax, fallback = LEGACY_VOTE_SCALE_MAX) {
+    const numericScale = Number(scaleMax);
+    return Number.isFinite(numericScale) && numericScale > 1 ? numericScale : fallback;
+}
+
+function convertScoreScale(score, fromScale = LEGACY_VOTE_SCALE_MAX, toScale = LEGACY_VOTE_SCALE_MAX) {
+    if (!isFinite(score)) return null;
+    const safeFrom = getSafeVoteScaleMax(fromScale, LEGACY_VOTE_SCALE_MAX);
+    const safeTo = getSafeVoteScaleMax(toScale, LEGACY_VOTE_SCALE_MAX);
+    const normalized = clampValue((score - 1) / (safeFrom - 1), 0, 1);
+    return 1 + normalized * (safeTo - 1);
+}
+
+function estimatePercentileFromOverallScore(overallScore, scaleMax = LEGACY_VOTE_SCALE_MAX) {
     if (!overallScore || !isFinite(overallScore)) return null;
-    const safeScale = isFinite(scaleMax) && scaleMax > 1 ? scaleMax : 6;
+    const safeScale = getSafeVoteScaleMax(scaleMax, LEGACY_VOTE_SCALE_MAX);
     const scoreNorm = clampValue((overallScore - 1) / (safeScale - 1), 0, 1);
     return estimatePercentileFromNormalizedScore(scoreNorm);
 }
@@ -2983,8 +3001,10 @@ function buildShipVoteEstimate(shipPost, multiplier, shipTimestamp) {
     }
 
     if (!multiplier || !isFinite(multiplier)) return null;
-    const legacy = buildVoteEstimate(multiplier);
-    return legacy ? { ...legacy, source: 'legacy-multiplier', scaleMax: 6 } : null;
+    return buildVoteEstimate(multiplier, {
+        source: isCurrentScaleShip ? 'current-multiplier' : 'legacy-multiplier',
+        scaleMax: isCurrentScaleShip ? CURRENT_VOTE_SCALE_MAX : LEGACY_VOTE_SCALE_MAX
+    });
 }
 
 function hasReliableCurrentScaleEstimate(estimate, minVotes = CURRENT_SCALE_ESTIMATE_MIN_VOTES) {
@@ -3087,6 +3107,15 @@ function getCurrentScaleProjectEstimateFromShipPosts(shipPosts) {
     };
 }
 
+function inferProjectFallbackScaleMax(estimateMeta = {}) {
+    const currentShipCount = Number(estimateMeta?.currentShipCount) || 0;
+    const legacyShipCount = Number(estimateMeta?.legacyShipCount) || 0;
+    if (currentShipCount > 0 && legacyShipCount === 0) {
+        return CURRENT_VOTE_SCALE_MAX;
+    }
+    return LEGACY_VOTE_SCALE_MAX;
+}
+
 function formatScoreWithScale(score, scaleMax) {
     const formatted = formatScoreValue(score);
     if (formatted === '--') return formatted;
@@ -3105,40 +3134,54 @@ function estimatePercentileFromMultiplier(multiplier) {
     return clampValue(corrected * 100, 0.01, 99.99);
 }
 
-function estimateOverallScoreFromMultiplier(multiplier) {
+function estimateOverallScoreFromMultiplier(multiplier, scaleMax = LEGACY_VOTE_SCALE_MAX) {
     if (!multiplier || !isFinite(multiplier)) return null;
+    const safeScale = getSafeVoteScaleMax(scaleMax, LEGACY_VOTE_SCALE_MAX);
     const hourlyRate = multiplier / PAYOUT_TICKETS_PER_DOLLAR;
     const normalized = (hourlyRate - PAYOUT_LOW_DOLLARS_PER_HOUR) / (PAYOUT_HIGH_DOLLARS_PER_HOUR - PAYOUT_LOW_DOLLARS_PER_HOUR);
     const clamped = clampValue(normalized, 0, 1);
     const pRaw = Math.pow(clamped, 1 / PAYOUT_GAMMA);
     const scoreNorm = polynomialCurve(pRaw, SCORE_CURVE_COEFFS);
-    const score = 1 + 5 * scoreNorm;
-    return clampValue(score, 1, 6);
+    const score = 1 + (safeScale - 1) * scoreNorm;
+    return clampValue(score, 1, safeScale);
 }
 
-function estimateCategoryScoresFromOverall(overallScore, percentile) {
+function estimateCategoryScoresFromOverall(overallScore, percentile, scaleMax = LEGACY_VOTE_SCALE_MAX) {
     if (!overallScore || !isFinite(overallScore)) return null;
+    const safeScale = getSafeVoteScaleMax(scaleMax, LEGACY_VOTE_SCALE_MAX);
+    const legacyOverall = convertScoreScale(overallScore, safeScale, LEGACY_VOTE_SCALE_MAX);
+    if (!legacyOverall || !isFinite(legacyOverall)) return null;
+
     const p = clampValue((percentile || 0) / 100, 0, 1);
-    const scoreNorm = clampValue((overallScore - 1) / 5, 0, 1);
+    const scoreNorm = clampValue((legacyOverall - 1) / (LEGACY_VOTE_SCALE_MAX - 1), 0, 1);
     const originality = lerpRange(CATEGORY_SCORE_RANGES.originality.min, CATEGORY_SCORE_RANGES.originality.max, scoreNorm);
     const technical = lerpRange(CATEGORY_SCORE_RANGES.technical.min, CATEGORY_SCORE_RANGES.technical.max, scoreNorm);
     const usabilityBase = lerpRange(CATEGORY_SCORE_RANGES.usability.min, CATEGORY_SCORE_RANGES.usability.max, scoreNorm);
     const usability = usabilityBase + (CATEGORY_SCORE_RANGES.usability.percentileSlope || 0) * p;
     const storytelling = lerpRange(CATEGORY_SCORE_RANGES.storytelling.min, CATEGORY_SCORE_RANGES.storytelling.max, scoreNorm);
 
-    return { originality, technical, usability, storytelling };
+    const legacyScores = { originality, technical, usability, storytelling };
+    if (safeScale === LEGACY_VOTE_SCALE_MAX) {
+        return legacyScores;
+    }
+
+    return Object.fromEntries(
+        Object.entries(legacyScores).map(([key, value]) => [key, convertScoreScale(value, LEGACY_VOTE_SCALE_MAX, safeScale)])
+    );
 }
 
-function buildVoteEstimate(multiplier) {
+function buildVoteEstimate(multiplier, options = {}) {
+    const scaleMax = getSafeVoteScaleMax(options.scaleMax, LEGACY_VOTE_SCALE_MAX);
+    const source = options.source || (scaleMax > LEGACY_VOTE_SCALE_MAX ? 'current-multiplier' : 'legacy-multiplier');
     const percentile = estimatePercentileFromMultiplier(multiplier);
     if (!percentile) return null;
-    const overallScore = estimateOverallScoreFromMultiplier(multiplier);
+    const overallScore = estimateOverallScoreFromMultiplier(multiplier, scaleMax);
     if (!overallScore) return null;
-    const categoriesRaw = estimateCategoryScoresFromOverall(overallScore, percentile);
+    const categoriesRaw = estimateCategoryScoresFromOverall(overallScore, percentile, scaleMax);
     if (!categoriesRaw) {
         return {
-            source: 'legacy-multiplier',
-            scaleMax: 6,
+            source,
+            scaleMax,
             percentile,
             overallScore,
             categories: null
@@ -3146,15 +3189,15 @@ function buildVoteEstimate(multiplier) {
     }
 
     return {
-        source: 'legacy-multiplier',
-        scaleMax: 6,
+        source,
+        scaleMax,
         percentile,
         overallScore,
         categories: {
-            originality: roundToHalf(clampValue(categoriesRaw.originality, 1, 6)),
-            technical: roundToHalf(clampValue(categoriesRaw.technical, 1, 6)),
-            usability: roundToHalf(clampValue(categoriesRaw.usability, 1, 6)),
-            storytelling: roundToHalf(clampValue(categoriesRaw.storytelling, 1, 6))
+            originality: roundToHalf(clampValue(categoriesRaw.originality, 1, scaleMax)),
+            technical: roundToHalf(clampValue(categoriesRaw.technical, 1, scaleMax)),
+            usability: roundToHalf(clampValue(categoriesRaw.usability, 1, scaleMax)),
+            storytelling: roundToHalf(clampValue(categoriesRaw.storytelling, 1, scaleMax))
         }
     };
 }
@@ -3198,7 +3241,8 @@ function createVoteEstimateElement(estimate, options = {}) {
 
     const isExact = options.exact || estimate.source === 'exact-votes';
     const scaleMax = options.scaleMax || estimate.scaleMax || (isExact ? 9 : 6);
-    const overallText = isExact
+    const useScaledDisplay = isExact || (Number(scaleMax) > LEGACY_VOTE_SCALE_MAX);
+    const overallText = useScaledDisplay
         ? formatScoreWithScale(estimate.overallScore, scaleMax)
         : formatScoreValue(estimate.overallScore);
 
@@ -3209,7 +3253,7 @@ function createVoteEstimateElement(estimate, options = {}) {
     let accordion = null;
     if (estimate.categories) {
         const formatCategory = (value) => (
-            isExact
+            useScaledDisplay
                 ? formatScoreWithScale(value, scaleMax)
                 : formatScoreValue(value)
         );
@@ -4977,7 +5021,13 @@ async function addProjectCardCookieStats() {
 
         const hours = minutes > 0 ? minutes / 60 : null;
         const rate = hours && totalCookies > 0 ? getMultiplierFromCookies(totalCookies, hours) : null;
-        const estimate = estimateOverride || (rate ? buildVoteEstimate(rate) : null);
+        const inferredScaleMax = inferProjectFallbackScaleMax(estimateMeta);
+        const inferredEstimateSource = inferredScaleMax > LEGACY_VOTE_SCALE_MAX
+            ? 'current-multiplier'
+            : 'legacy-multiplier';
+        const estimate = estimateOverride || (rate
+            ? buildVoteEstimate(rate, { scaleMax: inferredScaleMax, source: inferredEstimateSource })
+            : null);
         const isExactEstimate = estimate?.source === 'exact-votes';
 
         let rateLine = formatCookieRateLine(rate);
@@ -5055,7 +5105,6 @@ async function addProjectCardCookieStats() {
     cards.forEach(card => {
         const projectName = card.querySelector('.project-card__title-link')?.textContent?.trim();
         if (!projectName) return;
-
         const projectPayouts = payouts.filter(payout => projectNameMatches(payout.projectName, projectName));
         const projectId = card.id ? card.id.replace('project_', '') : null;
         const cachedUnshipped = projectId ? getCachedProjectUnshipped(projectId) : null;
@@ -5281,8 +5330,15 @@ async function addProjectShowCookieStat(forceRefresh = false) {
 
     const hours = minutes > 0 ? minutes / 60 : null;
     const rate = hours && totalCookies > 0 ? getMultiplierFromCookies(totalCookies, hours) : null;
-    const projectEstimate = currentScaleProjectEstimate || (rate ? buildVoteEstimate(rate) : null);
+    const fallbackScaleMax = inferProjectFallbackScaleMax(projectVoteMeta);
+    const fallbackEstimateSource = fallbackScaleMax > LEGACY_VOTE_SCALE_MAX
+        ? 'current-multiplier'
+        : 'legacy-multiplier';
+    const projectEstimate = currentScaleProjectEstimate || (rate
+        ? buildVoteEstimate(rate, { scaleMax: fallbackScaleMax, source: fallbackEstimateSource })
+        : null);
     const isExactProjectEstimate = projectEstimate?.source === 'exact-votes';
+    const useScaledProjectEstimateDisplay = isExactProjectEstimate || (Number(projectEstimate?.scaleMax) > LEGACY_VOTE_SCALE_MAX);
 
     let rateLine = formatCookieRateLine(rate);
     if ((!rate || !isFinite(rate)) && isExactProjectEstimate && projectEstimate?.multiplier) {
@@ -5351,7 +5407,7 @@ async function addProjectShowCookieStat(forceRefresh = false) {
             detailsRow.appendChild(createProjectShowStat(`${formatMinutesCompact(sinceLastShipMinutes)} since latest ship`, clockIcon));
         }
         if (estimate?.overallScore) {
-            const scoreValue = isExactProjectEstimate
+            const scoreValue = useScaledProjectEstimateDisplay
                 ? formatScoreWithScale(estimate.overallScore, estimate.scaleMax || 9)
                 : formatScoreValue(estimate.overallScore);
             const scoreText = `${isExactProjectEstimate ? '' : '~ '}avg ⭐ ${scoreValue}`;
@@ -5366,7 +5422,7 @@ async function addProjectShowCookieStat(forceRefresh = false) {
             categoriesRow.className = 'project-show-card__stats flavortown-project-category-stats';
 
             const formatCategoryScore = (value) => (
-                isExactProjectEstimate
+                useScaledProjectEstimateDisplay
                     ? formatScoreWithScale(value, estimate.scaleMax || 9)
                     : formatScoreValue(value)
             );
@@ -5785,6 +5841,215 @@ function insertImage(textarea) {
     textarea.dispatchEvent(new Event('input', { bubbles: true }));
 }
 
+function getCurrentProjectIdFromPath() {
+    const match = window.location.pathname.match(/\/projects\/(\d+)/);
+    return match ? match[1] : null;
+}
+
+function getDevlogDraftStorageKey(projectId) {
+    if (!projectId) return null;
+    return `${DEVLOG_DRAFT_KEY_PREFIX}${projectId}`;
+}
+
+function readDevlogDraft(projectId) {
+    const key = getDevlogDraftStorageKey(projectId);
+    if (!key) return null;
+    try {
+        const raw = localStorage.getItem(key);
+        if (!raw) return null;
+        const parsed = JSON.parse(raw);
+        if (!parsed || typeof parsed !== 'object') return null;
+        const body = typeof parsed.body === 'string' ? parsed.body : '';
+        const updatedAt = Number(parsed.updatedAt) || 0;
+        if (!body.trim()) return null;
+        return { body, updatedAt };
+    } catch (e) {
+        return null;
+    }
+}
+
+function writeDevlogDraft(projectId, body) {
+    const key = getDevlogDraftStorageKey(projectId);
+    if (!key) return false;
+    const text = typeof body === 'string' ? body : '';
+    if (!text.trim()) {
+        clearDevlogDraft(projectId);
+        return true;
+    }
+    try {
+        localStorage.setItem(key, JSON.stringify({
+            body: text,
+            updatedAt: Date.now()
+        }));
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+
+function clearDevlogDraft(projectId) {
+    const key = getDevlogDraftStorageKey(projectId);
+    if (!key) return;
+    try {
+        localStorage.removeItem(key);
+    } catch (e) {
+    }
+}
+
+function formatDraftSavedAt(timestamp) {
+    if (!timestamp || !isFinite(timestamp)) return '';
+    try {
+        return new Date(timestamp).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
+    } catch (e) {
+        return '';
+    }
+}
+
+function isDevlogDraftAutosaveEnabled() {
+    try {
+        return localStorage.getItem(DEVLOG_DRAFT_AUTOSAVE_KEY) === 'true';
+    } catch (e) {
+        return false;
+    }
+}
+
+function setDevlogDraftAutosaveEnabled(enabled) {
+    try {
+        localStorage.setItem(DEVLOG_DRAFT_AUTOSAVE_KEY, enabled ? 'true' : 'false');
+    } catch (e) {
+    }
+}
+
+function initDevlogDraftControls(wrapper, form, devlogTextarea) {
+    if (!wrapper || !form || !devlogTextarea) return;
+    if (wrapper.dataset.flavortownDevlogDraftInit === 'true') return;
+
+    const projectId = getCurrentProjectIdFromPath();
+    if (!projectId) return;
+
+    const actions = wrapper.querySelector('.projects-new__actions');
+    if (!actions) return;
+
+    wrapper.dataset.flavortownDevlogDraftInit = 'true';
+
+    const controls = document.createElement('div');
+    controls.className = 'flavortown-devlog-draft-controls';
+
+    const trailing = document.createElement('div');
+    trailing.className = 'flavortown-devlog-draft-trailing';
+
+    const saveDraftBtn = document.createElement('button');
+    saveDraftBtn.type = 'button';
+    saveDraftBtn.className = 'btn btn--brown flavortown-devlog-draft-btn-save';
+    saveDraftBtn.textContent = 'Save Draft';
+
+    const clearDraftBtn = document.createElement('button');
+    clearDraftBtn.type = 'button';
+    clearDraftBtn.className = 'flavortown-devlog-draft-btn flavortown-devlog-draft-btn-clear';
+    clearDraftBtn.textContent = 'x';
+    clearDraftBtn.setAttribute('aria-label', 'Clear draft');
+    clearDraftBtn.title = 'Clear draft';
+
+    const autoSaveWrap = document.createElement('label');
+    autoSaveWrap.className = 'flavortown-devlog-draft-autosave';
+    const autoSaveCheckbox = document.createElement('input');
+    autoSaveCheckbox.type = 'checkbox';
+    autoSaveCheckbox.className = 'flavortown-devlog-draft-autosave-checkbox';
+    autoSaveCheckbox.checked = isDevlogDraftAutosaveEnabled();
+    const autoSaveSwitch = document.createElement('span');
+    autoSaveSwitch.className = 'flavortown-devlog-draft-autosave-switch';
+    const autoSaveText = document.createElement('span');
+    autoSaveText.className = 'flavortown-devlog-draft-autosave-text';
+    autoSaveText.textContent = 'Auto-save';
+    autoSaveWrap.appendChild(autoSaveCheckbox);
+    autoSaveWrap.appendChild(autoSaveSwitch);
+    autoSaveWrap.appendChild(autoSaveText);
+
+    const status = document.createElement('span');
+    status.className = 'flavortown-devlog-draft-status';
+
+    const setStatus = (message) => {
+        status.textContent = message || '';
+    };
+
+    let autoSaveTimer = null;
+
+    const queueAutoSave = () => {
+        if (!autoSaveCheckbox.checked) return;
+        if (autoSaveTimer) clearTimeout(autoSaveTimer);
+        autoSaveTimer = setTimeout(() => {
+            const ok = writeDevlogDraft(projectId, devlogTextarea.value || '');
+            if (ok) {
+                if ((devlogTextarea.value || '').trim()) {
+                    setStatus(`Auto-saved ${formatDraftSavedAt(Date.now())}`);
+                } else {
+                    setStatus('Draft cleared');
+                }
+            }
+        }, 700);
+    };
+
+    saveDraftBtn.addEventListener('click', () => {
+        const ok = writeDevlogDraft(projectId, devlogTextarea.value || '');
+        if (!ok) {
+            setStatus('Failed to save draft');
+            return;
+        }
+        if ((devlogTextarea.value || '').trim()) {
+            setStatus(`Draft saved ${formatDraftSavedAt(Date.now())}`);
+        } else {
+            setStatus('Draft cleared');
+        }
+    });
+
+    clearDraftBtn.addEventListener('click', () => {
+        if (autoSaveTimer) clearTimeout(autoSaveTimer);
+        clearDevlogDraft(projectId);
+        setStatus('Draft cleared');
+    });
+
+    autoSaveCheckbox.addEventListener('change', () => {
+        setDevlogDraftAutosaveEnabled(autoSaveCheckbox.checked);
+        if (autoSaveCheckbox.checked) {
+            const ok = writeDevlogDraft(projectId, devlogTextarea.value || '');
+            if (ok) {
+                setStatus((devlogTextarea.value || '').trim()
+                    ? `Auto-save enabled (${formatDraftSavedAt(Date.now())})`
+                    : 'Auto-save enabled');
+            }
+        } else {
+            if (autoSaveTimer) clearTimeout(autoSaveTimer);
+            setStatus('Auto-save disabled');
+        }
+    });
+
+    devlogTextarea.addEventListener('input', queueAutoSave);
+
+    const existingDraft = readDevlogDraft(projectId);
+    if (existingDraft) {
+        if (!(devlogTextarea.value || '').trim()) {
+            devlogTextarea.value = existingDraft.body;
+            devlogTextarea.dispatchEvent(new Event('input', { bubbles: true }));
+            setStatus(`Draft restored (${formatDraftSavedAt(existingDraft.updatedAt)})`);
+        } else {
+            setStatus(`Draft available (${formatDraftSavedAt(existingDraft.updatedAt)})`);
+        }
+    }
+
+    controls.appendChild(status);
+    trailing.appendChild(autoSaveWrap);
+    trailing.appendChild(clearDraftBtn);
+    trailing.appendChild(saveDraftBtn);
+
+    const firstSubmit = actions.querySelector('button[type="submit"], input[type="submit"]');
+    if (firstSubmit && firstSubmit.parentNode === actions) {
+        trailing.appendChild(firstSubmit);
+    }
+    controls.appendChild(trailing);
+
+    actions.insertBefore(controls, actions.firstChild);
+}
+
 function inlineDevlogForm() {
     if (!/\/projects\/\d+$/.test(window.location.pathname)) {
         return;
@@ -5837,14 +6102,15 @@ function inlineDevlogForm() {
             addDevlogBtn.style.display = 'none';
             container.parentNode.insertBefore(wrapper, container.nextSibling);
 
+            const form = wrapper.querySelector('form') || wrapper.closest('form');
             const devlogTextarea = wrapper.querySelector('#post_devlog_body');
             if (devlogTextarea) {
                 addMarkdownToolbar(devlogTextarea);
                 initSlackEmojiAutocomplete(devlogTextarea, wrapper);
-                const form = wrapper.querySelector('form') || wrapper.closest('form');
                 if (form) {
                     attachSlackEmojiSubmitHandler(form, devlogTextarea);
                 }
+                initDevlogDraftControls(wrapper, form, devlogTextarea);
             }
 
             initDevlogChangelog(wrapper);
