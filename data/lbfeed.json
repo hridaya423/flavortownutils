@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-25T09:54:50.477Z",
+  "lastUpdated": "2026-03-25T10:50:56.527Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -13735,6 +13735,14 @@
         "delta": 5,
         "balance": 162,
         "reason": "Show and tell local",
+        "reasonType": "achievement",
+        "userId": "U084UQFF0LC"
+      },
+      {
+        "ts": "2026-03-25T10:35:50.982Z",
+        "delta": 5,
+        "balance": 167,
+        "reason": "Fleet Captain",
         "reasonType": "achievement",
         "userId": "U084UQFF0LC"
       }
@@ -82477,6 +82485,32 @@
         "userId": "U0AN7PG5BT5"
       }
     ],
+    "u0anpbeb4ry": [
+      {
+        "ts": "2026-03-25T09:56:46.211Z",
+        "delta": 3,
+        "balance": 3,
+        "reason": "Home Cookin'",
+        "reasonType": "achievement",
+        "userId": "U0ANPBEB4RY"
+      },
+      {
+        "ts": "2026-03-25T09:56:46.223Z",
+        "delta": 2,
+        "balance": 5,
+        "reason": "Recipe Notes",
+        "reasonType": "achievement",
+        "userId": "U0ANPBEB4RY"
+      },
+      {
+        "ts": "2026-03-25T09:56:50.739Z",
+        "delta": 2,
+        "balance": 7,
+        "reason": "Hello, Kitchen!",
+        "reasonType": "achievement",
+        "userId": "U0ANPBEB4RY"
+      }
+    ],
     "u0anql27ddx": [
       {
         "ts": "2026-03-24T20:19:57.526Z",
@@ -82489,6 +82523,18 @@
     ]
   },
   "users": {
+    "U084UQFF0LC": {
+      "id": "U084UQFF0LC",
+      "username": "floppy1703",
+      "displayName": "Floppy",
+      "avatar": "https://avatars.slack-edge.com/2025-09-05/9462910104643_f0e10508c7313006fa21_72.jpg"
+    },
+    "U0ANPBEB4RY": {
+      "id": "U0ANPBEB4RY",
+      "username": "devil27062007",
+      "displayName": "devil27062007",
+      "avatar": "https://secure.gravatar.com/avatar/fb7991cf53c622abf83725f7d72a8b6b.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0018-72.png"
+    },
     "U0A848RGULQ": {
       "id": "U0A848RGULQ",
       "username": "vaibhavsharma42011",
@@ -82806,12 +82852,6 @@
       "username": "roshini.g010",
       "displayName": "smoker27007",
       "avatar": "https://secure.gravatar.com/avatar/ccd365dcb5d9cc19553037da03950848.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0009-72.png"
-    },
-    "U084UQFF0LC": {
-      "id": "U084UQFF0LC",
-      "username": "floppy1703",
-      "displayName": "Floppy",
-      "avatar": "https://avatars.slack-edge.com/2025-09-05/9462910104643_f0e10508c7313006fa21_72.jpg"
     },
     "U09683EA86L": {
       "id": "U09683EA86L",
