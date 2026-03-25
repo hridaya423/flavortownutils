@@ -5973,6 +5973,7 @@ function initDevlogDraftControls(wrapper, form, devlogTextarea) {
     };
 
     let autoSaveTimer = null;
+    let pendingSubmitClear = false;
 
     const queueAutoSave = () => {
         if (!autoSaveCheckbox.checked) return;
@@ -6024,6 +6025,30 @@ function initDevlogDraftControls(wrapper, form, devlogTextarea) {
     });
 
     devlogTextarea.addEventListener('input', queueAutoSave);
+
+    const clearDraftAfterSuccessfulSubmit = () => {
+        clearDevlogDraft(projectId);
+        pendingSubmitClear = false;
+    };
+
+    form.addEventListener('submit', () => {
+        pendingSubmitClear = true;
+    });
+
+    form.addEventListener('turbo:submit-end', (event) => {
+        const success = !!event?.detail?.success;
+        if (success) {
+            clearDraftAfterSuccessfulSubmit();
+            return;
+        }
+        pendingSubmitClear = false;
+    });
+
+    window.addEventListener('pagehide', () => {
+        if (pendingSubmitClear) {
+            clearDraftAfterSuccessfulSubmit();
+        }
+    });
 
     const existingDraft = readDevlogDraft(projectId);
     if (existingDraft) {
