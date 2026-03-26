@@ -12,6 +12,8 @@
 ## Features:
 
 - Makes devlog posting directly into project page, instead of a new page.
+- Devlog drafts (per project)
+  - Manual save + Auto-save
 - Useful project stats
   - Percentile of payout
   - Cookies/h rate
