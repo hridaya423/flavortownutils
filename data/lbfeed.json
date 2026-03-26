@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-26T19:55:00.243Z",
+  "lastUpdated": "2026-03-26T20:37:20.795Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -23621,6 +23621,14 @@
         "delta": 14,
         "balance": 36,
         "reason": "user grant",
+        "reasonType": "",
+        "userId": "U091HG1TP6K"
+      },
+      {
+        "ts": "2026-03-26T19:57:21.294Z",
+        "delta": 16,
+        "balance": 52,
+        "reason": "ship event payout",
         "reasonType": "",
         "userId": "U091HG1TP6K"
       }
@@ -84163,6 +84171,11 @@
     ]
   },
   "users": {
+    "U091HG1TP6K": {
+      "id": "U091HG1TP6K",
+      "username": "kyle.bendall",
+      "avatar": "https://avatars.slack-edge.com/2025-12-27/10222476722736_6cdf723bd5ac23558306_72.png"
+    },
     "U0AK8ES3J3U": {
       "id": "U0AK8ES3J3U",
       "username": "lovro.kastelic011",
@@ -85369,11 +85382,6 @@
       "username": "renudilip19",
       "displayName": "Anirudh",
       "avatar": "https://avatars.slack-edge.com/2026-03-05/10622782448583_218d50bcdd00aea5788a_72.jpg"
-    },
-    "U091HG1TP6K": {
-      "id": "U091HG1TP6K",
-      "username": "kyle.bendall",
-      "avatar": "https://avatars.slack-edge.com/2025-12-27/10222476722736_6cdf723bd5ac23558306_72.png"
     },
     "U0A21R8V5FX": {
       "id": "U0A21R8V5FX",
