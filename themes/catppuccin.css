@@ -1411,6 +1411,7 @@ a:hover {
     color: var(--ctp-subtext0) !important;
     z-index: 1 !important;
     position: relative !important;
+    border-radius: 18px !important;
 }
 
 .dropdown__button {
@@ -1462,19 +1463,19 @@ a:hover {
 .dropdown--green .dropdown__label {
     color: var(--ctp-crust) !important;
     background-color: var(--ctp-green) !important;
-    border-radius: 8px !important;
+    border-radius: 10px !important;
 }
 
 .dropdown--blue .dropdown__label {
     color: var(--ctp-crust) !important;
     background-color: var(--ctp-blue) !important;
-    border-radius: 8px !important;
+    border-radius: 11px !important;
 }
 
 .dropdown--pink .dropdown__label {
     color: var(--ctp-crust) !important;
     background-color: var(--ctp-pink) !important;
-    border-radius: 8px !important;
+    border-radius: 11px !important;
 }
 
 .dropdown--brown .dropdown__label {
