@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-26T18:34:22.069Z",
+  "lastUpdated": "2026-03-26T19:55:00.243Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -11466,6 +11466,30 @@
         "balance": 1257,
         "reason": "shop purchase",
         "reasonType": "",
+        "userId": "U0823APHVK7"
+      },
+      {
+        "ts": "2026-03-26T19:05:32.622Z",
+        "delta": 5,
+        "balance": 1262,
+        "reason": "Show and tell local",
+        "reasonType": "achievement",
+        "userId": "U0823APHVK7"
+      },
+      {
+        "ts": "2026-03-26T19:05:32.646Z",
+        "delta": 15,
+        "balance": 1277,
+        "reason": "Sous Chef",
+        "reasonType": "achievement",
+        "userId": "U0823APHVK7"
+      },
+      {
+        "ts": "2026-03-26T19:05:32.647Z",
+        "delta": 30,
+        "balance": 1307,
+        "reason": "Chef who cooked",
+        "reasonType": "achievement",
         "userId": "U0823APHVK7"
       }
     ],
@@ -30382,6 +30406,14 @@
         "ts": "2026-03-24T00:08:24.548Z",
         "delta": -2696,
         "balance": 783,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U093B3R6HCK"
+      },
+      {
+        "ts": "2026-03-26T18:50:54.670Z",
+        "delta": -360,
+        "balance": 23,
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U093B3R6HCK"
@@ -83435,6 +83467,14 @@
         "reason": "Recipe Notes",
         "reasonType": "achievement",
         "userId": "U0AK8ES3J3U"
+      },
+      {
+        "ts": "2026-03-26T19:41:59.808Z",
+        "delta": 5,
+        "balance": 10,
+        "reason": "Very Fried",
+        "reasonType": "achievement",
+        "userId": "U0AK8ES3J3U"
       }
     ],
     "u0akc97mrjm": [
@@ -84123,6 +84163,24 @@
     ]
   },
   "users": {
+    "U0AK8ES3J3U": {
+      "id": "U0AK8ES3J3U",
+      "username": "lovro.kastelic011",
+      "displayName": "Kastelc",
+      "avatar": "https://secure.gravatar.com/avatar/4336c3545a34b50137793745697342c9.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0007-72.png"
+    },
+    "U0823APHVK7": {
+      "id": "U0823APHVK7",
+      "username": "stef",
+      "displayName": "Stef",
+      "avatar": "https://secure.gravatar.com/avatar/dd17903aa658cb68b13288ba1b967078.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0018-72.png"
+    },
+    "U093B3R6HCK": {
+      "id": "U093B3R6HCK",
+      "username": "timslawncare.ok",
+      "displayName": "Steve",
+      "avatar": "https://avatars.slack-edge.com/2025-12-31/10227680231761_579bd70387c3d904bfb5_72.jpg"
+    },
     "U09271EC63X": {
       "id": "U09271EC63X",
       "username": "sukarthacharya",
@@ -85141,12 +85199,6 @@
       "username": "drewratner27",
       "displayName": "MrDiamond",
       "avatar": "https://secure.gravatar.com/avatar/2f6fa1a082c932ada7e2abbdc8c19be8.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0015-72.png"
-    },
-    "U093B3R6HCK": {
-      "id": "U093B3R6HCK",
-      "username": "timslawncare.ok",
-      "displayName": "Steve",
-      "avatar": "https://avatars.slack-edge.com/2025-12-31/10227680231761_579bd70387c3d904bfb5_72.jpg"
     },
     "U0A7WTFMPSM": {
       "id": "U0A7WTFMPSM",
@@ -86236,12 +86288,6 @@
       "displayName": "Dhruv",
       "avatar": "https://secure.gravatar.com/avatar/a96b93e161e0b0c74c5913458a981a03.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0025-72.png"
     },
-    "U0823APHVK7": {
-      "id": "U0823APHVK7",
-      "username": "stef",
-      "displayName": "Stef",
-      "avatar": "https://secure.gravatar.com/avatar/dd17903aa658cb68b13288ba1b967078.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0018-72.png"
-    },
     "U09EF4LNH46": {
       "id": "U09EF4LNH46",
       "username": "miftasigma11",
@@ -86339,12 +86385,6 @@
       "username": "3129209",
       "displayName": "Null",
       "avatar": "https://secure.gravatar.com/avatar/9b2169a96c23115d5cecacd744db9d06.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0017-72.png"
-    },
-    "U0AK8ES3J3U": {
-      "id": "U0AK8ES3J3U",
-      "username": "lovro.kastelic011",
-      "displayName": "Kastelc",
-      "avatar": "https://secure.gravatar.com/avatar/4336c3545a34b50137793745697342c9.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0007-72.png"
     },
     "U0A0JJ603N2": {
       "id": "U0A0JJ603N2",
