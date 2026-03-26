@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-26T15:50:57.373Z",
+  "lastUpdated": "2026-03-26T17:03:19.179Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -13985,6 +13985,14 @@
         "delta": 322,
         "balance": 504,
         "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U084UQFF0LC"
+      },
+      {
+        "ts": "2026-03-26T16:48:02.348Z",
+        "delta": 25,
+        "balance": 529,
+        "reason": "user grant",
         "reasonType": "",
         "userId": "U084UQFF0LC"
       }
@@ -30006,6 +30014,30 @@
         "balance": 307,
         "reason": "show and tell payout",
         "reasonType": "",
+        "userId": "U092X590XUG"
+      },
+      {
+        "ts": "2026-03-26T16:57:53.666Z",
+        "delta": 15,
+        "balance": 327,
+        "reason": "Sous Chef",
+        "reasonType": "achievement",
+        "userId": "U092X590XUG"
+      },
+      {
+        "ts": "2026-03-26T16:57:53.683Z",
+        "delta": 5,
+        "balance": 312,
+        "reason": "Show and tell local",
+        "reasonType": "achievement",
+        "userId": "U092X590XUG"
+      },
+      {
+        "ts": "2026-03-26T16:57:53.701Z",
+        "delta": 30,
+        "balance": 357,
+        "reason": "Chef who cooked",
+        "reasonType": "achievement",
         "userId": "U092X590XUG"
       }
     ],
@@ -81161,6 +81193,14 @@
         "reason": "Hello, Kitchen!",
         "reasonType": "achievement",
         "userId": "U0AD3T7EH35"
+      },
+      {
+        "ts": "2026-03-26T16:45:15.704Z",
+        "delta": 3,
+        "balance": 28,
+        "reason": "Michelin Star",
+        "reasonType": "achievement",
+        "userId": "U0AD3T7EH35"
       }
     ],
     "u0ad5l22c8g": [
@@ -83731,6 +83771,14 @@
         "reason": "Michelin Star",
         "reasonType": "achievement",
         "userId": "U0AM5JFL02E"
+      },
+      {
+        "ts": "2026-03-26T16:20:11.523Z",
+        "delta": 11,
+        "balance": 39,
+        "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U0AM5JFL02E"
       }
     ],
     "u0amm0s4sq4": [
@@ -84011,6 +84059,30 @@
     ]
   },
   "users": {
+    "U092X590XUG": {
+      "id": "U092X590XUG",
+      "username": "keyboard1000n17",
+      "displayName": "Keyboard1000n17",
+      "avatar": "https://avatars.slack-edge.com/2025-06-19/9099193859040_baec610ae81aa3acc9f9_72.jpg"
+    },
+    "U084UQFF0LC": {
+      "id": "U084UQFF0LC",
+      "username": "floppy1703",
+      "displayName": "Floppy",
+      "avatar": "https://avatars.slack-edge.com/2025-09-05/9462910104643_f0e10508c7313006fa21_72.jpg"
+    },
+    "U0AD3T7EH35": {
+      "id": "U0AD3T7EH35",
+      "username": "debmatt247",
+      "displayName": "Michelle",
+      "avatar": "https://avatars.slack-edge.com/2026-02-17/10530550360084_5eeec00b5b874476f94b_72.png"
+    },
+    "U0AM5JFL02E": {
+      "id": "U0AM5JFL02E",
+      "username": "chibuikechukwu176",
+      "displayName": "My Dad The Bounty Hunter",
+      "avatar": "https://secure.gravatar.com/avatar/3a4069845ecf7a6db7c1f52ae5a70cbd.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0006-72.png"
+    },
     "U07AGEVSTD2": {
       "id": "U07AGEVSTD2",
       "username": "flx",
@@ -84405,12 +84477,6 @@
       "username": "coolcream",
       "displayName": "Cool cream",
       "avatar": "https://avatars.slack-edge.com/2026-01-14/10280240625063_9e2703ca34c8122db01a_72.png"
-    },
-    "U084UQFF0LC": {
-      "id": "U084UQFF0LC",
-      "username": "floppy1703",
-      "displayName": "Floppy",
-      "avatar": "https://avatars.slack-edge.com/2025-09-05/9462910104643_f0e10508c7313006fa21_72.jpg"
     },
     "U06DP2ZMZ3P": {
       "id": "U06DP2ZMZ3P",
@@ -85072,12 +85138,6 @@
       "displayName": "Hridya",
       "avatar": "https://secure.gravatar.com/avatar/5b54a7a1c2382dea03b98bd77e571f92.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0014-72.png"
     },
-    "U0AM5JFL02E": {
-      "id": "U0AM5JFL02E",
-      "username": "chibuikechukwu176",
-      "displayName": "My Dad The Bounty Hunter",
-      "avatar": "https://secure.gravatar.com/avatar/3a4069845ecf7a6db7c1f52ae5a70cbd.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0006-72.png"
-    },
     "U091KTCVBA8": {
       "id": "U091KTCVBA8",
       "username": "anish.miryala",
@@ -85303,12 +85363,6 @@
       "username": "voraviraj08",
       "displayName": "iamdumb",
       "avatar": "https://avatars.slack-edge.com/2026-03-01/10620535120321_467806b88e97e6569cf5_72.png"
-    },
-    "U092X590XUG": {
-      "id": "U092X590XUG",
-      "username": "keyboard1000n17",
-      "displayName": "Keyboard1000n17",
-      "avatar": "https://avatars.slack-edge.com/2025-06-19/9099193859040_baec610ae81aa3acc9f9_72.jpg"
     },
     "U07E8H9A24A": {
       "id": "U07E8H9A24A",
@@ -85696,12 +85750,6 @@
       "username": "alaricabyasa11",
       "displayName": "alarixfr",
       "avatar": "https://avatars.slack-edge.com/2026-02-18/10531657718310_799dd47e9fd737eba258_72.png"
-    },
-    "U0AD3T7EH35": {
-      "id": "U0AD3T7EH35",
-      "username": "debmatt247",
-      "displayName": "Michelle",
-      "avatar": "https://avatars.slack-edge.com/2026-02-17/10530550360084_5eeec00b5b874476f94b_72.png"
     },
     "U0A6DSNSV7A": {
       "id": "U0A6DSNSV7A",
