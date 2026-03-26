@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-26T06:13:18.468Z",
+  "lastUpdated": "2026-03-26T07:42:25.349Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -6941,6 +6941,14 @@
         "delta": 104,
         "balance": 155,
         "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U07JEDAMFV3"
+      },
+      {
+        "ts": "2026-03-26T06:25:44.790Z",
+        "delta": -100,
+        "balance": 55,
+        "reason": "shop purchase",
         "reasonType": "",
         "userId": "U07JEDAMFV3"
       }
@@ -22628,6 +22636,14 @@
         "ts": "2026-03-25T02:06:43.947Z",
         "delta": -100,
         "balance": 291,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U090LAT6QKB"
+      },
+      {
+        "ts": "2026-03-26T06:30:09.789Z",
+        "delta": -100,
+        "balance": 191,
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U090LAT6QKB"
@@ -83641,6 +83657,17 @@
     ]
   },
   "users": {
+    "U090LAT6QKB": {
+      "id": "U090LAT6QKB",
+      "username": "dinosaur890123",
+      "avatar": "https://avatars.slack-edge.com/2025-12-09/10077925689238_2149e0ba18d7110e7a3f_72.png"
+    },
+    "U07JEDAMFV3": {
+      "id": "U07JEDAMFV3",
+      "username": "genr234",
+      "displayName": "genr234",
+      "avatar": "https://avatars.slack-edge.com/2026-03-07/10648020329317_bc3cd0601b29f22f6ae2_72.png"
+    },
     "U0A7776A2MT": {
       "id": "U0A7776A2MT",
       "username": "kavyanshkhaitan11",
@@ -83731,12 +83758,6 @@
       "id": "U09A7GEM760",
       "username": "sadiyameem123",
       "avatar": "https://avatars.slack-edge.com/2025-12-13/10144998433360_d12c0c70edd22615e94d_72.png"
-    },
-    "U07JEDAMFV3": {
-      "id": "U07JEDAMFV3",
-      "username": "genr234",
-      "displayName": "genr234",
-      "avatar": "https://avatars.slack-edge.com/2026-03-07/10648020329317_bc3cd0601b29f22f6ae2_72.png"
     },
     "U081RF7D23D": {
       "id": "U081RF7D23D",
@@ -84081,11 +84102,6 @@
       "username": "noe447000",
       "displayName": "Noé",
       "avatar": "https://avatars.slack-edge.com/2026-03-23/10747015966055_501493f0b582a214080a_72.png"
-    },
-    "U090LAT6QKB": {
-      "id": "U090LAT6QKB",
-      "username": "dinosaur890123",
-      "avatar": "https://avatars.slack-edge.com/2025-12-09/10077925689238_2149e0ba18d7110e7a3f_72.png"
     },
     "U082DRXPMF1": {
       "id": "U082DRXPMF1",
