@@ -4158,6 +4158,13 @@ async function syncShopGoalsToLogpheus(force = false) {
     } catch (error) {
         logpheusSyncFailureCount += 1;
         const message = (error?.message || String(error || '')).toLowerCase();
+        if (message.includes('missing logpheus host permission')) {
+            setLogpheusSyncEnabled(false);
+            browserAPI.storage.sync.set({
+                [LOGPHEUS_SYNC_ENABLED_KEY]: false
+            });
+            return;
+        }
         if (message.includes('cors/preflight blocked') || message.includes('(0)')) {
             scheduleLogpheusCorsCooldown();
         } else {

@@ -107,6 +107,7 @@ browserAPI.runtime.onMessage.addListener((message, sender, sendResponse) => {
         const goals = Array.isArray(message.goals) ? message.goals : [];
         const apiKey = typeof message.apiKey === 'string' ? message.apiKey.trim() : '';
         const method = typeof message.method === 'string' ? message.method.toUpperCase() : 'PUT';
+        const logpheusOrigin = 'https://logpheus.gizzy.gay/*';
 
         if (!endpoint) {
             sendResponse({ ok: false, status: 0, error: 'Missing endpoint' });
@@ -118,34 +119,66 @@ browserAPI.runtime.onMessage.addListener((message, sender, sendResponse) => {
             return false;
         }
 
-        fetch(endpoint, {
-            method,
-            headers: {
-                'Authorization': `Bearer ${apiKey}`,
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ goals })
-        })
-            .then(async (response) => {
-                const text = await response.text().catch(() => '');
-                let data = null;
-                try {
-                    data = text ? JSON.parse(text) : null;
-                } catch (e) {
-                    data = null;
-                }
-
-                sendResponse({
-                    ok: response.ok,
-                    status: response.status,
-                    data,
-                    raw: data ? null : text
-                });
+        const runSyncFetch = () => {
+            fetch(endpoint, {
+                method,
+                headers: {
+                    'Authorization': `Bearer ${apiKey}`,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ goals })
             })
-            .catch((err) => {
-                sendResponse({ ok: false, status: 0, error: err?.message || 'Network error' });
+                .then(async (response) => {
+                    const text = await response.text().catch(() => '');
+                    let data = null;
+                    try {
+                        data = text ? JSON.parse(text) : null;
+                    } catch (e) {
+                        data = null;
+                    }
+
+                    sendResponse({
+                        ok: response.ok,
+                        status: response.status,
+                        data,
+                        raw: data ? null : text
+                    });
+                })
+                .catch((err) => {
+                    sendResponse({ ok: false, status: 0, error: err?.message || 'Network error' });
+                });
+        };
+
+        const handlePermissionResult = (granted) => {
+            if (!granted) {
+                sendResponse({ ok: false, status: 0, error: 'Missing Logpheus host permission' });
+                return;
+            }
+            runSyncFetch();
+        };
+
+        if (!browserAPI.permissions || typeof browserAPI.permissions.contains !== 'function') {
+            runSyncFetch();
+            return true;
+        }
+
+        try {
+            const maybePromise = browserAPI.permissions.contains({ origins: [logpheusOrigin] });
+            if (maybePromise && typeof maybePromise.then === 'function') {
+                maybePromise.then((granted) => handlePermissionResult(!!granted)).catch(() => handlePermissionResult(false));
+                return true;
+            }
+        } catch (e) {
+        }
+
+        try {
+            browserAPI.permissions.contains({ origins: [logpheusOrigin] }, (granted) => {
+                handlePermissionResult(!!granted);
             });
+        } catch (e) {
+            handlePermissionResult(false);
+        }
 
         return true;
     }

@@ -103,6 +103,7 @@ const POPUP_THEMES = {
 
 const LOCAL_STORAGE_SYNC_ENABLED_KEY = 'flavortownLocalStorageSyncEnabled';
 const LOGPHEUS_SYNC_ENABLED_KEY = 'flavortownLogpheusGoalSyncEnabled';
+const LOGPHEUS_PERMISSION_ORIGIN = 'https://logpheus.gizzy.gay/*';
 const LOCAL_STORAGE_SYNC_KEY = 'flavortownLocalStorageSync';
 const LOCAL_STORAGE_IMPORT_KEY = 'flavortownLocalStorageImport';
 const COMMAND_PALETTE_SHORTCUT_KEY = 'flavortownCommandPaletteShortcut';
@@ -164,6 +165,52 @@ document.addEventListener('DOMContentLoaded', async () => {
     updateUI();
 });
 
+async function checkOriginPermission(origin) {
+    if (!origin) return false;
+    if (!browserAPI.permissions || typeof browserAPI.permissions.contains !== 'function') return true;
+
+    try {
+        const maybePromise = browserAPI.permissions.contains({ origins: [origin] });
+        if (maybePromise && typeof maybePromise.then === 'function') {
+            return !!(await maybePromise);
+        }
+    } catch (e) {
+    }
+
+    return await new Promise((resolve) => {
+        try {
+            browserAPI.permissions.contains({ origins: [origin] }, (granted) => {
+                resolve(!!granted);
+            });
+        } catch (e) {
+            resolve(false);
+        }
+    });
+}
+
+async function requestOriginPermission(origin) {
+    if (!origin) return false;
+    if (!browserAPI.permissions || typeof browserAPI.permissions.request !== 'function') return true;
+
+    try {
+        const maybePromise = browserAPI.permissions.request({ origins: [origin] });
+        if (maybePromise && typeof maybePromise.then === 'function') {
+            return !!(await maybePromise);
+        }
+    } catch (e) {
+    }
+
+    return await new Promise((resolve) => {
+        try {
+            browserAPI.permissions.request({ origins: [origin] }, (granted) => {
+                resolve(!!granted);
+            });
+        } catch (e) {
+            resolve(false);
+        }
+    });
+}
+
 async function loadSettings() {
     const result = await browserAPI.storage.sync.get([
         'theme',
@@ -180,6 +227,17 @@ async function loadSettings() {
     }
     localStorageSyncEnabled = !!result[LOCAL_STORAGE_SYNC_ENABLED_KEY];
     logpheusSyncEnabled = !!result[LOGPHEUS_SYNC_ENABLED_KEY];
+
+    if (logpheusSyncEnabled) {
+        const hasPermission = await checkOriginPermission(LOGPHEUS_PERMISSION_ORIGIN);
+        if (!hasPermission) {
+            logpheusSyncEnabled = false;
+            await browserAPI.storage.sync.set({
+                [LOGPHEUS_SYNC_ENABLED_KEY]: false
+            });
+        }
+    }
+
     commandPaletteShortcut = normalizeShortcutString(result[COMMAND_PALETTE_SHORTCUT_KEY]) || DEFAULT_COMMAND_PALETTE_SHORTCUT;
 }
 
@@ -239,7 +297,24 @@ function setupEventListeners() {
 
     const logpheusToggle = document.getElementById('logpheusSyncToggle');
     logpheusToggle?.addEventListener('change', async (event) => {
-        logpheusSyncEnabled = event.target.checked;
+        const shouldEnable = !!event.target.checked;
+
+        if (shouldEnable) {
+            const alreadyGranted = await checkOriginPermission(LOGPHEUS_PERMISSION_ORIGIN);
+            const granted = alreadyGranted ? true : await requestOriginPermission(LOGPHEUS_PERMISSION_ORIGIN);
+
+            if (!granted) {
+                event.target.checked = false;
+                logpheusSyncEnabled = false;
+                await browserAPI.storage.sync.set({
+                    [LOGPHEUS_SYNC_ENABLED_KEY]: false
+                });
+                showStatus('Logpheus permission denied', true);
+                return;
+            }
+        }
+
+        logpheusSyncEnabled = shouldEnable;
         await browserAPI.storage.sync.set({
             [LOGPHEUS_SYNC_ENABLED_KEY]: logpheusSyncEnabled
         });
