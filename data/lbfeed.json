@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-27T19:42:25.579Z",
+  "lastUpdated": "2026-03-27T20:39:59.699Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -32364,6 +32364,14 @@
         "ts": "2026-03-23T04:05:51.904Z",
         "delta": -94,
         "balance": 72,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U096HTUQV8S"
+      },
+      {
+        "ts": "2026-03-27T19:57:50.564Z",
+        "delta": -35,
+        "balance": 37,
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U096HTUQV8S"
@@ -85233,6 +85241,12 @@
     ]
   },
   "users": {
+    "U096HTUQV8S": {
+      "id": "U096HTUQV8S",
+      "username": "gabrielledavaadorjgd",
+      "displayName": "K116",
+      "avatar": "https://avatars.slack-edge.com/2026-02-22/10557125664181_0ffc311c18677e135604_72.png"
+    },
     "U0A8XKDGMEU": {
       "id": "U0A8XKDGMEU",
       "username": "chris8457",
@@ -86802,12 +86816,6 @@
       "username": "guy",
       "displayName": "Guy",
       "avatar": "https://avatars.slack-edge.com/2023-10-28/6113518343412_1d907d6597a278566bad_72.png"
-    },
-    "U096HTUQV8S": {
-      "id": "U096HTUQV8S",
-      "username": "gabrielledavaadorjgd",
-      "displayName": "K116",
-      "avatar": "https://avatars.slack-edge.com/2026-02-22/10557125664181_0ffc311c18677e135604_72.png"
     },
     "U0825TMAF4K": {
       "id": "U0825TMAF4K",
