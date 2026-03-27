@@ -126,6 +126,7 @@ const GAMBLORPHEUS_LOTTERIES_ENDPOINT = 'https://gamblorpheus.hackclub.com/api/l
 const GAMBLORPHEUS_LOTTERY_CACHE_KEY = 'flavortown_gamblorpheus_lottery_cache';
 const GAMBLORPHEUS_LOTTERY_CACHE_TTL = 90 * 1000;
 const LOTTERY_SHOP_ITEM_ID = '200';
+const SHOP_RECENTLY_ADDED_COLLAPSED_KEY = 'flavortown_shop_recently_added_collapsed';
 const CHANGELOG_DISMISS_KEY = 'flavortown_changelog_dismissed';
 const CHANGELOG_OVERRIDE_KEY = 'flavortown_changelog_override';
 const CHANGELOG_CACHE_KEY = 'flavortown_changelog_cache';
@@ -9041,6 +9042,11 @@ function upsertLotterySummaryPanel(summary) {
     `;
 }
 
+function removeLotterySummaryPanel() {
+    const panel = document.querySelector('.flavortown-lottery-summary');
+    if (panel) panel.remove();
+}
+
 async function addLotteryOddsInsights() {
     if (window.location.pathname !== '/shop') return;
     if (window.__flavortownLotteryOddsLoading) return;
@@ -9048,7 +9054,10 @@ async function addLotteryOddsInsights() {
 
     try {
         const lotteryData = await fetchLotteryOddsData();
-        if (!lotteryData?.totalTickets) return;
+        if (!lotteryData?.totalTickets) {
+            removeLotterySummaryPanel();
+            return;
+        }
 
         const oneTicketChance = 100 / lotteryData.totalTickets;
         upsertLotteryCardOdds(oneTicketChance, lotteryData.totalTickets);
@@ -9063,6 +9072,11 @@ async function addLotteryOddsInsights() {
 
         const userTickets = matchedTickets > 0 ? matchedTickets : lotteryOrders.orderedTickets;
         const userChance = userTickets > 0 ? (userTickets / lotteryData.totalTickets) * 100 : 0;
+
+        if (userTickets <= 1) {
+            removeLotterySummaryPanel();
+            return;
+        }
 
         upsertLotterySummaryPanel({
             totalTickets: lotteryData.totalTickets,
@@ -9393,6 +9407,173 @@ function addShopCardEfficiency() {
         }
 
     });
+}
+
+function cleanupRecentlyAddedCarousel() {
+    const state = window.__flavortownRecentlyAddedCarousel;
+    if (!state) return;
+
+    if (state.intervalId) {
+        clearInterval(state.intervalId);
+    }
+
+    if (state.track && state.handlers) {
+        state.track.removeEventListener('mouseenter', state.handlers.onMouseEnter);
+        state.track.removeEventListener('mouseleave', state.handlers.onMouseLeave);
+        state.track.removeEventListener('pointerdown', state.handlers.onUserInteract);
+        state.track.removeEventListener('touchstart', state.handlers.onUserInteract);
+        state.track.removeEventListener('wheel', state.handlers.onUserInteract);
+    }
+
+    window.__flavortownRecentlyAddedCarousel = null;
+}
+
+function ensureRecentlyAddedAccordion(section) {
+    const inner = section.querySelector('.shop__recently-added-inner');
+    if (!inner) return { inner: null, details: null, items: null };
+
+    let details = inner.querySelector('.flavortown-recently-added-accordion');
+    if (!details) {
+        const header = inner.querySelector('.shop__recently-added-header');
+        const items = inner.querySelector('.shop__recently-added-items');
+        if (!items) return { inner, details: null, items: null };
+
+        details = document.createElement('details');
+        details.className = 'flavortown-recently-added-accordion';
+
+        const summary = document.createElement('summary');
+        summary.className = 'flavortown-recently-added-accordion__summary shop__recently-added-header';
+
+        const titleWrap = document.createElement('div');
+        titleWrap.className = 'flavortown-recently-added-accordion__summary-text';
+
+        const title = document.createElement('h2');
+        title.className = 'shop__recently-added-title';
+        title.textContent = header?.querySelector('.shop__recently-added-title')?.textContent?.trim() || 'Recently Added';
+
+        const subtitle = document.createElement('p');
+        subtitle.className = 'shop__recently-added-subtitle';
+        subtitle.textContent = header?.querySelector('.shop__recently-added-subtitle')?.textContent?.trim() || '';
+
+        const icon = document.createElement('span');
+        icon.className = 'flavortown-recently-added-accordion__icon';
+        icon.textContent = 'x';
+
+        titleWrap.appendChild(title);
+        if (subtitle.textContent) titleWrap.appendChild(subtitle);
+        summary.appendChild(titleWrap);
+        summary.appendChild(icon);
+
+        const content = document.createElement('div');
+        content.className = 'flavortown-recently-added-accordion__content';
+        content.appendChild(items);
+
+        details.appendChild(summary);
+        details.appendChild(content);
+
+        const collapsedPref = localStorage.getItem(SHOP_RECENTLY_ADDED_COLLAPSED_KEY);
+        const isCollapsed = collapsedPref === null ? true : collapsedPref === 'true';
+        details.open = !isCollapsed;
+
+        const syncIcon = () => {
+            icon.textContent = details.open ? 'x' : '+';
+        };
+        syncIcon();
+
+        details.addEventListener('toggle', () => {
+            localStorage.setItem(SHOP_RECENTLY_ADDED_COLLAPSED_KEY, details.open ? 'false' : 'true');
+            syncIcon();
+            section.classList.toggle('flavortown-recently-added-collapsed', !details.open);
+        });
+
+        inner.insertBefore(details, inner.firstChild);
+        if (header) header.remove();
+    }
+
+    section.classList.toggle('flavortown-recently-added-collapsed', !details.open);
+
+    const items = details.querySelector('.shop__recently-added-items');
+    return { inner, details, items };
+}
+
+function setupRecentlyAddedCarousel(items, details) {
+    cleanupRecentlyAddedCarousel();
+
+    if (!items) return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    items.classList.add('flavortown-recently-added-carousel');
+
+    const state = {
+        track: items,
+        details,
+        paused: false,
+        userPausedUntil: 0,
+        intervalId: null,
+        handlers: {}
+    };
+
+    state.handlers.onMouseEnter = () => {
+        state.paused = true;
+    };
+
+    state.handlers.onMouseLeave = () => {
+        state.paused = false;
+    };
+
+    state.handlers.onUserInteract = () => {
+        state.userPausedUntil = Date.now() + 4500;
+    };
+
+    items.addEventListener('mouseenter', state.handlers.onMouseEnter);
+    items.addEventListener('mouseleave', state.handlers.onMouseLeave);
+    items.addEventListener('pointerdown', state.handlers.onUserInteract, { passive: true });
+    items.addEventListener('touchstart', state.handlers.onUserInteract, { passive: true });
+    items.addEventListener('wheel', state.handlers.onUserInteract, { passive: true });
+
+    state.intervalId = window.setInterval(() => {
+        if (!document.body.contains(items)) {
+            cleanupRecentlyAddedCarousel();
+            return;
+        }
+
+        if (state.paused) return;
+        if (Date.now() < state.userPausedUntil) return;
+        if (state.details && !state.details.open) return;
+
+        const maxScrollLeft = items.scrollWidth - items.clientWidth;
+        if (maxScrollLeft <= 0) return;
+
+        const next = items.scrollLeft + 1;
+        items.scrollLeft = next >= maxScrollLeft - 1 ? 0 : next;
+    }, 24);
+
+    window.__flavortownRecentlyAddedCarousel = state;
+}
+
+function enhanceRecentlyAddedSection() {
+    if (window.location.pathname !== '/shop') {
+        cleanupRecentlyAddedCarousel();
+        return;
+    }
+
+    const section = document.querySelector('.shop__recently-added');
+    if (!section) {
+        cleanupRecentlyAddedCarousel();
+        return;
+    }
+
+    const { details, items } = ensureRecentlyAddedAccordion(section);
+
+    const buttons = document.querySelector('.shop__buttons');
+    if (buttons) {
+        buttons.classList.add('flavortown-shop-buttons-under-recently-added');
+        if (buttons.previousElementSibling !== section) {
+            section.insertAdjacentElement('afterend', buttons);
+        }
+    }
+
+    setupRecentlyAddedCarousel(items, details);
 }
 
 function addOutOfStockToggle() {
@@ -10803,6 +10984,7 @@ function init() {
     addShopCardEfficiency();
     addOutOfStockToggle();
     addLotteryOddsInsights();
+    enhanceRecentlyAddedSection();
     addExploreSearch();
     addExploreUsersPage();
     captureApiKey();
@@ -12389,6 +12571,7 @@ document.addEventListener('turbo:load', () => {
     addShopCardEfficiency();
     addOutOfStockToggle();
     addLotteryOddsInsights();
+    enhanceRecentlyAddedSection();
     addExploreSearch();
     addExploreUsersPage();
     captureApiKey();

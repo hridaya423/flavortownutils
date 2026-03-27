@@ -1064,6 +1064,7 @@ a:hover {
 .shop-goals {
     background: var(--ctp-surface0) !important;
     border-color: var(--ctp-surface1) !important;
+    border-radius: 16px !important;
 }
 
 .shop-goals__container {
@@ -1997,6 +1998,26 @@ a:hover {
 
 .user .content h2 {
     color: var(--ctp-text) !important;
+}
+
+.not-authorized-page__code,
+.not-authorized-page__title {
+    color: var(--ctp-red) !important;
+}
+
+.not-authorized-page__message {
+    color: var(--ctp-subtext1) !important;
+}
+
+.not-authorized-page__btn {
+    background: var(--ctp-red) !important;
+    color: var(--ctp-crust) !important;
+    box-shadow: 0 4px 0 color-mix(in srgb, var(--ctp-red), var(--ctp-crust) 45%) !important;
+}
+
+.not-authorized-page__btn:hover {
+    background: var(--ctp-maroon) !important;
+    color: var(--ctp-crust) !important;
 }
 
 .user .content h2 a {

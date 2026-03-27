@@ -6007,6 +6007,101 @@
     white-space: nowrap;
 }
 
+.flavortown-shop-buttons-under-recently-added {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+
+.flavortown-shop-buttons-under-recently-added .flavortown-oos-toggle {
+    margin-left: 0;
+}
+
+.flavortown-recently-added-accordion {
+    margin: 0;
+}
+
+.flavortown-recently-added-accordion__summary {
+    cursor: pointer;
+    list-style: none;
+    position: relative;
+    padding-right: 26px;
+}
+
+.flavortown-recently-added-accordion__summary::-webkit-details-marker {
+    display: none;
+}
+
+.flavortown-recently-added-accordion__summary-text {
+    min-width: 0;
+}
+
+.flavortown-recently-added-accordion__icon {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    width: 20px;
+    height: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateY(-50%);
+    font-weight: 700;
+    color: var(--color-text-muted, #8b7355);
+    border: 1px solid var(--color-border, #d7c5af);
+    border-radius: 999px;
+    line-height: 1;
+    font-size: 0.72rem;
+    background: var(--color-surface, #fffdf9);
+}
+
+.flavortown-recently-added-accordion:not([open]) .shop__recently-added-subtitle {
+    display: none;
+}
+
+.shop__recently-added.flavortown-recently-added-collapsed .shop__recently-added-inner {
+    padding: 10px 14px !important;
+}
+
+.shop__recently-added.flavortown-recently-added-collapsed .flavortown-recently-added-accordion__summary.shop__recently-added-header {
+    padding: 4px 0 !important;
+    margin: 0 !important;
+    min-height: 34px !important;
+}
+
+.shop__recently-added.flavortown-recently-added-collapsed .shop__recently-added-title {
+    margin: 2px 0 !important;
+    line-height: 1.25 !important;
+    font-size: 1.2rem !important;
+}
+
+.flavortown-recently-added-accordion__content {
+    margin-top: 8px;
+}
+
+.shop__recently-added-items.flavortown-recently-added-carousel {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scroll-behavior: smooth;
+    gap: 16px !important;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.shop__recently-added-items.flavortown-recently-added-carousel::-webkit-scrollbar {
+    display: none;
+}
+
+.shop__recently-added-items.flavortown-recently-added-carousel > .shop-item-card {
+    flex: 0 0 auto !important;
+    width: 280px !important;
+    min-width: 280px !important;
+}
+
 .flavortown-lottery-card-odds {
     margin: 8px 0;
     padding: 8px 10px;

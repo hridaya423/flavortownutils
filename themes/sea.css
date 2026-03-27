@@ -1019,6 +1019,7 @@ a:hover {
 .shop-goals {
     background: var(--sea-dark) !important;
     border-color: var(--sea-mid) !important;
+    border-radius: 16px !important;
 }
 
 .shop-goals__container {
@@ -1925,6 +1926,26 @@ a:hover {
 
 .user .content h2 {
     color: var(--sea-white) !important;
+}
+
+.not-authorized-page__code,
+.not-authorized-page__title {
+    color: var(--sea-coral) !important;
+}
+
+.not-authorized-page__message {
+    color: var(--sea-mist) !important;
+}
+
+.not-authorized-page__btn {
+    background: var(--sea-coral) !important;
+    color: var(--sea-abyss) !important;
+    box-shadow: 0 4px 0 color-mix(in srgb, var(--sea-coral), var(--sea-abyss) 45%) !important;
+}
+
+.not-authorized-page__btn:hover {
+    background: color-mix(in srgb, var(--sea-coral), var(--sea-gold) 18%) !important;
+    color: var(--sea-abyss) !important;
 }
 
 .user .content h2 a {

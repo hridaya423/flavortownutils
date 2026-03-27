@@ -1061,6 +1061,7 @@ a:hover {
 .shop-goals {
     background: var(--custom-bg-surface) !important;
     border-color: var(--custom-surface-hover) !important;
+    border-radius: 16px !important;
 }
 
 .shop-goals__container {
@@ -1994,6 +1995,26 @@ a:hover {
 
 .user .content h2 {
     color: var(--custom-text-primary) !important;
+}
+
+.not-authorized-page__code,
+.not-authorized-page__title {
+    color: var(--custom-error) !important;
+}
+
+.not-authorized-page__message {
+    color: var(--custom-text-secondary) !important;
+}
+
+.not-authorized-page__btn {
+    background: var(--custom-error) !important;
+    color: var(--custom-bg-crust) !important;
+    box-shadow: 0 4px 0 color-mix(in srgb, var(--custom-error), var(--custom-bg-crust) 45%) !important;
+}
+
+.not-authorized-page__btn:hover {
+    background: var(--custom-maroon) !important;
+    color: var(--custom-bg-crust) !important;
 }
 
 .user .content h2 a {
