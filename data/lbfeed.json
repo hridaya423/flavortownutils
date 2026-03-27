@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-27T07:41:38.303Z",
+  "lastUpdated": "2026-03-27T08:54:53.664Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -23250,6 +23250,22 @@
         "balance": 172,
         "reason": "shop purchase",
         "reasonType": "",
+        "userId": "U0918MSQ7E3"
+      },
+      {
+        "ts": "2026-03-27T08:43:09.762Z",
+        "delta": 15,
+        "balance": 187,
+        "reason": "Five Star Chef",
+        "reasonType": "achievement",
+        "userId": "U0918MSQ7E3"
+      },
+      {
+        "ts": "2026-03-27T08:43:09.789Z",
+        "delta": 15,
+        "balance": 202,
+        "reason": "Sous Chef",
+        "reasonType": "achievement",
         "userId": "U0918MSQ7E3"
       }
     ],
@@ -80557,6 +80573,14 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0AAVSGH3HC"
+      },
+      {
+        "ts": "2026-03-27T08:41:11.096Z",
+        "delta": -10,
+        "balance": 6,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0AAVSGH3HC"
       }
     ],
     "u0ab4awmbk3": [
@@ -84439,6 +84463,18 @@
     ]
   },
   "users": {
+    "U0918MSQ7E3": {
+      "id": "U0918MSQ7E3",
+      "username": "duyduy15456",
+      "displayName": "vair.​nooi",
+      "avatar": "https://avatars.slack-edge.com/2026-01-19/10339124565665_d1b880cce06974971c2b_72.jpg"
+    },
+    "U0AAVSGH3HC": {
+      "id": "U0AAVSGH3HC",
+      "username": "hackclub8",
+      "displayName": "46009361",
+      "avatar": "https://avatars.slack-edge.com/2026-01-29/10433002833120_f403f3da778a713c59df_72.png"
+    },
     "U0A60NZQCTA": {
       "id": "U0A60NZQCTA",
       "username": "jonas.gaden",
@@ -84491,12 +84527,6 @@
       "username": "speedhawks83647",
       "displayName": "speedhawks",
       "avatar": "https://secure.gravatar.com/avatar/7555d9e63469aa893dbff15febd365fc.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0026-72.png"
-    },
-    "U0AAVSGH3HC": {
-      "id": "U0AAVSGH3HC",
-      "username": "hackclub8",
-      "displayName": "46009361",
-      "avatar": "https://avatars.slack-edge.com/2026-01-29/10433002833120_f403f3da778a713c59df_72.png"
     },
     "U0AKLQNQ0BB": {
       "id": "U0AKLQNQ0BB",
@@ -85042,12 +85072,6 @@
       "username": "pratikadhikari904",
       "displayName": "Pratik",
       "avatar": "https://avatars.slack-edge.com/2026-01-05/10218091023719_c45d9087ea3ee217af67_72.jpg"
-    },
-    "U0918MSQ7E3": {
-      "id": "U0918MSQ7E3",
-      "username": "duyduy15456",
-      "displayName": "vair.​nooi",
-      "avatar": "https://avatars.slack-edge.com/2026-01-19/10339124565665_d1b880cce06974971c2b_72.jpg"
     },
     "U07DY3SJXK3": {
       "id": "U07DY3SJXK3",
