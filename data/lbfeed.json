@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-27T04:57:04.169Z",
+  "lastUpdated": "2026-03-27T06:14:14.674Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -4576,6 +4576,14 @@
         "ts": "2026-03-25T05:22:18.579Z",
         "delta": -132,
         "balance": 116,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U079084G91P"
+      },
+      {
+        "ts": "2026-03-27T05:12:12.909Z",
+        "delta": -10,
+        "balance": 106,
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U079084G91P"
@@ -84415,6 +84423,12 @@
     ]
   },
   "users": {
+    "U079084G91P": {
+      "id": "U079084G91P",
+      "username": "rmzha2234",
+      "displayName": "Blasty",
+      "avatar": "https://avatars.slack-edge.com/2024-06-18/7279055618119_8aee1063c7584cd63c0f_72.jpg"
+    },
     "U0AGAC5MJR3": {
       "id": "U0AGAC5MJR3",
       "username": "speedy_jayesh",
@@ -85071,12 +85085,6 @@
       "username": "explorercosmic",
       "displayName": "Solar",
       "avatar": "https://avatars.slack-edge.com/2025-10-10/9664368677651_555fac45bb12097a80ed_72.png"
-    },
-    "U079084G91P": {
-      "id": "U079084G91P",
-      "username": "rmzha2234",
-      "displayName": "Blasty",
-      "avatar": "https://avatars.slack-edge.com/2024-06-18/7279055618119_8aee1063c7584cd63c0f_72.jpg"
     },
     "U07950S3GMC": {
       "id": "U07950S3GMC",
