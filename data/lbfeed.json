@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-27T10:52:25.345Z",
+  "lastUpdated": "2026-03-27T11:42:09.868Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -22943,6 +22943,14 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U090XJF4NSD"
+      },
+      {
+        "ts": "2026-03-27T11:14:42.095Z",
+        "delta": -10,
+        "balance": 0,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U090XJF4NSD"
       }
     ],
     "u0914npnkm2": [
@@ -32239,6 +32247,22 @@
         "delta": 33,
         "balance": 476,
         "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U096J8GJ87J"
+      },
+      {
+        "ts": "2026-03-27T10:56:22.956Z",
+        "delta": 15,
+        "balance": 491,
+        "reason": "Five Star Chef",
+        "reasonType": "achievement",
+        "userId": "U096J8GJ87J"
+      },
+      {
+        "ts": "2026-03-27T10:58:48.816Z",
+        "delta": -206,
+        "balance": 285,
+        "reason": "shop purchase",
         "reasonType": "",
         "userId": "U096J8GJ87J"
       }
@@ -84471,6 +84495,18 @@
     ]
   },
   "users": {
+    "U090XJF4NSD": {
+      "id": "U090XJF4NSD",
+      "username": "the_cubidian",
+      "displayName": "The Cubidian",
+      "avatar": "https://avatars.slack-edge.com/2025-06-09/9020487880196_42d2f06d2aecea35d9ad_72.png"
+    },
+    "U096J8GJ87J": {
+      "id": "U096J8GJ87J",
+      "username": "amakerlife",
+      "displayName": "Makerlife",
+      "avatar": "https://secure.gravatar.com/avatar/cb69cb96489acae56e1ec773882cace9.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0012-72.png"
+    },
     "U092X590XUG": {
       "id": "U092X590XUG",
       "username": "keyboard1000n17",
@@ -86502,12 +86538,6 @@
       "displayName": "mashmash",
       "avatar": "https://avatars.slack-edge.com/2026-03-15/10715391321601_a14c9c5028af04b2e834_72.png"
     },
-    "U096J8GJ87J": {
-      "id": "U096J8GJ87J",
-      "username": "amakerlife",
-      "displayName": "Makerlife",
-      "avatar": "https://secure.gravatar.com/avatar/cb69cb96489acae56e1ec773882cace9.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0012-72.png"
-    },
     "U0AEP2DSQ11": {
       "id": "U0AEP2DSQ11",
       "username": "shreerangbhavsar912",
@@ -87550,12 +87580,6 @@
       "username": "crossroad78617",
       "displayName": "Esha haroon",
       "avatar": "https://secure.gravatar.com/avatar/a1fc862535abc099c5f51710f2a4eeb3.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0018-72.png"
-    },
-    "U090XJF4NSD": {
-      "id": "U090XJF4NSD",
-      "username": "the_cubidian",
-      "displayName": "The Cubidian",
-      "avatar": "https://avatars.slack-edge.com/2025-06-09/9020487880196_42d2f06d2aecea35d9ad_72.png"
     },
     "U092TLL6ZH6": {
       "id": "U092TLL6ZH6",
