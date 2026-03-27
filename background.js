@@ -1,5 +1,58 @@
 
 const browserAPI = typeof browser !== 'undefined' ? browser : chrome;
+const GAMBLORPHEUS_LOTTERIES_URL = 'https://gamblorpheus.hackclub.com/api/lotteries';
+const GAMBLORPHEUS_LOTTERIES_FALLBACK_URL = 'https://r.jina.ai/http://gamblorpheus.hackclub.com/api/lotteries';
+
+function parseLotteryPayload(text) {
+    if (typeof text !== 'string' || !text.trim()) return null;
+
+    try {
+        return JSON.parse(text);
+    } catch (e) {
+    }
+
+    const marker = 'Markdown Content:';
+    const markerIndex = text.indexOf(marker);
+    const body = markerIndex >= 0 ? text.slice(markerIndex + marker.length).trim() : text;
+    const start = body.indexOf('[');
+    const end = body.lastIndexOf(']');
+    if (start < 0 || end <= start) return null;
+
+    try {
+        return JSON.parse(body.slice(start, end + 1));
+    } catch (e) {
+        return null;
+    }
+}
+
+async function fetchLotteryPayload(url) {
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json, text/plain;q=0.9, */*;q=0.8'
+            }
+        });
+        const text = await response.text().catch(() => '');
+        const data = parseLotteryPayload(text);
+
+        return {
+            ok: response.ok,
+            status: response.status,
+            data,
+            raw: data ? null : text,
+            error: null
+        };
+    } catch (err) {
+        return {
+            ok: false,
+            status: 0,
+            data: null,
+            raw: null,
+            error: err?.message || 'Network error'
+        };
+    }
+}
 
 browserAPI.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.type === 'GET_TAB_ID') {
@@ -98,6 +151,35 @@ browserAPI.runtime.onMessage.addListener((message, sender, sendResponse) => {
             .catch(err => {
                 sendResponse({ ok: false, error: err.message });
             });
+
+        return true;
+    }
+
+    if (message.type === 'FETCH_GAMBLORPHEUS_LOTTERIES') {
+        const url = message.url || GAMBLORPHEUS_LOTTERIES_URL;
+
+        (async () => {
+            const fallbackResult = await fetchLotteryPayload(GAMBLORPHEUS_LOTTERIES_FALLBACK_URL);
+            if (fallbackResult.ok && Array.isArray(fallbackResult.data)) {
+                sendResponse({ ...fallbackResult, source: 'fallback' });
+                return;
+            }
+
+            const primaryResult = await fetchLotteryPayload(url);
+            if (primaryResult.ok && Array.isArray(primaryResult.data)) {
+                sendResponse({ ...primaryResult, source: 'primary' });
+                return;
+            }
+
+            sendResponse({
+                ok: false,
+                status: primaryResult.status || fallbackResult.status || 0,
+                error: primaryResult.error || fallbackResult.error || 'Unable to fetch lotteries',
+                data: null,
+                raw: primaryResult.raw || fallbackResult.raw || null,
+                source: 'failed'
+            });
+        })();
 
         return true;
     }

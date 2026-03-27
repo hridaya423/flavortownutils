@@ -521,7 +521,7 @@
 
 .flavortown-md-toolbar__btn--active {
     background: var(--flavortown-toolbar-btn-active, rgba(0, 0, 0, 0.15)) !important;
-    color: var(--flavortown-preview-accent, currentColor) !important;
+    color: var(--flavortown-toolbar-icon-active, var(--flavortown-preview-accent, currentColor)) !important;
 }
 
 .flavortown-md-container {
@@ -6005,4 +6005,129 @@
 
 .flavortown-oos-label {
     white-space: nowrap;
+}
+
+.flavortown-lottery-card-odds {
+    margin: 8px 0;
+    padding: 8px 10px;
+    border-radius: 10px;
+    border: 1px solid color-mix(in srgb, var(--color-accent, #ec8b33), transparent 70%);
+    background: color-mix(in srgb, var(--color-accent, #ec8b33), transparent 92%);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    width: 100%;
+    text-align: left;
+}
+
+.flavortown-lottery-card-odds__left {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.flavortown-lottery-card-odds__label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--color-text-muted, #8b7355);
+}
+
+.flavortown-lottery-card-odds__value {
+    font-size: 0.98rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--color-accent, #ec8b33);
+}
+
+.flavortown-lottery-card-odds__pool {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--color-text-secondary, #7a6750);
+    background: var(--color-surface, #fffdf9);
+    border: 1px solid color-mix(in srgb, var(--color-accent, #ec8b33), transparent 75%);
+    border-radius: 999px;
+    padding: 3px 8px;
+    white-space: nowrap;
+}
+
+.flavortown-lottery-summary {
+    margin: 14px 0 8px;
+    padding: 14px 16px;
+    border: 1px solid var(--color-border, #d7c5af);
+    border-radius: 12px;
+    background: var(--color-surface, #fffdf9);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.flavortown-lottery-summary__title {
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--color-text-primary, #5d4e37);
+    margin-bottom: 10px;
+}
+
+.flavortown-lottery-summary__stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.flavortown-lottery-summary__stat {
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--color-border, #d7c5af);
+    background: color-mix(in srgb, var(--color-accent, #ec8b33), transparent 94%);
+    color: var(--color-text-secondary, #7a6750);
+    font-size: 0.86em;
+}
+
+.flavortown-lottery-summary__stat--accent {
+    border-color: color-mix(in srgb, var(--color-accent, #ec8b33), transparent 70%);
+}
+
+.flavortown-lottery-summary__stat--wide {
+    grid-column: 1 / -1;
+}
+
+.flavortown-lottery-summary__stat .label {
+    display: block;
+    font-size: 0.82em;
+    opacity: 0.85;
+    margin-bottom: 2px;
+}
+
+.flavortown-lottery-summary__stat strong {
+    color: var(--color-text-primary, #5d4e37);
+    font-size: 1.05em;
+}
+
+.flavortown-lottery-summary__meta {
+    display: block;
+    margin-top: 2px;
+    font-size: 0.79em;
+    color: var(--color-text-muted, #8b7355);
+}
+
+.flavortown-lottery-summary__note {
+    margin-top: 11px;
+    font-size: 0.8em;
+    color: var(--color-text-muted, #8b7355);
+}
+
+@media (max-width: 640px) {
+    .flavortown-lottery-summary__stats {
+        grid-template-columns: 1fr;
+    }
+
+    .flavortown-lottery-summary__stat--wide {
+        grid-column: auto;
+    }
+
+    .flavortown-lottery-card-odds {
+        align-items: flex-start;
+        flex-direction: column;
+    }
 }

@@ -95,6 +95,8 @@ ${vars}
             --ctp-mauve: #b4befe !important;
             --color-brown: #b4befe !important;
             --color-accent: #b4befe !important;
+            --flavortown-toolbar-icon: #313244 !important;
+            --flavortown-toolbar-icon-active: #313244 !important;
         }
         `;
         appendToHead(accentStyle);

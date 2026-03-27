@@ -122,6 +122,10 @@ const LOGPHEUS_API_BASE_URL = 'https://logpheus.gizzy.gay';
 const LOGPHEUS_GOALS_ENDPOINT = `${LOGPHEUS_API_BASE_URL}/api/v1/goals`;
 const LOGPHEUS_LAST_SYNC_SIGNATURE_KEY = 'flavortown_logpheus_sync_signature';
 const LOGPHEUS_LAST_SYNC_AT_KEY = 'flavortown_logpheus_sync_at';
+const GAMBLORPHEUS_LOTTERIES_ENDPOINT = 'https://gamblorpheus.hackclub.com/api/lotteries';
+const GAMBLORPHEUS_LOTTERY_CACHE_KEY = 'flavortown_gamblorpheus_lottery_cache';
+const GAMBLORPHEUS_LOTTERY_CACHE_TTL = 90 * 1000;
+const LOTTERY_SHOP_ITEM_ID = '200';
 const CHANGELOG_DISMISS_KEY = 'flavortown_changelog_dismissed';
 const CHANGELOG_OVERRIDE_KEY = 'flavortown_changelog_override';
 const CHANGELOG_CACHE_KEY = 'flavortown_changelog_cache';
@@ -683,6 +687,8 @@ function applyTheme(theme, customColors, catppuccinAccent = 'mauve') {
     --ctp-mauve: #b4befe !important;
     --ctp-accent-text: #313244 !important;
     --flavortown-on-accent: #313244 !important;
+    --flavortown-toolbar-icon: #313244 !important;
+    --flavortown-toolbar-icon-active: #313244 !important;
     --color-brown: #b4befe !important;
     --color-accent: #b4befe !important;
     --ft-votes-accent: #b4befe !important;
@@ -8736,6 +8742,342 @@ async function runShopOrdersSync() {
     }
 }
 
+function isLotteryItemName(name) {
+    const normalized = normalizeShopItemName(name);
+    return normalized.includes('lottery ticket');
+}
+
+function fetchGamblorpheusLotteriesViaBackground() {
+    return new Promise((resolve, reject) => {
+        const payload = {
+            type: 'FETCH_GAMBLORPHEUS_LOTTERIES',
+            url: GAMBLORPHEUS_LOTTERIES_ENDPOINT
+        };
+
+        let settled = false;
+        const finalizeResolve = (value) => {
+            if (settled) return;
+            settled = true;
+            resolve(value);
+        };
+        const finalizeReject = (error) => {
+            if (settled) return;
+            settled = true;
+            reject(error);
+        };
+
+        const callback = (response) => {
+            const lastError = browserAPI.runtime && browserAPI.runtime.lastError;
+            if (lastError) {
+                finalizeReject(new Error(lastError.message || 'Background request failed'));
+                return;
+            }
+
+            if (!response) {
+                finalizeReject(new Error('No response from lottery background fetch'));
+                return;
+            }
+
+            finalizeResolve(response);
+        };
+
+        try {
+            const maybePromise = browserAPI.runtime.sendMessage(payload, callback);
+            if (maybePromise && typeof maybePromise.then === 'function') {
+                maybePromise.then(finalizeResolve).catch(finalizeReject);
+            }
+        } catch (error) {
+            finalizeReject(error);
+        }
+    });
+}
+
+function parseLotteryOrderIdsFromTickets(ticketsField) {
+    const orderIds = [];
+    const pushId = (value) => {
+        const id = parseInt(String(value || '').replace(/[^0-9]/g, ''), 10);
+        if (Number.isFinite(id) && id > 0) {
+            orderIds.push(id);
+        }
+    };
+
+    if (Array.isArray(ticketsField)) {
+        ticketsField.forEach((ticket) => pushId(ticket?.order_id));
+        return orderIds;
+    }
+
+    if (typeof ticketsField !== 'string' || !ticketsField.trim()) {
+        return orderIds;
+    }
+
+    let match;
+    const regex = /['"]order_id['"]\s*:\s*(\d+)/g;
+    while ((match = regex.exec(ticketsField)) !== null) {
+        pushId(match[1]);
+    }
+
+    if (!orderIds.length) {
+        const fallbackRegex = /order_id\s*[:=]\s*(\d+)/g;
+        while ((match = fallbackRegex.exec(ticketsField)) !== null) {
+            pushId(match[1]);
+        }
+    }
+
+    return orderIds;
+}
+
+function indexLotteryTicketsByOrder(orderIds) {
+    const byOrder = {};
+    orderIds.forEach((orderId) => {
+        const key = String(orderId);
+        byOrder[key] = (byOrder[key] || 0) + 1;
+    });
+    return byOrder;
+}
+
+function getLatestLotteryEntry(entries) {
+    if (!Array.isArray(entries) || !entries.length) return null;
+    return [...entries].sort((a, b) => (Number(b?.id) || 0) - (Number(a?.id) || 0))[0] || null;
+}
+
+function readLotteryOddsCache() {
+    try {
+        const raw = localStorage.getItem(GAMBLORPHEUS_LOTTERY_CACHE_KEY);
+        if (!raw) return null;
+        const parsed = JSON.parse(raw);
+        if (!parsed || typeof parsed !== 'object') return null;
+        const updatedAt = Number(parsed.updatedAt) || 0;
+        if (!updatedAt || Date.now() - updatedAt > GAMBLORPHEUS_LOTTERY_CACHE_TTL) return null;
+        return parsed;
+    } catch (e) {
+        return null;
+    }
+}
+
+function writeLotteryOddsCache(data) {
+    if (!data || typeof data !== 'object') return;
+    try {
+        localStorage.setItem(GAMBLORPHEUS_LOTTERY_CACHE_KEY, JSON.stringify({
+            ...data,
+            updatedAt: Date.now()
+        }));
+    } catch (e) {
+    }
+}
+
+async function fetchLotteryOddsData() {
+    const cached = readLotteryOddsCache();
+    if (cached?.totalTickets) {
+        return cached;
+    }
+
+    const response = await fetchGamblorpheusLotteriesViaBackground();
+    if (!response?.ok || !Array.isArray(response?.data)) return null;
+
+    const latestLottery = getLatestLotteryEntry(response.data);
+    if (!latestLottery) return null;
+
+    const orderIds = parseLotteryOrderIdsFromTickets(latestLottery.tickets);
+    const totalTickets = orderIds.length;
+    if (!totalTickets) return null;
+
+    const data = {
+        lotteryId: Number(latestLottery.id) || null,
+        totalTickets,
+        ticketsByOrder: indexLotteryTicketsByOrder(orderIds)
+    };
+    writeLotteryOddsCache(data);
+    return data;
+}
+
+async function fetchMyOrdersDocument() {
+    try {
+        const response = await fetch('/shop/my_orders', {
+            credentials: 'same-origin',
+            headers: { 'X-Flavortown-Ext-135': 'true' }
+        });
+        if (!response.ok) return null;
+        const html = await response.text();
+        return new DOMParser().parseFromString(html, 'text/html');
+    } catch (e) {
+        return null;
+    }
+}
+
+function getLotteryOrdersFromDoc(doc) {
+    const orderIds = new Set();
+    let orderedTickets = 0;
+
+    if (!doc) {
+        return { orderIds, orderedTickets };
+    }
+
+    doc.querySelectorAll('.my-orders__item').forEach((orderItem) => {
+        const name = getOrderItemName(orderItem);
+        if (!isLotteryItemName(name)) return;
+
+        const orderId = getOrderNumberFromItem(orderItem);
+        if (orderId) orderIds.add(String(orderId));
+
+        orderedTickets += getOrderQuantityFromItem(orderItem);
+    });
+
+    return { orderIds, orderedTickets };
+}
+
+function formatLotteryPercent(value) {
+    if (!Number.isFinite(value) || value <= 0) return '0%';
+    if (value >= 10) return `${value.toFixed(1)}%`;
+    if (value >= 1) return `${value.toFixed(2)}%`;
+    if (value >= 0.1) return `${value.toFixed(3)}%`;
+    return `${value.toFixed(4)}%`;
+}
+
+function findLotteryCard() {
+    const directMatches = Array.from(document.querySelectorAll(`.shop-item-card[data-shop-id="${LOTTERY_SHOP_ITEM_ID}"]`));
+
+    const fallbackMatches = Array.from(document.querySelectorAll('.shop-item-card[data-shop-id], .shop-item-card')).filter((card) => {
+        const nameSources = [
+            card.dataset.shopWishlistItemNameValue,
+            card.dataset.shopItemName,
+            card.dataset.itemName,
+            card.querySelector('.shop-item-card__title')?.textContent,
+            card.querySelector('.shop-item-card__name')?.textContent,
+            card.querySelector('[data-shop-item-name]')?.textContent
+        ].filter(Boolean);
+
+        const joinedName = nameSources.join(' ').trim();
+        if (joinedName && isLotteryItemName(joinedName)) return true;
+
+        const cardText = normalizeShopItemName(card.textContent || '');
+        return cardText.includes('lottery') && cardText.includes('ticket');
+    });
+
+    const candidates = directMatches.length ? directMatches : fallbackMatches;
+    if (!candidates.length) return null;
+
+    const scoreCard = (card) => {
+        let score = 0;
+        if (card.querySelector('.shop-item-card__content')) score += 3;
+        if (card.querySelector('.shop-item-card__order-button')) score += 2;
+        if (card.closest('.shop__items, .shop__grid, main')) score += 2;
+        const style = window.getComputedStyle(card);
+        if (style.display !== 'none' && style.visibility !== 'hidden' && style.opacity !== '0') score += 2;
+        if (card.offsetParent) score += 2;
+        return score;
+    };
+
+    return [...candidates].sort((a, b) => scoreCard(b) - scoreCard(a))[0] || null;
+}
+
+function upsertLotteryCardOdds(oneTicketChance, totalTickets) {
+    const lotteryCard = findLotteryCard();
+    if (!lotteryCard) return;
+
+    const cardContent = lotteryCard.querySelector('.shop-item-card__content') || lotteryCard;
+    const detailsRow = cardContent.querySelector('.shop-item-card__details') || lotteryCard.querySelector('.shop-item-card__details');
+    const efficiencyBlock = cardContent.querySelector('.flavortown-efficiency');
+
+    let oddsEl = lotteryCard.querySelector('.flavortown-lottery-card-odds');
+    if (!oddsEl) {
+        oddsEl = document.createElement('section');
+        oddsEl.className = 'flavortown-lottery-card-odds';
+    }
+
+    if (efficiencyBlock) {
+        efficiencyBlock.insertAdjacentElement('beforebegin', oddsEl);
+    } else if (detailsRow) {
+        if (oddsEl !== detailsRow.nextElementSibling) {
+            detailsRow.insertAdjacentElement('afterend', oddsEl);
+        }
+    } else if (oddsEl.parentElement !== cardContent) {
+        cardContent.appendChild(oddsEl);
+    }
+
+    oddsEl.innerHTML = `
+        <div class="flavortown-lottery-card-odds__left">
+            <span class="flavortown-lottery-card-odds__label">1 ticket chance</span>
+            <strong class="flavortown-lottery-card-odds__value">${formatLotteryPercent(oneTicketChance)}</strong>
+        </div>
+    `;
+}
+
+function upsertLotterySummaryPanel(summary) {
+    const recentlyAdded = document.querySelector('.shop__recently-added');
+    if (!recentlyAdded) return;
+
+    let panel = document.querySelector('.flavortown-lottery-summary');
+    if (!panel) {
+        panel = document.createElement('section');
+        panel.className = 'flavortown-lottery-summary';
+        recentlyAdded.insertAdjacentElement('afterend', panel);
+    }
+
+    const ticketsLabel = summary.userTickets === 1 ? 'ticket' : 'tickets';
+    const pendingNote = summary.orderedTickets > summary.matchedTickets
+        ? '<div class="flavortown-lottery-summary__note">Some recent ticket purchases may still be syncing into the lottery pool.</div>'
+        : '';
+
+    panel.innerHTML = `
+        <div class="flavortown-lottery-summary__title">Lottery Odds</div>
+        <div class="flavortown-lottery-summary__stats">
+            <div class="flavortown-lottery-summary__stat">
+                <span class="label">Tickets bought</span>
+                <strong>${summary.userTickets}</strong>
+                <span class="flavortown-lottery-summary__meta">${ticketsLabel}</span>
+            </div>
+            <div class="flavortown-lottery-summary__stat flavortown-lottery-summary__stat--accent">
+                <span class="label">Your chance</span>
+                <strong>${formatLotteryPercent(summary.userChance)}</strong>
+                <span class="flavortown-lottery-summary__meta">based on matched orders</span>
+            </div>
+            <div class="flavortown-lottery-summary__stat flavortown-lottery-summary__stat--wide">
+                <span class="label">Current pool size</span>
+                <strong>${summary.totalTickets.toLocaleString()}</strong>
+                <span class="flavortown-lottery-summary__meta">active tickets in drawing</span>
+            </div>
+        </div>
+        ${pendingNote}
+    `;
+}
+
+async function addLotteryOddsInsights() {
+    if (window.location.pathname !== '/shop') return;
+    if (window.__flavortownLotteryOddsLoading) return;
+    window.__flavortownLotteryOddsLoading = true;
+
+    try {
+        const lotteryData = await fetchLotteryOddsData();
+        if (!lotteryData?.totalTickets) return;
+
+        const oneTicketChance = 100 / lotteryData.totalTickets;
+        upsertLotteryCardOdds(oneTicketChance, lotteryData.totalTickets);
+
+        const ordersDoc = await fetchMyOrdersDocument();
+        const lotteryOrders = getLotteryOrdersFromDoc(ordersDoc);
+
+        let matchedTickets = 0;
+        lotteryOrders.orderIds.forEach((orderId) => {
+            matchedTickets += lotteryData.ticketsByOrder[String(orderId)] || 0;
+        });
+
+        const userTickets = matchedTickets > 0 ? matchedTickets : lotteryOrders.orderedTickets;
+        const userChance = userTickets > 0 ? (userTickets / lotteryData.totalTickets) * 100 : 0;
+
+        upsertLotterySummaryPanel({
+            totalTickets: lotteryData.totalTickets,
+            oneTicketChance,
+            userTickets,
+            userChance,
+            orderedTickets: lotteryOrders.orderedTickets,
+            matchedTickets
+        });
+    } catch (e) {
+    } finally {
+        window.__flavortownLotteryOddsLoading = false;
+    }
+}
+
 async function initShopAccessories() {
     if (!window.location.pathname.startsWith('/shop') || window.location.pathname.includes('/order')) {
         return;
@@ -10460,6 +10802,7 @@ function init() {
     initShopAccessories();
     addShopCardEfficiency();
     addOutOfStockToggle();
+    addLotteryOddsInsights();
     addExploreSearch();
     addExploreUsersPage();
     captureApiKey();
@@ -12045,6 +12388,7 @@ document.addEventListener('turbo:load', () => {
     initShopAccessories();
     addShopCardEfficiency();
     addOutOfStockToggle();
+    addLotteryOddsInsights();
     addExploreSearch();
     addExploreUsersPage();
     captureApiKey();
