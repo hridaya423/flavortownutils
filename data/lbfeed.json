@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-28T08:00:23.214Z",
+  "lastUpdated": "2026-03-28T08:53:22.012Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -32865,6 +32865,22 @@
         "delta": 5,
         "balance": 1133,
         "reason": "Cooking",
+        "reasonType": "achievement",
+        "userId": "U096NGLTF4K"
+      },
+      {
+        "ts": "2026-03-28T08:49:21.696Z",
+        "delta": 5,
+        "balance": 1138,
+        "reason": "Show and tell local",
+        "reasonType": "achievement",
+        "userId": "U096NGLTF4K"
+      },
+      {
+        "ts": "2026-03-28T08:49:21.756Z",
+        "delta": 15,
+        "balance": 1153,
+        "reason": "Sous Chef",
         "reasonType": "achievement",
         "userId": "U096NGLTF4K"
       }
@@ -85509,6 +85525,11 @@
     ]
   },
   "users": {
+    "U096NGLTF4K": {
+      "id": "U096NGLTF4K",
+      "username": "lordseriouspig",
+      "avatar": "https://avatars.slack-edge.com/2025-08-03/9311717326353_c74908988c852687be47_72.jpg"
+    },
     "U0A78UCA231": {
       "id": "U0A78UCA231",
       "username": "aayushydvnp",
@@ -87889,11 +87910,6 @@
       "username": "maverickroneal",
       "displayName": "maverickroneal",
       "avatar": "https://avatars.slack-edge.com/2026-03-08/10654004087830_f1afebfacddac279cdbb_72.png"
-    },
-    "U096NGLTF4K": {
-      "id": "U096NGLTF4K",
-      "username": "lordseriouspig",
-      "avatar": "https://avatars.slack-edge.com/2025-08-03/9311717326353_c74908988c852687be47_72.jpg"
     },
     "U0926U54UJV": {
       "id": "U0926U54UJV",
