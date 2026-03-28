@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-28T17:57:32.958Z",
+  "lastUpdated": "2026-03-28T18:52:23.472Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -29728,6 +29728,14 @@
         "ts": "2026-03-19T17:31:45.754Z",
         "delta": 38,
         "balance": 45,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U092G706V1A"
+      },
+      {
+        "ts": "2026-03-28T18:00:48.996Z",
+        "delta": -10,
+        "balance": 35,
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U092G706V1A"
@@ -79149,6 +79157,14 @@
         "reason": "user grant",
         "reasonType": "",
         "userId": "U0A8J0XNCT1"
+      },
+      {
+        "ts": "2026-03-28T17:57:58.163Z",
+        "delta": -104,
+        "balance": 153,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A8J0XNCT1"
       }
     ],
     "u0a8k57pse6": [
@@ -85913,6 +85929,12 @@
     ]
   },
   "users": {
+    "U092G706V1A": {
+      "id": "U092G706V1A",
+      "username": "shreyansh.sahoo039",
+      "displayName": "Enderman",
+      "avatar": "https://avatars.slack-edge.com/2025-10-11/9674200143923_5fd4b02ea9f0a5b47177_72.png"
+    },
     "U0A8J0XNCT1": {
       "id": "U0A8J0XNCT1",
       "username": "voraviraj08",
@@ -87897,12 +87919,6 @@
       "username": "admilkyway",
       "displayName": "Mr Milky Way",
       "avatar": "https://avatars.slack-edge.com/2025-08-15/9349731560455_d2d0d48707b7d867d90d_72.png"
-    },
-    "U092G706V1A": {
-      "id": "U092G706V1A",
-      "username": "shreyansh.sahoo039",
-      "displayName": "Enderman",
-      "avatar": "https://avatars.slack-edge.com/2025-10-11/9674200143923_5fd4b02ea9f0a5b47177_72.png"
     },
     "U09S4K4C2BA": {
       "id": "U09S4K4C2BA",
