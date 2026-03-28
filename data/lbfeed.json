@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-28T08:53:22.012Z",
+  "lastUpdated": "2026-03-28T09:38:53.033Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -18446,6 +18446,22 @@
         "ts": "2026-03-28T07:08:00.970Z",
         "delta": -723,
         "balance": 444,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U08D3AY7BG8"
+      },
+      {
+        "ts": "2026-03-28T08:56:31.417Z",
+        "delta": -20,
+        "balance": 424,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U08D3AY7BG8"
+      },
+      {
+        "ts": "2026-03-28T08:58:37.223Z",
+        "delta": -22,
+        "balance": 402,
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U08D3AY7BG8"
@@ -85525,6 +85541,11 @@
     ]
   },
   "users": {
+    "U08D3AY7BG8": {
+      "id": "U08D3AY7BG8",
+      "username": "me1978",
+      "avatar": "https://avatars.slack-edge.com/2026-01-13/10292071246820_9386a1b8c19f67927074_72.png"
+    },
     "U096NGLTF4K": {
       "id": "U096NGLTF4K",
       "username": "lordseriouspig",
@@ -85545,11 +85566,6 @@
       "username": "katona.mozes",
       "displayName": "katona.mozes",
       "avatar": "https://secure.gravatar.com/avatar/e50e1947de9a2d88a60b3fd09b540914.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0014-72.png"
-    },
-    "U08D3AY7BG8": {
-      "id": "U08D3AY7BG8",
-      "username": "me1978",
-      "avatar": "https://avatars.slack-edge.com/2026-01-13/10292071246820_9386a1b8c19f67927074_72.png"
     },
     "U0A4UTULSLE": {
       "id": "U0A4UTULSLE",
