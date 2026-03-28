@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-28T22:30:06.279Z",
+  "lastUpdated": "2026-03-28T22:59:12.955Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -6057,6 +6057,32 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U07C0RR30GZ"
+      }
+    ],
+    "u07d46xnupr": [
+      {
+        "ts": "2026-03-28T22:43:08.295Z",
+        "delta": 10,
+        "balance": 10,
+        "reason": "user grant",
+        "reasonType": "",
+        "userId": "U07D46XNUPR"
+      },
+      {
+        "ts": "2026-03-28T22:46:52.454Z",
+        "delta": 3,
+        "balance": 18,
+        "reason": "Home Cookin'",
+        "reasonType": "achievement",
+        "userId": "U07D46XNUPR"
+      },
+      {
+        "ts": "2026-03-28T22:46:52.456Z",
+        "delta": 5,
+        "balance": 15,
+        "reason": "Very Fried",
+        "reasonType": "achievement",
+        "userId": "U07D46XNUPR"
       }
     ],
     "u07d53w8l6r": [
@@ -86051,6 +86077,12 @@
     ]
   },
   "users": {
+    "U07D46XNUPR": {
+      "id": "U07D46XNUPR",
+      "username": "aldi",
+      "displayName": "h",
+      "avatar": "https://avatars.slack-edge.com/2026-01-04/10240028486753_21f27b10e510b09c828c_72.jpg"
+    },
     "U0AKLQNQ0BB": {
       "id": "U0AKLQNQ0BB",
       "username": "aniruddhm.modi",
