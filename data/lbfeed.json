@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-28T15:32:17.085Z",
+  "lastUpdated": "2026-03-28T16:35:37.498Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -14333,6 +14333,16 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U084UQFF0LC"
+      }
+    ],
+    "u0854u71h8e": [
+      {
+        "ts": "2026-03-28T16:05:31.560Z",
+        "delta": 178,
+        "balance": 329,
+        "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U0854U71H8E"
       }
     ],
     "u0857uwects": [
@@ -85815,6 +85825,12 @@
     ]
   },
   "users": {
+    "U0854U71H8E": {
+      "id": "U0854U71H8E",
+      "username": "contact852",
+      "displayName": "Evan Yu",
+      "avatar": "https://avatars.slack-edge.com/2025-01-23/8353988240833_1b93df9b5e156cfd3f46_72.jpg"
+    },
     "U0A6TF5Q4H0": {
       "id": "U0A6TF5Q4H0",
       "username": "georgegkoif2",
