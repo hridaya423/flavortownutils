@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-28T07:07:13.265Z",
+  "lastUpdated": "2026-03-28T08:00:23.214Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -18438,6 +18438,14 @@
         "ts": "2026-03-28T07:05:34.902Z",
         "delta": -471,
         "balance": 1167,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U08D3AY7BG8"
+      },
+      {
+        "ts": "2026-03-28T07:08:00.970Z",
+        "delta": -723,
+        "balance": 444,
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U08D3AY7BG8"
@@ -45911,6 +45919,40 @@
         "userId": "U0A2QF99Z7U"
       }
     ],
+    "u0a2qr9rmu0": [
+      {
+        "ts": "2026-03-28T07:35:56.956Z",
+        "delta": 5,
+        "balance": 5,
+        "reason": "Very Fried",
+        "reasonType": "achievement",
+        "userId": "U0A2QR9RMU0"
+      },
+      {
+        "ts": "2026-03-28T07:35:57.027Z",
+        "delta": 2,
+        "balance": 10,
+        "reason": "Recipe Notes",
+        "reasonType": "achievement",
+        "userId": "U0A2QR9RMU0"
+      },
+      {
+        "ts": "2026-03-28T07:35:57.030Z",
+        "delta": 3,
+        "balance": 8,
+        "reason": "Home Cookin'",
+        "reasonType": "achievement",
+        "userId": "U0A2QR9RMU0"
+      },
+      {
+        "ts": "2026-03-28T07:36:03.211Z",
+        "delta": 3,
+        "balance": 13,
+        "reason": "Order Up!",
+        "reasonType": "achievement",
+        "userId": "U0A2QR9RMU0"
+      }
+    ],
     "u0a2tmhuxm1": [
       {
         "ts": "2026-01-27T02:23:06.900Z",
@@ -66205,6 +66247,30 @@
         "reason": "ship event payout",
         "reasonType": "",
         "userId": "U0A78UCA231"
+      },
+      {
+        "ts": "2026-03-28T07:35:07.919Z",
+        "delta": -280,
+        "balance": 908,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A78UCA231"
+      },
+      {
+        "ts": "2026-03-28T07:46:04.291Z",
+        "delta": 280,
+        "balance": 1188,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A78UCA231"
+      },
+      {
+        "ts": "2026-03-28T07:48:46.831Z",
+        "delta": -280,
+        "balance": 908,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A78UCA231"
       }
     ],
     "u0a793wkubw": [
@@ -72772,6 +72838,14 @@
         "ts": "2026-02-08T01:10:36.756Z",
         "delta": -15,
         "balance": 14,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A7U42QFV3"
+      },
+      {
+        "ts": "2026-03-28T07:38:19.258Z",
+        "delta": -10,
+        "balance": 4,
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0A7U42QFV3"
@@ -85435,6 +85509,22 @@
     ]
   },
   "users": {
+    "U0A78UCA231": {
+      "id": "U0A78UCA231",
+      "username": "aayushydvnp",
+      "avatar": "https://secure.gravatar.com/avatar/8ebf09e3208359cb42383b27195e3552.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0013-72.png"
+    },
+    "U0A7U42QFV3": {
+      "id": "U0A7U42QFV3",
+      "username": "albumanyt69420",
+      "avatar": "https://avatars.slack-edge.com/2026-01-10/10297974189392_d9af8d3fbd37e5236020_72.jpg"
+    },
+    "U0A2QR9RMU0": {
+      "id": "U0A2QR9RMU0",
+      "username": "katona.mozes",
+      "displayName": "katona.mozes",
+      "avatar": "https://secure.gravatar.com/avatar/e50e1947de9a2d88a60b3fd09b540914.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0014-72.png"
+    },
     "U08D3AY7BG8": {
       "id": "U08D3AY7BG8",
       "username": "me1978",
@@ -85757,11 +85847,6 @@
       "username": "amber",
       "displayName": "amber",
       "avatar": "https://avatars.slack-edge.com/2026-03-01/10599797126067_7bbb980ae906a691a15a_72.jpg"
-    },
-    "U0A78UCA231": {
-      "id": "U0A78UCA231",
-      "username": "aayushydvnp",
-      "avatar": "https://secure.gravatar.com/avatar/8ebf09e3208359cb42383b27195e3552.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0013-72.png"
     },
     "U090XJF4NSD": {
       "id": "U090XJF4NSD",
@@ -89329,11 +89414,6 @@
       "id": "U0A1KGW04LE",
       "username": "awesomerocket1000",
       "avatar": "https://avatars.slack-edge.com/2026-01-11/10287239783745_1056f486ad96e66c08bb_72.gif"
-    },
-    "U0A7U42QFV3": {
-      "id": "U0A7U42QFV3",
-      "username": "albumanyt69420",
-      "avatar": "https://avatars.slack-edge.com/2026-01-10/10297974189392_d9af8d3fbd37e5236020_72.jpg"
     },
     "U0A9V6R0AJD": {
       "id": "U0A9V6R0AJD",
