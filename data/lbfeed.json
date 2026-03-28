@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-28T04:32:04.228Z",
+  "lastUpdated": "2026-03-28T05:57:48.022Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -40294,6 +40294,14 @@
         "ts": "2026-03-27T16:39:16.346Z",
         "delta": -60,
         "balance": 48,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U09HH4XAEBX"
+      },
+      {
+        "ts": "2026-03-28T05:53:00.334Z",
+        "delta": -40,
+        "balance": 8,
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U09HH4XAEBX"
@@ -85371,6 +85379,12 @@
     ]
   },
   "users": {
+    "U09HH4XAEBX": {
+      "id": "U09HH4XAEBX",
+      "username": "hkshrestha621",
+      "displayName": "Hira",
+      "avatar": "https://avatars.slack-edge.com/2026-01-14/10301067262146_f7e50a571f88588f1518_72.jpg"
+    },
     "U0A8J0XNCT1": {
       "id": "U0A8J0XNCT1",
       "username": "voraviraj08",
@@ -85520,12 +85534,6 @@
       "id": "U0A1NME3EJD",
       "username": "nok",
       "avatar": "https://avatars.slack-edge.com/2026-01-13/10282812823125_9fcc7248e736e16e62f6_72.png"
-    },
-    "U09HH4XAEBX": {
-      "id": "U09HH4XAEBX",
-      "username": "hkshrestha621",
-      "displayName": "Hira",
-      "avatar": "https://avatars.slack-edge.com/2026-01-14/10301067262146_f7e50a571f88588f1518_72.jpg"
     },
     "U07AZFQLPQ8": {
       "id": "U07AZFQLPQ8",
