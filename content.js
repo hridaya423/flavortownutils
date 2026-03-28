@@ -1075,8 +1075,7 @@ async function addShipStats() {
         }
 
         const timeEl = shipPost.querySelector('.post__time');
-        const shipDate = parseDateFromTimeElement(timeEl);
-        const shipTimestamp = getTimeElementTimestampForCutoff(timeEl, shipDate);
+        const shipTimestamp = getTimeElementTimestampForCutoff(timeEl);
 
         const { cookiesValue, hoursValue, multiplierValue } = getShipFooterPayoutMetrics(footer);
 
@@ -3030,8 +3029,7 @@ function pickReliableCurrentScaleEstimate(...candidates) {
 function getShipPostTimestamp(shipPost) {
     if (!shipPost) return NaN;
     const timeEl = shipPost.querySelector('.post__time');
-    const shipDate = parseDateFromTimeElement(timeEl);
-    return getTimeElementTimestampForCutoff(timeEl, shipDate);
+    return getTimeElementTimestampForCutoff(timeEl);
 }
 
 function aggregateExactShipEstimates(estimates) {
@@ -18387,19 +18385,37 @@ function parseDateFromTimeElement(timeEl) {
     return parseRelativeTime(text);
 }
 
-function getTimeElementTimestampForCutoff(timeEl, fallbackDate = null) {
-    if (!timeEl) return fallbackDate instanceof Date ? fallbackDate.getTime() : NaN;
+function parseReliableTimestampFromTimeElement(timeEl) {
+    if (!timeEl) return NaN;
 
     const timeTag = timeEl.matches('time') ? timeEl : timeEl.querySelector('time');
     if (timeTag) {
         const datetime = (timeTag.getAttribute('datetime') || '').trim();
         if (datetime) {
             const hasTimezone = /(?:Z|[+-]\d{2}:?\d{2})$/i.test(datetime);
-            const normalized = hasTimezone ? datetime : `${datetime}Z`;
-            const parsed = new Date(normalized);
-            if (!isNaN(parsed.getTime())) return parsed.getTime();
+            if (hasTimezone) {
+                const parsed = new Date(datetime);
+                if (!isNaN(parsed.getTime())) return parsed.getTime();
+            }
         }
     }
+
+    const timestamp = timeEl.getAttribute('data-timestamp') || timeEl.dataset?.timestamp;
+    if (timestamp) {
+        const parsedTs = parseInt(timestamp, 10);
+        if (!isNaN(parsedTs)) {
+            return parsedTs < 1000000000000 ? parsedTs * 1000 : parsedTs;
+        }
+    }
+
+    return NaN;
+}
+
+function getTimeElementTimestampForCutoff(timeEl, fallbackDate = null) {
+    if (!timeEl) return fallbackDate instanceof Date ? fallbackDate.getTime() : NaN;
+
+    const reliableTimestamp = parseReliableTimestampFromTimeElement(timeEl);
+    if (Number.isFinite(reliableTimestamp)) return reliableTimestamp;
 
     if (fallbackDate instanceof Date && !isNaN(fallbackDate.getTime())) {
         return fallbackDate.getTime();
