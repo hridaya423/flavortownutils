@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-29T11:54:27.377Z",
+  "lastUpdated": "2026-03-29T12:58:00.697Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -42843,6 +42843,22 @@
         "reason": "ship event payout",
         "reasonType": "",
         "userId": "U09T6KV30KX"
+      },
+      {
+        "ts": "2026-03-29T12:54:44.989Z",
+        "delta": 5,
+        "balance": 72,
+        "reason": "Fleet Captain",
+        "reasonType": "achievement",
+        "userId": "U09T6KV30KX"
+      },
+      {
+        "ts": "2026-03-29T12:54:45.060Z",
+        "delta": 15,
+        "balance": 87,
+        "reason": "Five Star Chef",
+        "reasonType": "achievement",
+        "userId": "U09T6KV30KX"
       }
     ],
     "u09tkl54j0p": [
@@ -67631,6 +67647,30 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0A7CQD6W1E"
+      },
+      {
+        "ts": "2026-03-29T12:41:48.752Z",
+        "delta": -100,
+        "balance": 371,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A7CQD6W1E"
+      },
+      {
+        "ts": "2026-03-29T12:42:29.758Z",
+        "delta": -176,
+        "balance": 195,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A7CQD6W1E"
+      },
+      {
+        "ts": "2026-03-29T12:42:49.038Z",
+        "delta": -140,
+        "balance": 55,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A7CQD6W1E"
       }
     ],
     "u0a7ctekasg": [
@@ -84981,6 +85021,14 @@
         "reason": "ship event payout",
         "reasonType": "",
         "userId": "U0AH8L2LLR4"
+      },
+      {
+        "ts": "2026-03-29T12:01:59.750Z",
+        "delta": -10,
+        "balance": 7,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0AH8L2LLR4"
       }
     ],
     "u0ahgn71g9l": [
@@ -86581,6 +86629,24 @@
     ]
   },
   "users": {
+    "U09T6KV30KX": {
+      "id": "U09T6KV30KX",
+      "username": "aymane.berhoua",
+      "displayName": "Cotti",
+      "avatar": "https://avatars.slack-edge.com/2026-01-26/10382493833649_233155ce3f26335e1655_72.jpg"
+    },
+    "U0A7CQD6W1E": {
+      "id": "U0A7CQD6W1E",
+      "username": "m8000",
+      "displayName": "M8000",
+      "avatar": "https://avatars.slack-edge.com/2026-01-05/10228747110243_ed8b4cadce55f06c17e2_72.png"
+    },
+    "U0AH8L2LLR4": {
+      "id": "U0AH8L2LLR4",
+      "username": "samanway",
+      "displayName": "Samanway",
+      "avatar": "https://avatars.slack-edge.com/2026-02-28/10630322696784_24fa8b8a4a871e4ebc5f_72.jpg"
+    },
     "U0824382CPP": {
       "id": "U0824382CPP",
       "username": "toni512mail",
@@ -86763,12 +86829,6 @@
       "username": "aniruddhm.modi",
       "displayName": "aniruddhm.modi",
       "avatar": "https://secure.gravatar.com/avatar/11085d50b3e2bba0c59db02f4033f69a.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0013-72.png"
-    },
-    "U09T6KV30KX": {
-      "id": "U09T6KV30KX",
-      "username": "aymane.berhoua",
-      "displayName": "Cotti",
-      "avatar": "https://avatars.slack-edge.com/2026-01-26/10382493833649_233155ce3f26335e1655_72.jpg"
     },
     "U0A3Z38JJMV": {
       "id": "U0A3Z38JJMV",
@@ -87596,12 +87656,6 @@
       "username": "smirby081482",
       "displayName": "Touhou Engie",
       "avatar": "https://avatars.slack-edge.com/2025-12-08/10065372645863_5f41a97fbb1817cb2e24_72.png"
-    },
-    "U0A7CQD6W1E": {
-      "id": "U0A7CQD6W1E",
-      "username": "m8000",
-      "displayName": "M8000",
-      "avatar": "https://avatars.slack-edge.com/2026-01-05/10228747110243_ed8b4cadce55f06c17e2_72.png"
     },
     "U0A2H749TL3": {
       "id": "U0A2H749TL3",
@@ -88541,12 +88595,6 @@
       "username": "goldmonke",
       "displayName": "GoldMonke",
       "avatar": "https://avatars.slack-edge.com/2025-08-14/9383090654640_59ccc1a7c14c96aaa2f1_72.jpg"
-    },
-    "U0AH8L2LLR4": {
-      "id": "U0AH8L2LLR4",
-      "username": "samanway",
-      "displayName": "Samanway",
-      "avatar": "https://avatars.slack-edge.com/2026-02-28/10630322696784_24fa8b8a4a871e4ebc5f_72.jpg"
     },
     "U09F58YQ524": {
       "id": "U09F58YQ524",
