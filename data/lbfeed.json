@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-29T13:56:07.083Z",
+  "lastUpdated": "2026-03-29T14:36:16.450Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -49009,6 +49009,22 @@
         "reason": "ship event payout",
         "reasonType": "",
         "userId": "U0A4SQJ7CJY"
+      },
+      {
+        "ts": "2026-03-29T13:56:09.872Z",
+        "delta": -212,
+        "balance": 168,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A4SQJ7CJY"
+      },
+      {
+        "ts": "2026-03-29T14:22:21.362Z",
+        "delta": -80,
+        "balance": 88,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A4SQJ7CJY"
       }
     ],
     "u0a4tbwjr42": [
@@ -67050,6 +67066,54 @@
         "balance": 548,
         "reason": "ship event payout",
         "reasonType": "",
+        "userId": "U0A793WKUBW"
+      },
+      {
+        "ts": "2026-03-29T14:32:49.644Z",
+        "delta": 5,
+        "balance": 553,
+        "reason": "Very Fried",
+        "reasonType": "achievement",
+        "userId": "U0A793WKUBW"
+      },
+      {
+        "ts": "2026-03-29T14:32:49.660Z",
+        "delta": 3,
+        "balance": 556,
+        "reason": "Home Cookin'",
+        "reasonType": "achievement",
+        "userId": "U0A793WKUBW"
+      },
+      {
+        "ts": "2026-03-29T14:32:49.680Z",
+        "delta": 2,
+        "balance": 558,
+        "reason": "Recipe Notes",
+        "reasonType": "achievement",
+        "userId": "U0A793WKUBW"
+      },
+      {
+        "ts": "2026-03-29T14:32:55.946Z",
+        "delta": 3,
+        "balance": 561,
+        "reason": "Order Up!",
+        "reasonType": "achievement",
+        "userId": "U0A793WKUBW"
+      },
+      {
+        "ts": "2026-03-29T14:32:55.947Z",
+        "delta": 3,
+        "balance": 564,
+        "reason": "Michelin Star",
+        "reasonType": "achievement",
+        "userId": "U0A793WKUBW"
+      },
+      {
+        "ts": "2026-03-29T14:32:55.996Z",
+        "delta": 15,
+        "balance": 579,
+        "reason": "Cookbook Author",
+        "reasonType": "achievement",
         "userId": "U0A793WKUBW"
       }
     ],
@@ -86661,6 +86725,18 @@
     ]
   },
   "users": {
+    "U0A793WKUBW": {
+      "id": "U0A793WKUBW",
+      "username": "dark",
+      "displayName": "dark",
+      "avatar": "https://secure.gravatar.com/avatar/3b94f94abe38f2d1a990ce828d2e741a.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0025-72.png"
+    },
+    "U0A4SQJ7CJY": {
+      "id": "U0A4SQJ7CJY",
+      "username": "mohamad.amin.ghanoum",
+      "displayName": "Abohisham",
+      "avatar": "https://avatars.slack-edge.com/2026-02-10/10496776805393_39e0cbbb2bbaf0c68892_72.jpg"
+    },
     "U09FZUW9FQB": {
       "id": "U09FZUW9FQB",
       "username": "airinazaria.h.putri",
@@ -86725,12 +86801,6 @@
       "username": "madankh00123",
       "displayName": "madankh00123",
       "avatar": "https://secure.gravatar.com/avatar/c4325a1cefaa67b067bf275456b2d6a2.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0017-72.png"
-    },
-    "U0A4SQJ7CJY": {
-      "id": "U0A4SQJ7CJY",
-      "username": "mohamad.amin.ghanoum",
-      "displayName": "Abohisham",
-      "avatar": "https://avatars.slack-edge.com/2026-02-10/10496776805393_39e0cbbb2bbaf0c68892_72.jpg"
     },
     "U0A72EJABAA": {
       "id": "U0A72EJABAA",
@@ -88908,12 +88978,6 @@
       "username": "begmetovrustambek",
       "displayName": "Fish Jr.",
       "avatar": "https://avatars.slack-edge.com/2026-01-22/10381259128640_eb99c53625608ef13dd8_72.png"
-    },
-    "U0A793WKUBW": {
-      "id": "U0A793WKUBW",
-      "username": "dark",
-      "displayName": "dark",
-      "avatar": "https://secure.gravatar.com/avatar/3b94f94abe38f2d1a990ce828d2e741a.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0025-72.png"
     },
     "U0A71MJF9L5": {
       "id": "U0A71MJF9L5",
