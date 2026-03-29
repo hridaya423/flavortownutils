@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-29T07:52:18.286Z",
+  "lastUpdated": "2026-03-29T08:41:31.590Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -28073,6 +28073,14 @@
         "delta": 15,
         "balance": 1024,
         "reason": "Sous Chef",
+        "reasonType": "achievement",
+        "userId": "U091ZF0JNBG"
+      },
+      {
+        "ts": "2026-03-29T08:30:36.931Z",
+        "delta": 15,
+        "balance": 1039,
+        "reason": "Five Star Chef",
         "reasonType": "achievement",
         "userId": "U091ZF0JNBG"
       }
@@ -82115,6 +82123,14 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0AAVSGH3HC"
+      },
+      {
+        "ts": "2026-03-29T08:10:41.603Z",
+        "delta": 7,
+        "balance": 7,
+        "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U0AAVSGH3HC"
       }
     ],
     "u0ab4awmbk3": [
@@ -86329,6 +86345,18 @@
     ]
   },
   "users": {
+    "U091ZF0JNBG": {
+      "id": "U091ZF0JNBG",
+      "username": "efecaliskan08",
+      "displayName": "Efe",
+      "avatar": "https://avatars.slack-edge.com/2025-06-19/9067525922198_1cba921e3478bd859369_72.png"
+    },
+    "U0AAVSGH3HC": {
+      "id": "U0AAVSGH3HC",
+      "username": "hackclub8",
+      "displayName": "46009361",
+      "avatar": "https://avatars.slack-edge.com/2026-01-29/10433002833120_f403f3da778a713c59df_72.png"
+    },
     "U07D46XNUPR": {
       "id": "U07D46XNUPR",
       "username": "aldi",
@@ -86679,12 +86707,6 @@
       "username": "elliottlieberman123",
       "displayName": "Elliott-entity",
       "avatar": "https://avatars.slack-edge.com/2026-02-25/10580651595973_fdb3c28150d3740252d7_72.png"
-    },
-    "U0AAVSGH3HC": {
-      "id": "U0AAVSGH3HC",
-      "username": "hackclub8",
-      "displayName": "46009361",
-      "avatar": "https://avatars.slack-edge.com/2026-01-29/10433002833120_f403f3da778a713c59df_72.png"
     },
     "U0998E0AFFD": {
       "id": "U0998E0AFFD",
@@ -87864,12 +87886,6 @@
       "username": "jan.richter2007",
       "displayName": "Hat Dealer",
       "avatar": "https://avatars.slack-edge.com/2025-05-30/8980670397188_afd3aeefffdf1868256a_72.png"
-    },
-    "U091ZF0JNBG": {
-      "id": "U091ZF0JNBG",
-      "username": "efecaliskan08",
-      "displayName": "Efe",
-      "avatar": "https://avatars.slack-edge.com/2025-06-19/9067525922198_1cba921e3478bd859369_72.png"
     },
     "U078KKF3R1Q": {
       "id": "U078KKF3R1Q",
