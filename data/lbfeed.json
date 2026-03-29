@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-29T16:36:45.565Z",
+  "lastUpdated": "2026-03-29T17:31:33.939Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -44747,6 +44747,22 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0A19UWEN3G"
+      },
+      {
+        "ts": "2026-03-29T16:42:32.713Z",
+        "delta": 80,
+        "balance": 707,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A19UWEN3G"
+      },
+      {
+        "ts": "2026-03-29T16:42:32.753Z",
+        "delta": 90,
+        "balance": 797,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A19UWEN3G"
       }
     ],
     "u0a1cft47k4": [
@@ -81803,6 +81819,14 @@
         "reason": "ship event payout",
         "reasonType": "",
         "userId": "U0AAHSKAH6K"
+      },
+      {
+        "ts": "2026-03-29T16:49:59.968Z",
+        "delta": -263,
+        "balance": 26,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0AAHSKAH6K"
       }
     ],
     "u0aak0eb2le": [
@@ -86861,6 +86885,17 @@
     ]
   },
   "users": {
+    "U0AAHSKAH6K": {
+      "id": "U0AAHSKAH6K",
+      "username": "manskill586",
+      "displayName": "Bob",
+      "avatar": "https://avatars.slack-edge.com/2026-02-20/10535720443815_36ddddb8875248e0a997_72.jpg"
+    },
+    "U0A19UWEN3G": {
+      "id": "U0A19UWEN3G",
+      "username": "heitorjcastilho",
+      "avatar": "https://avatars.slack-edge.com/2025-12-30/10210516118930_a18096c10756fe9925c5_72.png"
+    },
     "U093BFUBEBA": {
       "id": "U093BFUBEBA",
       "username": "tom.harker3",
@@ -86877,12 +86912,6 @@
       "username": "alessio.ferrari",
       "displayName": "F3rro32",
       "avatar": "https://avatars.slack-edge.com/2026-01-10/10255245318247_f55f198163ce06cd6c24_72.jpg"
-    },
-    "U0AAHSKAH6K": {
-      "id": "U0AAHSKAH6K",
-      "username": "manskill586",
-      "displayName": "Bob",
-      "avatar": "https://avatars.slack-edge.com/2026-02-20/10535720443815_36ddddb8875248e0a997_72.jpg"
     },
     "U091HJG84VD": {
       "id": "U091HJG84VD",
@@ -87072,11 +87101,6 @@
       "username": "bbheemaraya944",
       "displayName": "Luffy",
       "avatar": "https://avatars.slack-edge.com/2026-01-11/10301951539696_194f6f8409c47dce5059_72.png"
-    },
-    "U0A19UWEN3G": {
-      "id": "U0A19UWEN3G",
-      "username": "heitorjcastilho",
-      "avatar": "https://avatars.slack-edge.com/2025-12-30/10210516118930_a18096c10756fe9925c5_72.png"
     },
     "U07950S3GMC": {
       "id": "U07950S3GMC",
