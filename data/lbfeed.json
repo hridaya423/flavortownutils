@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-30T16:06:10.922Z",
+  "lastUpdated": "2026-03-30T17:28:28.004Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -50541,6 +50541,14 @@
         "reason": "ship event payout",
         "reasonType": "",
         "userId": "U0A4YTQVCCE"
+      },
+      {
+        "ts": "2026-03-30T16:41:53.566Z",
+        "delta": -20,
+        "balance": 164,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A4YTQVCCE"
       }
     ],
     "u0a504thmgw": [
@@ -87955,6 +87963,12 @@
     ]
   },
   "users": {
+    "U0A4YTQVCCE": {
+      "id": "U0A4YTQVCCE",
+      "username": "armand.hulin23",
+      "displayName": "Arlo",
+      "avatar": "https://secure.gravatar.com/avatar/8bb50e51d1b340edbaad71fd6a03e100.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0016-72.png"
+    },
     "U0AQDRVBKLY": {
       "id": "U0AQDRVBKLY",
       "username": "vaibhaav3",
@@ -89992,12 +90006,6 @@
       "username": "diegogs2305",
       "displayName": "diegogs2305",
       "avatar": "https://secure.gravatar.com/avatar/16be7eef74d6bdbca7eefa37fcde8c91.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0020-72.png"
-    },
-    "U0A4YTQVCCE": {
-      "id": "U0A4YTQVCCE",
-      "username": "armand.hulin23",
-      "displayName": "Arlo",
-      "avatar": "https://secure.gravatar.com/avatar/8bb50e51d1b340edbaad71fd6a03e100.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0016-72.png"
     },
     "U0AA4KJU08P": {
       "id": "U0AA4KJU08P",
