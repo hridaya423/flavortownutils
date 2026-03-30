@@ -15457,6 +15457,11 @@ async function enhanceAdminShopOrdersPage(attempt = 0) {
         const isOnHoldView = shouldGroupShopOrdersByOnHoldActor(rows);
         const onHoldActorMap = isOnHoldView ? await getOnHoldActorsByOrderId(rows) : new Map();
         const userGroups = new Map();
+        const formatCookies = (value) => {
+            if (!Number.isFinite(value)) return '0';
+            const rounded = Math.round(value * 10) / 10;
+            return Number.isInteger(rounded) ? String(rounded) : rounded.toFixed(1);
+        };
 
         rows.forEach((row, index) => {
             row.classList.add('flavortown-shop-order-row');
@@ -15492,11 +15497,17 @@ async function enhanceAdminShopOrdersPage(attempt = 0) {
                     subtitle,
                     href,
                     rows: [],
-                    firstIndex: index
+                    firstIndex: index,
+                    totalCookies: 0
                 });
             }
 
-            userGroups.get(groupKey).rows.push(row);
+            const ticketsText = row.querySelector('td:nth-child(5)')?.textContent?.trim() || '';
+            const ticketsValue = parseNumberFromText(ticketsText) || 0;
+
+            const group = userGroups.get(groupKey);
+            group.rows.push(row);
+            group.totalCookies += ticketsValue;
         });
 
         const groupedUsers = Array.from(userGroups.values())
@@ -15548,6 +15559,14 @@ async function enhanceAdminShopOrdersPage(attempt = 0) {
             }
 
             groupWrap.appendChild(titleWrap);
+
+            if (Number.isFinite(group.totalCookies)) {
+                const cookiesBadge = document.createElement('span');
+                cookiesBadge.className = 'flavortown-shop-orders-group-cookies';
+                cookiesBadge.textContent = `Total 🍪 ${formatCookies(group.totalCookies)}`;
+                groupWrap.appendChild(cookiesBadge);
+            }
+
             groupCell.appendChild(groupWrap);
             groupRow.appendChild(groupCell);
             tbody.appendChild(groupRow);
@@ -15564,7 +15583,8 @@ async function enhanceAdminShopOrdersPage(attempt = 0) {
                 {
                     title: 'Others:',
                     subtitle: 'single-order on-hold cases',
-                    href: ''
+                    href: '',
+                    totalCookies: singleOrderGroups.reduce((sum, group) => sum + (group.totalCookies || 0), 0)
                 },
                 'flavortown-shop-orders-group-row flavortown-shop-orders-others-row'
             );

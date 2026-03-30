@@ -6279,3 +6279,13 @@
     color: var(--color-text-muted, #8b7355);
     line-height: 1.2;
 }
+
+.flavortown-shop-orders-group-cookies {
+    font-size: 0.76rem;
+    font-weight: 700;
+    border-radius: 999px;
+    padding: 4px 9px;
+    background: var(--color-surface, #fffdf9);
+    border: 1px solid color-mix(in srgb, var(--color-accent, #ec8b33), transparent 68%);
+    color: var(--color-text-secondary, #6b5c4a);
+}
