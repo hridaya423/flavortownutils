@@ -20132,6 +20132,13 @@ const TUTORIAL_PHASE_3 = [
 ];
 
 const VERSION_FEATURES = {
+    '3.6.0': [
+        { title: 'Shop lottery stats', description: 'Lottery Ticket cards now show ticket odds', icon: '🎟️' },
+        { title: 'Recently Added refresh', description: 'Recently Added is now an accordion with auto-scroll behavior and cleaner button placement.', icon: '🛍️' },
+        { title: 'Vote scale reliability fixes', description: 'Post-Feb-23 vote scaling is now stricter and more accurate, including edge cases like invalidated votes after payout.', icon: '⭐' },
+        { title: 'Project/ship stats consistency', description: 'Project rate math now prefers canonical payout data, so project cards and ship posts match more reliably.', icon: '📊' },
+        { title: 'Theme and UI polish', description: 'More theme coverage and targeted visual cleanups across shop/admin surfaces.', icon: '🎨' }
+    ],
     '3.3.0': [
         { title: 'Explore Users page', description: 'Browse Flavortown users from Explore with search by display name or Slack ID and quick user cards.', icon: '👥' },
         { title: 'Multiline vote feedback', description: 'Vote feedback on /votes/new now supports multiline input for clearer, richer feedback.', icon: '📝' },
