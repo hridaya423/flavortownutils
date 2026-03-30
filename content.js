@@ -1074,8 +1074,7 @@ async function addShipStats() {
             currentElement = currentElement.nextElementSibling;
         }
 
-        const timeEl = shipPost.querySelector('.post__time');
-        const shipTimestamp = getTimeElementTimestampForCutoff(timeEl);
+        const shipTimestamp = getShipPostTimestamp(shipPost);
 
         const { cookiesValue, hoursValue, multiplierValue } = getShipFooterPayoutMetrics(footer);
 
@@ -2987,10 +2986,12 @@ function buildExactVoteEstimateFromShipPost(shipPost, fallbackMultiplier = null)
     const inferredMultiplier = (fallbackMultiplier && isFinite(fallbackMultiplier) && fallbackMultiplier > 0)
         ? fallbackMultiplier
         : estimateMultiplierFromPercentile(percentile);
+    const hasPayoutSignal = !!(fallbackMultiplier && isFinite(fallbackMultiplier) && fallbackMultiplier > 0);
 
     return {
         source: 'exact-votes',
         voteCount: entries.length,
+        hasPayoutSignal,
         scaleMax,
         percentile,
         overallScore,
@@ -3016,7 +3017,14 @@ function buildShipVoteEstimate(shipPost, multiplier, shipTimestamp) {
 function hasReliableCurrentScaleEstimate(estimate, minVotes = CURRENT_SCALE_ESTIMATE_MIN_VOTES) {
     if (!estimate || estimate.source !== 'exact-votes') return false;
     const voteCount = Number(estimate.voteCount);
-    return Number.isFinite(voteCount) && voteCount >= minVotes;
+    if (!Number.isFinite(voteCount)) return false;
+
+    if (voteCount >= minVotes) return true;
+
+    const hasPayoutSignal = !!estimate.hasPayoutSignal;
+    if (hasPayoutSignal && voteCount >= (minVotes - 1)) return true;
+
+    return false;
 }
 
 function pickReliableCurrentScaleEstimate(...candidates) {
@@ -3026,10 +3034,50 @@ function pickReliableCurrentScaleEstimate(...candidates) {
     return null;
 }
 
+function parseShipPostDebugTimestamp(shipPost) {
+    if (!shipPost) return NaN;
+
+    const debugInfo = shipPost.querySelector('.debug-info');
+    if (!debugInfo) return NaN;
+
+    const text = (debugInfo.textContent || '').replace(/\s+/g, ' ').trim();
+    if (!text) return NaN;
+
+    const createdMatch = text.match(/created:\s*(\d{4}-\d{2}-\d{2})\s+(\d{2}:\d{2}:\d{2})/i);
+    if (!createdMatch) return NaN;
+
+    const datePart = createdMatch[1];
+    const timePart = createdMatch[2];
+    const isoLike = `${datePart}T${timePart}`;
+
+    const parsedLocal = new Date(isoLike);
+    if (!isNaN(parsedLocal.getTime())) return parsedLocal.getTime();
+
+    const parsedUtc = new Date(`${isoLike}Z`);
+    if (!isNaN(parsedUtc.getTime())) return parsedUtc.getTime();
+
+    return NaN;
+}
+
 function getShipPostTimestamp(shipPost) {
     if (!shipPost) return NaN;
     const timeEl = shipPost.querySelector('.post__time');
-    return getTimeElementTimestampForCutoff(timeEl);
+    const directTimestamp = getTimeElementTimestampForCutoff(timeEl);
+    if (Number.isFinite(directTimestamp)) return directTimestamp;
+
+    const debugTimestamp = parseShipPostDebugTimestamp(shipPost);
+    if (Number.isFinite(debugTimestamp)) return debugTimestamp;
+
+    const relativeDate = parseDateFromTimeElement(timeEl);
+    if (relativeDate && !isNaN(relativeDate.getTime())) {
+        const relativeTimestamp = relativeDate.getTime();
+        const cutoffSafetyWindowMs = 24 * 60 * 60 * 1000;
+        if (Math.abs(relativeTimestamp - COMMUNITY_VOTES_SHIP_CUTOFF_TS) > cutoffSafetyWindowMs) {
+            return relativeTimestamp;
+        }
+    }
+
+    return NaN;
 }
 
 function aggregateExactShipEstimates(estimates) {
@@ -3058,6 +3106,7 @@ function aggregateExactShipEstimates(estimates) {
             const voteCount = Number(estimate?.voteCount);
             return sum + (isFinite(voteCount) && voteCount > 0 ? voteCount : 0);
         }, 0),
+        hasPayoutSignal: estimates.some(estimate => !!estimate?.hasPayoutSignal),
         percentile: percentile && isFinite(percentile) ? percentile : null,
         multiplier: multiplier && isFinite(multiplier) ? multiplier : null,
         overallScore,
@@ -4947,7 +4996,7 @@ function updateHeatmapLegend(container, viewMode) {
     }
 }
 
-async function addProjectCardCookieStats() {
+async function addProjectCardCookieStats(skipBackloadRefresh = false) {
     if (!window.location.pathname.endsWith('/projects')) return;
 
     const cards = document.querySelectorAll('.projects-board__grid-item .project-card');
@@ -5202,7 +5251,12 @@ async function addProjectCardCookieStats() {
         }
     });
 
-    await backloadProjectStatsFromIndex(cards);
+    if (!skipBackloadRefresh) {
+        await backloadProjectStatsFromIndex(cards);
+        setTimeout(() => {
+            addProjectCardCookieStats(true);
+        }, 0);
+    }
     initProjectBoardStats();
 }
 
@@ -5248,10 +5302,6 @@ async function addProjectShowCookieStat(forceRefresh = false) {
     const existingStat = document.querySelector('.flavortown-project-cookies-stat');
     const existingDetails = document.querySelector('.flavortown-project-cookies-details');
     const existingCategories = document.querySelector('.flavortown-project-category-stats');
-    
-    if (!forceRefresh && existingStat) {
-        return;
-    }
     
     existingStat?.remove();
     existingDetails?.remove();
