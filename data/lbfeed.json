@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-30T20:47:59.859Z",
+  "lastUpdated": "2026-03-30T21:42:27.961Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -19976,6 +19976,14 @@
         "ts": "2026-03-30T20:46:29.576Z",
         "delta": 72,
         "balance": 95,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U08L7671TDG"
+      },
+      {
+        "ts": "2026-03-30T20:48:06.279Z",
+        "delta": -72,
+        "balance": 23,
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U08L7671TDG"
