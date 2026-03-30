@@ -6226,3 +6226,56 @@
         flex-direction: column;
     }
 }
+
+.flavortown-shop-orders-group-row td {
+    padding: 8px 10px !important;
+    background: color-mix(in srgb, var(--color-accent, #ec8b33), transparent 92%);
+    border-top: 1px solid var(--color-border, #d8c9ba);
+    border-bottom: 1px solid var(--color-border, #d8c9ba);
+}
+
+.flavortown-shop-orders-others-row td {
+    background: color-mix(in srgb, var(--color-text-secondary, #6b5c4a), transparent 94%);
+    border-top-style: dashed;
+}
+
+.flavortown-shop-orders-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.flavortown-shop-orders-group-rank {
+    font-size: 0.78rem;
+    font-weight: 700;
+    border-radius: 999px;
+    padding: 4px 8px;
+    background: var(--color-surface, #fffdf9);
+    border: 1px solid color-mix(in srgb, var(--color-accent, #ec8b33), transparent 62%);
+    color: var(--color-accent, #ec8b33);
+}
+
+.flavortown-shop-orders-group-user {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0;
+}
+
+.flavortown-shop-orders-group-title {
+    color: var(--color-text-primary, #5d4e37);
+    font-weight: 700;
+    text-decoration: none;
+    line-height: 1.2;
+}
+
+.flavortown-shop-orders-group-title:hover {
+    text-decoration: underline;
+}
+
+.flavortown-shop-orders-group-email {
+    font-size: 0.74rem;
+    color: var(--color-text-muted, #8b7355);
+    line-height: 1.2;
+}

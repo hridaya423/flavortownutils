@@ -15014,7 +15014,25 @@ function addAdminViewButton() {
 
 function enhanceAdminPage() {
     if (!window.location.pathname.startsWith('/admin')) return;
-    if (document.querySelector('.flavortown-admin-enhanced')) return;
+    if (document.querySelector('.flavortown-admin-enhanced')) {
+        if (window.location.pathname === '/admin') {
+            enhanceAdminDashboard();
+        }
+
+        if (window.location.pathname.match(/\/admin\/users\/\d+/)) {
+            enhanceAdminUserPage();
+        }
+
+        if (window.location.pathname === '/admin/reports') {
+            enhanceAdminReportsPage();
+        }
+
+        if (window.location.pathname === '/admin/shop_orders') {
+            enhanceAdminShopOrdersPage();
+        }
+
+        return;
+    }
     document.body.classList.add('flavortown-admin-enhanced');
 
     const h1Elements = document.querySelectorAll('h1');
@@ -15154,6 +15172,10 @@ function enhanceAdminPage() {
     if (window.location.pathname === '/admin/reports') {
         enhanceAdminReportsPage();
     }
+
+    if (window.location.pathname === '/admin/shop_orders') {
+        enhanceAdminShopOrdersPage();
+    }
 }
 
 function enhanceAdminReportsPage() {
@@ -15250,6 +15272,316 @@ function enhanceAdminReportsPage() {
 
     reportsTable.classList.add('flavortown-reports-table');
     reportsTable.dataset.flavortownGrouped = 'true';
+}
+
+const SHOP_ORDER_ON_HOLD_ACTOR_CACHE_TTL = 10 * 60 * 1000;
+const shopOrderOnHoldActorCache = new Map();
+
+function getShopOrderIdFromRow(row) {
+    const inspectHref = row.querySelector('td:last-child a[href*="/admin/shop_orders/"]')?.getAttribute('href') || '';
+    const inspectMatch = inspectHref.match(/\/admin\/shop_orders\/(\d+)/);
+    if (inspectMatch) return inspectMatch[1];
+
+    const idText = row.querySelector('td:first-child')?.textContent || '';
+    const idMatch = idText.match(/#?(\d+)/);
+    return idMatch ? idMatch[1] : null;
+}
+
+function getShopOrderStatusText(row) {
+    return (row.querySelector('td:nth-child(6)')?.textContent || '')
+        .trim()
+        .replace(/\s+/g, ' ')
+        .toLowerCase();
+}
+
+function shouldGroupShopOrdersByOnHoldActor(rows) {
+    const params = new URLSearchParams(window.location.search);
+    const statusParam = (params.get('status') || params.get('return_status') || '').toLowerCase();
+    if (statusParam.includes('on_hold') || statusParam.includes('on hold')) return true;
+
+    const statuses = rows.map(getShopOrderStatusText).filter(Boolean);
+    return statuses.length > 0 && statuses.every(status => status.includes('on hold'));
+}
+
+function readCachedOnHoldActor(orderId) {
+    if (!orderId) return null;
+    const cached = shopOrderOnHoldActorCache.get(orderId);
+    if (!cached) return null;
+    if (Date.now() - cached.cachedAt > SHOP_ORDER_ON_HOLD_ACTOR_CACHE_TTL) {
+        shopOrderOnHoldActorCache.delete(orderId);
+        return null;
+    }
+    return cached.actor || null;
+}
+
+function writeCachedOnHoldActor(orderId, actor) {
+    if (!orderId || !actor) return;
+    shopOrderOnHoldActorCache.set(orderId, {
+        actor,
+        cachedAt: Date.now()
+    });
+}
+
+function extractAuditActorName(userCell) {
+    if (!userCell) return null;
+
+    const systemBadge = userCell.querySelector('.audit-logs__system-badge');
+    if (systemBadge) {
+        const text = systemBadge.textContent.trim();
+        if (text) return text;
+    }
+
+    const userName = userCell.querySelector('.audit-logs__user span');
+    if (userName) {
+        const text = userName.textContent.trim();
+        if (text) return text;
+    }
+
+    const fallback = userCell.textContent.trim().replace(/\s+/g, ' ');
+    return fallback || null;
+}
+
+function extractOnHoldActorFromOrderDoc(doc) {
+    if (!doc) return null;
+
+    const auditTable = Array.from(doc.querySelectorAll('.table-data')).find(table => {
+        const headers = Array.from(table.querySelectorAll('thead th')).map(th => th.textContent.trim().toLowerCase());
+        return headers.includes('timestamp') && headers.includes('user') && headers.includes('action') && headers.includes('changes');
+    });
+
+    if (!auditTable) return null;
+
+    const auditRows = Array.from(auditTable.querySelectorAll('tbody tr')).filter(row => row.querySelector('td'));
+    let actor = null;
+
+    auditRows.forEach(row => {
+        const actionText = row.querySelector('td:nth-child(3)')?.textContent?.trim().toLowerCase() || '';
+        const changesText = row.querySelector('td:nth-child(4)')?.textContent?.trim().toLowerCase() || '';
+        const isOnHold = actionText.includes('on hold') || changesText.includes('on_hold') || changesText.includes(' on hold');
+        if (!isOnHold) return;
+
+        const parsedActor = extractAuditActorName(row.querySelector('td:nth-child(2)'));
+        if (parsedActor) actor = parsedActor;
+    });
+
+    return actor;
+}
+
+async function fetchOnHoldActorForOrder(orderId) {
+    if (!orderId) return null;
+
+    const cachedActor = readCachedOnHoldActor(orderId);
+    if (cachedActor) return cachedActor;
+
+    try {
+        const response = await fetch(`/admin/shop_orders/${orderId}`, { credentials: 'same-origin' });
+        if (!response.ok) return null;
+
+        const html = await response.text();
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        const actor = extractOnHoldActorFromOrderDoc(doc);
+        if (actor) writeCachedOnHoldActor(orderId, actor);
+        return actor;
+    } catch (e) {
+        return null;
+    }
+}
+
+async function getOnHoldActorsByOrderId(rows) {
+    const orderIds = Array.from(new Set(rows
+        .map(getShopOrderIdFromRow)
+        .filter(Boolean)));
+
+    const actorMap = new Map();
+    if (!orderIds.length) return actorMap;
+
+    const concurrency = Math.min(4, orderIds.length);
+    let nextIndex = 0;
+
+    const workers = Array.from({ length: concurrency }, async () => {
+        while (nextIndex < orderIds.length) {
+            const index = nextIndex;
+            nextIndex += 1;
+            const orderId = orderIds[index];
+            const actor = await fetchOnHoldActorForOrder(orderId);
+            if (actor) actorMap.set(orderId, actor);
+        }
+    });
+
+    await Promise.all(workers);
+    return actorMap;
+}
+
+async function enhanceAdminShopOrdersPage(attempt = 0) {
+    document.body.classList.add('flavortown-admin-shop-orders-page');
+
+    const shopOrdersTable = Array.from(document.querySelectorAll('.table-data')).find(table => {
+        const headers = Array.from(table.querySelectorAll('thead th')).map(th => th.textContent.trim().toLowerCase());
+        return headers.includes('id')
+            && headers.includes('user')
+            && headers.includes('item')
+            && headers.includes('tickets')
+            && headers.includes('status');
+    });
+
+    if (!shopOrdersTable) {
+        if (attempt < 5) {
+            setTimeout(() => {
+                enhanceAdminShopOrdersPage(attempt + 1);
+            }, 250);
+        }
+        return;
+    }
+
+    if (shopOrdersTable.dataset.flavortownUserGrouped === 'true' || shopOrdersTable.dataset.flavortownUserGrouped === 'processing') {
+        return;
+    }
+
+    const tbody = shopOrdersTable.querySelector('tbody');
+    if (!tbody) return;
+
+    const rows = Array.from(tbody.querySelectorAll('tr')).filter(row => row.querySelector('td'));
+    if (!rows.length) {
+        if (attempt < 5) {
+            setTimeout(() => {
+                enhanceAdminShopOrdersPage(attempt + 1);
+            }, 250);
+        }
+        return;
+    }
+
+    shopOrdersTable.dataset.flavortownUserGrouped = 'processing';
+
+    try {
+        const totalColumns = Math.max(1, shopOrdersTable.querySelectorAll('thead th').length || 8);
+        const isOnHoldView = shouldGroupShopOrdersByOnHoldActor(rows);
+        const onHoldActorMap = isOnHoldView ? await getOnHoldActorsByOrderId(rows) : new Map();
+        const userGroups = new Map();
+
+        rows.forEach((row, index) => {
+            row.classList.add('flavortown-shop-order-row');
+
+            const userCell = row.querySelector('td:nth-child(2)');
+            const userLink = userCell?.querySelector('a[href*="/admin/users/"]');
+            const userName = userLink?.textContent?.trim() || 'Unknown user';
+            const userHref = userLink?.getAttribute('href') || '';
+            const userEmail = userCell?.querySelector('small')?.textContent?.trim() || '';
+
+            let groupKey = '';
+            let title = '';
+            let subtitle = '';
+            let href = '';
+
+            if (isOnHoldView) {
+                const orderId = getShopOrderIdFromRow(row);
+                const holdActor = (orderId && onHoldActorMap.get(orderId)) || 'Unknown';
+                groupKey = `on-hold::${holdActor.toLowerCase()}`;
+                title = holdActor;
+                subtitle = 'set on hold by';
+            } else {
+                const groupKeyBase = `${userName.toLowerCase()}::${userEmail.toLowerCase()}`;
+                groupKey = userHref || groupKeyBase;
+                title = userName;
+                subtitle = userEmail;
+                href = userHref;
+            }
+
+            if (!userGroups.has(groupKey)) {
+                userGroups.set(groupKey, {
+                    title,
+                    subtitle,
+                    href,
+                    rows: [],
+                    firstIndex: index
+                });
+            }
+
+            userGroups.get(groupKey).rows.push(row);
+        });
+
+        const groupedUsers = Array.from(userGroups.values())
+            .sort((a, b) => {
+                if (b.rows.length !== a.rows.length) return b.rows.length - a.rows.length;
+                return a.firstIndex - b.firstIndex;
+            });
+
+        tbody.innerHTML = '';
+        let groupedRank = 0;
+
+        const multiOrderGroups = groupedUsers.filter(group => group.rows.length > 1);
+        const singleOrderGroups = groupedUsers.filter(group => group.rows.length <= 1);
+
+        const appendGroupHeader = (group, rowClass = 'flavortown-shop-orders-group-row', rankText = null) => {
+            const groupRow = document.createElement('tr');
+            groupRow.className = rowClass;
+
+            const groupCell = document.createElement('td');
+            groupCell.className = 'flavortown-shop-orders-group-cell';
+            groupCell.colSpan = totalColumns;
+
+            const groupWrap = document.createElement('div');
+            groupWrap.className = 'flavortown-shop-orders-group';
+
+            if (rankText) {
+                const rankBadge = document.createElement('span');
+                rankBadge.className = 'flavortown-shop-orders-group-rank';
+                rankBadge.textContent = rankText;
+                groupWrap.appendChild(rankBadge);
+            }
+
+            const titleWrap = document.createElement('div');
+            titleWrap.className = 'flavortown-shop-orders-group-user';
+
+            const titleEl = group.href ? document.createElement('a') : document.createElement('span');
+            titleEl.className = 'flavortown-shop-orders-group-title';
+            if (group.href) {
+                titleEl.setAttribute('href', group.href);
+            }
+            titleEl.textContent = group.title;
+            titleWrap.appendChild(titleEl);
+
+            if (group.subtitle) {
+                const subtitleEl = document.createElement('span');
+                subtitleEl.className = 'flavortown-shop-orders-group-email';
+                subtitleEl.textContent = group.subtitle;
+                titleWrap.appendChild(subtitleEl);
+            }
+
+            groupWrap.appendChild(titleWrap);
+            groupCell.appendChild(groupWrap);
+            groupRow.appendChild(groupCell);
+            tbody.appendChild(groupRow);
+        };
+
+        multiOrderGroups.forEach(group => {
+            groupedRank += 1;
+            appendGroupHeader(group, 'flavortown-shop-orders-group-row', `#${groupedRank}`);
+            group.rows.forEach(row => tbody.appendChild(row));
+        });
+
+        if (isOnHoldView && singleOrderGroups.length > 0) {
+            appendGroupHeader(
+                {
+                    title: 'Others:',
+                    subtitle: 'single-order on-hold cases',
+                    href: ''
+                },
+                'flavortown-shop-orders-group-row flavortown-shop-orders-others-row'
+            );
+            singleOrderGroups.forEach(group => {
+                group.rows.forEach(row => tbody.appendChild(row));
+            });
+        } else {
+            singleOrderGroups.forEach(group => {
+                group.rows.forEach(row => tbody.appendChild(row));
+            });
+        }
+
+        shopOrdersTable.classList.add('flavortown-shop-orders-table');
+        shopOrdersTable.dataset.flavortownUserGrouped = 'true';
+    } catch (e) {
+        shopOrdersTable.dataset.flavortownUserGrouped = '';
+    }
 }
 
 function enhanceAdminUserPage() {
