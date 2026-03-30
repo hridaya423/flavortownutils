@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-30T17:28:28.004Z",
+  "lastUpdated": "2026-03-30T18:32:33.219Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -79439,6 +79439,14 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0A84BWLWDS"
+      },
+      {
+        "ts": "2026-03-30T18:21:39.467Z",
+        "delta": -20,
+        "balance": 346,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A84BWLWDS"
       }
     ],
     "u0a84een34k": [
@@ -86129,6 +86137,14 @@
         "reason": "ship event payout",
         "reasonType": "",
         "userId": "U0AH7BLJDKQ"
+      },
+      {
+        "ts": "2026-03-30T18:17:43.563Z",
+        "delta": -20,
+        "balance": 105,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0AH7BLJDKQ"
       }
     ],
     "u0ah7tt4ycx": [
@@ -87963,6 +87979,18 @@
     ]
   },
   "users": {
+    "U0A84BWLWDS": {
+      "id": "U0A84BWLWDS",
+      "username": "alonsomartinezcarrata",
+      "displayName": "aloyak",
+      "avatar": "https://avatars.slack-edge.com/2026-01-11/10266469042067_79d016b502587f2b7d52_72.png"
+    },
+    "U0AH7BLJDKQ": {
+      "id": "U0AH7BLJDKQ",
+      "username": "hamednoordin95",
+      "displayName": "Zincx_high",
+      "avatar": "https://avatars.slack-edge.com/2026-02-26/10581098611043_b4096dfad6c8b45bf37f_72.png"
+    },
     "U0A4YTQVCCE": {
       "id": "U0A4YTQVCCE",
       "username": "armand.hulin23",
@@ -88409,12 +88437,6 @@
       "displayName": "mayankbiswasgame",
       "avatar": "https://secure.gravatar.com/avatar/687f7443f14962cbe9e7f9ef29afa69e.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0011-72.png"
     },
-    "U0AH7BLJDKQ": {
-      "id": "U0AH7BLJDKQ",
-      "username": "hamednoordin95",
-      "displayName": "Zincx_high",
-      "avatar": "https://avatars.slack-edge.com/2026-02-26/10581098611043_b4096dfad6c8b45bf37f_72.png"
-    },
     "U07AGEVSTD2": {
       "id": "U07AGEVSTD2",
       "username": "flx",
@@ -88718,12 +88740,6 @@
       "username": "youssef.pro.coding",
       "displayName": "Yoid",
       "avatar": "https://avatars.slack-edge.com/2026-02-27/10597482202774_5dc9a504a15084157ea2_72.png"
-    },
-    "U0A84BWLWDS": {
-      "id": "U0A84BWLWDS",
-      "username": "alonsomartinezcarrata",
-      "displayName": "aloyak",
-      "avatar": "https://avatars.slack-edge.com/2026-01-11/10266469042067_79d016b502587f2b7d52_72.png"
     },
     "U07ES48RES3": {
       "id": "U07ES48RES3",
