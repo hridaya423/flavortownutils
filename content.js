@@ -2774,7 +2774,10 @@ function getShipFooterPayoutMetrics(footer) {
 
 function formatCookieRate(rate) {
     if (rate === null || rate === undefined || !isFinite(rate)) return '--';
-    return rate.toFixed(1);
+    return rate
+        .toFixed(2)
+        .replace(/\.00$/, '')
+        .replace(/(\.\d)0$/, '$1');
 }
 
 function normalizePayoutHours(hours) {
@@ -2787,6 +2790,52 @@ function getMultiplierFromCookies(totalCookies, hours) {
     const roundedHours = normalizePayoutHours(hours);
     if (!roundedHours || roundedHours <= 0) return null;
     return totalCookies / roundedHours;
+}
+
+function getCanonicalPaidShipHours(shipPost, payoutMetrics = null) {
+    const metrics = payoutMetrics || getShipFooterPayoutMetrics(shipPost?.querySelector('.post__payout-footer'));
+    const cookiesValue = Number(metrics?.cookiesValue) || 0;
+    const hoursValue = Number(metrics?.hoursValue) || 0;
+    const multiplierValue = Number(metrics?.multiplierValue) || 0;
+
+    if (multiplierValue > 0 && cookiesValue > 0) {
+        return cookiesValue / multiplierValue;
+    }
+
+    if (hoursValue > 0) {
+        return hoursValue;
+    }
+
+    const cachedMinutes = Number(shipPost?.dataset?.flavortownShipMinutes) || 0;
+    if (cachedMinutes > 0) {
+        return cachedMinutes / 60;
+    }
+
+    if (shipPost) {
+        const collectedMinutes = collectShipMinutesFromPost(shipPost);
+        if (collectedMinutes > 0) {
+            return collectedMinutes / 60;
+        }
+    }
+
+    return 0;
+}
+
+function getProjectRateFromCookies(totalCookies, paidHours = 0, paidMinutes = 0) {
+    if (!Number.isFinite(totalCookies) || totalCookies <= 0) return null;
+
+    if (Number.isFinite(paidHours) && paidHours > 0) {
+        const rateFromHours = getMultiplierFromCookies(totalCookies, paidHours);
+        if (rateFromHours && isFinite(rateFromHours) && rateFromHours > 0) {
+            return rateFromHours;
+        }
+    }
+
+    if (Number.isFinite(paidMinutes) && paidMinutes > 0) {
+        return getMultiplierFromCookies(totalCookies, paidMinutes / 60);
+    }
+
+    return null;
 }
 
 function clampValue(value, min, max) {
@@ -3589,6 +3638,7 @@ function setCachedProjectUnshipped(projectId, entry, ownerName = null) {
     cache[projectId] = {
         totalMinutes: Math.max(0, entry.totalMinutes || 0),
         paidShipMinutes: Math.max(0, entry.paidShipMinutes || 0),
+        paidShipHours: Math.max(0, Number(entry.paidShipHours) || 0),
         paidCookies: Math.max(0, entry.paidCookies || 0),
         unshippedMinutes: Math.max(0, entry.unshippedMinutes || 0),
         singleCurrentScaleShip: !!entry.singleCurrentScaleShip,
@@ -3725,6 +3775,7 @@ async function fetchProjectUnshippedStats(projectId) {
         const projectVoteMeta = getCurrentScaleProjectEstimateFromShipPosts(shipPosts);
         let totalShipMinutes = 0;
         let paidShipMinutes = 0;
+        let paidShipHours = 0;
         let paidCookies = 0;
 
         shipPosts.forEach(shipPost => {
@@ -3732,9 +3783,12 @@ async function fetchProjectUnshippedStats(projectId) {
             if (shipMinutes > 0) totalShipMinutes += shipMinutes;
 
             const footer = shipPost.querySelector('.post__payout-footer');
-            const { cookiesValue } = getShipFooterPayoutMetrics(footer);
+            const payoutMetrics = getShipFooterPayoutMetrics(footer);
+            const { cookiesValue } = payoutMetrics;
             if (cookiesValue && cookiesValue > 0) {
                 if (shipMinutes > 0) paidShipMinutes += shipMinutes;
+                const canonicalHours = getCanonicalPaidShipHours(shipPost, payoutMetrics);
+                if (canonicalHours > 0) paidShipHours += canonicalHours;
                 paidCookies += cookiesValue;
             }
         });
@@ -3745,6 +3799,7 @@ async function fetchProjectUnshippedStats(projectId) {
             totalMinutes: safeTotalMinutes,
             totalShipMinutes,
             paidShipMinutes,
+            paidShipHours,
             paidCookies,
             unshippedMinutes,
             singleCurrentScaleShip: projectVoteMeta.currentShipCount === 1,
@@ -5005,7 +5060,7 @@ async function addProjectCardCookieStats(skipBackloadRefresh = false) {
     const pagePayouts = getShipPayoutsFromProjectPage();
     const payouts = pagePayouts.length ? pagePayouts : await fetchShipPayouts();
 
-    const renderCardStat = (card, totalCookies, minutes, estimateOverride = null, estimateMeta = {}) => {
+    const renderCardStat = (card, totalCookies, minutes, paidHours = 0, estimateOverride = null, estimateMeta = {}) => {
         const existing = card.querySelector('.flavortown-project-cookies');
         if (existing) existing.remove();
         const existingDetails = card.querySelector('.flavortown-project-cookies-details');
@@ -5080,8 +5135,7 @@ async function addProjectCardCookieStats(skipBackloadRefresh = false) {
 
         statsRow.querySelectorAll('h5').forEach(stat => applyRowStatLayout(stat));
 
-        const hours = minutes > 0 ? minutes / 60 : null;
-        const rate = hours && totalCookies > 0 ? getMultiplierFromCookies(totalCookies, hours) : null;
+        const rate = getProjectRateFromCookies(totalCookies, paidHours, minutes);
         const inferredScaleMax = inferProjectFallbackScaleMax(estimateMeta);
         const inferredEstimateSource = inferredScaleMax > LEGACY_VOTE_SCALE_MAX
             ? 'current-multiplier'
@@ -5203,14 +5257,15 @@ async function addProjectCardCookieStats(skipBackloadRefresh = false) {
                 };
                 const fetchedCookies = stats.paidCookies || 0;
                 const fetchedMinutes = stats.paidShipMinutes || 0;
+                const fetchedHours = stats.paidShipHours || 0;
                 if (fetchedCookies <= 0 && !fetchedEstimate) return;
-                renderCardStat(card, fetchedCookies, fetchedMinutes, fetchedEstimate, fetchedMeta);
+                renderCardStat(card, fetchedCookies, fetchedMinutes, fetchedHours, fetchedEstimate, fetchedMeta);
             });
         }
 
         if (totalCookies <= 0) {
             if (cachedCurrentEstimate) {
-                renderCardStat(card, 0, cachedPaidMinutes, cachedCurrentEstimate, cachedEstimateMeta);
+                renderCardStat(card, 0, cachedPaidMinutes, cachedUnshipped?.paidShipHours || 0, cachedCurrentEstimate, cachedEstimateMeta);
             }
             if (projectId && projectStatsMinutes > 0) {
                 setCachedProjectUnshipped(projectId, {
@@ -5223,11 +5278,12 @@ async function addProjectCardCookieStats(skipBackloadRefresh = false) {
             return;
         }
 
-        renderCardStat(card, totalCookies, cachedPaidMinutes, cachedCurrentEstimate, cachedEstimateMeta);
+        renderCardStat(card, totalCookies, cachedPaidMinutes, cachedUnshipped?.paidShipHours || 0, cachedCurrentEstimate, cachedEstimateMeta);
 
         const shouldRefreshFromProjectPage = projectId
             && (!cachedUnshipped
                 || cachedPaidMinutes === 0
+                || ((cachedUnshipped.paidCookies || 0) > 0 && (Number(cachedUnshipped.paidShipHours) || 0) <= 0)
                 || typeof cachedUnshipped.currentShipCount !== 'number'
                 || (cachedUnshipped.currentShipCount > 0 && !hasReliableCurrentScaleEstimate(cachedUnshipped.currentScaleEstimate)));
 
@@ -5245,8 +5301,9 @@ async function addProjectCardCookieStats(skipBackloadRefresh = false) {
                 };
                 const fetchedCookies = stats.paidCookies > 0 ? stats.paidCookies : totalCookies;
                 const fetchedMinutes = stats.paidShipMinutes || 0;
-                if (fetchedMinutes <= 0 && !fetchedEstimate) return;
-                renderCardStat(card, fetchedCookies, fetchedMinutes, fetchedEstimate, fetchedMeta);
+                const fetchedHours = stats.paidShipHours || 0;
+                if (fetchedMinutes <= 0 && fetchedHours <= 0 && !fetchedEstimate) return;
+                renderCardStat(card, fetchedCookies, fetchedMinutes, fetchedHours, fetchedEstimate, fetchedMeta);
             });
         }
     });
@@ -5369,10 +5426,17 @@ async function addProjectShowCookieStat(forceRefresh = false) {
     });
 
     let minutes = 0;
+    let paidHours = 0;
     shipPostsOnPage.forEach(shipPost => {
         const footer = shipPost.querySelector('.post__payout-footer');
-        const { cookiesValue } = getShipFooterPayoutMetrics(footer);
+        const payoutMetrics = getShipFooterPayoutMetrics(footer);
+        const { cookiesValue } = payoutMetrics;
         if (!cookiesValue || cookiesValue <= 0) return;
+
+        const canonicalHours = getCanonicalPaidShipHours(shipPost, payoutMetrics);
+        if (canonicalHours > 0) {
+            paidHours += canonicalHours;
+        }
 
         const cachedMinutes = shipPost.dataset.flavortownShipMinutes;
         const parsedMinutes = cachedMinutes ? parseFloat(cachedMinutes) : 0;
@@ -5388,10 +5452,12 @@ async function addProjectShowCookieStat(forceRefresh = false) {
         if (cachedUnshipped && typeof cachedUnshipped.paidShipMinutes === 'number') {
             minutes = cachedUnshipped.paidShipMinutes;
         }
+        if (cachedUnshipped && typeof cachedUnshipped.paidShipHours === 'number' && cachedUnshipped.paidShipHours > 0) {
+            paidHours = cachedUnshipped.paidShipHours;
+        }
     }
 
-    const hours = minutes > 0 ? minutes / 60 : null;
-    const rate = hours && totalCookies > 0 ? getMultiplierFromCookies(totalCookies, hours) : null;
+    const rate = getProjectRateFromCookies(totalCookies, paidHours, minutes);
     const fallbackScaleMax = inferProjectFallbackScaleMax(projectVoteMeta);
     const fallbackEstimateSource = fallbackScaleMax > LEGACY_VOTE_SCALE_MAX
         ? 'current-multiplier'
