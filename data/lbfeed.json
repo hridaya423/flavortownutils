@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-31T07:51:41.989Z",
+  "lastUpdated": "2026-03-31T09:01:34.530Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -15049,6 +15049,22 @@
         "reason": "Show and tell local",
         "reasonType": "achievement",
         "userId": "U0864RMD6BE"
+      },
+      {
+        "ts": "2026-03-31T07:54:48.248Z",
+        "delta": 15,
+        "balance": 85,
+        "reason": "Sous Chef",
+        "reasonType": "achievement",
+        "userId": "U0864RMD6BE"
+      },
+      {
+        "ts": "2026-03-31T08:07:18.304Z",
+        "delta": -74,
+        "balance": 11,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0864RMD6BE"
       }
     ],
     "u086dtrrnsv": [
@@ -23920,6 +23936,14 @@
         "ts": "2026-03-30T02:09:33.684Z",
         "delta": -10,
         "balance": 349,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U090LAT6QKB"
+      },
+      {
+        "ts": "2026-03-31T08:17:45.515Z",
+        "delta": -10,
+        "balance": 339,
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U090LAT6QKB"
@@ -88379,6 +88403,17 @@
     ]
   },
   "users": {
+    "U090LAT6QKB": {
+      "id": "U090LAT6QKB",
+      "username": "dinosaur890123",
+      "avatar": "https://avatars.slack-edge.com/2025-12-09/10077925689238_2149e0ba18d7110e7a3f_72.png"
+    },
+    "U0864RMD6BE": {
+      "id": "U0864RMD6BE",
+      "username": "pratik.personal4",
+      "displayName": "zesty plutonium",
+      "avatar": "https://avatars.slack-edge.com/2026-01-28/10388989246820_15feda01b683a8a87bc5_72.jpg"
+    },
     "U0A71TWUM7D": {
       "id": "U0A71TWUM7D",
       "username": "nmsoukmandjiev007",
@@ -88737,12 +88772,6 @@
       "displayName": "Whatsup",
       "avatar": "https://secure.gravatar.com/avatar/edde908f134084345bf71c51e1120da2.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0012-72.png"
     },
-    "U0864RMD6BE": {
-      "id": "U0864RMD6BE",
-      "username": "pratik.personal4",
-      "displayName": "zesty plutonium",
-      "avatar": "https://avatars.slack-edge.com/2026-01-28/10388989246820_15feda01b683a8a87bc5_72.jpg"
-    },
     "U0A83LHGY7K": {
       "id": "U0A83LHGY7K",
       "username": "shaikhsamir8442",
@@ -88852,11 +88881,6 @@
       "username": "hamdaraksa",
       "displayName": "Rubiriku",
       "avatar": "https://avatars.slack-edge.com/2025-05-03/8835559698022_a023d18705695983b178_72.png"
-    },
-    "U090LAT6QKB": {
-      "id": "U090LAT6QKB",
-      "username": "dinosaur890123",
-      "avatar": "https://avatars.slack-edge.com/2025-12-09/10077925689238_2149e0ba18d7110e7a3f_72.png"
     },
     "U0829HRSQ76": {
       "id": "U0829HRSQ76",
