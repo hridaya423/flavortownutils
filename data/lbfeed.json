@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-01T09:46:02.778Z",
+  "lastUpdated": "2026-04-01T10:57:39.686Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -28642,6 +28642,30 @@
         "ts": "2026-01-30T11:08:21.771Z",
         "delta": -40,
         "balance": 144,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U091STGKU4D"
+      },
+      {
+        "ts": "2026-04-01T10:15:22.177Z",
+        "delta": 10,
+        "balance": 154,
+        "reason": "Line Cook",
+        "reasonType": "achievement",
+        "userId": "U091STGKU4D"
+      },
+      {
+        "ts": "2026-04-01T10:21:36.825Z",
+        "delta": -140,
+        "balance": 14,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U091STGKU4D"
+      },
+      {
+        "ts": "2026-04-01T10:22:12.746Z",
+        "delta": -10,
+        "balance": 4,
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U091STGKU4D"
@@ -89693,6 +89717,11 @@
     ]
   },
   "users": {
+    "U091STGKU4D": {
+      "id": "U091STGKU4D",
+      "username": "prasoonkandel",
+      "avatar": "https://avatars.slack-edge.com/2026-01-14/10300075251172_eb13f53810b7f4613c0f_72.jpg"
+    },
     "U0A9S13HQF3": {
       "id": "U0A9S13HQF3",
       "username": "alexfeed1990real",
@@ -94000,11 +94029,6 @@
       "username": "akhilchaturvedi.delhi",
       "displayName": "akhil",
       "avatar": "https://avatars.slack-edge.com/2026-01-31/10427658871777_8617e8ecab6963507031_72.jpg"
-    },
-    "U091STGKU4D": {
-      "id": "U091STGKU4D",
-      "username": "prasoonkandel",
-      "avatar": "https://avatars.slack-edge.com/2026-01-14/10300075251172_eb13f53810b7f4613c0f_72.jpg"
     },
     "U0ABVJP7KD2": {
       "id": "U0ABVJP7KD2",
