@@ -19103,7 +19103,22 @@ function createVoteCard(vote, usersMap) {
     return voteCard;
 }
 
+function hasRenderableCommunityVoteFeedback(vote) {
+    const feedback = (vote?.feedback || '').replace(/\s+/g, ' ').trim();
+    if (!feedback) return false;
+
+    const normalized = feedback.toLowerCase();
+    if (normalized === 'no feedback provided' || normalized === 'no feedback') {
+        return false;
+    }
+
+    return true;
+}
+
 function createVotesContainer(votes, usersMap) {
+    const renderableVotes = votes.filter(hasRenderableCommunityVoteFeedback);
+    if (!renderableVotes.length) return null;
+
     const votesContainer = document.createElement('div');
     votesContainer.className = 'flavortown-project-votes';
     votesContainer.style.cssText = `
@@ -19129,7 +19144,7 @@ function createVotesContainer(votes, usersMap) {
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="var(--catppuccin-yellow, var(--color-brown, #d4a857))" style="opacity: 0.9;">
             <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
         </svg>
-        <span>Community Votes (${votes.length})</span>
+        <span>Community Votes (${renderableVotes.length})</span>
     `;
     votesContainer.appendChild(header);
 
@@ -19138,7 +19153,7 @@ function createVotesContainer(votes, usersMap) {
 
     let shownCount = 0;
     const renderNextBatch = () => {
-        const nextVotes = votes.slice(shownCount, shownCount + 5);
+        const nextVotes = renderableVotes.slice(shownCount, shownCount + 5);
         nextVotes.forEach(vote => {
             votesList.insertBefore(createVoteCard(vote, usersMap), moreButton);
         });
@@ -19159,7 +19174,7 @@ function createVotesContainer(votes, usersMap) {
         padding-top: 6px;
     `;
     const updateMoreButton = () => {
-        const remaining = votes.length - shownCount;
+        const remaining = renderableVotes.length - shownCount;
         if (remaining <= 0) {
             moreButton.remove();
             return;
@@ -19239,6 +19254,7 @@ async function addProjectVotesDisplay() {
         if (!insertAfter) return;
 
         const votesContainer = createVotesContainer(shipVotes, votesData.users);
+        if (!votesContainer) return;
         insertAfter.parentNode.insertBefore(votesContainer, insertAfter.nextSibling);
     });
 }

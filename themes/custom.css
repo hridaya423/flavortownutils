@@ -3158,8 +3158,8 @@ main:has(.chef-img) .btn:hover {
 .flavortown-goal-item[data-progress-state="mid"],
 .flavortown-goal-item[data-progress-state="low"],
 .flavortown-goal-item[data-progress-state="high"] {
-    --progress-bg: color-mix(in srgb, var(--custom-accent) 40%, transparent) !important;
-    background: linear-gradient(90deg, color-mix(in srgb, var(--custom-accent) 40%, transparent) var(--progress, 0%), var(--custom-bg-surface) var(--progress, 0%)) !important;
+    --progress-bg: var(--custom-surface-active) !important;
+    background: linear-gradient(90deg, var(--custom-surface-active) var(--progress, 0%), var(--custom-bg-surface) var(--progress, 0%)) !important;
 }
 
 .flavortown-goal-item::before {

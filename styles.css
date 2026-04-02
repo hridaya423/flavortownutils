@@ -3827,6 +3827,7 @@
 .flavortown-progress-toggle__hint {
     font-size: 12px !important;
     color: var(--color-text-secondary, #7f6a52) !important;
+    background: var(--color-surface, #f7efe5) !important;
     background: color-mix(in srgb, var(--color-surface, #f7efe5) 80%, transparent) !important;
     border: 1px solid var(--color-border, rgba(120, 94, 66, 0.2)) !important;
     border-radius: 999px !important;
