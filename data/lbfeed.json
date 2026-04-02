@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-02T21:02:10.251Z",
+  "lastUpdated": "2026-04-02T22:01:05.820Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -23952,6 +23952,46 @@
         "balance": 0,
         "reason": "shop purchase",
         "reasonType": "",
+        "userId": "U08TRR1KEMD"
+      },
+      {
+        "ts": "2026-04-02T21:25:23.804Z",
+        "delta": 5,
+        "balance": 5,
+        "reason": "Very Fried",
+        "reasonType": "achievement",
+        "userId": "U08TRR1KEMD"
+      },
+      {
+        "ts": "2026-04-02T21:25:23.814Z",
+        "delta": 3,
+        "balance": 8,
+        "reason": "Home Cookin'",
+        "reasonType": "achievement",
+        "userId": "U08TRR1KEMD"
+      },
+      {
+        "ts": "2026-04-02T21:25:23.862Z",
+        "delta": 2,
+        "balance": 10,
+        "reason": "Recipe Notes",
+        "reasonType": "achievement",
+        "userId": "U08TRR1KEMD"
+      },
+      {
+        "ts": "2026-04-02T21:25:26.789Z",
+        "delta": 15,
+        "balance": 25,
+        "reason": "Cookbook Author",
+        "reasonType": "achievement",
+        "userId": "U08TRR1KEMD"
+      },
+      {
+        "ts": "2026-04-02T21:33:36.348Z",
+        "delta": 2,
+        "balance": 27,
+        "reason": "Hello, Kitchen!",
+        "reasonType": "achievement",
         "userId": "U08TRR1KEMD"
       }
     ],
@@ -86787,6 +86827,22 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0ACCKPFDL0"
+      },
+      {
+        "ts": "2026-04-02T21:12:11.454Z",
+        "delta": -87,
+        "balance": 180,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0ACCKPFDL0"
+      },
+      {
+        "ts": "2026-04-02T21:14:55.908Z",
+        "delta": -168,
+        "balance": 12,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0ACCKPFDL0"
       }
     ],
     "u0acgddbs15": [
@@ -90989,6 +91045,12 @@
     ]
   },
   "users": {
+    "U08TRR1KEMD": {
+      "id": "U08TRR1KEMD",
+      "username": "rishaan.sharma2202",
+      "displayName": "Rishaan",
+      "avatar": "https://avatars.slack-edge.com/2026-02-01/10430638729089_53f7acbc4a26aee42c94_72.png"
+    },
     "U0ACCKPFDL0": {
       "id": "U0ACCKPFDL0",
       "username": "sebastiaolina1",
@@ -95637,12 +95699,6 @@
       "id": "U092DA495UY",
       "username": "grayson",
       "avatar": "https://avatars.slack-edge.com/2026-01-07/10251766558980_2e3ccf213cb2238f4d55_72.jpg"
-    },
-    "U08TRR1KEMD": {
-      "id": "U08TRR1KEMD",
-      "username": "rishaan.sharma2202",
-      "displayName": "Rishaan",
-      "avatar": "https://avatars.slack-edge.com/2026-02-01/10430638729089_53f7acbc4a26aee42c94_72.png"
     },
     "U078M8Q8RNF": {
       "id": "U078M8Q8RNF",
