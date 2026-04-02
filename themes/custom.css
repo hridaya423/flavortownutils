@@ -4437,3 +4437,112 @@ body.flavortown-docs-no-code-theme .card code {
 .flavortown-oos-checkbox:checked + .flavortown-oos-switch {
     background: var(--custom-accent-alt) !important;
 }
+
+.sidequest-show--lockin .lockin-dashboard {
+    border: 3px solid var(--custom-surface-hover) !important;
+    border-radius: 12px !important;
+    box-shadow: 8px 8px 0 color-mix(in srgb, var(--custom-accent), transparent 80%) !important;
+    background: var(--custom-bg-base) !important;
+}
+
+.sidequest-show--lockin .lockin-header__title {
+    color: var(--custom-text-primary) !important;
+}
+
+.sidequest-show--lockin .lockin-header__desc {
+    color: var(--custom-text-secondary) !important;
+}
+
+.sidequest-show--lockin .lockin-weeks {
+    background: var(--custom-bg-surface) !important;
+    border: 2px solid var(--custom-surface-hover) !important;
+}
+
+.sidequest-show--lockin #lockin-countdown {
+    color: var(--custom-text-primary) !important;
+    background: var(--custom-bg-crust) !important;
+    border: 1px solid var(--custom-surface-hover) !important;
+}
+
+.sidequest-show--lockin #lockin-countdown > span:first-child {
+    color: var(--custom-accent) !important;
+}
+
+.sidequest-show--lockin .lockin-card {
+    background: var(--custom-bg-surface) !important;
+    border: 2px solid var(--custom-surface-hover) !important;
+}
+
+.sidequest-show--lockin .lockin-weeks__box {
+    background: var(--custom-bg-surface) !important;
+    border: 2px solid var(--custom-surface-hover) !important;
+}
+
+.sidequest-show--lockin .lockin-card__title {
+    color: var(--custom-text-primary) !important;
+}
+
+.sidequest-show--lockin .lockin-card ul li {
+    color: var(--custom-text-secondary) !important;
+}
+
+.sidequest-show--lockin .lockin-faq {
+    background: var(--custom-bg-surface) !important;
+    border: 2px solid var(--custom-surface-hover) !important;
+}
+
+.sidequest-show--lockin .lockin-card ul li strong {
+    color: var(--custom-accent) !important;
+}
+
+.sidequest-show--lockin .lockin-weeks__box .wk {
+    color: var(--custom-success) !important;
+}
+
+.sidequest-show--lockin .lockin-weeks__box .hrs {
+    color: var(--custom-text-secondary) !important;
+}
+
+.sidequest-show--lockin .lockin-faq .faq-item h4 {
+    color: var(--custom-accent) !important;
+}
+
+.sidequest-show--lockin .lockin-faq .faq-item p {
+    color: var(--custom-text-secondary) !important;
+}
+
+.sidequest-show--lockin .lockin-weeks__box.active {
+    box-shadow: 0 4px 10px color-mix(in srgb, var(--custom-accent), transparent 72%) !important;
+}
+
+.sidequest-show--lockin .lockin-faq__title {
+    color: var(--custom-text-primary) !important;
+}
+
+.sidequest-show--lockin .lockin-faq .faq-item ul {
+    color: var(--custom-text-secondary) !important;
+}
+
+.sidequest-show__prize-name {
+    color: var(--custom-accent) !important;
+}
+
+.sidequest-show__prize-row:hover {
+    background-color: color-mix(in srgb, var(--custom-accent), transparent 88%) !important;
+}
+
+.admin-section__header {
+    color: var(--custom-text-primary) !important;
+}
+
+.admin-alert--warning {
+    background: color-mix(in srgb, var(--custom-yellow), transparent 88%) !important;
+    border: 1px solid color-mix(in srgb, var(--custom-yellow), transparent 56%) !important;
+    color: var(--custom-yellow) !important;
+}
+
+.admin-textarea {
+    border: 1px solid var(--custom-surface-hover) !important;
+    background: var(--custom-bg-surface) !important;
+    color: var(--custom-text-primary) !important;
+}

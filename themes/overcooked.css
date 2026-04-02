@@ -4528,3 +4528,112 @@ body.flavortown-docs-no-code-theme .card code {
 .flavortown-oos-checkbox:checked + .flavortown-oos-switch {
     background: var(--overcooked-cyan) !important;
 }
+
+.sidequest-show--lockin .lockin-dashboard {
+    border: 3px solid var(--overcooked-mid) !important;
+    border-radius: 12px !important;
+    box-shadow: 8px 8px 0 color-mix(in srgb, var(--overcooked-cyan), transparent 80%) !important;
+    background: var(--overcooked-abyss) !important;
+}
+
+.sidequest-show--lockin .lockin-header__title {
+    color: var(--overcooked-white) !important;
+}
+
+.sidequest-show--lockin .lockin-header__desc {
+    color: var(--overcooked-foam) !important;
+}
+
+.sidequest-show--lockin .lockin-weeks {
+    background: var(--overcooked-dark) !important;
+    border: 2px solid var(--overcooked-mid) !important;
+}
+
+.sidequest-show--lockin #lockin-countdown {
+    color: var(--overcooked-white) !important;
+    background: var(--overcooked-abyss) !important;
+    border: 1px solid var(--overcooked-mid) !important;
+}
+
+.sidequest-show--lockin #lockin-countdown > span:first-child {
+    color: var(--overcooked-cyan) !important;
+}
+
+.sidequest-show--lockin .lockin-card {
+    background: var(--overcooked-abyss) !important;
+    border: 2px solid var(--overcooked-mid) !important;
+}
+
+.sidequest-show--lockin .lockin-weeks__box {
+    background: var(--overcooked-abyss) !important;
+    border: 2px solid var(--overcooked-mid) !important;
+}
+
+.sidequest-show--lockin .lockin-card__title {
+    color: var(--overcooked-white) !important;
+}
+
+.sidequest-show--lockin .lockin-card ul li {
+    color: var(--overcooked-foam) !important;
+}
+
+.sidequest-show--lockin .lockin-faq {
+    background: var(--overcooked-dark) !important;
+    border: 2px solid var(--overcooked-mid) !important;
+}
+
+.sidequest-show--lockin .lockin-card ul li strong {
+    color: var(--overcooked-cyan) !important;
+}
+
+.sidequest-show--lockin .lockin-weeks__box .wk {
+    color: var(--overcooked-kelp) !important;
+}
+
+.sidequest-show--lockin .lockin-weeks__box .hrs {
+    color: var(--overcooked-foam) !important;
+}
+
+.sidequest-show--lockin .lockin-faq .faq-item h4 {
+    color: var(--overcooked-cyan) !important;
+}
+
+.sidequest-show--lockin .lockin-faq .faq-item p {
+    color: var(--overcooked-foam) !important;
+}
+
+.sidequest-show--lockin .lockin-weeks__box.active {
+    box-shadow: 0 4px 10px color-mix(in srgb, var(--overcooked-cyan), transparent 72%) !important;
+}
+
+.sidequest-show--lockin .lockin-faq__title {
+    color: var(--overcooked-white) !important;
+}
+
+.sidequest-show--lockin .lockin-faq .faq-item ul {
+    color: var(--overcooked-foam) !important;
+}
+
+.sidequest-show__prize-name {
+    color: var(--overcooked-cyan) !important;
+}
+
+.sidequest-show__prize-row:hover {
+    background-color: color-mix(in srgb, var(--overcooked-cyan), transparent 88%) !important;
+}
+
+.admin-section__header {
+    color: var(--overcooked-white) !important;
+}
+
+.admin-alert--warning {
+    background: color-mix(in srgb, var(--overcooked-gold), transparent 88%) !important;
+    border: 1px solid color-mix(in srgb, var(--overcooked-gold), transparent 56%) !important;
+    color: var(--overcooked-gold) !important;
+}
+
+.admin-textarea {
+    border: 1px solid var(--overcooked-mid) !important;
+    background: var(--overcooked-dark) !important;
+    color: var(--overcooked-white) !important;
+}

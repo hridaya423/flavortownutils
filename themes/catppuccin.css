@@ -4462,3 +4462,112 @@ body.flavortown-docs-no-code-theme .card code {
 .flavortown-oos-checkbox:checked + .flavortown-oos-switch {
     background: var(--ctp-accent) !important;
 }
+
+.sidequest-show--lockin .lockin-dashboard {
+    border: 3px solid var(--ctp-surface2) !important;
+    border-radius: 12px !important;
+    box-shadow: 8px 8px 0 color-mix(in srgb, var(--ctp-mauve), transparent 78%) !important;
+    background: var(--ctp-base) !important;
+}
+
+.sidequest-show--lockin .lockin-header__title {
+    color: var(--ctp-text) !important;
+}
+
+.sidequest-show--lockin .lockin-header__desc {
+    color: var(--ctp-subtext0) !important;
+}
+
+.sidequest-show--lockin .lockin-weeks {
+    background: var(--ctp-mantle) !important;
+    border: 2px solid var(--ctp-surface1) !important;
+}
+
+.sidequest-show--lockin #lockin-countdown {
+    color: var(--ctp-text) !important;
+    background: var(--ctp-crust) !important;
+    border: 1px solid var(--ctp-surface2) !important;
+}
+
+.sidequest-show--lockin #lockin-countdown > span:first-child {
+    color: var(--ctp-mauve) !important;
+}
+
+.sidequest-show--lockin .lockin-card {
+    background: var(--ctp-mantle) !important;
+    border: 2px solid var(--ctp-surface1) !important;
+}
+
+.sidequest-show--lockin .lockin-weeks__box {
+    background: var(--ctp-crust) !important;
+    border: 2px solid var(--ctp-surface2) !important;
+}
+
+.sidequest-show--lockin .lockin-card__title {
+    color: var(--ctp-text) !important;
+}
+
+.sidequest-show--lockin .lockin-card ul li {
+    color: var(--ctp-subtext0) !important;
+}
+
+.sidequest-show--lockin .lockin-faq {
+    background: var(--ctp-mantle) !important;
+    border: 2px solid var(--ctp-surface1) !important;
+}
+
+.sidequest-show--lockin .lockin-card ul li strong {
+    color: var(--ctp-mauve) !important;
+}
+
+.sidequest-show--lockin .lockin-weeks__box .wk {
+    color: var(--ctp-green) !important;
+}
+
+.sidequest-show--lockin .lockin-weeks__box .hrs {
+    color: var(--ctp-subtext0) !important;
+}
+
+.sidequest-show--lockin .lockin-faq .faq-item h4 {
+    color: var(--ctp-mauve) !important;
+}
+
+.sidequest-show--lockin .lockin-faq .faq-item p {
+    color: var(--ctp-subtext0) !important;
+}
+
+.sidequest-show--lockin .lockin-weeks__box.active {
+    box-shadow: 0 4px 10px color-mix(in srgb, var(--ctp-mauve), transparent 72%) !important;
+}
+
+.sidequest-show--lockin .lockin-faq__title {
+    color: var(--ctp-text) !important;
+}
+
+.sidequest-show--lockin .lockin-faq .faq-item ul {
+    color: var(--ctp-subtext0) !important;
+}
+
+.sidequest-show__prize-name {
+    color: var(--ctp-mauve) !important;
+}
+
+.sidequest-show__prize-row:hover {
+    background-color: color-mix(in srgb, var(--ctp-mauve), transparent 88%) !important;
+}
+
+.admin-section__header {
+    color: var(--ctp-text) !important;
+}
+
+.admin-alert--warning {
+    background: color-mix(in srgb, var(--ctp-yellow), transparent 88%) !important;
+    border: 1px solid color-mix(in srgb, var(--ctp-yellow), transparent 58%) !important;
+    color: var(--ctp-yellow) !important;
+}
+
+.admin-textarea {
+    border: 1px solid var(--ctp-surface2) !important;
+    background: var(--ctp-mantle) !important;
+    color: var(--ctp-text) !important;
+}
