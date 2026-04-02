@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-02T22:01:05.820Z",
+  "lastUpdated": "2026-04-02T22:58:37.384Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -5271,6 +5271,14 @@
         "delta": -10,
         "balance": 2266,
         "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U079E6V7R28"
+      },
+      {
+        "ts": "2026-04-02T22:48:55.828Z",
+        "delta": 51,
+        "balance": 2317,
+        "reason": "ship event payout",
         "reasonType": "",
         "userId": "U079E6V7R28"
       }
@@ -91045,6 +91053,12 @@
     ]
   },
   "users": {
+    "U079E6V7R28": {
+      "id": "U079E6V7R28",
+      "username": "thisisnotnibblz123",
+      "displayName": "Nibbles",
+      "avatar": "https://avatars.slack-edge.com/2024-06-22/7311126135782_bbb6a69e1da606f6a474_72.png"
+    },
     "U08TRR1KEMD": {
       "id": "U08TRR1KEMD",
       "username": "rishaan.sharma2202",
@@ -91802,12 +91816,6 @@
       "username": "padamnabhnamdeo",
       "displayName": "The Outlier",
       "avatar": "https://secure.gravatar.com/avatar/f5cecfd91f653ea398db8f9f8ff498ce.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0004-72.png"
-    },
-    "U079E6V7R28": {
-      "id": "U079E6V7R28",
-      "username": "thisisnotnibblz123",
-      "displayName": "Nibbles",
-      "avatar": "https://avatars.slack-edge.com/2024-06-22/7311126135782_bbb6a69e1da606f6a474_72.png"
     },
     "U0A5WSLGHUY": {
       "id": "U0A5WSLGHUY",
