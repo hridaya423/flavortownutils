@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-02T14:38:34.928Z",
+  "lastUpdated": "2026-04-02T16:01:15.033Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -46029,6 +46029,16 @@
         "userId": "U0A0E74D8LC"
       }
     ],
+    "u0a0ekyrqud": [
+      {
+        "ts": "2026-04-02T15:03:17.781Z",
+        "delta": -10,
+        "balance": 0,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A0EKYRQUD"
+      }
+    ],
     "u0a0g70utas": [
       {
         "ts": "2025-12-23T08:56:52.470Z",
@@ -87569,6 +87579,30 @@
         "reason": "ship event payout",
         "reasonType": "",
         "userId": "U0AEYDUCLKF"
+      },
+      {
+        "ts": "2026-04-02T15:56:21.877Z",
+        "delta": 15,
+        "balance": 75,
+        "reason": "Cookbook Author",
+        "reasonType": "achievement",
+        "userId": "U0AEYDUCLKF"
+      },
+      {
+        "ts": "2026-04-02T15:56:21.945Z",
+        "delta": 5,
+        "balance": 80,
+        "reason": "Fleet Captain",
+        "reasonType": "achievement",
+        "userId": "U0AEYDUCLKF"
+      },
+      {
+        "ts": "2026-04-02T15:56:22.023Z",
+        "delta": 15,
+        "balance": 95,
+        "reason": "Five Star Chef",
+        "reasonType": "achievement",
+        "userId": "U0AEYDUCLKF"
       }
     ],
     "u0af05ftk51": [
@@ -90547,6 +90581,18 @@
     ]
   },
   "users": {
+    "U0AEYDUCLKF": {
+      "id": "U0AEYDUCLKF",
+      "username": "jacob.navaratne",
+      "displayName": "Jacob",
+      "avatar": "https://avatars.slack-edge.com/2026-02-15/10507758480291_a56356891a1addcfd2bc_72.png"
+    },
+    "U0A0EKYRQUD": {
+      "id": "U0A0EKYRQUD",
+      "username": "kanavromi",
+      "displayName": "kan",
+      "avatar": "https://avatars.slack-edge.com/2026-03-30/10810605242420_419b3ee90849842de8ad_72.jpg"
+    },
     "U0A7Q0H63C2": {
       "id": "U0A7Q0H63C2",
       "username": "saisadwiikkatam",
@@ -93305,12 +93351,6 @@
       "username": "nidheeshpusuluri",
       "displayName": "Nidheesh",
       "avatar": "https://avatars.slack-edge.com/2025-03-31/8688245620914_4561828f1d55fc23a0e2_72.png"
-    },
-    "U0AEYDUCLKF": {
-      "id": "U0AEYDUCLKF",
-      "username": "jacob.navaratne",
-      "displayName": "Jacob",
-      "avatar": "https://avatars.slack-edge.com/2026-02-15/10507758480291_a56356891a1addcfd2bc_72.png"
     },
     "U0A9MGA54RK": {
       "id": "U0A9MGA54RK",
