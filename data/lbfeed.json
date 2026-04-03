@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-03T18:01:03.624Z",
+  "lastUpdated": "2026-04-03T19:11:39.726Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -48559,6 +48559,24 @@
         "userId": "U0A1QAW6GUB"
       }
     ],
+    "u0a1s20bhd2": [
+      {
+        "ts": "2026-04-03T18:03:52.885Z",
+        "delta": 10,
+        "balance": 10,
+        "reason": "user grant",
+        "reasonType": "",
+        "userId": "U0A1S20BHD2"
+      },
+      {
+        "ts": "2026-04-03T18:08:53.387Z",
+        "delta": -10,
+        "balance": 0,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A1S20BHD2"
+      }
+    ],
     "u0a1sgvteqp": [
       {
         "ts": "2026-01-19T07:36:05.530Z",
@@ -72429,6 +72447,14 @@
         "reason": "user grant",
         "reasonType": "",
         "userId": "U0A7L8VNZRP"
+      },
+      {
+        "ts": "2026-04-03T19:04:59.905Z",
+        "delta": 15,
+        "balance": 15,
+        "reason": "Five Star Chef",
+        "reasonType": "achievement",
+        "userId": "U0A7L8VNZRP"
       }
     ],
     "u0a7lfpbcbt": [
@@ -91869,6 +91895,18 @@
     ]
   },
   "users": {
+    "U0A7L8VNZRP": {
+      "id": "U0A7L8VNZRP",
+      "username": "jayssarch",
+      "displayName": "jayssarch",
+      "avatar": "https://avatars.slack-edge.com/2026-01-12/10279435215202_ea7083b405c835e89aee_72.jpg"
+    },
+    "U0A1S20BHD2": {
+      "id": "U0A1S20BHD2",
+      "username": "ved09lad",
+      "displayName": "Ved",
+      "avatar": "https://secure.gravatar.com/avatar/88e7c91c5463f36469e0c8b9c6cd02c9.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0025-72.png"
+    },
     "U086VTQTB29": {
       "id": "U086VTQTB29",
       "username": "ivan.skrinnik.nomia",
@@ -93575,12 +93613,6 @@
       "username": "swastikbajpaii17969",
       "displayName": "alb",
       "avatar": "https://avatars.slack-edge.com/2026-01-10/10263502328755_a6900e95c27fd35464a9_72.jpg"
-    },
-    "U0A7L8VNZRP": {
-      "id": "U0A7L8VNZRP",
-      "username": "jayssarch",
-      "displayName": "jayssarch",
-      "avatar": "https://avatars.slack-edge.com/2026-01-12/10279435215202_ea7083b405c835e89aee_72.jpg"
     },
     "U0AA95YCSAU": {
       "id": "U0AA95YCSAU",
