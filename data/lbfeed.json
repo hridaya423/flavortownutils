@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-03T22:34:31.740Z",
+  "lastUpdated": "2026-04-03T23:34:56.574Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -10813,6 +10813,14 @@
         "delta": 10,
         "balance": 822,
         "reason": "Line Cook",
+        "reasonType": "achievement",
+        "userId": "U07UH9DQA4B"
+      },
+      {
+        "ts": "2026-04-03T22:37:42.870Z",
+        "delta": 15,
+        "balance": 837,
+        "reason": "Sous Chef",
         "reasonType": "achievement",
         "userId": "U07UH9DQA4B"
       }
@@ -46246,6 +46254,14 @@
         "balance": 973,
         "reason": "Cooking",
         "reasonType": "achievement",
+        "userId": "U09UU7TETBR"
+      },
+      {
+        "ts": "2026-04-03T22:43:48.038Z",
+        "delta": 971,
+        "balance": 1944,
+        "reason": "ship event payout",
+        "reasonType": "",
         "userId": "U09UU7TETBR"
       }
     ],
@@ -92093,6 +92109,11 @@
     ]
   },
   "users": {
+    "U09UU7TETBR": {
+      "id": "U09UU7TETBR",
+      "username": "simonhroff",
+      "avatar": "https://avatars.slack-edge.com/2025-11-25/10024094435280_d4db6c77b2d72752558c_72.png"
+    },
     "U07UH9DQA4B": {
       "id": "U07UH9DQA4B",
       "username": "izan",
@@ -92208,11 +92229,6 @@
       "username": "ferboinkles",
       "displayName": "Vihaan",
       "avatar": "https://avatars.slack-edge.com/2026-01-19/10322770970819_daedd0edcd7018256f16_72.png"
-    },
-    "U09UU7TETBR": {
-      "id": "U09UU7TETBR",
-      "username": "simonhroff",
-      "avatar": "https://avatars.slack-edge.com/2025-11-25/10024094435280_d4db6c77b2d72752558c_72.png"
     },
     "U0AEP2DSQ11": {
       "id": "U0AEP2DSQ11",
