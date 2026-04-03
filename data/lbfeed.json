@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-03T16:02:24.124Z",
+  "lastUpdated": "2026-04-03T17:03:51.291Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -47631,6 +47631,14 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0A19UWEN3G"
+      },
+      {
+        "ts": "2026-04-03T16:14:35.734Z",
+        "delta": 429,
+        "balance": 1224,
+        "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U0A19UWEN3G"
       }
     ],
     "u0a1cft47k4": [
@@ -49892,6 +49900,14 @@
         "balance": 455,
         "reason": "ship event payout",
         "reasonType": "",
+        "userId": "U0A3584269Z"
+      },
+      {
+        "ts": "2026-04-03T16:37:25.228Z",
+        "delta": 15,
+        "balance": 470,
+        "reason": "Sous Chef",
+        "reasonType": "achievement",
         "userId": "U0A3584269Z"
       }
     ],
@@ -91803,6 +91819,17 @@
     ]
   },
   "users": {
+    "U0A3584269Z": {
+      "id": "U0A3584269Z",
+      "username": "sahildash10",
+      "displayName": "rip_super",
+      "avatar": "https://avatars.slack-edge.com/2025-12-14/10124458601620_e347a2123ea82bdbe2f2_72.jpg"
+    },
+    "U0A19UWEN3G": {
+      "id": "U0A19UWEN3G",
+      "username": "heitorjcastilho",
+      "avatar": "https://avatars.slack-edge.com/2025-12-30/10210516118930_a18096c10756fe9925c5_72.png"
+    },
     "U0A4H78N1BR": {
       "id": "U0A4H78N1BR",
       "username": "saksham.khatod27",
@@ -92507,12 +92534,6 @@
       "displayName": "sl4shed",
       "avatar": "https://avatars.slack-edge.com/2026-02-27/10581993638343_b576f1c19acd1504810f_72.jpg"
     },
-    "U0A3584269Z": {
-      "id": "U0A3584269Z",
-      "username": "sahildash10",
-      "displayName": "rip_super",
-      "avatar": "https://avatars.slack-edge.com/2025-12-14/10124458601620_e347a2123ea82bdbe2f2_72.jpg"
-    },
     "U0A698NNHFD": {
       "id": "U0A698NNHFD",
       "username": "mforbelak",
@@ -92570,11 +92591,6 @@
       "username": "me1758",
       "displayName": "Hyeonjin",
       "avatar": "https://secure.gravatar.com/avatar/b7883dd3defa91f26fe271809c9ca024.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0015-72.png"
-    },
-    "U0A19UWEN3G": {
-      "id": "U0A19UWEN3G",
-      "username": "heitorjcastilho",
-      "avatar": "https://avatars.slack-edge.com/2025-12-30/10210516118930_a18096c10756fe9925c5_72.png"
     },
     "U078G7DML8P": {
       "id": "U078G7DML8P",
