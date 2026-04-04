@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-04T10:01:56.415Z",
+  "lastUpdated": "2026-04-04T10:59:02.881Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -92365,6 +92365,24 @@
         "userId": "U0AQQ1KENHL"
       }
     ],
+    "u0aqrb31nk0": [
+      {
+        "ts": "2026-04-04T10:33:32.166Z",
+        "delta": 10,
+        "balance": 10,
+        "reason": "user grant",
+        "reasonType": "",
+        "userId": "U0AQRB31NK0"
+      },
+      {
+        "ts": "2026-04-04T10:36:32.749Z",
+        "delta": -10,
+        "balance": 0,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0AQRB31NK0"
+      }
+    ],
     "u0arhc6d27j": [
       {
         "ts": "2026-04-03T06:33:37.030Z",
@@ -92385,6 +92403,12 @@
     ]
   },
   "users": {
+    "U0AQRB31NK0": {
+      "id": "U0AQRB31NK0",
+      "username": "baranithom",
+      "displayName": "baranithom",
+      "avatar": "https://secure.gravatar.com/avatar/9f34b6ba5e76b05d4f23814f59a31c3e.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0000-72.png"
+    },
     "U0801PU0MTQ": {
       "id": "U0801PU0MTQ",
       "username": "ytbraced",
