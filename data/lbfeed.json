@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-04T08:02:53.782Z",
+  "lastUpdated": "2026-04-04T09:06:12.291Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -3861,6 +3861,14 @@
         "delta": 392,
         "balance": 551,
         "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U074LUX88PJ"
+      },
+      {
+        "ts": "2026-04-04T08:47:23.863Z",
+        "delta": -452,
+        "balance": 99,
+        "reason": "shop purchase",
         "reasonType": "",
         "userId": "U074LUX88PJ"
       }
@@ -26582,6 +26590,14 @@
         "balance": 128,
         "reason": "Show and tell local",
         "reasonType": "achievement",
+        "userId": "U091KE59H5H"
+      },
+      {
+        "ts": "2026-04-04T09:04:28.498Z",
+        "delta": 34,
+        "balance": 162,
+        "reason": "ship event payout",
+        "reasonType": "",
         "userId": "U091KE59H5H"
       }
     ],
@@ -92361,6 +92377,17 @@
     ]
   },
   "users": {
+    "U091KE59H5H": {
+      "id": "U091KE59H5H",
+      "username": "joooooshp",
+      "avatar": "https://avatars.slack-edge.com/2025-12-26/10191934212674_e3a860ccf84ec572a0a4_72.png"
+    },
+    "U074LUX88PJ": {
+      "id": "U074LUX88PJ",
+      "username": "makstmguzun",
+      "displayName": "Noname",
+      "avatar": "https://avatars.slack-edge.com/2026-03-09/10657621289538_c94b5f67d0fb13e8bf4e_72.jpg"
+    },
     "U09736L44JZ": {
       "id": "U09736L44JZ",
       "username": "satyamrajgaya434",
@@ -92387,12 +92414,6 @@
       "id": "U0A19UWEN3G",
       "username": "heitorjcastilho",
       "avatar": "https://avatars.slack-edge.com/2025-12-30/10210516118930_a18096c10756fe9925c5_72.png"
-    },
-    "U074LUX88PJ": {
-      "id": "U074LUX88PJ",
-      "username": "makstmguzun",
-      "displayName": "Noname",
-      "avatar": "https://avatars.slack-edge.com/2026-03-09/10657621289538_c94b5f67d0fb13e8bf4e_72.jpg"
     },
     "U0A4H78N1BR": {
       "id": "U0A4H78N1BR",
@@ -93784,11 +93805,6 @@
       "username": "dhyans",
       "displayName": "dhyan",
       "avatar": "https://avatars.slack-edge.com/2026-02-23/10570997093412_56f90bc6b804be5f216c_72.jpg"
-    },
-    "U091KE59H5H": {
-      "id": "U091KE59H5H",
-      "username": "joooooshp",
-      "avatar": "https://avatars.slack-edge.com/2025-12-26/10191934212674_e3a860ccf84ec572a0a4_72.png"
     },
     "U092CHMLB24": {
       "id": "U092CHMLB24",
