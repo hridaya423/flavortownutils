@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-04T09:06:12.291Z",
+  "lastUpdated": "2026-04-04T10:01:56.415Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -11554,6 +11554,14 @@
         "balance": 192,
         "reason": "shop purchase",
         "reasonType": "",
+        "userId": "U0801PU0MTQ"
+      },
+      {
+        "ts": "2026-04-04T09:10:09.587Z",
+        "delta": 15,
+        "balance": 207,
+        "reason": "Cookbook Author",
+        "reasonType": "achievement",
         "userId": "U0801PU0MTQ"
       }
     ],
@@ -92377,6 +92385,12 @@
     ]
   },
   "users": {
+    "U0801PU0MTQ": {
+      "id": "U0801PU0MTQ",
+      "username": "ytbraced",
+      "displayName": "divpreet",
+      "avatar": "https://avatars.slack-edge.com/2025-01-16/8323967091792_1852e815019e2f2cd3b9_72.png"
+    },
     "U091KE59H5H": {
       "id": "U091KE59H5H",
       "username": "joooooshp",
@@ -93046,12 +93060,6 @@
       "username": "rojenchakradhar72",
       "displayName": "Rojen Chakradhar",
       "avatar": "https://avatars.slack-edge.com/2025-08-19/9368585555539_0c7e38edb2910b198132_72.png"
-    },
-    "U0801PU0MTQ": {
-      "id": "U0801PU0MTQ",
-      "username": "ytbraced",
-      "displayName": "divpreet",
-      "avatar": "https://avatars.slack-edge.com/2025-01-16/8323967091792_1852e815019e2f2cd3b9_72.png"
     },
     "U0A4N2K2P8T": {
       "id": "U0A4N2K2P8T",
