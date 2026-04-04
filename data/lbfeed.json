@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-04T10:59:02.881Z",
+  "lastUpdated": "2026-04-04T11:36:49.164Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -806,6 +806,14 @@
         "ts": "2026-04-03T11:39:05.184Z",
         "delta": -500,
         "balance": 490,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U054VC2KM9P"
+      },
+      {
+        "ts": "2026-04-04T11:14:51.715Z",
+        "delta": -150,
+        "balance": 340,
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U054VC2KM9P"
@@ -92403,6 +92411,12 @@
     ]
   },
   "users": {
+    "U054VC2KM9P": {
+      "id": "U054VC2KM9P",
+      "username": "amber",
+      "displayName": "amber",
+      "avatar": "https://avatars.slack-edge.com/2026-03-01/10599797126067_7bbb980ae906a691a15a_72.jpg"
+    },
     "U0AQRB31NK0": {
       "id": "U0AQRB31NK0",
       "username": "baranithom",
@@ -92679,12 +92693,6 @@
       "username": "vihaan.pundir26",
       "displayName": "vpun215",
       "avatar": "https://avatars.slack-edge.com/2024-11-26/8082692012613_329415085428bb8499ed_72.png"
-    },
-    "U054VC2KM9P": {
-      "id": "U054VC2KM9P",
-      "username": "amber",
-      "displayName": "amber",
-      "avatar": "https://avatars.slack-edge.com/2026-03-01/10599797126067_7bbb980ae906a691a15a_72.jpg"
     },
     "U07T7BUQMGF": {
       "id": "U07T7BUQMGF",
