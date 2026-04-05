@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-05T15:34:30.235Z",
+  "lastUpdated": "2026-04-05T16:38:09.345Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -10495,6 +10495,14 @@
         "delta": 10,
         "balance": 40,
         "reason": "Line Cook",
+        "reasonType": "achievement",
+        "userId": "U07QKHJKLN6"
+      },
+      {
+        "ts": "2026-04-05T15:39:35.578Z",
+        "delta": 15,
+        "balance": 55,
+        "reason": "Sous Chef",
         "reasonType": "achievement",
         "userId": "U07QKHJKLN6"
       }
@@ -53825,6 +53833,14 @@
         "reason": "ship event payout",
         "reasonType": "",
         "userId": "U0A4V01TS23"
+      },
+      {
+        "ts": "2026-04-05T16:37:05.208Z",
+        "delta": 47,
+        "balance": 750,
+        "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U0A4V01TS23"
       }
     ],
     "u0a4vcljc05": [
@@ -68698,6 +68714,38 @@
         "balance": 30,
         "reason": "shop purchase",
         "reasonType": "",
+        "userId": "U0A736S1Z0X"
+      },
+      {
+        "ts": "2026-04-05T15:56:13.854Z",
+        "delta": 3,
+        "balance": 33,
+        "reason": "Order Up!",
+        "reasonType": "achievement",
+        "userId": "U0A736S1Z0X"
+      },
+      {
+        "ts": "2026-04-05T15:56:13.866Z",
+        "delta": 15,
+        "balance": 66,
+        "reason": "Sous Chef",
+        "reasonType": "achievement",
+        "userId": "U0A736S1Z0X"
+      },
+      {
+        "ts": "2026-04-05T15:56:13.885Z",
+        "delta": 3,
+        "balance": 36,
+        "reason": "Michelin Star",
+        "reasonType": "achievement",
+        "userId": "U0A736S1Z0X"
+      },
+      {
+        "ts": "2026-04-05T15:56:13.893Z",
+        "delta": 15,
+        "balance": 51,
+        "reason": "Cookbook Author",
+        "reasonType": "achievement",
         "userId": "U0A736S1Z0X"
       }
     ],
@@ -93191,6 +93239,24 @@
     ]
   },
   "users": {
+    "U0A4V01TS23": {
+      "id": "U0A4V01TS23",
+      "username": "srinivasagudi0",
+      "displayName": "srinivasagudi0",
+      "avatar": "https://secure.gravatar.com/avatar/5bcf8605696c516d73d66f2bd261a585.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0016-72.png"
+    },
+    "U0A736S1Z0X": {
+      "id": "U0A736S1Z0X",
+      "username": "joelbu",
+      "displayName": "Joelbu",
+      "avatar": "https://avatars.slack-edge.com/2026-01-09/10264122181638_c6a00c24886090862eae_72.jpg"
+    },
+    "U07QKHJKLN6": {
+      "id": "U07QKHJKLN6",
+      "username": "talk2ved11",
+      "displayName": "ved patel",
+      "avatar": "https://avatars.slack-edge.com/2024-10-07/7840511863685_eb28b8e7a797038037c6_72.png"
+    },
     "U09CY2QAZMJ": {
       "id": "U09CY2QAZMJ",
       "username": "tonyforself",
@@ -93201,12 +93267,6 @@
       "username": "yousseifindx5",
       "displayName": "yousseifindx5",
       "avatar": "https://secure.gravatar.com/avatar/bad8896a796b8b4041cfe3a28bf57e63.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0012-72.png"
-    },
-    "U0A736S1Z0X": {
-      "id": "U0A736S1Z0X",
-      "username": "joelbu",
-      "displayName": "Joelbu",
-      "avatar": "https://avatars.slack-edge.com/2026-01-09/10264122181638_c6a00c24886090862eae_72.jpg"
     },
     "U0AMMB5DG15": {
       "id": "U0AMMB5DG15",
@@ -93576,12 +93636,6 @@
       "username": "hiba.malkan",
       "displayName": "grumpymarie",
       "avatar": "https://avatars.slack-edge.com/2025-12-22/10163436332483_d4454b9a7798819e7c39_72.jpg"
-    },
-    "U0A4V01TS23": {
-      "id": "U0A4V01TS23",
-      "username": "srinivasagudi0",
-      "displayName": "srinivasagudi0",
-      "avatar": "https://secure.gravatar.com/avatar/5bcf8605696c516d73d66f2bd261a585.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0016-72.png"
     },
     "U09CAKZDX6G": {
       "id": "U09CAKZDX6G",
@@ -96420,12 +96474,6 @@
       "username": "myroslavrepin",
       "displayName": "myroslavrepin",
       "avatar": "https://avatars.slack-edge.com/2026-01-06/10257709384289_58eaca21e4c29e859948_72.jpg"
-    },
-    "U07QKHJKLN6": {
-      "id": "U07QKHJKLN6",
-      "username": "talk2ved11",
-      "displayName": "ved patel",
-      "avatar": "https://avatars.slack-edge.com/2024-10-07/7840511863685_eb28b8e7a797038037c6_72.png"
     },
     "U0AL42Q9N9E": {
       "id": "U0AL42Q9N9E",
