@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-05T11:31:03.815Z",
+  "lastUpdated": "2026-04-05T12:59:52.917Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -6800,6 +6800,14 @@
         "balance": 0,
         "reason": "user grant",
         "reasonType": "",
+        "userId": "U07E8H9A24A"
+      },
+      {
+        "ts": "2026-04-05T12:15:35.179Z",
+        "delta": 30,
+        "balance": 30,
+        "reason": "Chef who cooked",
+        "reasonType": "achievement",
         "userId": "U07E8H9A24A"
       }
     ],
@@ -93055,6 +93063,12 @@
     ]
   },
   "users": {
+    "U07E8H9A24A": {
+      "id": "U07E8H9A24A",
+      "username": "youssef.pro.coding",
+      "displayName": "Yoid",
+      "avatar": "https://avatars.slack-edge.com/2026-02-27/10597482202774_5dc9a504a15084157ea2_72.png"
+    },
     "U091GA73H8T": {
       "id": "U091GA73H8T",
       "username": "vankeulensiem",
@@ -94841,12 +94855,6 @@
       "username": "jovannmc",
       "displayName": "Maya",
       "avatar": "https://avatars.slack-edge.com/2026-01-20/10328402678195_cfc667ef01cc1ba7dc74_72.png"
-    },
-    "U07E8H9A24A": {
-      "id": "U07E8H9A24A",
-      "username": "youssef.pro.coding",
-      "displayName": "Yoid",
-      "avatar": "https://avatars.slack-edge.com/2026-02-27/10597482202774_5dc9a504a15084157ea2_72.png"
     },
     "U084UQFF0LC": {
       "id": "U084UQFF0LC",
