@@ -64,6 +64,8 @@ const PAYOUT_LOW_DOLLARS_PER_HOUR = 0.3;
 const PAYOUT_HIGH_DOLLARS_PER_HOUR = 6.0;
 const PAYOUT_GAMMA = 1.745427173;
 const PAYOUT_TICKETS_PER_DOLLAR = 5;
+const PAYOUT_BLESSED_MULTIPLIER = 1.2;
+const PAYOUT_CURSED_MULTIPLIER = 0.5;
 const COMMUNITY_VOTES_SHIP_CUTOFF_ISO = '2026-02-23T20:41:00.000Z';
 const COMMUNITY_VOTES_SHIP_CUTOFF_TS = new Date(COMMUNITY_VOTES_SHIP_CUTOFF_ISO).getTime();
 const CURRENT_SCALE_ESTIMATE_MIN_VOTES = 12;
@@ -1126,8 +1128,9 @@ async function addShipStats() {
             const avgRate = getAverageMultiplierFallback();
             const estimatedRate = [multiplierValue, paidRate, avgRate]
                 .find(rate => rate && isFinite(rate) && rate > 0);
+            const adjustedEstimatedRate = applySidebarVoteVerdictToRate(estimatedRate);
 
-            if (!estimatedRate) {
+            if (!adjustedEstimatedRate) {
                 if (totalMinutes > 0) {
                     shipPost.dataset.flavortownShipMinutes = String(totalMinutes);
                 }
@@ -1137,7 +1140,7 @@ async function addShipStats() {
                 return;
             }
 
-            const estimatedCookies = Math.round(estimatedRate * estimateHours);
+            const estimatedCookies = Math.round(adjustedEstimatedRate * estimateHours);
             if (estimatedCookies > 0) {
                 if (!footer) {
                     footer = document.createElement('div');
@@ -1233,6 +1236,7 @@ async function addUnshippedCookieEstimate(attempt = 0) {
     }
 
     const paidMinutes = stats?.paidShipMinutes || 0;
+    const paidHours = Number(stats?.paidShipHours) || 0;
 
     const pagePayouts = getShipPayoutsFromProjectPage();
     const payouts = pagePayouts.length ? pagePayouts : await fetchShipPayouts();
@@ -1240,16 +1244,15 @@ async function addUnshippedCookieEstimate(attempt = 0) {
     const projectPayouts = payouts.filter(payout => projectNameMatches(payout.projectName, projectName));
     const payoutCookies = projectPayouts.reduce((sum, payout) => sum + (payout.amount || 0), 0);
     const baselineCookies = payoutCookies > 0 ? payoutCookies : (stats?.paidCookies || 0);
-    let rate = null;
-    if (paidMinutes > 0 && baselineCookies > 0) {
-        rate = getMultiplierFromCookies(baselineCookies, paidMinutes / 60);
-    }
+    let rate = getProjectRateFromCookies(baselineCookies, paidHours, paidMinutes);
     if (!rate || !isFinite(rate) || rate <= 0) {
         rate = getAverageMultiplierFallback();
     }
-    if (!rate || !isFinite(rate) || rate <= 0) return;
 
-    const projectedCookies = Math.round(rate * (unshippedMinutes / 60));
+    const projectedRate = applySidebarVoteVerdictToRate(rate);
+    if (!projectedRate || !isFinite(projectedRate) || projectedRate <= 0) return;
+
+    const projectedCookies = Math.round(projectedRate * (unshippedMinutes / 60));
 
     if (!projectedCookies || !isFinite(projectedCookies) || projectedCookies <= 0) return;
 
@@ -2746,6 +2749,17 @@ function parseDurationToMinutes(text) {
     return minutes;
 }
 
+function extractUndevloggedMinutesFromDocument(doc) {
+    if (!doc) return 0;
+
+    const previewStrong = doc.querySelector('.projects-new__time-preview strong');
+    const previewContainer = doc.querySelector('.projects-new__time-preview');
+    const previewText = (previewStrong?.textContent || previewContainer?.textContent || '').trim();
+    if (!previewText) return 0;
+
+    return Math.max(0, Math.round(parseDurationToMinutes(previewText)));
+}
+
 function parseNumberFromText(text) {
     if (!text) return null;
     const match = text.replace(/,/g, '').match(/[\d.]+/);
@@ -3547,6 +3561,39 @@ function getCurrentUserName() {
     return nameEl.textContent.trim();
 }
 
+function getSidebarVoteVerdictType() {
+    const verdictEl = document.querySelector('#sidebar-verdict-cookie, .vote-verdict-cookie');
+    if (!verdictEl) return 'neutral';
+
+    const label = (verdictEl.getAttribute('aria-label') || '').toLowerCase();
+    if (label.includes('blessed')) return 'blessed';
+    if (label.includes('cursed')) return 'cursed';
+
+    const imgSrc = (verdictEl.querySelector('img')?.getAttribute('src') || '').toLowerCase();
+    if (imgSrc.includes('blessed-cookie')) return 'blessed';
+    if (imgSrc.includes('cursed-cookie')) return 'cursed';
+
+    const className = (verdictEl.className || '').toLowerCase();
+    if (className.includes('blessed')) return 'blessed';
+    if (className.includes('cursed')) return 'cursed';
+
+    return 'neutral';
+}
+
+function getSidebarVoteVerdictMultiplier() {
+    const verdictType = getSidebarVoteVerdictType();
+    if (verdictType === 'blessed') return PAYOUT_BLESSED_MULTIPLIER;
+    if (verdictType === 'cursed') return PAYOUT_CURSED_MULTIPLIER;
+    return 1;
+}
+
+function applySidebarVoteVerdictToRate(rate) {
+    if (!Number.isFinite(rate) || rate <= 0) return null;
+    const multiplier = getSidebarVoteVerdictMultiplier();
+    if (!Number.isFinite(multiplier) || multiplier <= 0) return rate;
+    return rate * multiplier;
+}
+
 function getProjectOwnerName() {
     const byline = document.querySelector('.project-show-card__byline');
     if (!byline) return null;
@@ -3641,6 +3688,7 @@ function setCachedProjectUnshipped(projectId, entry, ownerName = null) {
         paidShipHours: Math.max(0, Number(entry.paidShipHours) || 0),
         paidCookies: Math.max(0, entry.paidCookies || 0),
         unshippedMinutes: Math.max(0, entry.unshippedMinutes || 0),
+        undevloggedMinutes: Math.max(0, Number(entry.undevloggedMinutes) || 0),
         singleCurrentScaleShip: !!entry.singleCurrentScaleShip,
         exactSingleShipEstimate: entry.exactSingleShipEstimate || null,
         legacyShipCount: Math.max(0, Number(entry.legacyShipCount) || 0),
@@ -3686,7 +3734,8 @@ function getAggregateUnshippedStats() {
 function getShopGoalProjectionStats(currentCookies) {
     const { totalUnshippedMinutes, totalPaidMinutes, totalPaidCookies } = getAggregateUnshippedStats();
 
-    const averageRate = totalPaidMinutes > 0 ? totalPaidCookies / (totalPaidMinutes / 60) : null;
+    const baseAverageRate = totalPaidMinutes > 0 ? totalPaidCookies / (totalPaidMinutes / 60) : null;
+    const averageRate = applySidebarVoteVerdictToRate(baseAverageRate);
     const hasAverageRate = Number.isFinite(averageRate) && averageRate > 0;
 
     const averageProjectedCookies = hasAverageRate && totalUnshippedMinutes > 0
@@ -3707,7 +3756,7 @@ function getShopGoalProjectionStats(currentCookies) {
         const paidCookies = Math.max(0, Number(entry.paidCookies) || 0);
 
         if (paidMinutes > 0 && paidCookies > 0) {
-            const projectRate = paidCookies / (paidMinutes / 60);
+            const projectRate = applySidebarVoteVerdictToRate(paidCookies / (paidMinutes / 60));
             if (Number.isFinite(projectRate) && projectRate > 0) {
                 projectExtraCookies += projectRate * (unshippedMinutes / 60);
                 projectMinutesCovered += unshippedMinutes;
@@ -3754,6 +3803,24 @@ function getTotalDevlogMinutesFromDocument(doc) {
     return totalMinutes;
 }
 
+async function fetchUndevloggedMinutesForProject(projectId) {
+    if (!projectId) return 0;
+
+    try {
+        const response = await fetch(`/projects/${projectId}/devlogs/new`, {
+            credentials: 'include',
+            headers: { 'X-Flavortown-Ext-135': 'true' }
+        });
+        if (!response.ok) return 0;
+
+        const html = await response.text();
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        return extractUndevloggedMinutesFromDocument(doc);
+    } catch (e) {
+        return 0;
+    }
+}
+
 async function fetchProjectUnshippedStats(projectId) {
     if (!projectId) return null;
 
@@ -3771,6 +3838,9 @@ async function fetchProjectUnshippedStats(projectId) {
         const doc = new DOMParser().parseFromString(html, 'text/html');
         const totalMinutes = getTotalDevlogMinutesFromDocument(doc);
         const ownerName = getProjectOwnerNameFromDocument(doc);
+        const currentUser = getCurrentUserName();
+        const isOwnerProject = !!(ownerName && currentUser
+            && normalizeOwnerName(ownerName) === normalizeOwnerName(currentUser));
         const shipPosts = Array.from(doc.querySelectorAll('article.post--ship, .post--ship'));
         const projectVoteMeta = getCurrentScaleProjectEstimateFromShipPosts(shipPosts);
         let totalShipMinutes = 0;
@@ -3795,6 +3865,9 @@ async function fetchProjectUnshippedStats(projectId) {
 
         const safeTotalMinutes = totalMinutes > 0 ? totalMinutes : totalShipMinutes;
         const unshippedMinutes = Math.max(0, safeTotalMinutes - paidShipMinutes);
+        const undevloggedMinutes = isOwnerProject
+            ? await fetchUndevloggedMinutesForProject(projectId)
+            : 0;
         const stats = {
             totalMinutes: safeTotalMinutes,
             totalShipMinutes,
@@ -3802,6 +3875,7 @@ async function fetchProjectUnshippedStats(projectId) {
             paidShipHours,
             paidCookies,
             unshippedMinutes,
+            undevloggedMinutes,
             singleCurrentScaleShip: projectVoteMeta.currentShipCount === 1,
             exactSingleShipEstimate: projectVoteMeta.currentShipCount === 1 ? projectVoteMeta.currentScaleEstimate : null,
             legacyShipCount: projectVoteMeta.legacyShipCount,
@@ -7979,7 +8053,9 @@ function enhanceShopGoals() {
         const goals = Object.entries(wishlist).map(([id, g]) => ({ ...g, id, price: Math.ceil(g.price || 0) }));
         if (goals.length === 0) return;
 
-        const fallbackRate = projectionStats.averageRate && projectionStats.averageRate > 0 ? projectionStats.averageRate : 10;
+        const fallbackRate = projectionStats.averageRate && projectionStats.averageRate > 0
+            ? projectionStats.averageRate
+            : (applySidebarVoteVerdictToRate(10) || 10);
         const effectiveRate = projectionMode === 'projected' && hasProjectedData && selectedProjectionRate && selectedProjectionRate > 0
             ? selectedProjectionRate
             : fallbackRate;
@@ -9468,8 +9544,10 @@ function addShopCardEfficiency() {
     const currentCookies = balanceBtn ? parseInt(balanceBtn.textContent.replace(/[^0-9]/g, ''), 10) || 0 : 0;
 
     const { totalPaidMinutes, totalPaidCookies } = getAggregateUnshippedStats();
-    const efficiency = totalPaidMinutes > 0 ? totalPaidCookies / (totalPaidMinutes / 60) : null;
-    const defaultRate = Math.min(30, Math.max(1, Math.round(efficiency || 10)));
+    const baseEfficiency = totalPaidMinutes > 0 ? totalPaidCookies / (totalPaidMinutes / 60) : null;
+    const efficiency = applySidebarVoteVerdictToRate(baseEfficiency);
+    const fallbackEfficiency = applySidebarVoteVerdictToRate(10) || 10;
+    const defaultRate = Math.min(30, Math.max(1, Math.round(efficiency || fallbackEfficiency)));
     const rates = [defaultRate, 20, 25].filter((rate, idx, arr) => arr.indexOf(rate) === idx);
 
     document.querySelectorAll('.shop-item-card[data-shop-id]').forEach(card => {
@@ -9481,7 +9559,7 @@ function addShopCardEfficiency() {
         const remaining = Math.max(0, price - currentCookies);
         const progress = price > 0 ? Math.min(100, (currentCookies / price) * 100) : 0;
         const canAfford = currentCookies >= price;
-        const effectiveRate = efficiency && efficiency > 0 ? efficiency : 10;
+        const effectiveRate = efficiency && efficiency > 0 ? efficiency : fallbackEfficiency;
         const moreHours = Math.max(0, remaining / effectiveRate);
         const totalHours = price / effectiveRate;
 
@@ -10554,7 +10632,8 @@ function initProjectBoardStats() {
 
     const totalHours = Math.floor(totalMinutes / 60);
 
-    let totalUnpaidMinutes = 0;
+    let totalUnshippedMinutes = 0;
+    let totalUndevloggedMinutes = 0;
     let totalProjectedCookies = 0;
     let totalPaidMinutes = 0;
     let totalPaidCookies = 0;
@@ -10562,7 +10641,10 @@ function initProjectBoardStats() {
         const cached = getCachedProjectUnshipped(projectId);
         if (!cached) return;
         if (typeof cached.unshippedMinutes === 'number') {
-            totalUnpaidMinutes += cached.unshippedMinutes;
+            totalUnshippedMinutes += cached.unshippedMinutes;
+        }
+        if (typeof cached.undevloggedMinutes === 'number') {
+            totalUndevloggedMinutes += cached.undevloggedMinutes;
         }
         if (typeof cached.paidShipMinutes === 'number') {
             totalPaidMinutes += cached.paidShipMinutes;
@@ -10571,14 +10653,18 @@ function initProjectBoardStats() {
             totalPaidCookies += cached.paidCookies;
         }
     });
-    if (totalPaidMinutes > 0 && totalUnpaidMinutes > 0) {
-        const efficiency = totalPaidCookies / (totalPaidMinutes / 60);
-        if (isFinite(efficiency) && efficiency > 0) {
-            totalProjectedCookies = Math.round(efficiency * (totalUnpaidMinutes / 60));
+    const totalProjectedMinutes = totalUnshippedMinutes + totalUndevloggedMinutes;
+    if (totalPaidMinutes > 0 && totalProjectedMinutes > 0) {
+        const baseEfficiency = totalPaidCookies / (totalPaidMinutes / 60);
+        const projectedEfficiency = applySidebarVoteVerdictToRate(baseEfficiency);
+        if (isFinite(projectedEfficiency) && projectedEfficiency > 0) {
+            totalProjectedCookies = Math.round(projectedEfficiency * (totalProjectedMinutes / 60));
         }
     }
-    const totalUnpaidHours = Math.floor(totalUnpaidMinutes / 60);
-    const totalUnpaidMins = totalUnpaidMinutes % 60;
+    const totalUnshippedHours = Math.floor(totalUnshippedMinutes / 60);
+    const totalUnshippedMins = totalUnshippedMinutes % 60;
+    const totalUndevloggedHours = Math.floor(totalUndevloggedMinutes / 60);
+    const totalUndevloggedMins = totalUndevloggedMinutes % 60;
 
     let freqText = '';
     if (totalDevlogs > 0) {
@@ -10600,14 +10686,20 @@ function initProjectBoardStats() {
             <div class="flavortown-stat-pill" title="Total Time Spent">
                 ⏱ <span class="flavortown-stat-value">${totalHours}h ${totalMinutes % 60}m</span>
             </div>
-            ${totalUnpaidMinutes > 0 ? `
-            <div class="flavortown-stat-pill flavortown-unpaid-pill" title="Total Unpaid Hours">
-                💰 <span class="flavortown-stat-value">${totalUnpaidHours}h ${totalUnpaidMins}m</span> unpaid
+            ${totalUnshippedMinutes > 0 ? `
+            <div class="flavortown-stat-pill flavortown-unpaid-pill" title="Total Unshipped Hours">
+                💰 <span class="flavortown-stat-value">${totalUnshippedHours}h ${totalUnshippedMins}m</span> unshipped
             </div>
+            ` : ''}
+            ${totalUndevloggedMinutes > 0 ? `
+            <div class="flavortown-stat-pill flavortown-undevlogged-pill" title="Total Undevlogged Hours">
+                🕒 <span class="flavortown-stat-value">${totalUndevloggedHours}h ${totalUndevloggedMins}m</span> undevlogged
+            </div>
+            ` : ''}
             ${totalProjectedCookies > 0 ? `
             <div class="flavortown-stat-pill flavortown-projected-pill" title="Projected Cookies from Unpaid Hours">
                 🍪 <span class="flavortown-stat-value">${totalProjectedCookies.toLocaleString()}</span> projected
-            </div>` : ''}` : ''}
+            </div>` : ''}
             ${freqText ? `
             <div class="flavortown-stat-pill" title="Average time per devlog">
                 1 📝 per <span class="flavortown-stat-value">${freqText}</span>
