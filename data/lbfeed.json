@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-05T12:59:52.917Z",
+  "lastUpdated": "2026-04-05T13:58:24.855Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -15163,6 +15163,46 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U084D1T5ZV0"
+      },
+      {
+        "ts": "2026-04-05T13:41:15.431Z",
+        "delta": 204,
+        "balance": 230,
+        "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U084D1T5ZV0"
+      },
+      {
+        "ts": "2026-04-05T13:45:15.563Z",
+        "delta": -70,
+        "balance": 160,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U084D1T5ZV0"
+      },
+      {
+        "ts": "2026-04-05T13:49:58.028Z",
+        "delta": -88,
+        "balance": 72,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U084D1T5ZV0"
+      },
+      {
+        "ts": "2026-04-05T13:50:49.573Z",
+        "delta": -35,
+        "balance": 37,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U084D1T5ZV0"
+      },
+      {
+        "ts": "2026-04-05T13:50:55.007Z",
+        "delta": -35,
+        "balance": 2,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U084D1T5ZV0"
       }
     ],
     "u084entee7j": [
@@ -25710,6 +25750,14 @@
         "balance": 13,
         "reason": "Order Up!",
         "reasonType": "achievement",
+        "userId": "U091GA73H8T"
+      },
+      {
+        "ts": "2026-04-05T13:48:25.959Z",
+        "delta": -20,
+        "balance": 8,
+        "reason": "shop purchase",
+        "reasonType": "",
         "userId": "U091GA73H8T"
       }
     ],
@@ -54494,6 +54542,14 @@
         "ts": "2026-03-26T09:39:58.296Z",
         "delta": 1,
         "balance": 1,
+        "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U0A53U48S3X"
+      },
+      {
+        "ts": "2026-04-05T13:17:26.861Z",
+        "delta": 10,
+        "balance": 11,
         "reason": "ship event payout",
         "reasonType": "",
         "userId": "U0A53U48S3X"
@@ -93063,17 +93119,28 @@
     ]
   },
   "users": {
-    "U07E8H9A24A": {
-      "id": "U07E8H9A24A",
-      "username": "youssef.pro.coding",
-      "displayName": "Yoid",
-      "avatar": "https://avatars.slack-edge.com/2026-02-27/10597482202774_5dc9a504a15084157ea2_72.png"
+    "U084D1T5ZV0": {
+      "id": "U084D1T5ZV0",
+      "username": "kashsuks",
+      "avatar": "https://avatars.slack-edge.com/2025-12-10/10078589222967_669bffbc7f9ee3695e9d_72.png"
     },
     "U091GA73H8T": {
       "id": "U091GA73H8T",
       "username": "vankeulensiem",
       "displayName": "Siem van Keulen",
       "avatar": "https://avatars.slack-edge.com/2025-08-08/9330075031620_35a2f94cc4ecdeb162d6_72.gif"
+    },
+    "U0A53U48S3X": {
+      "id": "U0A53U48S3X",
+      "username": "digantdonthy",
+      "displayName": "digantdonthy",
+      "avatar": "https://secure.gravatar.com/avatar/8d4c5329f021aaf045b1d5d47fc033d8.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0026-72.png"
+    },
+    "U07E8H9A24A": {
+      "id": "U07E8H9A24A",
+      "username": "youssef.pro.coding",
+      "displayName": "Yoid",
+      "avatar": "https://avatars.slack-edge.com/2026-02-27/10597482202774_5dc9a504a15084157ea2_72.png"
     },
     "U0A736S1Z0X": {
       "id": "U0A736S1Z0X",
@@ -94401,11 +94468,6 @@
       "displayName": "NellowTCS",
       "avatar": "https://avatars.slack-edge.com/2026-01-06/10244759646194_e5d5874c341665961dd8_72.png"
     },
-    "U084D1T5ZV0": {
-      "id": "U084D1T5ZV0",
-      "username": "kashsuks",
-      "avatar": "https://avatars.slack-edge.com/2025-12-10/10078589222967_669bffbc7f9ee3695e9d_72.png"
-    },
     "U0854U71H8E": {
       "id": "U0854U71H8E",
       "username": "contact852",
@@ -95124,12 +95186,6 @@
       "username": "sebastian.wimmer",
       "displayName": "TX 9394",
       "avatar": "https://avatars.slack-edge.com/2025-10-11/9674162603363_71ef6f31fe794670dc9c_72.png"
-    },
-    "U0A53U48S3X": {
-      "id": "U0A53U48S3X",
-      "username": "digantdonthy",
-      "displayName": "digantdonthy",
-      "avatar": "https://secure.gravatar.com/avatar/8d4c5329f021aaf045b1d5d47fc033d8.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0026-72.png"
     },
     "U0A7776A2MT": {
       "id": "U0A7776A2MT",
