@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-04T23:31:58.959Z",
+  "lastUpdated": "2026-04-05T02:34:44.822Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -15599,6 +15599,14 @@
         "delta": 15,
         "balance": 695,
         "reason": "Sous Chef",
+        "reasonType": "achievement",
+        "userId": "U085HNYPWLT"
+      },
+      {
+        "ts": "2026-04-05T00:03:57.203Z",
+        "delta": 30,
+        "balance": 725,
+        "reason": "Chef who cooked",
         "reasonType": "achievement",
         "userId": "U085HNYPWLT"
       }
@@ -34439,6 +34447,22 @@
         "reason": "ship event payout",
         "reasonType": "",
         "userId": "U093U1MM8H4"
+      },
+      {
+        "ts": "2026-04-05T02:01:53.241Z",
+        "delta": -144,
+        "balance": 2213,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U093U1MM8H4"
+      },
+      {
+        "ts": "2026-04-05T02:01:53.249Z",
+        "delta": -378,
+        "balance": 2357,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U093U1MM8H4"
       }
     ],
     "u093urnvc84": [
@@ -53192,6 +53216,14 @@
         "balance": 1697,
         "reason": "shop purchase",
         "reasonType": "",
+        "userId": "U0A4TBWJR42"
+      },
+      {
+        "ts": "2026-04-04T23:57:41.137Z",
+        "delta": 15,
+        "balance": 1712,
+        "reason": "Five Star Chef",
+        "reasonType": "achievement",
         "userId": "U0A4TBWJR42"
       }
     ],
@@ -92793,6 +92825,24 @@
     ]
   },
   "users": {
+    "U093U1MM8H4": {
+      "id": "U093U1MM8H4",
+      "username": "hungchi970104",
+      "displayName": "Hung-Chi Wang",
+      "avatar": "https://avatars.slack-edge.com/2025-07-01/9157068578752_0459174f9e6efff0b989_72.png"
+    },
+    "U085HNYPWLT": {
+      "id": "U085HNYPWLT",
+      "username": "admilkyway",
+      "displayName": "Mr Milky Way",
+      "avatar": "https://avatars.slack-edge.com/2025-08-15/9349731560455_d2d0d48707b7d867d90d_72.png"
+    },
+    "U0A4TBWJR42": {
+      "id": "U0A4TBWJR42",
+      "username": "milo1004",
+      "displayName": "milo1004",
+      "avatar": "https://avatars.slack-edge.com/2025-12-22/10168640612229_e72fcb4aecb4d239fc90_72.png"
+    },
     "U074LUX88PJ": {
       "id": "U074LUX88PJ",
       "username": "makstmguzun",
@@ -93091,12 +93141,6 @@
       "username": "hkshrestha621",
       "displayName": "Hira",
       "avatar": "https://avatars.slack-edge.com/2026-01-14/10301067262146_f7e50a571f88588f1518_72.jpg"
-    },
-    "U093U1MM8H4": {
-      "id": "U093U1MM8H4",
-      "username": "hungchi970104",
-      "displayName": "Hung-Chi Wang",
-      "avatar": "https://avatars.slack-edge.com/2025-07-01/9157068578752_0459174f9e6efff0b989_72.png"
     },
     "U0A1S20BHD2": {
       "id": "U0A1S20BHD2",
@@ -93533,12 +93577,6 @@
       "username": "mtthsschrbr",
       "displayName": "Matthias",
       "avatar": "https://avatars.slack-edge.com/2026-01-02/10233020067361_50bd91783e169d82ff5a_72.png"
-    },
-    "U0A4TBWJR42": {
-      "id": "U0A4TBWJR42",
-      "username": "milo1004",
-      "displayName": "milo1004",
-      "avatar": "https://avatars.slack-edge.com/2025-12-22/10168640612229_e72fcb4aecb4d239fc90_72.png"
     },
     "U06MC0G7A4R": {
       "id": "U06MC0G7A4R",
@@ -94256,12 +94294,6 @@
       "username": "silasburtonunger",
       "displayName": "Silas",
       "avatar": "https://avatars.slack-edge.com/2026-01-08/10259498873382_fad8c285def055d5b0ab_72.png"
-    },
-    "U085HNYPWLT": {
-      "id": "U085HNYPWLT",
-      "username": "admilkyway",
-      "displayName": "Mr Milky Way",
-      "avatar": "https://avatars.slack-edge.com/2025-08-15/9349731560455_d2d0d48707b7d867d90d_72.png"
     },
     "U073M5L9U13": {
       "id": "U073M5L9U13",
