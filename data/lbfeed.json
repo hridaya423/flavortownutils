@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-06T05:25:36.358Z",
+  "lastUpdated": "2026-04-06T07:08:58.627Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -48663,6 +48663,14 @@
         "reason": "ship event payout",
         "reasonType": "",
         "userId": "U0A1K3P66FP"
+      },
+      {
+        "ts": "2026-04-06T06:57:24.073Z",
+        "delta": 197,
+        "balance": 228,
+        "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U0A1K3P66FP"
       }
     ],
     "u0a1kgw04le": [
@@ -66090,6 +66098,14 @@
         "balance": 4106,
         "reason": "ship event payout",
         "reasonType": "",
+        "userId": "U0A6U1V879V"
+      },
+      {
+        "ts": "2026-04-06T05:46:15.993Z",
+        "delta": 5,
+        "balance": 4111,
+        "reason": "Show and tell local",
+        "reasonType": "achievement",
         "userId": "U0A6U1V879V"
       }
     ],
@@ -93499,6 +93515,18 @@
     ]
   },
   "users": {
+    "U0A1K3P66FP": {
+      "id": "U0A1K3P66FP",
+      "username": "sebastianfiser2275",
+      "displayName": "sebastianfiser2275",
+      "avatar": "https://avatars.slack-edge.com/2026-01-31/10413513344946_938895f36cc319e8bb4a_72.jpg"
+    },
+    "U0A6U1V879V": {
+      "id": "U0A6U1V879V",
+      "username": "abtheinnovator",
+      "displayName": "abtheinnovator",
+      "avatar": "https://secure.gravatar.com/avatar/7b7faa3b1aadcebeb63cd8dcdb82d74e.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0020-72.png"
+    },
     "U0AJEH66TCJ": {
       "id": "U0AJEH66TCJ",
       "username": "vasupks01",
@@ -93978,18 +94006,6 @@
       "id": "U07A10XBMGQ",
       "username": "devcmb",
       "avatar": "https://avatars.slack-edge.com/2024-06-23/7315572905317_9c11d9d2de7e23a1f5b1_72.png"
-    },
-    "U0A1K3P66FP": {
-      "id": "U0A1K3P66FP",
-      "username": "sebastianfiser2275",
-      "displayName": "sebastianfiser2275",
-      "avatar": "https://avatars.slack-edge.com/2026-01-31/10413513344946_938895f36cc319e8bb4a_72.jpg"
-    },
-    "U0A6U1V879V": {
-      "id": "U0A6U1V879V",
-      "username": "abtheinnovator",
-      "displayName": "abtheinnovator",
-      "avatar": "https://secure.gravatar.com/avatar/7b7faa3b1aadcebeb63cd8dcdb82d74e.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0020-72.png"
     },
     "U09GWFT9ZBM": {
       "id": "U09GWFT9ZBM",
