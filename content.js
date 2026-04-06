@@ -2752,12 +2752,37 @@ function parseDurationToMinutes(text) {
 function extractUndevloggedMinutesFromDocument(doc) {
     if (!doc) return 0;
 
+    const keywordPattern = /(undevlogged|to\s+devlog|available\s+to\s+devlog|left\s+to\s+devlog)/i;
+
     const previewStrong = doc.querySelector('.projects-new__time-preview strong');
     const previewContainer = doc.querySelector('.projects-new__time-preview');
-    const previewText = (previewStrong?.textContent || previewContainer?.textContent || '').trim();
-    if (!previewText) return 0;
+    const directPreviewText = (previewStrong?.textContent || previewContainer?.textContent || '').trim();
+    if (directPreviewText) {
+        const directPreviewMinutes = Math.max(0, Math.round(parseDurationToMinutes(directPreviewText)));
+        if (directPreviewMinutes > 0) return directPreviewMinutes;
+    }
 
-    return Math.max(0, Math.round(parseDurationToMinutes(previewText)));
+    const keywordNodes = Array.from(doc.querySelectorAll('p,span,strong,small,div,h4,h5,li,dt,dd')).slice(0, 500);
+    for (const node of keywordNodes) {
+        const text = (node.textContent || '').replace(/\s+/g, ' ').trim();
+        if (!text || text.length > 180) continue;
+        if (!keywordPattern.test(text)) continue;
+
+        const inNodeMinutes = Math.max(0, Math.round(parseDurationToMinutes(text)));
+        if (inNodeMinutes > 0) return inNodeMinutes;
+
+        const siblingText = (node.previousElementSibling?.textContent || node.nextElementSibling?.textContent || '').replace(/\s+/g, ' ').trim();
+        const siblingMinutes = Math.max(0, Math.round(parseDurationToMinutes(siblingText)));
+        if (siblingMinutes > 0) return siblingMinutes;
+    }
+
+    const bodyText = (doc.body?.textContent || '').replace(/\s+/g, ' ').trim();
+    if (!bodyText) return 0;
+
+    const fallback = bodyText.match(/(\d+\s*h(?:\s*\d+\s*m)?(?:\s*\d+\s*s)?|\d+\s*m(?:\s*\d+\s*s)?|\d+\s*s)\s*(?:undevlogged|to\s+devlog|available\s+to\s+devlog|left\s+to\s+devlog)/i);
+    if (!fallback?.[1]) return 0;
+
+    return Math.max(0, Math.round(parseDurationToMinutes(fallback[1])));
 }
 
 function parseNumberFromText(text) {
@@ -3539,6 +3564,7 @@ function writeProjectUnshippedCache(data) {
 }
 
 let projectBoardStatsRefreshTimer = null;
+
 function scheduleProjectBoardStatsRefresh() {
     if (!window.location.pathname.endsWith('/projects')) return;
     if (projectBoardStatsRefreshTimer) {
@@ -3673,14 +3699,9 @@ async function cleanupUnownedUnshippedCache() {
     }
 }
 
-function setCachedProjectUnshipped(projectId, entry, ownerName = null) {
+function setCachedProjectUnshipped(projectId, entry, options = {}) {
     if (!projectId || !entry) return;
-    const currentUser = getCurrentUserName();
-    const ownerMatch = ownerName && currentUser
-        ? normalizeOwnerName(currentUser) === normalizeOwnerName(ownerName)
-        : false;
-    const allowWhenOwnerUnknown = ownerName && !currentUser;
-    if (!ownerMatch && !allowWhenOwnerUnknown && !isProjectOwnedByCurrentUser()) return;
+    const skipBoardRefresh = !!options.skipBoardRefresh;
     const cache = readProjectUnshippedCache();
     cache[projectId] = {
         totalMinutes: Math.max(0, entry.totalMinutes || 0),
@@ -3699,7 +3720,9 @@ function setCachedProjectUnshipped(projectId, entry, ownerName = null) {
         updatedAt: Date.now()
     };
     writeProjectUnshippedCache(cache);
-    scheduleProjectBoardStatsRefresh();
+    if (!skipBoardRefresh) {
+        scheduleProjectBoardStatsRefresh();
+    }
 }
 
 function getProjectStatsMinutes(projectId) {
@@ -3806,97 +3829,146 @@ function getTotalDevlogMinutesFromDocument(doc) {
 async function fetchUndevloggedMinutesForProject(projectId) {
     if (!projectId) return 0;
 
-    try {
-        const response = await fetch(`/projects/${projectId}/devlogs/new`, {
-            credentials: 'include',
-            headers: { 'X-Flavortown-Ext-135': 'true' }
-        });
-        if (!response.ok) return 0;
+    for (let attempt = 0; attempt < 2; attempt++) {
+        try {
+            const response = await fetch(`/projects/${projectId}/devlogs/new`, {
+                credentials: 'include',
+                headers: { 'X-Flavortown-Ext-135': 'true' }
+            });
+            if (!response.ok) {
+                if (attempt === 0 && (response.status === 429 || response.status >= 500)) {
+                    await new Promise(resolve => setTimeout(resolve, 140));
+                    continue;
+                }
+                return 0;
+            }
 
-        const html = await response.text();
-        const doc = new DOMParser().parseFromString(html, 'text/html');
-        return extractUndevloggedMinutesFromDocument(doc);
-    } catch (e) {
-        return 0;
+            const resolvedPath = (() => {
+                try {
+                    return new URL(response.url || '', window.location.origin).pathname;
+                } catch (e) {
+                    return '';
+                }
+            })();
+
+            if (!/\/projects\/\d+\/devlogs\/new\/?$/.test(resolvedPath)) {
+                return 0;
+            }
+
+            const html = await response.text();
+            const doc = new DOMParser().parseFromString(html, 'text/html');
+            if (doc.querySelector('form.projects-new__form input[name="project[title]"]')) {
+                return 0;
+            }
+
+            const hasDevlogForm = !!doc.querySelector('form.projects-new__form textarea[name="post_devlog[body]"]');
+            if (!hasDevlogForm) {
+                return 0;
+            }
+
+            const undevloggedMinutes = extractUndevloggedMinutesFromDocument(doc);
+            return undevloggedMinutes;
+        } catch (e) {
+            if (attempt === 0) {
+                await new Promise(resolve => setTimeout(resolve, 140));
+                continue;
+            }
+            return 0;
+        }
     }
+
+    return 0;
 }
 
-async function fetchProjectUnshippedStats(projectId) {
+const projectUnshippedFetchInFlight = new Map();
+
+async function fetchProjectUnshippedStats(projectId, options = {}) {
     if (!projectId) return null;
+    const key = String(projectId).trim();
+    if (!key) return null;
 
-    try {
-        const projectUrl = toAbsoluteUrl(`/projects/${projectId}`);
-        if (!projectUrl) {
-            return null;
-        }
-        const response = await fetch(projectUrl, { credentials: 'include' });
-        if (!response.ok) {
-            return null;
-        }
-
-        const html = await response.text();
-        const doc = new DOMParser().parseFromString(html, 'text/html');
-        const totalMinutes = getTotalDevlogMinutesFromDocument(doc);
-        const ownerName = getProjectOwnerNameFromDocument(doc);
-        const currentUser = getCurrentUserName();
-        const isOwnerProject = !!(ownerName && currentUser
-            && normalizeOwnerName(ownerName) === normalizeOwnerName(currentUser));
-        const shipPosts = Array.from(doc.querySelectorAll('article.post--ship, .post--ship'));
-        const projectVoteMeta = getCurrentScaleProjectEstimateFromShipPosts(shipPosts);
-        let totalShipMinutes = 0;
-        let paidShipMinutes = 0;
-        let paidShipHours = 0;
-        let paidCookies = 0;
-
-        shipPosts.forEach(shipPost => {
-            const shipMinutes = collectShipMinutesFromPost(shipPost);
-            if (shipMinutes > 0) totalShipMinutes += shipMinutes;
-
-            const footer = shipPost.querySelector('.post__payout-footer');
-            const payoutMetrics = getShipFooterPayoutMetrics(footer);
-            const { cookiesValue } = payoutMetrics;
-            if (cookiesValue && cookiesValue > 0) {
-                if (shipMinutes > 0) paidShipMinutes += shipMinutes;
-                const canonicalHours = getCanonicalPaidShipHours(shipPost, payoutMetrics);
-                if (canonicalHours > 0) paidShipHours += canonicalHours;
-                paidCookies += cookiesValue;
-            }
-        });
-
-        const safeTotalMinutes = totalMinutes > 0 ? totalMinutes : totalShipMinutes;
-        const unshippedMinutes = Math.max(0, safeTotalMinutes - paidShipMinutes);
-        const undevloggedMinutes = isOwnerProject
-            ? await fetchUndevloggedMinutesForProject(projectId)
-            : 0;
-        const stats = {
-            totalMinutes: safeTotalMinutes,
-            totalShipMinutes,
-            paidShipMinutes,
-            paidShipHours,
-            paidCookies,
-            unshippedMinutes,
-            undevloggedMinutes,
-            singleCurrentScaleShip: projectVoteMeta.currentShipCount === 1,
-            exactSingleShipEstimate: projectVoteMeta.currentShipCount === 1 ? projectVoteMeta.currentScaleEstimate : null,
-            legacyShipCount: projectVoteMeta.legacyShipCount,
-            currentShipCount: projectVoteMeta.currentShipCount,
-            exactCurrentShipCount: projectVoteMeta.exactCurrentShipCount,
-            currentScaleEstimate: projectVoteMeta.currentScaleEstimate,
-            usesMixedCurrentOnly: projectVoteMeta.usesMixedCurrentOnly
-        };
-
-        if (stats.totalShipMinutes > 0) {
-            setCachedShipMinutes(projectId, stats.totalShipMinutes);
-        }
-
-        if (stats.totalMinutes > 0 || stats.paidCookies > 0 || stats.currentScaleEstimate) {
-            setCachedProjectUnshipped(projectId, stats, ownerName);
-        }
-
-        return stats;
-    } catch (e) {
-        return null;
+    if (!options.forceRefresh && projectUnshippedFetchInFlight.has(key)) {
+        return projectUnshippedFetchInFlight.get(key);
     }
+
+    const skipBoardRefresh = options.skipBoardRefresh !== undefined
+        ? !!options.skipBoardRefresh
+        : window.location.pathname.endsWith('/projects');
+
+    const job = (async () => {
+        try {
+            const projectUrl = toAbsoluteUrl(`/projects/${key}`);
+            if (!projectUrl) {
+                return null;
+            }
+            const response = await fetch(projectUrl, { credentials: 'include' });
+            if (!response.ok) {
+                return null;
+            }
+
+            const html = await response.text();
+            const doc = new DOMParser().parseFromString(html, 'text/html');
+            const totalMinutes = getTotalDevlogMinutesFromDocument(doc);
+            const shipPosts = Array.from(doc.querySelectorAll('article.post--ship, .post--ship'));
+            const projectVoteMeta = getCurrentScaleProjectEstimateFromShipPosts(shipPosts);
+            let totalShipMinutes = 0;
+            let paidShipMinutes = 0;
+            let paidShipHours = 0;
+            let paidCookies = 0;
+
+            shipPosts.forEach(shipPost => {
+                const shipMinutes = collectShipMinutesFromPost(shipPost);
+                if (shipMinutes > 0) totalShipMinutes += shipMinutes;
+
+                const footer = shipPost.querySelector('.post__payout-footer');
+                const payoutMetrics = getShipFooterPayoutMetrics(footer);
+                const { cookiesValue } = payoutMetrics;
+                if (cookiesValue && cookiesValue > 0) {
+                    if (shipMinutes > 0) paidShipMinutes += shipMinutes;
+                    const canonicalHours = getCanonicalPaidShipHours(shipPost, payoutMetrics);
+                    if (canonicalHours > 0) paidShipHours += canonicalHours;
+                    paidCookies += cookiesValue;
+                }
+            });
+
+            const safeTotalMinutes = totalMinutes > 0 ? totalMinutes : totalShipMinutes;
+            const unshippedMinutes = Math.max(0, safeTotalMinutes - paidShipMinutes);
+            const undevloggedMinutes = await fetchUndevloggedMinutesForProject(key);
+            const stats = {
+                totalMinutes: safeTotalMinutes,
+                totalShipMinutes,
+                paidShipMinutes,
+                paidShipHours,
+                paidCookies,
+                unshippedMinutes,
+                undevloggedMinutes,
+                singleCurrentScaleShip: projectVoteMeta.currentShipCount === 1,
+                exactSingleShipEstimate: projectVoteMeta.currentShipCount === 1 ? projectVoteMeta.currentScaleEstimate : null,
+                legacyShipCount: projectVoteMeta.legacyShipCount,
+                currentShipCount: projectVoteMeta.currentShipCount,
+                exactCurrentShipCount: projectVoteMeta.exactCurrentShipCount,
+                currentScaleEstimate: projectVoteMeta.currentScaleEstimate,
+                usesMixedCurrentOnly: projectVoteMeta.usesMixedCurrentOnly
+            };
+
+            if (stats.totalShipMinutes > 0) {
+                setCachedShipMinutes(key, stats.totalShipMinutes);
+            }
+
+            if (stats.totalMinutes > 0 || stats.paidCookies > 0 || stats.currentScaleEstimate || stats.undevloggedMinutes > 0) {
+                setCachedProjectUnshipped(key, stats, { skipBoardRefresh });
+            }
+
+            return stats;
+        } catch (e) {
+            return null;
+        } finally {
+            projectUnshippedFetchInFlight.delete(key);
+        }
+    })();
+
+    projectUnshippedFetchInFlight.set(key, job);
+    return job;
 }
 
 function collectShipMinutesFromPost(shipPost) {
@@ -5125,9 +5197,19 @@ function updateHeatmapLegend(container, viewMode) {
     }
 }
 
+let projectBoardHydrationInFlight = false;
+
 async function addProjectCardCookieStats(skipBackloadRefresh = false) {
     if (!window.location.pathname.endsWith('/projects')) return;
 
+    if (!skipBackloadRefresh) {
+        if (projectBoardHydrationInFlight) {
+            return;
+        }
+        projectBoardHydrationInFlight = true;
+    }
+
+    try {
     const cards = document.querySelectorAll('.projects-board__grid-item .project-card');
     if (!cards.length) return;
 
@@ -5317,114 +5399,65 @@ async function addProjectCardCookieStats(skipBackloadRefresh = false) {
             totalCookies = cachedUnshipped.paidCookies;
         }
 
-        if (totalCookies <= 0 && projectId) {
-            fetchProjectUnshippedStats(projectId).then(stats => {
-                if (!stats) return;
-                const fetchedEstimate = pickReliableCurrentScaleEstimate(
-                    stats.currentScaleEstimate,
-                    stats.exactSingleShipEstimate
-                );
-                const fetchedMeta = {
-                    usesMixedCurrentOnly: !!stats.usesMixedCurrentOnly,
-                    currentShipCount: Number(stats.currentShipCount) || 0,
-                    legacyShipCount: Number(stats.legacyShipCount) || 0
-                };
-                const fetchedCookies = stats.paidCookies || 0;
-                const fetchedMinutes = stats.paidShipMinutes || 0;
-                const fetchedHours = stats.paidShipHours || 0;
-                if (fetchedCookies <= 0 && !fetchedEstimate) return;
-                renderCardStat(card, fetchedCookies, fetchedMinutes, fetchedHours, fetchedEstimate, fetchedMeta);
-            });
-        }
-
         if (totalCookies <= 0) {
             if (cachedCurrentEstimate) {
                 renderCardStat(card, 0, cachedPaidMinutes, cachedUnshipped?.paidShipHours || 0, cachedCurrentEstimate, cachedEstimateMeta);
             }
             if (projectId && projectStatsMinutes > 0) {
-                setCachedProjectUnshipped(projectId, {
-                    totalMinutes: projectStatsMinutes,
-                    paidShipMinutes: 0,
-                    paidCookies: 0,
-                    unshippedMinutes: projectStatsMinutes
-                });
+                if (!cachedUnshipped) {
+                    setCachedProjectUnshipped(projectId, {
+                        totalMinutes: projectStatsMinutes,
+                        paidShipMinutes: 0,
+                        paidCookies: 0,
+                        unshippedMinutes: projectStatsMinutes,
+                        undevloggedMinutes: 0
+                    }, { skipBoardRefresh: true });
+                }
             }
             return;
         }
 
         renderCardStat(card, totalCookies, cachedPaidMinutes, cachedUnshipped?.paidShipHours || 0, cachedCurrentEstimate, cachedEstimateMeta);
-
-        const shouldRefreshFromProjectPage = projectId
-            && (!cachedUnshipped
-                || cachedPaidMinutes === 0
-                || ((cachedUnshipped.paidCookies || 0) > 0 && (Number(cachedUnshipped.paidShipHours) || 0) <= 0)
-                || typeof cachedUnshipped.currentShipCount !== 'number'
-                || (cachedUnshipped.currentShipCount > 0 && !hasReliableCurrentScaleEstimate(cachedUnshipped.currentScaleEstimate)));
-
-        if (shouldRefreshFromProjectPage) {
-            fetchProjectUnshippedStats(projectId).then(stats => {
-                if (!stats) return;
-                const fetchedEstimate = pickReliableCurrentScaleEstimate(
-                    stats.currentScaleEstimate,
-                    stats.exactSingleShipEstimate
-                );
-                const fetchedMeta = {
-                    usesMixedCurrentOnly: !!stats.usesMixedCurrentOnly,
-                    currentShipCount: Number(stats.currentShipCount) || 0,
-                    legacyShipCount: Number(stats.legacyShipCount) || 0
-                };
-                const fetchedCookies = stats.paidCookies > 0 ? stats.paidCookies : totalCookies;
-                const fetchedMinutes = stats.paidShipMinutes || 0;
-                const fetchedHours = stats.paidShipHours || 0;
-                if (fetchedMinutes <= 0 && fetchedHours <= 0 && !fetchedEstimate) return;
-                renderCardStat(card, fetchedCookies, fetchedMinutes, fetchedHours, fetchedEstimate, fetchedMeta);
-            });
-        }
     });
+    
+    if (!skipBackloadRefresh) {
+        initProjectBoardStats();
+    }
 
     if (!skipBackloadRefresh) {
         await backloadProjectStatsFromIndex(cards);
-        setTimeout(() => {
-            addProjectCardCookieStats(true);
-        }, 0);
+        await addProjectCardCookieStats(true);
+        return;
     }
     initProjectBoardStats();
+    } finally {
+        if (!skipBackloadRefresh) {
+            projectBoardHydrationInFlight = false;
+        }
+    }
 }
 
 async function backloadProjectStatsFromIndex(cards) {
-    let stats = {};
-    try {
-        stats = JSON.parse(localStorage.getItem('flavortown_project_stats') || '{}');
-    } catch (e) {
-        stats = {};
-    }
-
     const projectIds = Array.from(cards)
-        .map(card => ({
-            projectId: card.id ? card.id.replace('project_', '') : null,
-            card
-        }))
-        .filter(({ projectId, card }) => {
-            if (!projectId) return false;
-            const entry = stats[projectId];
-            let minutes = entry && typeof entry.minutes === 'number' ? entry.minutes : null;
-            if (minutes === null) {
-                const statLines = card.querySelectorAll('.project-card__stats h5');
-                const timeText = statLines[1]?.textContent?.trim() || '';
-                const hoursMatch = timeText.match(/(\d+)h/);
-                const minsMatch = timeText.match(/(\d+)m/);
-                let parsedMinutes = 0;
-                if (hoursMatch) parsedMinutes += parseInt(hoursMatch[1]) * 60;
-                if (minsMatch) parsedMinutes += parseInt(minsMatch[1]);
-                minutes = parsedMinutes;
-            }
-            return minutes > 0;
-        })
-        .map(({ projectId }) => projectId);
+        .map(card => (card.id ? card.id.replace('project_', '') : null))
+        .filter(Boolean);
 
     if (!projectIds.length) return;
 
-    await Promise.all(projectIds.map(projectId => fetchProjectUnshippedStats(projectId)));
+    const firstPass = await Promise.allSettled(projectIds.map((projectId) => fetchProjectUnshippedStats(projectId, { skipBoardRefresh: true })));
+    const failedIds = [];
+
+    firstPass.forEach((result, index) => {
+        if (result.status === 'fulfilled' && result.value) return;
+        failedIds.push(projectIds[index]);
+    });
+
+    if (!failedIds.length) return;
+
+    await Promise.allSettled(failedIds.map((projectId) => fetchProjectUnshippedStats(projectId, {
+        skipBoardRefresh: true,
+        forceRefresh: true
+    })));
 }
 
 async function addProjectShowCookieStat(forceRefresh = false) {
@@ -10590,10 +10623,7 @@ function initProjectBoardStats() {
     const cards = document.querySelectorAll('.projects-board__grid-item .project-card');
     if (!cards.length) return;
 
-    let stats = {};
-    try {
-        stats = JSON.parse(localStorage.getItem('flavortown_project_stats') || '{}');
-    } catch (e) { }
+    const stats = {};
 
     cards.forEach(card => {
         const id = card.id.replace('project_', '');
@@ -10676,6 +10706,7 @@ function initProjectBoardStats() {
 
     const heading = document.querySelector('.projects-board__heading');
     if (heading) {
+        const statsSignature = `${totalProjects}|${totalDevlogs}|${totalMinutes}|${totalUnshippedMinutes}|${totalUndevloggedMinutes}|${totalProjectedCookies}|${freqText}`;
         const statsMarkup = `
             <div class="flavortown-stat-pill" title="Total Projects">
                 📦 <span class="flavortown-stat-value">${totalProjects}</span> Projects
@@ -10707,11 +10738,15 @@ function initProjectBoardStats() {
         `;
         const existingStats = document.querySelector('.flavortown-project-stats');
         if (existingStats) {
-            existingStats.innerHTML = statsMarkup;
+            if (existingStats.dataset.flavortownSignature !== statsSignature) {
+                existingStats.innerHTML = statsMarkup;
+                existingStats.dataset.flavortownSignature = statsSignature;
+            }
         } else {
             const statsEl = document.createElement('div');
             statsEl.className = 'flavortown-project-stats';
             statsEl.innerHTML = statsMarkup;
+            statsEl.dataset.flavortownSignature = statsSignature;
             heading.appendChild(statsEl);
         }
     }
@@ -11194,7 +11229,6 @@ function init() {
     addExploreSearch();
     addExploreUsersPage();
     captureApiKey();
-    initProjectBoardStats();
     addProjectCardCookieStats();
     addSkipButton();
     enhanceKitchenDashboard();
@@ -12781,7 +12815,7 @@ document.addEventListener('turbo:load', () => {
     addExploreSearch();
     addExploreUsersPage();
     captureApiKey();
-    initProjectBoardStats();
+    addProjectCardCookieStats();
     addSkipButton();
     enhanceKitchenDashboard();
     setTimeout(enhanceLeaderboardPage, 0);
