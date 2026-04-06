@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-06T17:44:46.950Z",
+  "lastUpdated": "2026-04-06T19:01:43.192Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -6385,6 +6385,14 @@
         "delta": 5,
         "balance": 106,
         "reason": "user grant",
+        "reasonType": "",
+        "userId": "U07B27ZHEJU"
+      },
+      {
+        "ts": "2026-04-06T18:17:31.033Z",
+        "delta": -20,
+        "balance": 86,
+        "reason": "shop purchase",
         "reasonType": "",
         "userId": "U07B27ZHEJU"
       }
@@ -88867,6 +88875,14 @@
         "reason": "ship event payout",
         "reasonType": "",
         "userId": "U0AAVSGH3HC"
+      },
+      {
+        "ts": "2026-04-06T17:55:12.438Z",
+        "delta": -20,
+        "balance": 0,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0AAVSGH3HC"
       }
     ],
     "u0ab4awmbk3": [
@@ -94041,6 +94057,18 @@
     ]
   },
   "users": {
+    "U07B27ZHEJU": {
+      "id": "U07B27ZHEJU",
+      "username": "alanlichen1",
+      "displayName": "alaninnovates",
+      "avatar": "https://avatars.slack-edge.com/2024-06-29/7355967098836_ec494be617574d02498c_72.jpg"
+    },
+    "U0AAVSGH3HC": {
+      "id": "U0AAVSGH3HC",
+      "username": "hackclub8",
+      "displayName": "46009361",
+      "avatar": "https://avatars.slack-edge.com/2026-01-29/10433002833120_f403f3da778a713c59df_72.png"
+    },
     "U0AAN9NF75Z": {
       "id": "U0AAN9NF75Z",
       "username": "aarjalbhattarai",
@@ -94057,12 +94085,6 @@
       "username": "konnosr",
       "displayName": "KON/NOS R",
       "avatar": "https://avatars.slack-edge.com/2025-12-05/10058233925701_35e4cad787bd21d57573_72.jpg"
-    },
-    "U0AAVSGH3HC": {
-      "id": "U0AAVSGH3HC",
-      "username": "hackclub8",
-      "displayName": "46009361",
-      "avatar": "https://avatars.slack-edge.com/2026-01-29/10433002833120_f403f3da778a713c59df_72.png"
     },
     "U074LUX88PJ": {
       "id": "U074LUX88PJ",
@@ -97657,12 +97679,6 @@
       "username": "syedbarimanjan",
       "displayName": "Syed Bariman Jan",
       "avatar": "https://avatars.slack-edge.com/2025-10-10/9667687546293_bbb668349decebfa71fd_72.png"
-    },
-    "U07B27ZHEJU": {
-      "id": "U07B27ZHEJU",
-      "username": "alanlichen1",
-      "displayName": "alaninnovates",
-      "avatar": "https://avatars.slack-edge.com/2024-06-29/7355967098836_ec494be617574d02498c_72.jpg"
     },
     "U07LKN2HXT3": {
       "id": "U07LKN2HXT3",
