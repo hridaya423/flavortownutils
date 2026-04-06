@@ -4757,20 +4757,36 @@
 }
 
 .flavortown-cmd-palette {
+    --cmd-bg: #f8f9fc;
+    --cmd-bg-strong: #f2f4f9;
+    --cmd-border: rgba(34, 48, 74, 0.14);
+    --cmd-border-soft: rgba(34, 48, 74, 0.09);
+    --cmd-text: #1f2937;
+    --cmd-text-soft: #5b677a;
+    --cmd-muted: #7f8ba0;
+    --cmd-accent: #2563eb;
+    --cmd-accent-soft: rgba(37, 99, 235, 0.14);
+    --cmd-accent-strong: rgba(37, 99, 235, 0.22);
+    --cmd-chip-bg: rgba(148, 163, 184, 0.14);
+    --cmd-chip-border: rgba(148, 163, 184, 0.24);
+    --cmd-chip-text: var(--cmd-text);
+    --cmd-chip-subtext: var(--cmd-text-soft);
+    --cmd-user-card-bg: rgba(255, 255, 255, 0.03);
+    --cmd-user-avatar-bg: rgba(148, 163, 184, 0.15);
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(4px);
+    background: rgba(8, 10, 16, 0.58);
+    backdrop-filter: blur(14px);
     z-index: 99999;
     display: none;
     align-items: flex-start;
     justify-content: center;
-    padding-top: 15vh;
+    padding: 12vh 12px 0;
 }
 
 .flavortown-cmd-palette.open {
     display: flex;
-    animation: cmdFadeIn 0.15s ease-out;
+    animation: cmdFadeIn 0.12s ease-out;
 }
 
 @keyframes cmdFadeIn {
@@ -4779,14 +4795,16 @@
 }
 
 .flavortown-cmd-modal {
-    width: 100%;
-    max-width: 560px;
-    background: linear-gradient(180deg, #fffdf8 0%, #fff8f0 100%);
-    border: 3px solid #e6d5c3;
-    border-radius: 16px;
-    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+    width: min(680px, calc(100vw - 24px));
+    max-height: min(76vh, 760px);
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(180deg, var(--cmd-bg) 0%, var(--cmd-bg-strong) 100%);
+    border: 1px solid var(--cmd-border);
+    border-radius: 18px;
+    box-shadow: 0 30px 90px rgba(6, 12, 24, 0.45), 0 3px 10px rgba(6, 12, 24, 0.2);
     overflow: hidden;
-    animation: cmdSlideIn 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    animation: cmdSlideIn 0.15s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @keyframes cmdSlideIn {
@@ -4798,12 +4816,13 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 16px 20px;
-    border-bottom: 2px solid #e6d5c3;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--cmd-border-soft);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.28));
 }
 
 .flavortown-cmd-input-wrapper svg {
-    color: #b5a48f;
+    color: var(--cmd-muted);
     flex-shrink: 0;
 }
 
@@ -4811,100 +4830,649 @@
     flex: 1;
     border: none;
     background: transparent;
-    font-size: 1.1em;
-    font-weight: 500;
-    color: #5d4e37;
+    font-size: 1.02rem;
+    font-weight: 560;
+    color: var(--cmd-text);
+    letter-spacing: -0.01em;
     outline: none;
 }
 
 .flavortown-cmd-input::placeholder {
-    color: #b5a48f;
+    color: var(--cmd-muted);
+}
+
+.flavortown-cmd-input-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.flavortown-cmd-scope {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3px 8px;
+    border-radius: 999px;
+    border: 1px solid rgba(37, 99, 235, 0.24);
+    background: rgba(37, 99, 235, 0.09);
+    color: #1d4ed8;
+    font-size: 0.72rem;
+    font-weight: 650;
+    opacity: 0;
+    transform: translateY(2px);
+    transition: opacity 120ms ease, transform 120ms ease;
+    pointer-events: none;
+}
+
+.flavortown-cmd-scope.visible {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .flavortown-cmd-hint {
-    background: #f0e6d9;
-    color: #8b7355;
-    padding: 4px 8px;
+    background: rgba(148, 163, 184, 0.16);
+    color: var(--cmd-text-soft);
+    padding: 3px 8px;
     border-radius: 6px;
-    font-size: 0.75em;
-    font-weight: 600;
+    font-size: 0.72rem;
+    font-weight: 620;
     font-family: inherit;
-    border: 1px solid #e6d5c3;
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    line-height: 1.3;
 }
 
 .flavortown-cmd-results {
-    max-height: 400px;
+    flex: 1;
+    min-height: 180px;
     overflow-y: auto;
-    padding: 8px 0;
+    padding: 8px;
+    scrollbar-width: thin;
 }
 
 .flavortown-cmd-category {
-    padding: 8px 20px 4px;
-    font-size: 0.75em;
+    margin-top: 6px;
+    padding: 8px 10px 4px;
+    font-size: 0.7rem;
     font-weight: 700;
-    color: #8b7355;
+    color: var(--cmd-muted);
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.08em;
 }
 
 .flavortown-cmd-item {
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 10px 20px;
+    padding: 10px;
+    border: 1px solid transparent;
+    border-radius: 12px;
     cursor: pointer;
-    transition: background 0.1s ease;
+    transition: background 120ms ease, border-color 120ms ease, transform 120ms ease;
+}
+
+.flavortown-cmd-icon {
+    width: 30px;
+    min-width: 30px;
+    height: 30px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(148, 163, 184, 0.14);
+    border: 1px solid rgba(148, 163, 184, 0.24);
+    color: #5a6780;
+}
+
+.flavortown-cmd-icon svg {
+    width: 16px;
+    height: 16px;
+}
+
+.flavortown-cmd-main {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.flavortown-cmd-item--user {
+    align-items: stretch;
+    gap: 14px;
+    padding: 12px 14px;
+    background: var(--cmd-user-card-bg);
+}
+
+.flavortown-cmd-user-main {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.flavortown-cmd-user-title-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+}
+
+.flavortown-cmd-user-title-row .flavortown-cmd-label {
+    font-size: 1.02rem;
+}
+
+.flavortown-cmd-user-id {
+    font-size: 0.74rem;
+    font-weight: 620;
+    color: var(--cmd-muted);
+    background: rgba(148, 163, 184, 0.14);
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    border-radius: 999px;
+    padding: 2px 8px;
+}
+
+.flavortown-cmd-pin-btn {
+    margin-left: auto;
+    border: 1px solid var(--cmd-chip-border);
+    background: var(--cmd-chip-bg);
+    color: var(--cmd-chip-subtext);
+    border-radius: 999px;
+    padding: 3px 9px;
+    font-size: 0.68rem;
+    font-weight: 650;
+    cursor: pointer;
+    line-height: 1.2;
+}
+
+.flavortown-cmd-pin-btn.is-pinned {
+    border-color: var(--cmd-accent);
+    background: var(--cmd-accent-soft);
+    color: var(--cmd-chip-text);
+}
+
+.flavortown-cmd-pin-btn:hover {
+    border-color: var(--cmd-accent);
+    color: var(--cmd-chip-text);
+}
+
+.flavortown-cmd-user-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.flavortown-cmd-user-stat {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 4px;
+    background: var(--cmd-chip-bg);
+    border: 1px solid var(--cmd-chip-border);
+    border-radius: 999px;
+    padding: 3px 9px;
+    line-height: 1.2;
+}
+
+.flavortown-cmd-user-stat strong {
+    font-size: 0.82rem;
+    color: var(--cmd-chip-text);
+    font-weight: 700;
+}
+
+.flavortown-cmd-user-stat em {
+    font-size: 0.74rem;
+    color: var(--cmd-chip-subtext);
+    font-style: normal;
+    font-weight: 560;
+}
+
+.flavortown-cmd-project-stat {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 4px;
+    background: var(--cmd-chip-bg);
+    border: 1px solid var(--cmd-chip-border);
+    border-radius: 999px;
+    padding: 3px 9px;
+    line-height: 1.2;
+}
+
+.flavortown-cmd-project-stat strong {
+    font-size: 0.8rem;
+    color: var(--cmd-chip-text);
+    font-weight: 700;
+}
+
+.flavortown-cmd-project-stat em {
+    font-size: 0.72rem;
+    color: var(--cmd-chip-subtext);
+    font-style: normal;
+    font-weight: 560;
+}
+
+.flavortown-cmd-user-avatar {
+    width: 62px;
+    min-width: 62px;
+    height: 62px;
+    border-radius: 14px;
+    border: 1px solid var(--cmd-chip-border);
+    background: var(--cmd-user-avatar-bg);
+    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flavortown-cmd-user-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.flavortown-cmd-user-avatar-fallback {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--cmd-text-soft);
 }
 
 .flavortown-cmd-item:hover,
 .flavortown-cmd-item.active {
-    background: rgba(201, 168, 108, 0.15);
+    background: var(--cmd-accent-soft);
+    border-color: rgba(37, 99, 235, 0.26);
 }
 
 .flavortown-cmd-item.active {
-    background: rgba(201, 168, 108, 0.25);
+    background: var(--cmd-accent-strong);
+    transform: translateY(-1px);
 }
 
 .flavortown-cmd-label {
-    flex: 1;
-    font-size: 0.95em;
-    font-weight: 500;
-    color: #5d4e37;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--cmd-text);
+    letter-spacing: -0.01em;
+}
+
+.flavortown-cmd-subtitle {
+    font-size: 0.77rem;
+    color: var(--cmd-text-soft);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .flavortown-cmd-shortcut {
-    background: #f0e6d9;
-    color: #8b7355;
+    background: rgba(148, 163, 184, 0.16);
+    color: var(--cmd-text-soft);
     padding: 3px 8px;
-    border-radius: 4px;
-    font-size: 0.7em;
+    border-radius: 6px;
+    font-size: 0.7rem;
     font-weight: 600;
     font-family: inherit;
-    border: 1px solid #e6d5c3;
+    border: 1px solid rgba(148, 163, 184, 0.22);
 }
 
 .flavortown-cmd-empty {
     text-align: center;
-    padding: 32px;
-    color: #8b7355;
+    padding: 30px;
+    color: var(--cmd-text-soft);
     font-style: italic;
 }
 
 .flavortown-cmd-footer {
     display: flex;
     justify-content: center;
-    gap: 24px;
-    padding: 12px 20px;
-    border-top: 2px solid #e6d5c3;
-    background: #faf5ef;
-    font-size: 0.75em;
-    color: #8b7355;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding: 11px 14px;
+    border-top: 1px solid var(--cmd-border-soft);
+    background: rgba(255, 255, 255, 0.56);
+    color: var(--cmd-muted);
 }
 
 .flavortown-cmd-footer span {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 4px;
+    font-size: 0.72rem;
+}
+
+.flavortown-cmd-footer kbd {
+    background: rgba(148, 163, 184, 0.16);
+    border: 1px solid rgba(148, 163, 184, 0.24);
+    border-radius: 6px;
+    padding: 2px 6px;
+    color: var(--cmd-text-soft);
+    font-size: 0.68rem;
+    font-weight: 650;
+    line-height: 1.25;
+}
+
+.flavortown-cmd-item.active .flavortown-cmd-icon {
+    background: rgba(255, 255, 255, 0.7);
+    border-color: rgba(37, 99, 235, 0.35);
+    color: #1d4ed8;
+}
+
+.flavortown-cmd-item--user.active .flavortown-cmd-user-avatar,
+.flavortown-cmd-item--user:hover .flavortown-cmd-user-avatar {
+    border-color: var(--cmd-accent);
+    background: var(--cmd-accent-soft);
+}
+
+.flavortown-cmd-item--user.active .flavortown-cmd-user-stat,
+.flavortown-cmd-item--user:hover .flavortown-cmd-user-stat {
+    border-color: var(--cmd-accent);
+    background: var(--cmd-accent-soft);
+}
+
+.flavortown-cmd-item--project.active .flavortown-cmd-project-stat,
+.flavortown-cmd-item--project:hover .flavortown-cmd-project-stat,
+.flavortown-cmd-item--compare.active .flavortown-cmd-project-stat,
+.flavortown-cmd-item--compare:hover .flavortown-cmd-project-stat {
+    border-color: var(--cmd-accent);
+    background: var(--cmd-accent-soft);
+}
+
+.flavortown-cmd-item--project {
+    align-items: flex-start;
+}
+
+.flavortown-cmd-project-banner {
+    width: 88px;
+    min-width: 88px;
+    height: 56px;
+    border-radius: 10px;
+    border: 1px solid var(--cmd-chip-border);
+    background: var(--cmd-user-avatar-bg);
+    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flavortown-cmd-project-banner-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.flavortown-cmd-project-banner-fallback {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--cmd-chip-subtext);
+}
+
+.flavortown-cmd-item--compare {
+    align-items: stretch;
+    gap: 10px;
+}
+
+.flavortown-cmd-compare-side {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.flavortown-cmd-compare-project-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+.flavortown-cmd-compare-project-head .flavortown-cmd-compare-title-row {
+    flex: 1;
+    min-width: 0;
+}
+
+.flavortown-cmd-compare-project-banner {
+    width: 64px;
+    min-width: 64px;
+    height: 42px;
+    border-radius: 8px;
+}
+
+.flavortown-cmd-compare-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.flavortown-cmd-item--compare .flavortown-cmd-user-avatar {
+    width: 34px;
+    min-width: 34px;
+    height: 34px;
+    border-radius: 9px;
+}
+
+.flavortown-cmd-compare-title {
+    font-size: 0.88rem;
+    font-weight: 650;
+    color: var(--cmd-text);
+    letter-spacing: -0.01em;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.flavortown-cmd-compare-divider {
+    align-self: center;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--cmd-muted);
+    font-weight: 700;
+}
+
+.flavortown-cmd-item--compare-user .flavortown-cmd-compare-divider {
+    align-self: stretch;
+    min-width: 30px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.flavortown-cmd-item--compare-user .flavortown-cmd-compare-divider::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    bottom: 8px;
+    left: 50%;
+    width: 1px;
+    transform: translateX(-50%);
+    background: var(--cmd-border-soft);
+}
+
+.flavortown-cmd-inline-link {
+    border: 1px solid var(--cmd-chip-border);
+    background: var(--cmd-chip-bg);
+    color: var(--cmd-chip-subtext);
+    border-radius: 8px;
+    padding: 2px 7px;
+    font-size: 0.66rem;
+    font-weight: 650;
+    cursor: pointer;
+    line-height: 1.2;
+}
+
+.flavortown-cmd-inline-link:hover {
+    border-color: var(--cmd-accent);
+    color: var(--cmd-chip-text);
+}
+
+.flavortown-cmd-heatmap-preview {
+    margin: 8px 2px 12px;
+    border: 1px solid var(--cmd-border-soft);
+    border-radius: 14px;
+    padding: 8px;
+    background: var(--cmd-bg-strong);
+}
+
+.flavortown-cmd-heatmap-preview-loading {
+    padding: 14px;
+    font-size: 0.82rem;
+    color: var(--cmd-text-soft);
+}
+
+.flavortown-cmd-heatmap-preview .flavortown-heatmap-card,
+.flavortown-heatmap-card--palette {
+    margin: 0;
+    padding: 14px;
+    border-radius: 12px;
+    box-shadow: none;
+    border: 1px solid var(--cmd-border-soft);
+}
+
+.flavortown-cmd-heatmap-preview .flavortown-heatmap-card-header {
+    margin-bottom: 10px;
+}
+
+.flavortown-cmd-heatmap-preview .flavortown-heatmap-card-header h3 {
+    font-size: 0.96rem;
+}
+
+.flavortown-cmd-heatmap-preview .flavortown-heatmap-card-content {
+    gap: 12px;
+}
+
+.flavortown-cmd-heatmap-preview .flavortown-heatmap-side-stats {
+    min-width: 126px;
+    max-width: 136px;
+    gap: 10px;
+}
+
+.flavortown-cmd-heatmap-preview .flavortown-heatmap-side-stats.left,
+.flavortown-cmd-heatmap-preview .flavortown-heatmap-side-stats.right {
+    margin: 0;
+}
+
+.flavortown-cmd-heatmap-preview .flavortown-heatmap-stat-box {
+    border-width: 1px;
+    padding: 12px 10px;
+    min-height: 72px;
+}
+
+.flavortown-cmd-heatmap-preview .flavortown-heatmap-stat-value {
+    font-size: 1.3rem;
+}
+
+.flavortown-cmd-heatmap-preview .flavortown-heatmap-stat-sub {
+    font-size: 0.76rem;
+}
+
+.flavortown-cmd-heatmap-preview .flavortown-heatmap-canvas-container {
+    padding: 2px 0;
+}
+
+.flavortown-cmd-heatmap-preview .flavortown-heatmap-footer {
+    margin-top: 10px;
+    padding-right: 0;
+    justify-content: flex-start;
+}
+
+.flavortown-cmd-heatmap-preview-card {
+    padding: 14px;
+    border: 1px dashed var(--cmd-border);
+    border-radius: 10px;
+}
+
+.flavortown-cmd-heatmap-empty-title {
+    color: var(--cmd-text);
+    font-weight: 620;
+    font-size: 0.9rem;
+}
+
+.flavortown-cmd-heatmap-empty-sub {
+    margin-top: 4px;
+    color: var(--cmd-text-soft);
+    font-size: 0.8rem;
+}
+
+@media (max-width: 700px) {
+    .flavortown-cmd-palette {
+        padding-top: 8vh;
+    }
+
+    .flavortown-cmd-modal {
+        width: calc(100vw - 12px);
+        max-height: 84vh;
+        border-radius: 14px;
+    }
+
+    .flavortown-cmd-footer {
+        justify-content: flex-start;
+    }
+
+    .flavortown-cmd-heatmap-preview .flavortown-heatmap-card-content {
+        flex-direction: column;
+    }
+
+    .flavortown-cmd-heatmap-preview .flavortown-heatmap-side-stats {
+        min-width: 0;
+        max-width: none;
+        width: 100%;
+        flex-direction: row;
+    }
+
+    .flavortown-cmd-item--user {
+        padding: 10px;
+        gap: 10px;
+    }
+
+    .flavortown-cmd-user-avatar {
+        width: 50px;
+        min-width: 50px;
+        height: 50px;
+        border-radius: 11px;
+    }
+
+    .flavortown-cmd-user-stats {
+        gap: 6px;
+    }
+
+    .flavortown-cmd-project-banner {
+        width: 64px;
+        min-width: 64px;
+        height: 44px;
+        border-radius: 8px;
+    }
+
+    .flavortown-cmd-item--compare {
+        flex-direction: column;
+    }
+
+    .flavortown-cmd-compare-project-banner {
+        width: 58px;
+        min-width: 58px;
+        height: 38px;
+    }
+
+    .flavortown-cmd-compare-divider {
+        align-self: flex-start;
+    }
+
+    .flavortown-cmd-item--compare-user .flavortown-cmd-compare-divider {
+        align-self: stretch;
+        min-width: 0;
+    }
+
+    .flavortown-cmd-item--compare-user .flavortown-cmd-compare-divider::before {
+        top: 50%;
+        bottom: auto;
+        left: 10px;
+        right: 10px;
+        width: auto;
+        height: 1px;
+        transform: translateY(-50%);
+    }
 }
 
 .flavortown-upload-tools {

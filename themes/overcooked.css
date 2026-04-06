@@ -3742,7 +3742,23 @@ p[style*="background: #f9fafb"][style*="padding: 1rem"] {
 }
 
 .flavortown-cmd-palette {
-    background: rgba(26, 15, 15, 0.7) !important;
+    --cmd-bg: var(--overcooked-dark);
+    --cmd-bg-strong: var(--overcooked-charcoal);
+    --cmd-border: rgba(237, 137, 54, 0.24);
+    --cmd-border-soft: rgba(237, 137, 54, 0.14);
+    --cmd-text: var(--overcooked-white);
+    --cmd-text-soft: var(--overcooked-mist);
+    --cmd-muted: var(--overcooked-foam);
+    --cmd-accent: var(--overcooked-orange);
+    --cmd-accent-soft: rgba(237, 137, 54, 0.14);
+    --cmd-accent-strong: rgba(237, 137, 54, 0.24);
+    --cmd-chip-bg: rgba(58, 30, 30, 0.82);
+    --cmd-chip-border: rgba(92, 54, 54, 0.76);
+    --cmd-chip-text: var(--overcooked-white);
+    --cmd-chip-subtext: var(--overcooked-mist);
+    --cmd-user-card-bg: rgba(27, 14, 14, 0.44);
+    --cmd-user-avatar-bg: rgba(58, 30, 30, 0.9);
+    background: rgba(22, 13, 13, 0.72) !important;
 }
 
 .flavortown-cmd-modal {
@@ -3752,6 +3768,7 @@ p[style*="background: #f9fafb"][style*="padding: 1rem"] {
 
 .flavortown-cmd-input-wrapper {
     border-color: var(--overcooked-mid) !important;
+    background: linear-gradient(180deg, rgba(68, 38, 38, 0.9), rgba(45, 25, 25, 0.78)) !important;
 }
 
 .flavortown-cmd-input-wrapper svg {
@@ -3779,6 +3796,7 @@ p[style*="background: #f9fafb"][style*="padding: 1rem"] {
 .flavortown-cmd-item:hover,
 .flavortown-cmd-item.active {
     background: rgba(237, 137, 54, 0.15) !important;
+    border-color: rgba(237, 137, 54, 0.32) !important;
 }
 
 .flavortown-cmd-item.active {
@@ -3786,6 +3804,28 @@ p[style*="background: #f9fafb"][style*="padding: 1rem"] {
 }
 
 .flavortown-cmd-label {
+    color: var(--overcooked-white) !important;
+}
+
+.flavortown-cmd-subtitle {
+    color: var(--overcooked-mist) !important;
+}
+
+.flavortown-cmd-icon {
+    background: rgba(58, 30, 30, 0.75) !important;
+    border-color: var(--overcooked-mid) !important;
+    color: var(--overcooked-foam) !important;
+}
+
+.flavortown-cmd-item.active .flavortown-cmd-icon {
+    background: rgba(237, 137, 54, 0.2) !important;
+    border-color: rgba(237, 137, 54, 0.45) !important;
+    color: var(--overcooked-white) !important;
+}
+
+.flavortown-cmd-scope {
+    background: rgba(237, 137, 54, 0.2) !important;
+    border-color: rgba(237, 137, 54, 0.45) !important;
     color: var(--overcooked-white) !important;
 }
 
@@ -3803,6 +3843,13 @@ p[style*="background: #f9fafb"][style*="padding: 1rem"] {
     border-color: var(--overcooked-mid) !important;
     background: var(--overcooked-charcoal) !important;
     color: var(--overcooked-foam) !important;
+}
+
+.flavortown-cmd-footer kbd,
+.flavortown-cmd-hint {
+    background: var(--overcooked-mid) !important;
+    color: var(--overcooked-mist) !important;
+    border-color: var(--overcooked-surface) !important;
 }
 
 .flavortown-progress-toggle {

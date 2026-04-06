@@ -12800,6 +12800,7 @@ document.addEventListener('turbo:load', () => {
     initProjectRepoSuggestions();
     initProjectTodos();
     initShipFastFlow();
+    setTimeout(triggerPendingNavigationActions, 150);
 });
 
 function ensureUploadToolsContainer(fileUploadArea) {
@@ -16373,41 +16374,88 @@ function setupCommandPalette() {
     if (document.querySelector('.flavortown-cmd-palette')) return;
 
     const isAdmin = !!document.querySelector('a[href="/admin"], a[href*="/admin"]');
-    
+    const getCurrentPath = () => {
+        const path = window.location.pathname || '/';
+        if (path === '/') return '/';
+        return path.replace(/\/+$/, '') || '/';
+    };
+    const isShopPage = () => getCurrentPath() === '/shop';
+    const isProjectShowPage = () => /\/projects\/\d+$/.test(getCurrentPath());
+    const isProjectsBoardPage = () => getCurrentPath() === '/projects';
+    const isKitchenPage = () => getCurrentPath() === '/kitchen';
+    const isAdminShopOrdersPage = () => getCurrentPath() === '/admin/shop_orders';
+    const isVotesPage = () => getCurrentPath() === '/votes/new';
+
     const staticCommands = [
-        { id: 'home', label: 'Go to Kitchen', category: 'Navigation', url: '/' },
-        { id: 'projects', label: 'My Projects', category: 'Navigation', url: '/projects' },
-        { id: 'shop', label: 'Open Shop', category: 'Navigation', url: '/shop' },
-        { id: 'explore', label: 'Explore', category: 'Navigation', url: '/explore' },
-        { id: 'leaderboard', label: 'Leaderboard', category: 'Navigation', url: '/leaderboard' },
-        { id: 'achievements', label: 'My Achievements', category: 'Navigation', url: '/my/achievements' },
-        { id: 'profile', label: 'My Profile', category: 'Navigation', url: '/my' },
-        { id: 'search-projects', label: 'Search Projects', category: 'Actions', action: 'searchProjects' },
-        { id: 'new-project', label: 'New Project', category: 'Actions', url: '/projects/new' },
-        { id: 'buffet', label: 'Toggle Buffet Mode', category: 'Actions', action: 'buffet' },
-        { id: 'activity-heatmap', label: 'View Activity Heatmap', category: 'Actions', action: 'activityHeatmap' },
-        { id: 'settings', label: 'Open Settings', category: 'Actions', action: 'openSettings' },
-        { id: 'api-docs', label: 'API Documentation', category: 'Actions', url: '/api/v1/docs', external: true },
-        { id: 'setting-votes', label: 'Toggle: Send Votes to Slack', category: 'Settings', action: 'toggleSetting', settingId: 'send_votes_to_slack' },
-        { id: 'setting-leaderboard', label: 'Toggle: Leaderboard Opt-in', category: 'Settings', action: 'toggleSetting', settingId: 'leaderboard_optin' },
-        { id: 'setting-balance', label: 'Toggle: Balance Notifications', category: 'Settings', action: 'toggleSetting', settingId: 'slack_balance_notifications' },
-        { id: 'setting-effects', label: 'Toggle: Special Effects', category: 'Settings', action: 'toggleSetting', settingId: 'special_effects_enabled' },
-        { id: 'set-github-key', label: 'Set GitHub API Key', category: 'Settings', action: 'setGithubApiKey' },
-        { id: 'clear-github-key', label: 'Clear GitHub API Key', category: 'Settings', action: 'clearGithubApiKey' },
-        { id: 'theme-default', label: 'Theme: Default', category: 'Themes', action: 'theme', theme: 'default' },
-        { id: 'theme-catppuccin', label: 'Theme: Catppuccin', category: 'Themes', action: 'theme', theme: 'catppuccin' },
-        { id: 'theme-sea', label: 'Theme: Sea', category: 'Themes', action: 'theme', theme: 'sea' },
-        { id: 'theme-overcooked', label: 'Theme: Overcooked', category: 'Themes', action: 'theme', theme: 'overcooked' },
-        { id: 'accent-mauve', label: 'Catppuccin: Mauve Accent', category: 'Themes', action: 'setAccent', accent: 'mauve' },
-        { id: 'accent-lavender', label: 'Catppuccin: Lavender Accent', category: 'Themes', action: 'setAccent', accent: 'lavender' },
+        { id: 'home', icon: 'home', label: 'Go to Kitchen', subtitle: 'Open your kitchen dashboard', category: 'Navigation', url: '/', keywords: ['home', 'kitchen', 'dashboard'], priority: 60 },
+        { id: 'projects', icon: 'folder', label: 'My Projects', subtitle: 'Open your project board', category: 'Navigation', url: '/projects', keywords: ['projects', 'board'], priority: 60 },
+        { id: 'shop', icon: 'cart', label: 'Open Shop', subtitle: 'Browse and manage goal items', category: 'Navigation', url: '/shop', keywords: ['shop', 'goals', 'items'], priority: 60 },
+        { id: 'explore', icon: 'compass', label: 'Explore', subtitle: 'Browse ships and projects', category: 'Navigation', url: '/explore', keywords: ['explore', 'gallery'], priority: 55 },
+        { id: 'leaderboard', icon: 'trophy', label: 'Leaderboard', subtitle: 'Open ranking pages', category: 'Navigation', url: '/leaderboard', keywords: ['leaderboard', 'rank'], priority: 40 },
+        { id: 'achievements', icon: 'badge', label: 'My Achievements', subtitle: 'View achievement progress', category: 'Navigation', url: '/my/achievements', keywords: ['achievements', 'badges'], priority: 35 },
+        { id: 'profile', icon: 'user', label: 'My Profile', subtitle: 'Open profile page', category: 'Navigation', url: '/my', keywords: ['profile', 'account'], priority: 35 },
+        { id: 'votes-new', icon: 'edit', label: 'New Vote', subtitle: 'Open the voting page', category: 'Navigation', url: '/votes/new', keywords: ['vote', 'voting'], priority: 40 },
+        { id: 'my-shop-orders', icon: 'package', label: 'My Shop Orders', subtitle: 'Open your shop order history', category: 'Navigation', url: '/shop/my_orders', keywords: ['shop', 'orders', 'history'], priority: 42 },
+        { id: 'settings-page', icon: 'settings', label: 'My Settings Page', subtitle: 'Open account settings page', category: 'Navigation', url: '/my/settings', keywords: ['settings', 'preferences', 'account'], priority: 34 },
+        { id: 'new-project', icon: 'plus', label: 'New Project', subtitle: 'Create a project', category: 'Actions', url: '/projects/new', keywords: ['new', 'create', 'project'], priority: 40 },
+        { id: 'search-projects', icon: 'search', label: 'Search Projects', subtitle: 'Search all projects inline in the palette', category: 'Actions', action: 'searchProjects', keepPaletteOpen: true, keywords: ['search', 'find', 'projects'], priority: 45 },
+        { id: 'search-users', icon: 'users', label: 'Search Users', subtitle: 'Search users inline with profile stats', category: 'Actions', action: 'searchUsers', keepPaletteOpen: true, keywords: ['search', 'users', 'user stats'], priority: 45 },
+        { id: 'buffet', icon: 'sparkles', label: 'Toggle Buffet Mode', subtitle: 'Open/close doomscroll view', category: 'Actions', action: 'buffet', keywords: ['buffet', 'doomscroll', 'tiktok'], priority: 24 },
+        { id: 'heatmap-open-full', icon: 'chart', label: 'Heatmap: Open Full View', subtitle: 'Open Kitchen and jump to heatmap', category: 'Heatmap', action: 'activityHeatmap', keywords: ['heatmap', 'kitchen', 'open'], priority: 36 },
+        { id: 'refresh-heatmap', icon: 'refresh', label: 'Heatmap: Refresh Data', subtitle: 'Force heatmap fetch/update', category: 'Heatmap', action: 'refreshHeatmapData', keywords: ['heatmap', 'refresh', 'rebuild'], contexts: ['kitchen'], when: isKitchenPage, priority: 42 },
+        { id: 'open-settings', icon: 'settings', label: 'Open Settings', subtitle: 'Open the Flavortown settings modal', category: 'Actions', action: 'openSettings', keywords: ['settings', 'preferences'], priority: 30 },
+        { id: 'api-docs', icon: 'book', label: 'API Documentation', subtitle: 'Open API docs in new tab', category: 'Actions', url: '/api/v1/docs', external: true, keywords: ['api', 'docs'] },
+
+        { id: 'votes-speed-read', icon: 'book', label: 'Votes: Speed Read Devlogs', subtitle: 'Open speed reader for current vote project', category: 'Votes', action: 'openVotesSpeedReader', keywords: ['votes', 'speed read', 'devlogs'], contexts: ['votes-new'], when: isVotesPage, priority: 50 },
+        { id: 'votes-skip', icon: 'chevron-right', label: 'Votes: Skip Current Project', subtitle: 'Skip this project and load next one', category: 'Votes', action: 'skipVoteProject', keywords: ['votes', 'skip', 'next'], contexts: ['votes-new'], when: isVotesPage, priority: 48 },
+        { id: 'votes-focus-feedback', icon: 'edit', label: 'Votes: Focus Feedback Field', subtitle: 'Jump to and focus the feedback textarea', category: 'Votes', action: 'focusVotesFeedback', keywords: ['votes', 'feedback', 'focus'], contexts: ['votes-new'], when: isVotesPage, priority: 42 },
+
+        { id: 'shop-toggle-recent', icon: 'list', label: 'Shop: Toggle Recently Added', subtitle: 'Expand/collapse Recently Added', category: 'Shop', action: 'toggleRecentlyAdded', keywords: ['recently added', 'accordion'], contexts: ['shop'], when: isShopPage, priority: 50 },
+        { id: 'shop-expand-recent', icon: 'chevron-down', label: 'Shop: Expand Recently Added', subtitle: 'Open the accordion', category: 'Shop', action: 'setRecentlyAddedOpen', open: true, keywords: ['shop', 'recent', 'expand'], contexts: ['shop'], when: isShopPage, priority: 36 },
+        { id: 'shop-collapse-recent', icon: 'chevron-up', label: 'Shop: Collapse Recently Added', subtitle: 'Close the accordion', category: 'Shop', action: 'setRecentlyAddedOpen', open: false, keywords: ['shop', 'recent', 'collapse'], contexts: ['shop'], when: isShopPage, priority: 36 },
+        { id: 'shop-toggle-oos', icon: 'eye-off', label: 'Shop: Toggle Hide Out of Stock', subtitle: 'Show or hide out-of-stock cards', category: 'Shop', action: 'toggleOutOfStock', keywords: ['out of stock', 'oos', 'hide'], contexts: ['shop'], when: isShopPage, priority: 42 },
+        { id: 'shop-goals-individual', icon: 'target', label: 'Shop: Goals Mode Individual', subtitle: 'Per-item progress mode', category: 'Shop', action: 'setGoalsProgressMode', mode: 'individual', keywords: ['goals', 'individual'], contexts: ['shop'], when: isShopPage, priority: 38 },
+        { id: 'shop-goals-cumulative', icon: 'chart', label: 'Shop: Goals Mode Cumulative', subtitle: 'Stacked cumulative mode', category: 'Shop', action: 'setGoalsProgressMode', mode: 'cumulative', keywords: ['goals', 'cumulative'], contexts: ['shop'], when: isShopPage, priority: 38 },
+        { id: 'shop-proj-actual', icon: 'calculator', label: 'Shop: Projection Actual', subtitle: 'Use current balance only', category: 'Shop', action: 'setShopProjectionMode', mode: 'actual', keywords: ['projection', 'actual'], contexts: ['shop'], when: isShopPage, priority: 36 },
+        { id: 'shop-proj-projected', icon: 'sparkles', label: 'Shop: Projection Projected', subtitle: 'Use projected balance mode', category: 'Shop', action: 'setShopProjectionMode', mode: 'projected', keywords: ['projection', 'projected'], contexts: ['shop'], when: isShopPage, priority: 36 },
+        { id: 'shop-source-average', icon: 'chart', label: 'Shop: Projection Source Average', subtitle: 'Use average pace projection', category: 'Shop', action: 'setShopProjectionSource', source: 'average', keywords: ['projection source', 'average'], contexts: ['shop'], when: isShopPage, priority: 30 },
+        { id: 'shop-source-project', icon: 'bolt', label: 'Shop: Projection Source Project', subtitle: 'Use project-aware pace projection', category: 'Shop', action: 'setShopProjectionSource', source: 'project', keywords: ['projection source', 'project'], contexts: ['shop'], when: isShopPage, priority: 30 },
+        { id: 'shop-refresh-enhancements', icon: 'refresh', label: 'Shop: Refresh Enhancements', subtitle: 'Re-run goals, lottery, and card enhancements', category: 'Shop', action: 'refreshShopEnhancements', keywords: ['shop', 'refresh', 'lottery', 'goals'], contexts: ['shop'], when: isShopPage, priority: 32 },
+
+        { id: 'project-refresh-stats', icon: 'refresh', label: 'Project: Refresh Stats', subtitle: 'Recompute ship/project metrics', category: 'Project', action: 'refreshProjectStats', keywords: ['project stats', 'recompute', 'cookies/h'], contexts: ['project-show'], when: isProjectShowPage, priority: 50 },
+        { id: 'project-edit-current', icon: 'edit', label: 'Project: Edit This Project', subtitle: 'Open current project edit page', category: 'Project', action: 'editCurrentProject', keywords: ['project', 'edit', 'settings'], contexts: ['project-show'], when: isProjectShowPage, priority: 44 },
+        { id: 'project-focus-devlog', icon: 'edit', label: 'Project: Focus Devlog Editor', subtitle: 'Scroll and focus inline editor', category: 'Project', action: 'focusInlineDevlog', keywords: ['devlog', 'editor', 'focus'], contexts: ['project-show'], when: isProjectShowPage, priority: 40 },
+        { id: 'project-new-devlog-current', icon: 'file-plus', label: 'Project: New Devlog Here', subtitle: 'Jump to current project devlog form', category: 'Project', action: 'newDevlogCurrentProject', keywords: ['new devlog', 'ship'], contexts: ['project-show'], when: isProjectShowPage, priority: 42 },
+        { id: 'project-devlogs-new-page', icon: 'file-plus', label: 'Project: Open Devlogs/New Page', subtitle: 'Open full page devlog form', category: 'Project', action: 'openProjectDevlogsNewPage', keywords: ['project', 'devlogs', 'new'], contexts: ['project-show'], when: isProjectShowPage, priority: 36 },
+        { id: 'projects-refresh-board', icon: 'refresh', label: 'Projects: Refresh Board Stats', subtitle: 'Rebuild cookies/time/project stat pills', category: 'Project', action: 'refreshProjectsBoardStats', keywords: ['projects board', 'refresh'], contexts: ['projects'], when: isProjectsBoardPage, priority: 36 },
+
+        { id: 'setting-votes', icon: 'toggle', label: 'Toggle: Send Votes to Slack', subtitle: 'Enable or disable vote notifications', category: 'Settings', action: 'toggleSetting', settingId: 'send_votes_to_slack', keywords: ['setting', 'votes', 'slack'] },
+        { id: 'setting-leaderboard', icon: 'toggle', label: 'Toggle: Leaderboard Opt-in', subtitle: 'Control leaderboard participation', category: 'Settings', action: 'toggleSetting', settingId: 'leaderboard_optin', keywords: ['setting', 'leaderboard'] },
+        { id: 'setting-balance', icon: 'toggle', label: 'Toggle: Balance Notifications', subtitle: 'Control low/high balance alerts', category: 'Settings', action: 'toggleSetting', settingId: 'slack_balance_notifications', keywords: ['setting', 'balance', 'notifications'] },
+        { id: 'setting-effects', icon: 'toggle', label: 'Toggle: Special Effects', subtitle: 'Enable or disable visual effects', category: 'Settings', action: 'toggleSetting', settingId: 'special_effects_enabled', keywords: ['setting', 'effects'] },
+        { id: 'set-github-key', icon: 'key', label: 'Set GitHub API Key', subtitle: 'Store token for changelog requests', category: 'Settings', action: 'setGithubApiKey', keywords: ['github', 'token'] },
+        { id: 'clear-github-key', icon: 'trash', label: 'Clear GitHub API Key', subtitle: 'Remove stored GitHub token', category: 'Settings', action: 'clearGithubApiKey', keywords: ['github', 'token', 'clear'] },
+
+        { id: 'theme-default', icon: 'palette', label: 'Theme: Default', subtitle: 'Original warm Flavortown look', category: 'Themes', action: 'theme', theme: 'default', keywords: ['theme'] },
+        { id: 'theme-catppuccin', icon: 'palette', label: 'Theme: Catppuccin', subtitle: 'Muted pastel contrast palette', category: 'Themes', action: 'theme', theme: 'catppuccin', keywords: ['theme', 'catppuccin'] },
+        { id: 'theme-sea', icon: 'palette', label: 'Theme: Sea', subtitle: 'Cool oceanic contrast palette', category: 'Themes', action: 'theme', theme: 'sea', keywords: ['theme', 'sea'] },
+        { id: 'theme-overcooked', icon: 'palette', label: 'Theme: Overcooked', subtitle: 'Bold hot-sauce accent palette', category: 'Themes', action: 'theme', theme: 'overcooked', keywords: ['theme', 'overcooked'] },
+        { id: 'accent-mauve', icon: 'swatch', label: 'Catppuccin: Mauve Accent', subtitle: 'Use mauve for accents and highlights', category: 'Themes', action: 'setAccent', accent: 'mauve', keywords: ['accent', 'mauve', 'catppuccin'] },
+        { id: 'accent-lavender', icon: 'swatch', label: 'Catppuccin: Lavender Accent', subtitle: 'Use lavender for accents and highlights', category: 'Themes', action: 'setAccent', accent: 'lavender', keywords: ['accent', 'lavender', 'catppuccin'] },
     ];
     
     if (isAdmin) {
         staticCommands.push(
-            { id: 'admin', label: 'Admin Dashboard', category: 'Admin', url: '/admin' },
-            { id: 'admin-reports', label: 'Admin: Pending Reports', category: 'Admin', url: '/admin/reports' },
-            { id: 'admin-orders', label: 'Admin: Shop Orders', category: 'Admin', url: '/admin/shop_orders' },
-            { id: 'admin-users', label: 'Admin: Search Users', category: 'Admin', url: '/admin/users' },
+            { id: 'admin', icon: 'shield', label: 'Admin Dashboard', subtitle: 'Open admin home', category: 'Admin', url: '/admin', keywords: ['admin', 'dashboard'], priority: 35 },
+            { id: 'admin-reports', icon: 'alert', label: 'Admin: Pending Reports', subtitle: 'Review unresolved reports', category: 'Admin', url: '/admin/reports', keywords: ['admin', 'reports', 'pending'], priority: 45 },
+            { id: 'admin-orders', icon: 'package', label: 'Admin: Shop Orders', subtitle: 'Open shop orders table', category: 'Admin', url: '/admin/shop_orders?view=shop_orders', keywords: ['admin', 'orders', 'shop'], priority: 45 },
+            { id: 'admin-orders-onhold', icon: 'pause', label: 'Admin: On Hold Orders', subtitle: 'Open on-hold orders view', category: 'Admin', url: '/admin/shop_orders?status=on_hold&view=shop_orders', keywords: ['admin', 'orders', 'on hold', 'hold'], priority: 50 },
+            { id: 'admin-orders-pending', icon: 'clock', label: 'Admin: Pending Orders', subtitle: 'Open pending orders view', category: 'Admin', url: '/admin/shop_orders?view=shop_orders', keywords: ['admin', 'orders', 'pending'], priority: 44 },
+            { id: 'admin-orders-fulfilled', icon: 'check-circle', label: 'Admin: Fulfilled Orders', subtitle: 'Open fulfilled orders view', category: 'Admin', url: '/admin/shop_orders?status=fulfilled&view=shop_orders', keywords: ['admin', 'orders', 'fulfilled'], priority: 40 },
+            { id: 'admin-orders-awaiting', icon: 'clock', label: 'Admin: Awaiting Periodical Fulfillment', subtitle: 'Open awaiting fulfillment view', category: 'Admin', url: '/admin/shop_orders?status=awaiting_periodical_fulfillment&view=shop_orders', keywords: ['admin', 'orders', 'awaiting'], priority: 38 },
+            { id: 'admin-orders-rejected', icon: 'x-circle', label: 'Admin: Rejected Orders', subtitle: 'Open rejected orders view', category: 'Admin', url: '/admin/shop_orders?status=rejected&view=shop_orders', keywords: ['admin', 'orders', 'rejected'], priority: 38 },
+            { id: 'admin-users', icon: 'users', label: 'Admin: Search Users', subtitle: 'Open admin users', category: 'Admin', url: '/admin/users', keywords: ['admin', 'users'] },
+            { id: 'admin-regroup-shop-orders', icon: 'layers', label: 'Admin: Regroup Shop Orders', subtitle: 'Re-run user/holder grouping on current table', category: 'Admin', action: 'regroupShopOrders', keywords: ['admin', 'shop orders', 'group'], when: isAdminShopOrdersPage, contexts: ['admin-shop-orders'], priority: 50 },
         );
     }
 
@@ -16437,13 +16485,20 @@ function setupCommandPalette() {
             <div class="flavortown-cmd-input-wrapper">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                 <input type="text" class="flavortown-cmd-input" placeholder="Type a command..." autofocus />
-                <kbd class="flavortown-cmd-hint">ESC</kbd>
+                <div class="flavortown-cmd-input-meta">
+                    <span class="flavortown-cmd-scope" aria-live="polite"></span>
+                    <kbd class="flavortown-cmd-hint">Esc</kbd>
+                </div>
             </div>
             <div class="flavortown-cmd-results"></div>
             <div class="flavortown-cmd-footer">
-                <span>↑↓ Navigate</span>
-                <span>↵ Select</span>
-                <span>ESC Close</span>
+                <span><kbd>↑</kbd><kbd>↓</kbd> Navigate</span>
+                <span><kbd>Enter</kbd> Run</span>
+                <span><kbd>Cmd/Ctrl</kbd>+<kbd>Enter</kbd> New tab</span>
+                <span><kbd>Alt</kbd>+<kbd>Enter</kbd> Keep open</span>
+                <span><kbd>project:/user:</kbd> Scope</span>
+                <span><kbd>project:/user: a vs b</kbd> Compare</span>
+                <span><kbd>Esc</kbd> Close</span>
             </div>
         </div>
     `;
@@ -16451,59 +16506,1882 @@ function setupCommandPalette() {
 
     const input = overlay.querySelector('.flavortown-cmd-input');
     const results = overlay.querySelector('.flavortown-cmd-results');
+    const scopeIndicator = overlay.querySelector('.flavortown-cmd-scope');
 
-    function fuzzyMatch(text, query) {
-        const lowerText = text.toLowerCase();
-        const lowerQuery = query.toLowerCase();
-        return lowerQuery.split('').every(char => lowerText.includes(char)) && lowerText.includes(lowerQuery.charAt(0));
+    const QUERY_SCOPES = {
+        shop: { contexts: ['shop'], categories: ['shop'] },
+        project: { contexts: ['project-show', 'projects'], categories: ['project', 'your projects', 'search results', 'project compare'] },
+        user: { contexts: [], categories: ['user results', 'user compare'] },
+        admin: { contexts: ['admin', 'admin-shop-orders'], categories: ['admin'] },
+        heatmap: { contexts: ['kitchen'], categories: ['heatmap'] },
+        votes: { contexts: ['votes-new'], categories: ['votes'] },
+        settings: { contexts: [], categories: ['settings', 'themes'] },
+        nav: { contexts: [], categories: ['navigation'] }
+    };
+
+    function parseScopedQuery(rawQuery) {
+        const raw = (rawQuery || '').trim();
+        if (!raw) return { query: '', scope: null };
+        const match = raw.match(/^([a-z]+):\s*(.*)$/i);
+        if (!match) return { query: raw, scope: null };
+        const scopeName = String(match[1] || '').toLowerCase();
+        const scope = QUERY_SCOPES[scopeName] || null;
+        if (!scope) return { query: raw, scope: null };
+        return { query: (match[2] || '').trim(), scope: scopeName };
+    }
+
+    const inlineProjectSearchState = {
+        query: '',
+        loading: false,
+        results: [],
+        error: '',
+        requestId: 0,
+        timer: null
+    };
+
+    const inlineProjectCompareState = {
+        key: '',
+        loading: false,
+        result: null,
+        error: '',
+        requestId: 0,
+        timer: null
+    };
+
+    const inlineUserCompareState = {
+        key: '',
+        loading: false,
+        result: null,
+        error: '',
+        requestId: 0,
+        timer: null
+    };
+
+    const inlineUserSearchState = {
+        query: '',
+        loading: false,
+        results: [],
+        error: '',
+        requestId: 0,
+        timer: null
+    };
+
+    const inlineUserProfileCache = new Map();
+    const inlineProjectStatsCache = new Map();
+    const inlineProjectStatsPromiseCache = new Map();
+    const inlineProjectBannerCache = new Map();
+    const inlineProjectBannerPromiseCache = new Map();
+    const runInlineUserProfileTask = createAsyncLimiter(2);
+    const runInlineUserProjectHydrationTask = createAsyncLimiter(2);
+    const runInlineProjectStatsTask = createAsyncLimiter(2);
+    const runInlineProjectBannerTask = createAsyncLimiter(2);
+
+    const INLINE_PROJECT_STATS_TTL_MS = 5 * 60 * 1000;
+    const INLINE_PROJECT_BANNER_TTL_MS = 30 * 60 * 1000;
+    const CMD_PINNED_CARDS_KEY = 'flavortown_cmd_pinned_cards_v1';
+    let pinnedCards = readPinnedCards();
+
+    function readPinnedCards() {
+        try {
+            const raw = localStorage.getItem(CMD_PINNED_CARDS_KEY);
+            const parsed = raw ? JSON.parse(raw) : [];
+            if (!Array.isArray(parsed)) return [];
+            return parsed
+                .map((entry) => {
+                    if (!entry || typeof entry !== 'object') return null;
+                    const key = String(entry.key || '').trim();
+                    if (!key) return null;
+                    return {
+                        ...entry,
+                        key,
+                        pinnedAt: Number(entry.pinnedAt) || Date.now()
+                    };
+                })
+                .filter(Boolean)
+                .slice(0, 12);
+        } catch (e) {
+            return [];
+        }
+    }
+
+    function writePinnedCards() {
+        try {
+            localStorage.setItem(CMD_PINNED_CARDS_KEY, JSON.stringify(pinnedCards.slice(0, 12)));
+        } catch (e) {
+        }
+    }
+
+    function getCommandPinKey(cmd) {
+        if (!cmd || typeof cmd !== 'object') return '';
+        if (cmd.resultType === 'user' && cmd.userId) return `user:${cmd.userId}`;
+        if (cmd.resultType === 'project' && cmd.projectId) return `project:${cmd.projectId}`;
+        return '';
+    }
+
+    function canPinCommand(cmd) {
+        return !!getCommandPinKey(cmd);
+    }
+
+    function isCommandPinned(cmd) {
+        const key = getCommandPinKey(cmd);
+        if (!key) return false;
+        return pinnedCards.some(entry => entry.key === key);
+    }
+
+    function extractPinnedCardFromCommand(cmd) {
+        const key = getCommandPinKey(cmd);
+        if (!key) return null;
+
+        const isUser = cmd.resultType === 'user';
+        const isProject = cmd.resultType === 'project';
+        if (!isUser && !isProject) return null;
+
+        return {
+            key,
+            type: isUser ? 'user' : 'project',
+            label: String(cmd.label || ''),
+            subtitle: String(cmd.subtitle || ''),
+            url: String(cmd.url || ''),
+            avatarUrl: isUser ? String(cmd.avatarUrl || '') : '',
+            bannerUrl: isProject ? String(cmd.bannerUrl || '') : '',
+            userId: isUser ? String(cmd.userId || '') : '',
+            projectId: isProject ? String(cmd.projectId || '') : '',
+            projectIds: Array.isArray(cmd.projectIds) ? [...cmd.projectIds] : [],
+            statBundle: cmd.statBundle && typeof cmd.statBundle === 'object' ? { ...cmd.statBundle } : {}
+        };
+    }
+
+    function togglePinnedCommand(cmd) {
+        const key = getCommandPinKey(cmd);
+        if (!key) return;
+
+        const idx = pinnedCards.findIndex(entry => entry.key === key);
+        if (idx !== -1) {
+            pinnedCards.splice(idx, 1);
+            writePinnedCards();
+            showCommandToast('Card unpinned', 'info');
+            return;
+        }
+
+        const entry = extractPinnedCardFromCommand(cmd);
+        if (!entry) return;
+        pinnedCards.unshift({ ...entry, pinnedAt: Date.now() });
+        if (pinnedCards.length > 12) pinnedCards = pinnedCards.slice(0, 12);
+        writePinnedCards();
+        showCommandToast('Card pinned', 'success');
+    }
+
+    function syncPinnedCardsFromCommands(commands) {
+        if (!Array.isArray(commands) || !commands.length || !pinnedCards.length) return false;
+        const byKey = new Map();
+        commands.forEach((cmd) => {
+            const key = getCommandPinKey(cmd);
+            if (key) byKey.set(key, cmd);
+        });
+        if (!byKey.size) return false;
+
+        let changed = false;
+        pinnedCards = pinnedCards.map((entry) => {
+            const cmd = byKey.get(entry.key);
+            if (!cmd) return entry;
+            const next = extractPinnedCardFromCommand(cmd);
+            if (!next) return entry;
+            const merged = { ...next, pinnedAt: entry.pinnedAt };
+            const same = JSON.stringify(entry) === JSON.stringify(merged);
+            if (!same) changed = true;
+            return merged;
+        });
+
+        if (changed) writePinnedCards();
+        return changed;
+    }
+
+    function getPinnedCardCommands() {
+        if (!Array.isArray(pinnedCards) || !pinnedCards.length) return [];
+
+        return pinnedCards
+            .slice()
+            .sort((a, b) => (Number(b.pinnedAt) || 0) - (Number(a.pinnedAt) || 0))
+            .map((entry, idx) => {
+                if (entry.type === 'user' && entry.userId) {
+                    return {
+                        id: `pinned-user-${entry.userId}-${idx}`,
+                        resultType: 'user',
+                        label: entry.label || `User #${entry.userId}`,
+                        subtitle: entry.subtitle || '',
+                        category: 'Pinned',
+                        url: entry.url || `/users/${entry.userId}`,
+                        avatarUrl: entry.avatarUrl || '',
+                        userId: entry.userId,
+                        projectIds: Array.isArray(entry.projectIds) ? [...entry.projectIds] : [],
+                        statBundle: entry.statBundle && typeof entry.statBundle === 'object' ? { ...entry.statBundle } : {},
+                        keywords: ['pinned', 'user', (entry.label || '').toLowerCase()],
+                        priority: 190,
+                        suppressRecentCategory: true,
+                        isPinnedCard: true
+                    };
+                }
+
+                if (entry.type === 'project' && entry.projectId) {
+                    return {
+                        id: `pinned-project-${entry.projectId}-${idx}`,
+                        resultType: 'project',
+                        label: entry.label || `Project #${entry.projectId}`,
+                        subtitle: entry.subtitle || '',
+                        category: 'Pinned',
+                        url: entry.url || `/projects/${entry.projectId}`,
+                        projectId: entry.projectId,
+                        bannerUrl: entry.bannerUrl || '',
+                        statBundle: entry.statBundle && typeof entry.statBundle === 'object' ? { ...entry.statBundle } : {},
+                        keywords: ['pinned', 'project', (entry.label || '').toLowerCase()],
+                        priority: 190,
+                        suppressRecentCategory: true,
+                        isPinnedCard: true
+                    };
+                }
+
+                return null;
+            })
+            .filter(Boolean);
+    }
+
+    function normalizeQuery(query) {
+        return String(query || '').trim().toLowerCase();
+    }
+
+    function getInlineProjectStatsSnapshot(projectId) {
+        const key = String(projectId || '').trim();
+        if (!key) return null;
+
+        const inMemory = inlineProjectStatsCache.get(key);
+        if (inMemory && Date.now() - inMemory.ts < INLINE_PROJECT_STATS_TTL_MS) {
+            return inMemory.stats;
+        }
+        if (inMemory) inlineProjectStatsCache.delete(key);
+
+        const local = getCachedProjectUnshipped(key);
+        if (local) return local;
+        return null;
+    }
+
+    function pickInlineProjectBannerFromApi(project) {
+        if (!project || typeof project !== 'object') return '';
+        const candidates = [
+            project.banner,
+            project.banner_url,
+            project.cover_image,
+            project.cover_image_url,
+            project.thumbnail,
+            project.thumbnail_url,
+            project.screenshot,
+            project.screenshot_url,
+            project.image,
+            project.image_url
+        ];
+        for (const candidate of candidates) {
+            const value = String(candidate || '').trim();
+            if (value) return value;
+        }
+        return '';
+    }
+
+    function getCachedInlineProjectBanner(projectId) {
+        const key = String(projectId || '').trim();
+        if (!key) return '';
+        const cached = inlineProjectBannerCache.get(key);
+        if (!cached) return '';
+        if (Date.now() - cached.ts > INLINE_PROJECT_BANNER_TTL_MS) {
+            inlineProjectBannerCache.delete(key);
+            return '';
+        }
+        return String(cached.url || '').trim();
+    }
+
+    async function fetchInlineProjectBanner(projectId) {
+        const key = String(projectId || '').trim();
+        if (!key) return '';
+
+        const cached = getCachedInlineProjectBanner(key);
+        if (cached) return cached;
+
+        const existingPromise = inlineProjectBannerPromiseCache.get(key);
+        if (existingPromise) return existingPromise;
+
+        const promise = runInlineProjectBannerTask(async () => {
+            try {
+                const res = await fetch(`/projects/${key}`, { credentials: 'include' });
+                if (!res.ok) return '';
+                const html = await res.text();
+                const doc = new DOMParser().parseFromString(html, 'text/html');
+
+                const candidates = [
+                    doc.querySelector('meta[property="og:image"]')?.getAttribute('content') || '',
+                    doc.querySelector('meta[name="twitter:image"]')?.getAttribute('content') || '',
+                    doc.querySelector('.project-show-card img')?.getAttribute('src') || '',
+                    doc.querySelector('.project-show__header img')?.getAttribute('src') || '',
+                    doc.querySelector('.project-card img')?.getAttribute('src') || ''
+                ];
+
+                const bannerUrl = candidates.map(src => String(src || '').trim()).find(Boolean) || '';
+                if (bannerUrl) {
+                    inlineProjectBannerCache.set(key, { ts: Date.now(), url: bannerUrl });
+                }
+                return bannerUrl;
+            } catch (e) {
+                return '';
+            } finally {
+                inlineProjectBannerPromiseCache.delete(key);
+            }
+        });
+
+        inlineProjectBannerPromiseCache.set(key, promise);
+        return promise;
+    }
+
+    async function fetchInlineProjectStats(projectId, force = false) {
+        const key = String(projectId || '').trim();
+        if (!key) return null;
+
+        if (!force) {
+            const snapshot = getInlineProjectStatsSnapshot(key);
+            if (snapshot) return snapshot;
+        }
+
+        const existingPromise = inlineProjectStatsPromiseCache.get(key);
+        if (existingPromise) return existingPromise;
+
+        const promise = runInlineProjectStatsTask(async () => {
+            try {
+                const stats = await fetchProjectUnshippedStats(key);
+                if (stats) {
+                    inlineProjectStatsCache.set(key, { ts: Date.now(), stats });
+                    return stats;
+                }
+                return getInlineProjectStatsSnapshot(key);
+            } catch (e) {
+                return getInlineProjectStatsSnapshot(key);
+            } finally {
+                inlineProjectStatsPromiseCache.delete(key);
+            }
+        });
+
+        inlineProjectStatsPromiseCache.set(key, promise);
+        return promise;
+    }
+
+    function toProjectRatePerHour(stats) {
+        if (!stats) return null;
+        const paidHours = Number(stats.paidShipHours) || 0;
+        const paidCookies = Number(stats.paidCookies) || 0;
+        if (paidHours > 0 && paidCookies > 0) return paidCookies / paidHours;
+
+        const paidMinutes = Number(stats.paidShipMinutes) || 0;
+        if (paidMinutes > 0 && paidCookies > 0) return paidCookies / (paidMinutes / 60);
+        return null;
+    }
+
+    function buildInlineProjectStatBundle(stats) {
+        if (!stats) return {};
+        const paidCookies = Number(stats.paidCookies) || 0;
+        const totalMinutes = Math.max(0, Number(stats.totalMinutes) || 0);
+        const unshippedMinutes = Math.max(0, Number(stats.unshippedMinutes) || 0);
+        const undevloggedMinutes = Math.max(0, Number(stats.undevloggedMinutes) || 0);
+        const unpaidMinutes = unshippedMinutes + undevloggedMinutes;
+        const rate = toProjectRatePerHour(stats);
+        const projectedCookies = Number.isFinite(rate) && rate > 0 && unpaidMinutes > 0
+            ? Math.round(rate * (unpaidMinutes / 60))
+            : null;
+
+        return {
+            earned: paidCookies >= 0 ? paidCookies : null,
+            totalTime: totalMinutes > 0 ? formatMinutesCompact(totalMinutes) : null,
+            rate: Number.isFinite(rate) && rate > 0 ? formatCookieRate(rate) : null,
+            unpaid: unpaidMinutes > 0 ? formatMinutesCompact(unpaidMinutes) : null,
+            projected: projectedCookies
+        };
+    }
+
+    function buildInlineProjectSubtitle(bundle, fallback = '') {
+        const parts = [];
+        if (Number.isFinite(Number(bundle?.earned))) parts.push(`${Number(bundle.earned).toLocaleString()} cookies earned`);
+        if (bundle?.rate) parts.push(`${bundle.rate} cookies/h`);
+        if (bundle?.totalTime) parts.push(`${bundle.totalTime} total time`);
+        if (bundle?.unpaid) parts.push(`${bundle.unpaid} unpaid`);
+        if (Number.isFinite(Number(bundle?.projected)) && Number(bundle.projected) > 0) {
+            parts.push(`${Number(bundle.projected).toLocaleString()} projected`);
+        }
+        if (parts.length) return parts.join(' • ');
+        return fallback || 'Open project details';
+    }
+
+    function updateInlineProjectCommandWithStats(command, stats) {
+        if (!command || command.resultType !== 'project') return false;
+        const nextBundle = buildInlineProjectStatBundle(stats);
+        const nextSubtitle = buildInlineProjectSubtitle(nextBundle, command.subtitle || 'Open project details');
+
+        const sameBundle = JSON.stringify(command.statBundle || {}) === JSON.stringify(nextBundle || {});
+        const sameSubtitle = String(command.subtitle || '') === String(nextSubtitle || '');
+        if (sameBundle && sameSubtitle) return false;
+
+        command.statBundle = nextBundle;
+        command.subtitle = nextSubtitle;
+        return true;
+    }
+
+    function parseProjectCompareTerms(query, scopeName = null) {
+        if (scopeName !== 'project') return null;
+        const raw = String(query || '').trim();
+        if (!raw) return null;
+        const parts = raw.split(/\s+vs\s+/i).map(part => part.trim()).filter(Boolean);
+        if (parts.length !== 2) return null;
+        if (parts[0].length < 2 || parts[1].length < 2) return null;
+        return { left: parts[0], right: parts[1] };
+    }
+
+    function parseUserCompareTerms(query, scopeName = null) {
+        if (scopeName !== 'user') return null;
+        const raw = String(query || '').trim();
+        if (!raw) return null;
+        const parts = raw.split(/\s+vs\s+/i).map(part => part.trim()).filter(Boolean);
+        if (parts.length !== 2) return null;
+        if (parts[0].length < 2 || parts[1].length < 2) return null;
+        return { left: parts[0], right: parts[1] };
+    }
+
+    function shouldInlineProjectSearch(query, scopeName = null) {
+        const normalized = normalizeQuery(query);
+        if (normalized.length < 2) return false;
+        if (parseProjectCompareTerms(query, scopeName)) return false;
+        return scopeName === 'project';
+    }
+
+    function shouldInlineUserSearch(query, scopeName = null) {
+        const normalized = normalizeQuery(query);
+        if (normalized.length < 2) return false;
+        if (parseUserCompareTerms(query, scopeName)) return false;
+        return scopeName === 'user';
+    }
+
+    function toSafeCount(value) {
+        if (typeof value === 'number' && Number.isFinite(value)) return Math.max(0, Math.round(value));
+        if (typeof value === 'string') {
+            const parsed = parseInt(value.replace(/[^\d]/g, ''), 10);
+            if (Number.isFinite(parsed)) return Math.max(0, parsed);
+        }
+        return 0;
+    }
+
+    function normalizeInlineProjectIds(projectIds) {
+        if (!Array.isArray(projectIds)) return [];
+        const unique = new Set();
+        projectIds.forEach(projectId => {
+            if (projectId === null || projectId === undefined) return;
+            const normalized = String(projectId).trim();
+            if (!normalized) return;
+            unique.add(normalized);
+        });
+        return Array.from(unique);
+    }
+
+    function getInlineUserCachedTimeStats(user) {
+        const projectIds = normalizeInlineProjectIds(user?.project_ids);
+        if (!projectIds.length) return { totalMinutes: 0, coveredProjects: 0, totalProjects: 0 };
+
+        let totalMinutes = 0;
+        let coveredProjects = 0;
+
+        projectIds.forEach((projectId) => {
+            const cached = getInlineProjectStatsSnapshot(projectId);
+            if (!cached) return;
+            coveredProjects += 1;
+            if (Number.isFinite(Number(cached.totalMinutes))) totalMinutes += Math.max(0, Number(cached.totalMinutes));
+        });
+
+        return {
+            totalMinutes: Math.round(totalMinutes),
+            coveredProjects,
+            totalProjects: projectIds.length
+        };
+    }
+
+    async function hydrateInlineUserProjectStats(projectIds) {
+        const normalizedIds = normalizeInlineProjectIds(projectIds);
+        if (!normalizedIds.length) return;
+
+        const missingProjectIds = normalizedIds.filter((projectId) => !getInlineProjectStatsSnapshot(projectId));
+        if (!missingProjectIds.length) return;
+
+        const jobs = missingProjectIds.map((projectId) => runInlineUserProjectHydrationTask(async () => {
+            try {
+                await fetchInlineProjectStats(projectId, true);
+            } catch (e) {
+            }
+        }));
+
+        await Promise.all(jobs);
+    }
+
+    function readCountFromPossibleApiKeys(obj, keys) {
+        if (!obj || typeof obj !== 'object') return null;
+        for (const key of keys) {
+            if (!(key in obj)) continue;
+            const value = toSafeCount(obj[key]);
+            if (Number.isFinite(value)) return { value, confidence: 'api' };
+        }
+        return null;
+    }
+
+    function parseMetricFromScopedProfileNodes(doc, labelRegex) {
+        const root = doc?.querySelector('main') || doc?.body;
+        if (!root) return { value: null, confidence: 'none' };
+
+        const candidates = root.querySelectorAll('h1,h2,h3,h4,h5,strong,dt,li,p,span,div,a');
+        for (const node of candidates) {
+            const text = (node.textContent || '').replace(/\s+/g, ' ').trim();
+            if (!text || text.length > 90) continue;
+            if (!labelRegex.test(text)) continue;
+
+            const numberInSameNode = text.match(/([\d][\d,]*)/);
+            if (numberInSameNode?.[1]) {
+                const parsed = parseInt(numberInSameNode[1].replace(/,/g, ''), 10);
+                if (Number.isFinite(parsed)) return { value: Math.max(0, parsed), confidence: 'high' };
+            }
+
+            const sibling = node.previousElementSibling || node.nextElementSibling;
+            if (sibling) {
+                const siblingText = (sibling.textContent || '').replace(/\s+/g, ' ').trim();
+                const siblingMatch = siblingText.match(/^([\d][\d,]*)$/);
+                if (siblingMatch?.[1]) {
+                    const parsed = parseInt(siblingMatch[1].replace(/,/g, ''), 10);
+                    if (Number.isFinite(parsed)) return { value: Math.max(0, parsed), confidence: 'high' };
+                }
+            }
+        }
+
+        const mainText = (root.textContent || '').replace(/\s+/g, ' ').trim();
+        if (!mainText) return { value: null, confidence: 'none' };
+        const fallbackMatch = mainText.match(new RegExp(`\\b([\\d,]+)\\s+${labelRegex.source}\\b`, 'i'));
+        if (fallbackMatch?.[1]) {
+            const parsed = parseInt(String(fallbackMatch[1]).replace(/,/g, ''), 10);
+            if (Number.isFinite(parsed)) return { value: Math.max(0, parsed), confidence: 'low' };
+        }
+
+        return { value: null, confidence: 'none' };
+    }
+
+    function parseInlineUserProfileStats(doc) {
+        return {
+            ships: parseMetricFromScopedProfileNodes(doc, /ships?/),
+            orders: parseMetricFromScopedProfileNodes(doc, /orders?/),
+            devlogs: parseMetricFromScopedProfileNodes(doc, /devlogs?/)
+        };
+    }
+
+    async function fetchInlineUserProfileStats(userId) {
+        const key = String(userId || '').trim();
+        if (!key) return {
+            ships: { value: null, confidence: 'none' },
+            orders: { value: null, confidence: 'none' },
+            devlogs: { value: null, confidence: 'none' }
+        };
+
+        const cached = inlineUserProfileCache.get(key);
+        if (cached && Date.now() - cached.ts < 5 * 60 * 1000) return cached.stats;
+
+        try {
+            const res = await fetch(`/users/${key}`, { credentials: 'include' });
+            if (!res.ok) throw new Error(`Profile fetch failed: ${res.status}`);
+            const html = await res.text();
+            const doc = new DOMParser().parseFromString(html, 'text/html');
+            const stats = parseInlineUserProfileStats(doc);
+            inlineUserProfileCache.set(key, { ts: Date.now(), stats });
+            return stats;
+        } catch (e) {
+            return {
+                ships: { value: null, confidence: 'none' },
+                orders: { value: null, confidence: 'none' },
+                devlogs: { value: null, confidence: 'none' }
+            };
+        }
+    }
+
+    async function fetchInlineProjectCandidates(query) {
+        const data = await apiFetch(`/projects?query=${encodeURIComponent(query)}&page=1`);
+        return Array.isArray(data?.projects) ? data.projects : [];
+    }
+
+    async function fetchInlineProjectSearchResults(query) {
+        const projects = await fetchInlineProjectCandidates(query);
+
+        return projects.slice(0, 8).map((project) => {
+            const projectId = String(project.id || '').trim();
+            const snapshot = getInlineProjectStatsSnapshot(projectId);
+            const statBundle = buildInlineProjectStatBundle(snapshot);
+            const bannerUrl = pickInlineProjectBannerFromApi(project) || getCachedInlineProjectBanner(projectId);
+            const defaultSubtitle = project.description
+                ? String(project.description).replace(/\s+/g, ' ').trim().slice(0, 90)
+                : `Open /projects/${projectId}`;
+
+            return {
+                id: `search-result-${projectId}`,
+                icon: 'folder',
+                label: String(project.title || `Project #${projectId}`),
+                subtitle: buildInlineProjectSubtitle(statBundle, defaultSubtitle),
+                category: 'Search Results',
+                url: `/projects/${projectId}`,
+                resultType: 'project',
+                projectId,
+                bannerUrl,
+                statBundle,
+                keywords: ['project', projectId, String(project.title || '').toLowerCase()],
+                priority: 90
+            };
+        });
+    }
+
+    async function fetchInlineUserCandidates(query) {
+        const data = await apiFetch(`/users?query=${encodeURIComponent(query)}&page=1`);
+        return Array.isArray(data?.users) ? data.users : [];
+    }
+
+    async function buildInlineUserCommandFromUser(user, index = 0) {
+        const profileStats = await fetchInlineUserProfileStats(user.id);
+        const cookiesCount = toSafeCount(user.cookies);
+        const projectIds = normalizeInlineProjectIds(user.project_ids);
+        const projectCount = projectIds.length;
+        const cachedTime = getInlineUserCachedTimeStats(user);
+
+        const apiShips = readCountFromPossibleApiKeys(user, ['ships_count', 'ship_count', 'ships', 'total_ships']);
+        const apiOrders = readCountFromPossibleApiKeys(user, ['orders_count', 'order_count', 'orders', 'total_orders']);
+        const apiDevlogs = readCountFromPossibleApiKeys(user, ['devlogs_count', 'devlog_count', 'devlogs', 'total_devlogs']);
+
+        const shipsMetric = apiShips || profileStats.ships;
+        const ordersMetric = apiOrders || profileStats.orders;
+        const devlogsMetric = apiDevlogs || profileStats.devlogs;
+
+        const shouldShowMetric = (metric, strict = false) => {
+            if (!metric || !Number.isFinite(metric.value)) return false;
+            if (metric.value <= 0) return false;
+            if (!strict) return true;
+            return metric.confidence === 'api' || metric.confidence === 'high';
+        };
+
+        const subtitleParts = [
+            `${cookiesCount.toLocaleString()} cookies`,
+            `${projectCount} projects`
+        ];
+
+        if (shouldShowMetric(shipsMetric, true)) subtitleParts.push(`${shipsMetric.value} ships`);
+        if (shouldShowMetric(ordersMetric, true)) subtitleParts.push(`${ordersMetric.value} orders`);
+        if (shouldShowMetric(devlogsMetric, true)) subtitleParts.push(`${devlogsMetric.value} devlogs`);
+        if (cachedTime.totalMinutes > 0) subtitleParts.push(`${formatMinutesCompact(cachedTime.totalMinutes)} total time`);
+
+        return {
+            id: `user-result-${user.id}-${index}`,
+            icon: 'users',
+            label: String(user.display_name || `User #${user.id}`),
+            subtitle: subtitleParts.join(' • '),
+            category: 'User Results',
+            url: `/users/${user.id}`,
+            resultType: 'user',
+            avatarUrl: user.avatar ? String(user.avatar) : '',
+            userId: String(user.id),
+            projectIds,
+            statBundle: {
+                cookies: cookiesCount,
+                projects: projectCount,
+                ships: shouldShowMetric(shipsMetric, true) ? shipsMetric.value : null,
+                orders: shouldShowMetric(ordersMetric, true) ? ordersMetric.value : null,
+                devlogs: shouldShowMetric(devlogsMetric, true) ? devlogsMetric.value : null,
+                totalTime: cachedTime.totalMinutes > 0 ? formatMinutesCompact(cachedTime.totalMinutes) : null
+            },
+            keywords: ['user', String(user.id), String(user.display_name || '').toLowerCase()],
+            priority: 92
+        };
+    }
+
+    async function fetchInlineUserSearchResults(query) {
+        const users = (await fetchInlineUserCandidates(query)).slice(0, 8);
+        const results = await Promise.all(users.map((user, index) => runInlineUserProfileTask(() => buildInlineUserCommandFromUser(user, index))));
+        return results;
+    }
+
+    function refreshInlineProjectCommandStats(command) {
+        if (!command || command.resultType !== 'project' || !command.projectId) return false;
+        const snapshot = getInlineProjectStatsSnapshot(command.projectId);
+        if (!snapshot) return false;
+        return updateInlineProjectCommandWithStats(command, snapshot);
+    }
+
+    async function hydrateInlineProjectSearchStats(commands, query, requestId) {
+        const candidates = (commands || []).filter(cmd => cmd?.resultType === 'project').slice(0, 5);
+        if (!candidates.length) return;
+
+        const jobs = candidates.map((cmd) => runInlineProjectStatsTask(async () => {
+            await fetchInlineProjectStats(cmd.projectId);
+        }));
+        const bannerJobs = candidates.map((cmd) => runInlineProjectBannerTask(async () => {
+            const banner = await fetchInlineProjectBanner(cmd.projectId);
+            if (banner && !cmd.bannerUrl) cmd.bannerUrl = banner;
+        }));
+        await Promise.all([...jobs, ...bannerJobs]);
+
+        if (requestId !== inlineProjectSearchState.requestId) return;
+        if (inlineProjectSearchState.query !== query) return;
+
+        let changed = false;
+        inlineProjectSearchState.results.forEach((cmd) => {
+            if (refreshInlineProjectCommandStats(cmd)) changed = true;
+            if (!cmd.bannerUrl) {
+                const cachedBanner = getCachedInlineProjectBanner(cmd.projectId);
+                if (cachedBanner) {
+                    cmd.bannerUrl = cachedBanner;
+                    changed = true;
+                }
+            }
+        });
+        if (syncPinnedCardsFromCommands(inlineProjectSearchState.results)) changed = true;
+
+        if (changed) render();
+    }
+
+    async function fetchInlineProjectCompareResult(leftQuery, rightQuery) {
+        const [leftCandidates, rightCandidates] = await Promise.all([
+            fetchInlineProjectCandidates(leftQuery),
+            fetchInlineProjectCandidates(rightQuery)
+        ]);
+
+        const left = leftCandidates[0] || null;
+        if (!left) throw new Error(`No project match for "${leftQuery}"`);
+
+        let right = rightCandidates[0] || null;
+        if (!right) throw new Error(`No project match for "${rightQuery}"`);
+        if (String(right.id) === String(left.id)) {
+            right = rightCandidates.find((candidate) => String(candidate.id) !== String(left.id)) || right;
+        }
+
+        const leftId = String(left.id);
+        const rightId = String(right.id);
+
+        const leftBannerHint = pickInlineProjectBannerFromApi(left) || getCachedInlineProjectBanner(leftId);
+        const rightBannerHint = pickInlineProjectBannerFromApi(right) || getCachedInlineProjectBanner(rightId);
+        if (leftBannerHint) inlineProjectBannerCache.set(leftId, { ts: Date.now(), url: leftBannerHint });
+        if (rightBannerHint) inlineProjectBannerCache.set(rightId, { ts: Date.now(), url: rightBannerHint });
+
+        const [leftStats, rightStats, leftBannerUrl, rightBannerUrl] = await Promise.all([
+            fetchInlineProjectStats(leftId),
+            fetchInlineProjectStats(rightId),
+            leftBannerHint ? Promise.resolve(leftBannerHint) : fetchInlineProjectBanner(leftId),
+            rightBannerHint ? Promise.resolve(rightBannerHint) : fetchInlineProjectBanner(rightId)
+        ]);
+
+        const leftBundle = buildInlineProjectStatBundle(leftStats || getInlineProjectStatsSnapshot(leftId));
+        const rightBundle = buildInlineProjectStatBundle(rightStats || getInlineProjectStatsSnapshot(rightId));
+
+        const leftRate = leftBundle.rate ? parseFloat(String(leftBundle.rate).replace(/,/g, '')) : NaN;
+        const rightRate = rightBundle.rate ? parseFloat(String(rightBundle.rate).replace(/,/g, '')) : NaN;
+        let winnerLabel = 'Compare project metrics side by side';
+        if (Number.isFinite(leftRate) && Number.isFinite(rightRate) && leftRate > 0 && rightRate > 0) {
+            winnerLabel = leftRate === rightRate
+                ? 'Rate tie'
+                : (leftRate > rightRate ? `${left.title} leads on cookies/h` : `${right.title} leads on cookies/h`);
+        }
+
+        return {
+            id: `project-compare-${leftId}-${rightId}`,
+            icon: 'layers',
+            label: `${left.title} vs ${right.title}`,
+            subtitle: winnerLabel,
+            category: 'Project Compare',
+            action: 'noop',
+            keepPaletteOpen: true,
+            resultType: 'project-compare',
+            compareBundle: {
+                left: {
+                    id: leftId,
+                    title: String(left.title || `Project #${leftId}`),
+                    url: `/projects/${leftId}`,
+                    bannerUrl: String(leftBannerUrl || '').trim(),
+                    stats: leftBundle
+                },
+                right: {
+                    id: rightId,
+                    title: String(right.title || `Project #${rightId}`),
+                    url: `/projects/${rightId}`,
+                    bannerUrl: String(rightBannerUrl || '').trim(),
+                    stats: rightBundle
+                }
+            },
+            keywords: ['compare', leftQuery.toLowerCase(), rightQuery.toLowerCase(), 'project'],
+            priority: 140
+        };
+    }
+
+    async function fetchInlineUserCompareResult(leftQuery, rightQuery) {
+        const [leftCandidates, rightCandidates] = await Promise.all([
+            fetchInlineUserCandidates(leftQuery),
+            fetchInlineUserCandidates(rightQuery)
+        ]);
+
+        const leftUser = leftCandidates[0] || null;
+        if (!leftUser) throw new Error(`No user match for "${leftQuery}"`);
+
+        let rightUser = rightCandidates[0] || null;
+        if (!rightUser) throw new Error(`No user match for "${rightQuery}"`);
+        if (String(rightUser.id) === String(leftUser.id)) {
+            rightUser = rightCandidates.find((candidate) => String(candidate.id) !== String(leftUser.id)) || rightUser;
+        }
+
+        await Promise.all([
+            hydrateInlineUserProjectStats(leftUser.project_ids),
+            hydrateInlineUserProjectStats(rightUser.project_ids)
+        ]);
+
+        const [leftCmd, rightCmd] = await Promise.all([
+            runInlineUserProfileTask(() => buildInlineUserCommandFromUser(leftUser, 0)),
+            runInlineUserProfileTask(() => buildInlineUserCommandFromUser(rightUser, 1))
+        ]);
+
+        const leftCookies = Number(leftCmd?.statBundle?.cookies) || 0;
+        const rightCookies = Number(rightCmd?.statBundle?.cookies) || 0;
+        let summary = 'Compare user stats side by side';
+        if (leftCookies > 0 && rightCookies > 0) {
+            summary = leftCookies === rightCookies
+                ? 'Cookie tie'
+                : (leftCookies > rightCookies ? `${leftCmd.label} has more cookies` : `${rightCmd.label} has more cookies`);
+        }
+
+        return {
+            id: `user-compare-${leftCmd.userId}-${rightCmd.userId}`,
+            icon: 'users',
+            label: `${leftCmd.label} vs ${rightCmd.label}`,
+            subtitle: summary,
+            category: 'User Compare',
+            action: 'noop',
+            keepPaletteOpen: true,
+            resultType: 'user-compare',
+            compareBundle: {
+                left: {
+                    userId: leftCmd.userId,
+                    title: leftCmd.label,
+                    url: leftCmd.url,
+                    avatarUrl: leftCmd.avatarUrl,
+                    stats: leftCmd.statBundle || {}
+                },
+                right: {
+                    userId: rightCmd.userId,
+                    title: rightCmd.label,
+                    url: rightCmd.url,
+                    avatarUrl: rightCmd.avatarUrl,
+                    stats: rightCmd.statBundle || {}
+                }
+            },
+            keywords: ['compare', leftQuery.toLowerCase(), rightQuery.toLowerCase(), 'user'],
+            priority: 140
+        };
+    }
+
+    function refreshInlineUserCommandStats(command) {
+        if (!command || command.resultType !== 'user') return false;
+        const projectIds = Array.isArray(command.projectIds) ? command.projectIds : [];
+        const cachedTime = getInlineUserCachedTimeStats({ project_ids: projectIds });
+        const nextTotalTime = cachedTime.totalMinutes > 0 ? formatMinutesCompact(cachedTime.totalMinutes) : null;
+
+        const current = command.statBundle || {};
+        const changed = (current.totalTime || current.tracked || null) !== nextTotalTime;
+        if (!changed) return false;
+
+        const { tracked: _tracked, unshipped: _unshipped, ...rest } = current;
+
+        command.statBundle = {
+            ...rest,
+            totalTime: nextTotalTime
+        };
+
+        const subtitleParts = [];
+        if (Number.isFinite(Number(current.cookies))) subtitleParts.push(`${formatPaletteStatNumber(current.cookies)} cookies`);
+        if (Number.isFinite(Number(current.projects))) subtitleParts.push(`${formatPaletteStatNumber(current.projects)} projects`);
+        if (Number.isFinite(Number(current.ships)) && Number(current.ships) > 0) subtitleParts.push(`${formatPaletteStatNumber(current.ships)} ships`);
+        if (Number.isFinite(Number(current.orders)) && Number(current.orders) > 0) subtitleParts.push(`${formatPaletteStatNumber(current.orders)} orders`);
+        if (Number.isFinite(Number(current.devlogs)) && Number(current.devlogs) > 0) subtitleParts.push(`${formatPaletteStatNumber(current.devlogs)} devlogs`);
+        if (nextTotalTime) subtitleParts.push(`${nextTotalTime} total time`);
+        command.subtitle = subtitleParts.join(' • ');
+
+        return true;
+    }
+
+    async function hydrateInlineUserProjectCaches(commands, query, requestId) {
+        const candidates = (commands || []).filter(cmd => cmd?.resultType === 'user').slice(0, 5);
+        if (!candidates.length) return;
+
+        const hydrationJobs = candidates.map((cmd) => hydrateInlineUserProjectStats(cmd.projectIds));
+
+        if (!hydrationJobs.length) return;
+        await Promise.all(hydrationJobs);
+
+        if (requestId !== inlineUserSearchState.requestId) return;
+        if (inlineUserSearchState.query !== query) return;
+
+        let changed = false;
+        inlineUserSearchState.results.forEach((cmd) => {
+            if (refreshInlineUserCommandStats(cmd)) changed = true;
+        });
+
+        if (changed) render();
+    }
+
+    function queueInlineProjectCompare(query, scopeName = null) {
+        const terms = parseProjectCompareTerms(query, scopeName);
+        if (!terms) {
+            inlineProjectCompareState.key = '';
+            inlineProjectCompareState.loading = false;
+            inlineProjectCompareState.result = null;
+            inlineProjectCompareState.error = '';
+            if (inlineProjectCompareState.timer) {
+                clearTimeout(inlineProjectCompareState.timer);
+                inlineProjectCompareState.timer = null;
+            }
+            return;
+        }
+
+        const compareKey = `${normalizeQuery(terms.left)}::${normalizeQuery(terms.right)}`;
+        if (inlineProjectCompareState.key === compareKey && (inlineProjectCompareState.loading || inlineProjectCompareState.result)) {
+            return;
+        }
+
+        inlineProjectCompareState.key = compareKey;
+        inlineProjectCompareState.loading = true;
+        inlineProjectCompareState.result = null;
+        inlineProjectCompareState.error = '';
+
+        if (inlineProjectCompareState.timer) {
+            clearTimeout(inlineProjectCompareState.timer);
+            inlineProjectCompareState.timer = null;
+        }
+
+        const requestId = ++inlineProjectCompareState.requestId;
+        inlineProjectCompareState.timer = setTimeout(async () => {
+            try {
+                const result = await fetchInlineProjectCompareResult(terms.left, terms.right);
+                if (requestId !== inlineProjectCompareState.requestId) return;
+                inlineProjectCompareState.result = result;
+            } catch (e) {
+                if (requestId !== inlineProjectCompareState.requestId) return;
+                inlineProjectCompareState.result = null;
+                inlineProjectCompareState.error = e?.message || 'Project compare failed';
+            } finally {
+                if (requestId === inlineProjectCompareState.requestId) {
+                    inlineProjectCompareState.loading = false;
+                    render();
+                }
+            }
+        }, 200);
+    }
+
+    function queueInlineUserCompare(query, scopeName = null) {
+        const terms = parseUserCompareTerms(query, scopeName);
+        if (!terms) {
+            inlineUserCompareState.key = '';
+            inlineUserCompareState.loading = false;
+            inlineUserCompareState.result = null;
+            inlineUserCompareState.error = '';
+            if (inlineUserCompareState.timer) {
+                clearTimeout(inlineUserCompareState.timer);
+                inlineUserCompareState.timer = null;
+            }
+            return;
+        }
+
+        const compareKey = `${normalizeQuery(terms.left)}::${normalizeQuery(terms.right)}`;
+        if (inlineUserCompareState.key === compareKey && (inlineUserCompareState.loading || inlineUserCompareState.result)) {
+            return;
+        }
+
+        inlineUserCompareState.key = compareKey;
+        inlineUserCompareState.loading = true;
+        inlineUserCompareState.result = null;
+        inlineUserCompareState.error = '';
+
+        if (inlineUserCompareState.timer) {
+            clearTimeout(inlineUserCompareState.timer);
+            inlineUserCompareState.timer = null;
+        }
+
+        const requestId = ++inlineUserCompareState.requestId;
+        inlineUserCompareState.timer = setTimeout(async () => {
+            try {
+                const result = await fetchInlineUserCompareResult(terms.left, terms.right);
+                if (requestId !== inlineUserCompareState.requestId) return;
+                inlineUserCompareState.result = result;
+            } catch (e) {
+                if (requestId !== inlineUserCompareState.requestId) return;
+                inlineUserCompareState.result = null;
+                inlineUserCompareState.error = e?.message || 'User compare failed';
+            } finally {
+                if (requestId === inlineUserCompareState.requestId) {
+                    inlineUserCompareState.loading = false;
+                    render();
+                }
+            }
+        }, 200);
+    }
+
+    function queueInlineProjectSearch(query, scopeName = null) {
+        if (!shouldInlineProjectSearch(query, scopeName)) {
+            inlineProjectSearchState.query = '';
+            inlineProjectSearchState.loading = false;
+            inlineProjectSearchState.results = [];
+            inlineProjectSearchState.error = '';
+            if (inlineProjectSearchState.timer) {
+                clearTimeout(inlineProjectSearchState.timer);
+                inlineProjectSearchState.timer = null;
+            }
+            return;
+        }
+
+        const normalized = normalizeQuery(query);
+        if (inlineProjectSearchState.query === normalized && (inlineProjectSearchState.loading || inlineProjectSearchState.results.length > 0)) {
+            return;
+        }
+
+        inlineProjectSearchState.query = normalized;
+        inlineProjectSearchState.loading = true;
+        inlineProjectSearchState.results = [];
+        inlineProjectSearchState.error = '';
+
+        if (inlineProjectSearchState.timer) {
+            clearTimeout(inlineProjectSearchState.timer);
+            inlineProjectSearchState.timer = null;
+        }
+
+        const requestId = ++inlineProjectSearchState.requestId;
+        inlineProjectSearchState.timer = setTimeout(async () => {
+            try {
+                const results = await fetchInlineProjectSearchResults(normalized);
+                if (requestId !== inlineProjectSearchState.requestId) return;
+                inlineProjectSearchState.results = results;
+                hydrateInlineProjectSearchStats(results, normalized, requestId).catch(() => {});
+            } catch (e) {
+                if (requestId !== inlineProjectSearchState.requestId) return;
+                inlineProjectSearchState.results = [];
+                inlineProjectSearchState.error = e?.message || 'Search failed';
+            } finally {
+                if (requestId === inlineProjectSearchState.requestId) {
+                    inlineProjectSearchState.loading = false;
+                    render();
+                }
+            }
+        }, 180);
+    }
+
+    function queueInlineUserSearch(query, scopeName = null) {
+        if (!shouldInlineUserSearch(query, scopeName)) {
+            inlineUserSearchState.query = '';
+            inlineUserSearchState.loading = false;
+            inlineUserSearchState.results = [];
+            inlineUserSearchState.error = '';
+            if (inlineUserSearchState.timer) {
+                clearTimeout(inlineUserSearchState.timer);
+                inlineUserSearchState.timer = null;
+            }
+            return;
+        }
+
+        const normalized = normalizeQuery(query);
+        if (inlineUserSearchState.query === normalized && (inlineUserSearchState.loading || inlineUserSearchState.results.length > 0)) {
+            return;
+        }
+
+        inlineUserSearchState.query = normalized;
+        inlineUserSearchState.loading = true;
+        inlineUserSearchState.results = [];
+        inlineUserSearchState.error = '';
+
+        if (inlineUserSearchState.timer) {
+            clearTimeout(inlineUserSearchState.timer);
+            inlineUserSearchState.timer = null;
+        }
+
+        const requestId = ++inlineUserSearchState.requestId;
+        inlineUserSearchState.timer = setTimeout(async () => {
+            try {
+                const results = await fetchInlineUserSearchResults(normalized);
+                if (requestId !== inlineUserSearchState.requestId) return;
+                inlineUserSearchState.results = results;
+                hydrateInlineUserProjectCaches(results, normalized, requestId).catch(() => {});
+            } catch (e) {
+                if (requestId !== inlineUserSearchState.requestId) return;
+                inlineUserSearchState.results = [];
+                inlineUserSearchState.error = e?.message || 'User search failed';
+            } finally {
+                if (requestId === inlineUserSearchState.requestId) {
+                    inlineUserSearchState.loading = false;
+                    render();
+                }
+            }
+        }, 180);
+    }
+
+    function getInlineProjectSearchCommands(query, scopeName = null) {
+        if (!shouldInlineProjectSearch(query, scopeName)) return [];
+        const normalized = normalizeQuery(query);
+        if (inlineProjectSearchState.query !== normalized) return [];
+
+        if (inlineProjectSearchState.loading) {
+            return [{
+                id: `search-loading-${normalized}`,
+                icon: 'search',
+                label: `Searching projects for "${query}"...`,
+                subtitle: 'Fetching project matches from Flavortown API',
+                category: 'Search Results',
+                action: 'noop',
+                keepPaletteOpen: true,
+                priority: 96,
+                keywords: ['search', 'projects']
+            }];
+        }
+
+        if (inlineProjectSearchState.results.length > 0) {
+            return inlineProjectSearchState.results;
+        }
+
+        if (inlineProjectSearchState.error) {
+            return [{
+                id: `search-error-${normalized}`,
+                icon: 'alert',
+                label: 'Project search unavailable',
+                subtitle: inlineProjectSearchState.error,
+                category: 'Search Results',
+                action: 'noop',
+                keepPaletteOpen: true,
+                priority: 92,
+                keywords: ['search', 'error']
+            }];
+        }
+
+        return [{
+            id: `search-empty-${normalized}`,
+            icon: 'search',
+            label: `No project matches for "${query}"`,
+            subtitle: 'Try a different query',
+            category: 'Search Results',
+            action: 'noop',
+            keepPaletteOpen: true,
+            priority: 90,
+            keywords: ['search', 'projects']
+        }];
+    }
+
+    function getInlineProjectCompareCommands(query, scopeName = null) {
+        const terms = parseProjectCompareTerms(query, scopeName);
+        if (!terms) return [];
+        const compareKey = `${normalizeQuery(terms.left)}::${normalizeQuery(terms.right)}`;
+        if (inlineProjectCompareState.key !== compareKey) return [];
+
+        if (inlineProjectCompareState.loading) {
+            return [{
+                id: `project-compare-loading-${compareKey}`,
+                icon: 'layers',
+                label: `Comparing "${terms.left}" vs "${terms.right}"...`,
+                subtitle: 'Fetching project stats',
+                category: 'Project Compare',
+                action: 'noop',
+                resultType: 'project-compare',
+                keepPaletteOpen: true,
+                priority: 150,
+                keywords: ['compare', 'project']
+            }];
+        }
+
+        if (inlineProjectCompareState.result) {
+            return [inlineProjectCompareState.result];
+        }
+
+        if (inlineProjectCompareState.error) {
+            return [{
+                id: `project-compare-error-${compareKey}`,
+                icon: 'alert',
+                label: 'Project compare unavailable',
+                subtitle: inlineProjectCompareState.error,
+                category: 'Project Compare',
+                action: 'noop',
+                resultType: 'project-compare',
+                keepPaletteOpen: true,
+                priority: 145,
+                keywords: ['compare', 'project', 'error']
+            }];
+        }
+
+        return [];
+    }
+
+    function getInlineUserCompareCommands(query, scopeName = null) {
+        const terms = parseUserCompareTerms(query, scopeName);
+        if (!terms) return [];
+        const compareKey = `${normalizeQuery(terms.left)}::${normalizeQuery(terms.right)}`;
+        if (inlineUserCompareState.key !== compareKey) return [];
+
+        if (inlineUserCompareState.loading) {
+            return [{
+                id: `user-compare-loading-${compareKey}`,
+                icon: 'users',
+                label: `Comparing "${terms.left}" vs "${terms.right}"...`,
+                subtitle: 'Fetching user stats',
+                category: 'User Compare',
+                action: 'noop',
+                resultType: 'user-compare',
+                keepPaletteOpen: true,
+                priority: 150,
+                keywords: ['compare', 'user']
+            }];
+        }
+
+        if (inlineUserCompareState.result) {
+            return [inlineUserCompareState.result];
+        }
+
+        if (inlineUserCompareState.error) {
+            return [{
+                id: `user-compare-error-${compareKey}`,
+                icon: 'alert',
+                label: 'User compare unavailable',
+                subtitle: inlineUserCompareState.error,
+                category: 'User Compare',
+                action: 'noop',
+                resultType: 'user-compare',
+                keepPaletteOpen: true,
+                priority: 145,
+                keywords: ['compare', 'user', 'error']
+            }];
+        }
+
+        return [];
+    }
+
+    function getInlineUserSearchCommands(query, scopeName = null) {
+        if (!shouldInlineUserSearch(query, scopeName)) return [];
+        const normalized = normalizeQuery(query);
+        if (inlineUserSearchState.query !== normalized) return [];
+
+        if (inlineUserSearchState.loading) {
+            return [{
+                id: `user-search-loading-${normalized}`,
+                icon: 'search',
+                label: `Searching users for "${query}"...`,
+                subtitle: 'Fetching users and profile stats',
+                category: 'User Results',
+                action: 'noop',
+                keepPaletteOpen: true,
+                priority: 98,
+                keywords: ['search', 'users']
+            }];
+        }
+
+        if (inlineUserSearchState.results.length > 0) {
+            return inlineUserSearchState.results;
+        }
+
+        if (inlineUserSearchState.error) {
+            return [{
+                id: `user-search-error-${normalized}`,
+                icon: 'alert',
+                label: 'User search unavailable',
+                subtitle: inlineUserSearchState.error,
+                category: 'User Results',
+                action: 'noop',
+                keepPaletteOpen: true,
+                priority: 95,
+                keywords: ['search', 'users', 'error']
+            }];
+        }
+
+        return [{
+            id: `user-search-empty-${normalized}`,
+            icon: 'search',
+            label: `No users found for "${query}"`,
+            subtitle: 'Try another display name or id',
+            category: 'User Results',
+            action: 'noop',
+            keepPaletteOpen: true,
+            priority: 93,
+            keywords: ['search', 'users']
+        }];
+    }
+
+    function updateHeatmapInlineMetadata() {
+        const openHeatmapCommand = allCommands.find(cmd => cmd.id === 'heatmap-open-full');
+        if (!openHeatmapCommand) return;
+
+        const data = getHeatmapData();
+        const stats = calculateHeatmapStats(data);
+        const longestStreak = calculateLongestStreak(data);
+
+        if (!stats) {
+            openHeatmapCommand.subtitle = 'Open Kitchen and jump to heatmap';
+            return;
+        }
+
+        openHeatmapCommand.subtitle = `Current ${stats.currentStreak}d • Longest ${longestStreak}d`;
+    }
+
+    function shouldRenderHeatmapPreview(query, scopeName = null) {
+        const normalized = normalizeQuery(query);
+        if (scopeName === 'heatmap') return true;
+        if (!normalized) return false;
+        return normalized.includes('heatmap');
+    }
+
+    function buildPaletteHeatmapPreview() {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'flavortown-cmd-heatmap-preview-card';
+
+        const data = getHeatmapData();
+        const hasAggregates = data && data.dailyAggregates && Object.keys(data.dailyAggregates).length > 0;
+        if (!hasAggregates) {
+            wrapper.innerHTML = `
+                <div class="flavortown-cmd-heatmap-empty-title">No cached heatmap data yet</div>
+                <div class="flavortown-cmd-heatmap-empty-sub">Open Kitchen once or run “Heatmap: Open Full View” to build the preview.</div>
+            `;
+            return wrapper;
+        }
+
+        try {
+            const card = createHeatmapComponent(data);
+            card.classList.add('flavortown-heatmap-card--palette');
+            return card;
+        } catch (e) {
+            wrapper.innerHTML = `
+                <div class="flavortown-cmd-heatmap-empty-title">Heatmap preview unavailable</div>
+                <div class="flavortown-cmd-heatmap-empty-sub">Use “Heatmap: Open Full View” for the full dashboard card.</div>
+            `;
+            return wrapper;
+        }
+    }
+
+    const COMMAND_ICON_SVGS = {
+        command: '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="3.5" y="3.5" width="13" height="13" rx="3" stroke="currentColor" stroke-width="1.6"/><path d="M7 7h6M7 10h6M7 13h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
+        home: '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 9.2L10 4l6.5 5.2V16H12v-4H8v4H3.5V9.2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>',
+        folder: '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M2.8 6.8h5.4l1.4 1.8h7.6v6.7a1.7 1.7 0 0 1-1.7 1.7H4.5a1.7 1.7 0 0 1-1.7-1.7V6.8z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>',
+        cart: '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 4h1.5l1.2 8h8.2l1.3-6H6.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="8" cy="15.3" r="1.2" fill="currentColor"/><circle cx="13.2" cy="15.3" r="1.2" fill="currentColor"/></svg>',
+        compass: '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="6.8" stroke="currentColor" stroke-width="1.6"/><path d="M12.8 7.2l-1.8 4-4 1.8 1.8-4 4-1.8z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>',
+        trophy: '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M6 4h8v3.1a4 4 0 0 1-8 0V4z" stroke="currentColor" stroke-width="1.6"/><path d="M6 5H4.8a1.8 1.8 0 0 0 0 3.6H6M14 5h1.2a1.8 1.8 0 1 1 0 3.6H14M10 11v3M7.5 16h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
+        badge: '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="8" r="3.6" stroke="currentColor" stroke-width="1.6"/><path d="M7.8 11.1L7.2 16l2.8-1.8 2.8 1.8-.6-4.9" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>',
+        user: '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="7" r="3" stroke="currentColor" stroke-width="1.6"/><path d="M4.5 15.5a5.5 5.5 0 0 1 11 0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
+        plus: '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 4.5v11M4.5 10h11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+        search: '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="8.5" cy="8.5" r="4.5" stroke="currentColor" stroke-width="1.6"/><path d="M12 12l4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+        sparkles: '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 3l1.2 3.3L14.5 7.5l-3.3 1.2L10 12l-1.2-3.3L5.5 7.5l3.3-1.2L10 3zM15.5 12.2l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7.7-1.8z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>',
+        chart: '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 15.5V8.8M9 15.5V5.8M14 15.5V10.8M3.5 15.5h13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
+        refresh: '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M15.5 7.5A6 6 0 1 0 16 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M15.5 4.8v2.7h-2.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+        settings: '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 7.2a2.8 2.8 0 1 0 0 5.6 2.8 2.8 0 0 0 0-5.6z" stroke="currentColor" stroke-width="1.6"/><path d="M16.2 10a6.4 6.4 0 0 0-.1-1l1.5-1.2-1.6-2.8-1.9.6a6.6 6.6 0 0 0-1.7-1l-.3-2h-3.2l-.3 2c-.6.2-1.2.5-1.7 1L5 5 3.4 7.8 5 9a6.4 6.4 0 0 0 0 2l-1.6 1.2L5 15l1.9-.6c.5.4 1.1.7 1.7 1l.3 2h3.2l.3-2c.6-.2 1.2-.5 1.7-1l1.9.6 1.6-2.8-1.5-1.2c.1-.3.1-.6.1-1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>',
+        book: '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 4.8A1.8 1.8 0 0 1 5.8 3H16v13H5.8A1.8 1.8 0 0 0 4 17.8V4.8z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M6.5 6.5h6M6.5 9h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
+        list: '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M6.5 5h9M6.5 10h9M6.5 15h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="4" cy="5" r="1" fill="currentColor"/><circle cx="4" cy="10" r="1" fill="currentColor"/><circle cx="4" cy="15" r="1" fill="currentColor"/></svg>',
+        'chevron-down': '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M5.5 7.5l4.5 5 4.5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+        'chevron-up': '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M5.5 12.5l4.5-5 4.5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+        'chevron-left': '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M12.5 5.5l-5 4.5 5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+        'chevron-right': '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M7.5 5.5l5 4.5-5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+        link: '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M8.2 11.8l3.6-3.6M6.4 13.6l-1.2 1.2a2.6 2.6 0 1 1-3.7-3.7L4 8.6a2.6 2.6 0 0 1 3.7 0M13.6 6.4l1.2-1.2a2.6 2.6 0 1 1 3.7 3.7L16 11.4a2.6 2.6 0 0 1-3.7 0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
+        clipboard: '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="5.5" y="4.5" width="9" height="12" rx="2" stroke="currentColor" stroke-width="1.6"/><rect x="7.5" y="2.8" width="5" height="2.6" rx="1" stroke="currentColor" stroke-width="1.4"/></svg>',
+        'x-circle': '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="6.6" stroke="currentColor" stroke-width="1.6"/><path d="M7.8 7.8l4.4 4.4M12.2 7.8l-4.4 4.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
+        'check-circle': '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="6.6" stroke="currentColor" stroke-width="1.6"/><path d="M7.1 10.2l2 2.1 3.8-3.9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+        'eye-off': '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 3.5l13 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M7.3 7.4A3.5 3.5 0 0 1 13 10a3.5 3.5 0 0 1-.4 1.6M16.5 10s-2.4 4-6.5 4a7.4 7.4 0 0 1-2.6-.5M3.5 10s2.4-4 6.5-4c.5 0 1 .1 1.5.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
+        target: '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="5.8" stroke="currentColor" stroke-width="1.6"/><circle cx="10" cy="10" r="2.5" stroke="currentColor" stroke-width="1.6"/><circle cx="10" cy="10" r="0.9" fill="currentColor"/></svg>',
+        calculator: '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="5" y="3" width="10" height="14" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M7.5 6h5M7.5 10h1.3M11.2 10h1.3M7.5 13h1.3M11.2 13h1.3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>',
+        bolt: '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M11.4 3.5L6.8 10h3l-1.2 6.5 4.6-6.5h-3l1.2-6.5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>',
+        edit: '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 13.8V16h2.2l8-8-2.2-2.2-8 8z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M10.9 5.6l2.2 2.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
+        'file-plus': '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M6 3.5h5l3 3V16H6z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M11 3.5V7h3M10 10v4M8 12h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
+        toggle: '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="3" y="6.5" width="14" height="7" rx="3.5" stroke="currentColor" stroke-width="1.6"/><circle cx="8" cy="10" r="2.2" fill="currentColor"/></svg>',
+        key: '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="7" cy="10" r="3" stroke="currentColor" stroke-width="1.6"/><path d="M10 10h6M14 10v2M16 10v2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
+        trash: '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M5.5 6h9l-.7 10H6.2L5.5 6zM7 6V4.5h6V6M4.5 6h11" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/></svg>',
+        palette: '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 3.5A6.5 6.5 0 0 0 3.5 10 6 6 0 0 0 9.5 16h1a2 2 0 0 0 0-4h-.7a1.4 1.4 0 0 1-1.3-1.4A1.9 1.9 0 0 1 10.4 9H12a4.5 4.5 0 0 0 0-9h-2z" stroke="currentColor" stroke-width="1.6"/><circle cx="6.3" cy="9" r="0.8" fill="currentColor"/><circle cx="8.1" cy="6.4" r="0.8" fill="currentColor"/><circle cx="11.1" cy="5.6" r="0.8" fill="currentColor"/></svg>',
+        swatch: '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 6.5l6-3 6 3-6 3-6-3z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M4 10.5l6 3 6-3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+        shield: '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 3.5l5.5 2v4.3c0 3.4-2.2 5.7-5.5 6.7-3.3-1-5.5-3.3-5.5-6.7V5.5l5.5-2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>',
+        alert: '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 3.8l6.3 11H3.7L10 3.8z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M10 8v3.3M10 13.4h.1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+        package: '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 6.5l6-3 6 3v7l-6 3-6-3v-7z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M10 9.5v7M4 6.5l6 3 6-3" stroke="currentColor" stroke-width="1.4"/></svg>',
+        pause: '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="6" y="5" width="2.8" height="10" rx="1" fill="currentColor"/><rect x="11.2" y="5" width="2.8" height="10" rx="1" fill="currentColor"/></svg>',
+        clock: '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="6.5" stroke="currentColor" stroke-width="1.6"/><path d="M10 6.8v3.6l2.4 1.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
+        users: '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="7" cy="8" r="2.4" stroke="currentColor" stroke-width="1.6"/><circle cx="13.2" cy="8.6" r="2" stroke="currentColor" stroke-width="1.4"/><path d="M3.8 15a3.2 3.2 0 0 1 6.4 0M11.1 15a2.8 2.8 0 0 1 5.1-1.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
+        layers: '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 4l6 3.2-6 3.2-6-3.2L10 4zM4 10.8l6 3.2 6-3.2M4 13.8l6 3.2 6-3.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+    };
+
+    function getCommandIconMarkup(cmd) {
+        const iconName = typeof cmd?.icon === 'string' ? cmd.icon : 'command';
+        return COMMAND_ICON_SVGS[iconName] || COMMAND_ICON_SVGS.command;
+    }
+
+    function getPageContext() {
+        const path = getCurrentPath();
+        if (path === '/shop') return 'shop';
+        if (/\/projects\/\d+$/.test(path)) return 'project-show';
+        if (path === '/projects') return 'projects';
+        if (path === '/kitchen') return 'kitchen';
+        if (path === '/explore') return 'explore';
+        if (path === '/votes/new') return 'votes-new';
+        if (path === '/admin/shop_orders') return 'admin-shop-orders';
+        if (path.startsWith('/admin')) return 'admin';
+        return 'global';
+    }
+
+    function isCommandAvailable(cmd) {
+        if (!cmd) return false;
+        if (typeof cmd.when === 'function') {
+            try {
+                return !!cmd.when();
+            } catch (e) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function getRecentBoost(cmdId, recentIds) {
+        const idx = recentIds.indexOf(cmdId);
+        if (idx === -1) return 0;
+        return 140 - (idx * 18);
+    }
+
+    function orderedSubsequenceScore(text, query) {
+        if (!text || !query) return 0;
+        let qi = 0;
+        let score = 0;
+        for (let i = 0; i < text.length && qi < query.length; i++) {
+            if (text[i] !== query[qi]) continue;
+            score += i > 0 && text[i - 1] === query[qi - 1] ? 3 : 1;
+            qi += 1;
+        }
+        return qi === query.length ? score : 0;
+    }
+
+    function getWords(text) {
+        return (text || '').toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
+    }
+
+    function scoreCommand(cmd, query, recentIds, pageContext, scopeName = null) {
+        const q = (query || '').trim().toLowerCase();
+        const label = (cmd.label || '').toLowerCase();
+        const subtitle = (cmd.subtitle || '').toLowerCase();
+        const category = (cmd.category || '').toLowerCase();
+        const aliases = Array.isArray(cmd.aliases) ? cmd.aliases.map(a => String(a).toLowerCase()) : [];
+        const keywords = Array.isArray(cmd.keywords) ? cmd.keywords.map(k => String(k).toLowerCase()) : [];
+        const contexts = Array.isArray(cmd.contexts) ? cmd.contexts : [];
+
+        if (scopeName) {
+            const scope = QUERY_SCOPES[scopeName];
+            if (scope) {
+                const scopeContextMatch = !scope.contexts?.length || scope.contexts.includes(pageContext);
+                const scopeCategoryMatch = !scope.categories?.length || scope.categories.includes(category);
+                if (!scopeContextMatch && !scopeCategoryMatch) return null;
+            }
+        }
+
+        const contextBoost = contexts.includes(pageContext) ? 80 : 0;
+        const recentBoost = getRecentBoost(cmd.id, recentIds);
+        const basePriority = Number(cmd.priority) || 0;
+
+        if (cmd.resultType === 'project-compare' && parseProjectCompareTerms(query, scopeName)) {
+            return 2200 + basePriority + contextBoost + recentBoost;
+        }
+        if (cmd.resultType === 'user-compare' && parseUserCompareTerms(query, scopeName)) {
+            return 2200 + basePriority + contextBoost + recentBoost;
+        }
+
+        if (!q) {
+            return 200 + basePriority + contextBoost + recentBoost;
+        }
+
+        let score = -Infinity;
+        const labelWords = getWords(label);
+
+        if (label === q) score = Math.max(score, 1600);
+        if (label.startsWith(q)) score = Math.max(score, 1400);
+        if (labelWords.some(word => word.startsWith(q))) score = Math.max(score, 1250);
+        if (label.includes(q)) score = Math.max(score, 980);
+        if (subtitle.includes(q)) score = Math.max(score, 680);
+        if (category.includes(q)) score = Math.max(score, 520);
+
+        aliases.forEach(alias => {
+            if (alias === q) score = Math.max(score, 1300);
+            else if (alias.startsWith(q)) score = Math.max(score, 1100);
+            else if (alias.includes(q)) score = Math.max(score, 760);
+        });
+
+        keywords.forEach(keyword => {
+            if (keyword === q) score = Math.max(score, 1050);
+            else if (keyword.startsWith(q)) score = Math.max(score, 900);
+            else if (keyword.includes(q)) score = Math.max(score, 700);
+        });
+
+        const fuzzy = orderedSubsequenceScore(label, q);
+        if (fuzzy > 0) score = Math.max(score, 260 + fuzzy * 7);
+
+        if (!Number.isFinite(score)) return null;
+        return score + basePriority + contextBoost + recentBoost;
+    }
+
+    function formatPaletteStatNumber(value) {
+        const num = Number(value);
+        if (!Number.isFinite(num)) return null;
+        return Math.max(0, Math.round(num)).toLocaleString();
+    }
+
+    function formatPaletteStatValue(value) {
+        if (value === null || value === undefined || value === '') return null;
+        if (typeof value === 'number') return formatPaletteStatNumber(value);
+        return String(value).trim() || null;
+    }
+
+    function renderPinButtonHtml(cmd, idx) {
+        if (!canPinCommand(cmd)) return '';
+        const pinned = isCommandPinned(cmd);
+        return `<button type="button" class="flavortown-cmd-pin-btn ${pinned ? 'is-pinned' : ''}" data-cmd-pin-toggle="1" data-cmd-index="${idx}" aria-label="${pinned ? 'Unpin card' : 'Pin card'}">${pinned ? 'Pinned' : 'Pin'}</button>`;
+    }
+
+    function renderStatChipsHtml(statDefs, className = 'flavortown-cmd-user-stat') {
+        return statDefs
+            .filter(stat => stat && stat.value !== null && stat.value !== undefined)
+            .map(stat => `<span class="${className} ${className}--${escapeHtml(stat.key || 'item')}"><strong>${escapeHtml(String(stat.value))}</strong><em>${escapeHtml(String(stat.label || ''))}</em></span>`)
+            .join('');
+    }
+
+    function renderCommandItemHtml(cmd, idx, isActive) {
+        const activeClass = isActive ? 'active' : '';
+
+        if (cmd.resultType === 'user' && cmd.statBundle) {
+            const stats = cmd.statBundle || {};
+            const statDefs = [
+                { key: 'cookies', label: 'cookies', value: formatPaletteStatValue(stats.cookies) },
+                { key: 'projects', label: 'projects', value: formatPaletteStatValue(stats.projects) },
+                { key: 'ships', label: 'ships', value: formatPaletteStatValue(stats.ships) },
+                { key: 'orders', label: 'orders', value: formatPaletteStatValue(stats.orders) },
+                { key: 'devlogs', label: 'devlogs', value: formatPaletteStatValue(stats.devlogs) },
+                { key: 'totalTime', label: 'total time', value: formatPaletteStatValue(stats.totalTime || stats.tracked) }
+            ].filter(stat => stat.value !== null);
+
+            const statsHtml = renderStatChipsHtml(statDefs, 'flavortown-cmd-user-stat');
+
+            const displayName = escapeHtml(cmd.label || 'Unknown User');
+            const userId = cmd.userId ? `<span class="flavortown-cmd-user-id">#${escapeHtml(cmd.userId)}</span>` : '';
+            const avatarUrl = String(cmd.avatarUrl || '').trim();
+            const avatarAlt = `${displayName} avatar`;
+            const avatarFallback = escapeHtml((cmd.label || 'U').trim().charAt(0).toUpperCase() || 'U');
+            const pinButton = renderPinButtonHtml(cmd, idx);
+            const avatarHtml = avatarUrl
+                ? `<img class="flavortown-cmd-user-avatar-img" src="${escapeHtml(avatarUrl)}" alt="${avatarAlt}" loading="lazy" referrerpolicy="no-referrer" />`
+                : `<span class="flavortown-cmd-user-avatar-fallback">${avatarFallback}</span>`;
+
+            return `
+                <div class="flavortown-cmd-item flavortown-cmd-item--user ${activeClass}" data-index="${idx}">
+                    <span class="flavortown-cmd-user-avatar">${avatarHtml}</span>
+                    <span class="flavortown-cmd-user-main">
+                        <span class="flavortown-cmd-user-title-row">
+                            <span class="flavortown-cmd-label">${displayName}</span>
+                            ${userId}
+                            ${pinButton}
+                        </span>
+                        <span class="flavortown-cmd-user-stats">${statsHtml}</span>
+                    </span>
+                </div>
+            `;
+        }
+
+        if (cmd.resultType === 'project') {
+            const stats = cmd.statBundle || {};
+            const statDefs = [
+                { key: 'earned', label: 'cookies earned', value: formatPaletteStatValue(stats.earned) },
+                { key: 'totalTime', label: 'total time', value: formatPaletteStatValue(stats.totalTime) },
+                { key: 'unpaid', label: 'unpaid', value: formatPaletteStatValue(stats.unpaid) },
+                { key: 'rate', label: 'cookies/h', value: formatPaletteStatValue(stats.rate) },
+                { key: 'projected', label: 'projected', value: formatPaletteStatValue(stats.projected) }
+            ].filter(stat => stat.value !== null);
+
+            const statsHtml = renderStatChipsHtml(statDefs, 'flavortown-cmd-project-stat');
+            const projectId = cmd.projectId ? `<span class="flavortown-cmd-user-id">#${escapeHtml(cmd.projectId)}</span>` : '';
+            const pinButton = renderPinButtonHtml(cmd, idx);
+            const subtitle = cmd.subtitle ? `<span class="flavortown-cmd-subtitle">${escapeHtml(cmd.subtitle)}</span>` : '';
+            const bannerUrl = String(cmd.bannerUrl || '').trim();
+            const bannerHtml = bannerUrl
+                ? `<img class="flavortown-cmd-project-banner-img" src="${escapeHtml(bannerUrl)}" alt="${escapeHtml(cmd.label || 'Project')} banner" loading="lazy" referrerpolicy="no-referrer" />`
+                : `<span class="flavortown-cmd-project-banner-fallback">${escapeHtml((cmd.label || 'P').trim().charAt(0).toUpperCase() || 'P')}</span>`;
+
+            return `
+                <div class="flavortown-cmd-item flavortown-cmd-item--project ${activeClass}" data-index="${idx}">
+                    <span class="flavortown-cmd-icon" aria-hidden="true">${getCommandIconMarkup(cmd)}</span>
+                    <span class="flavortown-cmd-user-main">
+                        <span class="flavortown-cmd-user-title-row">
+                            <span class="flavortown-cmd-label">${escapeHtml(cmd.label || '')}</span>
+                            ${projectId}
+                            ${pinButton}
+                        </span>
+                        ${subtitle}
+                        <span class="flavortown-cmd-user-stats">${statsHtml}</span>
+                    </span>
+                    <span class="flavortown-cmd-project-banner">${bannerHtml}</span>
+                </div>
+            `;
+        }
+
+        if (cmd.resultType === 'project-compare' && cmd.compareBundle) {
+            const left = cmd.compareBundle.left || {};
+            const right = cmd.compareBundle.right || {};
+            const pick = (obj, key) => formatPaletteStatValue(obj?.stats?.[key]);
+            const renderProjectCompareBanner = (url, title) => {
+                const safeUrl = String(url || '').trim();
+                if (safeUrl) {
+                    return `<img class="flavortown-cmd-project-banner-img" src="${escapeHtml(safeUrl)}" alt="${escapeHtml(title || 'Project')} banner" loading="lazy" referrerpolicy="no-referrer" />`;
+                }
+                return `<span class="flavortown-cmd-project-banner-fallback">${escapeHtml((title || 'P').trim().charAt(0).toUpperCase() || 'P')}</span>`;
+            };
+
+            const leftStats = renderStatChipsHtml([
+                { key: 'earned', label: 'cookies earned', value: pick(left, 'earned') },
+                { key: 'totalTime', label: 'total time', value: pick(left, 'totalTime') },
+                { key: 'unpaid', label: 'unpaid', value: pick(left, 'unpaid') },
+                { key: 'rate', label: 'cookies/h', value: pick(left, 'rate') },
+                { key: 'projected', label: 'projected', value: pick(left, 'projected') }
+            ], 'flavortown-cmd-project-stat');
+
+            const rightStats = renderStatChipsHtml([
+                { key: 'earned', label: 'cookies earned', value: pick(right, 'earned') },
+                { key: 'totalTime', label: 'total time', value: pick(right, 'totalTime') },
+                { key: 'unpaid', label: 'unpaid', value: pick(right, 'unpaid') },
+                { key: 'rate', label: 'cookies/h', value: pick(right, 'rate') },
+                { key: 'projected', label: 'projected', value: pick(right, 'projected') }
+            ], 'flavortown-cmd-project-stat');
+
+            return `
+                <div class="flavortown-cmd-item flavortown-cmd-item--compare ${activeClass}" data-index="${idx}">
+                    <span class="flavortown-cmd-compare-side">
+                        <span class="flavortown-cmd-compare-project-head">
+                            <span class="flavortown-cmd-project-banner flavortown-cmd-compare-project-banner">${renderProjectCompareBanner(left.bannerUrl, left.title)}</span>
+                            <span class="flavortown-cmd-compare-title-row">
+                                <span class="flavortown-cmd-compare-title">${escapeHtml(left.title || 'Left')}</span>
+                                ${left.url ? `<button type="button" class="flavortown-cmd-inline-link" data-cmd-open-url="${escapeHtml(left.url)}">Open</button>` : ''}
+                            </span>
+                        </span>
+                        <span class="flavortown-cmd-user-stats">${leftStats || '<span class="flavortown-cmd-subtitle">No metrics yet</span>'}</span>
+                    </span>
+                    <span class="flavortown-cmd-compare-divider">vs</span>
+                    <span class="flavortown-cmd-compare-side">
+                        <span class="flavortown-cmd-compare-project-head">
+                            <span class="flavortown-cmd-project-banner flavortown-cmd-compare-project-banner">${renderProjectCompareBanner(right.bannerUrl, right.title)}</span>
+                            <span class="flavortown-cmd-compare-title-row">
+                                <span class="flavortown-cmd-compare-title">${escapeHtml(right.title || 'Right')}</span>
+                                ${right.url ? `<button type="button" class="flavortown-cmd-inline-link" data-cmd-open-url="${escapeHtml(right.url)}">Open</button>` : ''}
+                            </span>
+                        </span>
+                        <span class="flavortown-cmd-user-stats">${rightStats || '<span class="flavortown-cmd-subtitle">No metrics yet</span>'}</span>
+                    </span>
+                </div>
+            `;
+        }
+
+        if (cmd.resultType === 'user-compare' && cmd.compareBundle) {
+            const left = cmd.compareBundle.left || {};
+            const right = cmd.compareBundle.right || {};
+
+            const avatar = (url, title) => {
+                const safeUrl = String(url || '').trim();
+                const fallback = escapeHtml((title || 'U').trim().charAt(0).toUpperCase() || 'U');
+                return safeUrl
+                    ? `<img class="flavortown-cmd-user-avatar-img" src="${escapeHtml(safeUrl)}" alt="${escapeHtml(title || 'User')} avatar" loading="lazy" referrerpolicy="no-referrer" />`
+                    : `<span class="flavortown-cmd-user-avatar-fallback">${fallback}</span>`;
+            };
+
+            const statsFor = (side) => renderStatChipsHtml([
+                { key: 'cookies', label: 'cookies', value: formatPaletteStatValue(side?.stats?.cookies) },
+                { key: 'projects', label: 'projects', value: formatPaletteStatValue(side?.stats?.projects) },
+                { key: 'ships', label: 'ships', value: formatPaletteStatValue(side?.stats?.ships) },
+                { key: 'devlogs', label: 'devlogs', value: formatPaletteStatValue(side?.stats?.devlogs) },
+                { key: 'totalTime', label: 'total time', value: formatPaletteStatValue(side?.stats?.totalTime || side?.stats?.tracked) }
+            ], 'flavortown-cmd-project-stat');
+
+            const leftStats = statsFor(left);
+            const rightStats = statsFor(right);
+
+            return `
+                <div class="flavortown-cmd-item flavortown-cmd-item--compare flavortown-cmd-item--compare-user ${activeClass}" data-index="${idx}">
+                    <span class="flavortown-cmd-compare-side">
+                        <span class="flavortown-cmd-compare-title-row">
+                            <span class="flavortown-cmd-user-avatar">${avatar(left.avatarUrl, left.title)}</span>
+                            <span class="flavortown-cmd-compare-title">${escapeHtml(left.title || 'Left')}</span>
+                            ${left.url ? `<button type="button" class="flavortown-cmd-inline-link" data-cmd-open-url="${escapeHtml(left.url)}">Open</button>` : ''}
+                        </span>
+                        <span class="flavortown-cmd-user-stats">${leftStats || '<span class="flavortown-cmd-subtitle">No metrics yet</span>'}</span>
+                    </span>
+                    <span class="flavortown-cmd-compare-divider">vs</span>
+                    <span class="flavortown-cmd-compare-side">
+                        <span class="flavortown-cmd-compare-title-row">
+                            <span class="flavortown-cmd-user-avatar">${avatar(right.avatarUrl, right.title)}</span>
+                            <span class="flavortown-cmd-compare-title">${escapeHtml(right.title || 'Right')}</span>
+                            ${right.url ? `<button type="button" class="flavortown-cmd-inline-link" data-cmd-open-url="${escapeHtml(right.url)}">Open</button>` : ''}
+                        </span>
+                        <span class="flavortown-cmd-user-stats">${rightStats || '<span class="flavortown-cmd-subtitle">No metrics yet</span>'}</span>
+                    </span>
+                </div>
+            `;
+        }
+
+        return `
+            <div class="flavortown-cmd-item ${activeClass}" data-index="${idx}">
+                <span class="flavortown-cmd-icon" aria-hidden="true">${getCommandIconMarkup(cmd)}</span>
+                <span class="flavortown-cmd-main">
+                    <span class="flavortown-cmd-label">${escapeHtml(cmd.label || '')}</span>
+                    ${cmd.subtitle ? `<span class="flavortown-cmd-subtitle">${escapeHtml(cmd.subtitle)}</span>` : ''}
+                </span>
+                ${cmd.shortcut ? `<kbd class="flavortown-cmd-shortcut">${escapeHtml(cmd.shortcut)}</kbd>` : ''}
+            </div>
+        `;
     }
 
     function render() {
-        const query = input.value.trim();
+        const parsedQuery = parseScopedQuery(input.value);
+        const query = parsedQuery.query;
+        const scopeName = parsedQuery.scope;
         const recent = getRecentCommands();
+        const pageContext = getPageContext();
 
-        if (!query) {
-            const recentCmds = recent.map(id => allCommands.find(c => c.id === id)).filter(Boolean);
-            const otherCmds = allCommands.filter(c => !recent.includes(c.id));
-            filteredCommands = [...recentCmds, ...otherCmds];
-        } else {
-            filteredCommands = allCommands.filter(cmd => 
-                fuzzyMatch(cmd.label, query) || fuzzyMatch(cmd.category, query)
-            );
+        updateHeatmapInlineMetadata();
+        queueInlineProjectSearch(query, scopeName);
+        queueInlineProjectCompare(query, scopeName);
+        queueInlineUserCompare(query, scopeName);
+        queueInlineUserSearch(query, scopeName);
+
+        const pinnedCommands = !query ? getPinnedCardCommands() : [];
+        const inlineProjectCommands = getInlineProjectSearchCommands(query, scopeName);
+        const inlineProjectCompareCommands = getInlineProjectCompareCommands(query, scopeName);
+        const inlineUserCompareCommands = getInlineUserCompareCommands(query, scopeName);
+        const inlineUserCommands = getInlineUserSearchCommands(query, scopeName);
+        syncPinnedCardsFromCommands([...inlineProjectCommands, ...inlineUserCommands]);
+        const available = [
+            ...pinnedCommands,
+            ...allCommands.filter(isCommandAvailable),
+            ...inlineProjectCompareCommands,
+            ...inlineUserCompareCommands,
+            ...inlineProjectCommands,
+            ...inlineUserCommands
+        ];
+
+        if (scopeIndicator) {
+            if (parsedQuery.scope) {
+                scopeIndicator.textContent = `${parsedQuery.scope}:`;
+                scopeIndicator.classList.add('visible');
+            } else {
+                scopeIndicator.textContent = '';
+                scopeIndicator.classList.remove('visible');
+            }
         }
 
-        if (selectedIndex >= filteredCommands.length) selectedIndex = Math.max(0, filteredCommands.length - 1);
+        const scored = available
+            .map(cmd => ({ cmd, score: scoreCommand(cmd, query, recent, pageContext, scopeName) }))
+            .filter(entry => entry.score !== null && Number.isFinite(entry.score))
+            .sort((a, b) => b.score - a.score || a.cmd.label.localeCompare(b.cmd.label));
 
-        let html = '';
-        let lastCategory = '';
-
-        filteredCommands.forEach((cmd, i) => {
-            const isRecent = !query && recent.includes(cmd.id) && i < recent.length;
-            const cat = isRecent ? 'Recent' : cmd.category;
-            
-            if (cat !== lastCategory) {
-                html += `<div class="flavortown-cmd-category">${cat}</div>`;
-                lastCategory = cat;
-            }
-
-            html += `
-                <div class="flavortown-cmd-item ${i === selectedIndex ? 'active' : ''}" data-index="${i}">
-                    <span class="flavortown-cmd-label">${cmd.label}</span>
-                    ${cmd.shortcut ? `<kbd class="flavortown-cmd-shortcut">${cmd.shortcut}</kbd>` : ''}
-                </div>
-            `;
+        const groupedEntries = new Map();
+        scored.forEach((entry) => {
+            const cmd = entry.cmd;
+            const recentIdx = recent.indexOf(cmd.id);
+            const categoryName = recentIdx !== -1 && !query && !cmd.suppressRecentCategory ? 'Recent' : (cmd.category || 'Other');
+            if (!groupedEntries.has(categoryName)) groupedEntries.set(categoryName, []);
+            groupedEntries.get(categoryName).push(entry);
         });
 
-        results.innerHTML = html || '<div class="flavortown-cmd-empty">No commands found</div>';
+        const categoryOrder = ['Pinned', 'Recent', 'Project Compare', 'User Compare', 'Search Results', 'User Results', 'Navigation', 'Actions', 'Heatmap', 'Votes', 'Shop', 'Project', 'Your Projects', 'Admin', 'Settings', 'Themes'];
+        let orderedCategories = [];
+        if (query) {
+            const ranked = Array.from(groupedEntries.entries())
+                .sort((a, b) => (b[1][0]?.score || 0) - (a[1][0]?.score || 0) || a[0].localeCompare(b[0]))
+                .map(([name]) => name);
+            const prioritizedSearchCategories = ['Project Compare', 'User Compare', 'Search Results', 'User Results'].filter(name => ranked.includes(name));
+            orderedCategories = [...prioritizedSearchCategories, ...ranked.filter(name => !prioritizedSearchCategories.includes(name))];
+        } else {
+            const remainder = Array.from(groupedEntries.keys())
+                .filter(name => !categoryOrder.includes(name))
+                .sort((a, b) => a.localeCompare(b));
+            orderedCategories = [...categoryOrder.filter(name => groupedEntries.has(name)), ...remainder];
+        }
+
+        filteredCommands = [];
+
+        if (selectedIndex >= scored.length) selectedIndex = Math.max(0, scored.length - 1);
+
+        const showHeatmapPreview = shouldRenderHeatmapPreview(query, scopeName);
+        let html = '';
+        if (showHeatmapPreview) {
+            html += '<div class="flavortown-cmd-heatmap-preview" data-cmd-heatmap-preview="1"><div class="flavortown-cmd-heatmap-preview-loading">Loading heatmap preview...</div></div>';
+        }
+        orderedCategories.forEach((categoryName) => {
+            const entries = groupedEntries.get(categoryName) || [];
+            if (!entries.length) return;
+            html += `<div class="flavortown-cmd-category">${escapeHtml(categoryName)}</div>`;
+
+            entries.forEach((entry) => {
+                const cmd = entry.cmd;
+                const idx = filteredCommands.length;
+                filteredCommands.push(cmd);
+                html += renderCommandItemHtml(cmd, idx, idx === selectedIndex);
+            });
+        });
+
+        results.innerHTML = html || '<div class="flavortown-cmd-empty">No commands found. Try a broader query or remove the scope prefix.</div>';
+
+        if (showHeatmapPreview) {
+            const previewMount = results.querySelector('[data-cmd-heatmap-preview="1"]');
+            if (previewMount) {
+                previewMount.innerHTML = '';
+                previewMount.appendChild(buildPaletteHeatmapPreview());
+            }
+        }
 
         const activeEl = results.querySelector('.flavortown-cmd-item.active');
         if (activeEl) activeEl.scrollIntoView({ block: 'nearest' });
     }
 
-    function executeCommand(cmd) {
+    function showCommandToast(message, type = 'success') {
+        const toast = document.createElement('div');
+        const palette = {
+            success: { bg: '#4ade80', fg: '#15803d' },
+            info: { bg: '#93c5fd', fg: '#1e3a8a' },
+            warning: { bg: '#fcd34d', fg: '#92400e' }
+        };
+        const colors = palette[type] || palette.success;
+        toast.style.cssText = `position:fixed;bottom:20px;right:20px;background:${colors.bg};color:${colors.fg};padding:12px 20px;border-radius:8px;font-weight:600;z-index:999999;box-shadow:0 8px 24px rgba(0,0,0,0.15)`;
+        toast.textContent = message;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 2000);
+    }
+
+    function callIfAvailable(fn, ...args) {
+        if (typeof fn !== 'function') return false;
+        try {
+            fn(...args);
+            return true;
+        } catch (e) {
+            return false;
+        }
+    }
+
+    function executeCommand(cmd, options = {}) {
         if (!cmd) return;
-        saveRecentCommand(cmd.id);
-        closePalette();
+        const keepOpen = !!options.keepOpen || !!cmd.keepPaletteOpen;
+        const openInNewTab = !!options.openInNewTab;
+        const isActionable = !!cmd.url || !!cmd.action;
+        const cmdId = String(cmd.id || '');
+        const skipRecent = cmd.action === 'noop'
+            || cmdId.startsWith('search-loading-')
+            || cmdId.startsWith('search-empty-')
+            || cmdId.startsWith('search-error-')
+            || cmdId.startsWith('project-compare-loading-')
+            || cmdId.startsWith('project-compare-error-')
+            || cmdId.startsWith('user-search-loading-')
+            || cmdId.startsWith('user-search-empty-')
+            || cmdId.startsWith('user-search-error-')
+            || !!cmd.isPinnedCard;
+
+        if (!isActionable) return;
+
+        if (!skipRecent) saveRecentCommand(cmd.id);
+        if (!keepOpen) {
+            closePalette();
+        }
 
         if (cmd.url) {
             if (cmd.action === 'devlog' && cmd.projectId) {
@@ -16530,7 +18408,11 @@ function setupCommandPalette() {
                         step: t.currentStep
                     }));
                 }
-                window.location.href = cmd.url;
+                if (cmd.external || openInNewTab) {
+                    window.open(cmd.url, '_blank', 'noopener');
+                } else {
+                    window.location.href = cmd.url;
+                }
             }
         } else if (cmd.action === 'theme' && cmd.theme) {
             browserAPI.storage.sync.set({ theme: cmd.theme }, () => {
@@ -16538,6 +18420,7 @@ function setupCommandPalette() {
                     applyTheme(cmd.theme, {}, result.catppuccinAccent || 'mauve');
                 });
             });
+            showCommandToast(`Theme switched to ${cmd.theme}`, 'info');
         } else if (cmd.action === 'setAccent' && cmd.accent) {
             browserAPI.storage.sync.set({ catppuccinAccent: cmd.accent }, () => {
                 browserAPI.storage.sync.get(['theme'], (result) => {
@@ -16545,17 +18428,23 @@ function setupCommandPalette() {
                         applyTheme('catppuccin', {}, cmd.accent);
                     }
                 });
-                const toast = document.createElement('div');
-                toast.style.cssText = 'position:fixed;bottom:20px;right:20px;background:#cba6f7;color:#1e1e2e;padding:12px 20px;border-radius:8px;font-weight:600;z-index:999999';
-                toast.textContent = `Catppuccin accent: ${cmd.accent}`;
-                if (cmd.accent === 'lavender') {
-                    toast.style.background = '#b4befe';
-                }
-                document.body.appendChild(toast);
-                setTimeout(() => toast.remove(), 2000);
+                showCommandToast(`Catppuccin accent: ${cmd.accent}`, 'info');
             });
+        } else if (cmd.action === 'noop') {
+            render();
+            setTimeout(() => input.focus(), 20);
+        } else if (cmd.action === 'searchProjects') {
+            input.value = 'project: ';
+            selectedIndex = 0;
+            render();
+            setTimeout(() => input.focus(), 20);
+        } else if (cmd.action === 'searchUsers') {
+            input.value = 'user: ';
+            selectedIndex = 0;
+            render();
+            setTimeout(() => input.focus(), 20);
         } else if (cmd.action === 'buffet') {
-            if (!window.location.pathname.startsWith('/explore')) {
+            if (getCurrentPath() !== '/explore') {
                 sessionStorage.setItem('flavortown_toggle_buffet', 'true');
                 window.location.href = '/explore';
             } else {
@@ -16563,19 +18452,195 @@ function setupCommandPalette() {
                 if (buffetBtn) buffetBtn.click();
             }
         } else if (cmd.action === 'activityHeatmap') {
-            if (window.location.pathname !== '/kitchen') {
+            sessionStorage.setItem('flavortown_focus_heatmap', 'true');
+            if (getCurrentPath() !== '/kitchen') {
                 window.location.href = '/kitchen';
             } else {
-                const heatmapSection = document.querySelector('.flavortown-heatmap-section');
-                if (heatmapSection) {
-                    heatmapSection.scrollIntoView({ behavior: 'smooth' });
-                }
+                triggerPendingNavigationActions();
             }
+        } else if (cmd.action === 'refreshHeatmapData') {
+            if (getCurrentPath() !== '/kitchen') {
+                showCommandToast('Open Kitchen first to refresh heatmap', 'warning');
+                return;
+            }
+            if (typeof startKitchenHeatmapRefresh !== 'function' || typeof createHeatmapComponent !== 'function' || typeof getHeatmapData !== 'function') {
+                showCommandToast('Heatmap tools unavailable on this page', 'warning');
+                return;
+            }
+            const heatmapSection = document.querySelector('.flavortown-heatmap-section');
+            if (heatmapSection) {
+                heatmapSection.innerHTML = '<div class="flavortown-heatmap-loading" style="padding:24px;text-align:center;color:var(--color-text-secondary,#6b5c4a)">Refreshing heatmap...</div>';
+            }
+            startKitchenHeatmapRefresh((progress) => {
+                if (progress.type === 'complete') {
+                    if (heatmapSection) {
+                        heatmapSection.innerHTML = '';
+                        heatmapSection.appendChild(createHeatmapComponent(getHeatmapData()));
+                    }
+                    showCommandToast('Heatmap refreshed', 'success');
+                } else if (progress.type === 'error') {
+                    showCommandToast('Heatmap refresh failed', 'warning');
+                }
+            });
         } else if (cmd.action === 'openSettings') {
             const settingsModal = document.getElementById('settings-modal');
             if (settingsModal) {
                 settingsModal.showModal();
+                return;
             }
+            showCommandToast('Settings modal is unavailable on this page', 'warning');
+        } else if (cmd.action === 'openVotesSpeedReader') {
+            callIfAvailable(initSpeedReaderOnVotesPage);
+            const speedReadBtn = document.querySelector('.sr-devlog-btn');
+            if (speedReadBtn && !speedReadBtn.disabled) {
+                speedReadBtn.click();
+                return;
+            }
+            showCommandToast('Speed reader is unavailable for this vote right now', 'warning');
+        } else if (cmd.action === 'skipVoteProject') {
+            callIfAvailable(addSkipButton);
+            const skipBtn = document.querySelector('.flavortown-skip-btn');
+            if (skipBtn) {
+                skipBtn.click();
+                return;
+            }
+            showCommandToast('Skip button is unavailable right now', 'warning');
+        } else if (cmd.action === 'focusVotesFeedback') {
+            const feedback = document.querySelector('.votes-new__form textarea, textarea[name*="feedback"], #post_feedback');
+            if (feedback) {
+                feedback.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                setTimeout(() => feedback.focus(), 120);
+                return;
+            }
+            showCommandToast('Could not find vote feedback field', 'warning');
+        } else if (cmd.action === 'toggleRecentlyAdded') {
+            const details = document.querySelector('.flavortown-recently-added-accordion');
+            if (!details) {
+                showCommandToast('Recently Added not found on this page', 'warning');
+                return; 
+            }
+            details.open = !details.open;
+            localStorage.setItem(SHOP_RECENTLY_ADDED_COLLAPSED_KEY, details.open ? 'false' : 'true');
+            showCommandToast(`Recently Added ${details.open ? 'expanded' : 'collapsed'}`, 'info');
+        } else if (cmd.action === 'setRecentlyAddedOpen') {
+            const details = document.querySelector('.flavortown-recently-added-accordion');
+            if (!details) {
+                showCommandToast('Recently Added not found on this page', 'warning');
+                return;
+            }
+            details.open = !!cmd.open;
+            localStorage.setItem(SHOP_RECENTLY_ADDED_COLLAPSED_KEY, details.open ? 'false' : 'true');
+            showCommandToast(`Recently Added ${details.open ? 'expanded' : 'collapsed'}`, 'info');
+        } else if (cmd.action === 'toggleOutOfStock') {
+            const checkbox = document.querySelector('.flavortown-oos-checkbox');
+            const next = checkbox ? !checkbox.checked : !(localStorage.getItem('flavortown-hide-oos') === 'true');
+            localStorage.setItem('flavortown-hide-oos', next ? 'true' : 'false');
+            if (checkbox) checkbox.checked = next;
+            document.querySelectorAll('.shop-item-card--out-of-stock').forEach(card => {
+                card.style.display = next ? 'none' : 'flex';
+            });
+            showCommandToast(next ? 'Out-of-stock items hidden' : 'Out-of-stock items shown', 'info');
+        } else if (cmd.action === 'setGoalsProgressMode') {
+            localStorage.setItem('flavortown_progress_mode', cmd.mode === 'cumulative' ? 'cumulative' : 'individual');
+            if (!callIfAvailable(enhanceShopGoals)) {
+                showCommandToast('Shop goals are not available here', 'warning');
+                return;
+            }
+            showCommandToast(`Goals mode: ${cmd.mode}`, 'success');
+        } else if (cmd.action === 'setShopProjectionMode') {
+            localStorage.setItem('flavortown_projection_mode', cmd.mode === 'projected' ? 'projected' : 'actual');
+            if (!callIfAvailable(enhanceShopGoals)) {
+                showCommandToast('Shop goals are not available here', 'warning');
+                return;
+            }
+            showCommandToast(`Projection mode: ${cmd.mode}`, 'success');
+        } else if (cmd.action === 'setShopProjectionSource') {
+            localStorage.setItem('flavortown_projection_source', cmd.source === 'project' ? 'project' : 'average');
+            if (!callIfAvailable(enhanceShopGoals)) {
+                showCommandToast('Shop goals are not available here', 'warning');
+                return;
+            }
+            showCommandToast(`Projection source: ${cmd.source}`, 'success');
+        } else if (cmd.action === 'refreshShopEnhancements') {
+            const anyRan = [
+                callIfAvailable(enhanceShopGoals),
+                callIfAvailable(addShopCardEfficiency),
+                callIfAvailable(addLotteryOddsInsights),
+                callIfAvailable(enhanceRecentlyAddedSection),
+                callIfAvailable(addOutOfStockToggle)
+            ].some(Boolean);
+            if (!anyRan) {
+                showCommandToast('Shop enhancements unavailable here', 'warning');
+                return;
+            }
+            showCommandToast('Shop enhancements refreshed', 'success');
+        } else if (cmd.action === 'refreshProjectStats') {
+            const anyRan = [
+                callIfAvailable(addShipStats),
+                callIfAvailable(addUnshippedCookieEstimate),
+                callIfAvailable(addProjectShowCookieStat, true)
+            ].some(Boolean);
+            const projectId = window.location.pathname.match(/\/projects\/(\d+)$/)?.[1];
+            if (projectId) callIfAvailable(fetchProjectUnshippedStats, projectId);
+            if (!anyRan) {
+                showCommandToast('Project stats unavailable here', 'warning');
+                return;
+            }
+            showCommandToast('Project stats refreshed', 'success');
+        } else if (cmd.action === 'editCurrentProject') {
+            const projectId = getCurrentPath().match(/^\/projects\/(\d+)$/)?.[1];
+            if (!projectId) {
+                showCommandToast('Not on a project page', 'warning');
+                return;
+            }
+            window.location.href = `/projects/${projectId}/edit`;
+        } else if (cmd.action === 'openProjectDevlogsNewPage') {
+            const projectId = getCurrentPath().match(/^\/projects\/(\d+)$/)?.[1];
+            if (!projectId) {
+                showCommandToast('Not on a project page', 'warning');
+                return;
+            }
+            window.location.href = `/projects/${projectId}/devlogs/new`;
+        } else if (cmd.action === 'refreshProjectsBoardStats') {
+            const anyRan = [
+                callIfAvailable(addProjectCardCookieStats),
+                callIfAvailable(initProjectBoardStats)
+            ].some(Boolean);
+            if (!anyRan) {
+                showCommandToast('Projects board stats unavailable here', 'warning');
+                return;
+            }
+            showCommandToast('Projects board stats refreshed', 'success');
+        } else if (cmd.action === 'focusInlineDevlog') {
+            callIfAvailable(inlineDevlogForm);
+            const tryFocus = (attempt = 0) => {
+                const textarea = document.querySelector('.flavortown-inline-form #post_devlog_body');
+                if (textarea) {
+                    textarea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    setTimeout(() => textarea.focus(), 200);
+                    return;
+                }
+                if (attempt < 12) {
+                    setTimeout(() => tryFocus(attempt + 1), 200);
+                }
+            };
+            tryFocus();
+        } else if (cmd.action === 'newDevlogCurrentProject') {
+            callIfAvailable(inlineDevlogForm);
+            const textarea = document.querySelector('.flavortown-inline-form #post_devlog_body');
+            if (textarea) {
+                textarea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                setTimeout(() => textarea.focus(), 200);
+            } else {
+                sessionStorage.setItem('flavortown_focus_devlog', 'true');
+                window.location.hash = 'devlog';
+            }
+        } else if (cmd.action === 'regroupShopOrders') {
+            if (!callIfAvailable(enhanceAdminShopOrdersPage, 0)) {
+                showCommandToast('Shop order grouping unavailable here', 'warning');
+                return;
+            }
+            showCommandToast('Regrouping shop orders...', 'info');
         } else if (cmd.action === 'toggleSetting' && cmd.settingId) {
             const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || 
                               document.querySelector('input[name="authenticity_token"]')?.value;
@@ -16596,40 +18661,20 @@ function setupCommandPalette() {
                 credentials: 'same-origin'
             }).then(res => {
                 if (res.ok) {
-                    const toast = document.createElement('div');
-                    toast.style.cssText = 'position:fixed;bottom:20px;right:20px;background:#4ade80;color:#15803d;padding:12px 20px;border-radius:8px;font-weight:600;z-index:999999;animation:fadeOut 2s forwards';
-                    toast.textContent = `${cmd.label.replace('Toggle: ', '')} ${newValue ? 'enabled' : 'disabled'}`;
-                    document.body.appendChild(toast);
-                    setTimeout(() => toast.remove(), 2000);
+                    showCommandToast(`${cmd.label.replace('Toggle: ', '')} ${newValue ? 'enabled' : 'disabled'}`);
                     if (checkbox) checkbox.checked = newValue;
                 }
             });
-        } else if (cmd.action === 'searchProjects') {
-            if (window.location.pathname !== '/explore') {
-                sessionStorage.setItem('flavortown_focus_search', 'true');
-                window.location.href = '/explore';
-            } else {
-                const searchInput = document.querySelector('.flavortown-search-container input, .flavortown-search-input');
-                if (searchInput) searchInput.focus();
-            }
         } else if (cmd.action === 'setGithubApiKey') {
             const currentKey = getGithubApiKey();
             const key = prompt('Enter your GitHub Personal Access Token:\n\nThis will be used for the changelog to avoid rate limits.\nCreate one at: https://github.com/settings/tokens\n\nRequired scopes: repo (full)', currentKey || '');
             if (key !== null) {
                 setGithubApiKey(key.trim());
-                const toast = document.createElement('div');
-                toast.style.cssText = 'position:fixed;bottom:20px;right:20px;background:#4ade80;color:#15803d;padding:12px 20px;border-radius:8px;font-weight:600;z-index:999999;animation:fadeOut 2s forwards';
-                toast.textContent = key.trim() ? 'GitHub API key saved!' : 'GitHub API key cleared';
-                document.body.appendChild(toast);
-                setTimeout(() => toast.remove(), 2000);
+                showCommandToast(key.trim() ? 'GitHub API key saved!' : 'GitHub API key cleared');
             }
         } else if (cmd.action === 'clearGithubApiKey') {
             setGithubApiKey('');
-            const toast = document.createElement('div');
-            toast.style.cssText = 'position:fixed;bottom:20px;right:20px;background:#4ade80;color:#15803d;padding:12px 20px;border-radius:8px;font-weight:600;z-index:999999;animation:fadeOut 2s forwards';
-            toast.textContent = 'GitHub API key cleared';
-            document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 2000);
+            showCommandToast('GitHub API key cleared');
         }
     }
 
@@ -16673,9 +18718,47 @@ function setupCommandPalette() {
             });
             
             if (projects.length > 0) {
-                const projectCmds = projects.slice(0, 10).flatMap(p => [
-                    { id: `proj-${p.id}`, label: `Go to "${p.title}"`, category: 'Your Projects', url: `/projects/${p.id}` },
-                    { id: `devlog-${p.id}`, label: `New Devlog on "${p.title}"`, category: 'Your Projects', url: `/projects/${p.id}`, action: 'devlog', projectId: p.id },
+                const projectCmds = projects.slice(0, 20).flatMap(p => [
+                    (() => {
+                        const snapshot = getInlineProjectStatsSnapshot(p.id);
+                        const statBundle = buildInlineProjectStatBundle(snapshot);
+                        return {
+                            id: `proj-${p.id}`,
+                            icon: 'folder',
+                            label: `Go to "${p.title}"`,
+                            subtitle: buildInlineProjectSubtitle(statBundle, `Open /projects/${p.id}`),
+                            category: 'Your Projects',
+                            url: `/projects/${p.id}`,
+                            resultType: 'project',
+                            projectId: String(p.id),
+                            bannerUrl: getCachedInlineProjectBanner(p.id),
+                            statBundle,
+                            keywords: ['project', p.title.toLowerCase(), p.id],
+                            priority: 32
+                        };
+                    })(),
+                    {
+                        id: `devlog-${p.id}`,
+                        icon: 'file-plus',
+                        label: `New Devlog on "${p.title}"`,
+                        subtitle: 'Open project and focus inline devlog',
+                        category: 'Your Projects',
+                        url: `/projects/${p.id}`,
+                        action: 'devlog',
+                        projectId: p.id,
+                        keywords: ['devlog', p.title.toLowerCase(), p.id],
+                        priority: 34
+                    },
+                    {
+                        id: `proj-edit-${p.id}`,
+                        icon: 'edit',
+                        label: `Edit "${p.title}"`,
+                        subtitle: `Open /projects/${p.id}/edit`,
+                        category: 'Your Projects',
+                        url: `/projects/${p.id}/edit`,
+                        keywords: ['edit', 'project', p.title.toLowerCase(), p.id],
+                        priority: 30
+                    },
                 ]);
                 allCommands = [...staticCommands, ...projectCmds];
                 render();
@@ -16686,7 +18769,32 @@ function setupCommandPalette() {
     }
 
     overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) closePalette();
+        if (e.target === overlay) {
+            closePalette();
+            return;
+        }
+
+        const pinToggle = e.target.closest('[data-cmd-pin-toggle="1"]');
+        if (pinToggle) {
+            e.preventDefault();
+            e.stopPropagation();
+            const idx = parseInt(pinToggle.getAttribute('data-cmd-index') || '-1', 10);
+            if (Number.isFinite(idx) && idx >= 0 && filteredCommands[idx]) {
+                togglePinnedCommand(filteredCommands[idx]);
+                render();
+            }
+            return;
+        }
+
+        const openUrlBtn = e.target.closest('[data-cmd-open-url]');
+        if (openUrlBtn) {
+            e.preventDefault();
+            e.stopPropagation();
+            const url = String(openUrlBtn.getAttribute('data-cmd-open-url') || '').trim();
+            if (url) window.location.href = url;
+            return;
+        }
+
         const item = e.target.closest('.flavortown-cmd-item');
         if (item) {
             const idx = parseInt(item.dataset.index);
@@ -16710,7 +18818,10 @@ function setupCommandPalette() {
             render();
         } else if (e.key === 'Enter') {
             e.preventDefault();
-            executeCommand(filteredCommands[selectedIndex]);
+            executeCommand(filteredCommands[selectedIndex], {
+                openInNewTab: e.metaKey || e.ctrlKey,
+                keepOpen: e.altKey
+            });
         } else if (e.key === 'Escape') {
             closePalette();
         }
@@ -16731,68 +18842,79 @@ function setupCommandPalette() {
     });
 }
 
-if (sessionStorage.getItem('flavortown_focus_devlog') === 'true') {
-    sessionStorage.removeItem('flavortown_focus_devlog');
-    
-    let attempts = 0;
-    const maxAttempts = 20; 
-    
-    const pollForDevlogForm = () => {
-        const devlogForm = document.querySelector('.flavortown-inline-form');
-        if (devlogForm) {
-            devlogForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            const textarea = devlogForm.querySelector('textarea');
-            if (textarea) {
-                setTimeout(() => textarea.focus(), 300);
+function triggerPendingNavigationActions() {
+    const path = window.location.pathname || '/';
+
+    if (sessionStorage.getItem('flavortown_focus_devlog') === 'true' && /\/projects\/\d+$/.test(path)) {
+        sessionStorage.removeItem('flavortown_focus_devlog');
+
+        let attempts = 0;
+        const maxAttempts = 24;
+
+        const pollForDevlogForm = () => {
+            if (typeof inlineDevlogForm === 'function') inlineDevlogForm();
+            const devlogForm = document.querySelector('.flavortown-inline-form');
+            if (devlogForm) {
+                devlogForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                const textarea = devlogForm.querySelector('textarea');
+                if (textarea) setTimeout(() => textarea.focus(), 200);
+            } else if (attempts < maxAttempts) {
+                attempts += 1;
+                setTimeout(pollForDevlogForm, 250);
             }
-        } else if (attempts < maxAttempts) {
-            attempts++;
-            setTimeout(pollForDevlogForm, 250);
-        }
-    };
-    
-    setTimeout(pollForDevlogForm, 500);
-}
+        };
 
-if (sessionStorage.getItem('flavortown_toggle_buffet') === 'true') {
-    sessionStorage.removeItem('flavortown_toggle_buffet');
-    
-    let attempts = 0;
-    const maxAttempts = 20;
-    
-    const pollForBuffet = () => {
-        const buffetBtn = document.querySelector('.flavortown-doomscroll-toggle');
-        if (buffetBtn) {
-            buffetBtn.click();
-        } else if (attempts < maxAttempts) {
-            attempts++;
-            setTimeout(pollForBuffet, 250);
-        }
-    };
-    
-    setTimeout(pollForBuffet, 500);
-}
+        setTimeout(pollForDevlogForm, 350);
+    }
 
-if (sessionStorage.getItem('flavortown_focus_search') === 'true') {
-    sessionStorage.removeItem('flavortown_focus_search');
-    
-    let attempts = 0;
-    const maxAttempts = 20;
-    
-    const pollForSearch = () => {
-        const searchInput = document.querySelector('.flavortown-search-container input, .flavortown-search-input');
-        if (searchInput) {
-            searchInput.focus();
-        } else if (attempts < maxAttempts) {
-            attempts++;
-            setTimeout(pollForSearch, 250);
-        }
-    };
-    
-    setTimeout(pollForSearch, 500);
+    if (sessionStorage.getItem('flavortown_toggle_buffet') === 'true' && path.startsWith('/explore')) {
+        sessionStorage.removeItem('flavortown_toggle_buffet');
+
+        let attempts = 0;
+        const maxAttempts = 24;
+
+        const pollForBuffet = () => {
+            const buffetBtn = document.querySelector('.flavortown-doomscroll-toggle');
+            if (buffetBtn) {
+                buffetBtn.click();
+            } else if (attempts < maxAttempts) {
+                attempts += 1;
+                setTimeout(pollForBuffet, 250);
+            }
+        };
+
+        setTimeout(pollForBuffet, 300);
+    }
+
+    if (sessionStorage.getItem('flavortown_focus_heatmap') === 'true' && path === '/kitchen') {
+        sessionStorage.removeItem('flavortown_focus_heatmap');
+        if (typeof enhanceKitchenDashboard === 'function') enhanceKitchenDashboard();
+
+        let attempts = 0;
+        const maxAttempts = 30;
+
+        const pollForHeatmap = () => {
+            const heatmapSection = document.querySelector('.flavortown-heatmap-section');
+            if (heatmapSection) {
+                heatmapSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                return;
+            }
+
+            if (attempts < maxAttempts) {
+                attempts += 1;
+                if (attempts % 6 === 0 && typeof enhanceKitchenDashboard === 'function') {
+                    enhanceKitchenDashboard();
+                }
+                setTimeout(pollForHeatmap, 250);
+            }
+        };
+
+        setTimeout(pollForHeatmap, 300);
+    }
 }
 
 setupCommandPalette();
+setTimeout(triggerPendingNavigationActions, 200);
 
 
 const VOTES_JSON_URL = 'https://raw.githubusercontent.com/hridaya423/flavortownutils/refs/heads/main/data/votes.json';

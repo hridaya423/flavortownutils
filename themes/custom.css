@@ -3949,7 +3949,23 @@ main:has(.chef-img) .btn:hover {
 }
 
 .flavortown-cmd-palette {
-    background: rgba(17, 17, 27, 0.7) !important;
+    --cmd-bg: var(--custom-bg-base);
+    --cmd-bg-strong: var(--custom-bg-mantle);
+    --cmd-border: var(--custom-surface-hover);
+    --cmd-border-soft: var(--custom-surface-hover);
+    --cmd-text: var(--custom-text-primary);
+    --cmd-text-soft: var(--custom-text-secondary);
+    --cmd-muted: var(--custom-subtext);
+    --cmd-accent: var(--custom-accent);
+    --cmd-accent-soft: var(--custom-surface-active);
+    --cmd-accent-strong: var(--custom-surface-active);
+    --cmd-chip-bg: var(--custom-bg-surface);
+    --cmd-chip-border: var(--custom-surface-hover);
+    --cmd-chip-text: var(--custom-text-primary);
+    --cmd-chip-subtext: var(--custom-text-secondary);
+    --cmd-user-card-bg: var(--custom-bg-mantle);
+    --cmd-user-avatar-bg: var(--custom-bg-surface);
+    background: rgba(17, 17, 27, 0.72) !important;
 }
 
 .flavortown-cmd-modal {
@@ -3959,6 +3975,7 @@ main:has(.chef-img) .btn:hover {
 
 .flavortown-cmd-input-wrapper {
     border-color: var(--custom-surface-hover) !important;
+    background: linear-gradient(180deg, var(--custom-bg-surface) 0%, var(--custom-bg-mantle) 100%) !important;
 }
 
 .flavortown-cmd-input-wrapper svg {
@@ -3985,14 +4002,37 @@ main:has(.chef-img) .btn:hover {
 
 .flavortown-cmd-item:hover,
 .flavortown-cmd-item.active {
-    background: rgba(203, 166, 247, 0.1) !important;
+    background: var(--custom-surface-active) !important;
+    border-color: var(--custom-accent) !important;
 }
 
 .flavortown-cmd-item.active {
-    background: rgba(203, 166, 247, 0.2) !important;
+    background: var(--custom-surface-active) !important;
 }
 
 .flavortown-cmd-label {
+    color: var(--custom-text-primary) !important;
+}
+
+.flavortown-cmd-subtitle {
+    color: var(--custom-text-secondary) !important;
+}
+
+.flavortown-cmd-icon {
+    background: var(--custom-bg-surface) !important;
+    border-color: var(--custom-surface-hover) !important;
+    color: var(--custom-subtext) !important;
+}
+
+.flavortown-cmd-item.active .flavortown-cmd-icon {
+    background: var(--custom-surface-active) !important;
+    border-color: var(--custom-accent) !important;
+    color: var(--custom-text-primary) !important;
+}
+
+.flavortown-cmd-scope {
+    background: var(--custom-surface-active) !important;
+    border-color: var(--custom-accent) !important;
     color: var(--custom-text-primary) !important;
 }
 
@@ -4010,6 +4050,13 @@ main:has(.chef-img) .btn:hover {
     border-color: var(--custom-surface-hover) !important;
     background: var(--custom-bg-mantle) !important;
     color: var(--custom-subtext) !important;
+}
+
+.flavortown-cmd-footer kbd,
+.flavortown-cmd-hint {
+    background: var(--custom-bg-surface) !important;
+    color: var(--custom-text-secondary) !important;
+    border-color: var(--custom-surface-hover) !important;
 }
 
 .flavortown-progress-toggle {

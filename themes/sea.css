@@ -3744,7 +3744,23 @@ p[style*="background: #f9fafb"][style*="padding: 1rem"] {
 }
 
 .flavortown-cmd-palette {
-    background: rgba(10, 22, 40, 0.7) !important;
+    --cmd-bg: var(--sea-dark);
+    --cmd-bg-strong: var(--sea-deep);
+    --cmd-border: rgba(34, 211, 238, 0.2);
+    --cmd-border-soft: rgba(34, 211, 238, 0.12);
+    --cmd-text: var(--sea-white);
+    --cmd-text-soft: var(--sea-mist);
+    --cmd-muted: var(--sea-foam);
+    --cmd-accent: var(--sea-teal);
+    --cmd-accent-soft: rgba(34, 211, 238, 0.12);
+    --cmd-accent-strong: rgba(34, 211, 238, 0.2);
+    --cmd-chip-bg: rgba(15, 47, 78, 0.82);
+    --cmd-chip-border: rgba(51, 90, 128, 0.78);
+    --cmd-chip-text: var(--sea-white);
+    --cmd-chip-subtext: var(--sea-mist);
+    --cmd-user-card-bg: rgba(7, 25, 44, 0.42);
+    --cmd-user-avatar-bg: rgba(15, 47, 78, 0.9);
+    background: rgba(8, 18, 30, 0.72) !important;
 }
 
 .flavortown-cmd-modal {
@@ -3754,6 +3770,7 @@ p[style*="background: #f9fafb"][style*="padding: 1rem"] {
 
 .flavortown-cmd-input-wrapper {
     border-color: var(--sea-mid) !important;
+    background: linear-gradient(180deg, rgba(23, 54, 84, 0.9), rgba(10, 35, 59, 0.78)) !important;
 }
 
 .flavortown-cmd-input-wrapper svg {
@@ -3781,6 +3798,7 @@ p[style*="background: #f9fafb"][style*="padding: 1rem"] {
 .flavortown-cmd-item:hover,
 .flavortown-cmd-item.active {
     background: rgba(34, 211, 238, 0.1) !important;
+    border-color: rgba(34, 211, 238, 0.3) !important;
 }
 
 .flavortown-cmd-item.active {
@@ -3788,6 +3806,28 @@ p[style*="background: #f9fafb"][style*="padding: 1rem"] {
 }
 
 .flavortown-cmd-label {
+    color: var(--sea-white) !important;
+}
+
+.flavortown-cmd-subtitle {
+    color: var(--sea-mist) !important;
+}
+
+.flavortown-cmd-icon {
+    background: rgba(15, 47, 78, 0.72) !important;
+    border-color: var(--sea-mid) !important;
+    color: var(--sea-foam) !important;
+}
+
+.flavortown-cmd-item.active .flavortown-cmd-icon {
+    background: rgba(34, 211, 238, 0.2) !important;
+    border-color: rgba(34, 211, 238, 0.45) !important;
+    color: var(--sea-white) !important;
+}
+
+.flavortown-cmd-scope {
+    background: rgba(34, 211, 238, 0.18) !important;
+    border-color: rgba(34, 211, 238, 0.42) !important;
     color: var(--sea-white) !important;
 }
 
@@ -3805,6 +3845,13 @@ p[style*="background: #f9fafb"][style*="padding: 1rem"] {
     border-color: var(--sea-mid) !important;
     background: var(--sea-deep) !important;
     color: var(--sea-foam) !important;
+}
+
+.flavortown-cmd-footer kbd,
+.flavortown-cmd-hint {
+    background: var(--sea-mid) !important;
+    color: var(--sea-mist) !important;
+    border-color: var(--sea-surface) !important;
 }
 
 .flavortown-progress-toggle {
