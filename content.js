@@ -17065,58 +17065,167 @@ function setupCommandPalette() {
         return null;
     }
 
-    function parseMetricFromScopedProfileNodes(doc, labelRegex) {
-        const root = doc?.querySelector('main') || doc?.body;
-        if (!root) return { value: null, confidence: 'none' };
+    function buildInlineMetric(value, confidence = 'none') {
+        const num = Number(value);
+        return {
+            value: Number.isFinite(num) ? Math.max(0, Math.round(num)) : null,
+            confidence: Number.isFinite(num) ? confidence : 'none'
+        };
+    }
 
-        const candidates = root.querySelectorAll('h1,h2,h3,h4,h5,strong,dt,li,p,span,div,a');
-        for (const node of candidates) {
-            const text = (node.textContent || '').replace(/\s+/g, ' ').trim();
-            if (!text || text.length > 90) continue;
-            if (!labelRegex.test(text)) continue;
+    function parseInlineDurationMinutes(text) {
+        const raw = String(text || '').trim().toLowerCase();
+        if (!raw) return null;
 
-            const numberInSameNode = text.match(/([\d][\d,]*)/);
-            if (numberInSameNode?.[1]) {
-                const parsed = parseInt(numberInSameNode[1].replace(/,/g, ''), 10);
-                if (Number.isFinite(parsed)) return { value: Math.max(0, parsed), confidence: 'high' };
+        let totalMinutes = 0;
+        let matched = false;
+        const re = /(\d+(?:\.\d+)?)\s*(hours?|hrs?|hr|h|minutes?|mins?|min|m)\b/g;
+        let match = re.exec(raw);
+        while (match) {
+            const value = parseFloat(match[1]);
+            const unit = String(match[2] || '').toLowerCase();
+            if (Number.isFinite(value)) {
+                matched = true;
+                if (unit.startsWith('h')) totalMinutes += value * 60;
+                else totalMinutes += value;
             }
-
-            const sibling = node.previousElementSibling || node.nextElementSibling;
-            if (sibling) {
-                const siblingText = (sibling.textContent || '').replace(/\s+/g, ' ').trim();
-                const siblingMatch = siblingText.match(/^([\d][\d,]*)$/);
-                if (siblingMatch?.[1]) {
-                    const parsed = parseInt(siblingMatch[1].replace(/,/g, ''), 10);
-                    if (Number.isFinite(parsed)) return { value: Math.max(0, parsed), confidence: 'high' };
-                }
-            }
+            match = re.exec(raw);
         }
 
-        const mainText = (root.textContent || '').replace(/\s+/g, ' ').trim();
-        if (!mainText) return { value: null, confidence: 'none' };
-        const fallbackMatch = mainText.match(new RegExp(`\\b([\\d,]+)\\s+${labelRegex.source}\\b`, 'i'));
-        if (fallbackMatch?.[1]) {
-            const parsed = parseInt(String(fallbackMatch[1]).replace(/,/g, ''), 10);
-            if (Number.isFinite(parsed)) return { value: Math.max(0, parsed), confidence: 'low' };
-        }
+        if (!matched) return null;
+        return Math.max(0, Math.round(totalMinutes));
+    }
 
-        return { value: null, confidence: 'none' };
+    function normalizeInlineProfileStatKey(label) {
+        const normalized = String(label || '').toLowerCase().replace(/[^a-z]/g, '');
+        if (!normalized) return '';
+        if (normalized.startsWith('project')) return 'projects';
+        if (normalized.startsWith('ship')) return 'ships';
+        if (normalized.startsWith('vote')) return 'votes';
+        return '';
+    }
+
+    function extractInlineProfileCardStats(doc) {
+        const result = {};
+        const statCards = doc.querySelectorAll('.user-profile__stats .user-profile__stat');
+        statCards.forEach((card) => {
+            const label = card.querySelector('h3')?.textContent || '';
+            const key = normalizeInlineProfileStatKey(label);
+            if (!key) return;
+            const valueText = card.querySelector('h4')?.textContent || card.textContent || '';
+            const value = toSafeCount(valueText);
+            if (!Number.isFinite(value)) return;
+            result[key] = value;
+        });
+        return result;
+    }
+
+    function extractInlineProfileTimeStats(doc) {
+        const rows = doc.querySelectorAll('.user-profile__times .user-profile__time');
+        let allTimeMinutes = null;
+        let todayMinutes = null;
+
+        rows.forEach((row) => {
+            const cells = row.querySelectorAll('h4');
+            if (!cells || cells.length < 2) return;
+            const label = String(cells[0]?.textContent || '').toLowerCase();
+            const value = String(cells[cells.length - 1]?.textContent || '');
+            const minutes = parseInlineDurationMinutes(value);
+            if (!Number.isFinite(minutes)) return;
+
+            if (/all\s*time/.test(label)) allTimeMinutes = minutes;
+            else if (/today/.test(label)) todayMinutes = minutes;
+        });
+
+        return { allTimeMinutes, todayMinutes };
+    }
+
+    function extractInlineProfileProjectStats(doc) {
+        const links = Array.from(doc.querySelectorAll('.user-profile__projects a[href*="/projects/"]'));
+        const projectIds = [];
+        const seen = new Set();
+        let devlogs = 0;
+        let shipped = 0;
+
+        links.forEach((link) => {
+            const href = String(link.getAttribute('href') || '');
+            const idMatch = href.match(/\/projects\/(\d+)/);
+            if (idMatch?.[1] && !seen.has(idMatch[1])) {
+                seen.add(idMatch[1]);
+                projectIds.push(idMatch[1]);
+            }
+
+            const text = (link.textContent || '').replace(/\s+/g, ' ');
+            const devlogMatch = text.match(/(\d+)\s*devlogs?/i);
+            if (devlogMatch?.[1]) devlogs += toSafeCount(devlogMatch[1]);
+
+            const shippedBadge = link.querySelector('.user-profile__project-card-title h6');
+            if (shippedBadge && /shipped/i.test(shippedBadge.textContent || '')) shipped += 1;
+        });
+
+        return {
+            projectIds,
+            projectCount: projectIds.length,
+            devlogs,
+            shipped
+        };
+    }
+
+    function extractInlineProfileOrderCount(doc) {
+        const orderRows = Array.from(doc.querySelectorAll('.user-profile__orders .user-profile__order'));
+        if (!orderRows.length) return null;
+
+        let totalOrders = 0;
+        orderRows.forEach((row) => {
+            const quantityText = row.querySelector('h3 b')?.textContent || '';
+            const quantityMatch = quantityText.match(/(\d+)/);
+            if (quantityMatch?.[1]) {
+                totalOrders += toSafeCount(quantityMatch[1]);
+                return;
+            }
+            totalOrders += 1;
+        });
+
+        return Math.max(0, totalOrders);
     }
 
     function parseInlineUserProfileStats(doc) {
+        const cardStats = extractInlineProfileCardStats(doc);
+        const timeStats = extractInlineProfileTimeStats(doc);
+        const projectStats = extractInlineProfileProjectStats(doc);
+        const orderCount = extractInlineProfileOrderCount(doc);
+
+        const projectsValue = Number.isFinite(cardStats.projects)
+            ? cardStats.projects
+            : (projectStats.projectCount > 0 ? projectStats.projectCount : null);
+
+        const shipsValue = Number.isFinite(cardStats.ships)
+            ? cardStats.ships
+            : (projectStats.shipped > 0 ? projectStats.shipped : null);
+
         return {
-            ships: parseMetricFromScopedProfileNodes(doc, /ships?/),
-            orders: parseMetricFromScopedProfileNodes(doc, /orders?/),
-            devlogs: parseMetricFromScopedProfileNodes(doc, /devlogs?/)
+            projects: buildInlineMetric(projectsValue, 'high'),
+            ships: buildInlineMetric(shipsValue, 'high'),
+            votes: buildInlineMetric(cardStats.votes, 'high'),
+            orders: buildInlineMetric(orderCount, 'high'),
+            devlogs: buildInlineMetric(projectStats.devlogs, 'high'),
+            totalMinutes: buildInlineMetric(timeStats.allTimeMinutes, 'high'),
+            todayMinutes: buildInlineMetric(timeStats.todayMinutes, 'high'),
+            projectIds: projectStats.projectIds
         };
     }
 
     async function fetchInlineUserProfileStats(userId) {
         const key = String(userId || '').trim();
         if (!key) return {
+            projects: { value: null, confidence: 'none' },
             ships: { value: null, confidence: 'none' },
+            votes: { value: null, confidence: 'none' },
             orders: { value: null, confidence: 'none' },
-            devlogs: { value: null, confidence: 'none' }
+            devlogs: { value: null, confidence: 'none' },
+            totalMinutes: { value: null, confidence: 'none' },
+            todayMinutes: { value: null, confidence: 'none' },
+            projectIds: []
         };
 
         const cached = inlineUserProfileCache.get(key);
@@ -17132,9 +17241,14 @@ function setupCommandPalette() {
             return stats;
         } catch (e) {
             return {
+                projects: { value: null, confidence: 'none' },
                 ships: { value: null, confidence: 'none' },
+                votes: { value: null, confidence: 'none' },
                 orders: { value: null, confidence: 'none' },
-                devlogs: { value: null, confidence: 'none' }
+                devlogs: { value: null, confidence: 'none' },
+                totalMinutes: { value: null, confidence: 'none' },
+                todayMinutes: { value: null, confidence: 'none' },
+                projectIds: []
             };
         }
     }
@@ -17181,17 +17295,37 @@ function setupCommandPalette() {
     async function buildInlineUserCommandFromUser(user, index = 0) {
         const profileStats = await fetchInlineUserProfileStats(user.id);
         const cookiesCount = toSafeCount(user.cookies);
-        const projectIds = normalizeInlineProjectIds(user.project_ids);
-        const projectCount = projectIds.length;
-        const cachedTime = getInlineUserCachedTimeStats(user);
+        const profileProjectIds = normalizeInlineProjectIds(profileStats.projectIds);
+        const apiProjectIds = normalizeInlineProjectIds(user.project_ids);
+        const projectIds = profileProjectIds.length ? profileProjectIds : apiProjectIds;
+
+        const profileProjectCount = Number(profileStats.projects?.value);
+        const projectCount = Number.isFinite(profileProjectCount) ? Math.max(0, Math.round(profileProjectCount)) : projectIds.length;
+        const cachedTime = getInlineUserCachedTimeStats({ project_ids: projectIds });
 
         const apiShips = readCountFromPossibleApiKeys(user, ['ships_count', 'ship_count', 'ships', 'total_ships']);
         const apiOrders = readCountFromPossibleApiKeys(user, ['orders_count', 'order_count', 'orders', 'total_orders']);
         const apiDevlogs = readCountFromPossibleApiKeys(user, ['devlogs_count', 'devlog_count', 'devlogs', 'total_devlogs']);
 
-        const shipsMetric = apiShips || profileStats.ships;
-        const ordersMetric = apiOrders || profileStats.orders;
-        const devlogsMetric = apiDevlogs || profileStats.devlogs;
+        const pickMetric = (profileMetric, fallbackMetric = null) => {
+            const value = Number(profileMetric?.value);
+            if (Number.isFinite(value)) return profileMetric;
+            return fallbackMetric || { value: null, confidence: 'none' };
+        };
+
+        const shipsMetric = pickMetric(profileStats.ships, apiShips);
+        const ordersMetric = pickMetric(profileStats.orders, apiOrders);
+        const devlogsMetric = pickMetric(profileStats.devlogs, apiDevlogs);
+        const votesMetric = pickMetric(profileStats.votes, readCountFromPossibleApiKeys(user, ['votes_count', 'vote_count', 'votes', 'total_votes']));
+
+        const profileTotalMinutes = Number(profileStats.totalMinutes?.value);
+        const totalMinutes = Number.isFinite(profileTotalMinutes) && profileTotalMinutes > 0
+            ? Math.max(0, Math.round(profileTotalMinutes))
+            : (cachedTime.totalMinutes > 0 ? cachedTime.totalMinutes : 0);
+        const totalTimeLabel = totalMinutes > 0 ? formatMinutesCompact(totalMinutes) : null;
+        const totalTimeSource = Number.isFinite(profileTotalMinutes) && profileTotalMinutes > 0
+            ? 'profile'
+            : (cachedTime.totalMinutes > 0 ? 'projects' : null);
 
         const shouldShowMetric = (metric, strict = false) => {
             if (!metric || !Number.isFinite(metric.value)) return false;
@@ -17200,15 +17334,28 @@ function setupCommandPalette() {
             return metric.confidence === 'api' || metric.confidence === 'high';
         };
 
+        const statBundle = {
+            cookies: cookiesCount,
+            projects: projectCount,
+            ships: shouldShowMetric(shipsMetric, true) ? shipsMetric.value : null,
+            votes: shouldShowMetric(votesMetric, true) ? votesMetric.value : null,
+            orders: shouldShowMetric(ordersMetric, true) ? ordersMetric.value : null,
+            devlogs: shouldShowMetric(devlogsMetric, true) ? devlogsMetric.value : null,
+            totalTime: totalTimeLabel,
+            totalTimeMinutes: totalMinutes > 0 ? totalMinutes : null,
+            totalTimeSource
+        };
+
         const subtitleParts = [
             `${cookiesCount.toLocaleString()} cookies`,
             `${projectCount} projects`
         ];
 
         if (shouldShowMetric(shipsMetric, true)) subtitleParts.push(`${shipsMetric.value} ships`);
+        if (shouldShowMetric(votesMetric, true)) subtitleParts.push(`${votesMetric.value} votes`);
         if (shouldShowMetric(ordersMetric, true)) subtitleParts.push(`${ordersMetric.value} orders`);
         if (shouldShowMetric(devlogsMetric, true)) subtitleParts.push(`${devlogsMetric.value} devlogs`);
-        if (cachedTime.totalMinutes > 0) subtitleParts.push(`${formatMinutesCompact(cachedTime.totalMinutes)} total time`);
+        if (totalTimeLabel) subtitleParts.push(`${totalTimeLabel} total time`);
 
         return {
             id: `user-result-${user.id}-${index}`,
@@ -17221,14 +17368,7 @@ function setupCommandPalette() {
             avatarUrl: user.avatar ? String(user.avatar) : '',
             userId: String(user.id),
             projectIds,
-            statBundle: {
-                cookies: cookiesCount,
-                projects: projectCount,
-                ships: shouldShowMetric(shipsMetric, true) ? shipsMetric.value : null,
-                orders: shouldShowMetric(ordersMetric, true) ? ordersMetric.value : null,
-                devlogs: shouldShowMetric(devlogsMetric, true) ? devlogsMetric.value : null,
-                totalTime: cachedTime.totalMinutes > 0 ? formatMinutesCompact(cachedTime.totalMinutes) : null
-            },
+            statBundle,
             keywords: ['user', String(user.id), String(user.display_name || '').toLowerCase()],
             priority: 92
         };
@@ -17417,27 +17557,37 @@ function setupCommandPalette() {
 
     function refreshInlineUserCommandStats(command) {
         if (!command || command.resultType !== 'user') return false;
+        const current = command.statBundle || {};
+        if (current.totalTimeSource === 'profile') return false;
+
         const projectIds = Array.isArray(command.projectIds) ? command.projectIds : [];
         const cachedTime = getInlineUserCachedTimeStats({ project_ids: projectIds });
-        const nextTotalTime = cachedTime.totalMinutes > 0 ? formatMinutesCompact(cachedTime.totalMinutes) : null;
+        const nextTotalMinutes = cachedTime.totalMinutes > 0 ? Math.round(cachedTime.totalMinutes) : null;
+        const nextTotalTime = nextTotalMinutes ? formatMinutesCompact(nextTotalMinutes) : null;
 
-        const current = command.statBundle || {};
-        const changed = (current.totalTime || current.tracked || null) !== nextTotalTime;
+        const currentTotalMinutes = Number.isFinite(Number(current.totalTimeMinutes))
+            ? Math.max(0, Math.round(Number(current.totalTimeMinutes)))
+            : null;
+
+        const changed = currentTotalMinutes !== nextTotalMinutes;
         if (!changed) return false;
 
         const { tracked: _tracked, unshipped: _unshipped, ...rest } = current;
 
         command.statBundle = {
             ...rest,
-            totalTime: nextTotalTime
+            totalTime: nextTotalTime,
+            totalTimeMinutes: nextTotalMinutes,
+            totalTimeSource: nextTotalMinutes ? 'projects' : null
         };
 
         const subtitleParts = [];
-        if (Number.isFinite(Number(current.cookies))) subtitleParts.push(`${formatPaletteStatNumber(current.cookies)} cookies`);
-        if (Number.isFinite(Number(current.projects))) subtitleParts.push(`${formatPaletteStatNumber(current.projects)} projects`);
-        if (Number.isFinite(Number(current.ships)) && Number(current.ships) > 0) subtitleParts.push(`${formatPaletteStatNumber(current.ships)} ships`);
-        if (Number.isFinite(Number(current.orders)) && Number(current.orders) > 0) subtitleParts.push(`${formatPaletteStatNumber(current.orders)} orders`);
-        if (Number.isFinite(Number(current.devlogs)) && Number(current.devlogs) > 0) subtitleParts.push(`${formatPaletteStatNumber(current.devlogs)} devlogs`);
+        if (Number.isFinite(Number(rest.cookies))) subtitleParts.push(`${formatPaletteStatNumber(rest.cookies)} cookies`);
+        if (Number.isFinite(Number(rest.projects))) subtitleParts.push(`${formatPaletteStatNumber(rest.projects)} projects`);
+        if (Number.isFinite(Number(rest.ships)) && Number(rest.ships) > 0) subtitleParts.push(`${formatPaletteStatNumber(rest.ships)} ships`);
+        if (Number.isFinite(Number(rest.votes)) && Number(rest.votes) > 0) subtitleParts.push(`${formatPaletteStatNumber(rest.votes)} votes`);
+        if (Number.isFinite(Number(rest.orders)) && Number(rest.orders) > 0) subtitleParts.push(`${formatPaletteStatNumber(rest.orders)} orders`);
+        if (Number.isFinite(Number(rest.devlogs)) && Number(rest.devlogs) > 0) subtitleParts.push(`${formatPaletteStatNumber(rest.devlogs)} devlogs`);
         if (nextTotalTime) subtitleParts.push(`${nextTotalTime} total time`);
         command.subtitle = subtitleParts.join(' • ');
 
@@ -18085,6 +18235,7 @@ function setupCommandPalette() {
                 { key: 'cookies', label: 'cookies', value: formatPaletteStatValue(stats.cookies) },
                 { key: 'projects', label: 'projects', value: formatPaletteStatValue(stats.projects) },
                 { key: 'ships', label: 'ships', value: formatPaletteStatValue(stats.ships) },
+                { key: 'votes', label: 'votes', value: formatPaletteStatValue(stats.votes) },
                 { key: 'orders', label: 'orders', value: formatPaletteStatValue(stats.orders) },
                 { key: 'devlogs', label: 'devlogs', value: formatPaletteStatValue(stats.devlogs) },
                 { key: 'totalTime', label: 'total time', value: formatPaletteStatValue(stats.totalTime || stats.tracked) }
@@ -18224,6 +18375,8 @@ function setupCommandPalette() {
                 { key: 'cookies', label: 'cookies', value: formatPaletteStatValue(side?.stats?.cookies) },
                 { key: 'projects', label: 'projects', value: formatPaletteStatValue(side?.stats?.projects) },
                 { key: 'ships', label: 'ships', value: formatPaletteStatValue(side?.stats?.ships) },
+                { key: 'votes', label: 'votes', value: formatPaletteStatValue(side?.stats?.votes) },
+                { key: 'orders', label: 'orders', value: formatPaletteStatValue(side?.stats?.orders) },
                 { key: 'devlogs', label: 'devlogs', value: formatPaletteStatValue(side?.stats?.devlogs) },
                 { key: 'totalTime', label: 'total time', value: formatPaletteStatValue(side?.stats?.totalTime || side?.stats?.tracked) }
             ], 'flavortown-cmd-project-stat');
