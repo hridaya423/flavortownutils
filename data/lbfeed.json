@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-06T21:59:47.918Z",
+  "lastUpdated": "2026-04-06T22:49:52.664Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -89613,6 +89613,14 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0ACCKPFDL0"
+      },
+      {
+        "ts": "2026-04-06T22:00:33.627Z",
+        "delta": 10,
+        "balance": 22,
+        "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U0ACCKPFDL0"
       }
     ],
     "u0acgddbs15": [
@@ -94211,6 +94219,12 @@
     ]
   },
   "users": {
+    "U0ACCKPFDL0": {
+      "id": "U0ACCKPFDL0",
+      "username": "sebastiaolina1",
+      "displayName": "sebastiaolina1",
+      "avatar": "https://secure.gravatar.com/avatar/c530348eef9644c2e0c961ad2aaaa45a.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0015-72.png"
+    },
     "U091Q3TGSS0": {
       "id": "U091Q3TGSS0",
       "username": "ivo.theis",
@@ -95129,12 +95143,6 @@
       "username": "thisisnotnibblz123",
       "displayName": "Nibbles",
       "avatar": "https://avatars.slack-edge.com/2024-06-22/7311126135782_bbb6a69e1da606f6a474_72.png"
-    },
-    "U0ACCKPFDL0": {
-      "id": "U0ACCKPFDL0",
-      "username": "sebastiaolina1",
-      "displayName": "sebastiaolina1",
-      "avatar": "https://secure.gravatar.com/avatar/c530348eef9644c2e0c961ad2aaaa45a.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0015-72.png"
     },
     "U08D22QNUVD": {
       "id": "U08D22QNUVD",
