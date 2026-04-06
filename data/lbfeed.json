@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-06T07:08:58.627Z",
+  "lastUpdated": "2026-04-06T08:53:12.025Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -14295,6 +14295,14 @@
         "delta": 1279,
         "balance": 5288,
         "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U082GTRTR5X"
+      },
+      {
+        "ts": "2026-04-06T08:14:13.468Z",
+        "delta": -4995,
+        "balance": 293,
+        "reason": "shop purchase",
         "reasonType": "",
         "userId": "U082GTRTR5X"
       }
@@ -34036,6 +34044,30 @@
         "balance": 973,
         "reason": "ship event payout",
         "reasonType": "",
+        "userId": "U093DK2JL0Y"
+      },
+      {
+        "ts": "2026-04-06T08:48:17.848Z",
+        "delta": 5,
+        "balance": 978,
+        "reason": "Fleet Captain",
+        "reasonType": "achievement",
+        "userId": "U093DK2JL0Y"
+      },
+      {
+        "ts": "2026-04-06T08:48:17.890Z",
+        "delta": 15,
+        "balance": 993,
+        "reason": "Five Star Chef",
+        "reasonType": "achievement",
+        "userId": "U093DK2JL0Y"
+      },
+      {
+        "ts": "2026-04-06T08:48:18.004Z",
+        "delta": 15,
+        "balance": 1008,
+        "reason": "Sous Chef",
+        "reasonType": "achievement",
         "userId": "U093DK2JL0Y"
       }
     ],
@@ -53987,6 +54019,14 @@
         "delta": 359,
         "balance": 1017,
         "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U0A4VCLJC05"
+      },
+      {
+        "ts": "2026-04-06T07:23:35.716Z",
+        "delta": -2,
+        "balance": 1015,
+        "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0A4VCLJC05"
       }
@@ -93515,6 +93555,24 @@
     ]
   },
   "users": {
+    "U093DK2JL0Y": {
+      "id": "U093DK2JL0Y",
+      "username": "pranjal.prakarsh",
+      "displayName": "1nf1n0t1v3r",
+      "avatar": "https://avatars.slack-edge.com/2026-02-26/10590741968340_5b5850fb43a909c5d23e_72.png"
+    },
+    "U082GTRTR5X": {
+      "id": "U082GTRTR5X",
+      "username": "cyteon",
+      "displayName": "Cyteon",
+      "avatar": "https://avatars.slack-edge.com/2025-04-05/8722129902817_bed15dc712f97108332d_72.png"
+    },
+    "U0A4VCLJC05": {
+      "id": "U0A4VCLJC05",
+      "username": "hiba.malkan",
+      "displayName": "grumpymarie",
+      "avatar": "https://avatars.slack-edge.com/2025-12-22/10163436332483_d4454b9a7798819e7c39_72.jpg"
+    },
     "U0A1K3P66FP": {
       "id": "U0A1K3P66FP",
       "username": "sebastianfiser2275",
@@ -93538,12 +93596,6 @@
       "username": "tanjim",
       "displayName": "tanjim",
       "avatar": "https://avatars.slack-edge.com/2025-08-17/9353261346055_c03b1e4852e31751d7a4_72.jpg"
-    },
-    "U082GTRTR5X": {
-      "id": "U082GTRTR5X",
-      "username": "cyteon",
-      "displayName": "Cyteon",
-      "avatar": "https://avatars.slack-edge.com/2025-04-05/8722129902817_bed15dc712f97108332d_72.png"
     },
     "U09CAKZDX6G": {
       "id": "U09CAKZDX6G",
@@ -93995,12 +94047,6 @@
       "username": "izan",
       "displayName": "eth0",
       "avatar": "https://avatars.slack-edge.com/2026-02-20/10535766619703_0ea03bf74f6a02d6ba5c_72.jpg"
-    },
-    "U0A4VCLJC05": {
-      "id": "U0A4VCLJC05",
-      "username": "hiba.malkan",
-      "displayName": "grumpymarie",
-      "avatar": "https://avatars.slack-edge.com/2025-12-22/10163436332483_d4454b9a7798819e7c39_72.jpg"
     },
     "U07A10XBMGQ": {
       "id": "U07A10XBMGQ",
@@ -96301,12 +96347,6 @@
       "username": "ahmdalnhrawy306",
       "displayName": "Mohamed Barakat",
       "avatar": "https://secure.gravatar.com/avatar/11d2653f7b0d8b580f56eae5df0f0b12.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0016-72.png"
-    },
-    "U093DK2JL0Y": {
-      "id": "U093DK2JL0Y",
-      "username": "pranjal.prakarsh",
-      "displayName": "1nf1n0t1v3r",
-      "avatar": "https://avatars.slack-edge.com/2026-02-26/10590741968340_5b5850fb43a909c5d23e_72.png"
     },
     "U08AFJFPRJ7": {
       "id": "U08AFJFPRJ7",
