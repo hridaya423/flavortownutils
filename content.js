@@ -21709,10 +21709,10 @@ async function addMultiShipEfficiencyGraph() {
         shipGraphObserver = null;
     }
 
-    const adminActions = document.querySelector('.projects-show__admin-actions');
-    if (!adminActions) {
+    const actionsContainer = document.querySelector('.projects-show__title-actions, .projects-show__admin-actions');
+    if (!actionsContainer) {
         shipGraphObserver = new MutationObserver(() => {
-            if (document.querySelector('.projects-show__admin-actions')) {
+            if (document.querySelector('.projects-show__title-actions, .projects-show__admin-actions')) {
                 shipGraphObserver.disconnect();
                 shipGraphObserver = null;
                 addMultiShipEfficiencyGraph();
@@ -21741,20 +21741,20 @@ async function addMultiShipEfficiencyGraph() {
         return;
     }
 
-    const allShipsHaveExtras = Array.from(shipPosts).every(post => {
+    const shipsWithExtras = Array.from(shipPosts).filter(post => {
         const footer = post.querySelector('.post__payout-footer');
         return footer && footer.dataset.flavortownExtras === 'true';
-    });
+    }).length;
 
-    if (!allShipsHaveExtras) {
+    if (shipsWithExtras < 2) {
         shipGraphObserver = new MutationObserver(() => {
             const updatedShipPosts = document.querySelectorAll('article.post--ship');
-            const allHaveExtras = Array.from(updatedShipPosts).every(post => {
+            const updatedExtrasCount = Array.from(updatedShipPosts).filter(post => {
                 const footer = post.querySelector('.post__payout-footer');
                 return footer && footer.dataset.flavortownExtras === 'true';
-            });
+            }).length;
 
-            if (allHaveExtras) {
+            if (updatedExtrasCount >= 2) {
                 shipGraphObserver.disconnect();
                 shipGraphObserver = null;
                 addMultiShipEfficiencyGraph();
@@ -21781,53 +21781,48 @@ async function addMultiShipEfficiencyGraph() {
         if (!date) {
             return;
         }
-        
-        const hasExtras = payoutFooter.dataset.flavortownExtras === 'true';
-        
-        const payoutItems = payoutFooter.querySelectorAll('.post__payout-item');
-        
-        let hoursEl = null, cookiesEl = null, starsEl = null;
-        
-        payoutItems.forEach(item => {
-            const label = item.querySelector('.post__payout-label');
-            const value = item.querySelector('.post__payout-value');
-            if (!label || !value) return;
-            
-            const labelText = label.textContent.trim().toLowerCase();
-            if (labelText.includes('hours')) hoursEl = value;
-            else if (labelText.includes('cookies')) cookiesEl = value;
-            else if (labelText.includes('stars')) {
-                starsEl = value;
-            }
-        });
-        
-        if (!hoursEl || !cookiesEl) {
-            return;
-        }
-        
-        const hoursText = hoursEl.textContent.trim();
-        const cookiesText = cookiesEl.textContent.trim();
+        const payoutMetrics = getShipFooterPayoutMetrics(payoutFooter);
+        const cookies = Math.max(0, Math.round(Number(payoutMetrics.cookiesValue) || 0));
+        if (cookies <= 0) return;
 
-        const hoursMatch = hoursText.match(/([\d.]+)/);
-        const cookiesMatch = cookiesText.match(/([\d,]+)/);
-        const starsMatch = starsEl ? starsEl.textContent.match(/([\d.]+)/) : null;
-        
-        if (!hoursMatch || !cookiesMatch) {
-            return;
-        }
-        
-        const hours = parseFloat(hoursMatch[1]);
-        const cookies = parseInt(cookiesMatch[1].replace(/,/g, ''), 10);
-        const avgStars = starsMatch ? parseFloat(starsMatch[1]) : null;
-  
-        if (hours > 0 && cookies > 0) {
+        const canonicalHours = getCanonicalPaidShipHours(post, payoutMetrics);
+        const hours = canonicalHours > 0
+            ? canonicalHours
+            : (Number(payoutMetrics.hoursValue) > 0 ? Number(payoutMetrics.hoursValue) : 0);
+
+        const explicitMultiplier = Number(payoutMetrics.multiplierValue) || 0;
+        const efficiency = explicitMultiplier > 0
+            ? explicitMultiplier
+            : getMultiplierFromCookies(cookies, hours);
+        if (!Number.isFinite(efficiency) || efficiency <= 0) return;
+
+        const starsItem = Array.from(payoutFooter.querySelectorAll('.post__payout-item')).find(item => {
+            const labelText = (item.querySelector('.post__payout-label')?.textContent || '').toLowerCase();
+            return labelText.includes('avg stars') || labelText.includes('stars');
+        });
+        const starsText = starsItem?.querySelector('.post__payout-value')?.textContent || '';
+        const avgStars = parseNumberFromText(starsText);
+        const starsScaleMatch = String(starsText).match(/\/(\d+(?:\.\d+)?)/);
+        const shipTimestamp = getShipPostTimestamp(post);
+        const inferredStarsScaleMax = Number.isFinite(shipTimestamp)
+            ? (shipTimestamp >= COMMUNITY_VOTES_SHIP_CUTOFF_TS ? CURRENT_VOTE_SCALE_MAX : LEGACY_VOTE_SCALE_MAX)
+            : LEGACY_VOTE_SCALE_MAX;
+        const starsScaleMax = getSafeVoteScaleMax(starsScaleMatch?.[1], inferredStarsScaleMax);
+        const normalizedAvgStars = Number.isFinite(avgStars)
+            ? convertScoreScale(avgStars, starsScaleMax, CURRENT_VOTE_SCALE_MAX)
+            : null;
+
+        if (hours > 0) {
             paidShips.push({
                 shipNumber: index + 1,
                 date: date,
                 hours: hours,
                 cookies: cookies,
-                efficiency: cookies / hours,
-                avgStars: avgStars
+                efficiency,
+                avgStars: Number.isFinite(normalizedAvgStars) ? normalizedAvgStars : null,
+                starsScaleMax: CURRENT_VOTE_SCALE_MAX,
+                rawAvgStars: Number.isFinite(avgStars) ? avgStars : null,
+                rawStarsScaleMax: starsScaleMax
             });
         }
     });
@@ -21854,11 +21849,11 @@ async function addMultiShipEfficiencyGraph() {
         </svg>
     `;
     
-    const editBtn = adminActions.querySelector('a[href*="/edit"]');
+    const editBtn = actionsContainer.querySelector('a[href*="/edit"]');
     if (editBtn) {
         editBtn.insertAdjacentElement('afterend', graphBtn);
     } else {
-        adminActions.insertBefore(graphBtn, adminActions.firstChild);
+        actionsContainer.insertBefore(graphBtn, actionsContainer.firstChild);
     }
     
     graphBtn.addEventListener('click', () => {
@@ -21868,7 +21863,8 @@ async function addMultiShipEfficiencyGraph() {
 
 
 function showShipEfficiencyModal(ships) {
-    const predictedPoint = calculateLinearRegression(ships);
+    const starsScaleMax = CURRENT_VOTE_SCALE_MAX;
+    const predictedPoint = calculateLinearRegression(ships, starsScaleMax);
     
     const modal = document.createElement('div');
     modal.className = 'flavortown-leaderboard-modal';
@@ -21902,11 +21898,11 @@ function showShipEfficiencyModal(ships) {
     });
     
     requestAnimationFrame(() => {
-        createChartJSGraph(ships, predictedPoint, isDarkTheme, textColor, gridColor, efficiencyColor, starsColor);
+        createChartJSGraph(ships, predictedPoint, isDarkTheme, textColor, gridColor, efficiencyColor, starsColor, starsScaleMax);
     });
 }
 
-function createChartJSGraph(ships, predictedPoint, isDarkTheme, textColor, gridColor, efficiencyColor, starsColor) {
+function createChartJSGraph(ships, predictedPoint, isDarkTheme, textColor, gridColor, efficiencyColor, starsColor, starsScaleMax = LEGACY_VOTE_SCALE_MAX) {
     const ctx = document.getElementById('flavortown-ship-efficiency-graph').getContext('2d');
     
     const labels = ships.map(s => s.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
@@ -21917,6 +21913,7 @@ function createChartJSGraph(ships, predictedPoint, isDarkTheme, textColor, gridC
     
     const starsData = ships.map(s => s.avgStars || null);
     starsData.push(predictedPoint.avgStars);
+    const safeStarsScaleMax = getSafeVoteScaleMax(starsScaleMax, LEGACY_VOTE_SCALE_MAX);
     
     const hexToRgba = (hex, alpha) => {
         const r = parseInt(hex.slice(1, 3), 16);
@@ -22046,7 +22043,7 @@ function createChartJSGraph(ships, predictedPoint, isDarkTheme, textColor, gridC
                     position: 'right',
                     title: {
                         display: true,
-                        text: 'Average Stars',
+                        text: `Average Stars (normalized / ${safeStarsScaleMax})`,
                         color: starsColor,
                         font: { weight: 'bold' }
                     },
@@ -22059,15 +22056,15 @@ function createChartJSGraph(ships, predictedPoint, isDarkTheme, textColor, gridC
                             return value.toFixed(1);
                         }
                     },
-                    min: Math.max(1, Math.min(...starsData.filter(v => v !== null)) - 0.5),
-                    max: Math.min(6, Math.max(...starsData.filter(v => v !== null)) + 0.5)
+                    min: 1,
+                    max: safeStarsScaleMax
                 }
             }
         }
     });
 }
 
-function calculateLinearRegression(ships) {
+function calculateLinearRegression(ships, starsScaleMax = LEGACY_VOTE_SCALE_MAX) {
     const n = ships.length;
     
     let sumX = 0, sumY = 0, sumXY = 0, sumXX = 0;
@@ -22106,7 +22103,8 @@ function calculateLinearRegression(ships) {
     if (starsCount >= 2) {
         const starsSlope = (starsCount * sumXYStars - sumXStars * sumYStars) / (starsCount * sumXXStars - sumXStars * sumXStars);
         const starsIntercept = (sumYStars - starsSlope * sumXStars) / starsCount;
-        predictedStars = Math.max(1, Math.min(6, starsSlope * nextIndex + starsIntercept));
+        const safeStarsScaleMax = getSafeVoteScaleMax(starsScaleMax, LEGACY_VOTE_SCALE_MAX);
+        predictedStars = Math.max(1, Math.min(safeStarsScaleMax, starsSlope * nextIndex + starsIntercept));
     }
     
     const lastShip = ships[ships.length - 1];
