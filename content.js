@@ -1492,7 +1492,7 @@ async function getRepoUrlForProjectName(projectName, forceRefresh = false) {
         const doc = new DOMParser().parseFromString(html, 'text/html');
         const owner = getProjectOwnerNameFromDocument(doc);
         const currentUser = getCurrentUserName();
-        if (owner && currentUser && normalizeOwnerName(owner) !== normalizeOwnerName(currentUser)) return null;
+        if (owner && currentUser && !isOwnerMatch(owner, currentUser)) return null;
         const repoUrl = extractRepoUrlFromProjectDoc(doc);
         if (repoUrl) {
             repoMap[normalizedName] = repoUrl;
@@ -1577,7 +1577,7 @@ async function findGithubUsernameFromProjectsIndex() {
             const html = await res.text();
             const doc = new DOMParser().parseFromString(html, 'text/html');
             const owner = getProjectOwnerNameFromDocument(doc);
-            if (currentUser && (!owner || normalizeOwnerName(owner) !== normalizeOwnerName(currentUser))) continue;
+            if (currentUser && (!owner || !isOwnerMatch(owner, currentUser))) continue;
 
             const repoUrl = extractRepoUrlFromProjectDoc(doc);
             if (!repoUrl) continue;
@@ -3497,12 +3497,15 @@ function readShipTimeCache() {
         if (!parsed || typeof parsed !== 'object') return {};
 
         const now = Date.now();
+        const currentUserKey = getOwnerComparisonKey(getCurrentUserName());
         const data = parsed.data || parsed;
         const cleaned = {};
 
         Object.entries(data).forEach(([projectId, entry]) => {
             if (!entry || typeof entry.minutes !== 'number') return;
             if (entry.updatedAt && now - entry.updatedAt > SHIP_TIME_CACHE_TTL) return;
+            const entryOwnerKey = getOwnerComparisonKey(entry.ownerKey || entry.owner || '');
+            if (!currentUserKey || !entryOwnerKey || entryOwnerKey !== currentUserKey) return;
             cleaned[projectId] = entry;
         });
 
@@ -3526,10 +3529,16 @@ function getCachedShipMinutes(projectId) {
     return entry ? entry.minutes : 0;
 }
 
-function setCachedShipMinutes(projectId, minutes) {
+function setCachedShipMinutes(projectId, minutes, ownerName = null) {
     if (!projectId || !minutes) return;
+    const currentUser = getCurrentUserName();
+    const owner = ownerName || getProjectOwnerName();
+    if (!isOwnerMatch(owner, currentUser)) return;
+    const ownerKey = getOwnerComparisonKey(currentUser);
+    if (!ownerKey) return;
+
     const cache = readShipTimeCache();
-    cache[projectId] = { minutes, updatedAt: Date.now() };
+    cache[projectId] = { minutes, ownerKey, updatedAt: Date.now() };
     writeShipTimeCache(cache);
 }
 
@@ -3541,12 +3550,15 @@ function readProjectUnshippedCache() {
         if (!parsed || typeof parsed !== 'object') return {};
 
         const now = Date.now();
+        const currentUserKey = getOwnerComparisonKey(getCurrentUserName());
         const data = parsed.data || parsed;
         const cleaned = {};
 
         Object.entries(data).forEach(([projectId, entry]) => {
             if (!entry || typeof entry.unshippedMinutes !== 'number') return;
             if (entry.updatedAt && now - entry.updatedAt > PROJECT_UNSHIPPED_CACHE_TTL) return;
+            const entryOwnerKey = getOwnerComparisonKey(entry.ownerKey || entry.owner || '');
+            if (!currentUserKey || !entryOwnerKey || entryOwnerKey !== currentUserKey) return;
             cleaned[projectId] = entry;
         });
 
@@ -3654,12 +3666,31 @@ function normalizeUsernameForComparison(name) {
         .trim();
 }
 
+function getOwnerComparisonKey(name) {
+    if (!name) return '';
+    const usernameKey = normalizeUsernameForComparison(name);
+    if (usernameKey) return usernameKey;
+    return normalizeOwnerName(name);
+}
+
+function isOwnerMatch(ownerName, currentUserName = getCurrentUserName()) {
+    if (!ownerName || !currentUserName) return false;
+
+    const ownerNormalized = normalizeOwnerName(ownerName);
+    const userNormalized = normalizeOwnerName(currentUserName);
+    if (ownerNormalized && userNormalized && ownerNormalized === userNormalized) return true;
+
+    const ownerKey = getOwnerComparisonKey(ownerName);
+    const userKey = getOwnerComparisonKey(currentUserName);
+    if (!ownerKey || !userKey) return false;
+    return ownerKey === userKey;
+}
+
 function isProjectOwnedByCurrentUser() {
     if (!/\/projects\/\d+$/.test(window.location.pathname)) return false;
     const currentUser = getCurrentUserName();
     const owner = getProjectOwnerName();
-    if (!currentUser || !owner) return false;
-    return normalizeOwnerName(currentUser) === normalizeOwnerName(owner);
+    return isOwnerMatch(owner, currentUser);
 }
 
 async function cleanupUnownedUnshippedCache() {
@@ -3675,7 +3706,6 @@ async function cleanupUnownedUnshippedCache() {
     const projectIds = Object.keys(cache);
     if (!projectIds.length) return;
 
-    const normalizedUser = normalizeOwnerName(currentUser);
     let changed = false;
 
     for (const projectId of projectIds) {
@@ -3686,7 +3716,7 @@ async function cleanupUnownedUnshippedCache() {
             const doc = new DOMParser().parseFromString(html, 'text/html');
             const owner = getProjectOwnerNameFromDocument(doc);
             if (!owner) continue;
-            if (normalizeOwnerName(owner) !== normalizedUser) {
+            if (!isOwnerMatch(owner, currentUser)) {
                 delete cache[projectId];
                 changed = true;
             }
@@ -3702,6 +3732,12 @@ async function cleanupUnownedUnshippedCache() {
 function setCachedProjectUnshipped(projectId, entry, options = {}) {
     if (!projectId || !entry) return;
     const skipBoardRefresh = !!options.skipBoardRefresh;
+    const ownerName = options.ownerName || getProjectOwnerName();
+    const currentUser = getCurrentUserName();
+    if (!isOwnerMatch(ownerName, currentUser)) return;
+    const ownerKey = getOwnerComparisonKey(currentUser);
+    if (!ownerKey) return;
+
     const cache = readProjectUnshippedCache();
     cache[projectId] = {
         totalMinutes: Math.max(0, entry.totalMinutes || 0),
@@ -3717,6 +3753,7 @@ function setCachedProjectUnshipped(projectId, entry, options = {}) {
         exactCurrentShipCount: Math.max(0, Number(entry.exactCurrentShipCount) || 0),
         currentScaleEstimate: entry.currentScaleEstimate || null,
         usesMixedCurrentOnly: !!entry.usesMixedCurrentOnly,
+        ownerKey,
         updatedAt: Date.now()
     };
     writeProjectUnshippedCache(cache);
@@ -3908,6 +3945,8 @@ async function fetchProjectUnshippedStats(projectId, options = {}) {
 
             const html = await response.text();
             const doc = new DOMParser().parseFromString(html, 'text/html');
+            const ownerName = getProjectOwnerNameFromDocument(doc);
+            const canCacheOwnedStats = isOwnerMatch(ownerName);
             const totalMinutes = getTotalDevlogMinutesFromDocument(doc);
             const shipPosts = Array.from(doc.querySelectorAll('article.post--ship, .post--ship'));
             const projectVoteMeta = getCurrentScaleProjectEstimateFromShipPosts(shipPosts);
@@ -3951,12 +3990,12 @@ async function fetchProjectUnshippedStats(projectId, options = {}) {
                 usesMixedCurrentOnly: projectVoteMeta.usesMixedCurrentOnly
             };
 
-            if (stats.totalShipMinutes > 0) {
-                setCachedShipMinutes(key, stats.totalShipMinutes);
+            if (canCacheOwnedStats && stats.totalShipMinutes > 0) {
+                setCachedShipMinutes(key, stats.totalShipMinutes, ownerName);
             }
 
-            if (stats.totalMinutes > 0 || stats.paidCookies > 0 || stats.currentScaleEstimate || stats.undevloggedMinutes > 0) {
-                setCachedProjectUnshipped(key, stats, { skipBoardRefresh });
+            if (canCacheOwnedStats && (stats.totalMinutes > 0 || stats.paidCookies > 0 || stats.currentScaleEstimate || stats.undevloggedMinutes > 0)) {
+                setCachedProjectUnshipped(key, stats, { skipBoardRefresh, ownerName });
             }
 
             return stats;
@@ -4034,9 +4073,10 @@ async function fetchProjectShipMinutes(projectId) {
 
         const html = await response.text();
         const doc = new DOMParser().parseFromString(html, 'text/html');
+        const ownerName = getProjectOwnerNameFromDocument(doc);
         const minutes = extractShipMinutesFromDocument(doc);
         if (minutes > 0) {
-            setCachedShipMinutes(projectId, minutes);
+            setCachedShipMinutes(projectId, minutes, ownerName);
         }
         return minutes;
     } catch (e) {
@@ -5411,7 +5451,7 @@ async function addProjectCardCookieStats(skipBackloadRefresh = false) {
                         paidCookies: 0,
                         unshippedMinutes: projectStatsMinutes,
                         undevloggedMinutes: 0
-                    }, { skipBoardRefresh: true });
+                    }, { skipBoardRefresh: true, ownerName: getCurrentUserName() });
                 }
             }
             return;
@@ -5476,6 +5516,7 @@ async function addProjectShowCookieStat(forceRefresh = false) {
 
     const projectIdMatch = window.location.pathname.match(/\/projects\/(\d+)/);
     const projectId = projectIdMatch ? projectIdMatch[1] : null;
+    const ownerName = getProjectOwnerName();
 
     const payouts = await fetchShipPayouts();
     const shipPostsOnPage = Array.from(document.querySelectorAll('article.post--ship, .post--ship'));
@@ -5498,7 +5539,7 @@ async function addProjectShowCookieStat(forceRefresh = false) {
                     paidShipMinutes: 0,
                     paidCookies: 0,
                     unshippedMinutes: totalMinutes
-                });
+                }, { ownerName });
             }
         }
         return;
@@ -5514,7 +5555,7 @@ async function addProjectShowCookieStat(forceRefresh = false) {
                     paidShipMinutes: 0,
                     paidCookies: 0,
                     unshippedMinutes: totalMinutes
-                });
+                }, { ownerName });
             }
         }
         return;
