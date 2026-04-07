@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-07T14:52:49.504Z",
+  "lastUpdated": "2026-04-07T16:10:38.626Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -44941,6 +44941,14 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U09HQH0PNEN"
+      },
+      {
+        "ts": "2026-04-07T16:10:10.937Z",
+        "delta": 5,
+        "balance": 417,
+        "reason": "Fleet Captain",
+        "reasonType": "achievement",
+        "userId": "U09HQH0PNEN"
       }
     ],
     "u09hw4wa0c9": [
@@ -69602,6 +69610,14 @@
         "ts": "2026-04-05T16:50:01.617Z",
         "delta": -10,
         "balance": 6,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A736S1Z0X"
+      },
+      {
+        "ts": "2026-04-07T15:56:08.560Z",
+        "delta": -2,
+        "balance": 4,
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0A736S1Z0X"
@@ -94543,6 +94559,18 @@
     ]
   },
   "users": {
+    "U09HQH0PNEN": {
+      "id": "U09HQH0PNEN",
+      "username": "heyyitsmeaditya",
+      "displayName": "Aditya",
+      "avatar": "https://avatars.slack-edge.com/2026-02-15/10527635766673_2625fe4098188bcc1d3d_72.jpg"
+    },
+    "U0A736S1Z0X": {
+      "id": "U0A736S1Z0X",
+      "username": "joelbu",
+      "displayName": "Joelbu",
+      "avatar": "https://avatars.slack-edge.com/2026-01-09/10264122181638_c6a00c24886090862eae_72.jpg"
+    },
     "U0AKKLM2BQW": {
       "id": "U0AKKLM2BQW",
       "username": "neoxyyang11",
@@ -94975,12 +95003,6 @@
       "username": "wfreeform",
       "displayName": "FreeformWave",
       "avatar": "https://avatars.slack-edge.com/2026-02-27/10600777915266_626284f0e42fdcbba282_72.png"
-    },
-    "U0A736S1Z0X": {
-      "id": "U0A736S1Z0X",
-      "username": "joelbu",
-      "displayName": "Joelbu",
-      "avatar": "https://avatars.slack-edge.com/2026-01-09/10264122181638_c6a00c24886090862eae_72.jpg"
     },
     "U0A2QR9RMU0": {
       "id": "U0A2QR9RMU0",
@@ -95767,12 +95789,6 @@
       "id": "U0A150FQJ9Z",
       "username": "ekamwadhwa2004",
       "avatar": "https://secure.gravatar.com/avatar/8784d270ceb3ea85f65e56ac78f1e71a.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0012-72.png"
-    },
-    "U09HQH0PNEN": {
-      "id": "U09HQH0PNEN",
-      "username": "heyyitsmeaditya",
-      "displayName": "Aditya",
-      "avatar": "https://avatars.slack-edge.com/2026-02-15/10527635766673_2625fe4098188bcc1d3d_72.jpg"
     },
     "U0AQ0GRPENP": {
       "id": "U0AQ0GRPENP",
