@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-07T08:13:03.097Z",
+  "lastUpdated": "2026-04-07T09:43:34.184Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -73731,6 +73731,14 @@
         "reason": "ship event payout",
         "reasonType": "",
         "userId": "U0A7CTEKASG"
+      },
+      {
+        "ts": "2026-04-07T09:25:56.282Z",
+        "delta": 15,
+        "balance": 29,
+        "reason": "Sous Chef",
+        "reasonType": "achievement",
+        "userId": "U0A7CTEKASG"
       }
     ],
     "u0a7dj18qlb": [
@@ -94431,16 +94439,16 @@
     ]
   },
   "users": {
-    "U091Q62131A": {
-      "id": "U091Q62131A",
-      "username": "darius",
-      "avatar": "https://secure.gravatar.com/avatar/dc56de15e0c14e7ee2ec8c8a88287f51.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0000-72.png"
-    },
     "U0A7CTEKASG": {
       "id": "U0A7CTEKASG",
       "username": "tomek.tlustyxd",
       "displayName": "FarciarzYT",
       "avatar": "https://avatars.slack-edge.com/2026-01-07/10235006477655_aff643a219940f9cf390_72.jpg"
+    },
+    "U091Q62131A": {
+      "id": "U091Q62131A",
+      "username": "darius",
+      "avatar": "https://secure.gravatar.com/avatar/dc56de15e0c14e7ee2ec8c8a88287f51.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0000-72.png"
     },
     "U0ANPBEB4RY": {
       "id": "U0ANPBEB4RY",
