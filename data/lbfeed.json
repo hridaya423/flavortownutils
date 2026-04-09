@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-09T20:12:21.392Z",
+  "lastUpdated": "2026-04-09T21:09:26.618Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -34017,6 +34017,14 @@
         "delta": -145,
         "balance": 243,
         "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U092SRUUSTS"
+      },
+      {
+        "ts": "2026-04-09T20:56:49.669Z",
+        "delta": 219,
+        "balance": 462,
+        "reason": "ship event payout",
         "reasonType": "",
         "userId": "U092SRUUSTS"
       }
@@ -96229,6 +96237,24 @@
         "userId": "U0ARHC6D27J"
       }
     ],
+    "u0arl72c9uk": [
+      {
+        "ts": "2026-04-09T20:49:03.015Z",
+        "delta": 5,
+        "balance": 5,
+        "reason": "Very Fried",
+        "reasonType": "achievement",
+        "userId": "U0ARL72C9UK"
+      },
+      {
+        "ts": "2026-04-09T20:49:03.045Z",
+        "delta": 3,
+        "balance": 8,
+        "reason": "Home Cookin'",
+        "reasonType": "achievement",
+        "userId": "U0ARL72C9UK"
+      }
+    ],
     "u0askmdpxmw": [
       {
         "ts": "2026-04-09T08:32:00.621Z",
@@ -96241,6 +96267,17 @@
     ]
   },
   "users": {
+    "U092SRUUSTS": {
+      "id": "U092SRUUSTS",
+      "username": "birajbh65",
+      "avatar": "https://secure.gravatar.com/avatar/64e5f6b68ed00deb626aa085dcb1c207.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0005-72.png"
+    },
+    "U0ARL72C9UK": {
+      "id": "U0ARL72C9UK",
+      "username": "axel.zapien1831",
+      "displayName": "0xDuckHard",
+      "avatar": "https://avatars.slack-edge.com/2026-04-09/10881217724914_ca12bdbe1a1f10b5b4b1_72.png"
+    },
     "U092J7619CN": {
       "id": "U092J7619CN",
       "username": "sofaomda738",
@@ -96371,11 +96408,6 @@
       "username": "playerone99",
       "displayName": "Joko26",
       "avatar": "https://avatars.slack-edge.com/2026-02-07/10458110978563_7dcdcad97b993680f9d7_72.jpg"
-    },
-    "U092SRUUSTS": {
-      "id": "U092SRUUSTS",
-      "username": "birajbh65",
-      "avatar": "https://secure.gravatar.com/avatar/64e5f6b68ed00deb626aa085dcb1c207.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0005-72.png"
     },
     "U098P9DLUGJ": {
       "id": "U098P9DLUGJ",
