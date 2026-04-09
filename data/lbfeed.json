@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-09T06:57:16.566Z",
+  "lastUpdated": "2026-04-09T08:22:01.393Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -25965,6 +25965,14 @@
         "reason": "Fleet Captain",
         "reasonType": "achievement",
         "userId": "U0918MSQ7E3"
+      },
+      {
+        "ts": "2026-04-09T08:14:16.398Z",
+        "delta": 45,
+        "balance": 232,
+        "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U0918MSQ7E3"
       }
     ],
     "u09197c6m2b": [
@@ -34601,6 +34609,14 @@
         "delta": -20,
         "balance": 988,
         "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U093DK2JL0Y"
+      },
+      {
+        "ts": "2026-04-09T07:24:34.761Z",
+        "delta": 326,
+        "balance": 1314,
+        "reason": "ship event payout",
         "reasonType": "",
         "userId": "U093DK2JL0Y"
       }
@@ -95611,6 +95627,18 @@
     ]
   },
   "users": {
+    "U0918MSQ7E3": {
+      "id": "U0918MSQ7E3",
+      "username": "duyduy15456",
+      "displayName": "vair.​nooi",
+      "avatar": "https://avatars.slack-edge.com/2026-01-19/10339124565665_d1b880cce06974971c2b_72.jpg"
+    },
+    "U093DK2JL0Y": {
+      "id": "U093DK2JL0Y",
+      "username": "pranjal.prakarsh",
+      "displayName": "1nf1n0t1v3r",
+      "avatar": "https://avatars.slack-edge.com/2026-02-26/10590741968340_5b5850fb43a909c5d23e_72.png"
+    },
     "U093B3R6HCK": {
       "id": "U093B3R6HCK",
       "username": "timslawncare.ok",
@@ -96175,12 +96203,6 @@
       "displayName": "NullByte",
       "avatar": "https://avatars.slack-edge.com/2026-02-20/10557029387460_fc1724c4dc2e0a6eba90_72.png"
     },
-    "U093DK2JL0Y": {
-      "id": "U093DK2JL0Y",
-      "username": "pranjal.prakarsh",
-      "displayName": "1nf1n0t1v3r",
-      "avatar": "https://avatars.slack-edge.com/2026-02-26/10590741968340_5b5850fb43a909c5d23e_72.png"
-    },
     "U0A4XFR2W15": {
       "id": "U0A4XFR2W15",
       "username": "nizanurani46",
@@ -96516,12 +96538,6 @@
       "username": "aymane.berhoua",
       "displayName": "Cotti",
       "avatar": "https://avatars.slack-edge.com/2026-01-26/10382493833649_233155ce3f26335e1655_72.jpg"
-    },
-    "U0918MSQ7E3": {
-      "id": "U0918MSQ7E3",
-      "username": "duyduy15456",
-      "displayName": "vair.​nooi",
-      "avatar": "https://avatars.slack-edge.com/2026-01-19/10339124565665_d1b880cce06974971c2b_72.jpg"
     },
     "U093SU68GHY": {
       "id": "U093SU68GHY",
