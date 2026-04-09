@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-09T22:05:20.101Z",
+  "lastUpdated": "2026-04-09T23:08:54.987Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -15834,6 +15834,30 @@
         "balance": 362,
         "reason": "ship event payout",
         "reasonType": "",
+        "userId": "U0854U71H8E"
+      },
+      {
+        "ts": "2026-04-09T22:41:46.050Z",
+        "delta": 3,
+        "balance": 365,
+        "reason": "Michelin Star",
+        "reasonType": "achievement",
+        "userId": "U0854U71H8E"
+      },
+      {
+        "ts": "2026-04-09T22:41:46.082Z",
+        "delta": 30,
+        "balance": 410,
+        "reason": "Chef who cooked",
+        "reasonType": "achievement",
+        "userId": "U0854U71H8E"
+      },
+      {
+        "ts": "2026-04-09T22:41:46.120Z",
+        "delta": 15,
+        "balance": 380,
+        "reason": "Sous Chef",
+        "reasonType": "achievement",
         "userId": "U0854U71H8E"
       }
     ],
@@ -96299,6 +96323,12 @@
     ]
   },
   "users": {
+    "U0854U71H8E": {
+      "id": "U0854U71H8E",
+      "username": "contact852",
+      "displayName": "Evan Yu",
+      "avatar": "https://avatars.slack-edge.com/2025-01-23/8353988240833_1b93df9b5e156cfd3f46_72.jpg"
+    },
     "U0AAK0EB2LE": {
       "id": "U0AAK0EB2LE",
       "username": "adam.duda",
@@ -96494,12 +96524,6 @@
       "username": "nmsoukmandjiev007",
       "displayName": "nmsoukmandjiev007",
       "avatar": "https://secure.gravatar.com/avatar/895a326f79f3eb9b12e6a3f34bd23621.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0009-72.png"
-    },
-    "U0854U71H8E": {
-      "id": "U0854U71H8E",
-      "username": "contact852",
-      "displayName": "Evan Yu",
-      "avatar": "https://avatars.slack-edge.com/2025-01-23/8353988240833_1b93df9b5e156cfd3f46_72.jpg"
     },
     "U092H6G33T2": {
       "id": "U092H6G33T2",
