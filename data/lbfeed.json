@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-10T22:38:27.237Z",
+  "lastUpdated": "2026-04-10T23:36:02.029Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -48332,6 +48332,14 @@
         "ts": "2026-04-10T21:58:55.256Z",
         "delta": -140,
         "balance": 635,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U09TKL54J0P"
+      },
+      {
+        "ts": "2026-04-10T23:15:47.069Z",
+        "delta": -100,
+        "balance": 535,
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U09TKL54J0P"
@@ -97083,6 +97091,12 @@
     ]
   },
   "users": {
+    "U09TKL54J0P": {
+      "id": "U09TKL54J0P",
+      "username": "simha.saraswati",
+      "displayName": "Simha Saraswati",
+      "avatar": "https://avatars.slack-edge.com/2025-12-10/10122464508192_28489fd33a843ee78bc5_72.png"
+    },
     "U0AAK0EB2LE": {
       "id": "U0AAK0EB2LE",
       "username": "adam.duda",
@@ -97093,12 +97107,6 @@
       "id": "U0A5EMEKU3Z",
       "username": "vishalya18",
       "avatar": "https://secure.gravatar.com/avatar/0a45c7b164a8e5aca04def11393219dd.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0026-72.png"
-    },
-    "U09TKL54J0P": {
-      "id": "U09TKL54J0P",
-      "username": "simha.saraswati",
-      "displayName": "Simha Saraswati",
-      "avatar": "https://avatars.slack-edge.com/2025-12-10/10122464508192_28489fd33a843ee78bc5_72.png"
     },
     "U0A698NNHFD": {
       "id": "U0A698NNHFD",
