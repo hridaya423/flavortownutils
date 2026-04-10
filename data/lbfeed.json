@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-10T14:34:01.485Z",
+  "lastUpdated": "2026-04-10T15:54:34.426Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -11704,6 +11704,14 @@
         "balance": 1117,
         "reason": "shop purchase",
         "reasonType": "",
+        "userId": "U07V12XBSF6"
+      },
+      {
+        "ts": "2026-04-10T15:51:03.085Z",
+        "delta": 30,
+        "balance": 1229,
+        "reason": "Chef who cooked",
+        "reasonType": "achievement",
         "userId": "U07V12XBSF6"
       }
     ],
@@ -96851,6 +96859,11 @@
     ]
   },
   "users": {
+    "U07V12XBSF6": {
+      "id": "U07V12XBSF6",
+      "username": "praneetnrana",
+      "avatar": "https://avatars.slack-edge.com/2024-11-06/7981633353766_2c1d416704c08bf78e03_72.png"
+    },
     "U0A022J58PN": {
       "id": "U0A022J58PN",
       "username": "jydev",
@@ -98098,11 +98111,6 @@
       "username": "adamlotfalla233",
       "displayName": "Adam Lotfalla",
       "avatar": "https://secure.gravatar.com/avatar/bde066a4dadd97fb2686cebe9a7fc501.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0025-72.png"
-    },
-    "U07V12XBSF6": {
-      "id": "U07V12XBSF6",
-      "username": "praneetnrana",
-      "avatar": "https://avatars.slack-edge.com/2024-11-06/7981633353766_2c1d416704c08bf78e03_72.png"
     },
     "U0A5HTUE2F3": {
       "id": "U0A5HTUE2F3",
