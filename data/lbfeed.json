@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-11T04:33:11.127Z",
+  "lastUpdated": "2026-04-11T06:01:44.853Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -5440,6 +5440,14 @@
         "balance": 2006,
         "reason": "user grant",
         "reasonType": "",
+        "userId": "U07950S3GMC"
+      },
+      {
+        "ts": "2026-04-11T05:28:33.447Z",
+        "delta": 5,
+        "balance": 2071,
+        "reason": "Fleet Captain",
+        "reasonType": "achievement",
         "userId": "U07950S3GMC"
       }
     ],
@@ -26004,6 +26012,14 @@
         "ts": "2026-04-10T19:46:28.738Z",
         "delta": 20,
         "balance": 314,
+        "reason": "user grant",
+        "reasonType": "",
+        "userId": "U090LAT6QKB"
+      },
+      {
+        "ts": "2026-04-11T05:39:41.278Z",
+        "delta": -60,
+        "balance": 254,
         "reason": "user grant",
         "reasonType": "",
         "userId": "U090LAT6QKB"
@@ -97173,6 +97189,17 @@
     ]
   },
   "users": {
+    "U090LAT6QKB": {
+      "id": "U090LAT6QKB",
+      "username": "dinosaur890123",
+      "avatar": "https://avatars.slack-edge.com/2025-12-09/10077925689238_2149e0ba18d7110e7a3f_72.png"
+    },
+    "U07950S3GMC": {
+      "id": "U07950S3GMC",
+      "username": "shuflduf",
+      "displayName": "Shuflentity",
+      "avatar": "https://avatars.slack-edge.com/2026-02-10/10498415177345_16a6504fc94cd7ee5ef7_72.png"
+    },
     "U0A0TB2ETAB": {
       "id": "U0A0TB2ETAB",
       "username": "tejasmali",
@@ -97268,11 +97295,6 @@
       "id": "U0A1NME3EJD",
       "username": "nok",
       "avatar": "https://avatars.slack-edge.com/2026-01-13/10282812823125_9fcc7248e736e16e62f6_72.png"
-    },
-    "U090LAT6QKB": {
-      "id": "U090LAT6QKB",
-      "username": "dinosaur890123",
-      "avatar": "https://avatars.slack-edge.com/2025-12-09/10077925689238_2149e0ba18d7110e7a3f_72.png"
     },
     "U0A55A4B21K": {
       "id": "U0A55A4B21K",
@@ -97730,12 +97752,6 @@
       "id": "U078VN0UU2K",
       "username": "hippogriff",
       "avatar": "https://avatars.slack-edge.com/2026-01-14/10294818167174_9836ff19df7225cbbc26_72.jpg"
-    },
-    "U07950S3GMC": {
-      "id": "U07950S3GMC",
-      "username": "shuflduf",
-      "displayName": "Shuflentity",
-      "avatar": "https://avatars.slack-edge.com/2026-02-10/10498415177345_16a6504fc94cd7ee5ef7_72.png"
     },
     "U07ES48RES3": {
       "id": "U07ES48RES3",
