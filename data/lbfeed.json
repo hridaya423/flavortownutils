@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-11T19:35:20.836Z",
+  "lastUpdated": "2026-04-11T20:35:17.671Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -15100,6 +15100,14 @@
         "balance": 16,
         "reason": "Michelin Star",
         "reasonType": "achievement",
+        "userId": "U083F2N7ZAM"
+      },
+      {
+        "ts": "2026-04-11T19:40:17.171Z",
+        "delta": 334,
+        "balance": 365,
+        "reason": "ship event payout",
+        "reasonType": "",
         "userId": "U083F2N7ZAM"
       }
     ],
@@ -38729,6 +38737,14 @@
         "delta": -70,
         "balance": 0,
         "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U09736L44JZ"
+      },
+      {
+        "ts": "2026-04-11T20:30:33.993Z",
+        "delta": 75,
+        "balance": 75,
+        "reason": "ship event payout",
         "reasonType": "",
         "userId": "U09736L44JZ"
       }
@@ -97463,6 +97479,17 @@
     ]
   },
   "users": {
+    "U09736L44JZ": {
+      "id": "U09736L44JZ",
+      "username": "satyamrajgaya434",
+      "avatar": "https://avatars.slack-edge.com/2025-09-19/9577172238240_ca93b692b12938796d47_72.jpg"
+    },
+    "U083F2N7ZAM": {
+      "id": "U083F2N7ZAM",
+      "username": "meanclient69420",
+      "displayName": "BetterClient",
+      "avatar": "https://avatars.slack-edge.com/2025-02-27/8541973059712_37e1c34da3d506f891c4_72.png"
+    },
     "U06C0TGFGVA": {
       "id": "U06C0TGFGVA",
       "username": "albu.adam",
@@ -98407,11 +98434,6 @@
       "displayName": "Kip",
       "avatar": "https://avatars.slack-edge.com/2025-06-22/9086132293188_37946afc73986dd0a30d_72.png"
     },
-    "U09736L44JZ": {
-      "id": "U09736L44JZ",
-      "username": "satyamrajgaya434",
-      "avatar": "https://avatars.slack-edge.com/2025-09-19/9577172238240_ca93b692b12938796d47_72.jpg"
-    },
     "U08RE7RUD9C": {
       "id": "U08RE7RUD9C",
       "username": "aeratory678",
@@ -98509,12 +98531,6 @@
       "username": "makstmguzun",
       "displayName": "Noname",
       "avatar": "https://avatars.slack-edge.com/2026-03-09/10657621289538_c94b5f67d0fb13e8bf4e_72.jpg"
-    },
-    "U083F2N7ZAM": {
-      "id": "U083F2N7ZAM",
-      "username": "meanclient69420",
-      "displayName": "BetterClient",
-      "avatar": "https://avatars.slack-edge.com/2025-02-27/8541973059712_37e1c34da3d506f891c4_72.png"
     },
     "U06DP2ZMZ3P": {
       "id": "U06DP2ZMZ3P",
