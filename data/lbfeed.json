@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-11T21:34:09.958Z",
+  "lastUpdated": "2026-04-11T22:33:34.839Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -74059,6 +74059,14 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0A75AZ7ZJN"
+      },
+      {
+        "ts": "2026-04-11T21:39:06.535Z",
+        "delta": 10,
+        "balance": 18,
+        "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U0A75AZ7ZJN"
       }
     ],
     "u0a760de2t0": [
@@ -82442,6 +82450,14 @@
         "balance": 208,
         "reason": "Chef who cooked",
         "reasonType": "achievement",
+        "userId": "U0A7YQ0KVKJ"
+      },
+      {
+        "ts": "2026-04-11T21:44:10.801Z",
+        "delta": 6,
+        "balance": 214,
+        "reason": "ship event payout",
+        "reasonType": "",
         "userId": "U0A7YQ0KVKJ"
       }
     ],
@@ -97535,6 +97551,17 @@
     ]
   },
   "users": {
+    "U0A7YQ0KVKJ": {
+      "id": "U0A7YQ0KVKJ",
+      "username": "danjward8",
+      "displayName": "jam06452",
+      "avatar": "https://avatars.slack-edge.com/2026-02-03/10428401167669_923724959d03151f5ee3_72.jpg"
+    },
+    "U0A75AZ7ZJN": {
+      "id": "U0A75AZ7ZJN",
+      "username": "seradedstripes",
+      "avatar": "https://secure.gravatar.com/avatar/ff46040875bd323e4078b8ba78c48257.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0014-72.png"
+    },
     "U0ADU6K5BAR": {
       "id": "U0ADU6K5BAR",
       "username": "robkoo",
@@ -97937,12 +97964,6 @@
       "username": "fishygaming.life",
       "avatar": "https://secure.gravatar.com/avatar/7d55dc097985d807fd403ce4b3e9f629.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0017-72.png"
     },
-    "U0A7YQ0KVKJ": {
-      "id": "U0A7YQ0KVKJ",
-      "username": "danjward8",
-      "displayName": "jam06452",
-      "avatar": "https://avatars.slack-edge.com/2026-02-03/10428401167669_923724959d03151f5ee3_72.jpg"
-    },
     "U09CUN9GYJ2": {
       "id": "U09CUN9GYJ2",
       "username": "ssxavier888",
@@ -98123,11 +98144,6 @@
       "username": "begmetovrustambek",
       "displayName": "Fish Jr.",
       "avatar": "https://avatars.slack-edge.com/2026-01-22/10381259128640_eb99c53625608ef13dd8_72.png"
-    },
-    "U0A75AZ7ZJN": {
-      "id": "U0A75AZ7ZJN",
-      "username": "seradedstripes",
-      "avatar": "https://secure.gravatar.com/avatar/ff46040875bd323e4078b8ba78c48257.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0014-72.png"
     },
     "U088SJQAM35": {
       "id": "U088SJQAM35",
