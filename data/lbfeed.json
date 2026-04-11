@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-11T16:38:25.911Z",
+  "lastUpdated": "2026-04-11T17:32:14.044Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -95367,6 +95367,14 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0AJ2DDJ996"
+      },
+      {
+        "ts": "2026-04-11T16:58:44.740Z",
+        "delta": 10,
+        "balance": 1726,
+        "reason": "Line Cook",
+        "reasonType": "achievement",
+        "userId": "U0AJ2DDJ996"
       }
     ],
     "u0aj55ffgje": [
@@ -97237,6 +97245,14 @@
         "reason": "Michelin Star",
         "reasonType": "achievement",
         "userId": "U0AQDRVBKLY"
+      },
+      {
+        "ts": "2026-04-11T17:01:32.535Z",
+        "delta": 35,
+        "balance": 50,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0AQDRVBKLY"
       }
     ],
     "u0aqq1kenhl": [
@@ -97405,6 +97421,18 @@
     ]
   },
   "users": {
+    "U0AQDRVBKLY": {
+      "id": "U0AQDRVBKLY",
+      "username": "vaibhaav3",
+      "displayName": "vaibhaav3",
+      "avatar": "https://secure.gravatar.com/avatar/16e1f6aec12f854cf327ea8c6f740a1b.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0025-72.png"
+    },
+    "U0AJ2DDJ996": {
+      "id": "U0AJ2DDJ996",
+      "username": "brahmtejsawhney",
+      "displayName": "brahmtejsawhney",
+      "avatar": "https://secure.gravatar.com/avatar/12d9b4e2de5c4301ce58c88c6e05a6a2.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0015-72.png"
+    },
     "U0A4PKZKLF9": {
       "id": "U0A4PKZKLF9",
       "username": "wfreeform",
@@ -97633,12 +97661,6 @@
       "username": "sofaomda738",
       "displayName": "Sub",
       "avatar": "https://avatars.slack-edge.com/2026-03-10/10662104454789_fae7d5b4b2fbc4b912e6_72.png"
-    },
-    "U0AQDRVBKLY": {
-      "id": "U0AQDRVBKLY",
-      "username": "vaibhaav3",
-      "displayName": "vaibhaav3",
-      "avatar": "https://secure.gravatar.com/avatar/16e1f6aec12f854cf327ea8c6f740a1b.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0025-72.png"
     },
     "U092STH5TAL": {
       "id": "U092STH5TAL",
@@ -99469,12 +99491,6 @@
       "username": "mathdudex09",
       "displayName": "xFN10x",
       "avatar": "https://avatars.slack-edge.com/2025-08-03/9295106914389_7daba3e74ddbaf58bb1c_72.png"
-    },
-    "U0AJ2DDJ996": {
-      "id": "U0AJ2DDJ996",
-      "username": "brahmtejsawhney",
-      "displayName": "brahmtejsawhney",
-      "avatar": "https://secure.gravatar.com/avatar/12d9b4e2de5c4301ce58c88c6e05a6a2.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0015-72.png"
     },
     "U0AKLQNQ0BB": {
       "id": "U0AKLQNQ0BB",
