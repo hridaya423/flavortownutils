@@ -1,7 +1,6 @@
 
 const browserAPI = typeof browser !== 'undefined' ? browser : chrome;
 const GAMBLORPHEUS_LOTTERIES_URL = 'https://gamblorpheus.hackclub.com/api/lotteries';
-const GAMBLORPHEUS_LOTTERIES_FALLBACK_URL = 'https://r.jina.ai/http://gamblorpheus.hackclub.com/api/lotteries';
 
 function parseLotteryPayload(text) {
     if (typeof text !== 'string' || !text.trim()) return null;
@@ -51,6 +50,150 @@ async function fetchLotteryPayload(url) {
             raw: null,
             error: err?.message || 'Network error'
         };
+    }
+}
+
+async function waitForTabComplete(tabId, timeoutMs = 12000) {
+    try {
+        const existing = await browserAPI.tabs.get(tabId);
+        if (existing?.status === 'complete') return true;
+    } catch (e) {
+        return false;
+    }
+
+    return await new Promise((resolve) => {
+        let done = false;
+        const finish = (value) => {
+            if (done) return;
+            done = true;
+            try {
+                browserAPI.tabs.onUpdated.removeListener(onUpdated);
+            } catch (e) {
+            }
+            clearTimeout(timer);
+            resolve(value);
+        };
+
+        const onUpdated = (updatedTabId, info) => {
+            if (updatedTabId !== tabId) return;
+            if (info?.status === 'complete') {
+                finish(true);
+            }
+        };
+
+        const timer = setTimeout(() => finish(false), timeoutMs);
+        try {
+            browserAPI.tabs.onUpdated.addListener(onUpdated);
+        } catch (e) {
+            clearTimeout(timer);
+            resolve(false);
+        }
+    });
+}
+
+async function fetchAiTodoViaMainWorldBridge(endpoint, apiKey, model, messages) {
+    if (!browserAPI.scripting?.executeScript || !browserAPI.tabs?.create || !browserAPI.tabs?.query) {
+        return {
+            ok: false,
+            status: 0,
+            data: null,
+            raw: null,
+            error: 'AI CORS blocked and bridge unavailable'
+        };
+    }
+
+    let tempTabId = null;
+
+    try {
+        const existingTabs = await browserAPI.tabs.query({ url: 'https://ai.hackclub.com/*' });
+        let targetTab = Array.isArray(existingTabs) ? existingTabs[0] : null;
+
+        if (!targetTab?.id) {
+            targetTab = await browserAPI.tabs.create({ url: 'https://ai.hackclub.com/', active: false });
+            tempTabId = targetTab?.id || null;
+        }
+
+        if (!targetTab?.id) {
+            return {
+                ok: false,
+                status: 0,
+                data: null,
+                raw: null,
+                error: 'Unable to create AI bridge tab'
+            };
+        }
+
+        await waitForTabComplete(targetTab.id);
+
+        const results = await browserAPI.scripting.executeScript({
+            target: { tabId: targetTab.id },
+            world: 'MAIN',
+            func: async (bridgeEndpoint, bridgeApiKey, bridgeModel, bridgeMessages) => {
+                try {
+                    const response = await fetch(bridgeEndpoint, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${bridgeApiKey}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ model: bridgeModel, messages: bridgeMessages })
+                    });
+
+                    const text = await response.text().catch(() => '');
+                    let data = null;
+                    try {
+                        data = text ? JSON.parse(text) : null;
+                    } catch (e) {
+                        data = null;
+                    }
+
+                    return {
+                        ok: response.ok,
+                        status: response.status,
+                        data,
+                        raw: data ? null : text,
+                        error: response.ok ? null : (data?.error?.message || data?.error || text || `HTTP ${response.status}`)
+                    };
+                } catch (err) {
+                    return {
+                        ok: false,
+                        status: 0,
+                        data: null,
+                        raw: null,
+                        error: err?.message || 'AI bridge request failed'
+                    };
+                }
+            },
+            args: [endpoint, apiKey, model, messages]
+        });
+
+        const bridgeResult = Array.isArray(results) ? results[0]?.result : null;
+        if (bridgeResult && typeof bridgeResult === 'object') {
+            return bridgeResult;
+        }
+
+        return {
+            ok: false,
+            status: 0,
+            data: null,
+            raw: null,
+            error: 'Empty AI bridge response'
+        };
+    } catch (err) {
+        return {
+            ok: false,
+            status: 0,
+            data: null,
+            raw: null,
+            error: err?.message || 'AI bridge failed'
+        };
+    } finally {
+        if (tempTabId) {
+            try {
+                await browserAPI.tabs.remove(tempTabId);
+            } catch (e) {
+            }
+        }
     }
 }
 
@@ -159,12 +302,6 @@ browserAPI.runtime.onMessage.addListener((message, sender, sendResponse) => {
         const url = message.url || GAMBLORPHEUS_LOTTERIES_URL;
 
         (async () => {
-            const fallbackResult = await fetchLotteryPayload(GAMBLORPHEUS_LOTTERIES_FALLBACK_URL);
-            if (fallbackResult.ok && Array.isArray(fallbackResult.data)) {
-                sendResponse({ ...fallbackResult, source: 'fallback' });
-                return;
-            }
-
             const primaryResult = await fetchLotteryPayload(url);
             if (primaryResult.ok && Array.isArray(primaryResult.data)) {
                 sendResponse({ ...primaryResult, source: 'primary' });
@@ -173,10 +310,10 @@ browserAPI.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
             sendResponse({
                 ok: false,
-                status: primaryResult.status || fallbackResult.status || 0,
-                error: primaryResult.error || fallbackResult.error || 'Unable to fetch lotteries',
+                status: primaryResult.status || 0,
+                error: primaryResult.error || 'Unable to fetch lotteries',
                 data: null,
-                raw: primaryResult.raw || fallbackResult.raw || null,
+                raw: primaryResult.raw || null,
                 source: 'failed'
             });
         })();
@@ -261,6 +398,62 @@ browserAPI.runtime.onMessage.addListener((message, sender, sendResponse) => {
         } catch (e) {
             handlePermissionResult(false);
         }
+
+        return true;
+    }
+
+    if (message.type === 'AI_GENERATE_TODOS') {
+        const endpoint = typeof message.endpoint === 'string' ? message.endpoint : '';
+        const apiKey = typeof message.apiKey === 'string' ? message.apiKey.trim() : '';
+        const model = typeof message.model === 'string' ? message.model.trim() : '';
+        const messages = Array.isArray(message.messages) ? message.messages : [];
+
+        if (!endpoint) {
+            sendResponse({ ok: false, status: 0, error: 'Missing endpoint' });
+            return false;
+        }
+
+        if (!apiKey) {
+            sendResponse({ ok: false, status: 0, error: 'Missing API key' });
+            return false;
+        }
+
+        if (!model) {
+            sendResponse({ ok: false, status: 0, error: 'Missing model' });
+            return false;
+        }
+
+        (async () => {
+            if (browserAPI.permissions?.contains) {
+                try {
+                    const hasPermission = await new Promise((resolve) => {
+                        try {
+                            browserAPI.permissions.contains({ origins: ['https://ai.hackclub.com/*'] }, (granted) => resolve(!!granted));
+                        } catch (e) {
+                            resolve(true);
+                        }
+                    });
+                    if (!hasPermission) {
+                        sendResponse({
+                            ok: false,
+                            status: 0,
+                            error: 'Missing ai.hackclub.com host permission. Reload extension after update.'
+                        });
+                        return;
+                    }
+                } catch (e) {
+                }
+            }
+
+            const bridgeResult = await fetchAiTodoViaMainWorldBridge(endpoint, apiKey, model, messages);
+            if (bridgeResult.ok) {
+                sendResponse({ ...bridgeResult, source: 'bridge' });
+                return;
+            }
+
+            console.error('[AI TODO] Bridge request failed:', bridgeResult);
+            sendResponse({ ...bridgeResult, source: 'failed' });
+        })();
 
         return true;
     }

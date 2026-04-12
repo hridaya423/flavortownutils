@@ -63,6 +63,12 @@
     --flavortown-preview-text: var(--custom-text-primary);
     --flavortown-preview-panel-bg: var(--custom-bg-mantle);
 
+    --flavortown-md-counter-text: var(--custom-text-secondary);
+    --flavortown-md-counter-bg: color-mix(in srgb, var(--custom-bg-mantle) 88%, transparent);
+    --flavortown-md-counter-border: color-mix(in srgb, var(--custom-surface-hover) 75%, transparent);
+    --flavortown-md-counter-near: var(--custom-yellow);
+    --flavortown-md-counter-limit: var(--custom-error);
+
     --flavortown-doomscroll-bg: rgba(17, 17, 27, 0.8);
     --flavortown-doomscroll-card-bg: var(--custom-bg-base);
     --flavortown-doomscroll-media-bg: linear-gradient(135deg, var(--custom-bg-crust) 0%, var(--custom-bg-mantle) 50%, var(--custom-bg-base) 100%);

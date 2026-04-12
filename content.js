@@ -144,6 +144,9 @@ const CHANGELOG_CACHE_TTL = 10 * 60 * 1000;
 const CHANGELOG_MAX_COMMITS = 200;
 const CHANGELOG_RECENT_COMMITS = 10;
 const COMMAND_PALETTE_SHORTCUT_KEY = 'flavortownCommandPaletteShortcut';
+const AI_TODO_API_KEY_KEY = 'flavortown_ai_todo_api_key';
+const AI_TODO_MODEL = 'google/gemini-3-flash-preview';
+const AI_TODO_PROXY_ENDPOINT = 'https://ai.hackclub.com/proxy/v1/chat/completions';
 const DEFAULT_COMMAND_PALETTE_SHORTCUT = /Mac|iPhone|iPad|iPod/i.test(navigator.platform || navigator.userAgent)
     ? 'Cmd+K'
     : 'Ctrl+K';
@@ -985,6 +988,79 @@ function mergeVoteBreakdownMetaIntoScores() {
 
         scoreRow.classList.add('flavortown-vote-meta-scores');
         entry.dataset.flavortownVotesMerged = 'true';
+    });
+}
+
+function enhanceVoteBreakdownTodoConversion() {
+    if (!/\/projects\/\d+$/.test(window.location.pathname)) return;
+    if (!isProjectOwnedByCurrentUser()) return;
+
+    const projectId = window.location.pathname.match(/\/projects\/(\d+)/)?.[1] || null;
+    const projectName = getCurrentProjectName();
+    if (!projectId || !projectName) return;
+
+    const voteBlocks = document.querySelectorAll('.post__votes-breakdown');
+    if (!voteBlocks.length) return;
+
+    voteBlocks.forEach((block, blockIndex) => {
+        if (block.dataset.flavortownVoteTodoAttached === 'true') return;
+
+        const summary = block.querySelector(':scope > summary');
+        if (!summary) return;
+
+        const feedbackItems = Array.from(block.querySelectorAll('.post__vote-entry .post__vote-reason'))
+            .map((reason) => (reason?.textContent || '').trim())
+            .filter((feedback) => hasRenderableCommunityVoteFeedback({ feedback }));
+
+        if (!feedbackItems.length) return;
+
+        const controls = document.createElement('div');
+        controls.style.cssText = 'margin: 8px 0 4px; display: flex; align-items: center; justify-content: flex-end;';
+
+        const todoBtn = document.createElement('button');
+        todoBtn.type = 'button';
+        todoBtn.textContent = 'AI → TODOs for this ship';
+        todoBtn.style.cssText = 'padding: 4px 10px; border-radius: 6px; border: 1px solid var(--catppuccin-surface2, var(--color-brown-light, #c4b5a5)); background: var(--catppuccin-surface0, var(--color-cream-dark, #efe6d5)); color: var(--catppuccin-mauve, var(--color-accent, var(--color-brown, #b4854a))); font-size: 0.78em; font-weight: 600; cursor: pointer;';
+
+        todoBtn.addEventListener('click', async () => {
+            if (todoBtn.dataset.loading === 'true') return;
+            const previousText = todoBtn.textContent;
+            todoBtn.dataset.loading = 'true';
+            todoBtn.disabled = true;
+            todoBtn.textContent = 'Converting...';
+
+            try {
+                const liveFeedbackItems = Array.from(block.querySelectorAll('.post__vote-entry .post__vote-reason'))
+                    .map((reason) => (reason?.textContent || '').trim())
+                    .filter((feedback) => hasRenderableCommunityVoteFeedback({ feedback }));
+                const result = await convertVoteFeedbackBatchToTodos(liveFeedbackItems, projectId, projectName, {
+                    maxTodos: 7,
+                    contextLabel: `Ship vote block #${blockIndex + 1}`
+                });
+
+                if (result.added > 0) {
+                    todoBtn.textContent = `Added ${result.added} TODO${result.added === 1 ? '' : 's'}`;
+                } else if (result.parsed > 0) {
+                    todoBtn.textContent = 'Already in TODOs';
+                } else {
+                    todoBtn.textContent = 'No actionable task';
+                }
+            } catch (error) {
+                const message = formatAiTodoError(error);
+                todoBtn.textContent = message;
+                todoBtn.title = error?.message || message;
+            } finally {
+                setTimeout(() => {
+                    todoBtn.dataset.loading = 'false';
+                    todoBtn.disabled = false;
+                    todoBtn.textContent = previousText;
+                }, 2200);
+            }
+        });
+
+        controls.appendChild(todoBtn);
+        summary.insertAdjacentElement('afterend', controls);
+        block.dataset.flavortownVoteTodoAttached = 'true';
     });
 }
 
@@ -2710,6 +2786,18 @@ async function initProjectTodos() {
             currentFilter = tab.dataset.status || 'all';
             renderTabs();
         });
+    });
+
+    document.addEventListener('flavortown:project-todos-updated', (event) => {
+        const eventProjectId = String(event?.detail?.projectId || '');
+        if (!eventProjectId || eventProjectId !== String(projectId)) return;
+        const latest = readProjectTodos(projectId);
+        items = Array.isArray(latest.items) ? latest.items : [];
+        card.open = true;
+        if (metaEl) {
+            metaEl.textContent = 'Updated from vote feedback';
+        }
+        renderTabs();
     });
 
     const local = readProjectTodos(projectId);
@@ -5715,6 +5803,7 @@ async function addProjectShowCookieStat(forceRefresh = false) {
 
 
 let inlineFormLoading = false;
+const DEVLOG_CHAR_LIMIT = 2000;
 
 const LUCIDE_ICONS = {
     bold: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 12h9a4 4 0 0 1 0 8H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h7a4 4 0 0 1 0 8"/></svg>',
@@ -5886,6 +5975,9 @@ function addLivePreview(textarea, toolbar) {
     const container = document.createElement('div');
     container.className = 'flavortown-md-container';
 
+    const textareaShell = document.createElement('div');
+    textareaShell.className = 'flavortown-md-textarea-shell';
+
     const resizeHandle = document.createElement('div');
     resizeHandle.className = 'flavortown-md-resize';
     resizeHandle.title = 'Drag to resize';
@@ -5902,9 +5994,12 @@ function addLivePreview(textarea, toolbar) {
     closeBtn.title = 'Close preview';
 
     textarea.parentNode.insertBefore(container, textarea);
-    container.appendChild(textarea);
+    container.appendChild(textareaShell);
+    textareaShell.appendChild(textarea);
     container.appendChild(resizeHandle);
     container.appendChild(previewPanel);
+
+    ensureDevlogCharacterCounter(textarea, inputWrapper);
 
     let previewVisible = false;
     let previewManuallyClosed = false;
@@ -5988,6 +6083,56 @@ function addLivePreview(textarea, toolbar) {
     }
 }
 
+function ensureDevlogCharacterCounter(textarea, inputWrapper) {
+    if (!textarea || !inputWrapper) return;
+
+    const currentMax = Number(textarea.getAttribute('maxlength'));
+    if (!Number.isFinite(currentMax) || currentMax <= 0 || currentMax > DEVLOG_CHAR_LIMIT) {
+        textarea.setAttribute('maxlength', String(DEVLOG_CHAR_LIMIT));
+    }
+
+    const maxChars = Number(textarea.getAttribute('maxlength')) || DEVLOG_CHAR_LIMIT;
+    const counterHost = textarea.closest('.flavortown-md-textarea-shell') || inputWrapper;
+
+    if (counterHost && window.getComputedStyle(counterHost).position === 'static') {
+        counterHost.style.position = 'relative';
+    }
+
+    const counterKey = textarea.dataset.flavortownCharCounterKey
+        || `counter_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+    textarea.dataset.flavortownCharCounterKey = counterKey;
+    textarea.classList.add('flavortown-md-has-counter');
+
+    if (textarea.dataset.flavortownCharCounterInit === 'true') {
+        const existing = inputWrapper.querySelector('[data-flavortown-md-counter-for="' + counterKey + '"]');
+        if (existing) {
+            const len = textarea.value.length;
+            existing.textContent = `${len}/${maxChars}`;
+            existing.classList.toggle('flavortown-md-counter--near', len >= Math.floor(maxChars * 0.9));
+            existing.classList.toggle('flavortown-md-counter--limit', len >= maxChars);
+        }
+        return;
+    }
+
+    textarea.dataset.flavortownCharCounterInit = 'true';
+    const counter = document.createElement('div');
+    counter.className = 'flavortown-md-counter';
+    counter.setAttribute('aria-live', 'polite');
+    counter.setAttribute('data-flavortown-md-counter-for', counterKey);
+
+    const updateCounter = () => {
+        const len = textarea.value.length;
+        counter.textContent = `${len}/${maxChars}`;
+        counter.classList.toggle('flavortown-md-counter--near', len >= Math.floor(maxChars * 0.9));
+        counter.classList.toggle('flavortown-md-counter--limit', len >= maxChars);
+    };
+
+    textarea.addEventListener('input', updateCounter);
+    updateCounter();
+
+    (counterHost || inputWrapper).appendChild(counter);
+}
+
 function addMarkdownToolbar(textarea) {
     if (!textarea || textarea.dataset.mdToolbar) return;
     textarea.dataset.mdToolbar = 'true';
@@ -6044,6 +6189,7 @@ function addMarkdownToolbar(textarea) {
     inputWrapper.insertBefore(toolbar, textarea);
 
     addLivePreview(textarea, toolbar);
+    ensureDevlogCharacterCounter(textarea, inputWrapper);
 }
 
 function wrapSelection(textarea, before, after) {
@@ -7696,6 +7842,7 @@ function addInlineEditToolbar(textarea, inputWrapper) {
     });
 
     inputWrapper.insertBefore(toolbar, textarea);
+    ensureDevlogCharacterCounter(textarea, inputWrapper);
 }
 
 async function saveDevlogEdit(newBody, csrfToken, formAction, postBody, editWrapper, originalHtml, saveBtn) {
@@ -11248,6 +11395,7 @@ function init() {
     addDevlogFrequencyStat();
     addVotesDevlogFrequencyStat();
     mergeVoteBreakdownMetaIntoScores();
+    enhanceVoteBreakdownTodoConversion();
     ensureShipStatsReady();
     addShipStats();
     addUnshippedCookieEstimate();
@@ -12840,6 +12988,7 @@ document.addEventListener('turbo:load', () => {
     addDevlogFrequencyStat();
     addVotesDevlogFrequencyStat();
     mergeVoteBreakdownMetaIntoScores();
+    enhanceVoteBreakdownTodoConversion();
     ensureShipStatsReady();
     addShipStats();
     addUnshippedCookieEstimate();
@@ -21492,6 +21641,311 @@ function clusterVotesToShips(votes, ships) {
     return clustered;
 }
 
+function getAiTodoSettings() {
+    return new Promise((resolve) => {
+        try {
+            browserAPI.storage.sync.get([AI_TODO_API_KEY_KEY], (result) => {
+                const apiKey = typeof result?.[AI_TODO_API_KEY_KEY] === 'string'
+                    ? result[AI_TODO_API_KEY_KEY].trim()
+                    : '';
+                resolve({ apiKey });
+            });
+        } catch (e) {
+            resolve({ apiKey: '' });
+        }
+    });
+}
+
+function normalizeAiTodoLine(line) {
+    if (!line || typeof line !== 'string') return '';
+    const normalized = line
+        .replace(/^[-*\d.\s]+/, '')
+        .replace(/^todo\s*[:\-]\s*/i, '')
+        .replace(/^task\s*[:\-]\s*/i, '')
+        .replace(/^\[(high|medium|low|p\d)\]\s*/i, '')
+        .replace(/^"|"$/g, '')
+        .replace(/^'|'$/g, '')
+        .replace(/[\s.]+$/g, '')
+        .replace(/\s+/g, ' ')
+        .trim()
+        .slice(0, 180);
+
+    if (!normalized) return '';
+    if (normalized.length < 8) return '';
+
+    const lowValuePatterns = [
+        /^great\s+work\b/i,
+        /^looks\s+good\b/i,
+        /^keep\s+it\s+up\b/i,
+        /^continue\s+(developing|building)\b/i,
+        /^nice\s+project\b/i,
+        /^overall\b/i
+    ];
+    if (lowValuePatterns.some((pattern) => pattern.test(normalized))) {
+        return '';
+    }
+
+    return normalized.charAt(0).toUpperCase() + normalized.slice(1);
+}
+
+function extractAiTodoValue(value) {
+    if (typeof value === 'string') return value;
+    if (!value || typeof value !== 'object') return '';
+
+    const candidateKeys = ['task', 'title', 'todo', 'item', 'action', 'text', 'description'];
+    for (const key of candidateKeys) {
+        if (typeof value[key] === 'string' && value[key].trim()) {
+            return value[key];
+        }
+    }
+    return '';
+}
+
+function parseAiTodoContent(content) {
+    if (!content || typeof content !== 'string') return [];
+
+    const tryParseJsonTodos = (raw) => {
+        if (!raw || typeof raw !== 'string') return [];
+        try {
+            const parsed = JSON.parse(raw);
+            if (Array.isArray(parsed)) {
+                return parsed
+                    .map(extractAiTodoValue)
+                    .map(normalizeAiTodoLine)
+                    .filter(Boolean);
+            }
+            if (Array.isArray(parsed?.todos)) {
+                return parsed.todos
+                    .map(extractAiTodoValue)
+                    .map(normalizeAiTodoLine)
+                    .filter(Boolean);
+            }
+        } catch (e) {
+        }
+        return [];
+    };
+
+    const direct = tryParseJsonTodos(content.trim());
+    if (direct.length) return direct;
+
+    const fenced = content.match(/```(?:json)?\s*([\s\S]*?)```/i);
+    if (fenced?.[1]) {
+        const parsed = tryParseJsonTodos(fenced[1].trim());
+        if (parsed.length) return parsed;
+    }
+
+    const objectMatch = content.match(/\{[\s\S]*\}/);
+    if (objectMatch?.[0]) {
+        const parsed = tryParseJsonTodos(objectMatch[0]);
+        if (parsed.length) return parsed;
+    }
+
+    return content
+        .split('\n')
+        .map(normalizeAiTodoLine)
+        .filter(Boolean)
+        .slice(0, 5);
+}
+
+function tokenizeTodoForSimilarity(text) {
+    const stopWords = new Set(['the', 'a', 'an', 'to', 'for', 'of', 'in', 'on', 'and', 'with', 'from', 'by']);
+    return String(text || '')
+        .toLowerCase()
+        .replace(/[^a-z0-9\s]/g, ' ')
+        .split(/\s+/)
+        .map((token) => token.replace(/(ing|ed|es|s)$/i, ''))
+        .filter((token) => token.length > 2 && !stopWords.has(token));
+}
+
+function jaccardSimilarity(tokensA, tokensB) {
+    if (!tokensA.length || !tokensB.length) return 0;
+    const setA = new Set(tokensA);
+    const setB = new Set(tokensB);
+    let intersection = 0;
+    setA.forEach((token) => {
+        if (setB.has(token)) intersection += 1;
+    });
+    const union = setA.size + setB.size - intersection;
+    return union > 0 ? (intersection / union) : 0;
+}
+
+function dedupeAiTodoLines(lines) {
+    const accepted = [];
+    const acceptedTokens = [];
+    const exactSeen = new Set();
+
+    lines.forEach((line) => {
+        const normalized = normalizeAiTodoLine(line);
+        const key = normalizeTodoDedupeKey(normalized);
+        if (!normalized || !key || exactSeen.has(key)) return;
+
+        const tokens = tokenizeTodoForSimilarity(normalized);
+        const tooSimilar = acceptedTokens.some((existingTokens) => jaccardSimilarity(tokens, existingTokens) >= 0.72);
+        if (tooSimilar) return;
+
+        exactSeen.add(key);
+        accepted.push(normalized);
+        acceptedTokens.push(tokens);
+    });
+
+    return accepted;
+}
+
+function normalizeTodoDedupeKey(text) {
+    return String(text || '')
+        .toLowerCase()
+        .replace(/[^a-z0-9\s]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+}
+
+function formatAiTodoError(error) {
+    const raw = String(error?.message || '').trim();
+    if (!raw) return 'AI failed';
+
+    const normalized = raw.toLowerCase();
+    if (normalized.includes('missing ai api key')) return 'Set API key in popup';
+    if (normalized.includes('authentication failed') || normalized.includes('http 401')) return 'Invalid AI API key';
+    if (normalized.includes('host permission')) return 'Reload extension';
+    if (normalized.includes('bridge') || normalized.includes('cors')) return 'AI bridge failed';
+
+    return raw.slice(0, 80);
+}
+
+function appendFeedbackTodosToProject(projectId, todos, sourceVote = null) {
+    if (!projectId || !Array.isArray(todos) || !todos.length) return 0;
+    const local = readProjectTodos(projectId);
+    const existingItems = Array.isArray(local?.items) ? [...local.items] : [];
+    const seen = new Set(existingItems.map(item => normalizeTodoDedupeKey(item?.title)));
+    const existingTokenBuckets = existingItems.map((item) => tokenizeTodoForSimilarity(item?.title));
+    const nowIso = new Date().toISOString();
+
+    let added = 0;
+    todos.forEach((title) => {
+        const normalizedTitle = normalizeAiTodoLine(title);
+        const dedupeKey = normalizeTodoDedupeKey(normalizedTitle);
+        if (!normalizedTitle || !dedupeKey || seen.has(dedupeKey)) return;
+        const tokens = tokenizeTodoForSimilarity(normalizedTitle);
+        const tooSimilarToExisting = existingTokenBuckets.some((bucket) => jaccardSimilarity(tokens, bucket) >= 0.8);
+        if (tooSimilarToExisting) return;
+
+        seen.add(dedupeKey);
+        existingTokenBuckets.push(tokens);
+        existingItems.unshift({
+            id: generateLocalTodoId(),
+            title: normalizedTitle,
+            status: 'todo',
+            createdAt: nowIso,
+            updatedAt: nowIso,
+            source: 'local',
+            sourceMeta: {
+                kind: 'ai_vote_feedback',
+                voteTimestamp: sourceVote?.timestamp || null,
+                voter: sourceVote?.votedBy || null
+            }
+        });
+        added += 1;
+    });
+
+    if (!added) return 0;
+
+    writeProjectTodos(projectId, existingItems, local?.slackSyncedAt || 0);
+    document.dispatchEvent(new CustomEvent('flavortown:project-todos-updated', {
+        detail: {
+            projectId: String(projectId),
+            source: 'ai-vote-feedback'
+        }
+    }));
+    return added;
+}
+
+async function convertVoteFeedbackToTodos(feedback, projectId, projectName, vote) {
+    return convertVoteFeedbackBatchToTodos([feedback], projectId, projectName, {
+        maxTodos: 4,
+        sourceVote: vote,
+        contextLabel: 'Single vote feedback'
+    });
+}
+
+function sanitizeFeedbackForAi(text, maxChars = 700) {
+    return String(text || '')
+        .replace(/\s+/g, ' ')
+        .trim()
+        .slice(0, maxChars);
+}
+
+async function convertVoteFeedbackBatchToTodos(feedbackItems, projectId, projectName, options = {}) {
+    const normalizedFeedback = (Array.isArray(feedbackItems) ? feedbackItems : [])
+        .map((entry) => sanitizeFeedbackForAi(entry))
+        .filter(Boolean);
+
+    if (!normalizedFeedback.length) {
+        throw new Error('No feedback to convert');
+    }
+
+    const { apiKey } = await getAiTodoSettings();
+    if (!apiKey) {
+        throw new Error('Missing AI API key. Set it in the extension popup.');
+    }
+
+    const maxTodos = Math.max(2, Math.min(8, Number(options?.maxTodos) || 6));
+    const feedbackLines = normalizedFeedback
+        .map((text, index) => `${index + 1}. ${text}`)
+        .join('\n');
+
+    const systemPrompt = `You convert project feedback into actionable TODO tasks.
+Return strict JSON only in this exact shape: {"todos":["task one", "task two"]}
+Rules:
+- Each todo must be concrete, legible, and imperative.
+- Use 6-16 words per todo.
+- Include specific target/component when possible.
+- Merge overlapping feedback into one clearer task.
+- Exclude praise, generic comments, and non-actionable text.
+- Avoid duplicates and near-duplicates.
+- Maximum ${maxTodos} todos.
+- If no actionable work exists, return {"todos":[]}.
+- Do not include markdown, extra keys, or commentary.`;
+    const contextLabel = options?.contextLabel ? String(options.contextLabel).trim() : '';
+    const userPrompt = `Project: ${projectName || 'Unknown'}${contextLabel ? `\nContext: ${contextLabel}` : ''}\nFeedback items:\n${feedbackLines}`;
+
+    const aiResponse = await new Promise((resolve, reject) => {
+        try {
+            browserAPI.runtime.sendMessage({
+                type: 'AI_GENERATE_TODOS',
+                endpoint: AI_TODO_PROXY_ENDPOINT,
+                apiKey,
+                model: AI_TODO_MODEL,
+                messages: [
+                    { role: 'system', content: systemPrompt },
+                    { role: 'user', content: userPrompt }
+                ]
+            }, (response) => {
+                const err = browserAPI.runtime.lastError;
+                if (err) {
+                    reject(new Error(err.message || 'AI request failed'));
+                    return;
+                }
+                if (!response?.ok) {
+                    reject(new Error(response?.error || `AI request failed (${response?.status || 0})`));
+                    return;
+                }
+                resolve(response.data || null);
+            });
+        } catch (error) {
+            reject(error);
+        }
+    });
+
+    const content = aiResponse?.choices?.[0]?.message?.content || '';
+    const todos = dedupeAiTodoLines(parseAiTodoContent(content)).slice(0, maxTodos);
+    if (!todos.length) {
+        return { added: 0, parsed: 0 };
+    }
+
+    const added = appendFeedbackTodosToProject(projectId, todos, options?.sourceVote || null);
+    return { added, parsed: todos.length };
+}
+
 function createVoteCard(vote, usersMap) {
     const voteCard = document.createElement('div');
     voteCard.style.cssText = `
@@ -21557,7 +22011,7 @@ function hasRenderableCommunityVoteFeedback(vote) {
     return true;
 }
 
-function createVotesContainer(votes, usersMap) {
+function createVotesContainer(votes, usersMap, options = {}) {
     const renderableVotes = votes.filter(hasRenderableCommunityVoteFeedback);
     if (!renderableVotes.length) return null;
 
@@ -21576,18 +22030,65 @@ function createVotesContainer(votes, usersMap) {
     header.style.cssText = `
         display: flex;
         align-items: center;
-        gap: 8px;
+        justify-content: space-between;
+        gap: 10px;
         margin-bottom: 10px;
         font-weight: 600;
         font-size: 0.9em;
         color: var(--catppuccin-text, var(--color-brown, #5d4e37));
     `;
-    header.innerHTML = `
+    const titleWrap = document.createElement('div');
+    titleWrap.style.cssText = 'display:flex; align-items:center; gap:8px;';
+    titleWrap.innerHTML = `
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="var(--catppuccin-yellow, var(--color-brown, #d4a857))" style="opacity: 0.9;">
             <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
         </svg>
         <span>Community Votes (${renderableVotes.length})</span>
     `;
+    header.appendChild(titleWrap);
+
+    if (options?.allowTodoConversion && options?.projectId) {
+        const convertBtn = document.createElement('button');
+        convertBtn.type = 'button';
+        convertBtn.textContent = 'AI → TODOs for this ship';
+        convertBtn.style.cssText = 'padding: 4px 10px; border-radius: 6px; border: 1px solid var(--catppuccin-surface2, var(--color-brown-light, #c4b5a5)); background: var(--catppuccin-base, var(--color-cream, rgba(255,255,255,0.5))); color: var(--catppuccin-mauve, var(--color-accent, var(--color-brown, #b4854a))); font-size: 0.78em; font-weight: 600; cursor: pointer; white-space: nowrap;';
+        convertBtn.addEventListener('click', async () => {
+            if (convertBtn.dataset.loading === 'true') return;
+            const previousText = convertBtn.textContent;
+            convertBtn.dataset.loading = 'true';
+            convertBtn.disabled = true;
+            convertBtn.textContent = 'Converting...';
+
+            try {
+                const feedbackItems = renderableVotes
+                    .map((vote) => (vote?.feedback || '').trim())
+                    .filter((feedback) => hasRenderableCommunityVoteFeedback({ feedback }));
+                const result = await convertVoteFeedbackBatchToTodos(feedbackItems, options.projectId, options.projectName || '', {
+                    maxTodos: 7,
+                    contextLabel: 'Community votes block'
+                });
+
+                if (result.added > 0) {
+                    convertBtn.textContent = `Added ${result.added} TODO${result.added === 1 ? '' : 's'}`;
+                } else if (result.parsed > 0) {
+                    convertBtn.textContent = 'Already in TODOs';
+                } else {
+                    convertBtn.textContent = 'No actionable task';
+                }
+            } catch (error) {
+                const message = formatAiTodoError(error);
+                convertBtn.textContent = message;
+                convertBtn.title = error?.message || message;
+            } finally {
+                setTimeout(() => {
+                    convertBtn.dataset.loading = 'false';
+                    convertBtn.disabled = false;
+                    convertBtn.textContent = previousText;
+                }, 2200);
+            }
+        });
+        header.appendChild(convertBtn);
+    }
     votesContainer.appendChild(header);
 
     const votesList = document.createElement('div');
@@ -21642,7 +22143,8 @@ async function addProjectVotesDisplay() {
     if (document.querySelector('.flavortown-project-votes')) return;
 
     const projectName = getCurrentProjectName();
-    if (!projectName) return;
+    const projectId = window.location.pathname.match(/\/projects\/(\d+)/)?.[1] || null;
+    if (!projectName || !projectId) return;
 
     const votesData = await fetchVotesData();
     if (!votesData || !votesData.votes || votesData.votes.length === 0) return;
@@ -21695,7 +22197,11 @@ async function addProjectVotesDisplay() {
         const insertAfter = ship.statsElement || ship.element.querySelector('.post__body');
         if (!insertAfter) return;
 
-        const votesContainer = createVotesContainer(shipVotes, votesData.users);
+        const votesContainer = createVotesContainer(shipVotes, votesData.users, {
+            projectId,
+            projectName,
+            allowTodoConversion: isProjectOwnedByCurrentUser()
+        });
         if (!votesContainer) return;
         insertAfter.parentNode.insertBefore(votesContainer, insertAfter.nextSibling);
     });

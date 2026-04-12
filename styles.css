@@ -530,6 +530,43 @@
     width: 100%;
 }
 
+.flavortown-md-textarea-shell {
+    position: relative;
+    display: flex;
+    flex: 1;
+    min-width: 0;
+}
+
+.flavortown-md-has-counter {
+    padding-bottom: 26px;
+}
+
+.flavortown-md-counter {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    text-align: right;
+    font-size: 12px;
+    line-height: 1.2;
+    color: var(--flavortown-md-counter-text, var(--color-text-secondary, #7a6a59));
+    opacity: 0.9;
+    pointer-events: none;
+    z-index: 6;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: var(--flavortown-md-counter-bg, color-mix(in srgb, var(--color-surface, #ffffff) 82%, transparent));
+    border: 1px solid var(--flavortown-md-counter-border, color-mix(in srgb, var(--color-border, #d8c9ba) 55%, transparent));
+}
+
+.flavortown-md-counter--near {
+    color: var(--flavortown-md-counter-near, var(--color-accent, #b07a24));
+}
+
+.flavortown-md-counter--limit {
+    color: var(--flavortown-md-counter-limit, var(--color-red, #c74848));
+    font-weight: 600;
+}
+
 .flavortown-md-container--preview {
     flex-direction: row;
     gap: 12px;

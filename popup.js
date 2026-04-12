@@ -107,6 +107,7 @@ const LOGPHEUS_PERMISSION_ORIGIN = 'https://logpheus.gizzy.gay/*';
 const LOCAL_STORAGE_SYNC_KEY = 'flavortownLocalStorageSync';
 const LOCAL_STORAGE_IMPORT_KEY = 'flavortownLocalStorageImport';
 const COMMAND_PALETTE_SHORTCUT_KEY = 'flavortownCommandPaletteShortcut';
+const AI_TODO_API_KEY_KEY = 'flavortown_ai_todo_api_key';
 const EXPORT_VERSION = 1;
 const LOCAL_STORAGE_EXPORT_KEYS = [
     'flavortown_progress_mode',
@@ -156,6 +157,7 @@ let catppuccinAccent = 'mauve';
 let localStorageSyncEnabled = false;
 let logpheusSyncEnabled = false;
 let commandPaletteShortcut = null;
+let aiTodoApiKey = '';
 const isMac = /Mac|iPhone|iPad|iPod/i.test(navigator.platform || navigator.userAgent);
 const DEFAULT_COMMAND_PALETTE_SHORTCUT = isMac ? 'Cmd+K' : 'Ctrl+K';
 
@@ -218,7 +220,8 @@ async function loadSettings() {
         'catppuccinAccent',
         LOCAL_STORAGE_SYNC_ENABLED_KEY,
         LOGPHEUS_SYNC_ENABLED_KEY,
-        COMMAND_PALETTE_SHORTCUT_KEY
+        COMMAND_PALETTE_SHORTCUT_KEY,
+        AI_TODO_API_KEY_KEY
     ]);
     currentTheme = result.theme || 'default';
     catppuccinAccent = result.catppuccinAccent || 'mauve';
@@ -239,6 +242,7 @@ async function loadSettings() {
     }
 
     commandPaletteShortcut = normalizeShortcutString(result[COMMAND_PALETTE_SHORTCUT_KEY]) || DEFAULT_COMMAND_PALETTE_SHORTCUT;
+    aiTodoApiKey = typeof result[AI_TODO_API_KEY_KEY] === 'string' ? result[AI_TODO_API_KEY_KEY] : '';
 }
 
 function migrateCustomColors(oldColors) {
@@ -332,6 +336,23 @@ function setupEventListeners() {
     }
     shortcutReset?.addEventListener('click', () => resetShortcut(shortcutBtn));
 
+    const aiApiKeyInput = document.getElementById('aiTodoApiKey');
+
+    const saveAiTodoSettings = async (showSavedStatus = false) => {
+        aiTodoApiKey = (aiApiKeyInput?.value || '').trim();
+
+        await browserAPI.storage.sync.set({
+            [AI_TODO_API_KEY_KEY]: aiTodoApiKey
+        });
+
+        if (showSavedStatus) {
+            showStatus('AI TODO settings saved');
+        }
+    };
+
+    aiApiKeyInput?.addEventListener('change', () => saveAiTodoSettings(true));
+    aiApiKeyInput?.addEventListener('blur', () => saveAiTodoSettings(false));
+
     document.getElementById('clearCacheBtn')?.addEventListener('click', clearAllCaches);
 }
 
@@ -366,6 +387,7 @@ function updateUI() {
     updateCustomPreview();
     applyPopupTheme();
     updateSyncToggleUI();
+    updateAiTodoSettingsUI();
     updateShortcutUI();
 }
 
@@ -378,6 +400,13 @@ function updateSyncToggleUI() {
     const logpheusToggle = document.getElementById('logpheusSyncToggle');
     if (logpheusToggle) {
         logpheusToggle.checked = logpheusSyncEnabled;
+    }
+}
+
+function updateAiTodoSettingsUI() {
+    const keyInput = document.getElementById('aiTodoApiKey');
+    if (keyInput) {
+        keyInput.value = aiTodoApiKey || '';
     }
 }
 

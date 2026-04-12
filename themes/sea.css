@@ -49,6 +49,12 @@
     --flavortown-preview-text: var(--sea-white);
     --flavortown-preview-panel-bg: var(--sea-deep);
 
+    --flavortown-md-counter-text: var(--sea-mist);
+    --flavortown-md-counter-bg: color-mix(in srgb, var(--sea-deep) 88%, transparent);
+    --flavortown-md-counter-border: color-mix(in srgb, var(--sea-mid) 75%, transparent);
+    --flavortown-md-counter-near: var(--sea-gold);
+    --flavortown-md-counter-limit: var(--sea-coral);
+
     --flavortown-doomscroll-bg: rgba(10, 22, 40, 0.8);
     --flavortown-doomscroll-card-bg: var(--sea-dark);
     --flavortown-doomscroll-media-bg: linear-gradient(135deg, var(--sea-abyss) 0%, var(--sea-deep) 50%, var(--sea-dark) 100%);

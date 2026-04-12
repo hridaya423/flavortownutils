@@ -368,6 +368,53 @@ body {
     color: var(--popup-text-dim);
 }
 
+.popup__ai {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 10px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: var(--popup-surface);
+    border: 1px solid var(--popup-border);
+}
+
+.popup__ai-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--popup-text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.popup__ai-input,
+.popup__ai-select {
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid var(--popup-border);
+    background: var(--popup-surface-hover);
+    color: var(--popup-text);
+    font-size: 12px;
+    padding: 8px 10px;
+    outline: none;
+}
+
+.popup__ai-input:focus,
+.popup__ai-select:focus {
+    border-color: var(--popup-accent);
+}
+
+.popup__ai-hint {
+    font-size: 10px;
+    color: var(--popup-text-dim);
+    line-height: 1.35;
+}
+
+.popup__ai-fixed-model {
+    font-size: 11px;
+    color: var(--popup-text);
+    opacity: 0.9;
+}
+
 .popup__sync-toggle {
     margin-bottom: 8px;
 }
