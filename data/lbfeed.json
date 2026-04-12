@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-12T14:08:50.827Z",
+  "lastUpdated": "2026-04-12T15:05:01.350Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -30836,6 +30836,14 @@
         "balance": 12,
         "reason": "Hello, Kitchen!",
         "reasonType": "achievement",
+        "userId": "U091S46DVNG"
+      },
+      {
+        "ts": "2026-04-12T14:51:22.229Z",
+        "delta": 55,
+        "balance": 67,
+        "reason": "ship event payout",
+        "reasonType": "",
         "userId": "U091S46DVNG"
       }
     ],
@@ -75337,6 +75345,14 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0A78UCA231"
+      },
+      {
+        "ts": "2026-04-12T14:25:58.289Z",
+        "delta": -90,
+        "balance": 260,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A78UCA231"
       }
     ],
     "u0a793wkubw": [
@@ -97825,6 +97841,17 @@
     ]
   },
   "users": {
+    "U091S46DVNG": {
+      "id": "U091S46DVNG",
+      "username": "matthewjhinkleman",
+      "displayName": "Matthew Hinkleman",
+      "avatar": "https://avatars.slack-edge.com/2025-06-16/9060151397396_19d6dd6439c731bf178e_72.png"
+    },
+    "U0A78UCA231": {
+      "id": "U0A78UCA231",
+      "username": "aayushydvnp",
+      "avatar": "https://secure.gravatar.com/avatar/8ebf09e3208359cb42383b27195e3552.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0013-72.png"
+    },
     "U074LUX88PJ": {
       "id": "U074LUX88PJ",
       "username": "makstmguzun",
@@ -98822,11 +98849,6 @@
       "username": "ritwik.dadarwal",
       "displayName": "ritwikk",
       "avatar": "https://avatars.slack-edge.com/2025-12-27/10195971365766_cc76589516cf99ec270d_72.jpg"
-    },
-    "U0A78UCA231": {
-      "id": "U0A78UCA231",
-      "username": "aayushydvnp",
-      "avatar": "https://secure.gravatar.com/avatar/8ebf09e3208359cb42383b27195e3552.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0013-72.png"
     },
     "U09HQH0PNEN": {
       "id": "U09HQH0PNEN",
@@ -103553,12 +103575,6 @@
       "username": "bruhdows",
       "displayName": "Bruhdows",
       "avatar": "https://avatars.slack-edge.com/2025-09-26/9586387509746_c70fa180516d873e0a6f_72.jpg"
-    },
-    "U091S46DVNG": {
-      "id": "U091S46DVNG",
-      "username": "matthewjhinkleman",
-      "displayName": "Matthew Hinkleman",
-      "avatar": "https://avatars.slack-edge.com/2025-06-16/9060151397396_19d6dd6439c731bf178e_72.png"
     },
     "U0A5Y5SJ3LN": {
       "id": "U0A5Y5SJ3LN",
