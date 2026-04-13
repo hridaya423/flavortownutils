@@ -4624,3 +4624,49 @@ body.flavortown-docs-no-code-theme .card code {
     background: var(--ctp-mantle) !important;
     color: var(--ctp-text) !important;
 }
+
+.flavortown-shop-orders-group-actions {
+    --ft-btn-approve-bg: var(--ctp-green) !important;
+    --ft-btn-approve-hover: #b8f0b0 !important;
+    --ft-btn-hold-bg: var(--ctp-yellow) !important;
+    --ft-btn-hold-hover: #fbeec2 !important;
+    --ft-btn-reject-bg: var(--ctp-red) !important;
+    --ft-btn-reject-hover: #f8b4c4 !important;
+}
+
+.flavortown-shop-orders-actions-row button,
+.flavortown-shop-orders-bulk-approve,
+.flavortown-shop-orders-bulk-hold,
+.flavortown-shop-orders-bulk-reject {
+    background: var(--ft-btn-approve-bg, var(--ctp-green)) !important;
+    color: var(--ctp-crust) !important;
+    border: none !important;
+    border-radius: 5px !important;
+    font-size: 0.75rem !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    transition: all 0.15s ease !important;
+}
+
+.flavortown-shop-orders-bulk-approve:hover {
+    background: var(--ft-btn-approve-hover, #b8f0b0) !important;
+    transform: translateY(-1px) !important;
+}
+
+.flavortown-shop-orders-bulk-hold {
+    background: var(--ft-btn-hold-bg, var(--ctp-yellow)) !important;
+}
+
+.flavortown-shop-orders-bulk-hold:hover {
+    background: var(--ft-btn-hold-hover, #fbeec2) !important;
+    transform: translateY(-1px) !important;
+}
+
+.flavortown-shop-orders-bulk-reject {
+    background: var(--ft-btn-reject-bg, var(--ctp-red)) !important;
+}
+
+.flavortown-shop-orders-bulk-reject:hover {
+    background: var(--ft-btn-reject-hover, #f8b4c4) !important;
+    transform: translateY(-1px) !important;
+}

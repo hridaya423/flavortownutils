@@ -4690,3 +4690,49 @@ body.flavortown-docs-no-code-theme .card code {
     background: var(--overcooked-dark) !important;
     color: var(--overcooked-white) !important;
 }
+
+.flavortown-shop-orders-group-actions {
+    --ft-btn-approve-bg: var(--overcooked-kelp) !important;
+    --ft-btn-approve-hover: #7ddaa8 !important;
+    --ft-btn-hold-bg: var(--overcooked-gold) !important;
+    --ft-btn-hold-hover: #f7e876 !important;
+    --ft-btn-reject-bg: var(--overcooked-coral) !important;
+    --ft-btn-reject-hover: #fda5a5 !important;
+}
+
+.flavortown-shop-orders-actions-row button,
+.flavortown-shop-orders-bulk-approve,
+.flavortown-shop-orders-bulk-hold,
+.flavortown-shop-orders-bulk-reject {
+    background: var(--ft-btn-approve-bg, var(--overcooked-kelp)) !important;
+    color: var(--overcooked-burnt) !important;
+    border: none !important;
+    border-radius: 5px !important;
+    font-size: 0.75rem !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    transition: all 0.15s ease !important;
+}
+
+.flavortown-shop-orders-bulk-approve:hover {
+    background: var(--ft-btn-approve-hover, #7ddaa8) !important;
+    transform: translateY(-1px) !important;
+}
+
+.flavortown-shop-orders-bulk-hold {
+    background: var(--ft-btn-hold-bg, var(--overcooked-gold)) !important;
+}
+
+.flavortown-shop-orders-bulk-hold:hover {
+    background: var(--ft-btn-hold-hover, #f7e876) !important;
+    transform: translateY(-1px) !important;
+}
+
+.flavortown-shop-orders-bulk-reject {
+    background: var(--ft-btn-reject-bg, var(--overcooked-coral)) !important;
+}
+
+.flavortown-shop-orders-bulk-reject:hover {
+    background: var(--ft-btn-reject-hover, #fda5a5) !important;
+    transform: translateY(-1px) !important;
+}

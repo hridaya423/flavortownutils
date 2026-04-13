@@ -16000,6 +16000,155 @@ async function enhanceAdminShopOrdersPage(attempt = 0) {
                 groupWrap.appendChild(cookiesBadge);
             }
 
+            if (group.rows.length > 0) {
+                const actionsWrap = document.createElement('div');
+                actionsWrap.className = 'flavortown-shop-orders-group-actions';
+                actionsWrap.style.cssText = 'display: flex; gap: 6px; margin-left: auto;';
+
+                const approveAllBtn = document.createElement('button');
+                approveAllBtn.type = 'button';
+                approveAllBtn.textContent = `Approve All (${group.rows.length})`;
+                approveAllBtn.className = 'flavortown-shop-orders-bulk-approve';
+                approveAllBtn.style.cssText = 'padding: 4px 10px; background: #10b981; color: white; border: none; border-radius: 5px; font-size: 0.75rem; font-weight: 600; cursor: pointer;';
+
+                const holdAllBtn = document.createElement('button');
+                holdAllBtn.type = 'button';
+                holdAllBtn.textContent = `Hold All (${group.rows.length})`;
+                holdAllBtn.className = 'flavortown-shop-orders-bulk-hold';
+                holdAllBtn.style.cssText = 'padding: 4px 10px; background: #f59e0b; color: white; border: none; border-radius: 5px; font-size: 0.75rem; font-weight: 600; cursor: pointer;';
+
+                const rejectAllBtn = document.createElement('button');
+                rejectAllBtn.type = 'button';
+                rejectAllBtn.textContent = `Reject All (${group.rows.length})`;
+                rejectAllBtn.className = 'flavortown-shop-orders-bulk-reject';
+                rejectAllBtn.style.cssText = 'padding: 4px 10px; background: #ef4444; color: white; border: none; border-radius: 5px; font-size: 0.75rem; font-weight: 600; cursor: pointer;';
+
+                const orderIds = group.rows.map(row => getShopOrderIdFromRow(row)).filter(Boolean);
+
+                const csrfToken = getCsrfToken() || document.querySelector('input[name="authenticity_token"]')?.value || '';
+                const returnView = 'shop_orders';
+                const returnStatus = new URLSearchParams(window.location.search).get('status') || new URLSearchParams(window.location.search).get('return_status') || 'pending';
+
+                async function submitAction(orderId, action, bodyParams = {}) {
+                    const params = new URLSearchParams(bodyParams);
+                    params.set('authenticity_token', csrfToken);
+                    params.set('return_view', returnView);
+                    params.set('return_status', returnStatus);
+                    if (!params.has('tracking_number')) params.set('tracking_number', '');
+
+                    try {
+                        const response = await fetch(`/admin/shop_orders/${orderId}/${action}`, {
+                            method: 'POST',
+                            credentials: 'same-origin',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                                'X-CSRF-Token': csrfToken,
+                                'X-Requested-With': 'XMLHttpRequest'
+                            },
+                            body: params.toString()
+                        });
+
+                        if (!response.ok) {
+                            return { ok: false, status: response.status };
+                        }
+
+                        if (response.url && /sign_in|login/.test(response.url)) {
+                            return { ok: false, status: 401 };
+                        }
+
+                        return { ok: true, status: response.status };
+                    } catch (e) {
+                        return { ok: false, status: 0 };
+                    }
+                }
+
+                approveAllBtn.addEventListener('click', async () => {
+                    if (!confirm(`Approve ${orderIds.length} orders for ${group.title}?`)) return;
+                    if (!csrfToken) {
+                        alert('Missing CSRF token on this page. Reload and try again.');
+                        return;
+                    }
+                    approveAllBtn.disabled = true;
+                    approveAllBtn.textContent = 'Approving...';
+                    let approvedCount = 0;
+                    for (const orderId of orderIds) {
+                        const result = await submitAction(orderId, 'approve');
+                        if (result.ok) approvedCount += 1;
+                    }
+                    if (approvedCount > 0) {
+                        approveAllBtn.textContent = `Approved ${approvedCount}`;
+                        setTimeout(() => window.location.reload(), 800);
+                    } else {
+                        approveAllBtn.disabled = false;
+                        approveAllBtn.textContent = `Approve All (${group.rows.length})`;
+                        alert('Approve failed for all orders. Open one order and try manually to refresh auth/token, then retry bulk action.');
+                    }
+                });
+
+                holdAllBtn.addEventListener('click', async () => {
+                    if (!confirm(`Put ${orderIds.length} orders on hold for ${group.title}?`)) return;
+                    if (!csrfToken) {
+                        alert('Missing CSRF token on this page. Reload and try again.');
+                        return;
+                    }
+                    holdAllBtn.disabled = true;
+                    holdAllBtn.textContent = 'Holding...';
+                    let heldCount = 0;
+                    for (const orderId of orderIds) {
+                        const result = await submitAction(orderId, 'place_on_hold');
+                        if (result.ok) heldCount += 1;
+                    }
+                    if (heldCount > 0) {
+                        holdAllBtn.textContent = `Held ${heldCount}`;
+                        setTimeout(() => window.location.reload(), 800);
+                    } else {
+                        holdAllBtn.disabled = false;
+                        holdAllBtn.textContent = `Hold All (${group.rows.length})`;
+                        alert('Hold failed for all orders. Open one order and try manually to refresh auth/token, then retry bulk action.');
+                    }
+                });
+
+                rejectAllBtn.addEventListener('click', async () => {
+                    const reason = prompt('Rejection Reason (shown to user):');
+                    if (!reason) return;
+                    const internalReason = prompt('Internal Reason (required, staff only):');
+                    if (!internalReason) return;
+                    const projectId = prompt('Related Project ID (required):');
+                    if (!projectId) return;
+                    const joeCase = prompt('Joe Case URL (optional):');
+                    if (!csrfToken) {
+                        alert('Missing CSRF token on this page. Reload and try again.');
+                        return;
+                    }
+
+                    rejectAllBtn.disabled = true;
+                    rejectAllBtn.textContent = 'Rejecting...';
+                    let rejectedCount = 0;
+                    for (const orderId of orderIds) {
+                        const result = await submitAction(orderId, 'reject', {
+                            reason,
+                            internal_reason: internalReason,
+                            fraud_related_project_id: projectId,
+                            ...(joeCase && { joe_case_url: joeCase })
+                        });
+                        if (result.ok) rejectedCount += 1;
+                    }
+                    if (rejectedCount > 0) {
+                        rejectAllBtn.textContent = `Rejected ${rejectedCount}`;
+                        setTimeout(() => window.location.reload(), 800);
+                    } else {
+                        rejectAllBtn.disabled = false;
+                        rejectAllBtn.textContent = `Reject All (${group.rows.length})`;
+                        alert('Reject failed for all orders. Open one order and try manually to refresh auth/token, then retry bulk action.');
+                    }
+                });
+
+                actionsWrap.appendChild(approveAllBtn);
+                actionsWrap.appendChild(holdAllBtn);
+                actionsWrap.appendChild(rejectAllBtn);
+                groupWrap.appendChild(actionsWrap);
+            }
+
             groupCell.appendChild(groupWrap);
             groupRow.appendChild(groupCell);
             tbody.appendChild(groupRow);
