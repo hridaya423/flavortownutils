@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-12T23:35:51.395Z",
+  "lastUpdated": "2026-04-13T02:45:13.834Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -69693,6 +69693,30 @@
         "reason": "ship event payout",
         "reasonType": "",
         "userId": "U0A718B489K"
+      },
+      {
+        "ts": "2026-04-12T23:57:48.392Z",
+        "delta": 3,
+        "balance": 192,
+        "reason": "Michelin Star",
+        "reasonType": "achievement",
+        "userId": "U0A718B489K"
+      },
+      {
+        "ts": "2026-04-12T23:57:48.435Z",
+        "delta": 3,
+        "balance": 189,
+        "reason": "Order Up!",
+        "reasonType": "achievement",
+        "userId": "U0A718B489K"
+      },
+      {
+        "ts": "2026-04-13T00:01:49.860Z",
+        "delta": 10,
+        "balance": 202,
+        "reason": "Line Cook",
+        "reasonType": "achievement",
+        "userId": "U0A718B489K"
       }
     ],
     "u0a71m2mftp": [
@@ -98085,6 +98109,12 @@
     ]
   },
   "users": {
+    "U0A718B489K": {
+      "id": "U0A718B489K",
+      "username": "2143727",
+      "displayName": "NellowTCS",
+      "avatar": "https://avatars.slack-edge.com/2026-01-06/10244759646194_e5d5874c341665961dd8_72.png"
+    },
     "U0AQ6QQQRRS": {
       "id": "U0AQ6QQQRRS",
       "username": "matt.bh27",
@@ -100085,12 +100115,6 @@
       "username": "satyakisenapati92",
       "displayName": "Satyaki Senapati",
       "avatar": "https://secure.gravatar.com/avatar/bfbb4053c20b4a4362342e15973fb8da.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0005-72.png"
-    },
-    "U0A718B489K": {
-      "id": "U0A718B489K",
-      "username": "2143727",
-      "displayName": "NellowTCS",
-      "avatar": "https://avatars.slack-edge.com/2026-01-06/10244759646194_e5d5874c341665961dd8_72.png"
     },
     "U05D9BJD4UC": {
       "id": "U05D9BJD4UC",
