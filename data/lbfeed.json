@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-13T21:53:52.535Z",
+  "lastUpdated": "2026-04-13T22:44:12.741Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -39158,6 +39158,22 @@
         "balance": 336,
         "reason": "ship event payout",
         "reasonType": "",
+        "userId": "U097AHQQNN9"
+      },
+      {
+        "ts": "2026-04-13T22:13:26.884Z",
+        "delta": 5,
+        "balance": 341,
+        "reason": "Fleet Captain",
+        "reasonType": "achievement",
+        "userId": "U097AHQQNN9"
+      },
+      {
+        "ts": "2026-04-13T22:13:26.906Z",
+        "delta": 15,
+        "balance": 356,
+        "reason": "Sous Chef",
+        "reasonType": "achievement",
         "userId": "U097AHQQNN9"
       }
     ],
@@ -98485,6 +98501,12 @@
     ]
   },
   "users": {
+    "U097AHQQNN9": {
+      "id": "U097AHQQNN9",
+      "username": "quickhalewebtech",
+      "displayName": "satya//7YA",
+      "avatar": "https://avatars.slack-edge.com/2025-07-25/9248518529315_6f0a74151dad785891dd_72.jpg"
+    },
     "U0A1EN0P3K6": {
       "id": "U0A1EN0P3K6",
       "username": "konnosr",
@@ -100381,12 +100403,6 @@
       "username": "junyali",
       "displayName": "mochi",
       "avatar": "https://avatars.slack-edge.com/2026-02-20/10544894297846_3a8080ffbcad66111a37_72.jpg"
-    },
-    "U097AHQQNN9": {
-      "id": "U097AHQQNN9",
-      "username": "quickhalewebtech",
-      "displayName": "satya//7YA",
-      "avatar": "https://avatars.slack-edge.com/2025-07-25/9248518529315_6f0a74151dad785891dd_72.jpg"
     },
     "U094FQCCF40": {
       "id": "U094FQCCF40",
