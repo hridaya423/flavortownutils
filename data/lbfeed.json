@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-13T22:44:12.741Z",
+  "lastUpdated": "2026-04-13T23:42:36.571Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -11945,6 +11945,16 @@
         "reason": "Sous Chef",
         "reasonType": "achievement",
         "userId": "U07V9P0E680"
+      }
+    ],
+    "u07va44dnba": [
+      {
+        "ts": "2026-04-13T23:34:10.059Z",
+        "delta": 60,
+        "balance": 60,
+        "reason": "user grant",
+        "reasonType": "",
+        "userId": "U07VA44DNBA"
       }
     ],
     "u07vc9705d4": [
@@ -26286,6 +26296,14 @@
         "ts": "2026-04-11T12:19:40.906Z",
         "delta": 1305,
         "balance": 1559,
+        "reason": "user grant",
+        "reasonType": "",
+        "userId": "U090LAT6QKB"
+      },
+      {
+        "ts": "2026-04-13T23:33:51.799Z",
+        "delta": -60,
+        "balance": 1499,
         "reason": "user grant",
         "reasonType": "",
         "userId": "U090LAT6QKB"
@@ -98501,6 +98519,17 @@
     ]
   },
   "users": {
+    "U07VA44DNBA": {
+      "id": "U07VA44DNBA",
+      "username": "joshpinto6",
+      "displayName": "mat",
+      "avatar": "https://avatars.slack-edge.com/2026-02-26/10619199102816_8ec6d862c3432ee1f742_72.png"
+    },
+    "U090LAT6QKB": {
+      "id": "U090LAT6QKB",
+      "username": "dinosaur890123",
+      "avatar": "https://avatars.slack-edge.com/2025-12-09/10077925689238_2149e0ba18d7110e7a3f_72.png"
+    },
     "U097AHQQNN9": {
       "id": "U097AHQQNN9",
       "username": "quickhalewebtech",
@@ -98992,11 +99021,6 @@
       "id": "U0A3ASF212B",
       "username": "secretaditzu78",
       "avatar": "https://avatars.slack-edge.com/2026-01-05/10213206999143_b4517487a2e3a03c4e5a_72.jpg"
-    },
-    "U090LAT6QKB": {
-      "id": "U090LAT6QKB",
-      "username": "dinosaur890123",
-      "avatar": "https://avatars.slack-edge.com/2025-12-09/10077925689238_2149e0ba18d7110e7a3f_72.png"
     },
     "U07ES48RES3": {
       "id": "U07ES48RES3",
