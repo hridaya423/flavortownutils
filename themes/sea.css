@@ -1419,6 +1419,12 @@ a:hover {
     border-radius: 8px !important;
 }
 
+.dropdown--red .dropdown__label {
+    color: var(--sea-abyss) !important;
+    background-color: var(--sea-coral) !important;
+    border-radius: 11px !important;
+}
+
 .shop-order__content {
     background-color: var(--sea-dark) !important;
     color: var(--sea-white) !important;
@@ -1438,6 +1444,17 @@ a:hover {
     background-color: var(--sea-mid) !important;
     color: var(--sea-kelp) !important;
     border: 1px solid var(--sea-kelp) !important;
+}
+
+.shop-item-card__achievement-requirement {
+    margin-bottom: 0.4rem !important;
+    padding: 0.35rem 0.6rem !important;
+    background: color-mix(in srgb, var(--sea-gold) 16%, transparent) !important;
+    border: 1px solid color-mix(in srgb, var(--sea-gold) 36%, transparent) !important;
+    border-radius: 6px !important;
+    font-family: var(--font-family-text) !important;
+    font-size: 0.78rem !important;
+    color: var(--sea-gold) !important;
 }
 
 .shop-order__achievement-requirement--locked {

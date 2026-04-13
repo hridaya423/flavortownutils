@@ -1426,6 +1426,12 @@ a:hover {
     border-radius: 8px !important;
 }
 
+.dropdown--red .dropdown__label {
+    color: var(--overcooked-abyss) !important;
+    background-color: var(--overcooked-coral) !important;
+    border-radius: 11px !important;
+}
+
 .shop-order__content {
     background-color: var(--overcooked-dark) !important;
     color: var(--overcooked-white) !important;
@@ -1445,6 +1451,17 @@ a:hover {
     background-color: var(--overcooked-mid) !important;
     color: var(--overcooked-kelp) !important;
     border: 1px solid var(--overcooked-kelp) !important;
+}
+
+.shop-item-card__achievement-requirement {
+    margin-bottom: 0.4rem !important;
+    padding: 0.35rem 0.6rem !important;
+    background: color-mix(in srgb, var(--overcooked-gold) 16%, transparent) !important;
+    border: 1px solid color-mix(in srgb, var(--overcooked-gold) 36%, transparent) !important;
+    border-radius: 6px !important;
+    font-family: var(--font-family-text) !important;
+    font-size: 0.78rem !important;
+    color: var(--overcooked-gold) !important;
 }
 
 .shop-order__achievement-requirement--locked {
