@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-14T15:20:04.002Z",
+  "lastUpdated": "2026-04-14T16:41:10.360Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -39766,6 +39766,14 @@
         "balance": 127,
         "reason": "ship event payout",
         "reasonType": "",
+        "userId": "U097VQ3MX35"
+      },
+      {
+        "ts": "2026-04-14T15:57:48.479Z",
+        "delta": 15,
+        "balance": 142,
+        "reason": "Cookbook Author",
+        "reasonType": "achievement",
         "userId": "U097VQ3MX35"
       }
     ],
@@ -92939,6 +92947,14 @@
         "reason": "ship event payout",
         "reasonType": "",
         "userId": "U0AB5MDF95Z"
+      },
+      {
+        "ts": "2026-04-14T16:28:55.377Z",
+        "delta": -115,
+        "balance": 591,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0AB5MDF95Z"
       }
     ],
     "u0abed0llcx": [
@@ -98687,6 +98703,18 @@
     ]
   },
   "users": {
+    "U0AB5MDF95Z": {
+      "id": "U0AB5MDF95Z",
+      "username": "di.diegoevaristo",
+      "displayName": "foo-V",
+      "avatar": "https://avatars.slack-edge.com/2026-01-27/10414895538336_0ec24903e7c6cc0a3403_72.jpg"
+    },
+    "U097VQ3MX35": {
+      "id": "U097VQ3MX35",
+      "username": "sivayogeith",
+      "displayName": "sage",
+      "avatar": "https://avatars.slack-edge.com/2025-10-28/9784347823266_b6d78ff4d18909c2f6e2_72.jpg"
+    },
     "U0936KGPVRQ": {
       "id": "U0936KGPVRQ",
       "username": "petrenkodank",
@@ -99027,12 +99055,6 @@
       "username": "linus639",
       "displayName": "Linus",
       "avatar": "https://avatars.slack-edge.com/2026-01-11/10272103228150_2ea00cc0f8c41dc47166_72.png"
-    },
-    "U0AB5MDF95Z": {
-      "id": "U0AB5MDF95Z",
-      "username": "di.diegoevaristo",
-      "displayName": "foo-V",
-      "avatar": "https://avatars.slack-edge.com/2026-01-27/10414895538336_0ec24903e7c6cc0a3403_72.jpg"
     },
     "U0A7J4EHADP": {
       "id": "U0A7J4EHADP",
@@ -101866,12 +101888,6 @@
       "username": "chetanzeogu410",
       "displayName": "sonicx180",
       "avatar": "https://avatars.slack-edge.com/2026-03-04/10647142565025_7824a3b0f2e0468b2182_72.png"
-    },
-    "U097VQ3MX35": {
-      "id": "U097VQ3MX35",
-      "username": "sivayogeith",
-      "displayName": "sage",
-      "avatar": "https://avatars.slack-edge.com/2025-10-28/9784347823266_b6d78ff4d18909c2f6e2_72.jpg"
     },
     "U09DJMWTL07": {
       "id": "U09DJMWTL07",
