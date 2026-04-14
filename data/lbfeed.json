@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-14T05:24:39.959Z",
+  "lastUpdated": "2026-04-14T07:07:18.081Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -21411,6 +21411,14 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U08H2BFAB1Q"
+      },
+      {
+        "ts": "2026-04-14T05:39:13.830Z",
+        "delta": 312,
+        "balance": 314,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U08H2BFAB1Q"
       }
     ],
     "u08hr9mj29m": [
@@ -39069,6 +39077,14 @@
         "delta": 75,
         "balance": 75,
         "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U09736L44JZ"
+      },
+      {
+        "ts": "2026-04-14T05:41:48.462Z",
+        "delta": -70,
+        "balance": 5,
+        "reason": "shop purchase",
         "reasonType": "",
         "userId": "U09736L44JZ"
       }
@@ -98567,6 +98583,17 @@
     ]
   },
   "users": {
+    "U09736L44JZ": {
+      "id": "U09736L44JZ",
+      "username": "satyamrajgaya434",
+      "avatar": "https://avatars.slack-edge.com/2025-09-19/9577172238240_ca93b692b12938796d47_72.jpg"
+    },
+    "U08H2BFAB1Q": {
+      "id": "U08H2BFAB1Q",
+      "username": "raqeeb",
+      "displayName": "Raqeeb",
+      "avatar": "https://avatars.slack-edge.com/2025-12-31/10239975055360_eff77c2080500c00c5ca_72.jpg"
+    },
     "U0A9BAEQX6G": {
       "id": "U0A9BAEQX6G",
       "username": "animesh_varma",
@@ -99030,11 +99057,6 @@
       "displayName": "Neal",
       "avatar": "https://secure.gravatar.com/avatar/05ea463156be0c23da736bd0f6223555.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0026-72.png"
     },
-    "U09736L44JZ": {
-      "id": "U09736L44JZ",
-      "username": "satyamrajgaya434",
-      "avatar": "https://avatars.slack-edge.com/2025-09-19/9577172238240_ca93b692b12938796d47_72.jpg"
-    },
     "U083F2N7ZAM": {
       "id": "U083F2N7ZAM",
       "username": "meanclient69420",
@@ -99110,12 +99132,6 @@
       "username": "dark",
       "displayName": "dark",
       "avatar": "https://secure.gravatar.com/avatar/3b94f94abe38f2d1a990ce828d2e741a.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0025-72.png"
-    },
-    "U08H2BFAB1Q": {
-      "id": "U08H2BFAB1Q",
-      "username": "raqeeb",
-      "displayName": "Raqeeb",
-      "avatar": "https://avatars.slack-edge.com/2025-12-31/10239975055360_eff77c2080500c00c5ca_72.jpg"
     },
     "U0AJB081SHE": {
       "id": "U0AJB081SHE",
