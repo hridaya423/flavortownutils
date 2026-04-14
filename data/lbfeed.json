@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-13T23:42:36.571Z",
+  "lastUpdated": "2026-04-14T02:38:09.805Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -43921,6 +43921,22 @@
         "delta": 77,
         "balance": 153,
         "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U09CUN9GYJ2"
+      },
+      {
+        "ts": "2026-04-14T02:05:55.889Z",
+        "delta": -88,
+        "balance": 65,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U09CUN9GYJ2"
+      },
+      {
+        "ts": "2026-04-14T02:06:10.787Z",
+        "delta": -63,
+        "balance": 2,
+        "reason": "shop purchase",
         "reasonType": "",
         "userId": "U09CUN9GYJ2"
       }
@@ -98519,6 +98535,12 @@
     ]
   },
   "users": {
+    "U09CUN9GYJ2": {
+      "id": "U09CUN9GYJ2",
+      "username": "ssxavier888",
+      "displayName": "Xavier",
+      "avatar": "https://secure.gravatar.com/avatar/27ce049aad771c31878dd02c726752de.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0002-72.png"
+    },
     "U07VA44DNBA": {
       "id": "U07VA44DNBA",
       "username": "joshpinto6",
@@ -98576,12 +98598,6 @@
       "username": "alonsomartinezcarrata",
       "displayName": "aloyak",
       "avatar": "https://avatars.slack-edge.com/2026-01-11/10266469042067_79d016b502587f2b7d52_72.png"
-    },
-    "U09CUN9GYJ2": {
-      "id": "U09CUN9GYJ2",
-      "username": "ssxavier888",
-      "displayName": "Xavier",
-      "avatar": "https://secure.gravatar.com/avatar/27ce049aad771c31878dd02c726752de.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0002-72.png"
     },
     "U0AHQEPUQ7R": {
       "id": "U0AHQEPUQ7R",
