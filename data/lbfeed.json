@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-14T20:55:23.576Z",
+  "lastUpdated": "2026-04-14T21:53:31.797Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -61827,6 +61827,22 @@
         "reason": "ship event payout",
         "reasonType": "",
         "userId": "U0A5C1X6NSY"
+      },
+      {
+        "ts": "2026-04-14T21:16:46.414Z",
+        "delta": -455,
+        "balance": 23,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A5C1X6NSY"
+      },
+      {
+        "ts": "2026-04-14T21:18:19.146Z",
+        "delta": -20,
+        "balance": 3,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A5C1X6NSY"
       }
     ],
     "u0a5c33bn94": [
@@ -98783,6 +98799,11 @@
     ]
   },
   "users": {
+    "U0A5C1X6NSY": {
+      "id": "U0A5C1X6NSY",
+      "username": "yovomihov05",
+      "avatar": "https://avatars.slack-edge.com/2025-12-28/10192114260243_c7e6a1fb4f8da7360cdd_72.jpg"
+    },
     "U0A4U73DYF7": {
       "id": "U0A4U73DYF7",
       "username": "abdelkarim2dev",
@@ -101453,11 +101474,6 @@
       "username": "bhattprayas40",
       "displayName": "gravityonmars",
       "avatar": "https://avatars.slack-edge.com/2025-12-30/10222380209137_0b77096a8e258fd62a36_72.png"
-    },
-    "U0A5C1X6NSY": {
-      "id": "U0A5C1X6NSY",
-      "username": "yovomihov05",
-      "avatar": "https://avatars.slack-edge.com/2025-12-28/10192114260243_c7e6a1fb4f8da7360cdd_72.jpg"
     },
     "U0A5L7FPF28": {
       "id": "U0A5L7FPF28",
