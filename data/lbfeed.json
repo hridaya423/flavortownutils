@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-15T09:04:01.285Z",
+  "lastUpdated": "2026-04-15T10:42:01.783Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -23403,6 +23403,14 @@
         "reason": "ship event payout",
         "reasonType": "",
         "userId": "U08RZJCGYSD"
+      },
+      {
+        "ts": "2026-04-15T09:24:03.051Z",
+        "delta": -120,
+        "balance": 164,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U08RZJCGYSD"
       }
     ],
     "u08s00249m3": [
@@ -27142,6 +27150,22 @@
         "balance": 8,
         "reason": "shop purchase",
         "reasonType": "",
+        "userId": "U091GA73H8T"
+      },
+      {
+        "ts": "2026-04-15T10:07:17.501Z",
+        "delta": 3,
+        "balance": 11,
+        "reason": "Michelin Star",
+        "reasonType": "achievement",
+        "userId": "U091GA73H8T"
+      },
+      {
+        "ts": "2026-04-15T10:07:17.588Z",
+        "delta": 15,
+        "balance": 26,
+        "reason": "Sous Chef",
+        "reasonType": "achievement",
         "userId": "U091GA73H8T"
       }
     ],
@@ -99071,6 +99095,18 @@
     ]
   },
   "users": {
+    "U091GA73H8T": {
+      "id": "U091GA73H8T",
+      "username": "vankeulensiem",
+      "displayName": "Siem van Keulen",
+      "avatar": "https://avatars.slack-edge.com/2025-08-08/9330075031620_35a2f94cc4ecdeb162d6_72.gif"
+    },
+    "U08RZJCGYSD": {
+      "id": "U08RZJCGYSD",
+      "username": "khaiminhnguyen1902",
+      "displayName": "Minh Nguyen",
+      "avatar": "https://secure.gravatar.com/avatar/45a16032aa0b1795d95dc89d945721eb.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0015-72.png"
+    },
     "U0A1QAW6GUB": {
       "id": "U0A1QAW6GUB",
       "username": "someguest4",
@@ -99521,12 +99557,6 @@
       "username": "matt.bh27",
       "displayName": "matt.bh27",
       "avatar": "https://secure.gravatar.com/avatar/d48f9dda5f9edcd19b4c89b9e3365d54.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0016-72.png"
-    },
-    "U08RZJCGYSD": {
-      "id": "U08RZJCGYSD",
-      "username": "khaiminhnguyen1902",
-      "displayName": "Minh Nguyen",
-      "avatar": "https://secure.gravatar.com/avatar/45a16032aa0b1795d95dc89d945721eb.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0015-72.png"
     },
     "U06C0TGFGVA": {
       "id": "U06C0TGFGVA",
@@ -100567,12 +100597,6 @@
       "username": "pd541664",
       "displayName": "pd541664",
       "avatar": "https://secure.gravatar.com/avatar/6d30ed0a6527234a65c778de7728329c.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0010-72.png"
-    },
-    "U091GA73H8T": {
-      "id": "U091GA73H8T",
-      "username": "vankeulensiem",
-      "displayName": "Siem van Keulen",
-      "avatar": "https://avatars.slack-edge.com/2025-08-08/9330075031620_35a2f94cc4ecdeb162d6_72.gif"
     },
     "U0A53U48S3X": {
       "id": "U0A53U48S3X",
