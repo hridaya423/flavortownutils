@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-15T22:41:45.356Z",
+  "lastUpdated": "2026-04-15T23:42:11.202Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -99401,6 +99401,24 @@
         "userId": "U0ARL72C9UK"
       }
     ],
+    "u0asj4u9up6": [
+      {
+        "ts": "2026-04-15T23:36:11.638Z",
+        "delta": 10,
+        "balance": 10,
+        "reason": "user grant",
+        "reasonType": "",
+        "userId": "U0ASJ4U9UP6"
+      },
+      {
+        "ts": "2026-04-15T23:36:51.680Z",
+        "delta": -10,
+        "balance": 0,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0ASJ4U9UP6"
+      }
+    ],
     "u0askmdpxmw": [
       {
         "ts": "2026-04-09T08:32:00.621Z",
@@ -99431,6 +99449,12 @@
     ]
   },
   "users": {
+    "U0ASJ4U9UP6": {
+      "id": "U0ASJ4U9UP6",
+      "username": "marammaniteja",
+      "displayName": "marammaniteja",
+      "avatar": "https://secure.gravatar.com/avatar/1d5916ca6bf60993d00a760e0808a746.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0015-72.png"
+    },
     "U093U1MM8H4": {
       "id": "U093U1MM8H4",
       "username": "hungchi970104",
