@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-15T02:35:56.213Z",
+  "lastUpdated": "2026-04-15T05:25:06.883Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -4104,6 +4104,14 @@
         "balance": 67,
         "reason": "show and tell payout",
         "reasonType": "",
+        "userId": "U074LUX88PJ"
+      },
+      {
+        "ts": "2026-04-15T05:17:33.075Z",
+        "delta": 5,
+        "balance": 72,
+        "reason": "Show and tell local",
+        "reasonType": "achievement",
         "userId": "U074LUX88PJ"
       }
     ],
@@ -16452,6 +16460,14 @@
         "balance": 750,
         "reason": "show and tell payout",
         "reasonType": "",
+        "userId": "U085HNYPWLT"
+      },
+      {
+        "ts": "2026-04-15T05:10:39.554Z",
+        "delta": 5,
+        "balance": 755,
+        "reason": "Show and tell local",
+        "reasonType": "achievement",
         "userId": "U085HNYPWLT"
       }
     ],
@@ -98983,6 +98999,12 @@
     ]
   },
   "users": {
+    "U074LUX88PJ": {
+      "id": "U074LUX88PJ",
+      "username": "makstmguzun",
+      "displayName": "Noname",
+      "avatar": "https://avatars.slack-edge.com/2026-03-09/10657621289538_c94b5f67d0fb13e8bf4e_72.jpg"
+    },
     "U085HNYPWLT": {
       "id": "U085HNYPWLT",
       "username": "admilkyway",
@@ -99018,12 +99040,6 @@
       "username": "sarjak.khanal",
       "displayName": "En Passant",
       "avatar": "https://avatars.slack-edge.com/2026-03-05/10629815606115_487251550d2d58a078fd_72.jpg"
-    },
-    "U074LUX88PJ": {
-      "id": "U074LUX88PJ",
-      "username": "makstmguzun",
-      "displayName": "Noname",
-      "avatar": "https://avatars.slack-edge.com/2026-03-09/10657621289538_c94b5f67d0fb13e8bf4e_72.jpg"
     },
     "U0ACGDDBS15": {
       "id": "U0ACGDDBS15",
