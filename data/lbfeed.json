@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-15T20:50:51.171Z",
+  "lastUpdated": "2026-04-15T21:53:27.454Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -5250,6 +5250,14 @@
         "balance": 98,
         "reason": "show and tell payout",
         "reasonType": "",
+        "userId": "U078Y1PPU2V"
+      },
+      {
+        "ts": "2026-04-15T21:12:25.910Z",
+        "delta": 5,
+        "balance": 103,
+        "reason": "Show and tell local",
+        "reasonType": "achievement",
         "userId": "U078Y1PPU2V"
       }
     ],
@@ -37680,6 +37688,14 @@
         "balance": 769,
         "reason": "Cooking",
         "reasonType": "achievement",
+        "userId": "U0952JEN9DL"
+      },
+      {
+        "ts": "2026-04-15T21:49:27.347Z",
+        "delta": 345,
+        "balance": 1099,
+        "reason": "ship event payout",
+        "reasonType": "",
         "userId": "U0952JEN9DL"
       }
     ],
@@ -93587,6 +93603,14 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0AB5MDF95Z"
+      },
+      {
+        "ts": "2026-04-15T21:22:41.531Z",
+        "delta": -88,
+        "balance": 503,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0AB5MDF95Z"
       }
     ],
     "u0abed0llcx": [
@@ -99375,6 +99399,24 @@
     ]
   },
   "users": {
+    "U0952JEN9DL": {
+      "id": "U0952JEN9DL",
+      "username": "shige-rin",
+      "displayName": "Rintaりんた",
+      "avatar": "https://avatars.slack-edge.com/2025-12-29/10206925466820_e4fe5e9dbbebcbc8719c_72.jpg"
+    },
+    "U0AB5MDF95Z": {
+      "id": "U0AB5MDF95Z",
+      "username": "di.diegoevaristo",
+      "displayName": "foo-V",
+      "avatar": "https://avatars.slack-edge.com/2026-01-27/10414895538336_0ec24903e7c6cc0a3403_72.jpg"
+    },
+    "U078Y1PPU2V": {
+      "id": "U078Y1PPU2V",
+      "username": "johann.f.heuer",
+      "displayName": "Vimthusiast",
+      "avatar": "https://avatars.slack-edge.com/2025-03-26/8661209528035_138e1c433f6f3a0fcb69_72.jpg"
+    },
     "U074LUX88PJ": {
       "id": "U074LUX88PJ",
       "username": "makstmguzun",
@@ -99589,12 +99631,6 @@
       "displayName": "jam06452",
       "avatar": "https://avatars.slack-edge.com/2026-02-03/10428401167669_923724959d03151f5ee3_72.jpg"
     },
-    "U078Y1PPU2V": {
-      "id": "U078Y1PPU2V",
-      "username": "johann.f.heuer",
-      "displayName": "Vimthusiast",
-      "avatar": "https://avatars.slack-edge.com/2025-03-26/8661209528035_138e1c433f6f3a0fcb69_72.jpg"
-    },
     "U0A4H78N1BR": {
       "id": "U0A4H78N1BR",
       "username": "saksham.khatod27",
@@ -99645,12 +99681,6 @@
       "username": "saisadwiikkatam",
       "displayName": "saisadwiikkatam",
       "avatar": "https://secure.gravatar.com/avatar/5faec955dab91d221aa609c9950978d3.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0023-72.png"
-    },
-    "U0AB5MDF95Z": {
-      "id": "U0AB5MDF95Z",
-      "username": "di.diegoevaristo",
-      "displayName": "foo-V",
-      "avatar": "https://avatars.slack-edge.com/2026-01-27/10414895538336_0ec24903e7c6cc0a3403_72.jpg"
     },
     "U097VQ3MX35": {
       "id": "U097VQ3MX35",
@@ -100288,12 +100318,6 @@
       "username": "leszcz110",
       "displayName": "Jimi",
       "avatar": "https://avatars.slack-edge.com/2026-01-21/10352834849793_010f6593c7109d64722e_72.jpg"
-    },
-    "U0952JEN9DL": {
-      "id": "U0952JEN9DL",
-      "username": "shige-rin",
-      "displayName": "Rintaりんた",
-      "avatar": "https://avatars.slack-edge.com/2025-12-29/10206925466820_e4fe5e9dbbebcbc8719c_72.jpg"
     },
     "U0824CMEU1L": {
       "id": "U0824CMEU1L",
