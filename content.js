@@ -16062,6 +16062,109 @@ async function enhanceAdminShopOrdersPage(attempt = 0) {
                     }
                 }
 
+                function setParamFromFormField(params, form, value, predicates) {
+                    const fields = Array.from(form.querySelectorAll('input[name], textarea[name], select[name]'));
+                    const field = fields.find(el => predicates.some(predicate => predicate(el)));
+                    if (!field || !field.name) return false;
+                    params.set(field.name, value);
+                    return true;
+                }
+
+                async function submitRejectAction(orderId, rejectData) {
+                    try {
+                        const detailResponse = await fetch(
+                            `/admin/shop_orders/${orderId}?return_status=${encodeURIComponent(returnStatus)}&return_view=${encodeURIComponent(returnView)}`,
+                            { credentials: 'same-origin' }
+                        );
+                        if (!detailResponse.ok) return { ok: false, status: detailResponse.status };
+
+                        const detailHtml = await detailResponse.text();
+                        const detailDoc = new DOMParser().parseFromString(detailHtml, 'text/html');
+                        const rejectForm = Array.from(detailDoc.querySelectorAll('form')).find(form => {
+                            const actionAttr = form.getAttribute('action') || '';
+                            return actionAttr.includes(`/admin/shop_orders/${orderId}/reject`);
+                        });
+
+                        if (!rejectForm) {
+                            return submitAction(orderId, 'reject', {
+                                reason: rejectData.reason,
+                                internal_reason: rejectData.internalReason,
+                                fraud_related_project_id: rejectData.projectId,
+                                ...(rejectData.joeCase ? { joe_case_url: rejectData.joeCase } : {})
+                            });
+                        }
+
+                        const params = new URLSearchParams();
+                        Array.from(rejectForm.querySelectorAll('input[name], textarea[name], select[name]')).forEach(el => {
+                            if (el.disabled || !el.name) return;
+                            if ((el.type === 'checkbox' || el.type === 'radio') && !el.checked) return;
+                            params.append(el.name, el.value || '');
+                        });
+
+                        const submitBtn = rejectForm.querySelector('button[type="submit"][name], input[type="submit"][name]');
+                        if (submitBtn?.name) {
+                            params.set(submitBtn.name, submitBtn.value || submitBtn.textContent?.trim() || 'Submit');
+                        }
+
+                        const rejectToken = params.get('authenticity_token') || detailDoc.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || csrfToken;
+                        if (rejectToken) params.set('authenticity_token', rejectToken);
+                        params.set('return_view', returnView);
+                        params.set('return_status', returnStatus);
+                        if (!params.has('tracking_number')) params.set('tracking_number', '');
+
+                        const setReason = setParamFromFormField(params, rejectForm, rejectData.reason, [
+                            el => /^reason$/i.test(el.name),
+                            el => /rejection.*reason/i.test(el.name),
+                            el => /reason/i.test(el.name) && !/internal/i.test(el.name)
+                        ]);
+                        if (!setReason) params.set('reason', rejectData.reason);
+
+                        const setInternalReason = setParamFromFormField(params, rejectForm, rejectData.internalReason, [
+                            el => /^internal_reason$/i.test(el.name),
+                            el => /internal.*reason/i.test(el.name)
+                        ]);
+                        if (!setInternalReason) params.set('internal_reason', rejectData.internalReason);
+
+                        const setProjectId = setParamFromFormField(params, rejectForm, rejectData.projectId, [
+                            el => /^fraud_related_project_id$/i.test(el.name),
+                            el => /fraud.*project.*id/i.test(el.name),
+                            el => /project.*id/i.test(el.name)
+                        ]);
+                        if (!setProjectId) params.set('fraud_related_project_id', rejectData.projectId);
+
+                        if (rejectData.joeCase) {
+                            const setJoeCase = setParamFromFormField(params, rejectForm, rejectData.joeCase, [
+                                el => /^joe_case_url$/i.test(el.name),
+                                el => /joe.*case.*url/i.test(el.name),
+                                el => /case.*url/i.test(el.name)
+                            ]);
+                            if (!setJoeCase) params.set('joe_case_url', rejectData.joeCase);
+                        }
+
+                        const actionAttr = rejectForm.getAttribute('action') || `/admin/shop_orders/${orderId}/reject`;
+                        const actionUrl = new URL(actionAttr, window.location.origin).toString();
+                        const response = await fetch(actionUrl, {
+                            method: 'POST',
+                            credentials: 'same-origin',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                                'X-CSRF-Token': rejectToken,
+                                'X-Requested-With': 'XMLHttpRequest'
+                            },
+                            body: params.toString()
+                        });
+
+                        if (!response.ok) return { ok: false, status: response.status };
+                        if (response.url && response.url.includes(`/admin/shop_orders/${orderId}`)) {
+                            return { ok: false, status: response.status };
+                        }
+
+                        return { ok: true, status: response.status };
+                    } catch (e) {
+                        return { ok: false, status: 0 };
+                    }
+                }
+
                 approveAllBtn.addEventListener('click', async () => {
                     if (!confirm(`Approve ${orderIds.length} orders for ${group.title}?`)) return;
                     if (!csrfToken) {
@@ -16125,11 +16228,11 @@ async function enhanceAdminShopOrdersPage(attempt = 0) {
                     rejectAllBtn.textContent = 'Rejecting...';
                     let rejectedCount = 0;
                     for (const orderId of orderIds) {
-                        const result = await submitAction(orderId, 'reject', {
+                        const result = await submitRejectAction(orderId, {
                             reason,
-                            internal_reason: internalReason,
-                            fraud_related_project_id: projectId,
-                            ...(joeCase && { joe_case_url: joeCase })
+                            internalReason,
+                            projectId,
+                            joeCase
                         });
                         if (result.ok) rejectedCount += 1;
                     }
