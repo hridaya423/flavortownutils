@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-15T13:42:53.081Z",
+  "lastUpdated": "2026-04-15T15:05:34.977Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -23159,6 +23159,38 @@
         "reason": "ship event payout",
         "reasonType": "",
         "userId": "U08RE7RUD9C"
+      },
+      {
+        "ts": "2026-04-15T14:03:42.689Z",
+        "delta": -10,
+        "balance": 23,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U08RE7RUD9C"
+      },
+      {
+        "ts": "2026-04-15T14:05:54.905Z",
+        "delta": -20,
+        "balance": 3,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U08RE7RUD9C"
+      },
+      {
+        "ts": "2026-04-15T14:06:29.845Z",
+        "delta": 3,
+        "balance": 9,
+        "reason": "Michelin Star",
+        "reasonType": "achievement",
+        "userId": "U08RE7RUD9C"
+      },
+      {
+        "ts": "2026-04-15T14:06:29.866Z",
+        "delta": 3,
+        "balance": 6,
+        "reason": "Order Up!",
+        "reasonType": "achievement",
+        "userId": "U08RE7RUD9C"
       }
     ],
     "u08rj1pem7x": [
@@ -35131,6 +35163,14 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U092STH5TAL"
+      },
+      {
+        "ts": "2026-04-15T14:57:36.598Z",
+        "delta": 30,
+        "balance": 1250,
+        "reason": "Chef who cooked",
+        "reasonType": "achievement",
+        "userId": "U092STH5TAL"
       }
     ],
     "u092tll6zh6": [
@@ -36124,6 +36164,14 @@
         "ts": "2026-04-14T20:28:41.830Z",
         "delta": 70,
         "balance": 74,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U093MPT9FFX"
+      },
+      {
+        "ts": "2026-04-15T14:19:43.254Z",
+        "delta": -70,
+        "balance": 4,
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U093MPT9FFX"
@@ -99183,6 +99231,24 @@
     ]
   },
   "users": {
+    "U092STH5TAL": {
+      "id": "U092STH5TAL",
+      "username": "nguyensynguyen7856",
+      "displayName": "Brandon",
+      "avatar": "https://avatars.slack-edge.com/2026-01-03/10237425021265_537f629429cea20dd123_72.png"
+    },
+    "U093MPT9FFX": {
+      "id": "U093MPT9FFX",
+      "username": "letga25",
+      "displayName": "TGA25",
+      "avatar": "https://avatars.slack-edge.com/2025-07-23/9266230801808_5f7e06d945aba552d8eb_72.jpg"
+    },
+    "U08RE7RUD9C": {
+      "id": "U08RE7RUD9C",
+      "username": "aeratory678",
+      "displayName": "æra",
+      "avatar": "https://avatars.slack-edge.com/2026-01-01/10201551625847_4b9cfd2eb0573b2c525b_72.jpg"
+    },
     "U08RZJCGYSD": {
       "id": "U08RZJCGYSD",
       "username": "khaiminhnguyen1902",
@@ -99376,12 +99442,6 @@
       "username": "abdelkarim2dev",
       "displayName": "abdelkarim2dev",
       "avatar": "https://secure.gravatar.com/avatar/ddb17f1489187817335c2f07f5089e4b.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0019-72.png"
-    },
-    "U093MPT9FFX": {
-      "id": "U093MPT9FFX",
-      "username": "letga25",
-      "displayName": "TGA25",
-      "avatar": "https://avatars.slack-edge.com/2025-07-23/9266230801808_5f7e06d945aba552d8eb_72.jpg"
     },
     "U08BN2MUD2N": {
       "id": "U08BN2MUD2N",
@@ -99993,12 +100053,6 @@
       "displayName": "Sub",
       "avatar": "https://avatars.slack-edge.com/2026-03-10/10662104454789_fae7d5b4b2fbc4b912e6_72.png"
     },
-    "U092STH5TAL": {
-      "id": "U092STH5TAL",
-      "username": "nguyensynguyen7856",
-      "displayName": "Brandon",
-      "avatar": "https://avatars.slack-edge.com/2026-01-03/10237425021265_537f629429cea20dd123_72.png"
-    },
     "U0A022J58PN": {
       "id": "U0A022J58PN",
       "username": "jydev",
@@ -100453,12 +100507,6 @@
       "username": "joelbu",
       "displayName": "Joelbu",
       "avatar": "https://avatars.slack-edge.com/2026-01-09/10264122181638_c6a00c24886090862eae_72.jpg"
-    },
-    "U08RE7RUD9C": {
-      "id": "U08RE7RUD9C",
-      "username": "aeratory678",
-      "displayName": "æra",
-      "avatar": "https://avatars.slack-edge.com/2026-01-01/10201551625847_4b9cfd2eb0573b2c525b_72.jpg"
     },
     "U0A0G7QLN5C": {
       "id": "U0A0G7QLN5C",
