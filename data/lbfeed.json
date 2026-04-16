@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-16T19:16:23.476Z",
+  "lastUpdated": "2026-04-16T20:09:49.187Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -38572,6 +38572,14 @@
         "ts": "2026-03-28T01:48:18.928Z",
         "delta": -40,
         "balance": 193,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U096KJYT1PU"
+      },
+      {
+        "ts": "2026-04-16T19:23:43.208Z",
+        "delta": -176,
+        "balance": 17,
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U096KJYT1PU"
@@ -99983,6 +99991,12 @@
     ]
   },
   "users": {
+    "U096KJYT1PU": {
+      "id": "U096KJYT1PU",
+      "username": "elliottlieberman123",
+      "displayName": "Elliott-entity",
+      "avatar": "https://avatars.slack-edge.com/2026-02-25/10580651595973_fdb3c28150d3740252d7_72.png"
+    },
     "U0ACGDDBS15": {
       "id": "U0ACGDDBS15",
       "username": "punitmali",
@@ -102464,12 +102478,6 @@
       "username": "cartoontv123098",
       "displayName": "Slayer",
       "avatar": "https://avatars.slack-edge.com/2026-03-06/10675947598256_3c4868776cb5776482cf_72.jpg"
-    },
-    "U096KJYT1PU": {
-      "id": "U096KJYT1PU",
-      "username": "elliottlieberman123",
-      "displayName": "Elliott-entity",
-      "avatar": "https://avatars.slack-edge.com/2026-02-25/10580651595973_fdb3c28150d3740252d7_72.png"
     },
     "U092CSW4FGQ": {
       "id": "U092CSW4FGQ",
