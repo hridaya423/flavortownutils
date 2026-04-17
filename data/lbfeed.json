@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-17T19:37:22.085Z",
+  "lastUpdated": "2026-04-17T20:45:00.072Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -46072,6 +46072,14 @@
         "balance": 1049,
         "reason": "ship event payout",
         "reasonType": "",
+        "userId": "U09F58YQ524"
+      },
+      {
+        "ts": "2026-04-17T20:29:14.926Z",
+        "delta": 30,
+        "balance": 1079,
+        "reason": "Chef who cooked",
+        "reasonType": "achievement",
         "userId": "U09F58YQ524"
       }
     ],
@@ -100421,6 +100429,12 @@
     ]
   },
   "users": {
+    "U09F58YQ524": {
+      "id": "U09F58YQ524",
+      "username": "guitarfan934258",
+      "displayName": "guitarfan",
+      "avatar": "https://avatars.slack-edge.com/2025-11-03/9859155960880_fd0a3c59a02804cfd9cd_72.jpg"
+    },
     "U0847KFMUSC": {
       "id": "U0847KFMUSC",
       "username": "dwait.pandhi",
@@ -100574,12 +100588,6 @@
       "id": "U090LAT6QKB",
       "username": "dinosaur890123",
       "avatar": "https://avatars.slack-edge.com/2025-12-09/10077925689238_2149e0ba18d7110e7a3f_72.png"
-    },
-    "U09F58YQ524": {
-      "id": "U09F58YQ524",
-      "username": "guitarfan934258",
-      "displayName": "guitarfan",
-      "avatar": "https://avatars.slack-edge.com/2025-11-03/9859155960880_fd0a3c59a02804cfd9cd_72.jpg"
     },
     "U0AMMB5DG15": {
       "id": "U0AMMB5DG15",
