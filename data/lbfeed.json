@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-17T13:22:01.292Z",
+  "lastUpdated": "2026-04-17T14:40:59.023Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -32458,6 +32458,14 @@
         "ts": "2026-04-04T04:58:03.573Z",
         "delta": -94,
         "balance": 301,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U091YQ9F6B0"
+      },
+      {
+        "ts": "2026-04-17T13:29:30.585Z",
+        "delta": -280,
+        "balance": 21,
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U091YQ9F6B0"
@@ -99017,6 +99025,14 @@
         "reason": "Line Cook",
         "reasonType": "achievement",
         "userId": "U0ALVDMNMPT"
+      },
+      {
+        "ts": "2026-04-17T14:13:27.130Z",
+        "delta": 3,
+        "balance": 23,
+        "reason": "Order Up!",
+        "reasonType": "achievement",
+        "userId": "U0ALVDMNMPT"
       }
     ],
     "u0am5jfl02e": [
@@ -100317,6 +100333,18 @@
     ]
   },
   "users": {
+    "U0ALVDMNMPT": {
+      "id": "U0ALVDMNMPT",
+      "username": "jaswant.s.2025.civil",
+      "displayName": "jaswant.s.2025.civil",
+      "avatar": "https://secure.gravatar.com/avatar/177b81dc9bca945a4d2bb2c463316290.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0012-72.png"
+    },
+    "U091YQ9F6B0": {
+      "id": "U091YQ9F6B0",
+      "username": "tvmcconkey",
+      "displayName": "tvumcc",
+      "avatar": "https://avatars.slack-edge.com/2025-06-23/9092157461602_73ccc0f2eccf4b7319dc_72.png"
+    },
     "U0A71TWUM7D": {
       "id": "U0A71TWUM7D",
       "username": "nmsoukmandjiev007",
@@ -101339,12 +101367,6 @@
       "displayName": "bontaromiii",
       "avatar": "https://avatars.slack-edge.com/2026-04-03/10825107179351_5c250eb43fb359738733_72.jpg"
     },
-    "U0ALVDMNMPT": {
-      "id": "U0ALVDMNMPT",
-      "username": "jaswant.s.2025.civil",
-      "displayName": "jaswant.s.2025.civil",
-      "avatar": "https://secure.gravatar.com/avatar/177b81dc9bca945a4d2bb2c463316290.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0012-72.png"
-    },
     "U092J7619CN": {
       "id": "U092J7619CN",
       "username": "sofaomda738",
@@ -102064,12 +102086,6 @@
       "id": "U091KE59H5H",
       "username": "joooooshp",
       "avatar": "https://avatars.slack-edge.com/2025-12-26/10191934212674_e3a860ccf84ec572a0a4_72.png"
-    },
-    "U091YQ9F6B0": {
-      "id": "U091YQ9F6B0",
-      "username": "tvmcconkey",
-      "displayName": "tvumcc",
-      "avatar": "https://avatars.slack-edge.com/2025-06-23/9092157461602_73ccc0f2eccf4b7319dc_72.png"
     },
     "U09197C6M2B": {
       "id": "U09197C6M2B",
