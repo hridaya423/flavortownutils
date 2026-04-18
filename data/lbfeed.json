@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-18T11:35:07.137Z",
+  "lastUpdated": "2026-04-18T13:04:04.243Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -23187,6 +23187,14 @@
         "delta": 33,
         "balance": 154,
         "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U08NXJL86KT"
+      },
+      {
+        "ts": "2026-04-18T12:33:30.167Z",
+        "delta": 56,
+        "balance": 210,
+        "reason": "user grant",
         "reasonType": "",
         "userId": "U08NXJL86KT"
       }
@@ -53401,6 +53409,14 @@
         "delta": -85,
         "balance": 2786,
         "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A1NME3EJD"
+      },
+      {
+        "ts": "2026-04-18T12:32:59.614Z",
+        "delta": 330,
+        "balance": 3116,
+        "reason": "user grant",
         "reasonType": "",
         "userId": "U0A1NME3EJD"
       }
@@ -100757,6 +100773,17 @@
     ]
   },
   "users": {
+    "U08NXJL86KT": {
+      "id": "U08NXJL86KT",
+      "username": "froggington",
+      "displayName": "Frog",
+      "avatar": "https://avatars.slack-edge.com/2026-03-11/10707007801568_a1e3e7d3c411cbea9c7a_72.png"
+    },
+    "U0A1NME3EJD": {
+      "id": "U0A1NME3EJD",
+      "username": "nok",
+      "avatar": "https://avatars.slack-edge.com/2026-01-13/10282812823125_9fcc7248e736e16e62f6_72.png"
+    },
     "U0842GMRJKC": {
       "id": "U0842GMRJKC",
       "username": "hridayahoney",
@@ -101516,11 +101543,6 @@
       "username": "ahtiunto",
       "avatar": "https://avatars.slack-edge.com/2025-09-15/9509027117271_4c068675baceb4cdc9d3_72.jpg"
     },
-    "U0A1NME3EJD": {
-      "id": "U0A1NME3EJD",
-      "username": "nok",
-      "avatar": "https://avatars.slack-edge.com/2026-01-13/10282812823125_9fcc7248e736e16e62f6_72.png"
-    },
     "U0AG8L191HC": {
       "id": "U0AG8L191HC",
       "username": "shiviwhivi",
@@ -102155,12 +102177,6 @@
       "username": "milo1004",
       "displayName": "milo1004",
       "avatar": "https://avatars.slack-edge.com/2025-12-22/10168640612229_e72fcb4aecb4d239fc90_72.png"
-    },
-    "U08NXJL86KT": {
-      "id": "U08NXJL86KT",
-      "username": "froggington",
-      "displayName": "Frog",
-      "avatar": "https://avatars.slack-edge.com/2026-03-11/10707007801568_a1e3e7d3c411cbea9c7a_72.png"
     },
     "U0A1S20BHD2": {
       "id": "U0A1S20BHD2",
