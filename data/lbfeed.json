@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-18T04:56:12.533Z",
+  "lastUpdated": "2026-04-18T06:14:11.663Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -78423,6 +78423,22 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0A7DTQ90BE"
+      },
+      {
+        "ts": "2026-04-18T05:47:38.272Z",
+        "delta": -2500,
+        "balance": 756,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A7DTQ90BE"
+      },
+      {
+        "ts": "2026-04-18T05:47:38.344Z",
+        "delta": -500,
+        "balance": 256,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A7DTQ90BE"
       }
     ],
     "u0a7e30aceq": [
@@ -100557,6 +100573,12 @@
     ]
   },
   "users": {
+    "U0A7DTQ90BE": {
+      "id": "U0A7DTQ90BE",
+      "username": "coozywana9",
+      "displayName": "cw",
+      "avatar": "https://secure.gravatar.com/avatar/8dfd8a90c8981219235a3db471350187.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0019-72.png"
+    },
     "U06MC0G7A4R": {
       "id": "U06MC0G7A4R",
       "username": "mohittiwariis97",
@@ -100650,12 +100672,6 @@
       "username": "elliottlieberman123",
       "displayName": "Elliott-entity",
       "avatar": "https://avatars.slack-edge.com/2026-02-25/10580651595973_fdb3c28150d3740252d7_72.png"
-    },
-    "U0A7DTQ90BE": {
-      "id": "U0A7DTQ90BE",
-      "username": "coozywana9",
-      "displayName": "cw",
-      "avatar": "https://secure.gravatar.com/avatar/8dfd8a90c8981219235a3db471350187.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0019-72.png"
     },
     "U0ABKJ8S97A": {
       "id": "U0ABKJ8S97A",
