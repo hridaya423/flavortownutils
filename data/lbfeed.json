@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-18T21:36:35.923Z",
+  "lastUpdated": "2026-04-18T22:36:03.097Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -94987,6 +94987,14 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0AB5MDF95Z"
+      },
+      {
+        "ts": "2026-04-18T21:50:35.615Z",
+        "delta": -88,
+        "balance": 618,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0AB5MDF95Z"
       }
     ],
     "u0abed0llcx": [
@@ -98667,6 +98675,16 @@
         "userId": "U0AJ55FFGJE"
       }
     ],
+    "u0ajab37buk": [
+      {
+        "ts": "2026-04-18T22:19:10.681Z",
+        "delta": 15,
+        "balance": 15,
+        "reason": "Cookbook Author",
+        "reasonType": "achievement",
+        "userId": "U0AJAB37BUK"
+      }
+    ],
     "u0ajb081she": [
       {
         "ts": "2026-04-09T09:29:59.139Z",
@@ -100981,6 +100999,18 @@
     ]
   },
   "users": {
+    "U0AJAB37BUK": {
+      "id": "U0AJAB37BUK",
+      "username": "weeewwwwwwww",
+      "displayName": "weeewwwwwwww",
+      "avatar": "https://avatars.slack-edge.com/2026-03-07/10680194409264_cd224227004e249bed08_72.png"
+    },
+    "U0AB5MDF95Z": {
+      "id": "U0AB5MDF95Z",
+      "username": "di.diegoevaristo",
+      "displayName": "foo-V",
+      "avatar": "https://avatars.slack-edge.com/2026-01-27/10414895538336_0ec24903e7c6cc0a3403_72.jpg"
+    },
     "U0842GMRJKC": {
       "id": "U0842GMRJKC",
       "username": "hridayahoney",
@@ -101045,12 +101075,6 @@
       "username": "luke.robert.steenkamp",
       "displayName": "Capy",
       "avatar": "https://avatars.slack-edge.com/2026-04-11/10922553963888_9c1bb7299af1f2d0b702_72.png"
-    },
-    "U0AB5MDF95Z": {
-      "id": "U0AB5MDF95Z",
-      "username": "di.diegoevaristo",
-      "displayName": "foo-V",
-      "avatar": "https://avatars.slack-edge.com/2026-01-27/10414895538336_0ec24903e7c6cc0a3403_72.jpg"
     },
     "U0A75AZ7ZJN": {
       "id": "U0A75AZ7ZJN",
