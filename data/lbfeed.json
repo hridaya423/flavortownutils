@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-18T18:01:57.103Z",
+  "lastUpdated": "2026-04-18T19:22:33.952Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -32316,6 +32316,14 @@
         "balance": 4087,
         "reason": "ship event payout",
         "reasonType": "",
+        "userId": "U091WRF4B3L"
+      },
+      {
+        "ts": "2026-04-18T18:42:09.605Z",
+        "delta": 10,
+        "balance": 4097,
+        "reason": "Line Cook",
+        "reasonType": "achievement",
         "userId": "U091WRF4B3L"
       }
     ],
@@ -100877,6 +100885,12 @@
     ]
   },
   "users": {
+    "U091WRF4B3L": {
+      "id": "U091WRF4B3L",
+      "username": "fedvitu2007",
+      "displayName": "Fede Vitu",
+      "avatar": "https://secure.gravatar.com/avatar/4cfd3af6f8b7b30b28f954ca3328cec4.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0026-72.png"
+    },
     "U0A6CUVDKAB": {
       "id": "U0A6CUVDKAB",
       "username": "diceysnikey",
@@ -101356,12 +101370,6 @@
       "username": "georgegkoif2",
       "displayName": "georgegk",
       "avatar": "https://secure.gravatar.com/avatar/0c5f53045040441398dd145af621a662.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0021-72.png"
-    },
-    "U091WRF4B3L": {
-      "id": "U091WRF4B3L",
-      "username": "fedvitu2007",
-      "displayName": "Fede Vitu",
-      "avatar": "https://secure.gravatar.com/avatar/4cfd3af6f8b7b30b28f954ca3328cec4.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0026-72.png"
     },
     "U07QC35DFV0": {
       "id": "U07QC35DFV0",
