@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-18T17:05:45.143Z",
+  "lastUpdated": "2026-04-18T18:01:57.103Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -69683,6 +69683,14 @@
         "reason": "shop purchase",
         "reasonType": "",
         "userId": "U0A6CUVDKAB"
+      },
+      {
+        "ts": "2026-04-18T17:35:31.249Z",
+        "delta": -322,
+        "balance": 25,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0A6CUVDKAB"
       }
     ],
     "u0a6dsnsv7a": [
@@ -71029,6 +71037,14 @@
         "delta": 25,
         "balance": 4434,
         "reason": "show and tell payout",
+        "reasonType": "",
+        "userId": "U0A6U1V879V"
+      },
+      {
+        "ts": "2026-04-18T17:18:15.264Z",
+        "delta": 355,
+        "balance": 4789,
+        "reason": "ship event payout",
         "reasonType": "",
         "userId": "U0A6U1V879V"
       }
@@ -100861,6 +100877,18 @@
     ]
   },
   "users": {
+    "U0A6CUVDKAB": {
+      "id": "U0A6CUVDKAB",
+      "username": "diceysnikey",
+      "displayName": "diceysnikey",
+      "avatar": "https://avatars.slack-edge.com/2026-01-05/10232020814470_072072deb9d6daa9e0ff_72.png"
+    },
+    "U0A6U1V879V": {
+      "id": "U0A6U1V879V",
+      "username": "abtheinnovator",
+      "displayName": "abtheinnovator",
+      "avatar": "https://secure.gravatar.com/avatar/7b7faa3b1aadcebeb63cd8dcdb82d74e.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0020-72.png"
+    },
     "U092X590XUG": {
       "id": "U092X590XUG",
       "username": "keyboard1000n17",
@@ -101521,12 +101549,6 @@
       "id": "U092SRUUSTS",
       "username": "birajbh65",
       "avatar": "https://secure.gravatar.com/avatar/64e5f6b68ed00deb626aa085dcb1c207.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0005-72.png"
-    },
-    "U0A6U1V879V": {
-      "id": "U0A6U1V879V",
-      "username": "abtheinnovator",
-      "displayName": "abtheinnovator",
-      "avatar": "https://secure.gravatar.com/avatar/7b7faa3b1aadcebeb63cd8dcdb82d74e.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0020-72.png"
     },
     "U0A5DVA4Q4R": {
       "id": "U0A5DVA4Q4R",
@@ -105482,12 +105504,6 @@
       "username": "derek.verduijn",
       "displayName": "Definitely Not A Dolphin",
       "avatar": "https://avatars.slack-edge.com/2025-04-07/8740825217248_6caecd79bff7fbbf7b09_72.png"
-    },
-    "U0A6CUVDKAB": {
-      "id": "U0A6CUVDKAB",
-      "username": "diceysnikey",
-      "displayName": "diceysnikey",
-      "avatar": "https://avatars.slack-edge.com/2026-01-05/10232020814470_072072deb9d6daa9e0ff_72.png"
     },
     "U08NCJE9SGG": {
       "id": "U08NCJE9SGG",
