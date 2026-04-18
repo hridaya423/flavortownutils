@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-18T02:29:57.518Z",
+  "lastUpdated": "2026-04-18T04:56:12.533Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -3435,6 +3435,30 @@
         "delta": 331,
         "balance": 1199,
         "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U06MC0G7A4R"
+      },
+      {
+        "ts": "2026-04-18T03:22:12.309Z",
+        "delta": -312,
+        "balance": 908,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U06MC0G7A4R"
+      },
+      {
+        "ts": "2026-04-18T03:22:45.308Z",
+        "delta": -312,
+        "balance": 596,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U06MC0G7A4R"
+      },
+      {
+        "ts": "2026-04-18T04:42:25.584Z",
+        "delta": -312,
+        "balance": 284,
+        "reason": "shop purchase",
         "reasonType": "",
         "userId": "U06MC0G7A4R"
       }
@@ -100533,6 +100557,12 @@
     ]
   },
   "users": {
+    "U06MC0G7A4R": {
+      "id": "U06MC0G7A4R",
+      "username": "mohittiwariis97",
+      "displayName": "Mohit Tiwari",
+      "avatar": "https://avatars.slack-edge.com/2025-12-09/10083208082006_1dd0de8509c8166bbef7_72.png"
+    },
     "U0A7YGJ12KD": {
       "id": "U0A7YGJ12KD",
       "username": "anindasadhukhan2",
@@ -101827,12 +101857,6 @@
       "username": "felocode",
       "displayName": "Copticfelo",
       "avatar": "https://avatars.slack-edge.com/2025-05-06/8854232631124_277da3193096853490b6_72.jpg"
-    },
-    "U06MC0G7A4R": {
-      "id": "U06MC0G7A4R",
-      "username": "mohittiwariis97",
-      "displayName": "Mohit Tiwari",
-      "avatar": "https://avatars.slack-edge.com/2025-12-09/10083208082006_1dd0de8509c8166bbef7_72.png"
     },
     "U09UJUSPDT5": {
       "id": "U09UJUSPDT5",
