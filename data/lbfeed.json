@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-19T11:58:18.774Z",
+  "lastUpdated": "2026-04-19T13:20:45.541Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -46474,6 +46474,14 @@
         "balance": 14,
         "reason": "shop purchase",
         "reasonType": "",
+        "userId": "U09F5047N30"
+      },
+      {
+        "ts": "2026-04-19T12:06:49.545Z",
+        "delta": 10,
+        "balance": 24,
+        "reason": "Line Cook",
+        "reasonType": "achievement",
         "userId": "U09F5047N30"
       }
     ],
@@ -94039,6 +94047,14 @@
         "reason": "Five Star Chef",
         "reasonType": "achievement",
         "userId": "U0AAK0EB2LE"
+      },
+      {
+        "ts": "2026-04-19T12:25:36.070Z",
+        "delta": -212,
+        "balance": 1779,
+        "reason": "shop purchase",
+        "reasonType": "",
+        "userId": "U0AAK0EB2LE"
       }
     ],
     "u0aakdgp0ax": [
@@ -101333,6 +101349,18 @@
     ]
   },
   "users": {
+    "U0AAK0EB2LE": {
+      "id": "U0AAK0EB2LE",
+      "username": "adam.duda",
+      "displayName": "adamd",
+      "avatar": "https://avatars.slack-edge.com/2026-01-24/10349513961271_dc766ac7b818a8c3e2a2_72.png"
+    },
+    "U09F5047N30": {
+      "id": "U09F5047N30",
+      "username": "ayushrajkeshri95",
+      "displayName": "Psycho_Shinigami",
+      "avatar": "https://avatars.slack-edge.com/2025-10-21/9735418870150_17f1fb4a2ebc5dbce2ec_72.jpg"
+    },
     "U0AJEH66TCJ": {
       "id": "U0AJEH66TCJ",
       "username": "vasupks01",
@@ -101430,12 +101458,6 @@
       "username": "bettatested",
       "displayName": "fsh",
       "avatar": "https://avatars.slack-edge.com/2026-03-03/10614155190197_85728863f026bc5ca3b5_72.png"
-    },
-    "U09F5047N30": {
-      "id": "U09F5047N30",
-      "username": "ayushrajkeshri95",
-      "displayName": "Psycho_Shinigami",
-      "avatar": "https://avatars.slack-edge.com/2025-10-21/9735418870150_17f1fb4a2ebc5dbce2ec_72.jpg"
     },
     "U0ALKJPJGER": {
       "id": "U0ALKJPJGER",
@@ -101846,12 +101868,6 @@
       "id": "U0A3VK4GFRN",
       "username": "bhatrichit10",
       "avatar": "https://avatars.slack-edge.com/2025-12-23/10160500975127_4e0ba49afbde21f78807_72.png"
-    },
-    "U0AAK0EB2LE": {
-      "id": "U0AAK0EB2LE",
-      "username": "adam.duda",
-      "displayName": "adamd",
-      "avatar": "https://avatars.slack-edge.com/2026-01-24/10349513961271_dc766ac7b818a8c3e2a2_72.png"
     },
     "U0A78UCA231": {
       "id": "U0A78UCA231",
