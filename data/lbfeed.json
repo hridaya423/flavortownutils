@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-19T05:29:56.419Z",
+  "lastUpdated": "2026-04-19T06:58:59.247Z",
   "entries": {
     "u01mphkfz7s": [
       {
@@ -21583,6 +21583,16 @@
         "reason": "ship event payout",
         "reasonType": "",
         "userId": "U08DKTU2QRL"
+      }
+    ],
+    "u08egtxvcfr": [
+      {
+        "ts": "2026-04-19T05:37:01.187Z",
+        "delta": 2,
+        "balance": 2,
+        "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U08EGTXVCFR"
       }
     ],
     "u08emt46g3v": [
@@ -45177,6 +45187,22 @@
         "delta": 15,
         "balance": 32,
         "reason": "Five Star Chef",
+        "reasonType": "achievement",
+        "userId": "U09CUN9GYJ2"
+      },
+      {
+        "ts": "2026-04-19T05:58:59.131Z",
+        "delta": 82,
+        "balance": 114,
+        "reason": "ship event payout",
+        "reasonType": "",
+        "userId": "U09CUN9GYJ2"
+      },
+      {
+        "ts": "2026-04-19T06:11:59.415Z",
+        "delta": 2,
+        "balance": 116,
+        "reason": "Hello, Kitchen!",
         "reasonType": "achievement",
         "userId": "U09CUN9GYJ2"
       }
@@ -97313,6 +97339,14 @@
         "reason": "ship event payout",
         "reasonType": "",
         "userId": "U0AF4NULG67"
+      },
+      {
+        "ts": "2026-04-19T06:14:06.897Z",
+        "delta": 15,
+        "balance": 175,
+        "reason": "Five Star Chef",
+        "reasonType": "achievement",
+        "userId": "U0AF4NULG67"
       }
     ],
     "u0af9md9lfr": [
@@ -101099,6 +101133,24 @@
     ]
   },
   "users": {
+    "U0AF4NULG67": {
+      "id": "U0AF4NULG67",
+      "username": "max1",
+      "displayName": "Max",
+      "avatar": "https://secure.gravatar.com/avatar/6aab3a6a24aaa5f5fe508a2cc09b4004.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0016-72.png"
+    },
+    "U09CUN9GYJ2": {
+      "id": "U09CUN9GYJ2",
+      "username": "ssxavier888",
+      "displayName": "Xavier",
+      "avatar": "https://secure.gravatar.com/avatar/27ce049aad771c31878dd02c726752de.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0002-72.png"
+    },
+    "U08EGTXVCFR": {
+      "id": "U08EGTXVCFR",
+      "username": "wangz9096z",
+      "displayName": "gnahiak2",
+      "avatar": "https://avatars.slack-edge.com/2025-09-25/9577517134197_b1f21e411d6b04b3e262_72.png"
+    },
     "U07ES48RES3": {
       "id": "U07ES48RES3",
       "username": "renudilip19",
@@ -101814,12 +101866,6 @@
       "displayName": "someguest4",
       "avatar": "https://secure.gravatar.com/avatar/39ca3709cb30d7bd5ccaacf64bd10a47.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0022-72.png"
     },
-    "U09CUN9GYJ2": {
-      "id": "U09CUN9GYJ2",
-      "username": "ssxavier888",
-      "displayName": "Xavier",
-      "avatar": "https://secure.gravatar.com/avatar/27ce049aad771c31878dd02c726752de.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0002-72.png"
-    },
     "U0A3ASF212B": {
       "id": "U0A3ASF212B",
       "username": "secretaditzu78",
@@ -102509,12 +102555,6 @@
       "username": "coolcream",
       "displayName": "Cool cream",
       "avatar": "https://avatars.slack-edge.com/2026-01-14/10280240625063_9e2703ca34c8122db01a_72.png"
-    },
-    "U0AF4NULG67": {
-      "id": "U0AF4NULG67",
-      "username": "max1",
-      "displayName": "Max",
-      "avatar": "https://secure.gravatar.com/avatar/6aab3a6a24aaa5f5fe508a2cc09b4004.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0016-72.png"
     },
     "U093B3R6HCK": {
       "id": "U093B3R6HCK",
