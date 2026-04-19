@@ -491,7 +491,8 @@ function writeThemeCache(data) {
 }
 
 function captureThemePalette() {
-    const styles = getComputedStyle(document.documentElement);
+    const wrappedRoot = flavortownWrappedModal || document.querySelector('.flavortown-wrapped-overlay') || document.documentElement;
+    const styles = getComputedStyle(wrappedRoot);
     const palette = {};
     THEME_PALETTE_VARS.forEach(varName => {
         const value = styles.getPropertyValue(varName).trim();
@@ -8172,6 +8173,12 @@ function escapeHtml(text) {
     return div.innerHTML;
 }
 
+function escapeHtmlAttribute(text) {
+    return escapeHtml(text)
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
 function enhanceShopGoals() {
     if (window.location.pathname !== '/shop') return;
 
@@ -11421,6 +11428,7 @@ function init() {
     addProjectCardCookieStats();
     addSkipButton();
     enhanceKitchenDashboard();
+    initFlavortownWrapped();
     setTimeout(enhanceLeaderboardPage, 0);
     enhanceAdminPage();
     initProjectRepoSuggestions();
@@ -13017,6 +13025,7 @@ document.addEventListener('turbo:load', () => {
     addDoomscrollMode();
     addAdminViewButton();
     addSidebarItems();
+    initFlavortownWrapped();
     enhanceAchievementsPage();
     initShotsEditor();
     enhanceAdminPage();
@@ -15400,6 +15409,23 @@ function addSidebarItems() {
             'flavortown-sidebar-achievements'
         );
         if (achievementsItem) navList.appendChild(achievementsItem);
+    }
+
+    if (!navList.querySelector('a.sidebar__nav-link[data-flavortown-wrapped-link="true"]')) {
+        const wrappedItem = createItemFromTemplate(
+            '/kitchen?flavortown_wrapped=1',
+            'Wrapped',
+            '<path d="M12 2l2.39 4.85 5.36.78-3.88 3.78.92 5.35L12 14.77 7.21 16.76l.92-5.35L4.25 7.63l5.36-.78L12 2zm0 7.1l-.88 1.79-1.98.29 1.43 1.39-.34 1.97L12 13.81l1.77.93-.34-1.97 1.43-1.39-1.98-.29L12 9.1z"></path>',
+            'flavortown-sidebar-wrapped'
+        );
+
+        if (wrappedItem) {
+            const wrappedLink = wrappedItem.querySelector('a.sidebar__nav-link');
+            if (wrappedLink) {
+                wrappedLink.dataset.flavortownWrappedLink = 'true';
+            }
+            navList.appendChild(wrappedItem);
+        }
     }
 
     if (!navList.querySelector('a.sidebar__nav-link[href="/leaderboard"]')) {
@@ -21396,6 +21422,2579 @@ async function enhanceLeaderboardPage() {
             openLeaderboardHistoryModal({ userName, entries: entriesForUser, linkEl: link, profileUrl });
         });
     });
+}
+
+let flavortownWrappedModal = null;
+let flavortownWrappedCleanup = null;
+
+function initFlavortownWrapped() {
+    const wrappedLinks = document.querySelectorAll('a.sidebar__nav-link[data-flavortown-wrapped-link="true"]');
+    wrappedLinks.forEach((link) => {
+        if (link.dataset.flavortownWrappedBound === 'true') return;
+        link.dataset.flavortownWrappedBound = 'true';
+        link.addEventListener('click', (e) => {
+            if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+            e.preventDefault();
+            openFlavortownWrappedModal();
+        });
+    });
+
+    const params = new URLSearchParams(window.location.search || '');
+    if (params.get('flavortown_wrapped') === '1') {
+        params.delete('flavortown_wrapped');
+        const nextQuery = params.toString();
+        const nextUrl = `${window.location.pathname}${nextQuery ? `?${nextQuery}` : ''}${window.location.hash || ''}`;
+        window.history.replaceState(window.history.state, '', nextUrl);
+        setTimeout(() => {
+            if (!flavortownWrappedModal) {
+                openFlavortownWrappedModal();
+            }
+        }, 120);
+    }
+}
+
+function closeFlavortownWrappedModal() {
+    if (flavortownWrappedCleanup) {
+        flavortownWrappedCleanup();
+        flavortownWrappedCleanup = null;
+    }
+
+    if (flavortownWrappedModal) {
+        flavortownWrappedModal.remove();
+        flavortownWrappedModal = null;
+    }
+
+    document.body.style.overflow = '';
+}
+
+function wrappedFormatNumber(value) {
+    if (!Number.isFinite(value)) return '0';
+    return new Intl.NumberFormat('en-US').format(Math.round(value));
+}
+
+function wrappedFormatCompact(value) {
+    if (!Number.isFinite(value)) return '0';
+    return new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 1 }).format(value);
+}
+
+function wrappedFormatHoursFromMinutes(minutes) {
+    const safe = Math.max(0, Math.round(Number(minutes) || 0));
+    const hours = Math.floor(safe / 60);
+    const mins = safe % 60;
+    if (hours > 0) return `${hours}h ${mins}m`;
+    return `${mins}m`;
+}
+
+function wrappedDateLabel(date) {
+    if (!(date instanceof Date) || Number.isNaN(date.getTime())) return '-';
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+
+function parseCookieNumber(text) {
+    if (!text) return 0;
+    const match = String(text).match(/-?\d[\d,]*/);
+    if (!match) return 0;
+    return parseInt(match[0].replace(/,/g, ''), 10) || 0;
+}
+
+function getSidebarBalanceValue() {
+    const balanceEl = document.querySelector('.sidebar__user-balance');
+    if (!balanceEl) return 0;
+    const value = parseCookieNumber(balanceEl.textContent || '');
+    return Number.isFinite(value) ? Math.max(0, value) : 0;
+}
+
+function extractBalanceRowsFromDoc(doc) {
+    let rows = doc.querySelectorAll('.balance-history__table tbody tr');
+    if (rows.length === 0) rows = doc.querySelectorAll('table tbody tr');
+
+    if (rows.length > 0) return Array.from(rows);
+
+    const parser = new DOMParser();
+    const streamTemplates = doc.querySelectorAll('turbo-stream template');
+    if (!streamTemplates.length) return [];
+
+    const parsedRows = [];
+    streamTemplates.forEach((template) => {
+        const fragmentDoc = parser.parseFromString(template.innerHTML, 'text/html');
+        const templateRows = fragmentDoc.querySelectorAll('.balance-history__table tbody tr, table tbody tr');
+        parsedRows.push(...Array.from(templateRows));
+    });
+    return parsedRows;
+}
+
+function parseBalanceCurrentValue(doc) {
+    const header = doc.querySelector('.balance-history__header h1') || doc.querySelector('h1');
+    if (!header) return 0;
+    const match = header.textContent.match(/(\d[\d,]*)/);
+    if (!match) return 0;
+    return parseInt(match[1].replace(/,/g, ''), 10) || 0;
+}
+
+function buildWrappedBalancePoints(transactions, currentBalance) {
+    if (!Array.isArray(transactions) || !transactions.length) return [];
+
+    const sorted = transactions
+        .filter((entry) => entry?.date instanceof Date && !Number.isNaN(entry.date.getTime()))
+        .map((entry) => ({
+            date: entry.date,
+            reason: String(entry.reason || '').trim() || 'Balance update',
+            amount: Math.round(Number(entry.amount) || 0),
+        }))
+        .sort((a, b) => {
+            const byTime = a.date.getTime() - b.date.getTime();
+            if (byTime !== 0) return byTime;
+            return (Number(b.amount) || 0) - (Number(a.amount) || 0);
+        });
+
+    const baseBalance = currentBalance - sorted.reduce((sum, entry) => sum + (Number(entry.amount) || 0), 0);
+    let running = baseBalance;
+
+    return sorted.map((entry) => {
+        running += entry.amount;
+        return {
+            date: entry.date,
+            reason: entry.reason,
+            amount: entry.amount,
+            balance: running,
+        };
+    });
+}
+
+async function fetchWrappedBalanceData() {
+    const parser = new DOMParser();
+    const sidebarBalance = getSidebarBalanceValue();
+
+    const parseBalanceDoc = (doc) => {
+        const rows = extractBalanceRowsFromDoc(doc);
+        let currentBalance = parseBalanceCurrentValue(doc);
+        if (!Number.isFinite(currentBalance) || currentBalance <= 0) {
+            currentBalance = sidebarBalance;
+        }
+
+        const transactions = [];
+
+        rows.forEach((row) => {
+            const cells = row.querySelectorAll('td');
+            if (cells.length < 3) return;
+
+            const reason = (cells[0].textContent || '').trim().replace(/\s+/g, ' ');
+            const amountText = (cells[1].textContent || '').trim();
+            const dateText = (cells[2].textContent || '').trim();
+
+            const magnitude = Math.abs(parseCookieNumber(amountText));
+            if (!Number.isFinite(magnitude) || magnitude <= 0) return;
+
+            let isNegative = amountText.includes('-');
+            if (!isNegative && /shop order|domain grant|purchase|spent|redeem|buy/i.test(reason)) {
+                isNegative = true;
+            }
+
+            const amount = isNegative ? -magnitude : magnitude;
+
+            let date = parseRelativeTime(dateText);
+            if (!(date instanceof Date) || Number.isNaN(date.getTime())) {
+                date = parseAbsoluteDateText(dateText);
+            }
+            if (!(date instanceof Date) || Number.isNaN(date.getTime())) return;
+
+            transactions.push({ reason, amount, date });
+        });
+
+        const dataPoints = buildWrappedBalancePoints(transactions, currentBalance);
+        return { currentBalance, transactions, dataPoints };
+    };
+
+    try {
+        const frameResponse = await fetch('/my/balance', {
+            credentials: 'include',
+            headers: {
+                'Accept': 'text/html, application/xhtml+xml',
+                'Turbo-Frame': 'balance_history',
+                'X-Flavortown-Ext-135': 'true',
+            },
+        });
+
+        if (frameResponse.ok) {
+            const frameHtml = await frameResponse.text();
+            const frameDoc = parser.parseFromString(frameHtml, 'text/html');
+            const parsedFrame = parseBalanceDoc(frameDoc);
+            if (parsedFrame.transactions.length > 0 || parsedFrame.currentBalance > 0) {
+                return parsedFrame;
+            }
+        }
+
+        const fallbackResponse = await fetch('/my/balance', {
+            credentials: 'include',
+            headers: {
+                'Accept': 'text/html, application/xhtml+xml',
+                'X-Flavortown-Ext-135': 'true',
+            },
+        });
+
+        if (fallbackResponse.ok) {
+            const fallbackHtml = await fallbackResponse.text();
+            const fallbackDoc = parser.parseFromString(fallbackHtml, 'text/html');
+            const parsedFallback = parseBalanceDoc(fallbackDoc);
+            if (parsedFallback.transactions.length > 0 || parsedFallback.currentBalance > 0) {
+                return parsedFallback;
+            }
+        }
+
+        return { currentBalance: sidebarBalance, transactions: [], dataPoints: [] };
+    } catch (e) {
+        return { currentBalance: sidebarBalance, transactions: [], dataPoints: [] };
+    }
+}
+
+async function fetchWrappedAchievementsData() {
+    try {
+        const response = await fetch('/my/achievements', { credentials: 'include' });
+        if (!response.ok) {
+            const fallback = JSON.parse(localStorage.getItem(ACHIEVEMENT_STORAGE_KEY) || '[]');
+            const fallbackCount = Array.isArray(fallback) ? fallback.length : 0;
+            return {
+                count: fallbackCount,
+                totalCookies: 0,
+                top: [],
+                sideQuestCount: 0,
+                sideQuestCookies: 0,
+            };
+        }
+
+        const html = await response.text();
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        const earnedCards = Array.from(doc.querySelectorAll('.achievements__card--earned'));
+
+        const top = earnedCards.map((card) => {
+            const name = card.querySelector('.achievements__name')?.textContent?.trim() || 'Unknown';
+            const rewardText = card.querySelector('.achievements__reward')?.textContent || '';
+            const rewardMatch = rewardText.match(/\+(\d+)/);
+            const cookies = rewardMatch ? parseInt(rewardMatch[1], 10) : 0;
+            return { name, cookies };
+        });
+
+        top.sort((a, b) => b.cookies - a.cookies || a.name.localeCompare(b.name));
+        const totalCookies = top.reduce((sum, item) => sum + (item.cookies || 0), 0);
+        const sideQuestItems = top.filter((item) => /side\s*quest/i.test(item.name || ''));
+        const sideQuestCount = sideQuestItems.length;
+        const sideQuestCookies = sideQuestItems.reduce((sum, item) => sum + (item.cookies || 0), 0);
+
+        return {
+            count: top.length,
+            totalCookies,
+            top: top.slice(0, 5),
+            sideQuestCount,
+            sideQuestCookies,
+        };
+    } catch (e) {
+        return {
+            count: 0,
+            totalCookies: 0,
+            top: [],
+            sideQuestCount: 0,
+            sideQuestCookies: 0,
+        };
+    }
+}
+
+function normalizeWrappedShopOrderStatus(statusText) {
+    const value = String(statusText || '').toLowerCase();
+    if (!value) return 'other';
+    if (value.includes('fulfilled')) return 'fulfilled';
+    if (value.includes('pending')) return 'pending';
+    if (value.includes('cancel')) return 'cancelled';
+    if (value.includes('reject')) return 'rejected';
+    if (value.includes('hold')) return 'on_hold';
+    return 'other';
+}
+
+function parseWrappedMyOrdersFromDoc(doc) {
+    const items = Array.from(doc.querySelectorAll('.my-orders__item'));
+    return items.map((item) => {
+        const headerItems = Array.from(item.querySelectorAll('.my-orders__header-item'));
+        let dateText = '';
+        let totalText = '';
+
+        headerItems.forEach((header) => {
+            const label = (header.querySelector('.my-orders__header-label')?.textContent || '').trim().toLowerCase();
+            const value = (header.querySelector('.my-orders__header-value')?.textContent || '').trim();
+            if (label.includes('order placed')) dateText = value;
+            if (label === 'total') totalText = value;
+        });
+
+        const orderLabel = (item.querySelector('.my-orders__order-number-section .my-orders__header-label')?.textContent || '').trim();
+        const orderIdMatch = orderLabel.match(/#\s*(\d+)/);
+        const orderId = orderIdMatch ? orderIdMatch[1] : '';
+
+        const itemName = (item.querySelector('.my-orders__item-name')?.textContent || '').trim().replace(/\s+/g, ' ') || 'Unknown item';
+        const statusText = (item.querySelector('.my-orders__status')?.textContent || '').trim().replace(/\s+/g, ' ');
+        const statusKey = normalizeWrappedShopOrderStatus(statusText);
+
+        let quantity = 1;
+        let unitPrice = 0;
+        Array.from(item.querySelectorAll('.my-orders__detail-row')).forEach((row) => {
+            const label = (row.querySelector('.my-orders__label')?.textContent || '').trim().toLowerCase();
+            const value = (row.querySelector('.my-orders__value')?.textContent || '').trim();
+            if (label.includes('quantity')) {
+                const parsed = parseCookieNumber(value);
+                quantity = Number.isFinite(parsed) && parsed > 0 ? parsed : quantity;
+            }
+            if (label.includes('unit price')) {
+                unitPrice = Math.max(0, parseCookieNumber(value));
+            }
+        });
+
+        let totalCookies = Math.max(0, parseCookieNumber(totalText));
+        if (!totalCookies && unitPrice > 0 && quantity > 0) {
+            totalCookies = unitPrice * quantity;
+        }
+
+        let date = parseAbsoluteDateText(dateText);
+        if (!(date instanceof Date) || Number.isNaN(date.getTime())) {
+            date = parseRelativeTime(dateText);
+        }
+
+        const dateKey = (date instanceof Date && !Number.isNaN(date.getTime()))
+            ? `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`
+            : null;
+
+        return {
+            orderId,
+            itemName,
+            statusKey,
+            statusText,
+            quantity,
+            unitPrice,
+            totalCookies,
+            date,
+            dateKey,
+        };
+    });
+}
+
+async function fetchWrappedShopOrdersData() {
+    try {
+        const response = await fetch('/shop/my_orders', { credentials: 'include' });
+        if (!response.ok) {
+            return {
+                available: false,
+                reason: 'Could not load /shop/my_orders',
+                statuses: {},
+                totalOrders: 0,
+                totalCookies: 0,
+                approvedOrders: 0,
+                approvedCookies: 0,
+                topItems: [],
+                monthly: [],
+                reliable: false,
+            };
+        }
+
+        const html = await response.text();
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        const orders = parseWrappedMyOrdersFromDoc(doc).filter((order) => order.orderId || order.itemName || order.totalCookies > 0);
+
+        if (!orders.length) {
+            return {
+                available: false,
+                reason: 'No orders found',
+                statuses: {},
+                totalOrders: 0,
+                totalCookies: 0,
+                approvedOrders: 0,
+                approvedCookies: 0,
+                topItems: [],
+                monthly: [],
+                reliable: false,
+            };
+        }
+
+        const statuses = {
+            fulfilled: { label: 'Fulfilled', count: 0, cookies: 0 },
+            pending: { label: 'Pending', count: 0, cookies: 0 },
+            cancelled: { label: 'Cancelled', count: 0, cookies: 0 },
+            rejected: { label: 'Rejected', count: 0, cookies: 0 },
+            on_hold: { label: 'On Hold', count: 0, cookies: 0 },
+            other: { label: 'Other', count: 0, cookies: 0 },
+        };
+
+        const monthlyMap = new Map();
+        const itemMap = new Map();
+
+        orders.forEach((order) => {
+            const statusKey = statuses[order.statusKey] ? order.statusKey : 'other';
+            statuses[statusKey].count += 1;
+            statuses[statusKey].cookies += order.totalCookies || 0;
+
+            if (order.dateKey) {
+                const bucket = monthlyMap.get(order.dateKey) || { key: order.dateKey, orders: 0, cookies: 0 };
+                bucket.orders += 1;
+                bucket.cookies += order.totalCookies || 0;
+                monthlyMap.set(order.dateKey, bucket);
+            }
+
+            const itemKey = (order.itemName || 'Unknown item').toLowerCase();
+            if (!itemMap.has(itemKey)) {
+                itemMap.set(itemKey, { name: order.itemName || 'Unknown item', count: 0, cookies: 0 });
+            }
+            const item = itemMap.get(itemKey);
+            item.count += 1;
+            item.cookies += order.totalCookies || 0;
+        });
+
+        const totalOrders = orders.length;
+        const totalCookies = orders.reduce((sum, order) => sum + (order.totalCookies || 0), 0);
+        const approvedOrders = statuses.fulfilled.count;
+        const approvedCookies = statuses.fulfilled.cookies;
+
+        const topItems = Array.from(itemMap.values())
+            .sort((a, b) => b.cookies - a.cookies || b.count - a.count)
+            .slice(0, 8);
+
+        const monthly = Array.from(monthlyMap.values()).sort((a, b) => a.key.localeCompare(b.key));
+
+        return {
+            available: true,
+            source: 'my_orders',
+            statuses,
+            totalOrders,
+            totalCookies,
+            approvedOrders,
+            approvedCookies,
+            topItems,
+            monthly,
+            reliable: true,
+        };
+    } catch (e) {
+        return {
+            available: false,
+            reason: 'Shop orders request failed',
+            statuses: {},
+            totalOrders: 0,
+            totalCookies: 0,
+            approvedOrders: 0,
+            approvedCookies: 0,
+            topItems: [],
+            monthly: [],
+            reliable: false,
+        };
+    }
+}
+
+function buildWrappedRecentHeatmapCells(dailyAggregates, dayCount = 364) {
+    const safeDaily = dailyAggregates || {};
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const baselineStart = new Date(today);
+    baselineStart.setDate(baselineStart.getDate() - (dayCount - 1));
+
+    const activeDateKeys = Object.keys(safeDaily)
+        .filter((dateStr) => {
+            const aggregate = safeDaily[dateStr] || {};
+            return (Number(aggregate.totalHours) || 0) > 0 || (Number(aggregate.totalDevlogs) || 0) > 0;
+        })
+        .sort((a, b) => a.localeCompare(b));
+
+    let start = baselineStart;
+    if (activeDateKeys.length) {
+        const earliestActive = new Date(`${activeDateKeys[0]}T00:00:00`);
+        if (!Number.isNaN(earliestActive.getTime()) && earliestActive > baselineStart) {
+            start = earliestActive;
+        }
+    }
+
+    const mondayOffset = (start.getDay() + 6) % 7;
+    start.setDate(start.getDate() - mondayOffset);
+
+    const days = [];
+    let maxHours = 0;
+    for (let d = new Date(start); d <= today; d.setDate(d.getDate() + 1)) {
+        const dateStr = d.toISOString().split('T')[0];
+        const aggregate = safeDaily[dateStr] || { totalHours: 0, totalDevlogs: 0 };
+        const totalHours = Number(aggregate.totalHours) || 0;
+        const totalDevlogs = Number(aggregate.totalDevlogs) || 0;
+        maxHours = Math.max(maxHours, totalHours);
+        days.push({ dateStr, totalHours, totalDevlogs });
+    }
+
+    return days.map((day) => {
+        let level = 0;
+        if (day.totalHours > 0 && maxHours > 0) {
+            level = Math.min(4, Math.max(1, Math.ceil((day.totalHours / maxHours) * 4)));
+        }
+        return { ...day, level };
+    });
+}
+
+function getWrappedHeatmapStats(heatmapData) {
+    const dailyAggregates = heatmapData?.dailyAggregates || {};
+    const activeEntries = Object.entries(dailyAggregates)
+        .filter(([, day]) => (Number(day.totalHours) || 0) > 0 || (Number(day.totalDevlogs) || 0) > 0)
+        .sort((a, b) => new Date(a[0]).getTime() - new Date(b[0]).getTime());
+
+    const activeDays = activeEntries.length;
+    const totalHours = activeEntries.reduce((sum, [, day]) => sum + (Number(day.totalHours) || 0), 0);
+    const totalDevlogs = activeEntries.reduce((sum, [, day]) => sum + (Number(day.totalDevlogs) || 0), 0);
+
+    let longestStreak = 0;
+    let streak = 0;
+    let prevDate = null;
+    activeEntries.forEach(([dateStr]) => {
+        const date = new Date(`${dateStr}T00:00:00`);
+        if (prevDate) {
+            const diffDays = Math.round((date.getTime() - prevDate.getTime()) / 86400000);
+            streak = diffDays === 1 ? streak + 1 : 1;
+        } else {
+            streak = 1;
+        }
+        longestStreak = Math.max(longestStreak, streak);
+        prevDate = date;
+    });
+
+    const activeSet = new Set(activeEntries.map(([dateStr]) => dateStr));
+    let currentStreak = 0;
+    const walker = new Date();
+    walker.setHours(0, 0, 0, 0);
+    while (activeSet.has(walker.toISOString().split('T')[0])) {
+        currentStreak += 1;
+        walker.setDate(walker.getDate() - 1);
+    }
+
+    const bestDayEntry = activeEntries
+        .slice()
+        .sort((a, b) => {
+            const scoreA = (Number(a[1].totalHours) || 0) * 2 + (Number(a[1].totalDevlogs) || 0);
+            const scoreB = (Number(b[1].totalHours) || 0) * 2 + (Number(b[1].totalDevlogs) || 0);
+            if (scoreB !== scoreA) return scoreB - scoreA;
+            return new Date(b[0]).getTime() - new Date(a[0]).getTime();
+        })[0] || null;
+
+    const monthMap = new Map();
+    activeEntries.forEach(([dateStr, day]) => {
+        const key = dateStr.slice(0, 7);
+        const existing = monthMap.get(key) || { hours: 0, devlogs: 0, days: 0 };
+        existing.hours += Number(day.totalHours) || 0;
+        existing.devlogs += Number(day.totalDevlogs) || 0;
+        existing.days += 1;
+        monthMap.set(key, existing);
+    });
+
+    const topMonth = Array.from(monthMap.entries())
+        .sort((a, b) => b[1].hours - a[1].hours || b[1].devlogs - a[1].devlogs)[0] || null;
+
+    const monthSeries = Array.from(monthMap.entries())
+        .sort((a, b) => a[0].localeCompare(b[0]))
+        .map(([key, value]) => ({
+            key,
+            hours: value.hours,
+            devlogs: value.devlogs,
+            days: value.days,
+        }));
+
+    const weekdayStats = [
+        { key: 1, label: 'Mon', hours: 0, devlogs: 0 },
+        { key: 2, label: 'Tue', hours: 0, devlogs: 0 },
+        { key: 3, label: 'Wed', hours: 0, devlogs: 0 },
+        { key: 4, label: 'Thu', hours: 0, devlogs: 0 },
+        { key: 5, label: 'Fri', hours: 0, devlogs: 0 },
+        { key: 6, label: 'Sat', hours: 0, devlogs: 0 },
+        { key: 0, label: 'Sun', hours: 0, devlogs: 0 },
+    ];
+
+    activeEntries.forEach(([dateStr, day]) => {
+        const parsed = new Date(`${dateStr}T00:00:00`);
+        if (Number.isNaN(parsed.getTime())) return;
+        const weekday = parsed.getDay();
+        const target = weekdayStats.find((entry) => entry.key === weekday);
+        if (!target) return;
+        target.hours += Number(day.totalHours) || 0;
+        target.devlogs += Number(day.totalDevlogs) || 0;
+    });
+
+    const topWeekdayEntry = weekdayStats
+        .filter((entry) => entry.key >= 1 && entry.key <= 5)
+        .slice()
+        .sort((a, b) => b.hours - a.hours)[0] || null;
+
+    const topWeekendEntry = weekdayStats
+        .filter((entry) => entry.key === 6 || entry.key === 0)
+        .slice()
+        .sort((a, b) => b.hours - a.hours)[0] || null;
+
+    return {
+        activeDays,
+        totalHours,
+        totalDevlogs,
+        longestStreak,
+        currentStreak,
+        bestDay: bestDayEntry ? {
+            date: bestDayEntry[0],
+            hours: Number(bestDayEntry[1].totalHours) || 0,
+            devlogs: Number(bestDayEntry[1].totalDevlogs) || 0,
+        } : null,
+        topMonth: topMonth ? {
+            key: topMonth[0],
+            hours: topMonth[1].hours,
+            devlogs: topMonth[1].devlogs,
+            days: topMonth[1].days,
+        } : null,
+        monthSeries,
+        weekdayStats,
+        topWeekday: topWeekdayEntry && topWeekdayEntry.hours > 0 ? {
+            label: topWeekdayEntry.label,
+            hours: topWeekdayEntry.hours,
+            devlogs: topWeekdayEntry.devlogs,
+        } : null,
+        topWeekend: topWeekendEntry && topWeekendEntry.hours > 0 ? {
+            label: topWeekendEntry.label,
+            hours: topWeekendEntry.hours,
+            devlogs: topWeekendEntry.devlogs,
+        } : null,
+        recentCells: buildWrappedRecentHeatmapCells(dailyAggregates),
+    };
+}
+
+function getWrappedProjectStats(heatmapData) {
+    try {
+        const raw = localStorage.getItem('flavortown_project_stats');
+        if (!raw) {
+            return { totalProjects: 0, totalDevlogs: 0, totalMinutes: 0, topProjects: [] };
+        }
+
+        const parsed = JSON.parse(raw);
+        const heatmapProjects = heatmapData?.projects || {};
+        const rows = Object.entries(parsed || {}).map(([projectId, stat]) => {
+            const minutes = Number(stat?.minutes) || 0;
+            const devlogs = Number(stat?.devlogs) || 0;
+            const heatmapName = heatmapProjects[projectId]?.name;
+            const title = heatmapName || `Project #${projectId}`;
+            return { projectId, title, minutes, devlogs };
+        });
+
+        const totalProjects = rows.length;
+        const totalDevlogs = rows.reduce((sum, row) => sum + row.devlogs, 0);
+        const totalMinutes = rows.reduce((sum, row) => sum + row.minutes, 0);
+
+        const topProjects = rows
+            .slice()
+            .sort((a, b) => b.minutes - a.minutes || b.devlogs - a.devlogs)
+            .slice(0, 4);
+
+        return { totalProjects, totalDevlogs, totalMinutes, topProjects };
+    } catch (e) {
+        return { totalProjects: 0, totalDevlogs: 0, totalMinutes: 0, topProjects: [] };
+    }
+}
+
+function getWrappedShippingStats(currentBalance) {
+    const cache = readProjectUnshippedCache();
+    let totalPaidMinutes = 0;
+    let totalPaidCookies = 0;
+    let totalUnshippedMinutes = 0;
+    let totalUndevloggedMinutes = 0;
+    let totalShips = 0;
+
+    Object.values(cache || {}).forEach((entry) => {
+        if (!entry) return;
+        totalPaidMinutes += Math.max(0, Number(entry.paidShipMinutes) || 0);
+        totalPaidCookies += Math.max(0, Number(entry.paidCookies) || 0);
+        totalUnshippedMinutes += Math.max(0, Number(entry.unshippedMinutes) || 0);
+        totalUndevloggedMinutes += Math.max(0, Number(entry.undevloggedMinutes) || 0);
+
+        const exactShips = Number(entry.exactCurrentShipCount);
+        const currentShips = Number(entry.currentShipCount);
+        if (Number.isFinite(exactShips) && exactShips > 0) {
+            totalShips += exactShips;
+        } else if (Number.isFinite(currentShips) && currentShips > 0) {
+            totalShips += currentShips;
+        }
+    });
+
+    const avgEfficiency = totalPaidMinutes > 0
+        ? totalPaidCookies / (totalPaidMinutes / 60)
+        : 0;
+
+    const projection = getShopGoalProjectionStats(currentBalance || 0);
+    const projectedCookies = projection.hasProjectProjection
+        ? projection.projectProjectedCookies
+        : projection.averageProjectedCookies;
+
+    return {
+        totalPaidMinutes,
+        totalPaidCookies,
+        totalUnshippedMinutes,
+        totalUndevloggedMinutes,
+        totalShips,
+        avgEfficiency,
+        projectedCookies: Number.isFinite(projectedCookies) ? projectedCookies : null,
+    };
+}
+
+function getFlavortownWrappedArchetype(data) {
+    const longestStreak = data.heatmap.longestStreak;
+    const activeDays = data.heatmap.activeDays;
+    const avgEfficiency = data.shipping.avgEfficiency;
+    const projects = data.projects.totalProjects;
+    const achievements = data.achievements.count;
+
+    if (longestStreak >= 45 && activeDays >= 120) {
+        return {
+            emoji: 'fire',
+            title: 'The Marathon Builder',
+            subtitle: 'Consistency is your superpower. You keep shipping momentum alive day after day.',
+        };
+    }
+
+    if (avgEfficiency >= 75) {
+        return {
+            emoji: 'zap',
+            title: 'The Efficiency Wizard',
+            subtitle: 'You turn focused hours into serious cookie output with elite pacing.',
+        };
+    }
+
+    if (projects >= 12) {
+        return {
+            emoji: 'compass',
+            title: 'The Explorer',
+            subtitle: 'You hop across ideas and keep your project universe thriving.',
+        };
+    }
+
+    if (achievements >= 20) {
+        return {
+            emoji: 'trophy',
+            title: 'The Trophy Hunter',
+            subtitle: 'You chase progress, rack up badges, and convert wins into momentum.',
+        };
+    }
+
+    return {
+        emoji: 'sparkles',
+        title: 'The Steady Cooker',
+        subtitle: 'You make meaningful progress with focused sessions and steady growth.',
+    };
+}
+
+function getFlavortownWrappedMoments(data) {
+    const moments = [];
+    const biggestGain = data.balance.transactions
+        .filter((tx) => tx.amount > 0)
+        .sort((a, b) => b.amount - a.amount)[0];
+
+    if (biggestGain) {
+        moments.push(`Biggest single jump: +${wrappedFormatNumber(biggestGain.amount)} cookies on ${wrappedDateLabel(biggestGain.date)}.`);
+    }
+
+    if (data.heatmap.bestDay) {
+        const bestDate = wrappedDateLabel(new Date(`${data.heatmap.bestDay.date}T00:00:00`));
+        moments.push(`Peak day: ${bestDate} with ${data.heatmap.bestDay.hours.toFixed(1)}h logged.`);
+    }
+
+    if (data.projects.topProjects[0]) {
+        const top = data.projects.topProjects[0];
+        moments.push(`Top project: ${top.title} (${wrappedFormatHoursFromMinutes(top.minutes)} across ${wrappedFormatNumber(top.devlogs)} devlogs).`);
+    }
+
+    return moments.slice(0, 3);
+}
+
+function isWrappedBridgeAdjustmentReason(reasonRaw) {
+    const reason = String(reasonRaw || '').toLowerCase();
+    return reason.includes('bridge payout repair') || reason.includes('bridge payout correction');
+}
+
+function normalizeWrappedBalanceTransactions(transactions) {
+    const safe = Array.isArray(transactions) ? transactions : [];
+    const regular = [];
+    const bridgeByDay = new Map();
+
+    safe.forEach((tx) => {
+        const amount = Number(tx?.amount) || 0;
+        const date = tx?.date instanceof Date ? tx.date : null;
+        const reason = String(tx?.reason || '');
+
+        if (!date || Number.isNaN(date.getTime())) return;
+
+        if (!isWrappedBridgeAdjustmentReason(reason)) {
+            regular.push({ reason, amount, date });
+            return;
+        }
+
+        const dayKey = date.toISOString().slice(0, 10);
+        const bucket = bridgeByDay.get(dayKey) || { amount: 0, date };
+        bucket.amount += amount;
+        if (date.getTime() > bucket.date.getTime()) bucket.date = date;
+        bridgeByDay.set(dayKey, bucket);
+    });
+
+    bridgeByDay.forEach((bucket) => {
+        if (!Number.isFinite(bucket.amount) || Math.abs(bucket.amount) < 1) return;
+        regular.push({
+            reason: 'Bridge payout correction (net)',
+            amount: Math.round(bucket.amount),
+            date: bucket.date,
+        });
+    });
+
+    return regular.sort((a, b) => a.date.getTime() - b.date.getTime());
+}
+
+function wrappedNormalizeEarningLabel(raw) {
+    const cleaned = String(raw || '').replace(/\s+/g, ' ').trim();
+    if (!cleaned) return 'Other';
+    const words = cleaned.split(' ');
+    return words
+        .slice(0, 4)
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+        .join(' ');
+}
+
+function getWrappedEarningSourceInfo(reasonRaw) {
+    const reason = String(reasonRaw || '').replace(/\s+/g, ' ').trim();
+    if (!reason) return { sourceLabel: 'Other', projectLabel: 'Other' };
+
+    if (/show\s*(?:&|and)\s*tell/i.test(reason)) {
+        return { sourceLabel: 'Show & Tell', projectLabel: 'Show & Tell' };
+    }
+    if (/user\s*grant/i.test(reason)) {
+        return { sourceLabel: 'User Grant', projectLabel: 'User Grant' };
+    }
+    if (/achievement|side\s*quest|badge/i.test(reason)) {
+        return { sourceLabel: 'Achievements', projectLabel: 'Achievements' };
+    }
+
+    if (/ship\s*event\s*payout/i.test(reason)) {
+        let projectLabel = 'Unknown project';
+        const dashMatch = reason.match(/ship\s*event\s*payout\s*[-:]\s*(.+)$/i);
+        if (dashMatch && dashMatch[1]) {
+            projectLabel = wrappedNormalizeEarningLabel(dashMatch[1]);
+        } else {
+            const prefixMatch = reason.match(/^(.+?)\s+ship\s*event\s*payout/i);
+            if (prefixMatch && prefixMatch[1]) {
+                projectLabel = wrappedNormalizeEarningLabel(prefixMatch[1]);
+            }
+        }
+        return { sourceLabel: 'Ship Event payout', projectLabel };
+    }
+
+    const payoutMatch = reason.match(/^(.+?)\s+payouts?\b/i);
+    if (payoutMatch && payoutMatch[1]) {
+        const project = wrappedNormalizeEarningLabel(payoutMatch[1]);
+        return {
+            sourceLabel: `${project} payout`,
+            projectLabel: project,
+        };
+    }
+
+    const grantMatch = reason.match(/^(.+?)\s+grant\b/i);
+    if (grantMatch && grantMatch[1]) {
+        const project = wrappedNormalizeEarningLabel(grantMatch[1]);
+        return {
+            sourceLabel: `${project} grant`,
+            projectLabel: project,
+        };
+    }
+
+    if (/\bgrant\b/i.test(reason)) {
+        return { sourceLabel: 'Grant', projectLabel: 'Grant' };
+    }
+
+    const label = wrappedNormalizeEarningLabel(reason).slice(0, 32);
+    return { sourceLabel: label || 'Other', projectLabel: label || 'Other' };
+}
+
+function buildWrappedDonutGradient(parts) {
+    const safeParts = Array.isArray(parts) ? parts : [];
+    let cursor = 0;
+    const gradientParts = safeParts.map((entry) => {
+        const ratio = Math.max(0, Number(entry.ratio) || 0);
+        const sweep = ratio * 360;
+        const start = cursor;
+        const end = cursor + sweep;
+        cursor = end;
+        return `${entry.color} ${start}deg ${end}deg`;
+    }).filter(Boolean);
+
+    return gradientParts.length
+        ? `conic-gradient(${gradientParts.join(', ')})`
+        : 'conic-gradient(#8b7355 0deg 360deg)';
+}
+
+function getWrappedProjectPayoutLabel(earningBreakdown, sourceLabel) {
+    const safeSource = String(sourceLabel || '').trim();
+    if (!safeSource) return '';
+    const topProject = String(earningBreakdown?.drilldowns?.[safeSource]?.top?.label || '').trim();
+    if (!topProject) return '';
+    return /payout/i.test(topProject) ? topProject : `${topProject} payout`;
+}
+
+function getWrappedDonutColorPalette() {
+    const root = document.documentElement;
+    const styles = getComputedStyle(root);
+    const theme = String(root.dataset.flavortownTheme || 'default').toLowerCase();
+    const getVar = (name, fallback) => styles.getPropertyValue(name)?.trim() || fallback;
+
+    if (theme === 'catppuccin') {
+        return [
+            getVar('--ctp-mauve', '#cba6f7'),
+            getVar('--ctp-sapphire', '#74c7ec'),
+            getVar('--ctp-teal', '#94e2d5'),
+            getVar('--ctp-peach', '#fab387'),
+            getVar('--ctp-yellow', '#f9e2af'),
+            getVar('--ctp-rosewater', '#f5e0dc'),
+        ];
+    }
+
+    if (theme === 'sea') {
+        return [
+            getVar('--sea-cyan', '#22d3ee'),
+            getVar('--sea-wave', '#3d7eaa'),
+            getVar('--sea-kelp', '#2ed573'),
+            getVar('--sea-gold', '#ffd700'),
+            getVar('--sea-coral', '#ff7f7f'),
+            getVar('--sea-sand', '#f5deb3'),
+        ];
+    }
+
+    if (theme === 'overcooked') {
+        return [
+            getVar('--overcooked-cyan', '#ed8936'),
+            getVar('--overcooked-wave', '#c53030'),
+            getVar('--overcooked-gold', '#f6e05e'),
+            getVar('--overcooked-kelp', '#68d391'),
+            getVar('--overcooked-foam', '#fc8181'),
+            getVar('--overcooked-sand', '#feebc8'),
+        ];
+    }
+
+    if (theme === 'custom') {
+        return [
+            getVar('--custom-accent', '#cba6f7'),
+            getVar('--custom-accent-alt', '#89b4fa'),
+            getVar('--custom-teal', '#94e2d5'),
+            getVar('--custom-yellow', '#f9e2af'),
+            getVar('--custom-peach', '#fab387'),
+            getVar('--custom-pink', '#f5c2e7'),
+        ];
+    }
+
+    return [
+        getVar('--flavortown-wrapped-accent', '#e58d32'),
+        getVar('--flavortown-wrapped-accent-soft', '#e7bc93'),
+        getVar('--color-green', '#5b9d72'),
+        getVar('--color-red', '#be7b67'),
+        '#d5ad72',
+        '#8b7355',
+    ];
+}
+
+function getWrappedEarningBreakdown(transactions) {
+    const positive = Array.isArray(transactions)
+        ? transactions.filter((tx) => Number(tx?.amount) > 0)
+        : [];
+
+    const bucketMap = new Map();
+    const projectMapBySource = new Map();
+    positive.forEach((tx) => {
+        const amount = Math.max(0, Number(tx.amount) || 0);
+        if (amount <= 0) return;
+        const { sourceLabel, projectLabel } = getWrappedEarningSourceInfo(tx.reason);
+        if (!bucketMap.has(sourceLabel)) {
+            bucketMap.set(sourceLabel, { label: sourceLabel, amount: 0, count: 0 });
+        }
+        const bucket = bucketMap.get(sourceLabel);
+        bucket.amount += amount;
+        bucket.count += 1;
+
+        if (!projectMapBySource.has(sourceLabel)) {
+            projectMapBySource.set(sourceLabel, new Map());
+        }
+        const projectMap = projectMapBySource.get(sourceLabel);
+        const currentAmount = projectMap.get(projectLabel) || 0;
+        projectMap.set(projectLabel, currentAmount + amount);
+    });
+
+    const total = Array.from(bucketMap.values()).reduce((sum, entry) => sum + entry.amount, 0);
+    const colors = getWrappedDonutColorPalette();
+
+    const sortedRaw = Array.from(bucketMap.values())
+        .sort((a, b) => b.amount - a.amount || b.count - a.count);
+
+    const primary = sortedRaw.slice(0, 5);
+    const otherAmount = sortedRaw.slice(5).reduce((sum, entry) => sum + entry.amount, 0);
+    const partsBase = otherAmount > 0
+        ? [...primary, { label: 'Other', amount: otherAmount, count: 0 }]
+        : primary;
+
+    const parts = partsBase.map((entry, index) => ({
+        ...entry,
+        color: colors[index % colors.length],
+        ratio: total > 0 ? (entry.amount / total) : 0,
+        share: total > 0 ? Math.round((entry.amount / total) * 100) : 0,
+    }));
+
+    const drilldowns = {};
+    const drillColors = colors.slice(1).concat(colors[0]);
+
+    parts.forEach((part) => {
+        const projectMap = projectMapBySource.get(part.label);
+        if (!projectMap) return;
+        const values = Array.from(projectMap.entries())
+            .map(([label, amount]) => ({ label, amount }))
+            .filter((entry) => entry.amount > 0)
+            .sort((a, b) => b.amount - a.amount);
+        if (values.length < 1) return;
+        const totalAmount = values.reduce((sum, entry) => sum + entry.amount, 0);
+        const partsByProject = values.slice(0, 6).map((entry, index) => ({
+            ...entry,
+            color: drillColors[index % drillColors.length],
+            ratio: totalAmount > 0 ? entry.amount / totalAmount : 0,
+            share: totalAmount > 0 ? Math.round((entry.amount / totalAmount) * 100) : 0,
+        }));
+        drilldowns[part.label] = {
+            parts: partsByProject,
+            top: partsByProject[0] || null,
+            drillable: partsByProject.length > 1,
+            donutGradient: buildWrappedDonutGradient(partsByProject),
+        };
+    });
+
+    return {
+        total,
+        parts: parts.map((part) => ({
+            ...part,
+            drillable: !!drilldowns[part.label]?.drillable,
+        })),
+        top: parts[0] || null,
+        donutGradient: buildWrappedDonutGradient(parts),
+        drilldowns,
+    };
+}
+
+async function buildFlavortownWrappedData() {
+    const safe = (fn, fallback) => {
+        try {
+            const result = fn();
+            return result === undefined || result === null ? fallback : result;
+        } catch (e) {
+            return fallback;
+        }
+    };
+
+    const userName = safe(() => getCurrentUserName(), null) || 'Chef';
+    const heatmapData = safe(() => getHeatmapData(), { version: 3, lastUpdated: null, projects: {}, dailyAggregates: {} });
+
+    const [balance, achievements, shopOrders] = await Promise.all([
+        fetchWrappedBalanceData(),
+        fetchWrappedAchievementsData(),
+        fetchWrappedShopOrdersData(),
+    ]);
+
+    const rawTransactions = Array.isArray(balance.transactions)
+        ? balance.transactions
+            .filter((tx) => tx?.date instanceof Date && !Number.isNaN(tx.date.getTime()) && Number.isFinite(Number(tx.amount)))
+            .map((tx) => ({
+                reason: String(tx.reason || '').trim(),
+                amount: Math.round(Number(tx.amount) || 0),
+                date: tx.date,
+            }))
+            .sort((a, b) => {
+                const byTime = a.date.getTime() - b.date.getTime();
+                if (byTime !== 0) return byTime;
+                return (Number(b.amount) || 0) - (Number(a.amount) || 0);
+            })
+        : [];
+
+    const normalizedTransactions = normalizeWrappedBalanceTransactions(rawTransactions);
+    const rawDataPoints = buildWrappedBalancePoints(rawTransactions, Number(balance.currentBalance) || 0);
+
+    const safeAchievements = {
+        count: Number(achievements?.count) || 0,
+        totalCookies: Number(achievements?.totalCookies) || 0,
+        top: Array.isArray(achievements?.top) ? achievements.top : [],
+        sideQuestCount: Number(achievements?.sideQuestCount) || 0,
+        sideQuestCookies: Number(achievements?.sideQuestCookies) || 0,
+    };
+
+    const heatmap = safe(() => getWrappedHeatmapStats(heatmapData), {
+        activeDays: 0,
+        totalHours: 0,
+        totalDevlogs: 0,
+        longestStreak: 0,
+        currentStreak: 0,
+        bestDay: null,
+        topMonth: null,
+        monthSeries: [],
+        weekdayStats: [
+            { key: 1, label: 'Mon', hours: 0, devlogs: 0 },
+            { key: 2, label: 'Tue', hours: 0, devlogs: 0 },
+            { key: 3, label: 'Wed', hours: 0, devlogs: 0 },
+            { key: 4, label: 'Thu', hours: 0, devlogs: 0 },
+            { key: 5, label: 'Fri', hours: 0, devlogs: 0 },
+            { key: 6, label: 'Sat', hours: 0, devlogs: 0 },
+            { key: 0, label: 'Sun', hours: 0, devlogs: 0 },
+        ],
+        topWeekday: null,
+        topWeekend: null,
+        recentCells: buildWrappedRecentHeatmapCells({}),
+    });
+    const projects = safe(() => getWrappedProjectStats(heatmapData), {
+        totalProjects: 0,
+        totalDevlogs: 0,
+        totalMinutes: 0,
+        topProjects: [],
+    });
+    const shipping = safe(() => getWrappedShippingStats(balance.currentBalance), {
+        totalPaidMinutes: 0,
+        totalPaidCookies: 0,
+        totalUnshippedMinutes: 0,
+        totalUndevloggedMinutes: 0,
+        totalShips: 0,
+        avgEfficiency: 0,
+        projectedCookies: null,
+    });
+
+    const { totalEarned, totalSpent } = safe(
+        () => calculateSpendAndEarnTotals(normalizedTransactions, 'amount'),
+        { totalEarned: 0, totalSpent: 0 }
+    );
+    const netChange = totalEarned - totalSpent;
+    const allTimeMinutes = Math.max(projects.totalMinutes, Math.round(heatmap.totalHours * 60));
+    const earningsBreakdown = safe(
+        () => getWrappedEarningBreakdown(normalizedTransactions),
+        { total: 0, parts: [], top: null, donutGradient: 'conic-gradient(#8b7355 0deg 360deg)' }
+    );
+    const archetype = safe(
+        () => getFlavortownWrappedArchetype({ heatmap, shipping, projects, achievements }),
+        {
+            emoji: 'sparkles',
+            title: 'The Steady Cooker',
+            subtitle: 'You made meaningful progress and kept the momentum alive.',
+        }
+    );
+
+    const data = {
+        generatedAt: new Date().toISOString(),
+        year: new Date().getFullYear(),
+        userName,
+        balance: {
+            currentBalance: balance.currentBalance,
+            totalEarned,
+            totalSpent,
+            netChange,
+            dataPoints: rawDataPoints,
+            transactions: normalizedTransactions,
+        },
+        heatmap,
+        projects,
+        shipping,
+        shopOrders,
+        achievements: safeAchievements,
+        earningsBreakdown,
+        allTimeMinutes,
+        archetype,
+    };
+
+    data.missingSources = [];
+    if (data.balance.transactions.length === 0) data.missingSources.push('balance history');
+    if ((data.heatmap.totalDevlogs || 0) === 0 && (data.heatmap.totalHours || 0) === 0) data.missingSources.push('heatmap');
+    if ((data.projects.totalProjects || 0) === 0) data.missingSources.push('project stats');
+    if ((data.shipping.totalShips || 0) === 0) data.missingSources.push('ship cache');
+    if (!data.shopOrders.available || (data.shopOrders.totalOrders || 0) === 0) data.missingSources.push('shop orders');
+
+    data.moments = safe(() => getFlavortownWrappedMoments(data), []);
+    return data;
+}
+
+function renderFlavortownWrappedFallback(modal) {
+    modal.innerHTML = `
+        <div class="flavortown-wrapped-loading">
+            <div class="flavortown-wrapped-loading-title">Flavortown Wrapped is loading in safe mode</div>
+            <div class="flavortown-wrapped-loading-sub">Data parsing hit an unexpected edge case. Refresh this page and try again. Your account data is safe.</div>
+            <button type="button" class="flavortown-wrapped-close-inline">Close</button>
+        </div>
+    `;
+    const closeBtn = modal.querySelector('.flavortown-wrapped-close-inline');
+    if (closeBtn) closeBtn.addEventListener('click', closeFlavortownWrappedModal);
+}
+
+function drawFlavortownWrappedBalanceChart(canvas, points, options = {}) {
+    if (!canvas) return null;
+    const rect = canvas.getBoundingClientRect();
+    if (rect.width <= 0 || rect.height <= 0) return null;
+
+    const hoverIndex = Number.isInteger(options.hoverIndex) ? options.hoverIndex : -1;
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
+
+    const themeRoot = canvas.closest('.flavortown-wrapped-overlay') || document.documentElement;
+    const styles = getComputedStyle(themeRoot);
+    const borderColor = styles.getPropertyValue('--color-border')?.trim() || '#e2d8cc';
+    const mutedColor = styles.getPropertyValue('--color-text-muted')?.trim() || '#888';
+    const textColor = styles.getPropertyValue('--color-text-primary')?.trim() || '#333';
+    const lineColor = styles.getPropertyValue('--flavortown-wrapped-bar-end')?.trim() || '#e58d32';
+
+    const toRgba = (color, alpha) => {
+        if (!color) return `rgba(139, 115, 85, ${alpha})`;
+        if (color.startsWith('#') && (color.length === 7 || color.length === 4)) {
+            const expanded = color.length === 4
+                ? `#${color[1]}${color[1]}${color[2]}${color[2]}${color[3]}${color[3]}`
+                : color;
+            const r = parseInt(expanded.slice(1, 3), 16);
+            const g = parseInt(expanded.slice(3, 5), 16);
+            const b = parseInt(expanded.slice(5, 7), 16);
+            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+        }
+        const rgbMatch = color.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/i);
+        if (rgbMatch) return `rgba(${rgbMatch[1]}, ${rgbMatch[2]}, ${rgbMatch[3]}, ${alpha})`;
+        return `rgba(139, 115, 85, ${alpha})`;
+    };
+
+    const ctx = canvas.getContext('2d');
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, rect.width, rect.height);
+
+    if (!Array.isArray(points) || points.length < 2) {
+        ctx.fillStyle = mutedColor;
+        ctx.font = '13px system-ui';
+        ctx.textAlign = 'center';
+        ctx.fillText('Not enough data for chart', rect.width / 2, rect.height / 2);
+        return {
+            samples: [],
+            bounds: { padding: 0, plotWidth: 0, plotHeight: 0 },
+        };
+    }
+
+    const padding = 50;
+    const plotWidth = Math.max(12, rect.width - (padding * 2));
+    const plotHeight = Math.max(12, rect.height - (padding * 2));
+
+    const minBalance = Math.min(0, ...points.map((p) => p.balance));
+    const maxBalance = Math.max(...points.map((p) => p.balance));
+    const range = Math.max(1, maxBalance - minBalance);
+
+    const px = (index) => padding + (plotWidth * index) / Math.max(1, points.length - 1);
+    const py = (balance) => padding + plotHeight - ((balance - minBalance) / range) * plotHeight;
+
+    ctx.strokeStyle = borderColor;
+    ctx.fillStyle = textColor;
+    ctx.font = '11px system-ui';
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'middle';
+    for (let i = 0; i <= 5; i += 1) {
+        const y = padding + (plotHeight * i) / 5;
+        const value = Math.round(maxBalance - (range * i) / 5);
+        ctx.beginPath();
+        ctx.moveTo(padding, y);
+        ctx.lineTo(rect.width - padding, y);
+        ctx.stroke();
+        ctx.fillText(value.toString(), padding - 10, y + 4);
+    }
+
+    const samples = points.map((point, index) => ({
+        index,
+        point,
+        x: px(index),
+        y: py(point.balance),
+    }));
+
+    const areaGradient = ctx.createLinearGradient(0, padding, 0, padding + plotHeight);
+    areaGradient.addColorStop(0, toRgba(lineColor, 0.26));
+    areaGradient.addColorStop(1, toRgba(lineColor, 0.05));
+
+    ctx.beginPath();
+    ctx.moveTo(samples[0].x, samples[0].y);
+    for (let i = 1; i < samples.length; i += 1) {
+        const prev = samples[i - 1];
+        const curr = samples[i];
+        const cpX = (prev.x + curr.x) / 2;
+        ctx.bezierCurveTo(cpX, prev.y, cpX, curr.y, curr.x, curr.y);
+    }
+    ctx.lineTo(samples[samples.length - 1].x, padding + plotHeight);
+    ctx.lineTo(samples[0].x, padding + plotHeight);
+    ctx.closePath();
+    ctx.fillStyle = areaGradient;
+    ctx.fill();
+
+    ctx.lineWidth = 3;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.strokeStyle = lineColor;
+    ctx.beginPath();
+    ctx.moveTo(samples[0].x, samples[0].y);
+    for (let i = 1; i < samples.length; i += 1) {
+        const prev = samples[i - 1];
+        const curr = samples[i];
+        const cpX = (prev.x + curr.x) / 2;
+        ctx.bezierCurveTo(cpX, prev.y, cpX, curr.y, curr.x, curr.y);
+    }
+    ctx.stroke();
+
+    const firstPoint = points[0];
+    const latestPoint = points[points.length - 1];
+    ctx.fillStyle = textColor;
+    ctx.font = '11px system-ui';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'alphabetic';
+    const maxLabels = Math.min(points.length, 5);
+    const step = Math.max(1, Math.floor((points.length - 1) / Math.max(1, maxLabels - 1)));
+    for (let i = 0; i < points.length; i += step) {
+        ctx.fillText(wrappedDateLabel(points[i].date), px(i), rect.height - 10);
+    }
+    if (step > 1) {
+        ctx.fillText(wrappedDateLabel(latestPoint.date), padding + plotWidth, rect.height - 10);
+    }
+
+    if (hoverIndex >= 0 && hoverIndex < samples.length) {
+        const hovered = samples[hoverIndex];
+        ctx.strokeStyle = borderColor;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(hovered.x, padding);
+        ctx.lineTo(hovered.x, padding + plotHeight);
+        ctx.stroke();
+    }
+
+    return {
+        samples,
+        bounds: { padding, plotWidth, plotHeight },
+    };
+}
+
+function getFlavortownWrappedHighlightCards(data) {
+    const biggestGain = data.balance.transactions.filter((tx) => tx.amount > 0).sort((a, b) => b.amount - a.amount)[0] || null;
+    const biggestSpend = data.balance.transactions.filter((tx) => tx.amount < 0).sort((a, b) => a.amount - b.amount)[0] || null;
+    const weekdayPeak = (data.heatmap.weekdayStats || [])
+        .slice()
+        .sort((a, b) => (b.hours || 0) - (a.hours || 0))[0] || null;
+
+    const cards = [];
+    if (biggestGain) {
+        cards.push({
+            title: 'Biggest Gain',
+            value: `${wrappedFormatNumber(biggestGain.amount)} cookies`,
+            detail: wrappedDateLabel(biggestGain.date),
+        });
+    }
+    if (biggestSpend) {
+        cards.push({
+            title: 'Biggest Spend',
+            value: `${wrappedFormatNumber(Math.abs(biggestSpend.amount))} cookies`,
+            detail: wrappedDateLabel(biggestSpend.date),
+        });
+    }
+    if (data.heatmap.bestDay) {
+        cards.push({
+            title: 'Peak Workday',
+            value: `${data.heatmap.bestDay.hours.toFixed(1)}h`,
+            detail: `${wrappedDateLabel(new Date(`${data.heatmap.bestDay.date}T00:00:00`))} - hours peak`,
+        });
+    }
+    if (weekdayPeak && Number(weekdayPeak.hours) > 0) {
+        cards.push({
+            title: 'Strongest Weekday',
+            value: weekdayPeak.label,
+            detail: `${weekdayPeak.hours.toFixed(1)}h logged`,
+        });
+    }
+    cards.push({
+        title: 'Shipping Pace',
+        value: `${Number(data.shipping.avgEfficiency || 0).toFixed(1)} c/h`,
+        detail: `${wrappedFormatNumber(data.shipping.totalShips || 0)} ships counted`,
+    });
+    if (data.shopOrders?.available) {
+        cards.push({
+            title: 'Shop Spend',
+            value: `🍪 ${wrappedFormatNumber(data.shopOrders.totalCookies || 0)}`,
+            detail: `${wrappedFormatNumber(data.shopOrders.totalOrders || 0)} orders placed`,
+        });
+    }
+    if ((data.achievements.sideQuestCount || 0) > 0) {
+        cards.push({
+            title: 'Side Quests',
+            value: wrappedFormatNumber(data.achievements.sideQuestCount),
+            detail: `${wrappedFormatNumber(data.achievements.sideQuestCookies || 0)} cookies from side quest achievements`,
+        });
+    }
+
+    return cards.slice(0, 6);
+}
+
+function wrappedSlugify(value) {
+    return String(value || 'chef')
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '')
+        .slice(0, 50) || 'chef';
+}
+
+function wrappedCanvasRoundedRect(ctx, x, y, width, height, radius) {
+    const r = Math.max(0, Math.min(radius, width / 2, height / 2));
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.lineTo(x + width - r, y);
+    ctx.quadraticCurveTo(x + width, y, x + width, y + r);
+    ctx.lineTo(x + width, y + height - r);
+    ctx.quadraticCurveTo(x + width, y + height, x + width - r, y + height);
+    ctx.lineTo(x + r, y + height);
+    ctx.quadraticCurveTo(x, y + height, x, y + height - r);
+    ctx.lineTo(x, y + r);
+    ctx.quadraticCurveTo(x, y, x + r, y);
+    ctx.closePath();
+}
+
+function colorMixForCanvas(colorA, colorB, ratio = 0.5) {
+    const clamp = Math.max(0, Math.min(1, Number(ratio) || 0));
+
+    const parseHex = (color) => {
+        const value = String(color || '').trim();
+        if (!value.startsWith('#')) return null;
+        if (value.length === 4) {
+            return {
+                r: parseInt(value[1] + value[1], 16),
+                g: parseInt(value[2] + value[2], 16),
+                b: parseInt(value[3] + value[3], 16),
+            };
+        }
+        if (value.length === 7) {
+            return {
+                r: parseInt(value.slice(1, 3), 16),
+                g: parseInt(value.slice(3, 5), 16),
+                b: parseInt(value.slice(5, 7), 16),
+            };
+        }
+        return null;
+    };
+
+    const a = parseHex(colorA);
+    const b = parseHex(colorB);
+    if (!a || !b) return colorA || colorB || '#ffffff';
+
+    const r = Math.round((a.r * (1 - clamp)) + (b.r * clamp));
+    const g = Math.round((a.g * (1 - clamp)) + (b.g * clamp));
+    const bVal = Math.round((a.b * (1 - clamp)) + (b.b * clamp));
+    return `rgb(${r}, ${g}, ${bVal})`;
+}
+
+async function exportFlavortownWrappedPng(data) {
+    const width = 1800;
+    const height = 1080;
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext('2d');
+
+    const styles = getComputedStyle(document.documentElement);
+    const wrappedAccent = styles.getPropertyValue('--flavortown-wrapped-accent')?.trim()
+        || styles.getPropertyValue('--color-accent')?.trim()
+        || '#e58d32';
+    const wrappedAccentSoft = styles.getPropertyValue('--flavortown-wrapped-accent-soft')?.trim()
+        || styles.getPropertyValue('--color-brown-light')?.trim()
+        || colorMixForCanvas(wrappedAccent, '#ffffff', 0.28);
+    const wrappedSurface = styles.getPropertyValue('--flavortown-wrapped-surface')?.trim()
+        || styles.getPropertyValue('--color-surface')?.trim()
+        || '#fff8ef';
+
+    const palette = {
+        bg0: styles.getPropertyValue('--color-cream')?.trim() || '#f4ebdd',
+        bg1: styles.getPropertyValue('--color-background-color')?.trim() || '#efe3d1',
+        surface: wrappedSurface,
+        border: styles.getPropertyValue('--color-border')?.trim() || '#dac9af',
+        text: styles.getPropertyValue('--color-text-primary')?.trim() || '#352a20',
+        muted: styles.getPropertyValue('--color-text-secondary')?.trim() || '#6d5a46',
+        accent: wrappedAccent,
+        accentSoft: wrappedAccentSoft,
+        heat: [
+            colorMixForCanvas(wrappedAccent, wrappedSurface, 0.86),
+            colorMixForCanvas(wrappedAccent, wrappedSurface, 0.68),
+            colorMixForCanvas(wrappedAccent, wrappedSurface, 0.5),
+            colorMixForCanvas(wrappedAccent, wrappedSurface, 0.3),
+            colorMixForCanvas(wrappedAccent, wrappedSurface, 0.12),
+        ],
+    };
+
+    const bg = ctx.createLinearGradient(0, 0, width, height);
+    bg.addColorStop(0, palette.bg0);
+    bg.addColorStop(1, palette.bg1);
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, width, height);
+
+    const drawCard = (x, y, w, h, fill = palette.surface) => {
+        wrappedCanvasRoundedRect(ctx, x, y, w, h, 24);
+        ctx.fillStyle = fill;
+        ctx.fill();
+        ctx.strokeStyle = palette.border;
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+    };
+
+    const fitText = (text, maxWidth, font) => {
+        ctx.font = font;
+        const raw = String(text || '');
+        if (ctx.measureText(raw).width <= maxWidth) return raw;
+        let out = raw;
+        while (out.length > 2 && ctx.measureText(`${out}...`).width > maxWidth) {
+            out = out.slice(0, -1);
+        }
+        return `${out}...`;
+    };
+
+    ctx.fillStyle = palette.muted;
+    ctx.font = '600 22px system-ui';
+    ctx.fillText('Flavortown Wrapped', 90, 88);
+    ctx.fillStyle = palette.text;
+    ctx.font = '700 56px system-ui';
+    ctx.fillText(fitText(data.userName, 700, '700 56px system-ui'), 90, 158);
+
+    drawCard(70, 190, 840, 320, colorMixForCanvas(palette.surface, palette.accentSoft, 0.14));
+    ctx.fillStyle = palette.muted;
+    ctx.font = '600 22px system-ui';
+    ctx.fillText('Total Earned', 110, 248);
+    ctx.fillStyle = palette.text;
+    ctx.font = '700 98px system-ui';
+    ctx.fillText(fitText(`${wrappedFormatNumber(data.balance.totalEarned)}`, 520, '700 98px system-ui'), 110, 372);
+    ctx.font = '600 26px system-ui';
+    ctx.fillStyle = palette.muted;
+    ctx.fillText(`${wrappedFormatHoursFromMinutes(data.allTimeMinutes)} built`, 112, 438);
+
+    const donutParts = (data.earningsBreakdown?.parts || [])
+        .filter((entry) => (Number(entry?.amount) || 0) > 0)
+        .slice(0, 6);
+    const donutTotal = donutParts.reduce((sum, entry) => sum + (Number(entry?.amount) || 0), 0);
+    const donutCenterX = 748;
+    const donutCenterY = 350;
+    const donutOuter = 106;
+    const donutInner = 62;
+
+    let donutAngle = -Math.PI / 2;
+    if (donutParts.length && donutTotal > 0) {
+        donutParts.forEach((part, index) => {
+            const amount = Number(part?.amount) || 0;
+            if (amount <= 0) return;
+            const sweep = (amount / donutTotal) * Math.PI * 2;
+            const start = donutAngle;
+            const end = start + sweep;
+            donutAngle = end;
+
+            ctx.beginPath();
+            ctx.arc(donutCenterX, donutCenterY, donutOuter, start, end);
+            ctx.arc(donutCenterX, donutCenterY, donutInner, end, start, true);
+            ctx.closePath();
+            ctx.fillStyle = part.color || (index % 2 ? palette.accentSoft : palette.accent);
+            ctx.fill();
+        });
+    } else {
+        ctx.beginPath();
+        ctx.arc(donutCenterX, donutCenterY, donutOuter, 0, Math.PI * 2);
+        ctx.arc(donutCenterX, donutCenterY, donutInner, Math.PI * 2, 0, true);
+        ctx.closePath();
+        ctx.fillStyle = palette.accent;
+        ctx.fill();
+    }
+
+    ctx.beginPath();
+    ctx.arc(donutCenterX, donutCenterY, donutInner - 2, 0, Math.PI * 2);
+    ctx.fillStyle = colorMixForCanvas(palette.surface, '#ffffff', 0.1);
+    ctx.fill();
+
+    const topDonutPart = donutParts
+        .slice()
+        .sort((a, b) => (Number(b?.amount) || 0) - (Number(a?.amount) || 0))[0] || null;
+    const topDonutShare = topDonutPart
+        ? Math.round(((Number(topDonutPart.amount) || 0) / Math.max(1, donutTotal)) * 100)
+        : 0;
+
+    const topDonutSourceLabel = String(topDonutPart?.label || 'Earnings').trim();
+    const topDonutProjectPayout = getWrappedProjectPayoutLabel(data.earningsBreakdown, topDonutSourceLabel);
+    const donutSourceLabel = topDonutProjectPayout
+        ? `Top source: ${topDonutProjectPayout}`
+        : `Top source: ${topDonutSourceLabel}`;
+
+    ctx.textAlign = 'center';
+    ctx.fillStyle = palette.text;
+    ctx.font = '700 20px system-ui';
+    ctx.fillText(`${topDonutShare}%`, donutCenterX, donutCenterY + 7);
+    ctx.textAlign = 'left';
+    ctx.fillStyle = palette.muted;
+    ctx.font = '600 18px system-ui';
+    ctx.fillText(fitText(donutSourceLabel, 290, '600 18px system-ui'), donutCenterX - 142, 474);
+
+    const totalOrders = Math.max(0, Number(data.shopOrders?.totalOrders) || 0);
+
+    const economyCards = [
+        { label: 'Devlogs', value: wrappedFormatNumber(data.heatmap.totalDevlogs) },
+        { label: 'Ships', value: wrappedFormatNumber(data.shipping.totalShips) },
+        { label: 'Orders', value: wrappedFormatNumber(totalOrders) },
+        { label: 'Cookies Spent', value: wrappedFormatNumber(data.shopOrders?.totalCookies || 0) },
+    ];
+
+    const economyRowX = 70;
+    const economyRowY = 524;
+    const economyRowWidth = 840;
+    const economyGap = 12;
+    const economyCardCount = economyCards.length;
+    const economyCardWidth = Math.floor((economyRowWidth - economyGap * (economyCardCount - 1)) / economyCardCount);
+    const economyCardHeight = 172;
+
+    economyCards.forEach((item, index) => {
+        const x = economyRowX + index * (economyCardWidth + economyGap);
+        drawCard(x, economyRowY, economyCardWidth, economyCardHeight);
+        ctx.fillStyle = palette.muted;
+        ctx.font = '600 15px system-ui';
+        ctx.fillText(item.label, x + 20, economyRowY + 48);
+        ctx.fillStyle = palette.text;
+        ctx.font = '700 40px system-ui';
+        ctx.fillText(fitText(item.value, economyCardWidth - 40, '700 40px system-ui'), x + 20, economyRowY + 130);
+    });
+
+    drawCard(940, 190, 790, 330);
+    ctx.fillStyle = palette.muted;
+    ctx.font = '600 22px system-ui';
+    ctx.fillText('Balance Trend', 980, 248);
+
+    const sparkPoints = (data.balance.dataPoints || []).slice(-40);
+    if (sparkPoints.length >= 2) {
+        const min = Math.min(...sparkPoints.map((p) => p.balance));
+        const max = Math.max(...sparkPoints.map((p) => p.balance));
+        const span = Math.max(1, max - min);
+        const chartX = 980;
+        const chartY = 276;
+        const chartW = 690;
+        const chartH = 196;
+
+        const pointX = (index) => chartX + (chartW * index) / Math.max(1, sparkPoints.length - 1);
+        const pointY = (value) => chartY + chartH - ((value - min) / span) * chartH;
+
+        ctx.strokeStyle = colorMixForCanvas(palette.border, '#ffffff', 0.14);
+        ctx.lineWidth = 1;
+        for (let i = 0; i <= 3; i += 1) {
+            const y = chartY + (chartH * i) / 3;
+            ctx.beginPath();
+            ctx.moveTo(chartX, y);
+            ctx.lineTo(chartX + chartW, y);
+            ctx.stroke();
+        }
+
+        const area = ctx.createLinearGradient(0, chartY, 0, chartY + chartH);
+        area.addColorStop(0, colorMixForCanvas(palette.accent, palette.surface, 0.38));
+        area.addColorStop(1, colorMixForCanvas(palette.accent, palette.surface, 0.82));
+
+        const sparkCoords = sparkPoints.map((p, i) => ({ x: pointX(i), y: pointY(p.balance) }));
+        ctx.beginPath();
+        ctx.moveTo(sparkCoords[0].x, sparkCoords[0].y);
+        for (let i = 1; i < sparkCoords.length; i += 1) {
+            const prev = sparkCoords[i - 1];
+            const curr = sparkCoords[i];
+            const cpX = (prev.x + curr.x) / 2;
+            ctx.bezierCurveTo(cpX, prev.y, cpX, curr.y, curr.x, curr.y);
+        }
+        ctx.lineTo(sparkCoords[sparkCoords.length - 1].x, chartY + chartH);
+        ctx.lineTo(sparkCoords[0].x, chartY + chartH);
+        ctx.closePath();
+        ctx.fillStyle = area;
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.moveTo(sparkCoords[0].x, sparkCoords[0].y);
+        for (let i = 1; i < sparkCoords.length; i += 1) {
+            const prev = sparkCoords[i - 1];
+            const curr = sparkCoords[i];
+            const cpX = (prev.x + curr.x) / 2;
+            ctx.bezierCurveTo(cpX, prev.y, cpX, curr.y, curr.x, curr.y);
+        }
+        ctx.strokeStyle = palette.accent;
+        ctx.lineWidth = 4;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.stroke();
+    }
+
+    drawCard(940, 536, 790, 408);
+    ctx.fillStyle = palette.muted;
+    ctx.font = '600 22px system-ui';
+    ctx.fillText('Highlights', 980, 592);
+
+    const cards = getFlavortownWrappedHighlightCards(data).slice(0, 4);
+    cards.forEach((card, index) => {
+        const x = 980 + (index % 2) * 370;
+        const y = 622 + Math.floor(index / 2) * 150;
+        drawCard(x, y, 350, 134, colorMixForCanvas(palette.surface, palette.accentSoft, 0.08));
+        ctx.fillStyle = palette.muted;
+        ctx.font = '600 15px system-ui';
+        ctx.fillText(card.title, x + 22, y + 40);
+        ctx.fillStyle = palette.text;
+        ctx.font = '700 24px system-ui';
+        ctx.fillText(fitText(card.value, 300, '700 24px system-ui'), x + 22, y + 82);
+        ctx.fillStyle = palette.muted;
+        ctx.font = '500 13px system-ui';
+        ctx.fillText(fitText(card.detail, 300, '500 13px system-ui'), x + 22, y + 110);
+    });
+
+    drawCard(70, 704, 840, 240);
+    ctx.fillStyle = palette.muted;
+    ctx.font = '600 22px system-ui';
+    ctx.fillText('Activity Pulse', 110, 760);
+
+    const miniHeatmap = (data.heatmap.recentCells || []).slice(-14 * 7);
+    const heatCell = 13;
+    const heatGap = 5;
+    const heatX = 110;
+    const heatY = 782;
+    miniHeatmap.forEach((cell, index) => {
+        const col = Math.floor(index / 7);
+        const row = index % 7;
+        const x = heatX + col * (heatCell + heatGap);
+        const y = heatY + row * (heatCell + heatGap);
+        const level = Math.max(0, Math.min(4, Number(cell.level) || 0));
+        wrappedCanvasRoundedRect(ctx, x, y, heatCell, heatCell, 4);
+        ctx.fillStyle = palette.heat[level];
+        ctx.fill();
+    });
+
+    ctx.fillStyle = palette.text;
+    ctx.font = '600 20px system-ui';
+    ctx.fillText(`${wrappedFormatNumber(data.heatmap.activeDays)} active days`, 450, 794);
+    ctx.fillText(`${data.heatmap.totalHours.toFixed(1)} tracked hours`, 450, 834);
+    ctx.fillText(`${wrappedFormatNumber(data.projects.totalProjects)} projects touched`, 450, 874);
+    ctx.fillText(`${wrappedFormatNumber(totalOrders)} orders`, 450, 914);
+
+    const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
+    if (!blob) throw new Error('Could not create PNG export');
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${wrappedSlugify(data.userName)}-wrapped.png`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 6000);
+}
+
+function renderFlavortownWrapped(modal, data) {
+    const maxProjectMinutes = Math.max(1, ...data.projects.topProjects.map((p) => p.minutes), 1);
+    const topProjectsMarkup = data.projects.topProjects.length
+        ? data.projects.topProjects.map((project, index) => {
+            const width = Math.max(8, Math.round((project.minutes / maxProjectMinutes) * 100));
+            return `
+                <div class="flavortown-wrapped-project-row">
+                    <div class="flavortown-wrapped-project-head">
+                        <span class="flavortown-wrapped-project-rank">#${index + 1}</span>
+                        <span class="flavortown-wrapped-project-title">${escapeHtml(project.title)}</span>
+                        <span class="flavortown-wrapped-project-value">${wrappedFormatHoursFromMinutes(project.minutes)}</span>
+                    </div>
+                    <div class="flavortown-wrapped-project-bar"><span style="width:${width}%"></span></div>
+                    <div class="flavortown-wrapped-project-meta">${wrappedFormatNumber(project.devlogs)} devlogs</div>
+                </div>
+            `;
+        }).join('')
+        : '<div class="flavortown-wrapped-empty">No project board stats yet. Open /projects once to populate this section.</div>';
+
+    const topMonthLabel = data.heatmap.topMonth
+        ? new Date(`${data.heatmap.topMonth.key}-01T00:00:00`).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+        : 'No month data';
+    const topDayOfWeek = (data.heatmap.weekdayStats || [])
+        .slice()
+        .sort((a, b) => (b.hours || 0) - (a.hours || 0))[0] || null;
+    const averageActiveDayHours = data.heatmap.activeDays > 0
+        ? data.heatmap.totalHours / data.heatmap.activeDays
+        : 0;
+
+    const heatmapMonthMap = new Map((data.heatmap.monthSeries || []).map((entry) => [entry.key, entry]));
+    const shopMonthMap = new Map((data.shopOrders.monthly || []).map((entry) => [entry.key, entry]));
+
+    const activeMonthKeys = Array.from(new Set([
+        ...Array.from(heatmapMonthMap.entries())
+            .filter(([, entry]) => (Number(entry.hours) || 0) > 0)
+            .map(([key]) => key),
+        ...Array.from(shopMonthMap.entries())
+            .filter(([, entry]) => (Number(entry.orders) || 0) > 0)
+            .map(([key]) => key),
+    ])).sort((a, b) => a.localeCompare(b));
+
+    const nowMonth = new Date();
+    nowMonth.setDate(1);
+
+    let startMonth = new Date(nowMonth);
+    if (activeMonthKeys.length) {
+        startMonth = new Date(`${activeMonthKeys[0]}-01T00:00:00`);
+    }
+
+    const recentMonthKeys = [];
+    for (let d = new Date(startMonth); d <= nowMonth; d.setMonth(d.getMonth() + 1)) {
+        const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+        recentMonthKeys.push(key);
+    }
+
+    if (recentMonthKeys.length > 10) {
+        recentMonthKeys.splice(0, recentMonthKeys.length - 10);
+    }
+
+    const combinedMonthRows = recentMonthKeys.map((key) => {
+        const heat = heatmapMonthMap.get(key) || { hours: 0, devlogs: 0, days: 0 };
+        const shop = shopMonthMap.get(key) || { orders: 0, cookies: 0 };
+        return {
+            key,
+            label: new Date(`${key}-01T00:00:00`).toLocaleDateString('en-US', { month: 'short' }),
+            hours: Number(heat.hours) || 0,
+            devlogs: Number(heat.devlogs) || 0,
+            shopOrders: Number(shop.orders) || 0,
+            shopCookies: Number(shop.cookies) || 0,
+        };
+    });
+
+    const visibleMonthRows = combinedMonthRows.filter((entry) => entry.hours > 0 || entry.shopOrders > 0);
+    const maxMonthHours = Math.max(1, ...visibleMonthRows.map((entry) => entry.hours), 1);
+    const monthBarsMarkup = visibleMonthRows.length
+        ? visibleMonthRows.map((entry) => {
+            const width = entry.hours > 0 ? Math.max(6, Math.round((entry.hours / maxMonthHours) * 100)) : 2;
+            const shopMeta = entry.shopOrders > 0
+                ? `${wrappedFormatNumber(entry.shopOrders)} orders • 🍪 ${wrappedFormatNumber(entry.shopCookies)}`
+                : '';
+            return `
+                <div class="flavortown-wrapped-bar-row month">
+                    <span>${entry.label}</span>
+                    <div class="flavortown-wrapped-bar-track"><i style="width:${width}%"></i></div>
+                    <strong>${entry.hours.toFixed(1)}h</strong>
+                    ${shopMeta ? `<small>${shopMeta}</small>` : ''}
+                </div>
+            `;
+        }).join('')
+        : '<div class="flavortown-wrapped-empty">No monthly activity yet.</div>';
+
+    const weekdayStats = data.heatmap.weekdayStats || [];
+    const maxWeekdayHours = Math.max(1, ...weekdayStats.map((entry) => entry.hours || 0), 1);
+    const weekdayBarsMarkup = weekdayStats.length
+        ? weekdayStats.map((entry) => {
+            const width = Math.max(6, Math.round(((entry.hours || 0) / maxWeekdayHours) * 100));
+            return `
+                <div class="flavortown-wrapped-bar-row compact">
+                    <span>${entry.label}</span>
+                    <div class="flavortown-wrapped-bar-track"><i style="width:${width}%"></i></div>
+                    <strong>${(entry.hours || 0).toFixed(1)}h</strong>
+                </div>
+            `;
+        }).join('')
+        : '<div class="flavortown-wrapped-empty">No weekday distribution yet.</div>';
+
+    const heatmapCellsMarkup = data.heatmap.recentCells.map((cell) => {
+        const title = `${cell.dateStr}: ${cell.totalHours.toFixed(1)}h logged`;
+        return `<div class="flavortown-wrapped-heatmap-cell level-${cell.level}" title="${title}"></div>`;
+    }).join('');
+
+    const txCount = data.balance.transactions.length;
+    const biggestGain = data.balance.transactions.filter((tx) => tx.amount > 0).sort((a, b) => b.amount - a.amount)[0] || null;
+    const biggestSpend = data.balance.transactions.filter((tx) => tx.amount < 0).sort((a, b) => a.amount - b.amount)[0] || null;
+
+    const heroQuickStats = [
+        { label: 'Net', value: `${data.balance.netChange >= 0 ? '+' : ''}${wrappedFormatNumber(data.balance.netChange)}` },
+        { label: 'Active Days', value: wrappedFormatNumber(data.heatmap.activeDays) },
+        { label: 'Devlogs', value: wrappedFormatNumber(data.heatmap.totalDevlogs) },
+        { label: 'Ships', value: wrappedFormatNumber(data.shipping.totalShips) },
+    ].map((item) => `<div class="flavortown-wrapped-hero-mini"><span>${item.label}</span><strong>${item.value}</strong></div>`).join('');
+
+    const earningBreakdown = data.earningsBreakdown || { parts: [], top: null, donutGradient: 'conic-gradient(#8b7355 0deg 360deg)' };
+    const donutShare = Math.max(0, Math.min(100, Number(earningBreakdown.top?.share) || 0));
+    const donutLabel = getWrappedProjectPayoutLabel(earningBreakdown, earningBreakdown.top?.label)
+        || earningBreakdown.top?.label
+        || 'Earnings';
+    const earningLegendMarkup = earningBreakdown.parts.length
+        ? earningBreakdown.parts.slice(0, 4).map((part) => `
+            <div class="flavortown-wrapped-source-row ${part.drillable ? 'is-drillable' : ''}" data-wrapped-source-label="${escapeHtmlAttribute(part.label)}" ${part.drillable ? 'data-wrapped-source-drillable="true"' : ''}>
+                <span><i style="background:${part.color}"></i>${escapeHtml(part.label)}</span>
+                <strong>${part.share}%</strong>
+                <em>${wrappedFormatNumber(part.amount)} cookies</em>
+            </div>
+        `).join('')
+        : '<div class="flavortown-wrapped-empty">Not enough earnings data to break down sources yet.</div>';
+
+    let shopMarkup = '<div class="flavortown-wrapped-empty">No /shop/my_orders data available yet.</div>';
+    if (data.shopOrders.available) {
+    const shopStatusKeys = ['pending', 'cancelled', 'rejected', 'on_hold'];
+        const statusMarkup = shopStatusKeys
+            .filter((key) => (data.shopOrders.statuses?.[key]?.count || 0) > 0)
+            .map((key) => {
+                const status = data.shopOrders.statuses[key];
+                return `<div class="flavortown-wrapped-stat flavortown-wrapped-stat--shop"><label>${escapeHtml(status.label)}</label><strong data-countup="${status.count}">0</strong><em>🍪 ${wrappedFormatNumber(status.cookies || 0)}</em></div>`;
+            }).join('');
+
+        const topShopItemsMarkup = (data.shopOrders.topItems || []).slice(0, 5)
+            .map((item) => `
+                <div class="flavortown-wrapped-shop-item">
+                    <span>${escapeHtml(item.name)}</span>
+                    <strong>🍪 ${wrappedFormatNumber(item.cookies || 0)}</strong>
+                    <em>${wrappedFormatNumber(item.count || 0)} orders</em>
+                </div>
+            `).join('');
+
+        shopMarkup = `
+            ${statusMarkup ? `<div class="flavortown-wrapped-grid four">${statusMarkup}</div>` : ''}
+            <div class="flavortown-wrapped-grid three">
+                <div class="flavortown-wrapped-inline-note"><strong>${wrappedFormatNumber(data.shopOrders.totalOrders || 0)} orders</strong><em>${wrappedFormatNumber(data.shopOrders.totalCookies || 0)} cookies total</em></div>
+                <div class="flavortown-wrapped-inline-note"><strong>${wrappedFormatNumber(data.shopOrders.approvedOrders || 0)} fulfilled</strong><em>${wrappedFormatNumber(data.shopOrders.approvedCookies || 0)} cookies fulfilled</em></div>
+                <div class="flavortown-wrapped-inline-note"><strong>${wrappedFormatNumber(data.shopOrders.topItems?.length || 0)} items bought</strong><em>Unique item types purchased</em></div>
+            </div>
+            ${topShopItemsMarkup ? `<div class="flavortown-wrapped-shop-items">${topShopItemsMarkup}</div>` : ''}
+        `;
+    }
+
+    modal.innerHTML = `
+        <div class="flavortown-wrapped-site" role="dialog" aria-modal="true" aria-label="Flavortown Wrapped">
+            <header class="flavortown-wrapped-site-header">
+                <div class="flavortown-wrapped-brand">
+                    <div class="flavortown-wrapped-kicker">Flavortown Wrapped</div>
+                    <h2>${escapeHtml(data.userName)}</h2>
+                </div>
+                <div class="flavortown-wrapped-header-actions">
+                    <button type="button" data-action="toggle-mode">Dashboard view</button>
+                    <button type="button" data-action="export-png">Export PNG</button>
+                    <button type="button" data-action="copy-summary">Copy summary</button>
+                    <button type="button" data-action="close" aria-label="Close">Close</button>
+                </div>
+            </header>
+            <div class="flavortown-wrapped-layout">
+                <aside class="flavortown-wrapped-nav">
+                    <button type="button" data-section-target="overview" class="is-active">Overview</button>
+                    <button type="button" data-section-target="economy">Stats</button>
+                    <button type="button" data-section-target="activity">Activity</button>
+                    <button type="button" data-section-target="projects">Projects</button>
+                    <button type="button" data-section-target="shipping">Shipping + Shop</button>
+                </aside>
+                <main class="flavortown-wrapped-content" data-wrapped-scroll-area>
+                    <div class="flavortown-wrapped-story-controls" data-wrapped-story-controls>
+                        <button type="button" data-action="story-prev">Back</button>
+                        <div class="flavortown-wrapped-story-progress">
+                            <span data-wrapped-story-progress>1/5</span>
+                            <div class="flavortown-wrapped-story-dots" data-wrapped-story-dots></div>
+                        </div>
+                        <button type="button" data-action="story-next">Next</button>
+                    </div>
+
+                    <section id="wrapped-overview" data-wrapped-section="overview" data-wrapped-story-step="true" class="flavortown-wrapped-section">
+                        <div class="flavortown-wrapped-hero-layout">
+                            <div>
+                                <p class="flavortown-wrapped-hero-sub">Total earned</p>
+                                <div class="flavortown-wrapped-hero-number" data-countup="${data.balance.totalEarned}">0</div>
+                                <div class="flavortown-wrapped-hero-mini-grid">${heroQuickStats}</div>
+                            </div>
+                            <div class="flavortown-wrapped-hero-visual">
+                                <div class="flavortown-wrapped-donut" data-wrapped-earnings-donut style="--wrapped-donut-gradient:${earningBreakdown.donutGradient}">
+                                    <div class="flavortown-wrapped-donut-center">
+                                        <strong data-wrapped-donut-value>${donutShare}%</strong>
+                                        <span data-wrapped-donut-label>${escapeHtml(donutLabel)}</span>
+                                    </div>
+                                </div>
+                                <div class="flavortown-wrapped-source-breakdown" data-wrapped-source-breakdown>${earningLegendMarkup}</div>
+                                <button type="button" class="flavortown-wrapped-source-back" data-action="earnings-drillback" hidden>Back to all sources</button>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="wrapped-economy" data-wrapped-section="economy" data-wrapped-story-step="true" class="flavortown-wrapped-section">
+                        <h3>Stats</h3>
+                        <div class="flavortown-wrapped-grid four">
+                            <div class="flavortown-wrapped-stat"><label>Total Earned</label><strong data-countup="${data.balance.totalEarned}">0</strong></div>
+                            <div class="flavortown-wrapped-stat"><label>Total Spent</label><strong data-countup="${data.balance.totalSpent}" data-prefix="-">-0</strong></div>
+                            <div class="flavortown-wrapped-stat"><label>Net Change</label><strong data-countup="${data.balance.netChange}" data-prefix="${data.balance.netChange >= 0 ? '+' : ''}">0</strong></div>
+                            <div class="flavortown-wrapped-stat"><label>Transactions</label><strong data-countup="${txCount}">0</strong></div>
+                        </div>
+                        <div class="flavortown-wrapped-chart-wrap">
+                            <canvas class="flavortown-wrapped-balance-chart"></canvas>
+                            <div class="flavortown-wrapped-chart-tooltip" data-wrapped-chart-tooltip hidden></div>
+                        </div>
+                        <div class="flavortown-wrapped-grid two">
+                            <div class="flavortown-wrapped-inline-note">Largest gain: <strong>${biggestGain ? `+${wrappedFormatNumber(biggestGain.amount)} on ${wrappedDateLabel(biggestGain.date)}` : 'No data'}</strong></div>
+                            <div class="flavortown-wrapped-inline-note">Largest spend: <strong>${biggestSpend ? `${wrappedFormatNumber(Math.abs(biggestSpend.amount))} on ${wrappedDateLabel(biggestSpend.date)}` : 'No data'}</strong></div>
+                        </div>
+                    </section>
+
+                    <section id="wrapped-activity" data-wrapped-section="activity" data-wrapped-story-step="true" class="flavortown-wrapped-section">
+                        <h3>Consistency and Activity</h3>
+                        <div class="flavortown-wrapped-grid five">
+                            <div class="flavortown-wrapped-stat"><label>Tracked Hours</label><strong data-countup="${data.heatmap.totalHours}" data-decimals="1" data-suffix="h">0h</strong></div>
+                            <div class="flavortown-wrapped-stat"><label>Devlogs</label><strong data-countup="${data.heatmap.totalDevlogs}">0</strong></div>
+                            <div class="flavortown-wrapped-stat"><label>Active Days</label><strong data-countup="${data.heatmap.activeDays}">0</strong></div>
+                            <div class="flavortown-wrapped-stat"><label>Longest Streak</label><strong data-countup="${data.heatmap.longestStreak}" data-suffix="d">0d</strong></div>
+                            <div class="flavortown-wrapped-stat"><label>Current Streak</label><strong data-countup="${data.heatmap.currentStreak}" data-suffix="d">0d</strong></div>
+                        </div>
+                        <div class="flavortown-wrapped-heatmap-block">
+                            <div class="flavortown-wrapped-heatmap-grid">${heatmapCellsMarkup}</div>
+                            <div class="flavortown-wrapped-heatmap-meta">
+                                <div><span>Top Month</span><strong>${topMonthLabel}</strong><em>${data.heatmap.topMonth ? `${data.heatmap.topMonth.hours.toFixed(1)}h logged` : '-'}</em></div>
+                                <div><span>Best Day</span><strong>${data.heatmap.bestDay ? wrappedDateLabel(new Date(`${data.heatmap.bestDay.date}T00:00:00`)) : '-'}</strong><em>${data.heatmap.bestDay ? `${data.heatmap.bestDay.hours.toFixed(1)}h logged` : '-'}</em></div>
+                                <div><span>Top Day</span><strong>${topDayOfWeek ? topDayOfWeek.label : '-'}</strong><em>${topDayOfWeek ? `${(topDayOfWeek.hours || 0).toFixed(1)}h logged` : `${averageActiveDayHours.toFixed(1)}h avg active day`}</em></div>
+                            </div>
+                        </div>
+                        <div class="flavortown-wrapped-bars-layout">
+                            <div class="flavortown-wrapped-bars-panel">
+                                <h4>Monthly Hours</h4>
+                                ${monthBarsMarkup}
+                            </div>
+                            <div class="flavortown-wrapped-bars-panel">
+                                <h4>Weekday Distribution</h4>
+                                ${weekdayBarsMarkup}
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="wrapped-projects" data-wrapped-section="projects" data-wrapped-story-step="true" class="flavortown-wrapped-section">
+                        <h3>Project Depth</h3>
+                        <div class="flavortown-wrapped-grid three">
+                            <div class="flavortown-wrapped-stat"><label>Projects Tracked</label><strong data-countup="${data.projects.totalProjects}">0</strong></div>
+                            <div class="flavortown-wrapped-stat"><label>Total Board Devlogs</label><strong data-countup="${data.projects.totalDevlogs}">0</strong></div>
+                            <div class="flavortown-wrapped-stat"><label>Total Board Time</label><strong>${wrappedFormatHoursFromMinutes(data.projects.totalMinutes)}</strong></div>
+                        </div>
+                        <div class="flavortown-wrapped-project-list">${topProjectsMarkup}</div>
+                    </section>
+
+                    <section id="wrapped-shipping" data-wrapped-section="shipping" data-wrapped-story-step="true" class="flavortown-wrapped-section">
+                        <h3>Shipping and Shop</h3>
+                        <div class="flavortown-wrapped-grid four">
+                            <div class="flavortown-wrapped-stat"><label>Ships Counted</label><strong data-countup="${data.shipping.totalShips}">0</strong></div>
+                            <div class="flavortown-wrapped-stat"><label>Avg Efficiency</label><strong data-countup="${data.shipping.avgEfficiency}" data-decimals="1" data-suffix=" c/h">0 c/h</strong></div>
+                            <div class="flavortown-wrapped-stat"><label>Shop Orders</label><strong data-countup="${data.shopOrders.totalOrders || 0}">0</strong></div>
+                            <div class="flavortown-wrapped-stat"><label>Shop Cookies Spent</label><strong>🍪 ${wrappedFormatNumber(data.shopOrders.totalCookies || 0)}</strong></div>
+                        </div>
+                        ${shopMarkup}
+                    </section>
+                </main>
+            </div>
+        </div>
+    `;
+}
+
+function setupFlavortownWrappedInteractions(modal, data) {
+    const siteRoot = modal.querySelector('.flavortown-wrapped-site');
+    const scrollArea = modal.querySelector('[data-wrapped-scroll-area]');
+    const sections = Array.from(modal.querySelectorAll('[data-wrapped-section]'));
+    const storySteps = Array.from(modal.querySelectorAll('[data-wrapped-story-step="true"]'));
+    const navButtons = Array.from(modal.querySelectorAll('[data-section-target]'));
+    const chartCanvas = modal.querySelector('.flavortown-wrapped-balance-chart');
+    const chartWrap = modal.querySelector('.flavortown-wrapped-chart-wrap');
+    const chartTooltip = modal.querySelector('[data-wrapped-chart-tooltip]');
+    const earningsDonut = modal.querySelector('[data-wrapped-earnings-donut]');
+    const donutValueEl = modal.querySelector('[data-wrapped-donut-value]');
+    const donutLabelEl = modal.querySelector('[data-wrapped-donut-label]');
+    const sourceBreakdownEl = modal.querySelector('[data-wrapped-source-breakdown]');
+    const sourceBackBtn = modal.querySelector('[data-action="earnings-drillback"]');
+    const closeBtn = modal.querySelector('[data-action="close"]');
+    const modeToggleBtn = modal.querySelector('[data-action="toggle-mode"]');
+    const storyControls = modal.querySelector('[data-wrapped-story-controls]');
+    const storyPrevBtn = modal.querySelector('[data-action="story-prev"]');
+    const storyNextBtn = modal.querySelector('[data-action="story-next"]');
+    const storyProgressText = modal.querySelector('[data-wrapped-story-progress]');
+    const storyDots = modal.querySelector('[data-wrapped-story-dots]');
+    const exportBtn = modal.querySelector('[data-action="export-png"]');
+    const copyBtn = modal.querySelector('[data-action="copy-summary"]');
+
+    if (!siteRoot || !scrollArea || !sections.length) return;
+
+    const copyButtonDefaultLabel = copyBtn ? (copyBtn.textContent || 'Copy summary') : 'Copy summary';
+    const exportButtonDefaultLabel = exportBtn ? (exportBtn.textContent || 'Export PNG') : 'Export PNG';
+    let chartGeometry = null;
+    let activeHoverIndex = -1;
+    let activeDonutParts = [];
+    let activeDrillSource = '';
+    let wrappedMode = 'story';
+    let activeStoryIndex = 0;
+
+    const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+
+    const setActiveNav = (sectionId) => {
+        navButtons.forEach((button) => {
+            button.classList.toggle('is-active', button.getAttribute('data-section-target') === sectionId);
+        });
+    };
+
+    const runCountups = (root = modal) => {
+        const nodes = root.querySelectorAll('[data-countup]');
+        nodes.forEach((node) => {
+            if (node.dataset.counted === 'true') return;
+
+            const target = Number(node.dataset.countup);
+            if (!Number.isFinite(target)) return;
+
+            node.dataset.counted = 'true';
+            const decimals = Math.max(0, Math.min(2, Number(node.dataset.decimals) || 0));
+            const prefix = node.dataset.prefix || '';
+            const suffix = node.dataset.suffix || '';
+            const duration = 900;
+            const start = performance.now();
+
+            const render = (value) => {
+                const rounded = decimals > 0 ? value.toFixed(decimals) : Math.round(value).toString();
+                node.textContent = `${prefix}${rounded}${suffix}`;
+            };
+
+            const tick = (now) => {
+                const t = Math.min(1, (now - start) / duration);
+                const eased = 1 - ((1 - t) ** 3);
+                render(target * eased);
+                if (t < 1) {
+                    requestAnimationFrame(tick);
+                } else {
+                    render(target);
+                }
+            };
+            requestAnimationFrame(tick);
+        });
+    };
+
+    const resetCountups = (root = modal) => {
+        root.querySelectorAll('[data-countup]').forEach((node) => {
+            node.dataset.counted = 'false';
+            if (node.dataset.suffix) {
+                node.textContent = `0${node.dataset.suffix}`;
+            } else if (node.dataset.prefix) {
+                node.textContent = `${node.dataset.prefix}0`;
+            } else {
+                node.textContent = '0';
+            }
+        });
+    };
+
+    const getStoryStepSectionId = (step) => {
+        const sectionId = step?.getAttribute('data-wrapped-section');
+        return sectionId || '';
+    };
+
+    const setStoryProgress = () => {
+        if (storyProgressText) {
+            storyProgressText.textContent = `${activeStoryIndex + 1}/${Math.max(1, storySteps.length)}`;
+        }
+        if (storyPrevBtn) storyPrevBtn.disabled = activeStoryIndex <= 0;
+        if (storyNextBtn) storyNextBtn.disabled = activeStoryIndex >= storySteps.length - 1;
+        if (storyNextBtn) {
+            storyNextBtn.textContent = activeStoryIndex >= storySteps.length - 1 ? 'Open recap' : 'Next';
+        }
+
+        if (storyDots) {
+            storyDots.innerHTML = storySteps.map((_, index) => (
+                `<i class="${index === activeStoryIndex ? 'is-active' : ''}"></i>`
+            )).join('');
+        }
+    };
+
+    const setWrappedMode = (mode) => {
+        wrappedMode = mode === 'dashboard' ? 'dashboard' : 'story';
+        siteRoot.dataset.wrappedMode = wrappedMode;
+        if (modeToggleBtn) {
+            modeToggleBtn.textContent = wrappedMode === 'story' ? 'Dashboard view' : 'Story view';
+        }
+        if (wrappedMode === 'story') {
+            if (storyControls) storyControls.hidden = false;
+            setStoryProgress();
+        } else if (storyControls) {
+            storyControls.hidden = true;
+        }
+    };
+
+    const gotoStoryStep = (index) => {
+        if (!storySteps.length) return;
+        activeStoryIndex = clamp(index, 0, storySteps.length - 1);
+        const target = storySteps[activeStoryIndex];
+        if (!target) return;
+
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        setStoryProgress();
+
+        const sectionId = getStoryStepSectionId(target);
+        if (sectionId) setActiveNav(sectionId);
+
+        runCountups(target);
+        if (target.querySelector('.flavortown-wrapped-balance-chart')) {
+            drawCharts();
+        }
+    };
+
+    const drawCharts = () => {
+        if (chartCanvas) {
+            chartGeometry = drawFlavortownWrappedBalanceChart(chartCanvas, data.balance.dataPoints, {
+                hoverIndex: activeHoverIndex,
+            });
+        }
+    };
+
+    const scheduleChartRedraw = () => {
+        const raf = window.requestAnimationFrame || ((cb) => setTimeout(cb, 16));
+        const redraw = () => {
+            drawCharts();
+        };
+        raf(() => raf(redraw));
+    };
+
+    const hideChartTooltip = () => {
+        if (!chartTooltip) return;
+        chartTooltip.hidden = true;
+    };
+
+    const getTopPart = (parts) => {
+        const safeParts = Array.isArray(parts) ? parts : [];
+        return safeParts.slice().sort((a, b) => (b.amount || 0) - (a.amount || 0))[0] || null;
+    };
+
+    const renderSourceRows = (parts, drillSourceLabel = '') => {
+        if (!sourceBreakdownEl) return;
+        if (!Array.isArray(parts) || !parts.length) {
+            sourceBreakdownEl.innerHTML = '<div class="flavortown-wrapped-empty">Not enough earnings data to break down yet.</div>';
+            return;
+        }
+
+        sourceBreakdownEl.innerHTML = parts.map((part) => {
+            const drillable = !drillSourceLabel && !!data.earningsBreakdown?.drilldowns?.[part.label];
+            return `
+                <div class="flavortown-wrapped-source-row ${drillable ? 'is-drillable' : ''}" data-wrapped-source-label="${escapeHtmlAttribute(part.label)}" ${drillable ? 'data-wrapped-source-drillable="true"' : ''}>
+                    <span><i style="background:${part.color}"></i>${escapeHtml(part.label)}</span>
+                    <strong>${part.share}%</strong>
+                    <em>${wrappedFormatNumber(part.amount || 0)} cookies</em>
+                </div>
+            `;
+        }).join('');
+    };
+
+    const applyDonutState = (parts, fallbackLabel) => {
+        if (!earningsDonut || !donutValueEl || !donutLabelEl) return;
+        activeDonutParts = Array.isArray(parts) ? parts.slice() : [];
+        const topPart = getTopPart(parts);
+        const share = Math.max(0, Math.min(100, Number(topPart?.share) || 0));
+        const label = topPart?.label || fallbackLabel || 'Earnings';
+        earningsDonut.style.setProperty('--wrapped-donut-gradient', buildWrappedDonutGradient(parts));
+        donutValueEl.textContent = `${share}%`;
+        donutLabelEl.textContent = label;
+    };
+
+    const applyMainEarningBreakdown = () => {
+        const parts = (data.earningsBreakdown?.parts || []).slice(0, 4);
+        activeDrillSource = '';
+        renderSourceRows(parts, '');
+        applyDonutState(parts, 'Earnings');
+        if (sourceBackBtn) sourceBackBtn.hidden = true;
+    };
+
+    const applyEarningDrilldown = (sourceLabel) => {
+        const drill = data.earningsBreakdown?.drilldowns?.[sourceLabel];
+        if (!drill || !Array.isArray(drill.parts) || !drill.parts.length) return;
+        activeDrillSource = sourceLabel;
+        renderSourceRows(drill.parts, sourceLabel);
+        applyDonutState(drill.parts, `${sourceLabel} projects`);
+        if (sourceBackBtn) sourceBackBtn.hidden = false;
+    };
+
+    if (earningsDonut) {
+        earningsDonut.addEventListener('click', (event) => {
+            if (activeDrillSource) return;
+            if (!activeDonutParts.length) return;
+
+            const rect = earningsDonut.getBoundingClientRect();
+            const cx = rect.left + (rect.width / 2);
+            const cy = rect.top + (rect.height / 2);
+            const dx = event.clientX - cx;
+            const dy = event.clientY - cy;
+            const radius = rect.width / 2;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            const innerRadius = radius * 0.68;
+
+            if (distance < innerRadius || distance > radius) return;
+
+            const angle = (Math.atan2(dy, dx) * (180 / Math.PI) + 90 + 360) % 360;
+            let cursor = 0;
+            for (const part of activeDonutParts) {
+                const sweep = Math.max(0, Number(part.ratio) || 0) * 360;
+                const end = cursor + sweep;
+                if (angle >= cursor && angle <= end && part.drillable) {
+                    applyEarningDrilldown(part.label);
+                    return;
+                }
+                cursor = end;
+            }
+        });
+    }
+
+    if (sourceBreakdownEl) {
+        sourceBreakdownEl.addEventListener('click', (event) => {
+            const row = event.target.closest('[data-wrapped-source-label]');
+            if (!row) return;
+            const label = row.getAttribute('data-wrapped-source-label') || '';
+            if (!label || row.getAttribute('data-wrapped-source-drillable') !== 'true') return;
+            applyEarningDrilldown(label);
+        });
+    }
+
+    if (sourceBackBtn) {
+        sourceBackBtn.addEventListener('click', () => {
+            applyMainEarningBreakdown();
+        });
+    }
+
+    if (chartWrap && chartCanvas && chartTooltip) {
+        chartWrap.addEventListener('mousemove', (event) => {
+            if (!chartGeometry?.samples?.length) return;
+
+            const wrapRect = chartWrap.getBoundingClientRect();
+            const localX = event.clientX - wrapRect.left;
+            const nearest = chartGeometry.samples.reduce((best, sample, index) => {
+                if (!best) return { index, distance: Math.abs(sample.x - localX) };
+                const distance = Math.abs(sample.x - localX);
+                return distance < best.distance ? { index, distance } : best;
+            }, null);
+
+            if (!nearest) return;
+
+            if (nearest.index !== activeHoverIndex) {
+                activeHoverIndex = nearest.index;
+                drawCharts();
+            }
+
+            const hovered = chartGeometry.samples[nearest.index];
+            if (!hovered) return;
+
+            const point = hovered.point || {};
+            const amount = Number(point.amount) || 0;
+            const amountLabel = `${amount >= 0 ? '+' : '-'}${wrappedFormatNumber(Math.abs(amount))}`;
+            const reasonText = point.reason ? String(point.reason).replace(/\s+/g, ' ').trim().slice(0, 120) : '';
+            const reason = reasonText ? ` - ${reasonText}` : '';
+            chartTooltip.innerHTML = `<strong>${wrappedFormatNumber(point.balance)} cookies</strong><span>${wrappedDateLabel(point.date)}</span><span>${amountLabel} change${escapeHtml(reason)}</span>`;
+            chartTooltip.hidden = false;
+
+            const tooltipRect = chartTooltip.getBoundingClientRect();
+            const left = Math.max(8, Math.min(wrapRect.width - tooltipRect.width - 8, hovered.x - (tooltipRect.width / 2)));
+            const top = Math.max(8, Math.min(wrapRect.height - tooltipRect.height - 8, hovered.y - tooltipRect.height - 16));
+            chartTooltip.style.left = `${left}px`;
+            chartTooltip.style.top = `${top}px`;
+        });
+
+        chartWrap.addEventListener('mouseleave', () => {
+            if (activeHoverIndex !== -1) {
+                activeHoverIndex = -1;
+                drawCharts();
+            }
+            hideChartTooltip();
+        });
+    }
+
+    navButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+            const sectionId = button.getAttribute('data-section-target');
+            const target = modal.querySelector(`#wrapped-${sectionId}`);
+            if (!target) return;
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            setActiveNav(sectionId);
+            if (wrappedMode === 'story') {
+                const storyIndex = storySteps.findIndex((step) => step.id === target.id);
+                if (storyIndex >= 0) {
+                    activeStoryIndex = storyIndex;
+                    setStoryProgress();
+                }
+            }
+        });
+    });
+
+    if (modeToggleBtn) {
+        modeToggleBtn.addEventListener('click', () => {
+            if (wrappedMode === 'story') {
+                setWrappedMode('dashboard');
+                const overview = modal.querySelector('#wrapped-overview');
+                if (overview) overview.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                runCountups(scrollArea);
+                scheduleChartRedraw();
+                return;
+            }
+
+            setWrappedMode('story');
+            resetCountups(scrollArea);
+            gotoStoryStep(activeStoryIndex);
+        });
+    }
+
+    if (storyPrevBtn) {
+        storyPrevBtn.addEventListener('click', () => {
+            gotoStoryStep(activeStoryIndex - 1);
+        });
+    }
+
+    if (storyNextBtn) {
+        storyNextBtn.addEventListener('click', () => {
+            if (activeStoryIndex >= storySteps.length - 1) {
+                setWrappedMode('dashboard');
+                const overview = modal.querySelector('#wrapped-overview');
+                if (overview) overview.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                runCountups(scrollArea);
+                scheduleChartRedraw();
+                return;
+            }
+            gotoStoryStep(activeStoryIndex + 1);
+        });
+    }
+
+    let observer = null;
+    if ('IntersectionObserver' in window) {
+        observer = new IntersectionObserver((entries) => {
+            const visible = entries
+                .filter((entry) => entry.isIntersecting)
+                .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+            if (!visible) return;
+            if (wrappedMode === 'story') {
+                const idx = storySteps.indexOf(visible.target);
+                if (idx >= 0 && idx !== activeStoryIndex) {
+                    activeStoryIndex = idx;
+                    setStoryProgress();
+                }
+            }
+            const sectionId = visible.target.getAttribute('data-wrapped-section');
+            if (sectionId) {
+                setActiveNav(sectionId);
+                runCountups(visible.target);
+            }
+        }, {
+            root: scrollArea,
+            threshold: [0.35, 0.6],
+        });
+
+        sections.forEach((section) => observer.observe(section));
+    }
+
+    if (exportBtn) {
+        exportBtn.addEventListener('click', async () => {
+            exportBtn.textContent = 'Exporting...';
+            exportBtn.disabled = true;
+            try {
+                await exportFlavortownWrappedPng(data);
+                exportBtn.textContent = 'Saved';
+            } catch (e) {
+                exportBtn.textContent = 'Failed';
+            }
+            setTimeout(() => {
+                exportBtn.textContent = exportButtonDefaultLabel;
+                exportBtn.disabled = false;
+            }, 1500);
+        });
+    }
+
+    if (copyBtn) {
+        copyBtn.addEventListener('click', async () => {
+            const shopSummary = data.shopOrders.available
+                ? `${wrappedFormatNumber(data.shopOrders.totalOrders || 0)} shop orders, ${wrappedFormatNumber(data.shopOrders.totalCookies || 0)} cookies spent`
+                : 'shop orders unavailable';
+            const summaryText = `${data.userName}'s Flavortown Wrapped: ${wrappedFormatHoursFromMinutes(data.allTimeMinutes)} built, ${wrappedFormatNumber(data.balance.totalEarned)} total earned, ${wrappedFormatNumber(data.heatmap.totalDevlogs)} devlogs, ${wrappedFormatNumber(data.projects.totalProjects)} projects, ${wrappedFormatNumber(data.shipping.totalShips)} ships, ${shopSummary}.`;
+            try {
+                await navigator.clipboard.writeText(summaryText);
+                copyBtn.textContent = 'Copied!';
+                setTimeout(() => {
+                    copyBtn.textContent = copyButtonDefaultLabel;
+                }, 1800);
+            } catch (e) {
+                copyBtn.textContent = 'Copy failed';
+                setTimeout(() => {
+                    copyBtn.textContent = copyButtonDefaultLabel;
+                }, 1800);
+            }
+        });
+    }
+
+    const keyHandler = (e) => {
+        if (!flavortownWrappedModal) return;
+        if (e.key === 'Escape') {
+            closeFlavortownWrappedModal();
+            return;
+        }
+
+        if (wrappedMode !== 'story') return;
+
+        if ((e.key === 'ArrowDown' || e.key === 'PageDown') && activeStoryIndex >= storySteps.length - 1) {
+            e.preventDefault();
+            setWrappedMode('dashboard');
+            const overview = modal.querySelector('#wrapped-overview');
+            if (overview) overview.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            runCountups(scrollArea);
+            scheduleChartRedraw();
+            return;
+        }
+
+        if (e.key === 'ArrowDown' || e.key === 'PageDown') {
+            e.preventDefault();
+            gotoStoryStep(activeStoryIndex + 1);
+        } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+            e.preventDefault();
+            gotoStoryStep(activeStoryIndex - 1);
+        }
+    };
+
+    if (closeBtn) {
+        closeBtn.addEventListener('click', closeFlavortownWrappedModal);
+    }
+
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeFlavortownWrappedModal();
+        }
+    });
+
+    const resizeHandler = () => {
+        hideChartTooltip();
+        activeHoverIndex = -1;
+        scheduleChartRedraw();
+    };
+
+    document.addEventListener('keydown', keyHandler);
+    window.addEventListener('resize', resizeHandler);
+
+    flavortownWrappedCleanup = () => {
+        if (observer) observer.disconnect();
+        document.removeEventListener('keydown', keyHandler);
+        window.removeEventListener('resize', resizeHandler);
+    };
+
+    setActiveNav('overview');
+    setWrappedMode('story');
+    applyMainEarningBreakdown();
+    resetCountups(scrollArea);
+    gotoStoryStep(0);
+    scheduleChartRedraw();
+}
+
+async function openFlavortownWrappedModal() {
+    if (flavortownWrappedModal) return;
+
+    const modal = document.createElement('div');
+    modal.className = 'flavortown-wrapped-overlay';
+    modal.innerHTML = `
+        <div class="flavortown-wrapped-loading">
+            <div class="flavortown-wrapped-loading-title">Preparing Flavortown Wrapped...</div>
+            <div class="flavortown-wrapped-loading-sub">Gathering your cookies, projects, streaks, and signature moments.</div>
+        </div>
+    `;
+
+    flavortownWrappedModal = modal;
+    document.body.appendChild(modal);
+    document.body.style.overflow = 'hidden';
+
+    try {
+        const data = await buildFlavortownWrappedData();
+        if (!flavortownWrappedModal || flavortownWrappedModal !== modal) return;
+        try {
+            renderFlavortownWrapped(modal, data);
+            setupFlavortownWrappedInteractions(modal, data);
+        } catch (renderError) {
+            console.error('Flavortown Wrapped render/setup failed:', renderError);
+            renderFlavortownWrappedFallback(modal);
+        }
+    } catch (e) {
+        console.error('Flavortown Wrapped build failed:', e);
+        modal.innerHTML = `
+            <div class="flavortown-wrapped-loading">
+                <div class="flavortown-wrapped-loading-title">Could not build Wrapped</div>
+                <div class="flavortown-wrapped-loading-sub">Try opening it again after refreshing this page.</div>
+                <div class="flavortown-wrapped-loading-sub" style="font-size:0.8rem;opacity:0.85;">${escapeHtml(e?.message || 'Unknown error')}</div>
+                <button type="button" class="flavortown-wrapped-close-inline">Close</button>
+            </div>
+        `;
+        const closeBtn = modal.querySelector('.flavortown-wrapped-close-inline');
+        if (closeBtn) closeBtn.addEventListener('click', closeFlavortownWrappedModal);
+    }
 }
 
 var COMMENT_EMOJI_OBSERVER_KEY = 'flavortownCommentEmojiObserver';

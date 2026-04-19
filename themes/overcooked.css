@@ -70,6 +70,18 @@
     --flavortown-doomscroll-btn-color: var(--overcooked-coral);
     --flavortown-doomscroll-btn-border: var(--overcooked-surface);
     --flavortown-doomscroll-btn-hover: var(--overcooked-surface);
+
+    --flavortown-wrapped-surface: var(--overcooked-dark);
+    --flavortown-wrapped-border: var(--overcooked-mid);
+    --flavortown-wrapped-text-primary: var(--overcooked-white);
+    --flavortown-wrapped-text-secondary: var(--overcooked-mist);
+    --flavortown-wrapped-text-muted: var(--overcooked-foam);
+    --flavortown-wrapped-accent: var(--overcooked-cyan);
+    --flavortown-wrapped-accent-soft: var(--overcooked-spray);
+    --flavortown-wrapped-green: var(--overcooked-kelp);
+    --flavortown-wrapped-red: var(--overcooked-coral);
+    --flavortown-wrapped-bg-start: var(--overcooked-abyss);
+    --flavortown-wrapped-bg-end: var(--overcooked-charcoal);
 }
 
 body {

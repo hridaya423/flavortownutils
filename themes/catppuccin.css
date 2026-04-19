@@ -80,6 +80,18 @@
     --flavortown-doomscroll-btn-color: var(--ctp-mauve);
     --flavortown-doomscroll-btn-border: var(--ctp-surface1);
     --flavortown-doomscroll-btn-hover: var(--ctp-surface1);
+
+    --flavortown-wrapped-surface: var(--ctp-surface0);
+    --flavortown-wrapped-border: var(--ctp-surface1);
+    --flavortown-wrapped-text-primary: var(--ctp-text);
+    --flavortown-wrapped-text-secondary: var(--ctp-subtext1);
+    --flavortown-wrapped-text-muted: var(--ctp-overlay1);
+    --flavortown-wrapped-accent: var(--ctp-accent);
+    --flavortown-wrapped-accent-soft: var(--ctp-lavender);
+    --flavortown-wrapped-green: var(--ctp-green);
+    --flavortown-wrapped-red: var(--ctp-red);
+    --flavortown-wrapped-bg-start: var(--ctp-base);
+    --flavortown-wrapped-bg-end: var(--ctp-mantle);
 }
 
 body {

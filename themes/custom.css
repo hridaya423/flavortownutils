@@ -77,6 +77,18 @@
     --flavortown-doomscroll-btn-color: var(--custom-accent);
     --flavortown-doomscroll-btn-border: var(--custom-surface-hover);
     --flavortown-doomscroll-btn-hover: var(--custom-surface-hover);
+
+    --flavortown-wrapped-surface: var(--custom-bg-surface);
+    --flavortown-wrapped-border: var(--custom-surface-hover);
+    --flavortown-wrapped-text-primary: var(--custom-text-primary);
+    --flavortown-wrapped-text-secondary: var(--custom-text-secondary);
+    --flavortown-wrapped-text-muted: var(--custom-text-muted);
+    --flavortown-wrapped-accent: var(--custom-accent);
+    --flavortown-wrapped-accent-soft: var(--custom-accent-alt);
+    --flavortown-wrapped-green: var(--custom-success);
+    --flavortown-wrapped-red: var(--custom-error);
+    --flavortown-wrapped-bg-start: var(--custom-bg-base);
+    --flavortown-wrapped-bg-end: var(--custom-bg-mantle);
 }
 
 body {
