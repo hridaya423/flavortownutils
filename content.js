@@ -23626,7 +23626,12 @@ function setupFlavortownWrappedInteractions(modal, data) {
     };
 
     const scheduleChartRedraw = () => {
-        const raf = window.requestAnimationFrame || ((cb) => setTimeout(cb, 16));
+        const raf = (cb) => {
+            if (window && typeof window.requestAnimationFrame === 'function') {
+                return window.requestAnimationFrame.call(window, cb);
+            }
+            return setTimeout(cb, 16);
+        };
         const redraw = () => {
             drawCharts();
         };
