@@ -2374,7 +2374,7 @@ async function getHackatimeProjectFields(projectId) {
     if (!projectId) return [];
 
     try {
-        const response = await fetch(`/projects/${projectId}/edit`, { credentials: 'include' });
+        const response = await fetch(toAbsoluteUrl(`/projects/${projectId}/edit`), { credentials: 'include' });
         if (!response.ok) return [];
         const html = await response.text();
         const doc = new DOMParser().parseFromString(html, 'text/html');
@@ -2399,7 +2399,7 @@ async function updateProjectLinks(projectId, { repoUrl, demoUrl }) {
     });
 
     try {
-        const response = await fetch(`/projects/${projectId}`, {
+        const response = await fetch(toAbsoluteUrl(`/projects/${projectId}`), {
             method: 'POST',
             credentials: 'include',
             headers: {
@@ -3799,7 +3799,7 @@ async function cleanupUnownedUnshippedCache() {
 
     for (const projectId of projectIds) {
         try {
-            const response = await fetch(`/projects/${projectId}`, { credentials: 'same-origin' });
+            const response = await fetch(toAbsoluteUrl(`/projects/${projectId}`), { credentials: 'same-origin' });
             if (!response.ok) continue;
             const html = await response.text();
             const doc = new DOMParser().parseFromString(html, 'text/html');
@@ -3957,7 +3957,7 @@ async function fetchUndevloggedMinutesForProject(projectId) {
 
     for (let attempt = 0; attempt < 2; attempt++) {
         try {
-            const response = await fetch(`/projects/${projectId}/devlogs/new`, {
+            const response = await fetch(toAbsoluteUrl(`/projects/${projectId}/devlogs/new`), {
                 credentials: 'include',
                 headers: { 'X-Flavortown-Ext-135': 'true' }
             });
@@ -4157,7 +4157,7 @@ async function fetchProjectShipMinutes(projectId) {
     if (cachedMinutes) return cachedMinutes;
 
     try {
-        const response = await fetch(`/projects/${projectId}`, { credentials: 'same-origin' });
+        const response = await fetch(toAbsoluteUrl(`/projects/${projectId}`), { credentials: 'same-origin' });
         if (!response.ok) return 0;
 
         const html = await response.text();
@@ -4253,10 +4253,23 @@ function updateHeatmapDataForProject(projectSlug, projectName, devlogData) {
 }
 
 const API_BASE_URL = 'https://flavortown.hackclub.com/api/v1';
+const IS_FIREFOX_BROWSER = /firefox/i.test(navigator.userAgent || '');
+
 function toAbsoluteUrl(pathOrUrl) {
     if (!pathOrUrl) return null;
+    const raw = String(pathOrUrl).trim();
+    if (!raw) return null;
+
+    const hasProtocol = /^[a-zA-Z][a-zA-Z\d+.-]*:/.test(raw);
+    const isProtocolRelative = raw.startsWith('//');
+    const isRootRelative = raw.startsWith('/') && !isProtocolRelative;
+
+    if (!IS_FIREFOX_BROWSER && isRootRelative && !hasProtocol) {
+        return raw;
+    }
+
     try {
-        return new URL(pathOrUrl, window.location.origin).toString();
+        return new URL(raw, window.location.origin).toString();
     } catch (e) {
         return null;
     }
@@ -4292,7 +4305,7 @@ function createAsyncLimiter(maxConcurrent = 2) {
 
 async function fetchApiKeyFromSettings() {
     try {
-        const res = await fetch('/my/settings', { credentials: 'include' });
+        const res = await fetch(toAbsoluteUrl('/my/settings'), { credentials: 'include' });
         if (!res.ok) return null;
         const html = await res.text();
         const doc = new DOMParser().parseFromString(html, 'text/html');
@@ -9152,7 +9165,8 @@ async function runShopOrdersSync() {
     if (window.location.pathname !== '/shop') return;
 
     try {
-        const response = await fetch('/shop/my_orders', { credentials: 'same-origin' });
+        const myOrdersUrl = toAbsoluteUrl('/shop/my_orders') || `${window.location.origin}/shop/my_orders`;
+        const response = await fetch(myOrdersUrl, { credentials: 'same-origin' });
         if (!response.ok) return;
         const html = await response.text();
         const doc = new DOMParser().parseFromString(html, 'text/html');
@@ -9311,7 +9325,8 @@ async function fetchLotteryOddsData() {
 
 async function fetchMyOrdersDocument() {
     try {
-        const response = await fetch('/shop/my_orders', {
+        const myOrdersUrl = toAbsoluteUrl('/shop/my_orders') || `${window.location.origin}/shop/my_orders`;
+        const response = await fetch(myOrdersUrl, {
             credentials: 'same-origin',
             headers: { 'X-Flavortown-Ext-135': 'true' }
         });
@@ -9544,7 +9559,9 @@ async function initShopAccessories() {
     if (itemsToFetch.length > 0) {
         await Promise.all(itemsToFetch.map(async (shopId) => {
             try {
-                const response = await fetch(`/shop/order?shop_item_id=${shopId}`, { headers: { 'X-Flavortown-Ext-135': 'true' } });
+                const orderUrl = new URL('/shop/order', window.location.origin);
+                orderUrl.searchParams.set('shop_item_id', String(shopId));
+                const response = await fetch(orderUrl.toString(), { headers: { 'X-Flavortown-Ext-135': 'true' } });
                 const html = await response.text();
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(html, 'text/html');
@@ -12822,7 +12839,7 @@ function addDoomscrollMode() {
             } else {
                 try {
                     const token = document.querySelector('meta[name="csrf-token"]')?.content;
-                    await fetch(`/projects/${projectId}/follow`, {
+                    await fetch(toAbsoluteUrl(`/projects/${projectId}/follow`), {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/x-www-form-urlencoded',
@@ -15833,7 +15850,7 @@ async function fetchOnHoldActorForOrder(orderId) {
     if (cachedActor) return cachedActor;
 
     try {
-        const response = await fetch(`/admin/shop_orders/${orderId}`, { credentials: 'same-origin' });
+        const response = await fetch(toAbsoluteUrl(`/admin/shop_orders/${orderId}`), { credentials: 'same-origin' });
         if (!response.ok) return null;
 
         const html = await response.text();
@@ -16063,7 +16080,7 @@ async function enhanceAdminShopOrdersPage(attempt = 0) {
                     if (!params.has('tracking_number')) params.set('tracking_number', '');
 
                     try {
-                        const response = await fetch(`/admin/shop_orders/${orderId}/${action}`, {
+                        const response = await fetch(toAbsoluteUrl(`/admin/shop_orders/${orderId}/${action}`), {
                             method: 'POST',
                             credentials: 'same-origin',
                             headers: {
@@ -16587,7 +16604,7 @@ function enhanceAdminDashboard() {
 
 async function fetchOldestPending() {
     try {
-        const reportsRes = await fetch('/admin/reports?status=pending', { credentials: 'same-origin' });
+        const reportsRes = await fetch(toAbsoluteUrl('/admin/reports?status=pending'), { credentials: 'same-origin' });
         const reportsHtml = await reportsRes.text();
         const reportsDoc = new DOMParser().parseFromString(reportsHtml, 'text/html');
         
@@ -16629,7 +16646,7 @@ async function fetchOldestPending() {
     }
     
     try {
-        const ordersRes = await fetch('/admin/shop_orders?view=shop_orders', { credentials: 'same-origin' });
+        const ordersRes = await fetch(toAbsoluteUrl('/admin/shop_orders?view=shop_orders'), { credentials: 'same-origin' });
         const ordersHtml = await ordersRes.text();
         const ordersDoc = new DOMParser().parseFromString(ordersHtml, 'text/html');
         
@@ -16741,7 +16758,7 @@ async function fetchShopOrderRates() {
 
 async function fetchAdminStats() {
     try {
-        const reportsRes = await fetch('/admin/reports', { credentials: 'same-origin' });
+        const reportsRes = await fetch(toAbsoluteUrl('/admin/reports'), { credentials: 'same-origin' });
         const reportsHtml = await reportsRes.text();
         const reportsDoc = new DOMParser().parseFromString(reportsHtml, 'text/html');
 
@@ -16779,7 +16796,7 @@ async function fetchAdminStats() {
 
         for (const [projectId, projectData] of projectsToFetch) {
             try {
-                const projectRes = await fetch(`/admin/projects/${projectId}`, { credentials: 'same-origin' });
+                const projectRes = await fetch(toAbsoluteUrl(`/admin/projects/${projectId}`), { credentials: 'same-origin' });
                 const projectHtml = await projectRes.text();
                 const projectDoc = new DOMParser().parseFromString(projectHtml, 'text/html');
                 
@@ -17311,7 +17328,7 @@ function setupCommandPalette() {
 
         const promise = runInlineProjectBannerTask(async () => {
             try {
-                const res = await fetch(`/projects/${key}`, { credentials: 'include' });
+                const res = await fetch(toAbsoluteUrl(`/projects/${key}`), { credentials: 'include' });
                 if (!res.ok) return '';
                 const html = await res.text();
                 const doc = new DOMParser().parseFromString(html, 'text/html');
@@ -17700,7 +17717,7 @@ function setupCommandPalette() {
         if (cached && Date.now() - cached.ts < 5 * 60 * 1000) return cached.stats;
 
         try {
-            const res = await fetch(`/users/${key}`, { credentials: 'include' });
+            const res = await fetch(toAbsoluteUrl(`/users/${key}`), { credentials: 'include' });
             if (!res.ok) throw new Error(`Profile fetch failed: ${res.status}`);
             const html = await res.text();
             const doc = new DOMParser().parseFromString(html, 'text/html');
@@ -19307,7 +19324,7 @@ function setupCommandPalette() {
             formData.append('_method', 'patch');
             formData.append(cmd.settingId, newValue ? '1' : '0');
             
-            fetch('/my/settings', {
+            fetch(toAbsoluteUrl('/my/settings'), {
                 method: 'POST',
                 headers: {
                     'X-CSRF-Token': csrfToken,
@@ -19352,7 +19369,7 @@ function setupCommandPalette() {
         projectsLoaded = true;
 
         try {
-            const res = await fetch('/projects', { credentials: 'same-origin' });
+            const res = await fetch(toAbsoluteUrl('/projects'), { credentials: 'same-origin' });
             if (!res.ok) return;
             const html = await res.text();
             const doc = new DOMParser().parseFromString(html, 'text/html');
@@ -21564,6 +21581,7 @@ function buildWrappedBalancePoints(transactions, currentBalance) {
 async function fetchWrappedBalanceData() {
     const parser = new DOMParser();
     const sidebarBalance = getSidebarBalanceValue();
+    const balanceUrl = toAbsoluteUrl('/my/balance') || `${window.location.origin}/my/balance`;
 
     const parseBalanceDoc = (doc) => {
         const rows = extractBalanceRowsFromDoc(doc);
@@ -21606,7 +21624,7 @@ async function fetchWrappedBalanceData() {
     };
 
     try {
-        const frameResponse = await fetch('/my/balance', {
+        const frameResponse = await fetch(balanceUrl, {
             credentials: 'include',
             headers: {
                 'Accept': 'text/html, application/xhtml+xml',
@@ -21624,7 +21642,7 @@ async function fetchWrappedBalanceData() {
             }
         }
 
-        const fallbackResponse = await fetch('/my/balance', {
+        const fallbackResponse = await fetch(balanceUrl, {
             credentials: 'include',
             headers: {
                 'Accept': 'text/html, application/xhtml+xml',
@@ -21649,7 +21667,8 @@ async function fetchWrappedBalanceData() {
 
 async function fetchWrappedAchievementsData() {
     try {
-        const response = await fetch('/my/achievements', { credentials: 'include' });
+        const achievementsUrl = toAbsoluteUrl('/my/achievements') || `${window.location.origin}/my/achievements`;
+        const response = await fetch(achievementsUrl, { credentials: 'include' });
         if (!response.ok) {
             const fallback = JSON.parse(localStorage.getItem(ACHIEVEMENT_STORAGE_KEY) || '[]');
             const fallbackCount = Array.isArray(fallback) ? fallback.length : 0;
@@ -21775,7 +21794,8 @@ function parseWrappedMyOrdersFromDoc(doc) {
 
 async function fetchWrappedShopOrdersData() {
     try {
-        const response = await fetch('/shop/my_orders', { credentials: 'include' });
+        const myOrdersUrl = toAbsoluteUrl('/shop/my_orders') || `${window.location.origin}/shop/my_orders`;
+        const response = await fetch(myOrdersUrl, { credentials: 'include' });
         if (!response.ok) {
             return {
                 available: false,
@@ -25638,7 +25658,7 @@ async function scanUserContext() {
             }
         }
 
-        const projectsRes = await fetch('/projects', { credentials: 'same-origin' });
+        const projectsRes = await fetch(toAbsoluteUrl('/projects'), { credentials: 'same-origin' });
         if (projectsRes.ok) {
             const html = await projectsRes.text();
             const parser = new DOMParser();
@@ -25696,7 +25716,7 @@ async function scanUserContext() {
             if (!tutorialUserContext.projectWithShips && projectIds.length > 0) {
                 for (const project of projectIds) {
                     try {
-                        const projectRes = await fetch(`/projects/${project.id}`, { credentials: 'same-origin' });
+                        const projectRes = await fetch(toAbsoluteUrl(`/projects/${project.id}`), { credentials: 'same-origin' });
                         if (!projectRes.ok) continue;
                         const projectHtml = await projectRes.text();
                         const projectDoc = parser.parseFromString(projectHtml, 'text/html');

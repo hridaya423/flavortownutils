@@ -2,6 +2,132 @@
 const browserAPI = typeof browser !== 'undefined' ? browser : chrome;
 const GAMBLORPHEUS_LOTTERIES_URL = 'https://gamblorpheus.hackclub.com/api/lotteries';
 
+function normalizeFetchResponse(response, text, fallbackError = null) {
+    let data = null;
+    try {
+        data = text ? JSON.parse(text) : null;
+    } catch (e) {
+        data = null;
+    }
+
+    return {
+        ok: response.ok,
+        status: response.status,
+        data,
+        raw: data ? null : text,
+        error: response.ok ? null : (data?.error?.message || data?.error || text || fallbackError || `HTTP ${response.status}`)
+    };
+}
+
+async function fetchAiTodoDirect(endpoint, apiKey, model, messages) {
+    try {
+        const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${apiKey}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ model, messages })
+        });
+        const text = await response.text().catch(() => '');
+        return normalizeFetchResponse(response, text, 'AI request failed');
+    } catch (err) {
+        return {
+            ok: false,
+            status: 0,
+            data: null,
+            raw: null,
+            error: err?.message || 'AI request failed'
+        };
+    }
+}
+
+async function permissionsContainsOrigin(origin) {
+    if (!origin) return false;
+    if (!browserAPI.permissions || typeof browserAPI.permissions.contains !== 'function') return true;
+
+    try {
+        const maybePromise = browserAPI.permissions.contains({ origins: [origin] });
+        if (maybePromise && typeof maybePromise.then === 'function') {
+            return !!(await maybePromise);
+        }
+    } catch (e) {
+    }
+
+    return await new Promise((resolve) => {
+        let settled = false;
+        const finish = (value) => {
+            if (settled) return;
+            settled = true;
+            resolve(!!value);
+        };
+
+        const timeout = setTimeout(() => finish(false), 2000);
+        try {
+            browserAPI.permissions.contains({ origins: [origin] }, (granted) => {
+                clearTimeout(timeout);
+                finish(granted);
+            });
+        } catch (e) {
+            clearTimeout(timeout);
+            finish(false);
+        }
+    });
+}
+
+async function executeScriptInTab({ tabId, allFrames = false, world = 'ISOLATED', func, args = [] }) {
+    if (!tabId || typeof func !== 'function') {
+        throw new Error('Invalid script execution target');
+    }
+
+    if (browserAPI.scripting?.executeScript) {
+        return await browserAPI.scripting.executeScript({
+            target: { tabId, allFrames: !!allFrames },
+            world,
+            func,
+            args
+        });
+    }
+
+    if (!browserAPI.tabs?.executeScript) {
+        throw new Error('Script injection unavailable');
+    }
+
+    const serializedArgs = JSON.stringify(Array.isArray(args) ? args : []);
+    const code = '(' + func.toString() + ').apply(null, ' + serializedArgs + ');';
+    const details = { code, allFrames: !!allFrames };
+
+    const normalizeResults = (values) => (
+        Array.isArray(values)
+            ? values.map((value) => ({ result: value }))
+            : [{ result: values }]
+    );
+
+    if (browserAPI.tabs.executeScript.length >= 3) {
+        return await new Promise((resolve, reject) => {
+            try {
+                browserAPI.tabs.executeScript(tabId, details, (values) => {
+                    const err = browserAPI.runtime?.lastError;
+                    if (err) {
+                        reject(new Error(err.message || 'Script injection failed'));
+                        return;
+                    }
+                    resolve(normalizeResults(values));
+                });
+            } catch (e) {
+                reject(e);
+            }
+        });
+    }
+
+    const maybePromise = browserAPI.tabs.executeScript(tabId, details);
+    if (maybePromise && typeof maybePromise.then === 'function') {
+        const values = await maybePromise;
+        return normalizeResults(values);
+    }
+    return normalizeResults(maybePromise);
+}
+
 function parseLotteryPayload(text) {
     if (typeof text !== 'string' || !text.trim()) return null;
 
@@ -92,7 +218,7 @@ async function waitForTabComplete(tabId, timeoutMs = 12000) {
 }
 
 async function fetchAiTodoViaMainWorldBridge(endpoint, apiKey, model, messages) {
-    if (!browserAPI.scripting?.executeScript || !browserAPI.tabs?.create || !browserAPI.tabs?.query) {
+    if (!browserAPI.tabs?.create || !browserAPI.tabs?.query) {
         return {
             ok: false,
             status: 0,
@@ -125,8 +251,8 @@ async function fetchAiTodoViaMainWorldBridge(endpoint, apiKey, model, messages) 
 
         await waitForTabComplete(targetTab.id);
 
-        const results = await browserAPI.scripting.executeScript({
-            target: { tabId: targetTab.id },
+        const results = await executeScriptInTab({
+            tabId: targetTab.id,
             world: 'MAIN',
             func: async (bridgeEndpoint, bridgeApiKey, bridgeModel, bridgeMessages) => {
                 try {
@@ -213,8 +339,9 @@ browserAPI.runtime.onMessage.addListener((message, sender, sendResponse) => {
             return false;
         }
 
-        browserAPI.scripting.executeScript({
-            target: { tabId: tabId, allFrames: true },
+        executeScriptInTab({
+            tabId: tabId,
+            allFrames: true,
             func: loadImageIntoShotsso,
             args: [imageDataUrl, secondImageDataUrl]
         }).then(() => {
@@ -377,27 +504,9 @@ browserAPI.runtime.onMessage.addListener((message, sender, sendResponse) => {
             runSyncFetch();
         };
 
-        if (!browserAPI.permissions || typeof browserAPI.permissions.contains !== 'function') {
-            runSyncFetch();
-            return true;
-        }
-
-        try {
-            const maybePromise = browserAPI.permissions.contains({ origins: [logpheusOrigin] });
-            if (maybePromise && typeof maybePromise.then === 'function') {
-                maybePromise.then((granted) => handlePermissionResult(!!granted)).catch(() => handlePermissionResult(false));
-                return true;
-            }
-        } catch (e) {
-        }
-
-        try {
-            browserAPI.permissions.contains({ origins: [logpheusOrigin] }, (granted) => {
-                handlePermissionResult(!!granted);
-            });
-        } catch (e) {
-            handlePermissionResult(false);
-        }
+        permissionsContainsOrigin(logpheusOrigin)
+            .then((granted) => handlePermissionResult(!!granted))
+            .catch(() => handlePermissionResult(false));
 
         return true;
     }
@@ -424,30 +533,30 @@ browserAPI.runtime.onMessage.addListener((message, sender, sendResponse) => {
         }
 
         (async () => {
-            if (browserAPI.permissions?.contains) {
-                try {
-                    const hasPermission = await new Promise((resolve) => {
-                        try {
-                            browserAPI.permissions.contains({ origins: ['https://ai.hackclub.com/*'] }, (granted) => resolve(!!granted));
-                        } catch (e) {
-                            resolve(true);
-                        }
+            try {
+                const hasPermission = await permissionsContainsOrigin('https://ai.hackclub.com/*');
+                if (!hasPermission) {
+                    sendResponse({
+                        ok: false,
+                        status: 0,
+                        error: 'Missing ai.hackclub.com host permission. Reload extension after update.'
                     });
-                    if (!hasPermission) {
-                        sendResponse({
-                            ok: false,
-                            status: 0,
-                            error: 'Missing ai.hackclub.com host permission. Reload extension after update.'
-                        });
-                        return;
-                    }
-                } catch (e) {
+                    return;
                 }
+            } catch (e) {
             }
 
-            const bridgeResult = await fetchAiTodoViaMainWorldBridge(endpoint, apiKey, model, messages);
+            let source = 'bridge';
+            let bridgeResult = await fetchAiTodoViaMainWorldBridge(endpoint, apiKey, model, messages);
+            if (!bridgeResult.ok) {
+                const directResult = await fetchAiTodoDirect(endpoint, apiKey, model, messages);
+                if (directResult.ok) {
+                    bridgeResult = directResult;
+                    source = 'direct';
+                }
+            }
             if (bridgeResult.ok) {
-                sendResponse({ ...bridgeResult, source: 'bridge' });
+                sendResponse({ ...bridgeResult, source });
                 return;
             }
 
