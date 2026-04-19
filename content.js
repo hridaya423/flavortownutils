@@ -22381,13 +22381,19 @@ function getWrappedDonutColorPalette() {
         ];
     }
 
+    const defaultAccent = getVar('--flavortown-wrapped-accent', '#e58d32');
+    const defaultSoft = getVar('--flavortown-wrapped-accent-soft', '#e7bc93');
+    const defaultSurface = getVar('--flavortown-wrapped-surface', '#f7efe6');
+    const defaultTrack = getVar('--flavortown-wrapped-bar-track', '#e6ded0');
+    const defaultEnd = getVar('--flavortown-wrapped-bar-end', '#e58d32');
+
     return [
-        getVar('--flavortown-wrapped-accent', '#e58d32'),
-        getVar('--flavortown-wrapped-accent-soft', '#e7bc93'),
-        getVar('--color-green', '#5b9d72'),
-        getVar('--color-red', '#be7b67'),
-        '#d5ad72',
-        '#8b7355',
+        defaultEnd,
+        defaultAccent,
+        defaultSoft,
+        colorMixForCanvas(defaultAccent, defaultSurface, 0.32),
+        colorMixForCanvas(defaultSoft, defaultTrack, 0.38),
+        colorMixForCanvas(defaultTrack, defaultSurface, 0.16),
     ];
 }
 

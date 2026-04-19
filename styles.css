@@ -3221,8 +3221,8 @@
     --color-text-primary: var(--flavortown-wrapped-text-primary, #3c2f24);
     --color-text-secondary: var(--flavortown-wrapped-text-secondary, #6f5d4a);
     --color-text-muted: var(--flavortown-wrapped-text-muted, #8f7b67);
-    --color-accent: var(--flavortown-wrapped-accent, #8b7355);
-    --color-brown-light: var(--flavortown-wrapped-accent-soft, #b79b7a);
+    --color-accent: var(--flavortown-wrapped-accent, #e58d32);
+    --color-brown-light: var(--flavortown-wrapped-accent-soft, #e7bc93);
     --color-green: var(--flavortown-wrapped-green, #5b9d72);
     --color-red: var(--flavortown-wrapped-red, #be7b67);
     --flavortown-wrapped-bg-start: var(--flavortown-wrapped-bg-start, rgba(246, 238, 228, 0.9));
@@ -3302,8 +3302,8 @@
     --flavortown-wrapped-text-primary: #3c2f24;
     --flavortown-wrapped-text-secondary: #6f5d4a;
     --flavortown-wrapped-text-muted: #8f7b67;
-    --flavortown-wrapped-accent: #8b7355;
-    --flavortown-wrapped-accent-soft: #b79b7a;
+    --flavortown-wrapped-accent: #e58d32;
+    --flavortown-wrapped-accent-soft: #e7bc93;
     --flavortown-wrapped-green: #5b9d72;
     --flavortown-wrapped-red: #be7b67;
     --flavortown-wrapped-bg-start: rgba(246, 238, 228, 0.9);
@@ -8101,12 +8101,3 @@
     border: 1px solid color-mix(in srgb, var(--color-accent, #ec8b33), transparent 68%);
     color: var(--color-text-secondary, #6b5c4a);
 }
-    --color-surface: #f8f2e8;
-    --color-border: #d8c9b6;
-    --color-text-primary: #3c2f24;
-    --color-text-secondary: #6f5d4a;
-    --color-text-muted: #8f7b67;
-    --color-accent: #5e83d8;
-    --color-brown-light: #7c9ae0;
-    --color-green: #2f996f;
-    --color-red: #c55572;
