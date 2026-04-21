@@ -22409,8 +22409,8 @@ function getWrappedDonutColorPalette() {
 
     return [
         defaultEnd,
-        defaultAccent,
         defaultSoft,
+        colorMixForCanvas(defaultAccent, defaultTrack, 0.58),
         colorMixForCanvas(defaultAccent, defaultSurface, 0.32),
         colorMixForCanvas(defaultSoft, defaultTrack, 0.38),
         colorMixForCanvas(defaultTrack, defaultSurface, 0.16),
@@ -22950,13 +22950,26 @@ async function exportFlavortownWrappedPng(data) {
     ctx.fillRect(0, 0, width, height);
 
     const drawCard = (x, y, w, h, fill = palette.surface) => {
-        wrappedCanvasRoundedRect(ctx, x, y, w, h, 24);
+        wrappedCanvasRoundedRect(ctx, x + 0.5, y + 0.5, w - 1, h - 1, 24);
         ctx.fillStyle = fill;
         ctx.fill();
         ctx.strokeStyle = palette.border;
-        ctx.lineWidth = 1.5;
+        ctx.lineWidth = 1;
         ctx.stroke();
     };
+
+    const layout = {
+        leftX: 70,
+        leftW: 840,
+        rightX: 940,
+        topY: 190,
+        heroH: 320,
+        sectionGap: 24,
+        statsH: 142,
+        activityH: 255,
+    };
+    layout.statsY = layout.topY + layout.heroH + layout.sectionGap;
+    layout.activityY = layout.statsY + layout.statsH + layout.sectionGap;
 
     const fitText = (text, maxWidth, font) => {
         ctx.font = font;
@@ -22976,7 +22989,7 @@ async function exportFlavortownWrappedPng(data) {
     ctx.font = '700 56px system-ui';
     ctx.fillText(fitText(data.userName, 700, '700 56px system-ui'), 90, 158);
 
-    drawCard(70, 190, 840, 320, colorMixForCanvas(palette.surface, palette.accentSoft, 0.14));
+    drawCard(layout.leftX, layout.topY, layout.leftW, layout.heroH, colorMixForCanvas(palette.surface, palette.accentSoft, 0.14));
     ctx.fillStyle = palette.muted;
     ctx.font = '600 22px system-ui';
     ctx.fillText('Total Earned', 110, 248);
@@ -23058,23 +23071,23 @@ async function exportFlavortownWrappedPng(data) {
         { label: 'Cookies Spent', value: wrappedFormatNumber(data.shopOrders?.totalCookies || 0) },
     ];
 
-    const economyRowX = 70;
-    const economyRowY = 524;
-    const economyRowWidth = 840;
+    const economyRowX = layout.leftX;
+    const economyRowY = layout.statsY;
+    const economyRowWidth = layout.leftW;
     const economyGap = 12;
     const economyCardCount = economyCards.length;
     const economyCardWidth = Math.floor((economyRowWidth - economyGap * (economyCardCount - 1)) / economyCardCount);
-    const economyCardHeight = 172;
+    const economyCardHeight = layout.statsH;
 
     economyCards.forEach((item, index) => {
         const x = economyRowX + index * (economyCardWidth + economyGap);
         drawCard(x, economyRowY, economyCardWidth, economyCardHeight);
         ctx.fillStyle = palette.muted;
         ctx.font = '600 15px system-ui';
-        ctx.fillText(item.label, x + 20, economyRowY + 48);
+        ctx.fillText(item.label, x + 20, economyRowY + 42);
         ctx.fillStyle = palette.text;
         ctx.font = '700 40px system-ui';
-        ctx.fillText(fitText(item.value, economyCardWidth - 40, '700 40px system-ui'), x + 20, economyRowY + 130);
+        ctx.fillText(fitText(item.value, economyCardWidth - 40, '700 40px system-ui'), x + 20, economyRowY + 100);
     });
 
     drawCard(940, 190, 790, 330);
@@ -23160,16 +23173,16 @@ async function exportFlavortownWrappedPng(data) {
         ctx.fillText(fitText(card.detail, 300, '500 13px system-ui'), x + 22, y + 110);
     });
 
-    drawCard(70, 704, 840, 240);
+    drawCard(layout.leftX, layout.activityY, layout.leftW, layout.activityH);
     ctx.fillStyle = palette.muted;
     ctx.font = '600 22px system-ui';
-    ctx.fillText('Activity Pulse', 110, 760);
+    ctx.fillText('Activity Pulse', 110, layout.activityY + 58);
 
     const miniHeatmap = (data.heatmap.recentCells || []).slice(-14 * 7);
     const heatCell = 13;
     const heatGap = 5;
     const heatX = 110;
-    const heatY = 782;
+    const heatY = layout.activityY + 80;
     miniHeatmap.forEach((cell, index) => {
         const col = Math.floor(index / 7);
         const row = index % 7;
@@ -23183,10 +23196,10 @@ async function exportFlavortownWrappedPng(data) {
 
     ctx.fillStyle = palette.text;
     ctx.font = '600 20px system-ui';
-    ctx.fillText(`${wrappedFormatNumber(data.heatmap.activeDays)} active days`, 450, 794);
-    ctx.fillText(`${data.heatmap.totalHours.toFixed(1)} tracked hours`, 450, 834);
-    ctx.fillText(`${wrappedFormatNumber(data.projects.totalProjects)} projects touched`, 450, 874);
-    ctx.fillText(`${wrappedFormatNumber(totalOrders)} orders`, 450, 914);
+    ctx.fillText(`${wrappedFormatNumber(data.heatmap.activeDays)} active days`, 450, layout.activityY + 92);
+    ctx.fillText(`${data.heatmap.totalHours.toFixed(1)} tracked hours`, 450, layout.activityY + 132);
+    ctx.fillText(`${wrappedFormatNumber(data.projects.totalProjects)} projects touched`, 450, layout.activityY + 172);
+    ctx.fillText(`${wrappedFormatNumber(totalOrders)} orders`, 450, layout.activityY + 208);
 
     const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
     if (!blob) throw new Error('Could not create PNG export');
