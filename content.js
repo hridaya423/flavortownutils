@@ -20809,6 +20809,12 @@ let leaderboardFeedPromise = null;
 let leaderboardHistoryModal = null;
 let leaderboardHistoryLink = null;
 let leaderboardHistoryCleanup = null;
+const leaderboardApiEntriesCache = new Map();
+const leaderboardApiEntriesPromiseCache = new Map();
+const leaderboardApiUserIdCache = new Map();
+const leaderboardApiUserIdPromiseCache = new Map();
+const leaderboardApiUserSearchCache = new Map();
+const runLeaderboardResolveTask = createAsyncLimiter(4);
 
 async function fetchLeaderboardFeed() {
     if (leaderboardFeedCache) return leaderboardFeedCache;
@@ -20840,6 +20846,199 @@ function normalizeLeaderboardUserKey(name) {
         .replace(/^@/, '')
         .toLowerCase()
         .replace(/[^a-z0-9]/g, '');
+}
+
+function toLeaderboardSourceLabel(sourceType) {
+    const normalized = String(sourceType || '').trim();
+    if (!normalized) return 'balance change';
+    return normalized.replace(/_/g, ' ');
+}
+
+function parseLeaderboardApiEntries(payload) {
+    if (!payload || typeof payload !== 'object') return [];
+    const currentCookies = Number(payload.cookies);
+    const history = Array.isArray(payload.balance_history) ? payload.balance_history : [];
+    if (!history.length || !Number.isFinite(currentCookies)) return [];
+
+    let runningBalance = currentCookies;
+    const newestFirst = [];
+
+    history.forEach((entry) => {
+        if (!entry || typeof entry !== 'object') return;
+        const delta = Number(entry.amount);
+        const date = new Date(entry.created_at);
+        if (!Number.isFinite(delta) || Number.isNaN(date.getTime())) return;
+
+        newestFirst.push({
+            date,
+            delta,
+            balance: runningBalance,
+            reason: toLeaderboardSourceLabel(entry.source_type),
+            reasonType: String(entry.source_type || '').trim()
+        });
+        runningBalance -= delta;
+    });
+
+    return newestFirst
+        .reverse()
+        .sort((a, b) => a.date - b.date);
+}
+
+async function fetchLeaderboardUsersByQuery(query) {
+    const normalizedQuery = String(query || '').trim();
+    if (!normalizedQuery) return [];
+
+    if (leaderboardApiUserSearchCache.has(normalizedQuery)) {
+        return leaderboardApiUserSearchCache.get(normalizedQuery);
+    }
+
+    const promise = apiFetch(`/users?query=${encodeURIComponent(normalizedQuery)}&page=1`)
+        .then((data) => (Array.isArray(data?.users) ? data.users : []))
+        .catch(() => []);
+
+    leaderboardApiUserSearchCache.set(normalizedQuery, promise);
+    return promise;
+}
+
+function getLeaderboardUserLookupKey({ userName, userSlug, avatarKey }) {
+    return [
+        normalizeLeaderboardUserKey(userName),
+        normalizeLeaderboardUserKey(userSlug),
+        normalizeLeaderboardUserKey(avatarKey)
+    ].join('|');
+}
+
+function resolveLeaderboardUserMatch(users, candidateKeys) {
+    if (!Array.isArray(users) || !users.length) return null;
+    const keys = candidateKeys instanceof Set ? candidateKeys : new Set();
+
+    let best = null;
+    let bestScore = 0;
+
+    users.forEach((user) => {
+        if (!user || typeof user !== 'object') return;
+        const userId = String(user.id || '').trim();
+        if (!userId) return;
+
+        const userKeys = [
+            userId,
+            user.username,
+            user.display_name,
+            user.displayName,
+            user.name,
+            user.real_name,
+            user.realName
+        ]
+            .map((value) => normalizeLeaderboardUserKey(value))
+            .filter(Boolean);
+
+        let score = 0;
+        userKeys.forEach((key) => {
+            if (!keys.has(key)) return;
+            score += key === normalizeLeaderboardUserKey(userId) ? 3 : 2;
+        });
+
+        if (score > bestScore) {
+            best = user;
+            bestScore = score;
+        }
+    });
+
+    if (best && bestScore > 0) return best;
+    return users.length === 1 ? users[0] : null;
+}
+
+async function resolveLeaderboardApiUserId({ userName, userSlug, avatarKey }) {
+    const lookupKey = getLeaderboardUserLookupKey({ userName, userSlug, avatarKey });
+    if (leaderboardApiUserIdCache.has(lookupKey)) {
+        return leaderboardApiUserIdCache.get(lookupKey);
+    }
+    if (leaderboardApiUserIdPromiseCache.has(lookupKey)) {
+        return leaderboardApiUserIdPromiseCache.get(lookupKey);
+    }
+
+    const promise = (async () => {
+        const numericCandidate = [userSlug, avatarKey, userName]
+            .map((value) => String(value || '').trim())
+            .find((value) => /^\d+$/.test(value));
+        if (numericCandidate) {
+            leaderboardApiUserIdCache.set(lookupKey, numericCandidate);
+            return numericCandidate;
+        }
+
+        const candidateKeys = new Set([
+            normalizeLeaderboardUserKey(userName),
+            normalizeLeaderboardUserKey(userSlug),
+            normalizeLeaderboardUserKey(avatarKey)
+        ].filter(Boolean));
+
+        const queryCandidates = [
+            String(userSlug || '').replace(/[-_]+/g, ' ').trim(),
+            String(userSlug || '').trim(),
+            String(userName || '').trim(),
+            String(avatarKey || '').replace(/[-_]+/g, ' ').trim(),
+            String(avatarKey || '').trim()
+        ].filter((value, index, arr) => value && arr.indexOf(value) === index && value.length >= 2);
+
+        for (const query of queryCandidates) {
+            const users = await fetchLeaderboardUsersByQuery(query);
+            const match = resolveLeaderboardUserMatch(users, candidateKeys);
+            if (match?.id) {
+                const resolvedId = String(match.id).trim();
+                if (resolvedId) {
+                    leaderboardApiUserIdCache.set(lookupKey, resolvedId);
+                    return resolvedId;
+                }
+            }
+        }
+
+        leaderboardApiUserIdCache.set(lookupKey, null);
+        return null;
+    })().finally(() => {
+        leaderboardApiUserIdPromiseCache.delete(lookupKey);
+    });
+
+    leaderboardApiUserIdPromiseCache.set(lookupKey, promise);
+    return promise;
+}
+
+async function fetchLeaderboardApiEntriesForUserId(userId) {
+    const key = String(userId || '').trim();
+    if (!key) return [];
+    if (leaderboardApiEntriesCache.has(key)) return leaderboardApiEntriesCache.get(key);
+    if (leaderboardApiEntriesPromiseCache.has(key)) return leaderboardApiEntriesPromiseCache.get(key);
+
+    console.log('[Flavortown] Leaderboard API fetch start', { userId: key });
+
+    const promise = apiFetch(`/users/${encodeURIComponent(key)}`)
+        .then((payload) => {
+            const entries = parseLeaderboardApiEntries(payload);
+            leaderboardApiEntriesCache.set(key, entries);
+            console.log('[Flavortown] Leaderboard API fetch success', { userId: key, entries: entries.length });
+            return entries;
+        })
+        .catch((err) => {
+            console.warn('[Flavortown] Leaderboard API fetch failed', {
+                userId: key,
+                error: err?.message || String(err || 'Unknown error')
+            });
+            return [];
+        })
+        .finally(() => {
+            leaderboardApiEntriesPromiseCache.delete(key);
+        });
+
+    leaderboardApiEntriesPromiseCache.set(key, promise);
+    return promise;
+}
+
+async function fetchLeaderboardApiEntriesForUser({ userName, userSlug, avatarKey }) {
+    const userId = await resolveLeaderboardApiUserId({ userName, userSlug, avatarKey });
+    if (!userId) {
+        console.warn('[Flavortown] Leaderboard API user id resolution failed', { userName, userSlug, avatarKey });
+        return [];
+    }
+    return fetchLeaderboardApiEntriesForUserId(userId);
 }
 
 function parseLeaderboardEntries(rawEntries) {
@@ -21407,27 +21606,56 @@ async function enhanceLeaderboardPage() {
     const userLinks = document.querySelectorAll('.user .content h2 a[href^="/users/"]');
     if (!userLinks.length) return;
 
-    await fetchLeaderboardFeed();
+    let fallbackFeedLoaded = false;
+    let fallbackEntriesMap = {};
+    let fallbackUsersMap = {};
+    const ensureFallbackFeed = async () => {
+        if (fallbackFeedLoaded) {
+            return { entriesMap: fallbackEntriesMap, usersMap: fallbackUsersMap };
+        }
 
-    const feed = leaderboardFeedCache || {};
-    const entriesMap = feed.entries || feed;
-    const usersMap = feed.users || {};
+        await fetchLeaderboardFeed();
+        const feed = leaderboardFeedCache || {};
+        fallbackEntriesMap = feed.entries || feed;
+        fallbackUsersMap = feed.users || {};
+        fallbackFeedLoaded = true;
+        return { entriesMap: fallbackEntriesMap, usersMap: fallbackUsersMap };
+    };
 
     userLinks.forEach(link => {
         const userName = link.textContent.trim();
+        const href = link.getAttribute('href') || '';
+        const userSlugMatch = href.match(/^\/users\/([^/?#]+)/i);
+        const userSlug = userSlugMatch ? decodeURIComponent(userSlugMatch[1]) : '';
         const userCard = link.closest('.user');
         const avatarSrc = userCard?.querySelector('img')?.getAttribute('src') || '';
         const avatarMatch = avatarSrc.match(/\/users\/([^/]+)\//i);
         const avatarKey = avatarMatch ? avatarMatch[1] : '';
-        const userKey = normalizeLeaderboardUserKey(avatarKey || userName);
-        const entriesForUser = resolveLeaderboardEntries({ userName, userKey, entriesMap, usersMap });
-        updateLeaderboardCardDelta({ userCard, entries: entriesForUser, days: 5 });
+        const userKey = normalizeLeaderboardUserKey(avatarKey || userSlug || userName);
+        let entriesForUser = [];
 
         if (link.dataset.flavortownLeaderboardHistory === 'true') return;
         link.dataset.flavortownLeaderboardHistory = 'true';
         link.classList.add('flavortown-leaderboard-user-link');
 
-        link.addEventListener('click', (e) => {
+        runLeaderboardResolveTask(async () => {
+            const apiEntries = await fetchLeaderboardApiEntriesForUser({ userName, userSlug, avatarKey });
+            if (Array.isArray(apiEntries) && apiEntries.length) {
+                entriesForUser = apiEntries;
+                updateLeaderboardCardDelta({ userCard, entries: entriesForUser, days: 5 });
+                return;
+            }
+
+            const { entriesMap, usersMap } = await ensureFallbackFeed();
+            const fallbackEntries = resolveLeaderboardEntries({ userName, userKey, entriesMap, usersMap });
+            if (Array.isArray(fallbackEntries) && fallbackEntries.length) {
+                entriesForUser = fallbackEntries;
+                updateLeaderboardCardDelta({ userCard, entries: entriesForUser, days: 5 });
+            }
+        }).catch(() => {
+        });
+
+        link.addEventListener('click', async (e) => {
             if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
             if (link.classList.contains('flavortown-leaderboard-user-link--armed')) {
                 closeLeaderboardHistoryModal();
@@ -21435,8 +21663,26 @@ async function enhanceLeaderboardPage() {
             }
 
             e.preventDefault();
-            const profileUrl = link.getAttribute('href') || '#';
-            openLeaderboardHistoryModal({ userName, entries: entriesForUser, linkEl: link, profileUrl });
+            try {
+                const profileUrl = link.getAttribute('href') || '#';
+                if (!entriesForUser.length) {
+                    const apiEntries = await fetchLeaderboardApiEntriesForUser({ userName, userSlug, avatarKey });
+                    if (Array.isArray(apiEntries) && apiEntries.length) {
+                        entriesForUser = apiEntries;
+                        updateLeaderboardCardDelta({ userCard, entries: entriesForUser, days: 5 });
+                    } else {
+                        const { entriesMap, usersMap } = await ensureFallbackFeed();
+                        const fallbackEntries = resolveLeaderboardEntries({ userName, userKey, entriesMap, usersMap });
+                        if (Array.isArray(fallbackEntries) && fallbackEntries.length) {
+                            entriesForUser = fallbackEntries;
+                            updateLeaderboardCardDelta({ userCard, entries: entriesForUser, days: 5 });
+                        }
+                    }
+                }
+                openLeaderboardHistoryModal({ userName, entries: entriesForUser, linkEl: link, profileUrl });
+            } catch (err) {
+                openLeaderboardHistoryModal({ userName, entries: entriesForUser, linkEl: link, profileUrl: link.getAttribute('href') || '#' });
+            }
         });
     });
 }
