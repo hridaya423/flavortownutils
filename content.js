@@ -11450,7 +11450,6 @@ function init() {
     enhanceAdminPage();
     initProjectRepoSuggestions();
     initProjectTodos();
-    initShipFastFlow();
     initPayoutVotesTextRestructure();
 
     setTimeout(checkAchievements, 2000);
@@ -13049,7 +13048,6 @@ document.addEventListener('turbo:load', () => {
     initVotesFeature();
     initProjectRepoSuggestions();
     initProjectTodos();
-    initShipFastFlow();
     setTimeout(triggerPendingNavigationActions, 150);
 });
 
